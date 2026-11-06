@@ -53,7 +53,7 @@ Par-Tee Time was first built to run inside Claude. On Capra Lab its NPCs use the
 | Par-Tee Time | Lab original: `/par-tee-time/` (only in Capra Lab) |
 | Primal Survival | Native: `/primal-survival/`, uses Capra Lab profiles |
 | Mind Heist | https://mind-heist.netlify.app/ |
-| Glacial Maw | https://glacialmaw.netlify.app/ |
+| Glacial Maw | `/glacial-maw/`, served from its own site (glacialmaw.netlify.app, repo jj-capra/glacial-maw) so its hunters, friends and saves stay put; see netlify.toml |
 | Swerve Planet | Native: `/swerve-planet/`, leaderboard at `/swerve-planet/api/scores`; signed-in players post under their lab name |
 
 ## Adding a game tile

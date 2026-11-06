@@ -36,6 +36,27 @@
   status = 200
   force = true
 
+# Glacial Maw keeps its own Netlify site, server and data (hunters, friends, saved games); Capra Lab serves it
+# at /glacial-maw/ so it shares the lab's address. Its pages use relative paths; its one absolute path, the
+# server at /api/world, is passed through too. Nothing in the game's repo has to change for this.
+[[redirects]]
+  from = "/glacial-maw"
+  to = "/glacial-maw/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/glacial-maw/*"
+  to = "https://glacialmaw.netlify.app/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/world"
+  to = "https://glacialmaw.netlify.app/api/world"
+  status = 200
+  force = true
+
 # Modules must be served as JavaScript or the browser refuses them.
 [[headers]]
   for = "/*.js"
