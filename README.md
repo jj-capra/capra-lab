@@ -11,11 +11,13 @@ public/                      the site Netlify serves
   lab/keycard.js             the key card picture (key printed on it and hidden inside it)
   assets/, icons, manifest   logo, home-screen icon, full-screen app support
   primal-survival/           built from games/primal-survival/ (not committed)
+  par-tee-time/              built from games/par-tee-time/ (not committed)
 lab/                         lab-wide server code
   profiles.js                one name + six-digit key per player, for every game
   stores.js                  Netlify Blobs / memory / file storage
   test/profiles.test.mjs
 games/primal-survival/       Primal Survival's source: client, shared engine, server, tests
+games/par-tee-time/          Par-Tee Time: one self-contained page
 netlify/functions/
   profile.mjs                /api/profile/*                lab profiles
   primal-survival.mjs        /primal-survival/api/*        the game's API
@@ -39,11 +41,13 @@ The signed-in player is kept in the browser under `capra-lab.profile`, which eve
 
 **Adding a game to the profile:** server side, call `profiles.verify(name, code)` from `lab/profiles.js` and keep the game's own stats under its own store, keyed by the profile's handle. Client side, read the player from `localStorage['capra-lab.profile']` (`{ name, handle, code }`).
 
+Par-Tee Time was first built to run inside Claude. On Capra Lab its NPCs use their scripted trash talk (the Claude-powered replies only exist inside Claude) and the online-with-a-friend mode is hidden, since its rooms need Claude too. Hustler and pass-and-play work fully.
+
 ## Games on the hub
 
 | Game | Where |
 | --- | --- |
-| Par-Tee Time | Lab original, coming soon (will live at `/par-tee-time/`) |
+| Par-Tee Time | Lab original: `/par-tee-time/` (only in Capra Lab) |
 | Primal Survival | Native: `/primal-survival/`, uses Capra Lab profiles |
 | Mind Heist | https://mind-heist.netlify.app/ |
 | Glacial Maw | https://glacialmaw.netlify.app/ |

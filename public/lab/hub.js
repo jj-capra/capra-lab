@@ -229,5 +229,8 @@ document.addEventListener('keydown', e => {
 /* ---------------- first visit ---------------- */
 paintWho();
 const me = loadMe();
+const asked = location.hash === '#profile';                /* a game sent the player here to make one */
+if (asked) history.replaceState(null, '', location.pathname);
 if (me && !keySaved(me)) showKeyStep(me);                 /* left before saving: finish that first */
-else if (!me && !store.get(SKIP_KEY, sessionStorage)) { open(); step('welcome'); }
+else if (me && asked) openProfile();
+else if (!me && (asked || !store.get(SKIP_KEY, sessionStorage))) { open(); step('welcome'); }

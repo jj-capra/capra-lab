@@ -3,6 +3,7 @@ node_modules/
 *.log
 # built from games/<game>/ by scripts/build.mjs
 public/primal-survival/
+public/par-tee-time/
 # each game's own local-dev output
 games/*/public/
 games/*/dist/

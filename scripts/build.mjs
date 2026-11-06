@@ -2,7 +2,7 @@
  *
  * The hub (public/index.html, public/lab/, public/assets/) is committed as-is.
  * Each native game keeps its source in games/<game>/ and is copied to
- * public/<game>/ here, the same layout the game used as its own site:
+ * public/<game>/ here. Primal Survival keeps the layout it had as its own site:
  *
  *   public/primal-survival/index.html      <- games/primal-survival/client/index.html
  *   public/primal-survival/client/*        <- browser modules and assets
@@ -42,4 +42,14 @@ async function buildPrimalSurvival() {
   console.log('built public/primal-survival/');
 }
 
+/* Par-Tee Time is one self-contained page */
+async function buildParTeeTime() {
+  const out = path.join(ROOT, 'public', 'par-tee-time');
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(out, { recursive: true });
+  await fs.copyFile(path.join(ROOT, 'games', 'par-tee-time', 'index.html'), path.join(out, 'index.html'));
+  console.log('built public/par-tee-time/');
+}
+
 await buildPrimalSurvival();
+await buildParTeeTime();

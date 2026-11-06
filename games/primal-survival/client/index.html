@@ -368,7 +368,7 @@
       <div class="netline" id="netLine">Connecting to today's season&hellip;</div>
     </div>
   </header>
-  <div class="homebar"><span class="who" id="whoHome">Playing as<b>Guest</b></span></div>
+  <div class="homebar"><a href="/" style="color:inherit;font-weight:700;text-decoration:none;padding:10px 0">&larr; Capra Lab</a><span class="who" id="whoHome">Playing as<b>Guest</b></span></div>
   <div class="menu">
     <button class="primary" id="goPlay"><span class="mt">Play today's season</span>
       <span class="md">Draft five. Survive as long as you can.</span></button>
@@ -390,9 +390,8 @@
   <div id="signedOut">
     <div class="panel">
       <h3>Take a name</h3>
-      <p>A name and a six-digit key. No email, no password. The key is the account &mdash; we show it once and you keep the card.</p>
-      <input id="newName" maxlength="24" placeholder="Name" autocomplete="off">
-      <button class="btn" id="createBtn">Create a profile</button>
+      <p>Profiles belong to Capra Lab now: one name and six-digit key for every game in the lab. Make yours there, save your key card, and you come back signed in.</p>
+      <button class="btn" id="createBtn">Make my Capra Lab profile</button>
       <div class="msg" id="createMsg"></div>
     </div>
     <div class="panel">
@@ -400,7 +399,7 @@
       <input id="inName" maxlength="24" placeholder="Name" autocomplete="off">
       <input id="inCode" maxlength="6" inputmode="numeric" placeholder="Six-digit key" autocomplete="off">
       <button class="btn ghost" id="signinBtn">Sign in</button>
-      <div class="drop" id="dropZone">or drop your key card here</div>
+      <div class="drop" id="dropZone">or choose your key card picture</div>
       <input type="file" id="cardFile" accept="image/png" class="hidden">
       <div class="msg" id="signinMsg"></div>
     </div>

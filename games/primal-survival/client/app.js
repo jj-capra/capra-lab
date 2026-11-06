@@ -677,7 +677,8 @@ $('bHome').onclick = () => show('viewHome');
 $('dHome').onclick = () => show('viewHome');
 $('tabToday').onclick = () => openBoard('today');
 $('tabAll').onclick = () => openBoard('lifetime');
-$('createBtn').onclick = createProfile;
+/* profiles are made in Capra Lab, where the key-card save step cannot be skipped */
+$('createBtn').onclick = () => { location.href = '/#profile'; };
 $('signinBtn').onclick = () => signIn($('inName').value.trim(), $('inCode').value.trim());
 $('saveCardBtn').onclick = saveCard;
 $('newKeyBtn').onclick = rotateKey;

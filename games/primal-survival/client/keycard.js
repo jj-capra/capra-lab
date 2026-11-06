@@ -236,7 +236,8 @@ export async function keyCardBlob(canvas, profile) {
 export async function readKeyCardFile(file) {
   try {
     const bytes = new Uint8Array(await file.arrayBuffer());
-    const text = readFromPng(bytes);
+    /* a Capra Lab key card works here too */
+    const text = readFromPng(bytes) || readFromPng(bytes, 'capra-lab-key');
     if (!text) return null;
     const p = JSON.parse(text);
     return p && p.name && p.code ? { name: p.name, code: String(p.code) } : null;
