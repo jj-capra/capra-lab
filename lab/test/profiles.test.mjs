@@ -78,6 +78,26 @@ await test('one profile works in a game: Primal Survival banks a run against it'
   assert.equal((await ps.signIn({ name: 'Lab Player', code })).name, 'Lab Player');
 });
 
+await test('guessing a key is slowed per name: 8 misses lock it for 10 minutes, then it opens again', async () => {
+  let t = Date.parse('2026-11-06T12:00:00Z');
+  const p = createProfiles(memoryStore(), { now: () => t });
+  const { code } = await p.create({ name: 'Target' });
+  await p.create({ name: 'Bystander' });
+  const wrong = code === '111111' ? '222222' : '111111';
+  for (let i = 0; i < 7; i++) assert.equal((await p.signIn({ name: 'Target', code: wrong })).status, 401);
+  /* a right key before the limit clears the count */
+  assert.ok((await p.signIn({ name: 'Target', code })).identity);
+  for (let i = 0; i < 8; i++) await p.signIn({ name: 'Target', code: wrong });
+  const locked = await p.signIn({ name: 'Target', code });
+  assert.equal(locked.status, 429);
+  assert.equal(await p.verify('Target', code), null, 'games see a locked name as no match');
+  assert.equal((await p.rotateKey({ name: 'Target', code })).status, 429);
+  /* other names are untouched, and a name that does not exist still looks like a wrong key */
+  assert.equal((await p.signIn({ name: 'Nobody', code: wrong })).status, 401);
+  t += 10 * 60 * 1000 + 1;
+  assert.ok((await p.signIn({ name: 'Target', code })).identity, 'opens again after 10 minutes');
+});
+
 await test('handles are stable', () => {
   assert.equal(handleOf('  Billy  Goat! '), 'billy-goat');
 });

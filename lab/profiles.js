@@ -15,12 +15,22 @@
  *
  * Keys are stored as a salted SHA-256. Six digits is not much entropy, but a
  * dump of the store should still not hand over every account.
+ *
+ * Guessing is slowed per name, not per address (games ask from Netlify's own
+ * servers, so every guess can come from the same address): after 8 wrong keys
+ * in 10 minutes the name stops accepting any key, right or wrong, until the 10
+ * minutes are up. At that pace a guesser needs over a year for one name.
+ *
+ *              fails/<handle>     { n, since }
  */
 
 export const handleOf = name =>
   String(name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 24);
 
 const profileKey = handle => 'profile/' + handle;
+const failKey = handle => 'fails/' + handle;
+export const LOCK_AFTER = 8;
+export const LOCK_MS = 10 * 60 * 1000;
 
 function newCode() {
   const n = new Uint32Array(1);
@@ -50,16 +60,34 @@ export const publicIdentity = p => ({ name: p.name, handle: p.handle, created: p
 
 /* one message for a wrong name and a wrong key, so this cannot be used to discover names */
 const NO_MATCH = { status: 401, error: 'No profile with that name and key.' };
+const LOCKED = { status: 429, error: 'Too many wrong keys for that name. Wait 10 minutes and try again.' };
 
-export function createProfiles(store) {
+export function createProfiles(store, { now = () => Date.now() } = {}) {
+  /* the wrong-key count for a name, or null once its 10 minutes are up */
+  async function fails(handle) {
+    const f = await store.get(failKey(handle));
+    return f && now() - f.since < LOCK_MS ? f : null;
+  }
+  const locked = async handle => ((await fails(handle)) || { n: 0 }).n >= LOCK_AFTER;
+
+  /* the profile when the name and key match; null otherwise, and null while the name is locked */
   async function verify(name, code) {
-    const p = await store.get(profileKey(handleOf(name)));
+    const handle = handleOf(name);
+    const p = await store.get(profileKey(handle));
     if (!p) return null;
-    return sameHash(p.codeHash, await hashCode(String(code || '').trim(), p.salt)) ? p : null;
+    const f = await fails(handle);
+    if (f && f.n >= LOCK_AFTER) return null;
+    if (sameHash(p.codeHash, await hashCode(String(code || '').trim(), p.salt))) {
+      if (f) await store.set(failKey(handle), { n: 0, since: 0 });
+      return p;
+    }
+    await store.set(failKey(handle), f ? { n: f.n + 1, since: f.since } : { n: 1, since: now() });
+    return null;
   }
 
   return {
     verify,
+    locked: name => locked(handleOf(name)),
 
     /* The only time a key is ever returned in the clear, apart from rotateKey. */
     async create(body) {
@@ -75,7 +103,8 @@ export function createProfiles(store) {
 
     async signIn(body) {
       const p = await verify(body.name, body.code);
-      return p ? { identity: publicIdentity(p) } : NO_MATCH;
+      if (p) return { identity: publicIdentity(p) };
+      return (await locked(handleOf(body.name))) ? LOCKED : NO_MATCH;
     },
 
     /* Cuts a fresh key and retires the old one. Being signed in is the only
@@ -83,7 +112,7 @@ export function createProfiles(store) {
      * a key card, or keep the key. */
     async rotateKey(body) {
       const p = await verify(body.name, body.code);
-      if (!p) return NO_MATCH;
+      if (!p) return (await locked(handleOf(body.name))) ? LOCKED : NO_MATCH;
       const code = newCode();
       p.salt = newSalt();
       p.codeHash = await hashCode(code, p.salt);

@@ -40,7 +40,11 @@ A Capra Lab profile is a player name and a six-digit key, nothing else: no email
 
 Signing back in: choose the key picture (the hidden key signs you straight in), or type the name and six digits printed on it. A screenshot loses the hidden copy but keeps the printed one.
 
+Guessing a key is slowed per name: after 8 wrong keys in 10 minutes that name accepts no key for 10 minutes (sign-in answers 429, games see no match). It's per name rather than per address because games check keys from Netlify's servers.
+
 The signed-in player is kept in the browser under `capra-lab.profile`, which every game in the lab reads. On iPhone, a home-screen app keeps its own storage separate from Safari, so the first time someone opens Capra Lab from the home screen they sign in once with their key picture.
+
+**Games on their own sites** (Glacial Maw, Mind Heist) are passed through by `netlify.toml`, so they share this address and its browser storage. Requests through the proxy count on both sites' Netlify credits.
 
 **Adding a game to the profile:** server side, call `profiles.verify(name, code)` from `lab/profiles.js` and keep the game's own stats under its own store, keyed by the profile's handle. Client side, read the player from `localStorage['capra-lab.profile']` (`{ name, handle, code }`).
 
@@ -52,7 +56,7 @@ Par-Tee Time was first built to run inside Claude. On Capra Lab its NPCs use the
 | --- | --- |
 | Par-Tee Time | Lab original: `/par-tee-time/` (only in Capra Lab) |
 | Primal Survival | Native: `/primal-survival/`, uses Capra Lab profiles |
-| Mind Heist | https://mind-heist.netlify.app/ |
+| Mind Heist | `/mind-heist/`, served from its own site (mind-heist.netlify.app, source in JC's `Desktop\MH\mind-heist-daily`, deployed with its `deploy.cmd`). Its server checks lab keys with `/api/profile/signin` and links each lab player to one Mind Heist profile; players can bring an old one with its Mind Heist key |
 | Glacial Maw | `/glacial-maw/`, served from its own site (glacialmaw.netlify.app, repo jj-capra/glacial-maw) so its hunters, friends and saves stay put; see netlify.toml |
 | Swerve Planet | Native: `/swerve-planet/`, leaderboard at `/swerve-planet/api/scores`; signed-in players post under their lab name |
 

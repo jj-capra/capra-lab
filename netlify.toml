@@ -57,6 +57,21 @@
   status = 200
   force = true
 
+# Mind Heist works the same way: its own site (mind-heist.netlify.app, deployed from JC's MH folder), server
+# and data, served here at /mind-heist/. Its pages write every path through src/client/base.js so they work at
+# either address, and inside the lab it signs players in with their Capra Lab profile (/api/me/lab there).
+[[redirects]]
+  from = "/mind-heist"
+  to = "/mind-heist/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/mind-heist/*"
+  to = "https://mind-heist.netlify.app/:splat"
+  status = 200
+  force = true
+
 # Modules must be served as JavaScript or the browser refuses them.
 [[headers]]
   for = "/*.js"
