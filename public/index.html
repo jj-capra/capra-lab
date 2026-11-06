@@ -181,6 +181,106 @@
   .tile.next strong { font-size: 20px; letter-spacing: 0.04em; text-shadow: none; }
   .tile.next .name span { font-weight: 600; color: rgba(255, 248, 236, 0.72); }
 
+
+  /* ---------- who's playing ---------- */
+  .who-btn {
+    display: flex; align-items: center; gap: 12px; width: 100%;
+    margin: 0 0 22px; padding: 10px 12px 10px 14px; min-height: 60px;
+    background: #221B2E; color: var(--paper);
+    border: 3px solid #05030A; border-radius: 16px; box-shadow: 4px 4px 0 #05030A;
+    font: inherit; text-align: left; cursor: pointer;
+  }
+  .who-btn:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+  .who-mark {
+    flex: none; width: 38px; height: 38px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--yellow); color: var(--ink); border: 3px solid var(--ink);
+    font-family: var(--display); font-size: 22px; line-height: 1;
+  }
+  .who-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+  .who-text small { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 248, 236, 0.7); }
+  .who-text b { font-size: 16px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .who-cta {
+    flex: none; padding: 8px 12px; border-radius: 999px;
+    background: var(--yellow); color: var(--ink); border: 2px solid var(--ink);
+    font-size: 12px; font-weight: 800; letter-spacing: 0.04em;
+  }
+
+  /* ---------- the walkthrough ---------- */
+  body.locked { overflow: hidden; }
+  .onboard {
+    position: fixed; inset: 0; z-index: 50; overflow-y: auto;
+    background-color: rgba(10, 8, 16, 0.94);
+    background-image: radial-gradient(rgba(255, 248, 236, 0.06) 1px, transparent 1.6px);
+    background-size: 9px 9px;
+    padding:
+      calc(env(safe-area-inset-top) + 20px) calc(env(safe-area-inset-right) + 16px)
+      calc(env(safe-area-inset-bottom) + 24px) calc(env(safe-area-inset-left) + 16px);
+  }
+  .onboard[hidden] { display: none; }
+  .ob-card {
+    max-width: 460px; margin: 0 auto; padding: 22px 20px 24px;
+    background: var(--night); border: 3px solid var(--yellow); border-radius: 24px;
+    box-shadow: 6px 7px 0 #05030A;
+  }
+  .dots { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; }
+  .dots span { width: 28px; height: 6px; border-radius: 999px; background: rgba(255, 248, 236, 0.18); }
+  .dots span.on { background: var(--yellow); }
+  .ob-step { display: flex; flex-direction: column; gap: 14px; }
+  .ob-step[hidden] { display: none; }
+  .ob-step h2 {
+    margin: 0; font-family: var(--display); font-weight: 400; font-size: 36px; line-height: 1;
+    letter-spacing: 0.03em; text-shadow: 2px 0 var(--magenta), -2px 0 var(--cyan); outline: none;
+  }
+  .ob-step p { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.45; color: rgba(255, 248, 236, 0.86); }
+  .ob-logo { width: 150px; height: 150px; margin: 0 auto -4px; display: block; }
+  .ob-center { text-align: center; align-items: center; }
+  .ob-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+    min-height: 54px; padding: 12px 18px; border-radius: 16px;
+    background: var(--yellow); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 5px 0 #05030A;
+    font: inherit; font-size: 17px; font-weight: 800; cursor: pointer;
+  }
+  .ob-btn:active { transform: translate(3px, 4px); box-shadow: 1px 1px 0 #05030A; }
+  .ob-btn.alt { background: #221B2E; color: var(--paper); border-color: #05030A; }
+  .ob-btn:disabled { background: #3A3446; color: rgba(255, 248, 236, 0.55); border-color: #05030A; box-shadow: none; cursor: not-allowed; transform: none; }
+  .ob-btn:focus-visible, .ob-link:focus-visible, .ob-field input:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+  .ob-link {
+    align-self: center; padding: 10px 12px; min-height: 44px; background: none; border: 0;
+    color: rgba(255, 248, 236, 0.75); font: inherit; font-size: 14px; font-weight: 700; text-decoration: underline; cursor: pointer;
+  }
+  .ob-field { display: flex; flex-direction: column; gap: 6px; }
+  .ob-field label { font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 248, 236, 0.75); }
+  .ob-field input {
+    min-height: 54px; padding: 12px 14px; border-radius: 14px; border: 3px solid #05030A;
+    background: var(--paper); color: var(--ink); font: inherit; font-size: 20px; font-weight: 800;
+  }
+  .ob-field input.digits { letter-spacing: 0.3em; font-variant-numeric: tabular-nums; }
+  .ob-status { min-height: 20px; margin: 0; font-size: 14px; font-weight: 700; color: var(--live); }
+  .ob-status.bad { color: #FF8FB8; }
+  .ob-card-img {
+    width: 100%; height: auto; aspect-ratio: 1080 / 1350; display: block;
+    border-radius: 16px; border: 3px solid #05030A; background: #221B2E;
+    -webkit-touch-callout: default;
+  }
+  .ob-warn {
+    display: flex; gap: 10px; padding: 12px 14px; border-radius: 14px;
+    background: var(--paper); color: var(--ink); border: 3px solid var(--ink);
+  }
+  .ob-warn svg { flex: none; width: 26px; height: 26px; fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .ob-warn p { color: var(--ink); font-size: 14px; }
+  .ob-check {
+    display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 14px;
+    background: #221B2E; border: 3px solid #05030A; font-size: 15px; font-weight: 700; line-height: 1.35; cursor: pointer;
+  }
+  .ob-check input { flex: none; width: 24px; height: 24px; margin: 0; accent-color: var(--yellow); }
+  .ob-hint { font-size: 13px !important; color: rgba(255, 248, 236, 0.7) !important; text-align: center; }
+  .ob-keyline { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+  .ob-keyline b { font-size: 18px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ob-keyline span { font-family: var(--display); font-size: 30px; letter-spacing: 0.06em; color: var(--yellow); white-space: nowrap; }
+  .ob-file { position: relative; }
+  .ob-file input { position: absolute; inset: 0; opacity: 0; width: 100%; cursor: pointer; }
+
   .tip { margin: 22px 0 0; font-size: 12px; font-weight: 600; line-height: 1.4; text-align: center; color: rgba(255, 248, 236, 0.62); }
   @media (display-mode: standalone) { .tip { display: none; } }
 
@@ -207,9 +307,13 @@
     </div>
   </header>
 
+  <button class="who-btn" id="whoBtn" type="button">
+    <span class="who-text"><small>One profile, every game</small><b>Make your Capra Lab profile</b></span><span class="who-cta">Start</span>
+  </button>
+
   <div class="label">
     <h2>PICK AN EXPERIMENT</h2>
-    <span>6 GAMES</span>
+    <span>5 GAMES</span>
   </div>
 
   <nav class="games" aria-label="Games">
@@ -241,20 +345,12 @@
       <div class="name"><strong>GLACIAL MAW</strong><span>Rescue Ice Age Echoes</span></div>
     </a>
 
-    <a class="tile" href="https://primalsurvival365.netlify.app/" style="--tile: #B9D84A">
+    <a class="tile" href="/primal-survival/" style="--tile: #B9D84A">
       <div class="top">
         <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4c1 6-1 12-3 16"/><path d="M12 3c1 7-1 13-3 18"/><path d="M18 4c1 6-1 12-3 16"/></svg></div>
         <span class="chip live">LIVE</span>
       </div>
       <div class="name"><strong>PRIMAL SURVIVAL</strong><span>Draft the all-time pack</span></div>
-    </a>
-
-    <a class="tile" href="https://my-doll-besties.netlify.app/" style="--tile: #BFA4F5">
-      <div class="top">
-        <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 3h5l-.8 4.5L18 20H6l4.3-12.5z"/><path d="M9.7 7.5h4.6"/></svg></div>
-        <span class="chip live">LIVE</span>
-      </div>
-      <div class="name"><strong>MY DOLL BESTIES</strong><span>Felt doll dress-up</span></div>
     </a>
 
     <a class="tile" href="https://swerve-planet.netlify.app/" style="--tile: #F06AA6">
@@ -275,5 +371,91 @@
   <p class="tip">On iPhone: Share › Add to Home Screen opens the lab full-screen.</p>
 
 </main>
+
+<div class="onboard" id="onboard" role="dialog" aria-modal="true" aria-label="Capra Lab profile" hidden>
+  <div class="ob-card">
+    <div class="dots" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
+    <section class="ob-step ob-center" data-step="welcome" hidden>
+      <img class="ob-logo" src="/assets/capra-lab-logo.png" width="150" height="150" alt="">
+      <h2>Welcome to Capra Lab</h2>
+      <p>Make one profile and it works in every game in the lab. It takes about a minute.</p>
+      <button class="ob-btn" id="goMake" type="button">Make my profile</button>
+      <button class="ob-btn alt" id="goSignin" type="button">I already have a key</button>
+      <button class="ob-link" id="goSkip" type="button">Skip for now</button>
+    </section>
+
+    <section class="ob-step" data-step="name" hidden>
+      <h2>Pick your player name</h2>
+      <p>This is how you show up on every leaderboard in the lab.</p>
+      <form id="nameForm" class="ob-step" novalidate>
+        <div class="ob-field">
+          <label for="nameInput">Player name</label>
+          <input id="nameInput" name="name" maxlength="24" autocomplete="nickname" autocapitalize="words" spellcheck="false" required>
+        </div>
+        <p class="ob-status" id="nameStatus" role="status" aria-live="polite"></p>
+        <button class="ob-btn" id="nameGo" type="submit">Create my key</button>
+      </form>
+      <button class="ob-link" type="button" data-back="welcome">Back</button>
+    </section>
+
+    <section class="ob-step" data-step="key" hidden>
+      <h2>This picture is your key</h2>
+      <div class="ob-warn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19z"/><path d="M12 10v4.5"/><path d="M12 17.5v.01"/></svg><p><b>Save it now.</b> There is no email and no password reset. If you lose this picture, you lose this profile and your progress in every game.</p></div>
+      <img class="ob-card-img" id="keyImg" alt="Your Capra Lab key card, showing your name and six-digit key">
+      <div class="ob-keyline"><b id="keyName"></b><span id="keyDigits"></span></div>
+      <button class="ob-btn" id="keySave" type="button">Save to Photos</button>
+      <p class="ob-hint">On iPhone, tap Save Image in the share sheet. You can also press and hold the picture and tap Save to Photos.</p>
+      <p class="ob-status" id="keyStatus" role="status" aria-live="polite"></p>
+      <label class="ob-check"><input type="checkbox" id="keyConfirm"><span>I saved my key picture, or I took a screenshot of it.</span></label>
+      <button class="ob-btn" id="keyNext" type="button" disabled>Continue</button>
+    </section>
+
+    <section class="ob-step ob-center" data-step="done" hidden>
+      <img class="ob-logo" src="/assets/capra-lab-logo.png" width="150" height="150" alt="">
+      <h2>You're in, <span id="doneName"></span></h2>
+      <p>Your profile works across the lab. Open any game and you are already signed in.</p>
+      <button class="ob-btn" id="doneGo" type="button">Start playing</button>
+    </section>
+
+    <section class="ob-step" data-step="signin" hidden>
+      <h2>Welcome back</h2>
+      <p>Choose your key picture, or type the name and six digits printed on it.</p>
+      <div class="ob-btn alt ob-file">Use my key picture<input type="file" id="signFile" accept="image/png,image/*" aria-label="Choose your key picture"></div>
+      <form id="signForm" class="ob-step" novalidate>
+        <div class="ob-field">
+          <label for="signName">Player name</label>
+          <input id="signName" name="name" maxlength="24" autocomplete="username" autocapitalize="words" spellcheck="false">
+        </div>
+        <div class="ob-field">
+          <label for="signCode">Six-digit key</label>
+          <input id="signCode" class="digits" name="code" inputmode="numeric" pattern="[0-9 ]*" maxlength="7" autocomplete="one-time-code">
+        </div>
+        <p class="ob-status" id="signStatus" role="status" aria-live="polite"></p>
+        <button class="ob-btn" type="submit">Sign in</button>
+      </form>
+      <button class="ob-link" type="button" data-back="welcome">Back</button>
+    </section>
+
+    <section class="ob-step" data-step="profile" hidden>
+      <h2 id="profName"></h2>
+      <p>Your key card. Save it again any time, or keep a second copy somewhere safe.</p>
+      <img class="ob-card-img" id="profImg" alt="Your Capra Lab key card">
+      <button class="ob-btn" id="profSave" type="button">Save to Photos</button>
+      <p class="ob-status" id="profStatus" role="status" aria-live="polite"></p>
+      <button class="ob-btn alt" id="profClose" type="button">Back to the games</button>
+      <button class="ob-link" id="profOut" type="button">Sign out of this device</button>
+    </section>
+
+    <section class="ob-step" data-step="signout" hidden>
+      <h2>Before you sign out</h2>
+      <div class="ob-warn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19z"/><path d="M12 10v4.5"/><path d="M12 17.5v.01"/></svg><p>You will need your key picture, or your name and six digits, to get back in. Is it saved?</p></div>
+      <button class="ob-btn" id="outNo" type="button">Show my key first</button>
+      <button class="ob-btn alt" id="outYes" type="button">Yes, sign me out</button>
+    </section>
+  </div>
+</div>
+
+<script type="module" src="/lab/hub.js"></script>
 </body>
 </html>

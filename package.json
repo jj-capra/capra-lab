@@ -1,0 +1,16 @@
+{
+  "name": "capra-lab",
+  "private": true,
+  "type": "module",
+  "description": "Capra Lab: the hub, lab-wide profiles, and the native games.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node lab/test/profiles.test.mjs && node games/primal-survival/test/engine.test.mjs && node games/primal-survival/test/api.test.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

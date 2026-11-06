@@ -1,41 +1,68 @@
 # Capra Lab
 
-The hub for JC's games: one iPhone-friendly page with a tile for each game.
+The hub for JC's games: an iPhone-friendly page with a tile per game, one player profile that works across every game in the lab, and the games that live inside it.
 
 ## What's here
 
 ```
-public/
-  index.html             the hub page (all markup and styles in one file)
-  assets/capra-lab-logo.png   the logo with its background removed
-  apple-touch-icon.png   iPhone home-screen icon
-  icon-192.png, icon-512.png, favicon.png
-  manifest.webmanifest   lets the page open full-screen from the home screen
-netlify.toml             tells Netlify to serve public/ (no build step)
+public/                      the site Netlify serves
+  index.html                 the hub page
+  lab/hub.js                 profile walkthrough, sign-in, "Playing as" chip
+  lab/keycard.js             the key card picture (key printed on it and hidden inside it)
+  assets/, icons, manifest   logo, home-screen icon, full-screen app support
+  primal-survival/           built from games/primal-survival/ (not committed)
+lab/                         lab-wide server code
+  profiles.js                one name + six-digit key per player, for every game
+  stores.js                  Netlify Blobs / memory / file storage
+  test/profiles.test.mjs
+games/primal-survival/       Primal Survival's source: client, shared engine, server, tests
+netlify/functions/
+  profile.mjs                /api/profile/*                lab profiles
+  primal-survival.mjs        /primal-survival/api/*        the game's API
+scripts/build.mjs            Netlify's build: runs each game's checks, lays it out in public/
+scripts/dev-server.mjs       the whole lab locally, with in-memory storage
+netlify.toml                 build settings and the API routes
 ```
+
+## Profiles
+
+A Capra Lab profile is a player name and a six-digit key, nothing else: no email, no password, no reset. The key is the account, so the first visit walks a new player through:
+
+1. **Welcome**: make a profile, sign in with a key, or skip for now.
+2. **Pick a name**: names are unique across the lab.
+3. **Your key card**: a picture with the name and key printed on it, and the key also hidden inside the file. **Continue stays locked** until the card has gone through the share sheet (Save Image puts it in Photos) or the player ticks "I saved my key picture, or I took a screenshot of it". Leaving mid-way brings them back to this step next time.
+4. **Done**: signed in everywhere in the lab.
+
+Signing back in: choose the key picture (the hidden key signs you straight in), or type the name and six digits printed on it. A screenshot loses the hidden copy but keeps the printed one.
+
+The signed-in player is kept in the browser under `capra-lab.profile`, which every game in the lab reads. On iPhone, a home-screen app keeps its own storage separate from Safari, so the first time someone opens Capra Lab from the home screen they sign in once with their key picture.
+
+**Adding a game to the profile:** server side, call `profiles.verify(name, code)` from `lab/profiles.js` and keep the game's own stats under its own store, keyed by the profile's handle. Client side, read the player from `localStorage['capra-lab.profile']` (`{ name, handle, code }`).
 
 ## Games on the hub
 
-| Game | Link |
+| Game | Where |
 | --- | --- |
 | Par-Tee Time | Lab original, coming soon (will live at `/par-tee-time/`) |
+| Primal Survival | Native: `/primal-survival/`, uses Capra Lab profiles |
 | Mind Heist | https://mind-heist.netlify.app/ |
 | Glacial Maw | https://glacialmaw.netlify.app/ |
-| Primal Survival | https://primalsurvival365.netlify.app/ |
-| My Doll Besties | https://my-doll-besties.netlify.app/ |
 | Swerve Planet | https://swerve-planet.netlify.app/ |
 
-## Adding a game
+## Adding a game tile
 
-Copy one of the `<a class="tile">` blocks in `public/index.html`, then change the link, the `--tile` color, the icon, the name and the one-line tagline. Update the count in the `PICK AN EXPERIMENT` row.
+Copy one of the `<a class="tile">` blocks in `public/index.html`, then change the link, the `--tile` color, the icon, the name and the tagline. Update the count in the `PICK AN EXPERIMENT` row.
 
-## Launching Par-Tee Time
+## Making a game native
 
-Par-Tee Time is a Capra Lab original, so it lives inside this site rather than on its own Netlify address:
+Put its source in `games/<game>/`, add a step to `scripts/build.mjs` that copies it into `public/<game>/`, add its API as `netlify/functions/<game>.mjs` with one redirect in `netlify.toml`, and point its tile at `/<game>/`.
 
-1. Put the game in `public/par-tee-time/index.html`.
-2. In `public/index.html`, change the Par-Tee Time `<div class="tile feature">` to `<a class="tile feature" href="/par-tee-time/">` (and its closing tag to `</a>`), and swap the `COMING SOON` chip for `<span class="chip live">PLAY</span>`.
+## Testing and deploying
 
-## Deploying
+```
+npm install
+npm test                                  lab profiles + Primal Survival engine and API
+npm run build && node scripts/dev-server.mjs    the lab at http://localhost:8790
+```
 
-Netlify deploys automatically from the `main` branch of this GitHub repository. In Netlify: **Add new site → Import an existing project → GitHub → capra-lab**, keep the settings it reads from `netlify.toml`, and deploy.
+Netlify deploys automatically from `main`. Storage is Netlify Blobs: `capra-lab-profiles` for identities, `primal-survival` for that game's seasons, runs and careers.

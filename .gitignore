@@ -1,0 +1,9 @@
+node_modules/
+.netlify/
+*.log
+# built from games/<game>/ by scripts/build.mjs
+public/primal-survival/
+# each game's own local-dev output
+games/*/public/
+games/*/dist/
+games/*/server/data/

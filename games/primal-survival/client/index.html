@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Primal Survival — can five survive the year?</title>
+<style>
+  :root{
+    --soil:#0F1512;
+    --soil2:#18211C;
+    --soil3:#22302A;
+    --moss:#22302A;
+    --moss2:#2E4034;
+    --bone:#E8E3D3;
+    --ash:#8A978C;
+    --ochre:#C6A664;
+    --brass-d:#8A7038;
+    --rust:#A8492F;
+    --edge:rgba(198,166,100,.20);
+    --edge2:rgba(198,166,100,.42);
+    --serif: ui-serif, "Iowan Old Style", "Hoefler Text", "Palatino Linotype", Palatino, Georgia, serif;
+    --sans: ui-sans-serif, "Segoe UI", Inter, system-ui, -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--soil);
+    color:var(--bone);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+    padding:0 0 40px;
+  }
+  .wrap{max-width:1060px;margin:0 auto;padding:0 16px}
+  .cols{display:grid;grid-template-columns:1fr;gap:16px;margin-top:14px}
+  @media (min-width:880px){
+    .cols{grid-template-columns:360px 1fr;gap:26px;align-items:start}
+    .colA{position:sticky;top:14px}
+  }
+  button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+  .hidden{display:none !important}
+
+  /* ---------- masthead ---------- */
+  header{padding:16px 0 8px}
+  .compact header{padding:10px 0 4px}
+  .compact .tag{display:none}
+  .compact h1{font-size:clamp(24px,6.5vw,34px)}
+  .compact .crest{padding:10px 12px 9px}
+  .compact .record-strip b{font-size:21px}
+  h1{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:clamp(30px,8.5vw,46px);
+    line-height:.95;
+    letter-spacing:.02em;
+    margin:0;
+    color:var(--ochre);
+    text-transform:uppercase;
+    text-align:center;
+    text-shadow:0 2px 0 rgba(0,0,0,.5);
+  }
+  .crest{
+    border:2px solid var(--ochre);border-radius:4px;
+    padding:13px 14px 12px;background:linear-gradient(180deg,var(--moss),var(--soil2));
+    position:relative;
+  }
+  .crest:before,.crest:after{
+    content:"";position:absolute;width:5px;height:5px;border-radius:50%;
+    background:var(--brass-d);top:6px;
+  }
+  .crest:before{left:7px} .crest:after{right:7px}
+  .crest .sub{
+    text-align:center;color:var(--ash);font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;margin-top:9px;font-family:var(--sans);
+  }
+  .tag{color:var(--ash);font-size:14.5px;margin:16px 0 0;max-width:34em}
+  .record-strip{
+    display:flex;align-items:center;justify-content:center;gap:12px;
+    margin-top:12px;padding-top:12px;border-top:1px solid var(--edge);
+    font-size:11px;color:var(--ash);letter-spacing:.18em;text-transform:uppercase;
+  }
+  .record-strip b{font-family:var(--serif);font-size:30px;color:var(--bone);font-weight:700;letter-spacing:.02em}
+
+  /* ---------- roster board ---------- */
+  .board{margin:0;border-top:1px solid var(--edge)}
+  /* reels */
+  .reels{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .reel{border:1px solid var(--edge2);border-radius:3px;background:var(--soil2);padding:10px 12px 9px;text-align:center}
+  .reel .rl{display:block;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
+  .reel .rv{display:block;font-family:var(--serif);font-size:clamp(17px,4.6vw,22px);color:var(--bone);
+    line-height:1.1;margin-top:4px;min-height:1.2em}
+  .reel.rolling .rv{opacity:.35}
+  .respin{margin-top:7px;background:transparent;border:1px solid var(--edge);border-radius:2px;
+    color:var(--ochre);font-size:11px;padding:3px 9px;letter-spacing:.05em}
+  .respin:hover{border-color:var(--ochre)}
+  .respin:disabled{opacity:.3;cursor:default;color:var(--ash)}
+  /* battlefield */
+  .field{margin-top:12px;border:1px solid var(--edge2);border-radius:3px;overflow:hidden;
+    background:linear-gradient(180deg,var(--soil2),var(--moss))}
+  .field svg{display:block;width:100%;height:auto}
+  .field .empty{color:var(--ash);font-size:12.5px;text-align:center;padding:22px 10px}
+  /* discs */
+  .discs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+  .disc{text-align:center}
+  .disc svg{display:block;width:100%;height:auto}
+  .disc .dn{display:block;font-size:10px;color:var(--ash);margin-top:3px;line-height:1.2;
+    overflow:hidden;text-overflow:ellipsis}
+  .disc.filled .dn{color:var(--bone)}
+  /* result stats */
+  .statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:14px}
+  @media (max-width:520px){.statgrid{grid-template-columns:repeat(3,1fr)}}
+  .stat{border:1px solid var(--edge);border-radius:3px;background:var(--soil2);padding:9px 8px;text-align:center}
+  .stat b{display:block;font-family:var(--serif);font-size:clamp(20px,6vw,27px);color:var(--bone);
+    font-variant-numeric:tabular-nums;line-height:1}
+  .stat span{display:block;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ash);margin-top:4px}
+  .gcount{font-family:var(--serif);font-size:clamp(38px,11vw,54px);line-height:1;color:var(--bone);
+    font-variant-numeric:tabular-nums}
+  .reveal{opacity:0;transition:opacity .5s ease}
+  .reveal.on{opacity:1}
+  .sil{width:100%;height:100%;display:block;overflow:visible}
+  .silbox{display:block}
+  .badge{display:block;width:100%;height:auto}
+  .pool{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:0}
+  @media (min-width:560px){.pool{grid-template-columns:repeat(4,1fr);gap:10px}}
+  @media (min-width:880px){.pool{grid-template-columns:repeat(5,1fr)}}
+  .tile{background:transparent;border:0;padding:0;cursor:pointer}
+  .tile:hover .badge{filter:brightness(1.12)}
+  .tile.taken{opacity:.28;pointer-events:none}
+  .tile.unfit{opacity:.4;pointer-events:none}
+  .tile .cap{display:block;font-size:10px;color:var(--ash);margin-top:3px;line-height:1.2}
+  .slot{
+    display:grid;grid-template-columns:58px 40px 1fr auto;align-items:center;gap:10px;
+    padding:8px 0;border-bottom:1px solid var(--edge);
+  }
+  .slot .role{
+    font-family:var(--serif);font-size:14px;color:var(--ash);
+    font-style:italic;letter-spacing:.01em;
+  }
+  .slot.live .role{color:var(--ochre);font-style:normal}
+  .slot .name{font-size:16px;color:var(--ash)}
+  .slot.filled .name{color:var(--bone)}
+  .slot .sub{display:block;font-size:12.5px;color:var(--ash);margin-top:2px}
+  .slot .val{
+    font-family:var(--serif);font-size:20px;color:var(--bone);
+    min-width:2.2em;text-align:right;font-variant-numeric:tabular-nums;
+  }
+  .slot:not(.filled) .val{color:rgba(237,230,214,.22)}
+  .slot .silbox{height:34px}
+  .slot .silbox svg{height:100%;width:auto;display:block}
+  .slot:not(.filled) .silbox{visibility:hidden}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:block;width:100%;margin-top:12px;padding:12px 18px;
+    background:var(--ochre);color:#15100A;border:0;border-radius:2px;
+    font-weight:640;letter-spacing:.005em;
+  }
+  .btn:hover{background:#E0B255}
+  .btn.ghost{background:transparent;color:var(--bone);border:1px solid var(--edge2)}
+  .btn.ghost:hover{background:var(--soil2)}
+  .btn:disabled{opacity:.35;cursor:default}
+  .btn-row{display:flex;gap:10px}
+  .btn-row .btn{margin-top:14px}
+
+  /* ---------- spin ---------- */
+  .spin-card{
+    margin-top:14px;padding:14px;background:var(--soil2);
+    border:1px solid var(--edge);border-radius:3px;
+  }
+  .spin-line{font-family:var(--serif);font-size:26px;line-height:1.15;letter-spacing:-.01em}
+  .spin-line .era{display:block;font-size:15px;color:var(--ochre);font-style:italic;margin-top:5px;letter-spacing:.02em}
+  .spin-note{color:var(--ash);font-size:13.5px;margin-top:12px}
+  .rolling{opacity:.5}
+
+  /* ---------- pool ---------- */
+  .pool{margin-top:6px}
+  .beast{
+    width:100%;text-align:left;background:transparent;border:0;
+    border-bottom:1px solid var(--edge);padding:13px 2px;
+    display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;
+  }
+  .beast:hover{background:var(--soil2)}
+  .beast .bn{font-size:16px}
+  .beast .bm{font-size:12.5px;color:var(--ash);margin-top:3px}
+  .beast .tags{font-size:12px;color:var(--ochre);margin-top:4px;font-style:italic;font-family:var(--serif)}
+  .beast .br{font-family:var(--serif);font-size:19px;color:var(--bone);font-variant-numeric:tabular-nums}
+  .beast .silbox{height:34px;color:var(--bone)}
+  .beast.taken{opacity:.3;pointer-events:none}
+  .beast.unfit{opacity:.42}
+
+  /* ---------- role picker ---------- */
+  .sheet{position:fixed;inset:0;background:rgba(8,12,10,.78);display:flex;align-items:flex-end;z-index:50}
+  .sheet-in{width:100%;max-width:560px;margin:0 auto;background:var(--soil2);border-top:1px solid var(--edge2);padding:22px 18px 26px}
+  .sheet-sil{height:132px;margin-bottom:8px}
+  .sheet-sil svg{height:100%;width:auto;display:block;margin:0 auto}
+  .sheet h3{font-family:var(--serif);font-weight:600;font-size:24px;margin:0 0 4px;letter-spacing:-.01em}
+  .sheet p{color:var(--ash);font-size:13.5px;margin:0 0 14px}
+  .role-opt{
+    width:100%;text-align:left;background:transparent;border:1px solid var(--edge);
+    border-radius:2px;padding:12px 14px;margin-bottom:9px;
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+  }
+  .role-opt:hover{border-color:var(--ochre)}
+  .role-opt .rn{font-family:var(--serif);font-size:17px}
+  .role-opt .rd{font-size:12.5px;color:var(--ash);margin-top:2px}
+  .role-opt .rv{font-family:var(--serif);font-size:21px;color:var(--ochre);font-variant-numeric:tabular-nums}
+
+  /* ---------- season ---------- */
+  .day-head{padding:8px 0 4px;text-align:center}
+  /* the season screen is one thing: how many days, and why today went the way
+     it did. everything else waits for the verdict. */
+  .stage{padding:10px 0 4px;text-align:center}
+  .squadrow{display:flex;justify-content:center;gap:8px;margin-top:14px}
+  .squadrow .m{width:46px;color:var(--ash);transition:color .18s ease}
+  @media (min-width:880px){.squadrow .m{width:38px}}
+  .squadrow .m svg{width:100%;height:auto;display:block}
+  .squadrow .m.won{color:var(--ochre)}
+  .squadrow .m.lost{color:var(--rust);opacity:.55}
+  .verdictline{margin-top:12px;font-family:var(--serif);font-size:clamp(15px,4.2vw,19px);
+    line-height:1.3;color:var(--bone);min-height:2.6em;padding:0 4px}
+  .verdictline.bad{color:var(--rust)}
+  .flash{margin-top:8px;min-height:1.4em;font-size:11.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ochre);opacity:0;transition:opacity .25s ease}
+  .flash.on{opacity:1}
+  /* the ground today, with your five standing on it. fills the screen a phone
+     has spare and shows the terrain without spending a word on it. */
+  .seasonfield{margin-top:12px}
+  .stage,.btn-row,.seasonfield{max-width:520px;margin-left:auto;margin-right:auto}
+  /* the duel-by-duel breakdown is desktop only — on a phone it pushed the day
+     count off screen, and the same detail is on the verdict screen anyway */
+  .duels{display:none}
+  @media (min-width:880px){
+    .duels{display:block;max-width:560px;margin:18px auto 0}
+  }
+  .day-num{
+    font-family:var(--serif);font-size:clamp(52px,14vw,80px);line-height:.86;
+    letter-spacing:-.04em;font-variant-numeric:tabular-nums;
+  }
+  .day-sub{color:var(--ash);font-size:14px;margin-top:10px}
+  .vs{
+    margin-top:20px;padding-top:14px;border-top:1px solid var(--edge);
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:14px;
+  }
+  .vs .opp{font-family:var(--serif);font-size:18px}
+  .vs .terrain{color:var(--ochre);font-style:italic;font-family:var(--serif);font-size:14px}
+  .duels{margin-top:4px}
+  .duel{
+    display:grid;grid-template-columns:1fr 54px 1fr;gap:8px;align-items:center;
+    padding:9px 0;border-bottom:1px solid var(--edge);font-size:14px;
+  }
+  .duel .mine{text-align:right}
+  .duel .silbox{height:38px;margin-bottom:2px}
+  .duel .silbox svg{height:100%;width:auto;display:inline-block}
+  .duel .mine .silbox{text-align:right}
+  .duel.won .mine .silbox{color:var(--ochre)}
+  .duel .theirs .silbox{transform:scaleX(-1)}
+  .duel.lost .theirs .silbox{color:var(--rust)}
+  .duel .theirs{color:var(--ash)}
+  .duel .mid{text-align:center;font-family:var(--serif);font-size:13px;color:var(--ash);font-variant-numeric:tabular-nums}
+  .duel.won .mine{color:var(--ochre)}
+  .duel.lost .mine{color:var(--ash)}
+  .duel.lost .theirs{color:var(--rust)}
+  .duel .why{display:block;font-size:11.5px;color:var(--ash);font-style:italic;font-family:var(--serif)}
+  .log{margin-top:14px;max-height:32vh;overflow:auto;border-top:1px solid var(--edge);padding-top:8px}
+  .log div{font-size:13px;color:var(--ash);padding:3px 0;font-variant-numeric:tabular-nums}
+  .log b{color:var(--bone);font-weight:500}
+  .log .fell{color:var(--rust)}
+
+  /* ---------- result ---------- */
+  .gradebox{display:flex;align-items:center;gap:16px;margin:16px 0 0;padding:14px;
+    border:2px solid var(--ochre);border-radius:4px;background:linear-gradient(180deg,var(--moss),var(--soil2))}
+  .gletter{font-family:var(--serif);font-weight:700;font-size:clamp(52px,16vw,78px);line-height:.82;
+    color:var(--bone);letter-spacing:-.03em;min-width:1.3em;text-align:center}
+  .grank{font-family:var(--serif);font-size:clamp(20px,5.5vw,27px);color:var(--ochre);line-height:1.05}
+  .gdays{color:var(--ash);font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-top:6px}
+  .fate{display:grid;grid-template-columns:50px 1fr;gap:12px;align-items:start;
+    padding:11px 0;border-bottom:1px solid var(--edge)}
+  .fate .fb{color:var(--ash)}
+  .fate.died .fb{color:var(--rust)}
+  .fate.lived .fb{color:var(--ochre)}
+  .fate .fb svg{width:100%;height:auto;display:block}
+  .fate b{font-weight:600;font-size:15px}
+  .fate .frole{font-family:var(--serif);font-style:italic;color:var(--ash);font-size:13px;margin-left:6px}
+  .fate .frec{display:block;font-size:11.5px;color:var(--ash);margin-top:2px}
+  .fate .fep{display:block;font-family:var(--serif);font-size:14px;margin-top:5px;line-height:1.35}
+  .fate.died .fep{color:var(--bone)}
+  .fate.lived .fep{color:var(--ochre)}
+  @media (min-width:880px){#fates{display:grid;grid-template-columns:1fr 1fr;gap:0 26px}}
+  .cause{color:var(--ash);font-size:15px;margin-top:12px}
+  .share{
+    margin-top:18px;padding:14px;background:var(--soil2);border:1px solid var(--edge);
+    border-radius:2px;font-size:13.5px;color:var(--ash);white-space:pre-wrap;
+  }
+  .foot{margin-top:20px;padding-top:12px;border-top:1px solid var(--edge);color:var(--ash);font-size:12px}
+  .netline{text-align:center;color:var(--ash);font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;margin-top:8px}
+  .submitbox{margin-top:16px;padding:13px;border:1px solid var(--edge2);border-radius:3px;background:var(--soil2)}
+  .submitbox input{width:100%;padding:11px 12px;background:var(--soil);color:var(--bone);
+    border:1px solid var(--edge);border-radius:2px;font-family:var(--sans);font-size:15px}
+  .submitbox input::placeholder{color:var(--ash)}
+  .verifyline{margin-top:9px;font-size:12.5px;color:var(--ash);min-height:1.2em}
+  .leaderboard{margin-top:14px;border-top:1px solid var(--edge)}
+  .lrow{display:grid;grid-template-columns:28px 1fr 34px auto;gap:10px;align-items:baseline;
+    padding:7px 0;border-bottom:1px solid var(--edge);font-size:13.5px}
+  .lrow span:first-child{color:var(--ash);font-variant-numeric:tabular-nums}
+  .lrow span:nth-child(3){font-family:var(--serif);color:var(--ochre)}
+  .lrow b{font-family:var(--serif);font-size:17px;font-variant-numeric:tabular-nums}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+  /* ---- home, profile, leaderboard ---- */
+  .homebar{display:flex;align-items:center;gap:10px;padding:10px 0 2px;min-height:40px}
+  .homebar button{background:transparent;border:1px solid var(--edge);border-radius:2px;
+    color:var(--bone);font-size:12.5px;padding:6px 12px;letter-spacing:.04em}
+  .homebar button:hover{border-color:var(--ochre)}
+  .homebar .who{margin-left:auto;font-size:11.5px;color:var(--ash);letter-spacing:.1em;
+    text-transform:uppercase;text-align:right;line-height:1.3}
+  .homebar .who b{display:block;color:var(--ochre);font-family:var(--serif);
+    font-size:14px;letter-spacing:.01em;text-transform:none}
+  .menu{display:grid;gap:10px;margin-top:20px}
+  .menu button{padding:20px 18px;text-align:left;background:linear-gradient(180deg,var(--moss),var(--soil2));
+    border:1px solid var(--edge2);border-radius:3px;color:var(--bone)}
+  .menu button:hover{border-color:var(--ochre)}
+  .menu .mt{display:block;font-family:var(--serif);font-size:23px;letter-spacing:-.01em}
+  .menu .md{display:block;font-size:12.5px;color:var(--ash);margin-top:3px}
+  .menu button.primary{background:var(--ochre);border-color:var(--ochre);color:#15100A}
+  .menu button.primary .md{color:rgba(21,16,10,.72)}
+  .panel{margin-top:16px;padding:15px;border:1px solid var(--edge2);border-radius:3px;
+    background:var(--soil2)}
+  .panel h3{font-family:var(--serif);font-weight:600;font-size:21px;margin:0 0 4px;letter-spacing:-.01em}
+  .panel p{color:var(--ash);font-size:13px;margin:0 0 12px;line-height:1.45}
+  .panel input{width:100%;padding:12px;background:var(--soil);color:var(--bone);
+    border:1px solid var(--edge);border-radius:2px;font-family:var(--sans);font-size:16px;margin-bottom:9px}
+  .panel input::placeholder{color:var(--ash)}
+  .panel .msg{font-size:12.5px;color:var(--ash);min-height:1.2em;margin-top:8px}
+  .panel .msg.bad{color:var(--rust)}
+  .panel .msg.good{color:var(--ochre)}
+  .drop{margin-top:10px;padding:16px;border:1px dashed var(--edge2);border-radius:3px;
+    text-align:center;color:var(--ash);font-size:12.5px;cursor:pointer}
+  .drop.over{border-color:var(--ochre);color:var(--ochre);background:var(--moss)}
+  .codeout{font-family:var(--serif);font-size:clamp(34px,11vw,48px);letter-spacing:.22em;
+    color:var(--bone);text-align:center;margin:10px 0 4px;font-variant-numeric:tabular-nums}
+  .rankbar{margin-top:12px}
+  .rankbar .rt{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--ash)}
+  .rankbar .track{height:6px;background:var(--soil);border:1px solid var(--edge);
+    border-radius:3px;margin-top:6px;overflow:hidden}
+  .rankbar .fill{height:100%;background:var(--ochre)}
+  .tabs{display:flex;gap:8px;margin-top:14px}
+  .tabs button{flex:1;padding:10px;background:transparent;border:1px solid var(--edge);
+    border-radius:2px;color:var(--ash);font-size:13px}
+  .tabs button.on{border-color:var(--ochre);color:var(--ochre)}
+  .lrow.me{background:var(--moss)}
+  .lrow .sub{display:block;font-size:11px;color:var(--ash)}
+  .cardwrap{margin-top:12px;text-align:center}
+  .cardwrap canvas{width:100%;max-width:300px;height:auto;border:1px solid var(--edge2);border-radius:3px}
+  :focus-visible{outline:2px solid var(--ochre);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============ HOME ============ -->
+<section id="viewHome">
+  <header>
+    <div class="crest">
+      <h1>Primal Survival</h1>
+      <div class="sub">The ultimate endurance challenge</div>
+      <div class="record-strip"><span>days</span><b>365&ndash;0</b><span>rounds</span></div>
+      <div class="netline" id="netLine">Connecting to today's season&hellip;</div>
+    </div>
+  </header>
+  <div class="homebar"><span class="who" id="whoHome">Playing as<b>Guest</b></span></div>
+  <div class="menu">
+    <button class="primary" id="goPlay"><span class="mt">Play today's season</span>
+      <span class="md">Draft five. Survive as long as you can.</span></button>
+    <button id="goBoard"><span class="mt">Leaderboard</span>
+      <span class="md">Today's best runs, and every name that ever lasted.</span></button>
+    <button id="goProfile"><span class="mt">Profile</span>
+      <span class="md">Your rank, your record, your key.</span></button>
+  </div>
+  <div class="foot"><span id="rosterNote"></span></div>
+</section>
+
+<!-- ============ PROFILE ============ -->
+<section id="viewProfile" class="hidden">
+  <div class="homebar">
+    <button id="pHome">&larr; Home</button>
+    <span class="who" id="whoProfile">Playing as<b>Guest</b></span>
+  </div>
+
+  <div id="signedOut">
+    <div class="panel">
+      <h3>Take a name</h3>
+      <p>A name and a six-digit key. No email, no password. The key is the account &mdash; we show it once and you keep the card.</p>
+      <input id="newName" maxlength="24" placeholder="Name" autocomplete="off">
+      <button class="btn" id="createBtn">Create a profile</button>
+      <div class="msg" id="createMsg"></div>
+    </div>
+    <div class="panel">
+      <h3>Already have one</h3>
+      <input id="inName" maxlength="24" placeholder="Name" autocomplete="off">
+      <input id="inCode" maxlength="6" inputmode="numeric" placeholder="Six-digit key" autocomplete="off">
+      <button class="btn ghost" id="signinBtn">Sign in</button>
+      <div class="drop" id="dropZone">or drop your key card here</div>
+      <input type="file" id="cardFile" accept="image/png" class="hidden">
+      <div class="msg" id="signinMsg"></div>
+    </div>
+  </div>
+
+  <div id="signedIn" class="hidden">
+    <div class="panel">
+      <h3 id="profName">&mdash;</h3>
+      <p id="profRankNote">&mdash;</p>
+      <div class="rankbar">
+        <div class="rt"><span id="rankNow">&mdash;</span><span id="rankNext">&mdash;</span></div>
+        <div class="track"><div class="fill" id="rankFill" style="width:0%"></div></div>
+      </div>
+      <div class="statgrid" id="profStats"></div>
+    </div>
+    <div class="panel">
+      <h3>Your key card</h3>
+      <p>The key is printed on it and written into the image itself, so dropping the card on this screen signs you in. A screenshot only keeps the printed number.</p>
+      <div class="cardwrap"><canvas id="keyCanvas"></canvas></div>
+      <button class="btn" id="saveCardBtn">Save key card</button>
+      <button class="btn ghost" id="newKeyBtn">Cut a new key</button>
+      <div class="msg" id="keyMsg"></div>
+    </div>
+    <button class="btn ghost" id="signoutBtn">Sign out</button>
+  </div>
+</section>
+
+<!-- ============ LEADERBOARD ============ -->
+<section id="viewBoard" class="hidden">
+  <div class="homebar">
+    <button id="bHome">&larr; Home</button>
+    <span class="who" id="whoBoard">Playing as<b>Guest</b></span>
+  </div>
+  <div class="tabs">
+    <button id="tabToday" class="on">Today</button>
+    <button id="tabAll">All time</button>
+  </div>
+  <div class="netline" id="boardNote">&nbsp;</div>
+  <div class="leaderboard" id="bigBoard"></div>
+</section>
+
+<!-- ============ INTRO / DRAFT ============ -->
+<section id="viewDraft" class="hidden">
+  <div class="homebar">
+    <button id="dHome">&larr; Home</button>
+    <span class="who" id="whoDraft">Playing as<b>Guest</b></span>
+  </div>
+  <header>
+    <p class="tag" id="tagline">Draft five animals into five jobs. They face another five every day for a year. Lose one day and the run is over.</p>
+    <p class="tag" id="stripNote" style="margin-top:6px">Nobody has done it.</p>
+  </header>
+
+  <div class="cols">
+    <div class="colA">
+      <div class="reels">
+        <div class="reel" id="reelEraBox">
+          <span class="rl">Era</span><span class="rv" id="reelEra">&mdash;</span>
+          <button class="respin" id="respinEra" disabled>respin era</button>
+        </div>
+        <div class="reel" id="reelBiomeBox">
+          <span class="rl">Ground</span><span class="rv" id="reelBiome">&mdash;</span>
+          <button class="respin" id="respinBiome" disabled>respin ground</button>
+        </div>
+      </div>
+      <div class="field" id="field"></div>
+      <div class="discs" id="discs"></div>
+      <div id="spinZone">
+        <button class="btn" id="spinBtn">Spin</button>
+        <div class="spin-note" id="spinNote" style="margin-top:8px">Five spins, five slots. One respin of each reel.</div>
+      </div>
+      <button class="btn hidden" id="runBtn">Release them into the year</button>
+    </div>
+    <div class="colB"><div class="pool" id="pool"></div></div>
+  </div>
+  <div class="foot"><span id="rosterNote">Mass and top speed are real recorded figures; the five ratings are derived from them plus armour, endurance and guile.</span></div>
+</section>
+
+<!-- ============ SEASON ============ -->
+<section id="viewSeason" class="hidden">
+  <div class="stage">
+    <div class="day-num" id="dayNum">1</div>
+    <div class="day-sub">days survived</div>
+    <div class="squadrow" id="squadRow"></div>
+    <div class="verdictline" id="verdictLine">&mdash;</div>
+    <div class="flash" id="flash"></div>
+    <div class="field seasonfield" id="seasonField"></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn ghost" id="pauseBtn">Pause</button>
+    <button class="btn ghost" id="fastBtn">Skip ahead</button>
+  </div>
+  <div class="duels" id="duels"></div>
+</section>
+
+<!-- ============ RESULT ============ -->
+<section id="viewResult" class="hidden">
+  <div class="gradebox">
+    <div class="gletter" id="gLetter">&mdash;</div>
+    <div>
+      <div class="gcount" id="gCount">0</div>
+      <div class="gdays">days survived</div>
+      <div class="grank reveal" id="gRank">&mdash;</div>
+    </div>
+  </div>
+  <div class="statgrid reveal" id="statGrid"></div>
+  <p class="cause" id="cause"></p>
+  <div id="fates"></div>
+  <div class="submitbox">
+    <input id="playerName" maxlength="24" placeholder="Name for the board" autocomplete="off">
+    <button class="btn" id="submitBtn" disabled>Submit to today's board</button>
+    <div class="verifyline" id="verifyLine"></div>
+  </div>
+  <div class="leaderboard" id="leaderBoard"></div>
+  <div class="share" id="shareText"></div>
+  <button class="btn ghost" id="copyBtn">Copy result</button>
+  <button class="btn ghost" id="againBtn">Draft again</button>
+  <div class="foot" id="leaderFoot"></div>
+</section>
+
+</div>
+
+<div class="sheet hidden" id="sheet">
+  <div class="sheet-in">
+    <div class="sheet-sil" id="sheetSil"></div>
+    <h3 id="sheetName">&mdash;</h3>
+    <p id="sheetFacts">&mdash;</p>
+    <div id="sheetRoles"></div>
+    <button class="btn ghost" id="sheetCancel">Back to the pool</button>
+  </div>
+</div>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>

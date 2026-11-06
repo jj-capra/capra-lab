@@ -1,0 +1,20 @@
+{
+  "name": "primal-survival",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Draft five animals. Survive the year. A native Capra Lab game; deployed with the lab, not on its own.",
+  "scripts": {
+    "dev": "node server/index.js",
+    "start": "node server/index.js",
+    "build": "node scripts/build-site.mjs",
+    "build:single": "node scripts/build-single.mjs",
+    "test": "node test/engine.test.mjs",
+    "test:api": "node test/api.test.mjs",
+    "test:site": "node test/site.test.cjs",
+    "test:all": "npm test && npm run test:api && npm run build && npm run build:single && npm run test:site"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

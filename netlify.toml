@@ -1,6 +1,57 @@
-# Capra Lab is a static site: no build step, Netlify serves the public/ folder.
+# Capra Lab on Netlify.
+#
+# The hub is static. Native games are copied into public/<game>/ by the build,
+# and their APIs are Netlify Functions. Each route below is mapped in exactly
+# one place: the functions do not declare config.path, because two systems
+# claiming one route is a known way to get a 404 from both.
+
 [build]
+  command = "node scripts/build.mjs"
   publish = "public"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Lab-wide profiles: one name + six-digit key for every game.
+[[redirects]]
+  from = "/api/profile/*"
+  to = "/.netlify/functions/profile/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/profile"
+  to = "/.netlify/functions/profile"
+  status = 200
+  force = true
+
+# Primal Survival's game API.
+[[redirects]]
+  from = "/primal-survival/api/*"
+  to = "/.netlify/functions/primal-survival/:splat"
+  status = 200
+  force = true
+
+# Modules must be served as JavaScript or the browser refuses them.
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Content-Type = "text/javascript; charset=utf-8"
+    Cache-Control = "public, max-age=300"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "no-cache"
 
 [[headers]]
   for = "/assets/*"
