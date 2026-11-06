@@ -12,15 +12,18 @@ public/                      the site Netlify serves
   assets/, icons, manifest   logo, home-screen icon, full-screen app support
   primal-survival/           built from games/primal-survival/ (not committed)
   par-tee-time/              built from games/par-tee-time/ (not committed)
+  swerve-planet/             built from games/swerve-planet/ (not committed)
 lab/                         lab-wide server code
   profiles.js                one name + six-digit key per player, for every game
   stores.js                  Netlify Blobs / memory / file storage
   test/profiles.test.mjs
 games/primal-survival/       Primal Survival's source: client, shared engine, server, tests
 games/par-tee-time/          Par-Tee Time: one self-contained page
+games/swerve-planet/         Swerve Planet: the page, its icon and its leaderboard tests
 netlify/functions/
   profile.mjs                /api/profile/*                lab profiles
-  primal-survival.mjs        /primal-survival/api/*        the game's API
+  primal-survival.mjs        /primal-survival/api/*        Primal Survival's API
+  swerve-planet.mjs          /swerve-planet/api/scores     Swerve Planet's leaderboards (path set in the file)
 scripts/build.mjs            Netlify's build: runs each game's checks, lays it out in public/
 scripts/dev-server.mjs       the whole lab locally, with in-memory storage
 netlify.toml                 build settings and the API routes
@@ -51,7 +54,7 @@ Par-Tee Time was first built to run inside Claude. On Capra Lab its NPCs use the
 | Primal Survival | Native: `/primal-survival/`, uses Capra Lab profiles |
 | Mind Heist | https://mind-heist.netlify.app/ |
 | Glacial Maw | https://glacialmaw.netlify.app/ |
-| Swerve Planet | https://swerve-planet.netlify.app/ |
+| Swerve Planet | Native: `/swerve-planet/`, leaderboard at `/swerve-planet/api/scores`; signed-in players post under their lab name |
 
 ## Adding a game tile
 
@@ -69,4 +72,4 @@ npm test                                  lab profiles + Primal Survival engine 
 npm run build && node scripts/dev-server.mjs    the lab at http://localhost:8790
 ```
 
-Netlify deploys automatically from `main`. Storage is Netlify Blobs: `capra-lab-profiles` for identities, `primal-survival` for that game's seasons, runs and careers.
+Netlify deploys automatically from `main`. Storage is Netlify Blobs: `capra-lab-profiles` for identities, `primal-survival` for that game's seasons, runs and careers, `swerve-scores` for Swerve Planet's boards.

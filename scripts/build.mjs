@@ -51,5 +51,15 @@ async function buildParTeeTime() {
   console.log('built public/par-tee-time/');
 }
 
+/* Swerve Planet: one page and its icon; its leaderboard is netlify/functions/swerve-planet.mjs */
+async function buildSwervePlanet() {
+  const game = path.join(ROOT, 'games', 'swerve-planet'), out = path.join(ROOT, 'public', 'swerve-planet');
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(out, { recursive: true });
+  for (const f of ['index.html', 'apple-touch-icon.png']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  console.log('built public/swerve-planet/');
+}
+
 await buildPrimalSurvival();
 await buildParTeeTime();
+await buildSwervePlanet();
