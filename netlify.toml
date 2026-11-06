@@ -1,0 +1,13 @@
+# Capra Lab is a static site: no build step, Netlify serves the public/ folder.
+[build]
+  publish = "public"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
