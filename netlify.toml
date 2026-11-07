@@ -37,15 +37,13 @@
   status = 200
   force = true
 
+# Netlify matches /x and /x/ as the same path, so never add a rule that sends /x to /x/: it sends
+# /x/ to itself forever (that broke the Glacial Maw and Mind Heist tiles on Nov 7 2026). The hub
+# links every game with the trailing slash.
+
 # Glacial Maw keeps its own Netlify site, server and data (hunters, friends, saved games); Capra Lab serves it
 # at /glacial-maw/ so it shares the lab's address. Its pages use relative paths; its one absolute path, the
 # server at /api/world, is passed through too. Nothing in the game's repo has to change for this.
-[[redirects]]
-  from = "/glacial-maw"
-  to = "/glacial-maw/"
-  status = 301
-  force = true
-
 [[redirects]]
   from = "/glacial-maw/*"
   to = "https://glacialmaw.netlify.app/:splat"
@@ -62,12 +60,6 @@
 # netlify/functions/mind-heist.mjs, which claims /mind-heist/api/* through its own config.path (a
 # path-configured function runs before these rules, so no API rule here). Invite links
 # (/mind-heist/ABCD), /r/, /c/, /tv/ and /jam all load the app; real files are served as they are.
-[[redirects]]
-  from = "/mind-heist"
-  to = "/mind-heist/"
-  status = 301
-  force = true
-
 [[redirects]]
   from = "/mind-heist/*"
   to = "/mind-heist/index.html"
