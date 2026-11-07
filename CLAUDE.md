@@ -1,0 +1,10 @@
+# Capra Lab: notes for working in this repo
+
+JC's game hub at capra-lab.netlify.app; Netlify deploys `main` automatically. README.md has the layout, the profile system and how to make a game native. The rules that are easy to miss:
+
+- **Status bar buffer on every screen.** Nothing may sit under the iPhone status bar: the page runs under it from the home screen and iOS blurs it. `viewport-fit=cover`, then every screen, top bar, HUD and fixed layer starts at `env(safe-area-inset-top)` plus a margin (bottom and landscape sides too). Check with `Emulation.setSafeAreaInsetsOverride` (see README).
+- **One profile for every game.** Players are `localStorage['capra-lab.profile']` = `{ name, handle, code }`; servers check keys with `lab/profiles.js` (`verify`). Games keep their own stats keyed by handle. New players go to `/#profile` for the key-card walkthrough.
+- **One place per route.** A path is mapped either in `netlify.toml` or by a function's `config.path`, never both.
+- Games on their own sites (Glacial Maw, Mind Heist) are proxied in `netlify.toml`; their pages must work under a path prefix.
+- `npm test` runs every suite; `npm run build && node scripts/dev-server.mjs` serves the lab locally.
+- Commits: `git -c user.name="JC" -c user.email="caitlin.miah@gmail.com" commit`.

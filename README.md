@@ -71,6 +71,8 @@ Copy one of the `<a class="tile">` blocks in `public/index.html`, then change th
 
 Put its source in `games/<game>/`, add a step to `scripts/build.mjs` that copies it into `public/<game>/`, add its API as `netlify/functions/<game>.mjs` with one redirect in `netlify.toml`, and point its tile at `/<game>/`.
 
+**Every page leaves room for the iPhone status bar.** Capra Lab is often opened from the home screen, where the page runs under the status bar (time, battery) and iOS blurs whatever sits there. Use `viewport-fit=cover` in the viewport tag and start every screen, top bar and in-game HUD below `env(safe-area-inset-top)` (for example `padding-top: calc(env(safe-area-inset-top, 0px) + 12px)`), with the same for `env(safe-area-inset-bottom)` at the bottom and the left/right insets in landscape. Fixed and absolutely positioned layers need it too, since body padding doesn't move them. To check without a phone, Chromium's DevTools protocol can fake the insets: `Emulation.setSafeAreaInsetsOverride` with `{ top: 59, bottom: 34 }`.
+
 ## Testing and deploying
 
 ```

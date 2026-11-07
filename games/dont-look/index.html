@@ -278,9 +278,10 @@
   @keyframes turn { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
   /* A phone with rotation lock on stays in portrait even held sideways: the stage turns itself. */
   .stage.turned { inset: auto; top: 50%; left: 50%; }
-  .stage.turned .stage-top { padding: 12px 54px 0; }
-  .stage.turned .stage-main { padding: 4px 54px; }
-  .stage.turned .taps { padding: 0 54px 12px; }
+  .stage.turned { --turn-gap: calc(max(env(safe-area-inset-top), env(safe-area-inset-bottom), 20px) + 10px); }
+  .stage.turned .stage-top { padding: 12px var(--turn-gap) 0; }
+  .stage.turned .stage-main { padding: 4px var(--turn-gap); }
+  .stage.turned .taps { padding: 0 var(--turn-gap) 12px; }
 
   /* ---------- results ---------- */
   .results { display: flex; flex-direction: column; }

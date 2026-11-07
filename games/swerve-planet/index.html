@@ -45,7 +45,7 @@ button:focus-visible{outline:3px solid var(--volt);outline-offset:3px}
 
 /* ---------- HUD ---------- */
 #hud.replaying > *{opacity:0;transition:opacity .2s}
-#hud{position:absolute;inset:0;pointer-events:none;
+#hud{position:absolute;inset:env(safe-area-inset-top,0px) 0 0 0;pointer-events:none;
   --sl:max(14px, env(safe-area-inset-left,0px)); --sr:max(14px, env(safe-area-inset-right,0px));}
 .panel{background:var(--paper);color:var(--ink);border:var(--edge);box-shadow:var(--drop);}
 .cap{font:700 11px/1 var(--label);letter-spacing:.14em;text-transform:uppercase}
@@ -266,7 +266,7 @@ body.touch .hud-bc .cap{display:none}
 
 /* ---------- overlays (cover, pause, wreck) ---------- */
 .overlay{position:absolute;inset:0;display:grid;place-items:center;overflow:auto;
-  padding-block:max(16px, env(safe-area-inset-top,0px)) max(16px, env(safe-area-inset-bottom,0px));
+  padding-block:calc(env(safe-area-inset-top,0px) + 14px) calc(env(safe-area-inset-bottom,0px) + 14px);
   padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));
   background:radial-gradient(circle at 3px 3px, rgba(20,13,36,.55) 1.6px, transparent 1.9px) 0 0/7px 7px, rgba(20,13,36,.28)}
 .cover{position:relative;width:min(600px,100%);--accent:var(--hero);background:var(--paper);color:var(--ink);border:5px solid var(--ink);box-shadow:10px 10px 0 var(--ink);
