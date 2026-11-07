@@ -60,6 +60,16 @@ async function buildSwervePlanet() {
   console.log('built public/swerve-planet/');
 }
 
+/* Don't Look!: a page and three modules, no server (no leaderboard on purpose) */
+async function buildDontLook() {
+  const game = path.join(ROOT, 'games', 'dont-look'), out = path.join(ROOT, 'public', 'dont-look');
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(out, { recursive: true });
+  for (const f of ['index.html', 'game.js', 'logic.js', 'words.js']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  console.log('built public/dont-look/');
+}
+
 await buildPrimalSurvival();
 await buildParTeeTime();
 await buildSwervePlanet();
+await buildDontLook();

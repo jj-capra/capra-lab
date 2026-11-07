@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Don't Look! · Capra Lab</title>
+<meta name="description" content="Phone on your forehead, friends give clues, guess the word. A Capra Lab original.">
+<meta name="theme-color" content="#16141F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Capra Lab">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #120E18;
+    --night: #16141F;
+    --panel: #221B2E;
+    --paper: #FFF8EC;
+    --yellow: #FFD23F;
+    --magenta: #FF3D8B;
+    --cyan: #29D3F0;
+    --got: #5BE38A;
+    --pass: #FF9A4D;
+    --shadow: #05030A;
+    --display: Bangers, Impact, "Arial Narrow Bold", system-ui, sans-serif;
+    --sl: env(safe-area-inset-left);
+    --sr: env(safe-area-inset-right);
+    --st: env(safe-area-inset-top);
+    --sb: env(safe-area-inset-bottom);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background-color: var(--night);
+    background-image: radial-gradient(rgba(255, 248, 236, 0.07) 1px, transparent 1.6px);
+    background-size: 9px 9px;
+    color: var(--paper);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible, a:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .screen { min-height: 100vh; min-height: 100dvh; }
+
+  /* ---------- shared pieces ---------- */
+  .bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: calc(var(--st) + 10px) calc(var(--sr) + 14px) 6px calc(var(--sl) + 14px);
+  }
+  .back {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px 0 8px;
+    border-radius: 999px; background: var(--panel); border: 2px solid var(--shadow);
+    color: var(--paper); text-decoration: none; font-size: 12px; font-weight: 800; letter-spacing: 0.1em;
+  }
+  .back svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .bar-right { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .who {
+    min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    font-size: 12px; font-weight: 700; color: rgba(255, 248, 236, 0.75);
+  }
+  .who b { color: var(--yellow); font-weight: 800; }
+  .round-btn {
+    flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--panel); border: 2px solid var(--shadow); padding: 0;
+    font-family: var(--display); font-size: 22px; line-height: 1;
+  }
+  .round-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .label {
+    margin: 0 0 7px; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; color: rgba(255, 248, 236, 0.7);
+  }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 54px; padding: 10px 22px; border-radius: 16px;
+    background: var(--yellow); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 5px 0 var(--shadow);
+    font-size: 18px; font-weight: 800; letter-spacing: 0.02em;
+  }
+  .btn:active { transform: translate(3px, 4px); box-shadow: 1px 1px 0 var(--shadow); }
+  .btn.alt { background: var(--panel); color: var(--paper); border-color: var(--shadow); }
+  .btn.big { min-height: 64px; font-family: var(--display); font-weight: 400; font-size: 30px; letter-spacing: 0.05em; padding: 8px 28px; }
+  .link {
+    background: none; border: 0; padding: 10px 6px; min-height: 44px;
+    color: rgba(255, 248, 236, 0.8); font-size: 14px; font-weight: 700; text-decoration: underline;
+  }
+
+  /* ---------- home ---------- */
+  .logo {
+    display: flex; align-items: center; gap: 10px; margin: 0;
+    font-family: var(--display); font-weight: 400; font-size: clamp(42px, 8vw, 64px); line-height: 0.9;
+    letter-spacing: 0.04em; text-shadow: 3px 0 var(--magenta), -3px 0 var(--cyan);
+  }
+  .logo em { font-style: normal; color: var(--yellow); }
+  .logo .eye {
+    flex: none; width: 0.95em; height: 0.95em; border-radius: 50%; display: grid; place-items: center;
+    background: var(--yellow); border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--shadow); text-shadow: none;
+  }
+  .logo .eye svg { width: 64%; height: 64%; fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .tag { margin: 8px 0 0; font-size: 14px; font-weight: 700; line-height: 1.35; color: rgba(255, 248, 236, 0.82); }
+  .home-body {
+    display: grid; gap: 18px;
+    padding: 8px calc(var(--sr) + 16px) calc(var(--sb) + 22px) calc(var(--sl) + 16px);
+  }
+  .intro { display: flex; flex-direction: column; gap: 14px; }
+  .seg { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; }
+  .seg button {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    min-height: 46px; padding: 6px 4px; border-radius: 12px;
+    background: var(--panel); border: 2px solid var(--shadow); color: var(--paper);
+  }
+  .seg button b { font-family: var(--display); font-weight: 400; font-size: 22px; line-height: 1; letter-spacing: 0.04em; }
+  .seg button small { font-size: 10px; font-weight: 800; letter-spacing: 0.04em; line-height: 1.1; color: rgba(255, 248, 236, 0.72); }
+  .seg button[aria-checked="true"] { background: var(--yellow); color: var(--ink); border-color: var(--ink); box-shadow: 2px 3px 0 var(--shadow); }
+  .seg button[aria-checked="true"] small { color: var(--ink); }
+  .decks { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+  .deck {
+    position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 8px; min-height: 104px; padding: 10px 12px 12px;
+    background: var(--deck); color: var(--ink); text-align: left;
+    border: 3px solid var(--ink); border-radius: 16px; box-shadow: 4px 5px 0 var(--shadow); overflow: hidden;
+  }
+  .deck::after {
+    content: ""; position: absolute; right: -16px; bottom: -16px; width: 70px; height: 70px; border-radius: 50%;
+    background-image: radial-gradient(var(--ink) 1.2px, transparent 1.6px); background-size: 6px 6px; opacity: 0.16; pointer-events: none;
+  }
+  .deck:active { transform: translate(3px, 4px); box-shadow: 1px 1px 0 var(--shadow); }
+  .deck .badge {
+    flex: none; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--paper); border: 3px solid var(--ink); font-size: 22px; line-height: 1;
+  }
+  .deck strong {
+    position: relative; z-index: 1; max-width: 100%; font-family: var(--display); font-weight: 400; font-size: 22px; line-height: 0.95; letter-spacing: 0.03em;
+    text-shadow: 1.5px 0 rgba(255, 61, 139, 0.7), -1.5px 0 rgba(41, 211, 240, 0.7);
+  }
+  .deck.mix { background: linear-gradient(135deg, #FFD23F 0 25%, #FF5DA2 25% 50%, #29D3F0 50% 75%, #5BE38A 75%); }
+  .deck.mix strong { background: var(--paper); padding: 4px 7px 2px; border-radius: 8px; border: 2px solid var(--ink); text-shadow: none; }
+
+  @media (orientation: landscape) and (min-width: 560px) {
+    .home { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+    .home-body { flex: 1; min-height: 0; grid-template-columns: minmax(250px, 0.85fr) 1.6fr; padding-bottom: calc(var(--sb) + 10px); }
+    .intro { overflow-y: auto; padding-bottom: 8px; }
+    .decks-wrap { overflow-y: auto; min-height: 0; padding: 2px 8px 12px 2px; }
+  }
+  @media (orientation: landscape) and (max-height: 430px) {
+    .logo { font-size: 46px; }
+    .tag { font-size: 13px; margin-top: 6px; }
+    .intro { gap: 10px; }
+    .deck { min-height: 96px; }
+  }
+
+  /* ---------- ready ---------- */
+  .ready { display: flex; flex-direction: column; }
+  .ready-body {
+    flex: 1; display: grid; gap: 18px; align-items: center;
+    padding: 6px calc(var(--sr) + 18px) calc(var(--sb) + 18px) calc(var(--sl) + 18px);
+  }
+  .ready-deck {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center;
+    padding: 18px; min-height: 180px; border-radius: 22px; background: var(--deck); color: var(--ink);
+    border: 3px solid var(--ink); box-shadow: 6px 7px 0 var(--shadow);
+  }
+  .ready-deck .badge {
+    width: 74px; height: 74px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--paper); border: 3px solid var(--ink); font-size: 38px;
+  }
+  .ready-deck strong {
+    font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 0.95; letter-spacing: 0.03em;
+    text-shadow: 2px 0 rgba(255, 61, 139, 0.75), -2px 0 rgba(41, 211, 240, 0.75);
+  }
+  .ready-deck span { font-size: 13px; font-weight: 800; letter-spacing: 0.08em; }
+  .ready-how { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+  .how-art { width: 100%; max-height: 150px; }
+  .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .rule {
+    display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 12px;
+    background: var(--panel); border: 2px solid var(--shadow); font-size: 13px; font-weight: 700; line-height: 1.2;
+  }
+  .rule i { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-weight: 800; color: var(--ink); border: 2px solid var(--ink); }
+  .rule.up i { background: var(--got); }
+  .rule.down i { background: var(--pass); }
+  .ready-note { margin: 0; font-size: 12.5px; font-weight: 700; line-height: 1.35; text-align: center; color: rgba(255, 248, 236, 0.7); }
+  @media (orientation: landscape) {
+    .ready { height: 100vh; height: 100dvh; }
+    .ready-body { min-height: 0; grid-template-columns: minmax(200px, 0.8fr) 1.2fr; }
+    .ready-deck { height: 100%; max-height: 300px; }
+  }
+  @media (orientation: landscape) and (max-height: 430px) {
+    .ready-body { gap: 14px; padding-bottom: calc(var(--sb) + 10px); }
+    .ready-how { gap: 8px; }
+    .how-art { max-height: 112px; }
+    .ready-deck { min-height: 0; padding: 12px; }
+    .ready-deck .badge { width: 60px; height: 60px; font-size: 30px; }
+    .ready-deck strong { font-size: 34px; }
+    .btn.big { min-height: 56px; font-size: 28px; }
+    .ready-note { font-size: 12px; }
+  }
+
+  /* ---------- the stage: forehead, countdown, the round ---------- */
+  .stage {
+    position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column;
+    background-color: var(--deck); color: var(--ink);
+    background-image: radial-gradient(rgba(18, 14, 24, 0.13) 1.4px, transparent 1.9px);
+    background-size: 12px 12px;
+  }
+  .stage-top {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: calc(var(--st) + 10px) calc(var(--sr) + 16px) 0 calc(var(--sl) + 16px);
+  }
+  .pill {
+    min-width: 76px; padding: 6px 12px 4px; border-radius: 999px; text-align: center;
+    background: var(--ink); color: var(--paper); font-family: var(--display); font-size: 26px; line-height: 1; letter-spacing: 0.05em;
+  }
+  .pill.score { min-width: 64px; }
+  .pill.score span { color: var(--got); }
+  .pill.time.low { background: var(--magenta); animation: pulse 1s ease-in-out infinite; }
+  @keyframes pulse { 50% { transform: scale(1.08); } }
+  .end-btn {
+    width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; padding: 0;
+    background: rgba(18, 14, 24, 0.18); border: 2px solid var(--ink); color: var(--ink);
+  }
+  .end-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; }
+  .stage-main {
+    flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    padding: 4px calc(var(--sr) + 22px) 4px calc(var(--sl) + 22px);
+  }
+  .word {
+    width: 100%; max-height: 100%; margin: 0; text-align: center;
+    font-family: var(--display); font-weight: 400; line-height: 0.98; letter-spacing: 0.02em;
+    overflow-wrap: normal; word-break: normal; hyphens: none;
+  }
+  .pic { font-size: min(26vh, 120px); line-height: 1; filter: drop-shadow(3px 4px 0 rgba(18, 14, 24, 0.35)); }
+  .stage.turned .pic { font-size: min(26vw, 120px); }
+  .prompt { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .prompt h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(44px, 11vh, 92px); line-height: 0.95; letter-spacing: 0.03em; }
+  .prompt p { margin: 0; max-width: 520px; font-size: 16px; font-weight: 700; line-height: 1.35; }
+  .prompt .link { color: var(--ink); }
+  .prompt .head-icon { width: 120px; height: 84px; }
+  .count { font-family: var(--display); font-size: min(62vh, 40vw); line-height: 1; animation: pop 0.8s ease-out both; }
+  @keyframes pop { 0% { transform: scale(0.4); opacity: 0; } 25% { transform: scale(1.08); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+  .taps {
+    display: flex; justify-content: space-between; gap: 14px;
+    padding: 0 calc(var(--sr) + 16px) calc(var(--sb) + 12px) calc(var(--sl) + 16px);
+  }
+  .taps button {
+    flex: 1; max-width: 260px; min-height: 60px; border-radius: 16px; border: 3px solid var(--ink); box-shadow: 4px 5px 0 rgba(5, 3, 10, 0.55);
+    font-family: var(--display); font-size: 28px; letter-spacing: 0.05em; color: var(--ink);
+  }
+  .taps button:active { transform: translate(3px, 4px); box-shadow: 1px 1px 0 rgba(5, 3, 10, 0.55); }
+  .taps .pass { background: var(--pass); }
+  .taps .got { background: var(--got); }
+  .flash {
+    position: absolute; inset: 0; z-index: 2; display: grid; place-items: center;
+    font-family: var(--display); font-size: min(30vh, 18vw); line-height: 1; letter-spacing: 0.04em; color: var(--ink);
+    background-image: radial-gradient(rgba(18, 14, 24, 0.14) 1.4px, transparent 1.9px); background-size: 12px 12px;
+  }
+  .flash.got { background-color: var(--got); }
+  .flash.pass { background-color: var(--pass); }
+  .flash.over { background-color: var(--magenta); color: var(--paper); text-shadow: 4px 4px 0 var(--ink); }
+  .flash span { animation: pop 0.45s ease-out both; }
+
+  /* turn sideways */
+  .rotate {
+    position: fixed; inset: 0; z-index: 30; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    padding: 24px; text-align: center; background: var(--night);
+    background-image: radial-gradient(rgba(255, 248, 236, 0.07) 1px, transparent 1.6px); background-size: 9px 9px;
+  }
+  .rotate h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1; letter-spacing: 0.03em; text-shadow: 2px 0 var(--magenta), -2px 0 var(--cyan); }
+  .rotate p { margin: 0; max-width: 300px; font-size: 15px; font-weight: 700; line-height: 1.4; color: rgba(255, 248, 236, 0.8); }
+  .rotate svg { width: 92px; height: 92px; fill: none; stroke: var(--yellow); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; animation: turn 2.2s ease-in-out infinite; }
+  @keyframes turn { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+  /* A phone with rotation lock on stays in portrait even held sideways: the stage turns itself. */
+  .stage.turned { inset: auto; top: 50%; left: 50%; }
+  .stage.turned .stage-top { padding: 12px 54px 0; }
+  .stage.turned .stage-main { padding: 4px 54px; }
+  .stage.turned .taps { padding: 0 54px 12px; }
+
+  /* ---------- results ---------- */
+  .results { display: flex; flex-direction: column; }
+  .res-body {
+    flex: 1; min-height: 0; display: grid; gap: 16px;
+    padding: 4px calc(var(--sr) + 18px) calc(var(--sb) + 16px) calc(var(--sl) + 18px);
+  }
+  .res-score { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; }
+  .res-score small { font-size: 12px; font-weight: 800; letter-spacing: 0.16em; color: rgba(255, 248, 236, 0.72); }
+  .res-score .num {
+    font-family: var(--display); font-size: 110px; line-height: 0.85; color: var(--yellow);
+    text-shadow: 4px 0 var(--magenta), -4px 0 var(--cyan);
+  }
+  .res-score .of { font-size: 15px; font-weight: 800; }
+  .res-score .deckname { font-size: 13px; font-weight: 700; color: rgba(255, 248, 236, 0.75); }
+  .res-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 6px; }
+  .res-list {
+    margin: 0; padding: 12px 14px; list-style: none; border-radius: 18px; background: var(--panel); border: 3px solid var(--shadow);
+    columns: 2 150px; column-gap: 18px; overflow-y: auto;
+  }
+  .res-list li { display: flex; align-items: baseline; gap: 8px; padding: 5px 0; break-inside: avoid; font-size: 17px; font-weight: 800; line-height: 1.2; }
+  .res-list li i { flex: none; width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; font-style: normal; font-size: 13px; color: var(--ink); transform: translateY(3px); }
+  .res-list li.got i { background: var(--got); }
+  .res-list li.pass, .res-list li.none { color: rgba(255, 248, 236, 0.55); font-weight: 700; }
+  .res-list li.pass i { background: var(--pass); }
+  .res-list li.none i { background: rgba(255, 248, 236, 0.35); }
+  .res-empty { margin: 0; text-align: center; color: rgba(255, 248, 236, 0.7); font-weight: 700; }
+  @media (orientation: landscape) {
+    .results { height: 100vh; height: 100dvh; }
+    .res-body { grid-template-columns: minmax(220px, 0.8fr) 1.3fr; }
+    .res-list { align-self: center; max-height: 100%; }
+  }
+
+  /* ---------- help and settings ---------- */
+  .sheet {
+    position: fixed; inset: 0; z-index: 40; overflow-y: auto; display: flex; align-items: flex-start; justify-content: center;
+    padding: calc(var(--st) + 14px) calc(var(--sr) + 14px) calc(var(--sb) + 14px) calc(var(--sl) + 14px);
+    background: rgba(10, 8, 16, 0.92);
+  }
+  .sheet-card {
+    width: 100%; max-width: 640px; margin: auto 0; padding: 18px 18px 20px; border-radius: 22px;
+    background: var(--night); border: 3px solid var(--yellow); box-shadow: 6px 7px 0 var(--shadow);
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .sheet-card h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 34px; line-height: 1; letter-spacing: 0.03em; text-shadow: 2px 0 var(--magenta), -2px 0 var(--cyan); }
+  .steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; counter-reset: s; }
+  .steps li { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; font-weight: 700; line-height: 1.35; }
+  .steps li::before {
+    counter-increment: s; content: counter(s); flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--yellow); color: var(--ink); border: 2px solid var(--ink); font-family: var(--display); font-size: 18px;
+  }
+  .steps b.up { color: var(--got); }
+  .steps b.down { color: var(--pass); }
+  .set-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border-radius: 14px; background: var(--panel); border: 2px solid var(--shadow); }
+  .set-row > span { font-size: 15px; font-weight: 800; }
+  .set-row small { display: block; margin-top: 2px; font-size: 12px; font-weight: 600; color: rgba(255, 248, 236, 0.7); }
+  .set-row .seg { min-width: 190px; }
+  .set-row .seg button { min-height: 40px; }
+  .set-row .seg button b { font-family: Inter, system-ui, sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 0; }
+  .meter { position: relative; height: 34px; border-radius: 999px; background: linear-gradient(90deg, var(--pass), #3A3446 35% 65%, var(--got)); border: 2px solid var(--shadow); }
+  .meter i { position: absolute; top: 3px; width: 24px; height: 24px; margin-left: -12px; border-radius: 50%; background: var(--paper); border: 3px solid var(--ink); left: 50%; transition: left 0.08s linear; }
+  .meter-labels { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: rgba(255, 248, 236, 0.7); }
+  .tilt-status { margin: 0; font-size: 13px; font-weight: 700; line-height: 1.4; color: rgba(255, 248, 236, 0.8); }
+  .sheet-actions { display: flex; justify-content: flex-end; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HOME: level, time, deck ============ -->
+<section class="screen home" data-screen="home">
+  <header class="bar">
+    <a class="back" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>CAPRA LAB</a>
+    <div class="bar-right">
+      <span class="who" id="who" hidden>Playing as <b></b></span>
+      <button class="round-btn" id="helpBtn" type="button" aria-label="How to play">?</button>
+      <button class="round-btn" id="setBtn" type="button" aria-label="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button>
+    </div>
+  </header>
+  <div class="home-body">
+    <div class="intro">
+      <div>
+        <h1 class="logo"><span class="eye"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12" r="2.6"/><path d="M4 20 20 4"/></svg></span><span>DON'T <em>LOOK!</em></span></h1>
+        <p class="tag">Phone on your forehead. Your friends give clues. Guess the word before time runs out!</p>
+      </div>
+      <div>
+        <p class="label" id="levelLabel">LEVEL</p>
+        <div class="seg" id="levels" role="radiogroup" aria-labelledby="levelLabel"></div>
+      </div>
+      <div>
+        <p class="label" id="timeLabel">TIME</p>
+        <div class="seg" id="times" role="radiogroup" aria-labelledby="timeLabel"></div>
+      </div>
+    </div>
+    <div class="decks-wrap">
+      <p class="label">PICK A DECK</p>
+      <div class="decks" id="decks"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ READY: how to hold it ============ -->
+<section class="screen ready" data-screen="ready" hidden>
+  <header class="bar">
+    <button class="back" id="readyBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>DECKS</button>
+    <div class="bar-right"><button class="round-btn" id="helpBtn2" type="button" aria-label="How to play">?</button></div>
+  </header>
+  <div class="ready-body">
+    <div class="ready-deck" id="readyDeck">
+      <div class="badge" id="readyEmoji"></div>
+      <strong id="readyName"></strong>
+      <span id="readyLevel"></span>
+    </div>
+    <div class="ready-how">
+      <svg class="how-art" viewBox="0 0 360 150" role="img" aria-label="Hold the phone sideways on your forehead, screen facing your friends. Flip it up when you get it, down to pass.">
+        <g stroke="#120E18" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M120 146c0-34 26-52 60-52s60 18 60 52" fill="#5C4A72"/>
+          <circle cx="180" cy="62" r="40" fill="#F2C9A0"/>
+          <path d="M140 52c4-26 24-34 40-34s38 8 42 34c-12-10-26-14-42-14s-30 4-40 14z" fill="#3A2A1E"/>
+          <rect x="132" y="24" width="96" height="46" rx="8" fill="#FFD23F"/>
+          <rect x="140" y="31" width="80" height="32" rx="4" fill="#FFF8EC"/>
+        </g>
+        <text x="180" y="54" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="20" fill="#120E18">?</text>
+        <g fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M252 84c20-6 30-22 28-44" stroke="#5BE38A"/><path d="M268 48l12-12 10 13" stroke="#5BE38A"/>
+          <path d="M108 36c-20 6-28 24-26 44" stroke="#FF9A4D"/><path d="M72 70l10 13 12-10" stroke="#FF9A4D"/>
+        </g>
+        <text x="324" y="44" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="22" fill="#5BE38A" id="artUp">GOT IT</text>
+        <text x="38" y="112" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="22" fill="#FF9A4D" id="artDown">PASS</text>
+      </svg>
+      <div class="rules">
+        <div class="rule up"><i>▲</i><span id="ruleUp">Flip <b>up</b> when you get it</span></div>
+        <div class="rule down"><i>▼</i><span id="ruleDown">Flip <b>down</b> to pass</span></div>
+      </div>
+      <button class="btn big" id="goBtn" type="button">I'M READY!</button>
+      <p class="ready-note" id="readyNote">Hold it sideways on your forehead with the screen facing your friends. No peeking!</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STAGE: forehead, countdown, the round ============ -->
+<section class="stage" data-screen="stage" hidden>
+  <div class="stage-top">
+    <div class="pill score" id="scorePill" aria-label="Score"><span>✓</span> <b id="score">0</b></div>
+    <div class="pill time" id="timePill" aria-live="off">1:00</div>
+    <button class="end-btn" id="endBtn" type="button" aria-label="End the round"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="stage-main" id="stageMain">
+    <div class="prompt" id="forehead" hidden>
+      <svg class="head-icon" viewBox="0 0 120 84" aria-hidden="true"><g stroke="#120E18" stroke-width="4" stroke-linejoin="round"><circle cx="60" cy="54" r="28" fill="#FFF8EC"/><rect x="28" y="6" width="64" height="32" rx="6" fill="#120E18"/></g></svg>
+      <h2>ON YOUR FOREHEAD!</h2>
+      <p>Screen facing your friends. Hold still and the round starts.</p>
+      <button class="link" id="useTaps" type="button">No tilt? Use buttons instead</button>
+    </div>
+    <div class="count" id="count" hidden></div>
+    <div class="pic" id="pic" aria-hidden="true" hidden></div>
+    <p class="word" id="word" hidden></p>
+  </div>
+  <div class="taps" id="taps" hidden>
+    <button class="pass" id="tapPass" type="button">✗ PASS</button>
+    <button class="got" id="tapGot" type="button">GOT IT ✓</button>
+  </div>
+  <div class="flash" id="flash" hidden><span id="flashText"></span></div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="screen results" data-screen="results" hidden>
+  <header class="bar">
+    <button class="back" id="resBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>DECKS</button>
+  </header>
+  <div class="res-body">
+    <div class="res-score">
+      <small id="resTitle">TIME'S UP!</small>
+      <div class="num" id="resNum">0</div>
+      <div class="of" id="resOf"></div>
+      <div class="deckname" id="resDeck"></div>
+      <div class="res-actions">
+        <button class="btn" id="againBtn" type="button">Play again</button>
+        <button class="btn alt" id="decksBtn" type="button">New deck</button>
+      </div>
+    </div>
+    <ul class="res-list" id="resList"></ul>
+  </div>
+</section>
+
+<!-- ============ HOW TO PLAY ============ -->
+<div class="sheet" id="help" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden>
+  <div class="sheet-card">
+    <h2 id="helpTitle">HOW TO PLAY</h2>
+    <ol class="steps">
+      <li>Pick a level and a deck. Turn the phone sideways.</li>
+      <li>The guesser holds the phone on their forehead, screen facing everyone else. Don't look!</li>
+      <li>Everyone else gives clues: describe it, act it out, make the sound. Just don't say the word.</li>
+      <li id="helpFlip">Got it? Flip the phone <b class="up">UP</b> (screen to the ceiling). Stuck? Flip it <b class="down">DOWN</b> to pass.</li>
+      <li>Get as many as you can before time runs out, then pass the phone to the next guesser.</li>
+    </ol>
+    <p class="tilt-status">No tilt on this phone? GOT IT and PASS buttons show up on the screen instead, so a friend can tap.</p>
+    <div class="sheet-actions"><button class="btn" id="helpClose" type="button">Let's play</button></div>
+  </div>
+</div>
+
+<!-- ============ SETTINGS ============ -->
+<div class="sheet" id="settings" role="dialog" aria-modal="true" aria-labelledby="setTitle" hidden>
+  <div class="sheet-card">
+    <h2 id="setTitle">SETTINGS</h2>
+    <div class="set-row">
+      <span>Sound</span>
+      <div class="seg" id="soundSeg" role="radiogroup" aria-label="Sound"></div>
+    </div>
+    <div class="set-row">
+      <span>Flip up means<small>Flip down means the other one.</small></span>
+      <div class="seg" id="flipSeg" role="radiogroup" aria-label="Flip up means"></div>
+    </div>
+    <div class="set-row" style="flex-direction: column; align-items: stretch;">
+      <span>Tilt check<small>Hold the phone sideways and flip it. The dot should swing to GOT IT and PASS.</small></span>
+      <div class="meter" aria-hidden="true"><i id="meterDot"></i></div>
+      <div class="meter-labels"><span id="meterDown">PASS</span><span>UPRIGHT</span><span id="meterUp">GOT IT</span></div>
+      <p class="tilt-status" id="tiltStatus"></p>
+      <button class="btn alt" id="tiltOn" type="button" hidden>Turn on tilt</button>
+    </div>
+    <div class="sheet-actions"><button class="btn" id="setClose" type="button">Done</button></div>
+  </div>
+</div>
+
+<div class="rotate" id="rotate" aria-live="polite" hidden>
+  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/></svg>
+  <h2>TURN IT SIDEWAYS</h2>
+  <p>Don't Look! plays with the phone turned on its side, held on your forehead.</p>
+  <button class="link" id="rotateTaps" type="button">Play without tilt instead</button>
+</div>
+
+<script type="module" src="./game.js"></script>
+</body>
+</html>

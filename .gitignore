@@ -5,6 +5,7 @@ node_modules/
 public/primal-survival/
 public/par-tee-time/
 public/swerve-planet/
+public/dont-look/
 # each game's own local-dev output
 games/*/public/
 games/*/dist/

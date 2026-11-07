@@ -13,6 +13,7 @@ public/                      the site Netlify serves
   primal-survival/           built from games/primal-survival/ (not committed)
   par-tee-time/              built from games/par-tee-time/ (not committed)
   swerve-planet/             built from games/swerve-planet/ (not committed)
+  dont-look/                 built from games/dont-look/ (not committed)
 lab/                         lab-wide server code
   profiles.js                one name + six-digit key per player, for every game
   stores.js                  Netlify Blobs / memory / file storage
@@ -20,6 +21,7 @@ lab/                         lab-wide server code
 games/primal-survival/       Primal Survival's source: client, shared engine, server, tests
 games/par-tee-time/          Par-Tee Time: one self-contained page
 games/swerve-planet/         Swerve Planet: the page, its icon and its leaderboard tests
+games/dont-look/             Don't Look!: page, game.js, logic.js (tilt, dealing), words.js (the decks), tests
 netlify/functions/
   profile.mjs                /api/profile/*                lab profiles
   primal-survival.mjs        /primal-survival/api/*        Primal Survival's API
@@ -55,6 +57,7 @@ Par-Tee Time was first built to run inside Claude. On Capra Lab its NPCs use the
 | Game | Where |
 | --- | --- |
 | Par-Tee Time | Lab original: `/par-tee-time/` (only in Capra Lab) |
+| Don't Look! | Lab original: `/dont-look/` (only in Capra Lab). Heads Up-style: phone on the forehead, flip up for got it, down to pass (swappable in settings). Four levels (K–2, 3–5, 6–8, 9–12), 14 decks plus Mix It Up, words in `games/dont-look/words.js`. No server and no leaderboard on purpose; the lab name shows in the corner |
 | Primal Survival | Native: `/primal-survival/`, uses Capra Lab profiles |
 | Mind Heist | `/mind-heist/`, served from its own site (mind-heist.netlify.app, source in JC's `Desktop\MH\mind-heist-daily`, deployed with its `deploy.cmd`). Its server checks lab keys with `/api/profile/signin` and links each lab player to one Mind Heist profile; players can bring an old one with its Mind Heist key |
 | Glacial Maw | `/glacial-maw/`, served from its own site (glacialmaw.netlify.app, repo jj-capra/glacial-maw) so its hunters, friends and saves stay put; see netlify.toml |

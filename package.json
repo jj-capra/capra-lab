@@ -5,7 +5,7 @@
   "description": "Capra Lab: the hub, lab-wide profiles, and the native games.",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node lab/test/profiles.test.mjs && node games/primal-survival/test/engine.test.mjs && node games/primal-survival/test/api.test.mjs && node games/swerve-planet/tests/scores.test.mjs"
+    "test": "node lab/test/profiles.test.mjs && node games/primal-survival/test/engine.test.mjs && node games/primal-survival/test/api.test.mjs && node games/swerve-planet/tests/scores.test.mjs && node games/dont-look/test/dont-look.test.mjs"
   },
   "engines": {
     "node": ">=18"
