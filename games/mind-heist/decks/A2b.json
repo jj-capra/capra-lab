@@ -1,0 +1,1064 @@
+[
+ {
+  "id": "totally-80s",
+  "blurb": "Big hair, bigger phones: the tech, fads and moments of the 1980s",
+  "categories": [
+   {
+    "name": "80s Tech",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Apple's famous '1984' Super Bowl ad introduced which computer?",
+      "options": [
+       "Apple II",
+       "iMac",
+       "Lisa",
+       "Macintosh"
+      ],
+      "answer": 3,
+      "fact": "It was directed by Ridley Scott, of Alien and Blade Runner fame, and aired during Super Bowl XVIII.",
+      "src": "en.wikipedia.org/wiki/Apple_Inc. (Macintosh Jan 24, 1984; '1984' ad by Ridley Scott, Super Bowl XVIII)"
+     },
+     {
+      "value": 200,
+      "q": "In the 80s home-video format war, VHS beat which Sony format?",
+      "options": [
+       "Betamax",
+       "Video 2000",
+       "LaserDisc",
+       "CED"
+      ],
+      "answer": 0,
+      "fact": "VHS was developed by JVC; Sony had launched Betamax back in 1975.",
+      "src": "en.wikipedia.org/wiki/Sony (Betamax 1975; VHS developed by JVC). Other options are non-Sony formats."
+     },
+     {
+      "value": 300,
+      "q": "The DynaTAC 8000X, the first commercial handheld cellphone, was approved for sale in which year?",
+      "options": [
+       "1979",
+       "1983",
+       "1987",
+       "1990"
+      ],
+      "answer": 1,
+      "fact": "Motorola's phone won FCC approval in September 1983, about a decade after the first handheld cellphone call.",
+      "src": "en.wikipedia.org/wiki/Motorola (FCC approved DynaTAC 8000X Sept 1983); wiki/Mobile_phone (first handheld call April 3, 1973)"
+     },
+     {
+      "value": 400,
+      "q": "Which band's 1985 album 'Brothers in Arms' was the first to sell a million copies on CD?",
+      "options": [
+       "The Police",
+       "Genesis",
+       "Dire Straits",
+       "Def Leppard"
+      ],
+      "answer": 2,
+      "fact": "It was also the first album to sell more copies on CD than on vinyl LP.",
+      "src": "en.wikipedia.org/wiki/Brothers_in_Arms_(album) ('first album to sell one million copies in the CD format and to outsell its LP version')"
+     }
+    ]
+   },
+   {
+    "name": "Fads & Fashion",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In E.T. (1982), Elliott lures the alien with a trail of which candy?",
+      "options": [
+       "Skittles",
+       "M&M's",
+       "Reese's Pieces",
+       "Jelly Belly"
+      ],
+      "answer": 2,
+      "fact": "The film gave a big sales boost to Reese's Pieces, which had been introduced just four years earlier, in 1978.",
+      "src": "en.wikipedia.org/wiki/Reese%27s_Pieces (US launch Sept 1978; Mars declined the E.T. placement; sales up as much as 300%)"
+     },
+     {
+      "value": 200,
+      "q": "Swatch, the colorful plastic watch craze of the 1980s, came from which country?",
+      "options": [
+       "Switzerland",
+       "Germany",
+       "Japan",
+       "Italy"
+      ],
+      "answer": 0,
+      "fact": "Launched in 1983, the low-cost Swatch helped revive the Swiss watch industry.",
+      "src": "swissinfo.ch 'The Swatch celebrates its 20th birthday' (launched in Zurich March 1, 1983; 'did much to rescue the Swiss watch industry')"
+     },
+     {
+      "value": 300,
+      "q": "Which 1983 film made ripped, off-the-shoulder sweatshirts a fashion craze?",
+      "options": [
+       "Footloose",
+       "Fame",
+       "Flashdance",
+       "Dirty Dancing"
+      ],
+      "answer": 2,
+      "fact": "Star Jennifer Beals said her sweatshirt shrank in the dryer, so she simply cut around the neck hole.",
+      "src": "entertainment.time.com 'What a Feeling: 10 Legacies of Flashdance' (ripped-shoulder clothing slide; Beals: sweatshirt stayed in the dryer too long, she cut around the hole). Footloose 1984, Fame 1980, Dirty Dancing 1987."
+     },
+     {
+      "value": 400,
+      "q": "The Trapper Keeper, an 80s school-binder craze, was made by which company?",
+      "options": [
+       "Avery",
+       "Crayola",
+       "Hallmark",
+       "Mead"
+      ],
+      "answer": 3,
+      "fact": "Mead first test-marketed the Trapper Keeper in Wichita, Kansas, in August 1978.",
+      "src": "en.wikipedia.org/wiki/Trapper_Keeper (made by Mead; initial market Wichita, Kansas, August 1978)"
+     }
+    ]
+   },
+   {
+    "name": "Big Moments",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In 1985, which soda brand changed its famous formula, then brought the original back 79 days later?",
+      "options": [
+       "Coca-Cola",
+       "Pepsi",
+       "Dr Pepper",
+       "7 Up"
+      ],
+      "answer": 0,
+      "fact": "The returning original was sold as 'Coca-Cola Classic,' while the new formula became known as New Coke.",
+      "src": "history.com This Day in History (New Coke April 23, 1985; original returned July 11, 1985, '79 days after the release of New Coke')"
+     },
+     {
+      "value": 200,
+      "q": "The 1985 Live Aid benefit concerts were held in London and which US city?",
+      "options": [
+       "New York",
+       "Los Angeles",
+       "Chicago",
+       "Philadelphia"
+      ],
+      "answer": 3,
+      "fact": "Both shows took place on July 13, 1985, at London's Wembley Stadium and Philadelphia's JFK Stadium.",
+      "src": "britannica.com/event/Live-Aid; billypenn.com (July 13, 1985, Wembley Stadium London and JFK Stadium Philadelphia)"
+     },
+     {
+      "value": 300,
+      "q": "Kirk Gibson's famous limping home run in the 1988 World Series was for which team?",
+      "options": [
+       "Oakland A's",
+       "Los Angeles Dodgers",
+       "New York Mets",
+       "Detroit Tigers"
+      ],
+      "answer": 1,
+      "fact": "His pinch-hit, game-winning homer in Game 1 was his only plate appearance of the Series.",
+      "src": "en.wikipedia.org/wiki/Kirk_Gibson%27s_1988_World_Series_home_run ('his only plate appearance of the series'; Dodgers vs A's, off Dennis Eckersley)"
+     },
+     {
+      "value": 400,
+      "q": "Which country hosted the 1986 FIFA World Cup, won by Argentina?",
+      "options": [
+       "Colombia",
+       "Spain",
+       "Mexico",
+       "Italy"
+      ],
+      "answer": 2,
+      "fact": "Colombia was the original host but withdrew, so Mexico became the first nation to host the World Cup twice.",
+      "src": "en.wikipedia.org/wiki/1986_FIFA_World_Cup (Colombia withdrew Nov 1982; Mexico 'became the first nation to host two World Cups'; Argentina won)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "the-90s",
+  "blurb": "Dial-up, grunge and the Macarena: the 1990s on one board",
+  "categories": [
+   {
+    "name": "Tech Boom",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which Microsoft system, launched in 1995, introduced the Start button?",
+      "options": [
+       "Windows 3.1",
+       "Windows 98",
+       "Windows 95",
+       "Windows XP"
+      ],
+      "answer": 2,
+      "fact": "Its launch ads used the Rolling Stones song 'Start Me Up,' a nod to the new Start button.",
+      "src": "en.wikipedia.org/wiki/Windows_95 (GA Aug 24, 1995; introduced Start menu and taskbar; 'Start Me Up' ad)"
+     },
+     {
+      "value": 200,
+      "q": "The 'Y2K bug' scare came from old computers storing years with how many digits?",
+      "options": [
+       "Four",
+       "Three",
+       "Two",
+       "Six"
+      ],
+      "answer": 2,
+      "fact": "Programs that saved 1999 as '99' risked reading '00' as 1900 instead of 2000.",
+      "src": "NOT WEB-CHECKED (textbook-certain: two-digit year storage behind the Y2K bug)"
+     },
+     {
+      "value": 300,
+      "q": "The first text message, sent in the UK in December 1992, said what?",
+      "options": [
+       "Hello world",
+       "Merry Christmas",
+       "Happy holidays",
+       "Testing 123"
+      ],
+      "answer": 1,
+      "fact": "Engineer Neil Papworth typed it on a computer and sent it to the phone of Vodafone's Richard Jarvis.",
+      "src": "en.wikipedia.org/wiki/SMS (Dec 3, 1992, Papworth of Sema Group to Richard Jarvis of Vodafone)"
+     },
+     {
+      "value": 400,
+      "q": "In 1997, IBM's Deep Blue computer beat which world chess champion in a match?",
+      "options": [
+       "Bobby Fischer",
+       "Anatoly Karpov",
+       "Magnus Carlsen",
+       "Garry Kasparov"
+      ],
+      "answer": 3,
+      "fact": "Kasparov had beaten an earlier version of Deep Blue in their first match, in 1996.",
+      "src": "history.com 'Kasparov defeats chess-playing computer' (Feb 1996 match); chessbase.com '25 years ago: Deep Blue beats Kasparov' (1997 rematch)"
+     }
+    ]
+   },
+   {
+    "name": "Pop Culture",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The 90s grunge look of flannel and ripped jeans came out of which city's music scene?",
+      "options": [
+       "Seattle",
+       "Portland",
+       "Austin",
+       "Detroit"
+      ],
+      "answer": 0,
+      "fact": "Bands like Nirvana, Pearl Jam and Soundgarden carried the Seattle sound around the world.",
+      "src": "NOT WEB-CHECKED (textbook-certain: Seattle grunge scene; Nirvana, Pearl Jam, Soundgarden)"
+     },
+     {
+      "value": 200,
+      "q": "Los del Rio, the duo behind the 1990s dance craze 'Macarena,' come from which country?",
+      "options": [
+       "Mexico",
+       "Portugal",
+       "Brazil",
+       "Spain"
+      ],
+      "answer": 3,
+      "fact": "A remix by the Bayside Boys turned it into a No. 1 hit in the US in 1996.",
+      "src": "en.wikipedia.org/wiki/Macarena (Spanish duo Los del Rio; Bayside Boys remix No. 1 on the Hot 100 from August 1996 for 14 weeks)"
+     },
+     {
+      "value": 300,
+      "q": "The 'Magic Eye' book craze of the 1990s hid what kind of picture inside colorful patterns?",
+      "options": [
+       "Glow-in-the-dark art",
+       "Scratch-and-sniff art",
+       "3D images",
+       "Invisible ink"
+      ],
+      "answer": 2,
+      "fact": "The pictures are autostereograms: relax your focus and a 3D shape seems to float off the page.",
+      "src": "NOT WEB-CHECKED (textbook-certain: Magic Eye autostereograms)"
+     },
+     {
+      "value": 400,
+      "q": "The 90s POG craze took its name from a Hawaiian juice of passion fruit, orange and what?",
+      "options": [
+       "Guava",
+       "Pineapple",
+       "Grape",
+       "Mango"
+      ],
+      "answer": 0,
+      "fact": "Maui's Haleakala Dairy created the juice in 1971 and gave away caps printed with the POG logo.",
+      "src": "en.wikipedia.org/wiki/Pog_(drink) (passionfruit-orange-guava; created 1971 by Mary Soon for Haleakala Dairy, Maui; dairy gave away POG-logo caps; craze began 1991)"
+     }
+    ]
+   },
+   {
+    "name": "Big Moments",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which film saga returned to theaters in 1999 with 'The Phantom Menace'?",
+      "options": [
+       "Star Trek",
+       "Star Wars",
+       "Indiana Jones",
+       "Superman"
+      ],
+      "answer": 1,
+      "fact": "It opened on May 19, 1999, almost 16 years after Return of the Jedi.",
+      "src": "en.wikipedia.org/wiki/Star_Wars:_Episode_I_%E2%80%93_The_Phantom_Menace (US release May 19, 1999, 'almost 16 years after the premiere of Return of the Jedi')"
+     },
+     {
+      "value": 200,
+      "q": "When Johnny Carson retired in 1992, who took over as host of The Tonight Show?",
+      "options": [
+       "David Letterman",
+       "Conan O'Brien",
+       "Jay Leno",
+       "Arsenio Hall"
+      ],
+      "answer": 2,
+      "fact": "David Letterman, seen by many as Carson's natural successor, left NBC for CBS in 1993.",
+      "src": "en.wikipedia.org/wiki/The_Tonight_Show_with_Jay_Leno (debuted May 25, 1992, three days after Carson retired; Letterman 'considered by many as the natural successor'; left NBC June 1993, joined CBS August 1993)"
+     },
+     {
+      "value": 300,
+      "q": "In 1996, Starbucks opened its first store outside North America in which city?",
+      "options": [
+       "Seoul",
+       "London",
+       "Paris",
+       "Tokyo"
+      ],
+      "answer": 3,
+      "fact": "The store opened in August 1996 in Tokyo's Ginza shopping district.",
+      "src": "tastingtable.com/1854774 (first store outside North America opened in Tokyo in August 1996, in the Ginza shopping district)"
+     },
+     {
+      "value": 400,
+      "q": "After his first NBA retirement, Michael Jordan played minor league baseball in 1994 for which team?",
+      "options": [
+       "Durham Bulls",
+       "Birmingham Barons",
+       "Toledo Mud Hens",
+       "Nashville Sounds"
+      ],
+      "answer": 1,
+      "fact": "The Barons were a Double-A farm team of the Chicago White Sox, whose owner also owned the Bulls.",
+      "src": "nbcsports.com oral history of Jordan's baseball career (#45 of the Birmingham Barons, 1994). Barons as White Sox Double-A club and Reinsdorf owning both teams: textbook."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "the-2000s",
+  "blurb": "iPods, BlackBerrys and red envelopes: the 2000s on rewind",
+  "categories": [
+   {
+    "name": "Gadgets",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Apple's first iPod, in 2001, promised how many songs in your pocket?",
+      "options": [
+       "100",
+       "500",
+       "1,000",
+       "10,000"
+      ],
+      "answer": 2,
+      "fact": "A copywriter named it after the line 'Open the pod bay doors' from 2001: A Space Odyssey.",
+      "src": "en.wikipedia.org/wiki/IPod (Nov 10, 2001; '1,000 songs in your pocket'; Vinnie Chieco name origin)"
+     },
+     {
+      "value": 200,
+      "q": "BlackBerry phones, famous for their tiny keyboards, were made in which country?",
+      "options": [
+       "Finland",
+       "Sweden",
+       "Japan",
+       "Canada"
+      ],
+      "answer": 3,
+      "fact": "Maker Research In Motion was based in Waterloo, Ontario; the first BlackBerry was a 1999 email pager.",
+      "src": "en.wikipedia.org/wiki/BlackBerry (RIM, Waterloo, Ontario; BlackBerry 850 pager Jan 19, 1999)"
+     },
+     {
+      "value": 300,
+      "q": "The first iPhone went on sale in the US in June of which year?",
+      "options": [
+       "2005",
+       "2006",
+       "2007",
+       "2008"
+      ],
+      "answer": 2,
+      "fact": "Steve Jobs unveiled it on January 9, 2007, and it reached stores on June 29.",
+      "src": "en.wikipedia.org/wiki/Apple_Inc."
+     },
+     {
+      "value": 400,
+      "q": "Which disc format beat HD DVD in the 2000s battle over high-definition movies?",
+      "options": [
+       "Blu-ray",
+       "LaserDisc",
+       "DVD-Audio",
+       "UMD"
+      ],
+      "answer": 0,
+      "fact": "Sony backed Blu-ray, and HD DVD's main supporter, Toshiba, gave up the fight in February 2008.",
+      "src": "engadget.com / cnn.com / aljazeera.com, Feb 19, 2008 (Toshiba drops HD DVD; Blu-ray wins). Sony backing Blu-ray is textbook."
+     }
+    ]
+   },
+   {
+    "name": "Pop Culture",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Netflix's DVD-by-mail service sent discs in envelopes of what color?",
+      "options": [
+       "Red",
+       "Blue",
+       "Yellow",
+       "White"
+      ],
+      "answer": 0,
+      "fact": "Netflix mailed its last DVDs in September 2023, 25 years after the service began.",
+      "src": "tweaktown.com/news/91156 (final red-envelope DVDs mailed Sept 29, 2023; DVD service began 25 years earlier)"
+     },
+     {
+      "value": 200,
+      "q": "The Snuggie, a TV-ad sensation of 2008, was a blanket with what added?",
+      "options": [
+       "A hood",
+       "Sleeves",
+       "Pockets",
+       "A zipper"
+      ],
+      "answer": 1,
+      "fact": "Sleeved blankets like the Slanket were sold earlier, but the Snuggie's memorable ads made it a craze.",
+      "src": "en.wikipedia.org/wiki/Sleeved_blanket (Snuggie TV campaign autumn 2008; Freedom Blanket sold from 2005, Slanket launched 2006)"
+     },
+     {
+      "value": 300,
+      "q": "YouTube's first video, 'Me at the zoo' (2005), was filmed at the zoo in which city?",
+      "options": [
+       "San Diego",
+       "Los Angeles",
+       "San Francisco",
+       "Chicago"
+      ],
+      "answer": 0,
+      "fact": "Co-founder Jawed Karim posted the 19-second clip, which shows him standing in front of elephants.",
+      "src": "en.wikipedia.org/wiki/Me_at_the_zoo (San Diego Zoo; Jawed Karim in front of two elephants; 19 seconds; April 23, 2005)"
+     },
+     {
+      "value": 400,
+      "q": "Crocs foam clogs made their 2002 debut at what kind of event?",
+      "options": [
+       "A golf expo",
+       "A boat show",
+       "A garden show",
+       "A surf contest"
+      ],
+      "answer": 1,
+      "fact": "Their first model was called the Beach, and all 200 pairs reportedly sold out at the Fort Lauderdale show.",
+      "src": "en.wikipedia.org/wiki/Crocs ('In 2002, Crocs unveiled their first model, the Beach, at the Fort Lauderdale Boat Show in Florida'; 200 pairs reportedly sold out)"
+     }
+    ]
+   },
+   {
+    "name": "Big Moments",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which new currency went into circulation as cash in 12 European countries in 2002?",
+      "options": [
+       "Ecu",
+       "Euro",
+       "Franc",
+       "Mark"
+      ],
+      "answer": 1,
+      "fact": "The euro had existed since 1999, but only electronically, before the notes and coins arrived.",
+      "src": "ecb.europa.eu euro changeover 2002 page (notes and coins introduced Jan 1, 2002 in 12 countries). Euro as non-cash currency from Jan 1999 is textbook."
+     },
+     {
+      "value": 200,
+      "q": "Facebook launched in 2004 as a site for students at which university?",
+      "options": [
+       "Stanford",
+       "Yale",
+       "MIT",
+       "Harvard"
+      ],
+      "answer": 3,
+      "fact": "It started as 'TheFacebook' and opened to anyone 13 or older in September 2006.",
+      "src": "Wikipedia 'Facebook' (copy at solarspell-dls.sfis.asu.edu): Thefacebook launched Feb 4, 2004 for Harvard students; opened Sept 26, 2006 to everyone 13 and older"
+     },
+     {
+      "value": 300,
+      "q": "The London Eye, which opened in 2000, was originally called what?",
+      "options": [
+       "Thames Wheel",
+       "Crown Wheel",
+       "Millennium Wheel",
+       "Britannia Wheel"
+      ],
+      "answer": 2,
+      "fact": "At 443 feet, it was the world's tallest Ferris wheel until China's Star of Nanchang passed it in 2006.",
+      "src": "en.wikipedia.org/wiki/London_Eye ('originally the Millennium Wheel'; opened to the paying public March 9, 2000; 135 m / 443 ft; tallest Ferris wheel until the Star of Nanchang in 2006)"
+     },
+     {
+      "value": 400,
+      "q": "In 2001, the Seattle Mariners tied the major league record for regular-season wins. How many did they win?",
+      "options": [
+       "104",
+       "110",
+       "116",
+       "122"
+      ],
+      "answer": 2,
+      "fact": "They matched the 1906 Chicago Cubs, who won 116 games in a season of only 152 games.",
+      "src": "en.wikipedia.org/wiki/2001_Seattle_Mariners_season (116-46, 'tying the major league record for wins in the modern era'; 1906 Cubs did it in a 152-game season). Ichiro's 2001 MVP is already used in sports-legends, so kept out of the fact."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "the-70s",
+  "blurb": "Disco suits, mood rings and floppy disks: a trip through the 1970s",
+  "categories": [
+   {
+    "name": "Groovy Gadgets",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Sony's Walkman portable cassette player first went on sale in which year?",
+      "options": [
+       "1975",
+       "1979",
+       "1983",
+       "1986"
+      ],
+      "answer": 1,
+      "fact": "The first model, the TPS-L2, had two headphone jacks so two people could listen at once.",
+      "src": "en.wikipedia.org/wiki/Sony (Walkman 1979); maketecheasier.com (first 1979 Walkman had a second headphone jack at Akio Morita's insistence); walkman-archive.com TPS-L2 page"
+     },
+     {
+      "value": 200,
+      "q": "In the 1970s CB radio craze, what did CB stand for?",
+      "options": [
+       "Common Broadcast",
+       "Citizens Band",
+       "Civil Band",
+       "Car Broadcast"
+      ],
+      "answer": 1,
+      "fact": "C.W. McCall's trucker song 'Convoy,' a No. 1 hit in early 1976, helped fuel the fad.",
+      "src": "en.wikipedia.org/wiki/Convoy_(song) ('capitalized on the fad for citizens band (CB) radio'; one week at No. 1 on the pop chart in its 1975-76 run)"
+     },
+     {
+      "value": 300,
+      "q": "In 1971, Ray Tomlinson sent the first networked email and chose which symbol for addresses?",
+      "options": [
+       "#",
+       "@",
+       "&",
+       "%"
+      ],
+      "answer": 1,
+      "fact": "He chose @ because no one used it in computing and it already meant 'at,' as in a user at a computer.",
+      "src": "maketecheasier.com/why-email-uses-at-symbol (Tomlinson, 1971; @ was unused in computing and 'already meant, in commercial English, at')"
+     },
+     {
+      "value": 400,
+      "q": "IBM's first floppy disks, introduced in the early 1970s, measured how many inches across?",
+      "options": [
+       "3.5",
+       "5.25",
+       "8",
+       "12"
+      ],
+      "answer": 2,
+      "fact": "The smaller 5.25-inch floppy arrived in 1976, followed by the 3.5-inch disk in the 1980s.",
+      "src": "en.wikipedia.org/wiki/Floppy_disk (IBM's first floppies, 1971, were 8 inches; Shugart 5.25-inch in 1976; 3.5-inch drives first shipped 1983)"
+     }
+    ]
+   },
+   {
+    "name": "Fads & Fashion",
+    "questions": [
+     {
+      "value": 100,
+      "q": "John Travolta's white disco suit is the iconic look from which 1977 film?",
+      "options": [
+       "Urban Cowboy",
+       "Grease",
+       "Saturday Night Fever",
+       "Staying Alive"
+      ],
+      "answer": 2,
+      "fact": "The role earned Travolta his first Academy Award nomination, for Best Actor.",
+      "src": "tcm.com Critics' Corner: Saturday Night Fever (Travolta nominated for Best Actor; 'his first ever nomination')"
+     },
+     {
+      "value": 200,
+      "q": "1970s mood rings changed color in response to what?",
+      "options": [
+       "Body heat",
+       "Humidity",
+       "Light",
+       "Magnetism"
+      ],
+      "answer": 0,
+      "fact": "The stones held heat-sensitive liquid crystals that shift color as temperature changes.",
+      "src": "NOT WEB-CHECKED (textbook-certain: thermochromic liquid crystals)"
+     },
+     {
+      "value": 300,
+      "q": "Bell-bottom pants borrowed their flared shape from the uniforms of which workers?",
+      "options": [
+       "Sailors",
+       "Cowboys",
+       "Railroad workers",
+       "Mail carriers"
+      ],
+      "answer": 0,
+      "fact": "Navy sailors wore them for generations; the wide legs were said to be easy to roll up for scrubbing decks.",
+      "src": "NOT WEB-CHECKED (textbook-certain: naval bell-bottoms; deck-scrubbing reason is hedged with 'said to be')"
+     },
+     {
+      "value": 400,
+      "q": "Hacky Sack, the footbag craze, was invented in 1972 in which state?",
+      "options": [
+       "California",
+       "Colorado",
+       "Washington",
+       "Oregon"
+      ],
+      "answer": 3,
+      "fact": "Friends John Stalberger and Mike Marshall created it in Oregon City; toy maker Wham-O later bought the brand.",
+      "src": "en.wikipedia.org/wiki/Hacky_sack (invented 1972 by Mike Marshall and John Stalberger of Oregon City, Oregon; trademark sold to Wham-O in 1983)"
+     }
+    ]
+   },
+   {
+    "name": "Big Moments",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Walt Disney World opened in 1971 in which state?",
+      "options": [
+       "California",
+       "Texas",
+       "Florida",
+       "Georgia"
+      ],
+      "answer": 2,
+      "fact": "It opened on October 1, 1971, with the Magic Kingdom as its only theme park.",
+      "src": "fox35orlando.com history of Walt Disney World (opened Oct 1, 1971); fox6now.com (Epcot opened 1982), so the Magic Kingdom was the only park at opening"
+     },
+     {
+      "value": 200,
+      "q": "On April 8, 1974, Hank Aaron hit his 715th home run, passing which legend?",
+      "options": [
+       "Willie Mays",
+       "Mickey Mantle",
+       "Ted Williams",
+       "Babe Ruth"
+      ],
+      "answer": 3,
+      "fact": "Aaron hit No. 715 for the Atlanta Braves off Al Downing of the Los Angeles Dodgers.",
+      "src": "sabr.org Games Project, April 8, 1974 (Al Downing pitching for the Los Angeles Dodgers; Aaron's Braves won)"
+     },
+     {
+      "value": 300,
+      "q": "Which Chicago skyscraper became the world's tallest building when it opened in 1973?",
+      "options": [
+       "Sears Tower",
+       "John Hancock Center",
+       "Aon Center",
+       "Marina City"
+      ],
+      "answer": 0,
+      "fact": "It held the title for nearly 25 years and was renamed Willis Tower in 2009.",
+      "src": "en.wikipedia.org/wiki/Willis_Tower (opened Sept 1973, world's tallest at opening, ~25 years; renamed July 16, 2009)"
+     },
+     {
+      "value": 400,
+      "q": "In 1973, which horse won the Triple Crown, taking the Belmont Stakes by 31 lengths?",
+      "options": [
+       "Seattle Slew",
+       "Affirmed",
+       "Citation",
+       "Secretariat"
+      ],
+      "answer": 3,
+      "fact": "Seattle Slew in 1977 and Affirmed in 1978 also won the Triple Crown, making three in one decade.",
+      "src": "si.com 'Secretariat's 31-length victory at the 1973 Belmont'; ktvb.com This Day in Sports. Seattle Slew 1977 and Affirmed 1978 Triple Crowns, Citation 1948: textbook."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "the-60s",
+  "blurb": "Go-go boots, Touch-Tone phones and Beatlemania: the swinging 60s",
+  "categories": [
+   {
+    "name": "New & Improved",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which sporty Ford car was unveiled at the 1964 New York World's Fair?",
+      "options": [
+       "Mustang",
+       "Thunderbird",
+       "Corvette",
+       "Camaro"
+      ],
+      "answer": 0,
+      "fact": "It was such a hit that Ford sold more than 400,000 Mustangs in its first year.",
+      "src": "fromtheroad.ford.com 'Mustang launch: the grand introduction' (unveiled at the New York World's Fair, public debut April 17, 1964; 'more than 418,000 units' in the first year)"
+     },
+     {
+      "value": 200,
+      "q": "Kodak's Instamatic camera, launched in 1963, made photography easier with what feature?",
+      "options": [
+       "Instant prints",
+       "Autofocus",
+       "Drop-in film cartridges",
+       "Zoom lens"
+      ],
+      "answer": 2,
+      "fact": "More than 50 million Instamatic cameras were produced between 1963 and 1970.",
+      "src": "en.wikipedia.org/wiki/Instamatic (1963; drop-in 126 cartridges; 50+ million 1963-1970). Checker swapped 'Built-in flash' (early Instamatics took flashbulbs in a built-in holder, arguable) for 'Zoom lens' (Instamatics had fixed lenses)."
+     },
+     {
+      "value": 300,
+      "q": "When Bell launched push-button Touch-Tone phones in 1963, what did the buttons replace?",
+      "options": [
+       "Party lines",
+       "Crank handles",
+       "Operators",
+       "Rotary dials"
+      ],
+      "answer": 3,
+      "fact": "The first models had just 10 buttons; the star and pound keys were added later.",
+      "src": "en.wikipedia.org/wiki/Push-button_telephone (Bell introduced Touch-Tone Nov 18, 1963; Western Electric 1500 'had only ten buttons'; * and # added on the 12-button model 2500 in 1968)"
+     },
+     {
+      "value": 400,
+      "q": "Which company introduced the compact audio cassette in 1963?",
+      "options": [
+       "Sony",
+       "RCA",
+       "Philips",
+       "3M"
+      ],
+      "answer": 2,
+      "fact": "Engineer Lou Ottens's team developed it, and it debuted at the Berlin Radio Show in August 1963.",
+      "src": "en.wikipedia.org/wiki/Cassette_tape (Philips introduced the Compact Cassette Aug 28, 1963 at the Berlin Radio Show; Lou Ottens led the team)"
+     }
+    ]
+   },
+   {
+    "name": "Far Out Fads",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Chubby Checker's 1960 hit kicked off which dance craze?",
+      "options": [
+       "The Twist",
+       "The Hustle",
+       "The Swim",
+       "The Mashed Potato"
+      ],
+      "answer": 0,
+      "fact": "'The Twist' hit No. 1 in 1960 and again in 1962, a rare second trip to the top.",
+      "src": "en.wikipedia.org/wiki/The_Twist_(song) (No. 1 on Sept 19, 1960 and again from Jan 13, 1962; only song to top the chart in two separate runs until 2020)"
+     },
+     {
+      "value": 200,
+      "q": "Harvey Ball designed the yellow smiley face in 1963 for what kind of company?",
+      "options": [
+       "A bank",
+       "An insurance company",
+       "A toy maker",
+       "A soda brand"
+      ],
+      "answer": 1,
+      "fact": "He reportedly earned just $45 for the design and never trademarked it.",
+      "src": "en.wikipedia.org/wiki/Harvey_Ball (State Mutual Life Assurance Company, 1963; earned $45; didn't trademark it)"
+     },
+     {
+      "value": 300,
+      "q": "The lava lamp was invented in 1963 by Edward Craven Walker in which country?",
+      "options": [
+       "United States",
+       "England",
+       "Germany",
+       "Sweden"
+      ],
+      "answer": 1,
+      "fact": "He first sold it as the Astro lamp, and it became a decor icon of the 60s and 70s.",
+      "src": "en.wikipedia.org/wiki/Lava_lamp (invented by Edward Craven Walker in England in 1963; Crestworth 'launched the first Astro lava lamp in 1963')"
+     },
+     {
+      "value": 400,
+      "q": "Designer Mary Quant, who helped popularize the miniskirt, ran her famous boutique in which city?",
+      "options": [
+       "Paris",
+       "Milan",
+       "London",
+       "New York"
+      ],
+      "answer": 2,
+      "fact": "Her shop, Bazaar, opened on Chelsea's King's Road in 1955.",
+      "src": "londonmuseum.org.uk 'How Mary Quant revolutionised 1960s fashion' (Bazaar, King's Road, Chelsea, opened 1955)"
+     }
+    ]
+   },
+   {
+    "name": "Big Moments",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The Beatles' first live US TV appearance, in February 1964, was on whose show?",
+      "options": [
+       "Johnny Carson",
+       "Steve Allen",
+       "Dick Clark",
+       "Ed Sullivan"
+      ],
+      "answer": 3,
+      "fact": "About 73 million viewers tuned in that night, February 9, 1964.",
+      "src": "smithsonianmag.com 'On this day in 1964, 73 million Americans tuned in'; boston25news.com 'first live US television appearance' (Feb 9, 1964). Jack Paar showed clips only."
+     },
+     {
+      "value": 200,
+      "q": "In July 1969, Apollo 11's lunar module, the craft that landed on the Moon, had what name?",
+      "options": [
+       "Columbia",
+       "Eagle",
+       "Falcon",
+       "Snoopy"
+      ],
+      "answer": 1,
+      "fact": "Michael Collins stayed in orbit in the command module, Columbia, while Armstrong and Aldrin landed.",
+      "src": "si.edu newsdesk factsheet 'Apollo 11 Command Module Columbia' (CM Columbia, LM Eagle; Collins orbited while Armstrong and Aldrin landed). Falcon was Apollo 15's LM, Snoopy Apollo 10's."
+     },
+     {
+      "value": 300,
+      "q": "Which team, nicknamed the 'Miracle' team, won the 1969 World Series?",
+      "options": [
+       "Atlanta Braves",
+       "Baltimore Orioles",
+       "Chicago Cubs",
+       "New York Mets"
+      ],
+      "answer": 3,
+      "fact": "The Mets had finished ninth or tenth in every one of their first seven seasons.",
+      "src": "en.wikipedia.org/wiki/1969_World_Series (beat the Orioles 4-1; Mets 'had never finished higher than ninth place (next-to-last)' in the 10-team NL)"
+     },
+     {
+      "value": 400,
+      "q": "Telstar, the 1962 satellite that beamed live TV between the US and Europe, was built by which company?",
+      "options": [
+       "RCA",
+       "IBM",
+       "AT&T",
+       "Hughes"
+      ],
+      "answer": 2,
+      "fact": "NASA launched it on July 10, 1962, and its name later went on a famous World Cup soccer ball.",
+      "src": "nokia.com/bell-labs Telstar 1 story (built by AT&T Bell Telephone Laboratories, launched with NASA July 10, 1962; live TV and phone signals between US and Europe; inspired the World Cup ball). nasa.gov Telstar history (also relayed phone, data and fax)."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "the-2010s",
+  "blurb": "Selfies, viral dresses and six-second videos: the 2010s",
+  "categories": [
+   {
+    "name": "Apps & Gadgets",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Apple's first iPad went on sale in which year?",
+      "options": [
+       "2008",
+       "2010",
+       "2012",
+       "2014"
+      ],
+      "answer": 1,
+      "fact": "The Wi-Fi model reached US stores on April 3, 2010; the smaller iPad mini followed in 2012.",
+      "src": "en.wikipedia.org/wiki/IPad"
+     },
+     {
+      "value": 200,
+      "q": "When Instagram launched in 2010, it was available only on which device?",
+      "options": [
+       "Android phones",
+       "BlackBerry",
+       "iPhone",
+       "Windows Phone"
+      ],
+      "answer": 2,
+      "fact": "Facebook bought Instagram in 2012 for about $1 billion.",
+      "src": "en.wikipedia.org/wiki/Instagram (iOS-only release Oct 6, 2010; Android April 3, 2012; Facebook bought it for $1 billion April 9, 2012)"
+     },
+     {
+      "value": 300,
+      "q": "Apple's voice assistant Siri debuted on which iPhone model in 2011?",
+      "options": [
+       "iPhone 5S",
+       "iPhone 4",
+       "iPhone 5",
+       "iPhone 4S"
+      ],
+      "answer": 3,
+      "fact": "The iPhone 4S went on sale on October 14, 2011, with Siri labeled a beta feature.",
+      "src": "en.wikipedia.org/wiki/Siri ('On October 14, 2011, Apple launched the iPhone 4S with a beta version of Siri')"
+     },
+     {
+      "value": 400,
+      "q": "Vine, the 2010s looping-video app, limited clips to how many seconds?",
+      "options": [
+       "3",
+       "6",
+       "10",
+       "15"
+      ],
+      "answer": 1,
+      "fact": "Twitter bought the startup in October 2012 for a reported $30 million.",
+      "src": "bandt.com.au 'Gone in 6 seconds: Twitter's Vine app set to close' (six-second app; acquired by Twitter Oct 2012 for a reported $30 million)"
+     }
+    ]
+   },
+   {
+    "name": "Viral Hits",
+    "questions": [
+     {
+      "q": "Which 2016 mobile game sent millions of people outdoors to catch Pikachu and friends?",
+      "options": [
+       "Angry Birds",
+       "Pokémon Go",
+       "Candy Crush",
+       "Clash of Clans"
+      ],
+      "answer": 1,
+      "fact": "Niantic, the company that made it, began in 2010 as a startup inside Google.",
+      "src": "Fortune, 2016-07-12 (https://fortune.com/2016/07/12/google-pokemon-go): launched July 6, 2016; Niantic Labs founded inside Google in 2010, spun off 2015",
+      "value": 100
+     },
+     {
+      "value": 200,
+      "q": "In 2012, which video became the first on YouTube to reach 1 billion views?",
+      "options": [
+       "Baby",
+       "Call Me Maybe",
+       "Gangnam Style",
+       "Harlem Shake"
+      ],
+      "answer": 2,
+      "fact": "South Korean singer PSY's video passed the mark in December 2012.",
+      "src": "guinnessworldrecords.com 'First video to receive one billion views'; history.com This Day in History, Dec 21 (Gangnam Style first to 1 billion, 2012)"
+     },
+     {
+      "value": 300,
+      "q": "Oxford Dictionaries' 2015 Word of the Year wasn't a word at all. Which emoji was it?",
+      "options": [
+       "Grinning Face",
+       "Red Heart",
+       "Thumbs Up",
+       "Face with Tears of Joy"
+      ],
+      "answer": 3,
+      "fact": "Designer Shigetaka Kurita created an early, widely used emoji set for Japanese phones in 1999.",
+      "src": "en.wikipedia.org/wiki/Emoji (Oxford 2015 WOTY; Kurita 1999 DoCoMo set)"
+     },
+     {
+      "value": 400,
+      "q": "Internet sensation Grumpy Cat's real name was what?",
+      "options": [
+       "Lil Bub",
+       "Maru",
+       "Keyboard Cat",
+       "Tardar Sauce"
+      ],
+      "answer": 3,
+      "fact": "She first went viral in 2012 after a photo of her was posted on Reddit.",
+      "src": "complex.com '30 things you didn't know about Grumpy Cat' (real name Tardar Sauce; photo posted to Reddit Sept 22, 2012). Other options are other famous internet cats."
+     }
+    ]
+   },
+   {
+    "name": "Big Moments",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The Burj Khalifa became the world's tallest building when it opened in 2010. In which city?",
+      "options": [
+       "Dubai",
+       "Doha",
+       "Abu Dhabi",
+       "Riyadh"
+      ],
+      "answer": 0,
+      "fact": "It rises about 2,717 feet, more than half a mile into the sky.",
+      "src": "guinnessworldrecords.com tallest building (Burj Khalifa, Downtown Dubai, 828 m / 2,716 ft 6 in; opened Jan 4, 2010)"
+     },
+     {
+      "value": 200,
+      "q": "The 'Great American Eclipse' crossed the US from Oregon to South Carolina in which year?",
+      "options": [
+       "2012",
+       "2017",
+       "2019",
+       "2021"
+      ],
+      "answer": 1,
+      "fact": "On August 21, 2017, it became the first total solar eclipse to cross the US coast to coast since 1918.",
+      "src": "fox2detroit.com 'Countdown begins for the Great American Eclipse' (Aug 21, 2017, Oregon to South Carolina; first coast-to-coast total eclipse since 1918)"
+     },
+     {
+      "value": 300,
+      "q": "How did Felix Baumgartner break the sound barrier in 2012?",
+      "options": [
+       "Jumping from a balloon",
+       "Flying a jet pack",
+       "Driving a rocket car",
+       "Riding a rocket sled"
+      ],
+      "answer": 0,
+      "fact": "He leapt from a capsule about 24 miles up during the Red Bull Stratos project.",
+      "src": "itv.com / mprnews.org, Oct 14, 2012 (24-mile skydive from a balloon capsule; broke the sound barrier)"
+     },
+     {
+      "value": 400,
+      "q": "In 2016, which club stunned soccer fans by winning England's Premier League?",
+      "options": [
+       "Leicester City",
+       "Tottenham Hotspur",
+       "Arsenal",
+       "West Ham United"
+      ],
+      "answer": 0,
+      "fact": "Just a year earlier, Leicester had been fighting to avoid relegation to the second tier.",
+      "src": "nbcsports.com 'Leicester City crowned 2015-16 Premier League champions'; thescore.com 'Leicester City's great escape from relegation' (2014-15)"
+     }
+    ]
+   }
+  ]
+ }
+]

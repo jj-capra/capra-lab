@@ -1,0 +1,1418 @@
+[
+  {
+    "id": "time-machine",
+    "blurb": "Milestone moments from Magna Carta to the modern era",
+    "categories": [
+      {
+        "name": "Explorers",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In 1492, Christopher Columbus sailed west for the rulers of which country?",
+            "options": [
+              "Portugal",
+              "Spain",
+              "England",
+              "France"
+            ],
+            "answer": 1,
+            "fact": "His three ships were the Nina, the Pinta and the Santa Maria.",
+            "src": "Textbook (voyage backed by Ferdinand and Isabella of Castile and Aragon, i.e. Spain); reworded from 'flag of which kingdom'"
+          },
+          {
+            "value": 200,
+            "q": "Which Portuguese explorer became the first European to reach India by sea, in 1498?",
+            "options": [
+              "Bartolomeu Dias",
+              "Ferdinand Magellan",
+              "Vasco da Gama",
+              "Pedro Alvares Cabral"
+            ],
+            "answer": 2,
+            "fact": "He reached Calicut after rounding Africa's Cape of Good Hope, first passed by Dias in 1488.",
+            "src": "Textbook (da Gama reached Calicut May 1498; Dias rounded the Cape 1488). Writer's Wikipedia for Schools note agrees"
+          },
+          {
+            "value": 300,
+            "q": "Thor Heyerdahl's 1947 Kon-Tiki expedition crossed the Pacific from Peru on what kind of vessel?",
+            "options": [
+              "A balsa-wood raft",
+              "A papyrus reed boat",
+              "A dugout canoe",
+              "A bamboo junk"
+            ],
+            "answer": 0,
+            "fact": "The raft traveled about 4,300 miles in 101 days before reaching an atoll in French Polynesia.",
+            "src": "en.wikipedia.org/wiki/Kon-Tiki_expedition: nine balsa logs, Callao to Raroia (Tuamotus, French Polynesia), 101 days, ~4,300 mi"
+          },
+          {
+            "value": 400,
+            "q": "A 2021 tree-ring study showed Vikings were cutting wood in Newfoundland in which year?",
+            "options": [
+              "993",
+              "1066",
+              "1121",
+              "1021"
+            ],
+            "answer": 3,
+            "fact": "Scientists counted rings from a radiation spike caused by a solar storm in 993 to pin the exact year.",
+            "src": "nationalgeographic.com ancient-solar-storm-pinpoints-viking-settlement: trees felled AD 1021, dated by counting rings from the 993 solar-storm spike"
+          }
+        ]
+      },
+      {
+        "name": "Paper Trail",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Who was the main author of the Declaration of Independence?",
+            "options": [
+              "John Adams",
+              "Benjamin Franklin",
+              "James Madison",
+              "Thomas Jefferson"
+            ],
+            "answer": 3,
+            "fact": "Most delegates actually signed it on August 2, 1776, not July 4.",
+            "src": "nps.gov/articles/engrossed.htm: most members signed the engrossed copy Aug 2, 1776; Jefferson as main drafter is textbook"
+          },
+          {
+            "value": 200,
+            "q": "In 1215, English barons forced which king to agree to Magna Carta?",
+            "options": [
+              "King John",
+              "Richard the Lionheart",
+              "Henry II",
+              "Edward I"
+            ],
+            "answer": 0,
+            "fact": "Four original 1215 copies survive: two at the British Library and one each at Lincoln and Salisbury.",
+            "src": "medieval.eu/magna-cartas-united: four 1215 copies survive, two at the British Library, one each at Lincoln and Salisbury cathedrals"
+          },
+          {
+            "value": 300,
+            "q": "Which Founding Father wrote 51 of the 85 Federalist Papers?",
+            "options": [
+              "James Madison",
+              "Alexander Hamilton",
+              "John Jay",
+              "John Adams"
+            ],
+            "answer": 1,
+            "fact": "Madison wrote 29 and John Jay wrote five, all under the shared pen name Publius.",
+            "src": "battlefields.org Federalist Papers: Hamilton 51, Madison 29, Jay 5, pen name Publius"
+          },
+          {
+            "value": 400,
+            "q": "The 1494 Treaty of Tordesillas divided newly claimed lands between Spain and which country?",
+            "options": [
+              "France",
+              "England",
+              "Portugal",
+              "The Netherlands"
+            ],
+            "answer": 2,
+            "fact": "Its line gave Portugal a claim to eastern South America, one reason Brazil speaks Portuguese.",
+            "src": "Textbook (Tordesillas 1494, Castile and Portugal; line put eastern Brazil on Portugal's side)"
+          }
+        ]
+      },
+      {
+        "name": "Since 1990",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Declared complete in 2003, the Human Genome Project mapped the full set of human what?",
+            "options": [
+              "DNA",
+              "Proteins",
+              "Blood types",
+              "Brain cells"
+            ],
+            "answer": 0,
+            "fact": "It finished in April 2003, 50 years after Watson and Crick described DNA's double helix.",
+            "src": "genome.gov 2003 release: HGP declared complete April 14, 2003; Watson-Crick paper was April 1953 (moved from $300 to $100)"
+          },
+          {
+            "value": 200,
+            "q": "In 2012, scientists at CERN announced the discovery of which long-sought particle?",
+            "options": [
+              "The neutron",
+              "The positron",
+              "The Higgs boson",
+              "The neutrino"
+            ],
+            "answer": 2,
+            "fact": "Peter Higgs, one of the physicists who predicted it in 1964, shared the 2013 Nobel Prize in Physics.",
+            "src": "pbs.org/wgbh/nova higgs-and-englert-win-physics-nobel-prize: CERN announcement July 4, 2012; Englert and Higgs shared 2013 Nobel; theory 1964. Neutron 1932, positron 1932, neutrino 1956"
+          },
+          {
+            "value": 300,
+            "q": "Opened in 2000, the Oresund Bridge links Denmark with which country?",
+            "options": [
+              "Norway",
+              "Sweden",
+              "Germany",
+              "Finland"
+            ],
+            "answer": 1,
+            "fact": "It ends on an artificial island, Peberholm, where the route continues through an undersea tunnel to Copenhagen.",
+            "src": "en.wikipedia.org/wiki/Oresund_Bridge: opened 1 July 2000, links Copenhagen and Malmo; bridge joins the Oresund Tunnel on Peberholm"
+          },
+          {
+            "value": 400,
+            "q": "In 2022, explorers found the ship Endurance deep off Antarctica. Whose expedition ship was it?",
+            "options": [
+              "Robert Falcon Scott",
+              "Roald Amundsen",
+              "Ernest Shackleton",
+              "Richard Byrd"
+            ],
+            "answer": 2,
+            "fact": "It sank in 1915, yet all 28 crew were rescued. The wreck was found about 10,000 feet down.",
+            "src": "aljazeera.com 2022/3/9 Shackleton's lost ship: found at 3,008 m (9,869 ft), sank 1915, all 28 men survived"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "eureka",
+    "blurb": "Inventions and the minds behind them, ancient to modern",
+    "categories": [
+      {
+        "name": "Happy Accidents",
+        "questions": [
+          {
+            "value": 100,
+            "q": "A candy bar melting in Percy Spencer's pocket near radar gear led to which invention?",
+            "options": [
+              "Toaster oven",
+              "Electric stove",
+              "Microwave oven",
+              "Dishwasher"
+            ],
+            "answer": 2,
+            "fact": "Early commercial microwaves stood nearly six feet tall and weighed about 750 pounds.",
+            "src": "aps.org/apsnews/2015/10/first-patent-for-microwave: candy bar melted; Radarange nearly six feet tall, more than 750 lb"
+          },
+          {
+            "value": 200,
+            "q": "Mold growing on a dish Alexander Fleming left out in 1928 led to which discovery?",
+            "options": [
+              "Penicillin",
+              "Insulin",
+              "Aspirin",
+              "Vitamin C"
+            ],
+            "answer": 0,
+            "fact": "Fleming shared the 1945 Nobel Prize with Howard Florey and Ernst Chain, who made it a usable drug.",
+            "src": "Textbook (Fleming 1928; 1945 Nobel in Physiology or Medicine shared with Florey and Chain)"
+          },
+          {
+            "value": 300,
+            "q": "Burrs stuck to his dog's fur inspired Swiss engineer Georges de Mestral to invent what?",
+            "options": [
+              "Zippers",
+              "Snap buttons",
+              "Duct tape",
+              "Velcro"
+            ],
+            "answer": 3,
+            "fact": "The name blends two French words: velours, meaning velvet, and crochet, meaning hook.",
+            "src": "swissinfo.ch how-a-swiss-invention-hooked-the-world: 1941 walk, burrs on dog's fur, electrical engineer, velours + crochet"
+          },
+          {
+            "value": 400,
+            "q": "In 1938, DuPont chemist Roy Plunkett accidentally discovered which slippery material?",
+            "options": [
+              "Nylon",
+              "Teflon",
+              "Kevlar",
+              "Neoprene"
+            ],
+            "answer": 1,
+            "fact": "He was working on refrigerants when the gas inside a cylinder turned into a white solid.",
+            "src": "lemelson.mit.edu/resources/roy-plunkett: assigned to new Freon refrigerants; April 6, 1938 TFE gas in a cylinder solidified into PTFE"
+          }
+        ]
+      },
+      {
+        "name": "Old School Tech",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which German inventor brought movable-type printing to Europe around 1440?",
+            "options": [
+              "Johannes Kepler",
+              "Albrecht Durer",
+              "Johannes Gutenberg",
+              "Gottfried Leibniz"
+            ],
+            "answer": 2,
+            "fact": "Movable type had already been used in China and Korea centuries before Gutenberg's press.",
+            "src": "Textbook (Gutenberg c. 1440; Bi Sheng movable type c. 1040, Korean metal type by 1377)"
+          },
+          {
+            "value": 200,
+            "q": "Benjamin Franklin invented which device to protect buildings during storms?",
+            "options": [
+              "The lightning rod",
+              "The weather vane",
+              "The barometer",
+              "The storm shutter"
+            ],
+            "answer": 0,
+            "fact": "Franklin never patented his inventions, preferring to share them freely.",
+            "src": "fi.edu Benjamin Franklin inventions: never patented any, believing they should be shared freely; pointed lightning rod"
+          },
+          {
+            "value": 300,
+            "q": "Galileo didn't invent the telescope. A patent for one was first sought in 1608 in which country?",
+            "options": [
+              "Italy",
+              "England",
+              "Germany",
+              "The Netherlands"
+            ],
+            "answer": 3,
+            "fact": "Galileo built his own in 1609 and soon discovered four of Jupiter's moons.",
+            "src": "aas.org 2017/10 invention of the telescope: Lippershey's patent application, 2 Oct 1608, States General of the Netherlands; Galileo built his own in 1609"
+          },
+          {
+            "value": 400,
+            "q": "The Archimedes screw, named for the ancient Greek scientist, was mainly used to do what?",
+            "options": [
+              "Grind grain into flour",
+              "Lift water uphill",
+              "Tell time",
+              "Weigh cargo"
+            ],
+            "answer": 1,
+            "fact": "A screw turning inside a tube carries water upward a little with every rotation.",
+            "src": "Textbook (water-raising screw). Reworded: its origin is disputed (possible earlier Assyrian use), so q no longer says it came from Greece"
+          }
+        ]
+      },
+      {
+        "name": "Modern Makers",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Inventor James Dyson is best known for reinventing which household appliance?",
+            "options": [
+              "The washing machine",
+              "The toaster",
+              "The blender",
+              "The vacuum cleaner"
+            ],
+            "answer": 3,
+            "fact": "He built 5,127 prototypes before landing on his bagless cyclone design.",
+            "src": "dyson.com relentless engineering: 'Creating 5,127 prototypes, to reach the first bagless vacuum'"
+          },
+          {
+            "value": 200,
+            "q": "Which company launched the Roomba robot vacuum in 2002?",
+            "options": [
+              "iRobot",
+              "Shark",
+              "Hoover",
+              "Bissell"
+            ],
+            "answer": 0,
+            "fact": "iRobot was founded in 1990 by three robotics experts from MIT.",
+            "src": "en.wikipedia.org/wiki/IRobot: founded 1990 by Brooks, Angle and Greiner after MIT's AI Lab; Roomba unveiled Sept 2002"
+          },
+          {
+            "value": 300,
+            "q": "The QR code was invented in Japan in 1994 to keep track of what?",
+            "options": [
+              "Library books",
+              "Train tickets",
+              "Car parts",
+              "Rice shipments"
+            ],
+            "answer": 2,
+            "fact": "Inventor Masahiro Hara got the idea during a lunchtime game of Go, with its black and white stones.",
+            "src": "en.wikipedia.org/wiki/QR_code (1994, Denso Wave, to track automobile parts); wiki/Masahiro_Hara (idea came during a lunchtime game of go). Old fact 'QR = Quick Response' duplicated A8 monday-mixer-3"
+          },
+          {
+            "value": 400,
+            "q": "The 2019 Nobel Prize in Chemistry honored the invention of what?",
+            "options": [
+              "The LED light",
+              "The lithium-ion battery",
+              "The solar cell",
+              "The touchscreen"
+            ],
+            "answer": 1,
+            "fact": "Lithium-ion batteries first went on sale in 1991. Co-winner John Goodenough was 97 when he won.",
+            "src": "nobelprize.org 2019 chemistry press release (for lithium-ion batteries; first entered the market 1991); wiki/John_B._Goodenough (97 at award). Blue LED was Physics 2014"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ancient-worlds",
+    "blurb": "Pharaohs, philosophers, emperors and empire builders",
+    "categories": [
+      {
+        "name": "Land of Pharaohs",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which river was the lifeline of ancient Egypt?",
+            "options": [
+              "Tigris",
+              "Nile",
+              "Euphrates",
+              "Jordan"
+            ],
+            "answer": 1,
+            "fact": "Egyptians called their land Kemet, 'black land,' after the dark, rich soil left by the floods.",
+            "src": "Textbook Egyptology (Kemet = black land, from Nile silt)"
+          },
+          {
+            "value": 200,
+            "q": "The Rosetta Stone helped scholars finally read which ancient writing?",
+            "options": [
+              "Cuneiform",
+              "Linear B",
+              "Egyptian hieroglyphs",
+              "Maya glyphs"
+            ],
+            "answer": 2,
+            "fact": "It repeats one decree in three scripts. Jean-Francois Champollion cracked it in 1822.",
+            "src": "Textbook (hieroglyphic, Demotic and Greek texts; Champollion 1822)"
+          },
+          {
+            "value": 300,
+            "q": "In 1922, Howard Carter found whose nearly intact tomb in Egypt's Valley of the Kings?",
+            "options": [
+              "Ramesses II",
+              "Akhenaten",
+              "Khufu",
+              "Tutankhamun"
+            ],
+            "answer": 3,
+            "fact": "The 1970s 'Treasures of Tutankhamun' tour drew huge crowds to American museums.",
+            "src": "Textbook (Carter, Nov 1922); neh.gov King Tut Comes to America: US tour Nov 1976-Apr 1979, 6+ million visitors"
+          },
+          {
+            "value": 400,
+            "q": "The Great Pyramid of Giza was built for which pharaoh?",
+            "options": [
+              "Khufu",
+              "Khafre",
+              "Menkaure",
+              "Djoser"
+            ],
+            "answer": 0,
+            "fact": "Cleopatra lived closer in time to the Moon landing than to the building of this pyramid.",
+            "src": "Textbook (Khufu, c. 2560 BC). Math: 2560 BC to 30 BC ~2,530 yrs; 30 BC to 1969 ~2,000 yrs"
+          }
+        ]
+      },
+      {
+        "name": "Greeks & Romans",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In Greek mythology, which god ruled the sea?",
+            "options": [
+              "Zeus",
+              "Hades",
+              "Poseidon",
+              "Apollo"
+            ],
+            "answer": 2,
+            "fact": "The Romans called him Neptune, the name later given to the eighth planet.",
+            "src": "Textbook mythology"
+          },
+          {
+            "value": 200,
+            "q": "Legend says Rome was founded by Romulus and his twin brother. What was the twin's name?",
+            "options": [
+              "Remus",
+              "Brutus",
+              "Rufus",
+              "Cassius"
+            ],
+            "answer": 0,
+            "fact": "In the story, a she-wolf nursed the twins. Tradition dates Rome's founding to 753 BC.",
+            "src": "Textbook Roman legend"
+          },
+          {
+            "value": 300,
+            "q": "Which Greek philosopher tutored a teenage Alexander the Great?",
+            "options": [
+              "Plato",
+              "Aristotle",
+              "Socrates",
+              "Pythagoras"
+            ],
+            "answer": 1,
+            "fact": "Aristotle had studied under Plato, who in turn had been a student of Socrates.",
+            "src": "Textbook"
+          },
+          {
+            "value": 400,
+            "q": "Hadrian's Wall, the Roman frontier begun in AD 122, stands in which modern country?",
+            "options": [
+              "Scotland",
+              "Wales",
+              "Ireland",
+              "England"
+            ],
+            "answer": 3,
+            "fact": "It ran about 73 miles coast to coast. A later Roman barrier, the Antonine Wall, crossed Scotland.",
+            "src": "english-heritage.org.uk faqs-hadrians-wall: begun AD 122, 73 miles, in northern England; Antonine Wall in what is now Scotland"
+          }
+        ]
+      },
+      {
+        "name": "Far Horizons",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Mexico City stands on the site of which civilization's great capital?",
+            "options": [
+              "Maya",
+              "Aztec",
+              "Inca",
+              "Olmec"
+            ],
+            "answer": 1,
+            "fact": "Their capital, Tenochtitlan, was first built on small islands in Lake Texcoco.",
+            "src": "britannica.com/place/Tenochtitlan: Aztec capital at the site of modern Mexico City, originally on two small islands in Lake Texcoco. Replaces Machu Picchu Q (A4 around-the-world names 'The Inca citadel of Machu Picchu')"
+          },
+          {
+            "value": 200,
+            "q": "China's first emperor was buried with an army of life-size soldiers made of what?",
+            "options": [
+              "Carved jade",
+              "Terracotta clay",
+              "Cast iron",
+              "Carved wood"
+            ],
+            "answer": 1,
+            "fact": "Farmers digging a well near Xi'an found the first of the figures in 1974.",
+            "src": "britannica.com/topic/terra-cotta-army: found March 1974 by farmers digging a well; life-size figures"
+          },
+          {
+            "value": 300,
+            "q": "Cuneiform, one of the world's earliest writing systems, began in which region?",
+            "options": [
+              "Mesopotamia",
+              "The Nile Valley",
+              "The Indus Valley",
+              "Ancient Greece"
+            ],
+            "answer": 0,
+            "fact": "Scribes pressed wedge-shaped marks into wet clay. Cuneiform means 'wedge-shaped.'",
+            "src": "Textbook (cuneiform from Latin cuneus, wedge; Sumer/Mesopotamia)"
+          },
+          {
+            "value": 400,
+            "q": "The ancient Maya counting system was based on groups of which number?",
+            "options": [
+              "10",
+              "12",
+              "60",
+              "20"
+            ],
+            "answer": 3,
+            "fact": "The Maya also had a symbol for zero, often drawn as a shell.",
+            "src": "mayan.org/symbols/numbers: vigesimal (base-20) system; stylized shell = 0. Base 60 = Babylonian"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "monuments-memorials",
+    "blurb": "For Veterans Day: the stories behind famous monuments and memorials",
+    "categories": [
+      {
+        "name": "Veterans Day",
+        "questions": [
+          {
+            "value": 100,
+            "q": "The WWI armistice took effect on November 11, 1918, at what time of day?",
+            "options": [
+              "9 a.m.",
+              "11 a.m.",
+              "Noon",
+              "Midnight"
+            ],
+            "answer": 1,
+            "fact": "It was the 11th hour of the 11th day of the 11th month, which is why Veterans Day is November 11.",
+            "src": "prologue.blogs.archives.gov From Armistice to Veterans Day: 11th hour of the 11th day of the 11th month, 1918"
+          },
+          {
+            "value": 200,
+            "q": "Before 1954, the US holiday on November 11 was known as what?",
+            "options": [
+              "Memorial Day",
+              "Remembrance Day",
+              "Decoration Day",
+              "Armistice Day"
+            ],
+            "answer": 3,
+            "fact": "It was renamed Veterans Day in 1954 to honor American veterans of all wars.",
+            "src": "prologue.blogs.archives.gov From Armistice to Veterans Day: renamed June 1, 1954 to honor veterans of all wars"
+          },
+          {
+            "value": 300,
+            "q": "Which flower became a worldwide symbol of remembrance for WWI veterans?",
+            "options": [
+              "The red poppy",
+              "The red rose",
+              "The red tulip",
+              "The red carnation"
+            ],
+            "answer": 0,
+            "fact": "The tradition grew from 'In Flanders Fields,' a 1915 poem by Canadian doctor John McCrae.",
+            "src": "Textbook (remembrance poppy; McCrae's In Flanders Fields, May 1915); militarytimes.com history of a symbol"
+          },
+          {
+            "value": 400,
+            "q": "Sentinels at Arlington's Tomb of the Unknown Soldier take how many steps before turning?",
+            "options": [
+              "11",
+              "13",
+              "21",
+              "50"
+            ],
+            "answer": 2,
+            "fact": "The 21 steps echo the 21-gun salute, the highest military honor that can be given.",
+            "src": "arlingtoncemetery.mil Changing of the Guard: exactly 21 steps, 21-second pauses; 21 symbolizes the highest military honor, the 21-gun salute. Added 'Arlington's' since the deck also has France's tomb"
+          }
+        ]
+      },
+      {
+        "name": "American Icons",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Mount Rushmore, with the carved faces of four presidents, is in which state?",
+            "options": [
+              "North Dakota",
+              "Wyoming",
+              "Montana",
+              "South Dakota"
+            ],
+            "answer": 3,
+            "fact": "Each of the four faces is about 60 feet tall.",
+            "src": "bensguide.gpo.gov Mount Rushmore: 'The faces of the Presidents are 60 feet high'"
+          },
+          {
+            "value": 200,
+            "q": "The 630-foot Gateway Arch, completed in 1965, stands in which city?",
+            "options": [
+              "St. Louis",
+              "Kansas City",
+              "Omaha",
+              "Chicago"
+            ],
+            "answer": 0,
+            "fact": "It honors westward expansion and is exactly as wide at its base as it is tall.",
+            "src": "nps.gov/jeff 50th year of completion (630 ft, completed Oct 28, 1965, westward expansion); wiki/Gateway_Arch (width and height both 630 ft)"
+          },
+          {
+            "value": 300,
+            "q": "Which French engineer designed the iron framework inside the Statue of Liberty?",
+            "options": [
+              "Ferdinand de Lesseps",
+              "Gustave Eiffel",
+              "Auguste Rodin",
+              "Charles Garnier"
+            ],
+            "answer": 1,
+            "fact": "Sculptor Frederic Auguste Bartholdi designed the statue, which was dedicated in 1886.",
+            "src": "en.wikipedia.org/wiki/Statue_of_Liberty: Eiffel (with Koechlin) designed the iron truss frame; Bartholdi sculptor; dedicated Oct 28, 1886"
+          },
+          {
+            "value": 400,
+            "q": "The National WWII Memorial, dedicated in 2004, has 56 granite pillars. What do they stand for?",
+            "options": [
+              "Major battles",
+              "Allied nations",
+              "States and territories",
+              "Military units"
+            ],
+            "answer": 2,
+            "fact": "It sits on the National Mall between the Lincoln Memorial and the Washington Monument.",
+            "src": "nps.gov/places/national-world-war-ii-memorial: 56 pillars for the states, D.C. and territories; dedicated May 29, 2004; framed by Washington Monument and Lincoln Memorial"
+          }
+        ]
+      },
+      {
+        "name": "Landmarks Abroad",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Stonehenge, the ring of giant prehistoric stones, stands in which country?",
+            "options": [
+              "Ireland",
+              "England",
+              "Scotland",
+              "Wales"
+            ],
+            "answer": 1,
+            "fact": "Its smaller bluestones were hauled from Wales, about 150 miles away.",
+            "src": "smithsonianmag.com stonehenge-was-moved-wales: Preseli bluestones roughly 150 miles away"
+          },
+          {
+            "value": 200,
+            "q": "In London, the name Big Ben officially belongs to what?",
+            "options": [
+              "The clock tower",
+              "The clock face",
+              "The great bell",
+              "The minute hand"
+            ],
+            "answer": 2,
+            "fact": "The tower was renamed Elizabeth Tower in 2012 for Queen Elizabeth II's Diamond Jubilee.",
+            "src": "parliament.uk Big Ben factsheet ('Big Ben is in fact the Great Bell'); kvia.com Big Ben fast facts (renamed Elizabeth Tower Sept 12, 2012 for the Diamond Jubilee)"
+          },
+          {
+            "value": 300,
+            "q": "France's Tomb of the Unknown Soldier lies beneath which Paris monument?",
+            "options": [
+              "The Arc de Triomphe",
+              "The Eiffel Tower",
+              "The Pantheon",
+              "Les Invalides"
+            ],
+            "answer": 0,
+            "fact": "A memorial flame there has been rekindled every evening since 1923.",
+            "src": "cheminsdememoire.gouv.fr/en/arc-de-triomphe: Unknown Soldier buried 1921; flame first lit Nov 11, 1923, revived every evening, never stopped even 1940-44"
+          },
+          {
+            "value": 400,
+            "q": "The nightly Last Post ceremony, begun in 1928, takes place at which memorial in Ypres, Belgium?",
+            "options": [
+              "Vimy Memorial",
+              "Thiepval Memorial",
+              "The Cenotaph",
+              "Menin Gate"
+            ],
+            "answer": 3,
+            "fact": "The Menin Gate memorial was unveiled in 1927, the year before the ceremony began.",
+            "src": "lastpost.be/about (Menin Gate inaugurated 24 July 1927; Last Post Association's first ceremony 2 July 1928); eu.mission.gov.au lastpost. Vimy/Thiepval in France, Cenotaph in London"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evergreen-state",
+    "blurb": "Washington State: symbols, scenery, history and homegrown legends",
+    "categories": [
+      {
+        "name": "State Symbols",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Invented on Bainbridge Island in 1965, which game became Washington's official state sport in 2022?",
+            "options": [
+              "Disc golf",
+              "Pickleball",
+              "Racquetball",
+              "Ultimate frisbee"
+            ],
+            "answer": 1,
+            "fact": "It started on a backyard badminton court with ping-pong paddles and a plastic ball full of holes.",
+            "src": "usapickleball.org history (Bainbridge 1965, badminton court, table tennis paddles, perforated plastic ball); wiki List_of_Washington_state_symbols (state sport 2022)"
+          },
+          {
+            "value": 200,
+            "q": "Washington's official state marine mammal, adopted in 2005, is which animal?",
+            "options": [
+              "Gray whale",
+              "Sea otter",
+              "Orca",
+              "Harbor seal"
+            ],
+            "answer": 2,
+            "fact": "Second graders at Crescent Harbor Elementary in Oak Harbor spent two years pushing for it.",
+            "src": "leg.wa.gov state symbols, marine mammal: orca, 2005, two years of work by Crescent Harbor Elementary second graders, Oak Harbor"
+          },
+          {
+            "value": 300,
+            "q": "In 1928 schoolchildren chose the meadowlark, but which bird became Washington's state bird in 1951?",
+            "options": [
+              "American goldfinch",
+              "Mountain bluebird",
+              "Black-capped chickadee",
+              "Western tanager"
+            ],
+            "answer": 0,
+            "fact": "Seven other states had also picked the meadowlark. In a later student vote, the goldfinch won.",
+            "src": "leg.wa.gov state symbols, bird: 1928 children chose meadowlark, seven other states had it; 1931 club vote picked goldfinch; 1951 children voted goldfinch, Legislature adopted"
+          },
+          {
+            "value": 400,
+            "q": "What is Washington's official state gem?",
+            "options": [
+              "Jade",
+              "Garnet",
+              "Opal",
+              "Petrified wood"
+            ],
+            "answer": 3,
+            "fact": "Ginkgo Petrified Forest State Park near Vantage preserves ancient logs that turned to stone.",
+            "src": "leg.wa.gov state symbols, gem: petrified wood adopted 1975; historylink.org File 7396 (Ginkgo park one mile north of Vantage, petrified logs)"
+          }
+        ]
+      },
+      {
+        "name": "Around the State",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What is the highest mountain in Washington?",
+            "options": [
+              "Mount Baker",
+              "Mount Adams",
+              "Mount Rainier",
+              "Mount St. Helens"
+            ],
+            "answer": 2,
+            "fact": "Mount Rainier National Park, created in 1899, was the nation's fifth national park.",
+            "src": "nps.gov/mora America's Fifth Park: established March 2, 1899, 'the fifth oldest national park'; Rainier highest in WA is textbook"
+          },
+          {
+            "value": 200,
+            "q": "Grand Coulee Dam was built across which river?",
+            "options": [
+              "Columbia River",
+              "Snake River",
+              "Spokane River",
+              "Yakima River"
+            ],
+            "answer": 0,
+            "fact": "Woody Guthrie's 1941 song 'Roll On, Columbia, Roll On' became the state folk song in 1987.",
+            "src": "Textbook (Grand Coulee on the Columbia); wiki Roll_On,_Columbia,_Roll_On (written 1941 for BPA, state folk song 1987)"
+          },
+          {
+            "value": 300,
+            "q": "Spokane's Expo '74 was the first world's fair built around which theme?",
+            "options": [
+              "Space travel",
+              "The environment",
+              "Computers",
+              "World peace"
+            ],
+            "answer": 1,
+            "fact": "Spokane was the smallest city yet to host one, and the fairgrounds became Riverfront Park.",
+            "src": "en.wikipedia.org/wiki/Expo_'74: first environmentally themed world's fair; smallest host city at the time (until Knoxville 1982); site became Riverfront Park"
+          },
+          {
+            "value": 400,
+            "q": "Which Washington community can be reached by land only by driving through Canada?",
+            "options": [
+              "Blaine",
+              "Friday Harbor",
+              "Sumas",
+              "Point Roberts"
+            ],
+            "answer": 3,
+            "fact": "It sits on the tip of a peninsula that dips just south of the 49th parallel, the border line.",
+            "src": "en.wikivoyage.org/wiki/Point_Roberts: only road in or out is through Canada; Tsawwassen Peninsula just below the 49th parallel"
+          }
+        ]
+      },
+      {
+        "name": "Made in WA",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which aerospace giant was founded in Seattle in 1916?",
+            "options": [
+              "Lockheed",
+              "Douglas",
+              "Cessna",
+              "Boeing"
+            ],
+            "answer": 3,
+            "fact": "William Boeing first called it Pacific Aero Products Co., renaming it the next year.",
+            "src": "en.wikipedia.org/wiki/History_of_Boeing: incorporated as Pacific Aero Products Co. July 15, 1916; renamed Boeing Airplane Company April 1917"
+          },
+          {
+            "value": 200,
+            "q": "Which holiday grew out of a celebration held in Spokane on June 19, 1910?",
+            "options": [
+              "Mother's Day",
+              "Father's Day",
+              "Flag Day",
+              "Grandparents Day"
+            ],
+            "answer": 1,
+            "fact": "Sonora Smart Dodd created it to honor her father, a Civil War veteran who raised six children.",
+            "src": "historylink.org File 9458 and wiki Sonora_Smart_Dodd (June 19, 1910 Spokane; Civil War veteran father raised six children). Reworded: a 1908 Fairmont, W.Va. service is also called the first Father's Day"
+          },
+          {
+            "value": 300,
+            "q": "Which famous crooner grew up in Spokane and attended Gonzaga?",
+            "options": [
+              "Bing Crosby",
+              "Frank Sinatra",
+              "Perry Como",
+              "Dean Martin"
+            ],
+            "answer": 0,
+            "fact": "His boyhood home, built in 1911, became a museum on Gonzaga's campus.",
+            "src": "gonzaga.edu Bing Crosby House Museum: home built 1911, now a Gonzaga museum; Bing entered Gonzaga in fall 1920"
+          },
+          {
+            "value": 400,
+            "q": "Amazon was founded in 1994 in a garage in which Washington city?",
+            "options": [
+              "Redmond",
+              "Tacoma",
+              "Bellevue",
+              "Everett"
+            ],
+            "answer": 2,
+            "fact": "Amazon says its first desks there were made from wooden doors with legs attached.",
+            "src": "historylink.org File 23230 (rented Bellevue house, garage, 1994); aboutamazon.com first-amazon-office (door desks). Old 'only books' fact duplicated A2 log-on Web Firsts 100"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "famous-firsts",
+    "blurb": "First flights, first steps and history-making firsts",
+    "categories": [
+      {
+        "name": "Taking Flight",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In 1903, the Wright brothers made their first powered airplane flights near which town?",
+            "options": [
+              "Dayton, Ohio",
+              "Kitty Hawk, N.C.",
+              "Cape May, N.J.",
+              "Akron, Ohio"
+            ],
+            "answer": 1,
+            "fact": "The first flight lasted 12 seconds and covered about 120 feet.",
+            "src": "ncpedia.org/airplane-first-flight: about 12 s and 120 ft, Kill Devil Hill four miles south of Kitty Hawk. Reworded to 'their first' so the Whitehead first-flight claim can't be raised"
+          },
+          {
+            "value": 200,
+            "q": "In 1932, who became the first woman to fly solo across the Atlantic?",
+            "options": [
+              "Beryl Markham",
+              "Harriet Quimby",
+              "Amelia Earhart",
+              "Jacqueline Cochran"
+            ],
+            "answer": 2,
+            "fact": "She took off from Newfoundland and landed in a pasture in Northern Ireland.",
+            "src": "faa.gov blog pilot-many-firsts-amelia-earhart: Harbour Grace to a pasture near Culmore, N. Ireland; first woman to fly the Atlantic solo. Markham's flight 1936"
+          },
+          {
+            "value": 300,
+            "q": "In 2021, Ingenuity made the first powered flight on another planet. What kind of aircraft was it?",
+            "options": [
+              "A helicopter",
+              "A glider",
+              "A rocket plane",
+              "A balloon"
+            ],
+            "answer": 0,
+            "fact": "It carried a tiny swatch of fabric from the Wright brothers' 1903 Flyer.",
+            "src": "phys.org 2021-03 wright-brothers-1st-airplane-nasa: postage-size muslin from the Flyer's wing on Ingenuity; first flight April 19, 2021"
+          },
+          {
+            "value": 400,
+            "q": "Bessie Coleman, the first African American woman to earn a pilot's license, trained in which country?",
+            "options": [
+              "England",
+              "Canada",
+              "Germany",
+              "France"
+            ],
+            "answer": 3,
+            "fact": "US flight schools would not admit her, so she studied French in Chicago and earned her license in 1921.",
+            "src": "en.wikipedia.org/wiki/Bessie_Coleman: US schools admitted neither women nor Black people; Berlitz French class in Chicago; FAI license in France June 15, 1921"
+          }
+        ]
+      },
+      {
+        "name": "Pioneers",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Who was the first woman to win a Nobel Prize?",
+            "options": [
+              "Marie Curie",
+              "Rosalind Franklin",
+              "Ada Lovelace",
+              "Jane Goodall"
+            ],
+            "answer": 0,
+            "fact": "She won in physics in 1903, then won again in chemistry in 1911.",
+            "src": "nobelprize.org (textbook): Physics 1903, Chemistry 1911"
+          },
+          {
+            "value": 200,
+            "q": "Edmund Hillary, who first summited Everest with Tenzing Norgay in 1953, came from which country?",
+            "options": [
+              "Australia",
+              "Canada",
+              "New Zealand",
+              "South Africa"
+            ],
+            "answer": 2,
+            "fact": "News of their May 29 climb reached London on the morning of Queen Elizabeth II's coronation.",
+            "src": "en.wikipedia.org/wiki/1953_British_Mount_Everest_expedition: summit May 29, news released in London the morning of June 2, coronation day; Hillary a New Zealander"
+          },
+          {
+            "value": 300,
+            "q": "Whose team was the first to reach the South Pole, in December 1911?",
+            "options": [
+              "Robert Falcon Scott",
+              "Robert Peary",
+              "Roald Amundsen",
+              "Fridtjof Nansen"
+            ],
+            "answer": 2,
+            "fact": "Amundsen's Norwegian team beat Robert Falcon Scott's British party by about five weeks.",
+            "src": "historyhit.com scott-vs-amundsen: Amundsen 14 Dec 1911, Scott 17 Jan 1912 (34 days, about five weeks)"
+          },
+          {
+            "value": 400,
+            "q": "In 1665, Robert Hooke first used the word 'cell' in biology after viewing what under a microscope?",
+            "options": [
+              "Pond water",
+              "Onion skin",
+              "A fly's wing",
+              "Cork"
+            ],
+            "answer": 3,
+            "fact": "In his book Micrographia, he described the cork as full of tiny pores, much like a honeycomb.",
+            "src": "b-s-h.org.uk 'Much like a honey comb': Hooke saw cork full of tiny pores he called cells, Micrographia 1665. Old fact's monks'-rooms story is disputed; 'coined the word' fixed (the word existed)"
+          }
+        ]
+      },
+      {
+        "name": "Game Changers",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In 1947, Jackie Robinson broke baseball's modern color barrier with which team?",
+            "options": [
+              "New York Yankees",
+              "Boston Braves",
+              "Brooklyn Dodgers",
+              "Cleveland Indians"
+            ],
+            "answer": 2,
+            "fact": "That season he won MLB's first Rookie of the Year award, which was later renamed in his honor.",
+            "src": "en.wikipedia.org/wiki/MLB_Rookie_of_the_Year_Award: Robinson won the first (1947); renamed Jackie Robinson Award 1987. Old 'No. 42' fact duplicated A7 sports-legends Diamond Greats 100"
+          },
+          {
+            "value": 200,
+            "q": "In 1954, who became the first person to run a mile in under four minutes?",
+            "options": [
+              "Roger Bannister",
+              "Jesse Owens",
+              "Paavo Nurmi",
+              "Emil Zatopek"
+            ],
+            "answer": 0,
+            "fact": "He was a medical student and ran 3:59.4 on a track in Oxford, England.",
+            "src": "history.com this-day first-four-minute-mile: 25-year-old medical student, 3:59.4, Iffley Road track, Oxford"
+          },
+          {
+            "value": 300,
+            "q": "Which country hosted and won the first FIFA World Cup, in 1930?",
+            "options": [
+              "Brazil",
+              "Argentina",
+              "Italy",
+              "Uruguay"
+            ],
+            "answer": 3,
+            "fact": "Uruguay beat neighbor Argentina 4-2 in the final in Montevideo.",
+            "src": "FIFA history (textbook): Uruguay 4-2 Argentina, Montevideo, 1930"
+          },
+          {
+            "value": 400,
+            "q": "At the 1999 X Games, Tony Hawk became the first skater to land which trick?",
+            "options": [
+              "The 720",
+              "The 900",
+              "The 1080",
+              "The kickflip"
+            ],
+            "answer": 1,
+            "fact": "A 900 is two and a half full spins in midair.",
+            "src": "guinnessworldrecords.com first-900-on-a-skateboard: Tony Hawk, 27 June 1999, X Games, San Francisco"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "by-the-numbers",
+    "blurb": "Numbers, measures and math curiosities, big and small",
+    "categories": [
+      {
+        "name": "Math Magic",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Pi Day is celebrated on which date, matching the first digits of pi?",
+            "options": [
+              "March 3",
+              "March 14",
+              "April 1",
+              "January 4"
+            ],
+            "answer": 1,
+            "fact": "The first big Pi Day party was held in 1988 at San Francisco's Exploratorium. It's also Einstein's birthday.",
+            "src": "en.wikipedia.org/wiki/Pi_Day: earliest large-scale celebration 1988, Larry Shaw, Exploratorium; March 14 is Einstein's birthday"
+          },
+          {
+            "value": 200,
+            "q": "In the Fibonacci sequence 1, 1, 2, 3, 5, 8, which number comes next?",
+            "options": [
+              "11",
+              "12",
+              "16",
+              "13"
+            ],
+            "answer": 3,
+            "fact": "Fibonacci's 1202 book Liber Abaci helped bring Hindu-Arabic numerals to Europe.",
+            "src": "Math (5 + 8 = 13); textbook history of Liber Abaci (1202)"
+          },
+          {
+            "value": 300,
+            "q": "In Roman numerals, what number is written as XL?",
+            "options": [
+              "40",
+              "60",
+              "90",
+              "110"
+            ],
+            "answer": 0,
+            "fact": "A smaller numeral placed before a larger one is subtracted, so XL means 50 minus 10.",
+            "src": "Math / textbook Roman numerals (X=10, L=50, C=100; XL=40, LX=60, XC=90, CX=110). Replaces googol Q, which duplicated A2 log-on Garage Startups 200"
+          },
+          {
+            "value": 400,
+            "q": "A number equal to the sum of its smaller divisors, like 6 (1+2+3), is called what?",
+            "options": [
+              "A prime number",
+              "An irrational number",
+              "A perfect number",
+              "An imaginary number"
+            ],
+            "answer": 2,
+            "fact": "The next perfect number is 28, since 1 + 2 + 4 + 7 + 14 = 28.",
+            "src": "Math (definition of perfect number)"
+          }
+        ]
+      },
+      {
+        "name": "Measure Up",
+        "questions": [
+          {
+            "value": 100,
+            "q": "How many feet are in a mile?",
+            "options": [
+              "5,000",
+              "1,760",
+              "5,280",
+              "3,280"
+            ],
+            "answer": 2,
+            "fact": "An English law of 1593, under Queen Elizabeth I, fixed the mile at 5,280 feet.",
+            "src": "encyclopedia.com Mile, Nautical and Statute: fixed at 5,280 ft (8 furlongs) by a 1593 act under Elizabeth I. 1,760 = yards in a mile"
+          },
+          {
+            "value": 200,
+            "q": "A speed of one knot means traveling one what per hour?",
+            "options": [
+              "Nautical mile",
+              "Statute mile",
+              "Kilometer",
+              "League"
+            ],
+            "answer": 0,
+            "fact": "Sailors once timed a knotted rope paying out behind the ship to gauge their speed.",
+            "src": "Textbook (knot = 1 nautical mile per hour; chip log with knotted line)"
+          },
+          {
+            "value": 300,
+            "q": "A 'hand,' used to measure a horse's height, equals how many inches?",
+            "options": [
+              "3",
+              "6",
+              "12",
+              "4"
+            ],
+            "answer": 3,
+            "fact": "Horses are measured from the ground to the withers, the ridge between the shoulder blades.",
+            "src": "Textbook (1 hand = 4 inches)"
+          },
+          {
+            "value": 400,
+            "q": "The metric system was first adopted in the 1790s by which country?",
+            "options": [
+              "England",
+              "France",
+              "Germany",
+              "The Netherlands"
+            ],
+            "answer": 1,
+            "fact": "The meter was defined as one ten-millionth of the distance from the North Pole to the equator.",
+            "src": "Textbook (French Revolution metric system; original meter definition)"
+          }
+        ]
+      },
+      {
+        "name": "Count It Up",
+        "questions": [
+          {
+            "value": 100,
+            "q": "How many keys are on a standard modern piano?",
+            "options": [
+              "76",
+              "88",
+              "92",
+              "100"
+            ],
+            "answer": 1,
+            "fact": "That's 52 white keys and 36 black keys.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "In the US, how many zeros are in one billion?",
+            "options": [
+              "9",
+              "6",
+              "12",
+              "10"
+            ],
+            "answer": 0,
+            "fact": "In older British usage, a billion meant a million million, with 12 zeros.",
+            "src": "Textbook (short scale vs long scale)"
+          },
+          {
+            "value": 300,
+            "q": "How many items are in a 'gross'?",
+            "options": [
+              "100",
+              "120",
+              "200",
+              "144"
+            ],
+            "answer": 3,
+            "fact": "A gross is a dozen dozens, and a 'great gross' is 12 gross, or 1,728.",
+            "src": "Math (12 x 12 = 144; 144 x 12 = 1,728)"
+          },
+          {
+            "value": 400,
+            "q": "In binary code, what number does 1010 represent?",
+            "options": [
+              "5",
+              "9",
+              "10",
+              "12"
+            ],
+            "answer": 2,
+            "fact": "Each binary place is worth double the one to its right: 8, 4, 2 and 1.",
+            "src": "Math (8 + 2 = 10)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "clockwork",
+    "blurb": "Calendars, clocks, time zones and how the months got their names",
+    "categories": [
+      {
+        "name": "Name That Month",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which month is named after Julius Caesar?",
+            "options": [
+              "June",
+              "July",
+              "August",
+              "March"
+            ],
+            "answer": 1,
+            "fact": "Caesar was born in that month, and the Romans renamed it in his honor in 44 BC.",
+            "src": "en.wikipedia.org/wiki/Quintilis: renamed Iulius in 44 BC, Caesar's birth month"
+          },
+          {
+            "value": 200,
+            "q": "January is named for Janus, the Roman god of what?",
+            "options": [
+              "Harvests and crops",
+              "Doorways and beginnings",
+              "Wars and battles",
+              "Seas and rivers"
+            ],
+            "answer": 1,
+            "fact": "Janus had two faces, one looking back at the past and one looking ahead to the future.",
+            "src": "Textbook Roman mythology"
+          },
+          {
+            "value": 300,
+            "q": "October comes from the Latin word for 'eight.' Why isn't it the 8th month?",
+            "options": [
+              "Romans counted from zero",
+              "Two months were deleted",
+              "The year once began in March",
+              "Monks reordered the months"
+            ],
+            "answer": 2,
+            "fact": "September, November and December likewise come from the Latin for seven, nine and ten.",
+            "src": "Textbook (early Roman calendar began in March)"
+          },
+          {
+            "value": 400,
+            "q": "Before it was renamed for Emperor Augustus, what was the month of August called?",
+            "options": [
+              "Quintilis",
+              "Septimus",
+              "Sextilis",
+              "Decimus"
+            ],
+            "answer": 2,
+            "fact": "Quintilis, meaning 'fifth,' was the old name of July, the month just before it.",
+            "src": "Textbook (Sextilis renamed Augustus, 8 BC; Quintilis = July)"
+          }
+        ]
+      },
+      {
+        "name": "Tick Tock",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which ancient timekeeper tells the hour by the shadow it casts?",
+            "options": [
+              "Hourglass",
+              "Water clock",
+              "Candle clock",
+              "Sundial"
+            ],
+            "answer": 3,
+            "fact": "The part of a sundial that casts the shadow is called the gnomon.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "Greenwich, home of Greenwich Mean Time, is part of which city?",
+            "options": [
+              "London",
+              "Paris",
+              "Edinburgh",
+              "Dublin"
+            ],
+            "answer": 0,
+            "fact": "An 1884 conference in Washington, D.C., chose Greenwich as the Prime Meridian, 0 degrees longitude.",
+            "src": "Textbook (International Meridian Conference, 1884)"
+          },
+          {
+            "value": 300,
+            "q": "In which year did US and Canadian railroads adopt standard time zones?",
+            "options": [
+              "1869",
+              "1901",
+              "1883",
+              "1918"
+            ],
+            "answer": 2,
+            "fact": "Before then, towns set clocks by the local sun, so neighboring cities often differed by minutes.",
+            "src": "en.wikipedia.org/wiki/History_of_time_in_the_United_States: US and Canadian railroads adopted standard time Nov 18, 1883; Standard Time Act 1918"
+          },
+          {
+            "value": 400,
+            "q": "In 1967, scientists defined the second using the vibrations of which element's atoms?",
+            "options": [
+              "Hydrogen",
+              "Cesium",
+              "Rubidium",
+              "Strontium"
+            ],
+            "answer": 1,
+            "fact": "That definition set one second at 9,192,631,770 cycles of radiation from a cesium-133 atom.",
+            "src": "BIPM SI definition of the second (13th CGPM, 1967). Fact reworded so it stays true if the second is ever redefined"
+          }
+        ]
+      },
+      {
+        "name": "Calendar Quirks",
+        "questions": [
+          {
+            "value": 100,
+            "q": "How many days are in a leap year?",
+            "options": [
+              "364",
+              "365",
+              "367",
+              "366"
+            ],
+            "answer": 3,
+            "fact": "The extra day keeps the calendar in step with Earth's trip around the sun, about 365.24 days.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "Which day of the week is named after the Norse god Thor?",
+            "options": [
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday"
+            ],
+            "answer": 2,
+            "fact": "Wednesday honors Woden, or Odin, who was Thor's father in Norse myth.",
+            "src": "Textbook etymology"
+          },
+          {
+            "value": 300,
+            "q": "When Britain and its colonies switched calendars in 1752, how many days were skipped?",
+            "options": [
+              "11",
+              "7",
+              "10",
+              "14"
+            ],
+            "answer": 0,
+            "fact": "That's why George Washington's birthday moved from February 11 to February 22.",
+            "src": "mountvernon.org celebrating Washington's birthday: Feb 11 old style became Feb 22 after the 1752 change (11 days). 10 days = 1582 switch"
+          },
+          {
+            "value": 400,
+            "q": "Under Gregorian calendar rules, which of these century years was a leap year?",
+            "options": [
+              "1700",
+              "1800",
+              "1900",
+              "2000"
+            ],
+            "answer": 3,
+            "fact": "Century years must divide evenly by 400 to be leap years, so the next one is 2400.",
+            "src": "Math / Gregorian rule"
+          }
+        ]
+      }
+    ]
+  }
+]

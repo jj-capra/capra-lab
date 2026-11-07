@@ -1,0 +1,1418 @@
+[
+ {
+  "id": "lab-coats",
+  "blurb": "Everyday science from the periodic table to the kitchen counter",
+  "categories": [
+   {
+    "name": "Element Hunt",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which noble gas shares its name with Superman's home planet?",
+      "options": [
+       "Xenon",
+       "Krypton",
+       "Argon",
+       "Radon"
+      ],
+      "answer": 1,
+      "fact": "Krypton's name comes from the Greek word kryptos, meaning hidden. It was discovered in 1898.",
+      "src": "chemicool.com/elements/krypton.html (Ramsay and Travers, London, 1898; Greek kryptos = hidden)"
+     },
+     {
+      "value": 200,
+      "q": "In Iron Man 2 (2010), which element in Tony Stark's arc reactor is slowly poisoning him?",
+      "options": [
+       "Titanium",
+       "Platinum",
+       "Palladium",
+       "Iridium"
+      ],
+      "answer": 2,
+      "fact": "Palladium is a real precious metal, and one of its biggest uses is in car catalytic converters.",
+      "src": "en.wikipedia.org/wiki/Iron_Man_2 (palladium core slowly poisoning him); livescience.com 36991-palladium (main use since 1989 is car catalytic converters)"
+     },
+     {
+      "value": 300,
+      "q": "Helium was first detected in 1868, not on Earth, but where?",
+      "options": [
+       "In a meteorite",
+       "In the Sun",
+       "In a comet's tail",
+       "In the Orion Nebula"
+      ],
+      "answer": 1,
+      "fact": "It's named after Helios, the Greek sun god. William Ramsay first isolated it on Earth in 1895.",
+      "src": "smithsonianmag.com how-scientists-discovered-helium-first-alien-element-1868 (Janssen, Aug 18 1868 eclipse, solar spectrum; Palmieri saw its line in Vesuvius lava 1882; Ramsay isolated it 1895)"
+     },
+     {
+      "value": 400,
+      "q": "Which solid metal will melt in your hand, since it turns liquid at about 86 F (30 C)?",
+      "options": [
+       "Bismuth",
+       "Indium",
+       "Tin",
+       "Gallium"
+      ],
+      "answer": 3,
+      "fact": "Mendeleev predicted gallium before French chemist Lecoq de Boisbaudran discovered it in 1875.",
+      "src": "chemicool.com/elements/gallium.html (mp 29.76 C / 85.6 F; Mendeleev eka-aluminum; Lecoq de Boisbaudran 1875)"
+     }
+    ]
+   },
+   {
+    "name": "Kitchen Chemistry",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What gas makes baking soda and vinegar fizz when you mix them?",
+      "options": [
+       "Carbon dioxide",
+       "Oxygen",
+       "Hydrogen",
+       "Nitrogen"
+      ],
+      "answer": 0,
+      "fact": "It's the same gas that puts the bubbles in soda and helps yeast bread rise.",
+      "src": "Textbook chemistry (acid-base reaction releases CO2)"
+     },
+     {
+      "value": 200,
+      "q": "Cornstarch-and-water goo, named after a Dr. Seuss book, is known as what?",
+      "options": [
+       "Flubber",
+       "Gak",
+       "Oobleck",
+       "Gloop"
+      ],
+      "answer": 2,
+      "fact": "It's a non-Newtonian fluid: it pours like a liquid but stiffens when you punch or squeeze it.",
+      "src": "en.wikipedia.org/wiki/Oobleck (named after Bartholomew and the Oobleck; non-Newtonian starch-in-water suspension)"
+     },
+     {
+      "value": 300,
+      "q": "Which acid gives vinegar its sour taste?",
+      "options": [
+       "Citric acid",
+       "Acetic acid",
+       "Lactic acid",
+       "Malic acid"
+      ],
+      "answer": 1,
+      "fact": "Lemons get their sourness from citric acid, and yogurt gets its tangy taste from lactic acid.",
+      "src": "healthline.com/nutrition/sour-foods (acetic acid is the main reason vinegar tastes sour; citric acid in citrus; lactic acid gives yogurt its sour taste). Replaced Maillard question, which duplicated A6's Maillard question"
+     },
+     {
+      "value": 400,
+      "q": "Pop Rocks hit stores in 1975, but its 1956 inventor was trying to create what?",
+      "options": [
+       "Instant fizzy soda",
+       "Sugar-free gum",
+       "Hard rock candy",
+       "Freeze-dried ice cream"
+      ],
+      "answer": 0,
+      "fact": "The same General Foods chemist, William Mitchell, also invented Tang and Cool Whip.",
+      "src": "en.wikipedia.org/wiki/William_A._Mitchell (1956 instantly self-carbonating soda attempt; Pop Rocks sold from 1975; Tang 1957; Cool Whip 1967; General Foods 1941-76)"
+     }
+    ]
+   },
+   {
+    "name": "Seeing Is Believing",
+    "questions": [
+     {
+      "value": 100,
+      "q": "How many colors are in the traditional list of rainbow colors?",
+      "options": [
+       "Five",
+       "Six",
+       "Seven",
+       "Eight"
+      ],
+      "answer": 2,
+      "fact": "Isaac Newton started with five, then added orange and indigo to match the seven notes of a musical scale.",
+      "src": "en.wikipedia.org/wiki/ROYGBIV ('Originally he used only five colors, but later he added orange and indigo' to match the major scale)"
+     },
+     {
+      "value": 200,
+      "q": "In 2015, 'The Dress' photo split the internet. What colors was the real dress?",
+      "options": [
+       "White and gold",
+       "Blue and black",
+       "Blue and gold",
+       "White and black"
+      ],
+      "answer": 1,
+      "fact": "Retailer Roman Originals confirmed it was royal blue with black lace. The photo's lighting fooled many eyes.",
+      "src": "en.wikipedia.org/wiki/The_dress (royal blue Lace Bodycon Dress, black lace; Roman Originals tweet confirmed blue and black)"
+     },
+     {
+      "value": 300,
+      "q": "The viral 2018 'Yanny or Laurel' clip was originally a recording of which word?",
+      "options": [
+       "Larry",
+       "Yanny",
+       "Yearly",
+       "Laurel"
+      ],
+      "answer": 3,
+      "fact": "It came from a 2007 Vocabulary.com recording. Listeners tuned to higher frequencies heard Yanny.",
+      "src": "en.wikipedia.org/wiki/Yanny_or_Laurel (word laurel, recorded 2007 for Vocabulary.com by Jay Aubrey Jones; Yanny in higher frequencies)"
+     },
+     {
+      "value": 400,
+      "q": "Which 1973 Pink Floyd album cover shows white light splitting into colors through a prism?",
+      "options": [
+       "Wish You Were Here",
+       "The Dark Side of the Moon",
+       "Atom Heart Mother",
+       "A Saucerful of Secrets"
+      ],
+      "answer": 1,
+      "fact": "A prism splits white light because each color bends by a slightly different amount as it passes through.",
+      "src": "pentagram.com/work/the-dark-side-of-the-moon (prism design, Hipgnosis/George Hardie); dispersion is textbook optics"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "animal-kingdom",
+  "blurb": "Speed demons, giants and the wild habits of Earth's creatures",
+  "categories": [
+   {
+    "name": "Fast and Slow",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What is the fastest land animal on Earth?",
+      "options": [
+       "Lion",
+       "Cheetah",
+       "Thomson's gazelle",
+       "Ostrich"
+      ],
+      "answer": 1,
+      "fact": "Unlike lions and tigers, cheetahs can't roar. They purr, chirp and growl instead.",
+      "src": "clevelandzoosociety.org 2023/12/01 ask-the-expert-what-sounds-do-cheetahs-make (purrs, chirps, trills, growls, hisses; cannot roar); cheetah fastest land animal textbook"
+     },
+     {
+      "value": 200,
+      "q": "In Disney's Zootopia (2016), the DMV is famously staffed by which slow-moving animals?",
+      "options": [
+       "Tortoises",
+       "Snails",
+       "Koalas",
+       "Sloths"
+      ],
+      "answer": 3,
+      "fact": "Real sloths move so little that algae grow in their fur, giving them a greenish tint.",
+      "src": "Zootopia DMV scene with Flash the sloth (textbook film fact); BMC Evol Biol 2010 10:86 (green algae, Trichophilus, growing in sloth hair)"
+     },
+     {
+      "value": 300,
+      "q": "The roadrunner, speedy star of classic Looney Tunes cartoons, belongs to which bird family?",
+      "options": [
+       "Cuckoo",
+       "Pheasant",
+       "Quail",
+       "Woodpecker"
+      ],
+      "answer": 0,
+      "fact": "The roadrunner is New Mexico's state bird, and it's quick enough to catch and eat rattlesnakes.",
+      "src": "nps.gov/whsa/learn/nature/roadrunner.htm (cuckoo family; eats rattlesnakes; NM state bird)"
+     },
+     {
+      "value": 400,
+      "q": "What is the fastest land animal native to North America?",
+      "options": [
+       "Elk",
+       "Gray wolf",
+       "Pronghorn",
+       "Mule deer"
+      ],
+      "answer": 2,
+      "fact": "Pronghorn are the last surviving members of their animal family, and they live only in North America.",
+      "src": "nps.gov/wica/learn/nature/pronghorn.htm ('fastest North American land mammal'; only surviving member of Antilocapridae; North America and nowhere else)"
+     }
+    ]
+   },
+   {
+    "name": "Big and Small",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What is the tallest animal on Earth?",
+      "options": [
+       "African elephant",
+       "Giraffe",
+       "Moose",
+       "Ostrich"
+      ],
+      "answer": 1,
+      "fact": "A giraffe's long neck has just seven bones, the same number as a human neck.",
+      "src": "Textbook zoology (giraffe; seven cervical vertebrae)"
+     },
+     {
+      "value": 200,
+      "q": "The capybara, a South American internet favorite, is the world's largest what?",
+      "options": [
+       "Rodent",
+       "Marsupial",
+       "Wild pig",
+       "Anteater"
+      ],
+      "answer": 0,
+      "fact": "Capybaras are excellent swimmers and have slightly webbed feet.",
+      "src": "buffalozoo.org/animal/capybara (largest rodents; excellent swimmers; partially webbed feet)"
+     },
+     {
+      "value": 300,
+      "q": "The bee hummingbird, the world's smallest bird, lives in the wild only in which country?",
+      "options": [
+       "Jamaica",
+       "Costa Rica",
+       "Cuba",
+       "Brazil"
+      ],
+      "answer": 2,
+      "fact": "Adults are only about 2 inches long, from beak to tail.",
+      "src": "hummingbirdcentral.com/bee-hummingbird.htm (endemic to Cuba; 2.24 in / 5.7 cm including bill)"
+     },
+     {
+      "value": 400,
+      "q": "What is the largest living reptile on Earth?",
+      "options": [
+       "Komodo dragon",
+       "Saltwater crocodile",
+       "Nile crocodile",
+       "Green anaconda"
+      ],
+      "answer": 1,
+      "fact": "Komodo dragons are the largest living lizards, but a big saltwater crocodile outweighs one many times over.",
+      "src": "Textbook zoology (Crocodylus porosus largest living reptile; Komodo largest lizard)"
+     }
+    ]
+   },
+   {
+    "name": "Into the Wild",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Wild giant pandas eat almost nothing but what?",
+      "options": [
+       "Eucalyptus",
+       "Bamboo",
+       "Fish",
+       "Berries"
+      ],
+      "answer": 1,
+      "fact": "Pandas are true bears with a meat-eater's digestive system, so they must spend much of the day eating.",
+      "src": "Textbook zoology (Ailuropoda, family Ursidae; carnivore-type gut, bamboo diet)"
+     },
+     {
+      "value": 200,
+      "q": "A famous 2016 Planet Earth II scene showed baby iguanas racing to escape swarms of what?",
+      "options": [
+       "Crabs",
+       "Seagulls",
+       "Snakes",
+       "Fire ants"
+      ],
+      "answer": 2,
+      "fact": "The chase was filmed on Fernandina Island in the Galapagos, and David Attenborough narrated it.",
+      "src": "discoverwildlife.com racer-snakes-versus-iguana-wins-bafta (filmed on Fernandina, Galapagos, for the opening Islands episode); galapagosconservation.org.uk (marine iguana hatchling vs Galapagos racer snakes)"
+     },
+     {
+      "value": 300,
+      "q": "In 1960, Jane Goodall saw wild chimps do something thought to be uniquely human. What was it?",
+      "options": [
+       "Make tools",
+       "Build fires",
+       "Use sign language",
+       "Plant seeds"
+      ],
+      "answer": 0,
+      "fact": "A chimp she named David Greybeard stripped the leaves off a stem and used it to fish termites from a mound.",
+      "src": "history.com this-day-in-history jane-goodall-observes-a-chimpanzee-making-and-using-tools (Nov 4 1960, Gombe; David Greybeard stripped leaves from a stem to fish termites; ability believed exclusive to humans)"
+     },
+     {
+      "value": 400,
+      "q": "Born Free (1966) told the true story of Elsa, a lioness raised and released in which country?",
+      "options": [
+       "Tanzania",
+       "South Africa",
+       "Botswana",
+       "Kenya"
+      ],
+      "answer": 3,
+      "fact": "It's based on Joy Adamson's 1960 bestseller about raising Elsa with her husband, George.",
+      "src": "en.wikipedia.org/wiki/Elsa_the_lioness (book 1960, film 1966); kenyans.co.ke 43047 (raised by the Adamsons, released into Meru National Park, Kenya)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "creepy-crawlies",
+  "blurb": "Bats, owls, spiders and bugs: the night shift of the natural world",
+  "categories": [
+   {
+    "name": "Night Flyers",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What is the only mammal capable of true flight?",
+      "options": [
+       "Flying squirrel",
+       "Sugar glider",
+       "Bat",
+       "Colugo"
+      ],
+      "answer": 2,
+      "fact": "Roughly one in every five mammal species on Earth is a bat.",
+      "src": "en.wikipedia.org/wiki/Bat ('only mammals capable of true and sustained flight'; about 20% of classified mammal species)"
+     },
+     {
+      "value": 200,
+      "q": "Which owl is famous for its pale, heart-shaped face?",
+      "options": [
+       "Great horned owl",
+       "Barn owl",
+       "Barred owl",
+       "Burrowing owl"
+      ],
+      "answer": 1,
+      "fact": "That dish-like face funnels sound to its ears, letting it catch prey in total darkness by hearing alone.",
+      "src": "collections.museumsvictoria.com.au/species/6167 (heart-shaped facial disc; sound channelled to the ears; pinpoints prey in complete darkness); Konishi, J Exp Biol 54:535 (locates prey in total darkness by hearing alone). Replaced Hedwig/snowy owl question, which overlapped A7's Hedwig question"
+     },
+     {
+      "value": 300,
+      "q": "About how far can an owl turn its head in either direction?",
+      "options": [
+       "90 degrees",
+       "180 degrees",
+       "270 degrees",
+       "360 degrees"
+      ],
+      "answer": 2,
+      "fact": "Owls can't move their eyes in their sockets, so they swivel their whole heads instead.",
+      "src": "sciencedaily.com/releases/2013/01/130131144102.htm (Johns Hopkins: up to 270 degrees in either direction); nationalgeographic.com how-owls-twist-heads-almost-360-degrees (fixed eye sockets, eyeballs can't rotate)"
+     },
+     {
+      "value": 400,
+      "q": "Which city's Congress Avenue Bridge is home to a huge summer colony of Mexican free-tailed bats?",
+      "options": [
+       "Austin",
+       "San Antonio",
+       "Houston",
+       "Phoenix"
+      ],
+      "answer": 0,
+      "fact": "The bats moved in after the bridge was rebuilt, when narrow gaps under its new deck made perfect roosts.",
+      "src": "en.wikipedia.org/wiki/Ann_W._Richards_Congress_Avenue_Bridge (Mexican free-tailed bats roost in gaps under the road deck); 99percentinvisible.org episode 432 transcript (bats arrived shortly after the bridge was rebuilt)"
+     }
+    ]
+   },
+   {
+    "name": "Eight Legs",
+    "questions": [
+     {
+      "value": 100,
+      "q": "How many legs does a spider have?",
+      "options": [
+       "Six",
+       "Eight",
+       "Ten",
+       "Twelve"
+      ],
+      "answer": 1,
+      "fact": "Spiders aren't insects. They're arachnids, a group that also includes scorpions, ticks and mites.",
+      "src": "Textbook biology"
+     },
+     {
+      "value": 200,
+      "q": "In the 1952 children's book Charlotte's Web, Charlotte is what kind of spider?",
+      "options": [
+       "Wolf spider",
+       "Black widow",
+       "Jumping spider",
+       "Barn spider"
+      ],
+      "answer": 3,
+      "fact": "Her full name, Charlotte A. Cavatica, comes from the barn spider's scientific name, Araneus cavaticus.",
+      "src": "en.wikipedia.org/wiki/Barn_spider (basis for Charlotte; full name Charlotte A. Cavatica from Araneus cavaticus)"
+     },
+     {
+      "value": 300,
+      "q": "Under an ultraviolet blacklight, what color do scorpions glow?",
+      "options": [
+       "Bright red",
+       "Blue-green",
+       "Purple",
+       "Orange"
+      ],
+      "answer": 1,
+      "fact": "One theory is that the glow helps scorpions sense dim moonlight and find shady places to hide.",
+      "src": "nationalgeographic.com why-do-scorpions-glow-in-the-dark (blue-green under UV; Douglas Gaffin's hypothesis: light sensing, shade indicates hiding place)"
+     },
+     {
+      "value": 400,
+      "q": "Many tarantulas defend themselves by flicking what at attackers?",
+      "options": [
+       "Silk threads",
+       "Venom droplets",
+       "Barbed hairs",
+       "Sticky glue"
+      ],
+      "answer": 2,
+      "fact": "They kick itchy hairs off their abdomen with their legs. Some female tarantulas live 20 years or more.",
+      "src": "blueplanetaquarium.com 6-fun-facts-about-tarantulas (flick urticating bristles at threats; females known to live up to 30 years); New World tarantulas kick hairs off abdomen, textbook"
+     }
+    ]
+   },
+   {
+    "name": "Bug Life",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In Pixar's A Bug's Life (1998), the inventive hero Flik is what kind of insect?",
+      "options": [
+       "Ant",
+       "Grasshopper",
+       "Ladybug",
+       "Beetle"
+      ],
+      "answer": 0,
+      "fact": "In a real ant colony, all of the worker ants are female.",
+      "src": "A Bug's Life (Pixar, 1998), Flik is an ant; worker ants are female, textbook"
+     },
+     {
+      "value": 200,
+      "q": "In 2020, Washington State crews found and removed the first US nest of which giant insect?",
+      "options": [
+       "Spotted lanternfly",
+       "Africanized honeybee",
+       "Asian giant hornet",
+       "Emerald ash borer"
+      ],
+      "answer": 2,
+      "fact": "Entomologists tracked it to a tree in Blaine by tying tiny radio tags to captured hornets with dental floss.",
+      "src": "ksat.com 2020/10/23 washington-state-discovers-first-murder-hornet-nest-in-us (first US nest; tree cavity in Blaine; found Oct 22 2020; radio trackers tied on with dental floss)"
+     },
+     {
+      "value": 300,
+      "q": "Fireflies aren't actually flies. What kind of insect are they?",
+      "options": [
+       "Moths",
+       "Beetles",
+       "Wasps",
+       "Gnats"
+      ],
+      "answer": 1,
+      "fact": "Many firefly species flash in their own pattern, which helps them find others of their own kind.",
+      "src": "Textbook entomology (Lampyridae are beetles)"
+     },
+     {
+      "value": 400,
+      "q": "Periodical cicadas emerge in the eastern US every 13 years, or every how many years?",
+      "options": [
+       "11",
+       "15",
+       "21",
+       "17"
+      ],
+      "answer": 3,
+      "fact": "In 2024, 17-year Brood XIII and 13-year Brood XIX emerged in the same year for the first time since 1803.",
+      "src": "smithsonianmag.com cicadas-are-coming-rare-dual-emergence 180983635 (XIII and XIX together for first time since 1803); KING5 fact-check (13-year XIX, 17-year XIII; other 13/17 pairs co-emerge every 5-6 years, so original 'a 13-year and a 17-year brood' wording was misleading)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "space-race",
+  "blurb": "Missions, planets and stars, from Apollo to SpaceX",
+  "categories": [
+   {
+    "name": "Mission Control",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which famous space telescope was carried into orbit by the Space Shuttle in 1990?",
+      "options": [
+       "James Webb",
+       "Hubble",
+       "Kepler",
+       "Spitzer"
+      ],
+      "answer": 1,
+      "fact": "Its blurry vision was fixed in 1993, when spacewalking astronauts installed corrective optics.",
+      "src": "en.wikipedia.org/wiki/STS-31 (launched Apr 24 1990, Hubble deployed Apr 25); esahubble.org servicing_mission_1 (Dec 1993 STS-61 installed COSTAR and WFPC2 corrective optics; mirror itself not repaired)"
+     },
+     {
+      "value": 200,
+      "q": "Which 1970 Apollo mission had to skip its Moon landing after an oxygen tank exploded?",
+      "options": [
+       "Apollo 11",
+       "Apollo 12",
+       "Apollo 13",
+       "Apollo 14"
+      ],
+      "answer": 2,
+      "fact": "The crew made it home safely, and Tom Hanks played commander Jim Lovell in the 1995 film.",
+      "src": "NASA history (Apollo 13, April 1970); Apollo 13 film (1995)"
+     },
+     {
+      "value": 300,
+      "q": "In 2020, which company's Crew Dragon capsule flew NASA astronauts to the space station?",
+      "options": [
+       "Boeing",
+       "Blue Origin",
+       "Northrop Grumman",
+       "SpaceX"
+      ],
+      "answer": 3,
+      "fact": "It was the first crewed orbital launch from US soil since the Space Shuttle retired in 2011.",
+      "src": "spacepolicyonline.com two-american-astronauts-lift-off-from-american-soil-for-first-time-in-nine-years (Demo-2, May 30 2020; first from US soil since final shuttle mission 2011)"
+     },
+     {
+      "value": 400,
+      "q": "The two Voyager probes, launched in 1977, each carry a golden record holding what?",
+      "options": [
+       "Sounds and music of Earth",
+       "Maps of every US state",
+       "Signatures of NASA staff",
+       "The US Constitution"
+      ],
+      "answer": 0,
+      "fact": "Carl Sagan led the team that chose its contents, which include Chuck Berry's Johnny B. Goode.",
+      "src": "en.wikipedia.org/wiki/Voyager_Golden_Record (committee chaired by Carl Sagan; natural sounds and music; Johnny B. Goode included)"
+     }
+    ]
+   },
+   {
+    "name": "Planet Patrol",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which planet is known as the Red Planet?",
+      "options": [
+       "Venus",
+       "Jupiter",
+       "Mars",
+       "Mercury"
+      ],
+      "answer": 2,
+      "fact": "Its red color comes from iron oxide, basically rust, in its dusty soil.",
+      "src": "Textbook astronomy"
+     },
+     {
+      "value": 200,
+      "q": "In what year was Pluto reclassified as a dwarf planet?",
+      "options": [
+       "2001",
+       "2006",
+       "2009",
+       "2011"
+      ],
+      "answer": 1,
+      "fact": "Pluto had been counted as the ninth planet ever since Clyde Tombaugh discovered it in 1930.",
+      "src": "earthsky.org pluto-dwarf-planet-august-24-2006 (IAU, Aug 24 2006); Tombaugh discovery 1930, textbook"
+     },
+     {
+      "value": 300,
+      "q": "Which planet has the hottest surface in our solar system?",
+      "options": [
+       "Venus",
+       "Mercury",
+       "Mars",
+       "Jupiter"
+      ],
+      "answer": 0,
+      "fact": "Venus beats Mercury because its thick carbon dioxide atmosphere traps heat like a greenhouse.",
+      "src": "Textbook astronomy (Venus surface about 465 C)"
+     },
+     {
+      "value": 400,
+      "q": "Which planet spins tipped over on its side, rolling around the Sun like a ball?",
+      "options": [
+       "Neptune",
+       "Saturn",
+       "Venus",
+       "Uranus"
+      ],
+      "answer": 3,
+      "fact": "Uranus was the first planet discovered with a telescope, found by William Herschel in 1781.",
+      "src": "science.gsfc.nasa.gov solar-system-tour Uranus ('first planet discovered by telescope', Herschel 1781; tilt 98 degrees)"
+     }
+    ]
+   },
+   {
+    "name": "Star Gazing",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The Big Dipper is part of which constellation?",
+      "options": [
+       "Ursa Major",
+       "Ursa Minor",
+       "Orion",
+       "Cassiopeia"
+      ],
+      "answer": 0,
+      "fact": "The two stars at the end of its bowl point the way to Polaris, the North Star.",
+      "src": "Textbook astronomy (Big Dipper asterism in Ursa Major; pointer stars Dubhe and Merak)"
+     },
+     {
+      "value": 200,
+      "q": "Halley's Comet, last seen from Earth in 1986, returns about every how many years?",
+      "options": [
+       "25",
+       "50",
+       "76",
+       "100"
+      ],
+      "answer": 2,
+      "fact": "Edmond Halley predicted it would come back in 1758. It did, proving some comets orbit the Sun.",
+      "src": "science.nasa.gov/solar-system/comets/1p-halley (average period 76 years; last seen 1986; Halley correctly predicted 1758 return)"
+     },
+     {
+      "value": 300,
+      "q": "A light-year is a unit used to measure what?",
+      "options": [
+       "Time",
+       "Distance",
+       "Brightness",
+       "Speed"
+      ],
+      "answer": 1,
+      "fact": "One light-year, the distance light travels in a year, is about 5.9 trillion miles.",
+      "src": "Textbook astronomy (about 5.88 trillion miles)"
+     },
+     {
+      "value": 400,
+      "q": "In 2019, astronomers released the first-ever image of what?",
+      "options": [
+       "A neutron star",
+       "An exoplanet",
+       "Dark matter",
+       "A black hole"
+      ],
+      "answer": 3,
+      "fact": "The Event Horizon Telescope captured the black hole in galaxy M87, about 55 million light-years away.",
+      "src": "earthsky.org 1st-photo-black-hole-event-horizon-release-apr-2019 (Apr 10 2019; M87; 55 million light-years)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ocean-deep",
+  "blurb": "Sea creatures, the deepest trench and the pull of the tides",
+  "categories": [
+   {
+    "name": "Sea Creatures",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What is the largest animal known to have ever lived?",
+      "options": [
+       "Sperm whale",
+       "Whale shark",
+       "Blue whale",
+       "Humpback whale"
+      ],
+      "answer": 2,
+      "fact": "Despite their size, blue whales live mostly on krill, tiny shrimp-like animals.",
+      "src": "Textbook marine biology"
+     },
+     {
+      "value": 200,
+      "q": "Clownfish like the star of Finding Nemo (2003) make their homes in what?",
+      "options": [
+       "Sea sponges",
+       "Sea anemones",
+       "Kelp forests",
+       "Giant clams"
+      ],
+      "answer": 1,
+      "fact": "A special coating on their skin protects clownfish from the anemone's stinging tentacles.",
+      "src": "Textbook marine biology (clownfish-anemone symbiosis)"
+     },
+     {
+      "value": 300,
+      "q": "How many hearts does an octopus have?",
+      "options": [
+       "One",
+       "Two",
+       "Eight",
+       "Three"
+      ],
+      "answer": 3,
+      "fact": "Octopus blood is blue, thanks to a copper-based protein called hemocyanin.",
+      "src": "sciencefocus.com why-does-an-octopus-have-more-than-one-heart (three hearts; copper-rich haemocyanin makes blood blue)"
+     },
+     {
+      "value": 400,
+      "q": "SpongeBob SquarePants is a sea sponge. What are real sea sponges?",
+      "options": [
+       "Animals",
+       "Plants",
+       "Algae",
+       "Fungi"
+      ],
+      "answer": 0,
+      "fact": "Sponges have no brain, heart or muscles, and they're among the oldest animal groups on Earth.",
+      "src": "Textbook biology (phylum Porifera)"
+     }
+    ]
+   },
+   {
+    "name": "The Deep End",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What is the name of the deepest known ocean trench on Earth?",
+      "options": [
+       "Puerto Rico Trench",
+       "Java Trench",
+       "Mariana Trench",
+       "Tonga Trench"
+      ],
+      "answer": 2,
+      "fact": "Its deepest point, the Challenger Deep, lies nearly 7 miles below the surface.",
+      "src": "en.wikipedia.org/wiki/Mariana_Trench (Challenger Deep 10,935 m, about 6.79 mi)"
+     },
+     {
+      "value": 200,
+      "q": "The deep-sea anglerfish attracts prey in total darkness using what?",
+      "options": [
+       "A glowing lure",
+       "Electric shocks",
+       "A clicking song",
+       "Mirror-like scales"
+      ],
+      "answer": 0,
+      "fact": "In many species, the glow comes from light-making bacteria living inside the lure.",
+      "src": "naturestories.org from-the-depths (symbiotic luminescent bacteria live in the esca)"
+     },
+     {
+      "value": 300,
+      "q": "In 2012, which film director piloted a solo dive to the deepest point in the ocean?",
+      "options": [
+       "Steven Spielberg",
+       "James Cameron",
+       "Peter Jackson",
+       "Ridley Scott"
+      ],
+      "answer": 1,
+      "fact": "The only earlier crewed dive there was in 1960, when Don Walsh and Jacques Piccard rode down in the Trieste.",
+      "src": "guinnessworldrecords.com first-dive-to-the-challenger-deep-by-a-crewed-vessel-solo (Cameron, Mar 2012); nationalgeographic.com 120324 (Walsh and Piccard, Trieste 1960, only humans before). Uncrewed probes had visited earlier, so fact now says 'crewed'"
+     },
+     {
+      "value": 400,
+      "q": "Ocean explorer Jacques Cousteau co-invented which diving device, first tested in 1943?",
+      "options": [
+       "The diving bell",
+       "The bathysphere",
+       "The wetsuit",
+       "The Aqua-Lung"
+      ],
+      "answer": 3,
+      "fact": "Built with engineer Emile Gagnan, it made modern scuba diving possible.",
+      "src": "en.wikipedia.org/wiki/Jacques_Cousteau (co-invented Aqua-Lung with Emile Gagnan; first prototype tried 1943)"
+     }
+    ]
+   },
+   {
+    "name": "Open Water",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What mainly causes the ocean's tides?",
+      "options": [
+       "Ocean winds",
+       "The Moon's gravity",
+       "Earth's magnetic field",
+       "Undersea earthquakes"
+      ],
+      "answer": 1,
+      "fact": "The Sun pulls too. When the Sun and Moon line up, we get extra-high spring tides.",
+      "src": "Textbook oceanography"
+     },
+     {
+      "value": 200,
+      "q": "On most coastlines, how many high tides come in each day?",
+      "options": [
+       "Two",
+       "One",
+       "Three",
+       "Four"
+      ],
+      "answer": 0,
+      "fact": "Tides arrive about 50 minutes later each day, because the Moon rises later each day too.",
+      "src": "oceanservice.noaa.gov tutorial_tides supp_tide05 (two high and two low tides every 24 h 50 min; Earth takes an extra 50 minutes to catch up to the Moon)"
+     },
+     {
+      "value": 300,
+      "q": "In 2021, National Geographic officially recognized which as the world's fifth ocean?",
+      "options": [
+       "Arctic Ocean",
+       "Indian Ocean",
+       "Southern Ocean",
+       "Coral Sea"
+      ],
+      "answer": 2,
+      "fact": "It surrounds Antarctica and is defined by a current that flows all the way around the globe.",
+      "src": "abc7news.com world-oceans-day-2021-fifth-ocean (NatGeo, June 8 2021); nationalgeographic.com theres-a-new-ocean-now ('the Southern Ocean is defined by a current', the Antarctic Circumpolar Current)"
+     },
+     {
+      "value": 400,
+      "q": "Which explorer gave the Pacific Ocean its name, meaning 'peaceful'?",
+      "options": [
+       "Vasco da Gama",
+       "James Cook",
+       "Christopher Columbus",
+       "Ferdinand Magellan"
+      ],
+      "answer": 3,
+      "fact": "Magellan named it in 1520 after calm sailing. Balboa had sighted it in 1513 and called it the South Sea.",
+      "src": "neatlinemaps.com 2018-2-12 ferdinand-magellan-and-the-renaming-of-the-south-sea (Magellan named it for calm waters after the strait, 1520; Balboa's Mar del Sur); Balboa 1513 textbook"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "body-works",
+  "blurb": "Bones, senses and organs: a tour of the amazing machine you live in",
+  "categories": [
+   {
+    "name": "Bare Bones",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What is the longest bone in the human body?",
+      "options": [
+       "Tibia",
+       "Femur",
+       "Humerus",
+       "Fibula"
+      ],
+      "answer": 1,
+      "fact": "The femur, or thigh bone, is also one of the strongest bones in the body.",
+      "src": "Textbook anatomy"
+     },
+     {
+      "value": 200,
+      "q": "How many bones are in the typical adult human body?",
+      "options": [
+       "186",
+       "196",
+       "206",
+       "226"
+      ],
+      "answer": 2,
+      "fact": "Babies start out with closer to 300 bones, and many of them fuse together as they grow.",
+      "src": "popsci.com bones-human-skeleton (newborns can have more than 300 bones; adults typically 206)"
+     },
+     {
+      "value": 300,
+      "q": "When you bang your 'funny bone,' what are you actually hitting?",
+      "options": [
+       "A tendon",
+       "A nerve",
+       "A muscle",
+       "A blood vessel"
+      ],
+      "answer": 1,
+      "fact": "It's the ulnar nerve, which passes close to the skin at your elbow.",
+      "src": "Textbook anatomy (ulnar nerve at the medial epicondyle)"
+     },
+     {
+      "value": 400,
+      "q": "Which bone in the throat is the only bone not connected to any other bone?",
+      "options": [
+       "Hyoid",
+       "Stapes",
+       "Patella",
+       "Clavicle"
+      ],
+      "answer": 0,
+      "fact": "The U-shaped hyoid is held in place by muscles and ligaments, and it helps support the tongue.",
+      "src": "my.clevelandclinic.org/health/body/hyoid-bone (only bone that doesn't connect to another bone; U-shaped; supports tongue)"
+     }
+    ]
+   },
+   {
+    "name": "Sense-ational",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What is the colored part of the eye called?",
+      "options": [
+       "Pupil",
+       "Retina",
+       "Iris",
+       "Cornea"
+      ],
+      "answer": 2,
+      "fact": "The iris works like a camera shutter, widening or shrinking the pupil to control light.",
+      "src": "Textbook anatomy"
+     },
+     {
+      "value": 200,
+      "q": "The 'red-eye' in old flash photos is light bouncing off what?",
+      "options": [
+       "The back of the eye",
+       "The iris",
+       "The cornea",
+       "The eyelids"
+      ],
+      "answer": 0,
+      "fact": "Many cameras fight it with a quick pre-flash that makes your pupils shrink first.",
+      "src": "Textbook optics (flash reflects off the blood-rich fundus/choroid at the back of the eye)"
+     },
+     {
+      "value": 300,
+      "q": "The body's smallest bone is found in which part of the body?",
+      "options": [
+       "The nose",
+       "The wrist",
+       "The toes",
+       "The ear"
+      ],
+      "answer": 3,
+      "fact": "Called the stapes, or stirrup, it's only about 3 millimeters long, smaller than a grain of rice.",
+      "src": "guinnessworldrecords.com smallest-bone (stapes, middle ear, 2.6-3.4 mm). Original 'size of a grain of rice' overstated it"
+     },
+     {
+      "value": 400,
+      "q": "Along with sweet, sour, salty and bitter, what is considered the fifth basic taste?",
+      "options": [
+       "Spicy",
+       "Umami",
+       "Tangy",
+       "Smoky"
+      ],
+      "answer": 1,
+      "fact": "Japanese chemist Kikunae Ikeda named it in 1908 after studying the savory taste of seaweed broth.",
+      "src": "ajinomoto.com.my/about-umami (Ikeda identified glutamate in kombu dashi and named umami in 1908)"
+     }
+    ]
+   },
+   {
+    "name": "Inside Job",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What is the largest organ of the human body?",
+      "options": [
+       "Skin",
+       "Liver",
+       "Lungs",
+       "Brain"
+      ],
+      "answer": 0,
+      "fact": "The liver is the largest organ inside the body.",
+      "src": "Textbook anatomy"
+     },
+     {
+      "value": 200,
+      "q": "How many chambers does the human heart have?",
+      "options": [
+       "Two",
+       "Three",
+       "Four",
+       "Six"
+      ],
+      "answer": 2,
+      "fact": "A typical heart beats around 100,000 times a day.",
+      "src": "livescience.com 44460-heart-facts ('The human heart beats about 100,000 times a day'); four chambers textbook"
+     },
+     {
+      "value": 300,
+      "q": "Smartwatches like the Apple Watch track your pulse by shining what onto your wrist?",
+      "options": [
+       "Tiny sound waves",
+       "Green light",
+       "Ultraviolet light",
+       "A static charge"
+      ],
+      "answer": 1,
+      "fact": "Blood absorbs green light, so the watch counts beats as the blood flow in your wrist rises and falls.",
+      "src": "support.apple.com HT204666 (green LEDs, photoplethysmography; blood reflects red and absorbs green light)"
+     },
+     {
+      "value": 400,
+      "q": "Your left lung is a bit smaller than your right one. What does it make room for?",
+      "options": [
+       "The stomach",
+       "The liver",
+       "The spleen",
+       "The heart"
+      ],
+      "answer": 3,
+      "fact": "The right lung has three lobes, while the left lung has only two.",
+      "src": "Textbook anatomy (cardiac notch)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "paws-claws",
+  "blurb": "Dogs, cats and the small critters we share our homes with",
+  "categories": [
+   {
+    "name": "Dog Park",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What breed of dog is Scooby-Doo?",
+      "options": [
+       "Mastiff",
+       "Great Dane",
+       "Bloodhound",
+       "St. Bernard"
+      ],
+      "answer": 1,
+      "fact": "Despite its name, the Great Dane was developed in Germany, not Denmark.",
+      "src": "en.wikipedia.org/wiki/Great_Dane (origin Germany); Scooby-Doo is a Great Dane, textbook"
+     },
+     {
+      "value": 200,
+      "q": "TV's Lassie, which debuted in 1954, was what breed of dog?",
+      "options": [
+       "Border Collie",
+       "Shetland Sheepdog",
+       "Rough Collie",
+       "Australian Shepherd"
+      ],
+      "answer": 2,
+      "fact": "Pal, who first played Lassie in a 1943 film, was male, and so were his descendants who played her on TV.",
+      "src": "cbsnews.com lassies-revival (role 'has always been played by a male dog'; Pal starred in the 1943 film; descendants of Pal); en.wikipedia.org/wiki/Pal_(dog) (male Rough Collie)"
+     },
+     {
+      "value": 300,
+      "q": "The 'Doge' meme that took off in 2013 starred which dog breed?",
+      "options": [
+       "Shiba Inu",
+       "Akita",
+       "Corgi",
+       "Pomeranian"
+      ],
+      "answer": 0,
+      "fact": "The Shiba Inu is the smallest of the six original dog breeds native to Japan.",
+      "src": "en.wikipedia.org/wiki/Shiba_Inu ('smallest of the six original dog breeds native to Japan'; Doge meme 2013, Kabosu)"
+     },
+     {
+      "value": 400,
+      "q": "Which dog breed is famous for its blue-black tongue?",
+      "options": [
+       "Akita",
+       "Samoyed",
+       "Siberian Husky",
+       "Chow Chow"
+      ],
+      "answer": 3,
+      "fact": "Chow Chow puppies are born with pink tongues, which turn blue-black as they grow.",
+      "src": "akc.org why-do-chow-chows-have-blue-tongues (puppies have pink tongues; only other breed with the requirement is the Shar-Pei, not an option)"
+     }
+    ]
+   },
+   {
+    "name": "Cat Nap",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which comic-strip cat, created in 1978, is famous for loving lasagna?",
+      "options": [
+       "Heathcliff",
+       "Garfield",
+       "Sylvester",
+       "Felix"
+      ],
+      "answer": 1,
+      "fact": "Creator Jim Davis named him after his grandfather, James Garfield Davis.",
+      "src": "ballstatedaily.com 2018/08 news-jim-davis-centennial (named after his grandfather, James Garfield Davis, per the Garfield website); strip began June 1978"
+     },
+     {
+      "value": 200,
+      "q": "Which cat breed is best known for being hairless?",
+      "options": [
+       "Sphynx",
+       "Siamese",
+       "Devon Rex",
+       "Russian Blue"
+      ],
+      "answer": 0,
+      "fact": "Despite its Egyptian-sounding name, the modern breed began in Toronto, Canada, in 1966.",
+      "src": "en.wikipedia.org/wiki/Sphynx_cat ('started in 1966 in Toronto, Ontario, Canada')"
+     },
+     {
+      "value": 300,
+      "q": "The Manx, a cat breed known for having no tail, comes from which island?",
+      "options": [
+       "Isle of Wight",
+       "Iceland",
+       "Isle of Man",
+       "Ireland"
+      ],
+      "answer": 2,
+      "fact": "Some Manx cats have a short stub of a tail, while those called rumpies have none at all.",
+      "src": "en.wikipedia.org/wiki/Manx_cat (Isle of Man; rumpies have no tail, stumpies a short stub)"
+     },
+     {
+      "value": 400,
+      "q": "Which basic taste can cats not detect?",
+      "options": [
+       "Salty",
+       "Sour",
+       "Bitter",
+       "Sweet"
+      ],
+      "answer": 3,
+      "fact": "Cats lack a working gene for sweet taste receptors, so sugar simply doesn't register.",
+      "src": "scientificamerican.com strange-but-true-cats-cannot-taste-sweets (Tas1r2 gene defect); catster.com how-do-cats-taste (cats taste all basic flavors except sweet, so Salty/Sour/Bitter are wrong)"
+     }
+    ]
+   },
+   {
+    "name": "Pet Shop",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Where do hamsters stash extra food so they can carry it home?",
+      "options": [
+       "A belly pouch",
+       "Cheek pouches",
+       "Behind their ears",
+       "Under their tails"
+      ],
+      "answer": 1,
+      "fact": "Syrian, or golden, hamsters are loners and are usually happiest living alone.",
+      "src": "rvc.ac.uk Caring-for-your-hamster 2022 (golden/Syrian hamsters housed singly; cheek pouches); textbook"
+     },
+     {
+      "value": 200,
+      "q": "Despite their name, guinea pigs originally come from where?",
+      "options": [
+       "Guinea, in Africa",
+       "New Guinea",
+       "South America",
+       "Southeast Asia"
+      ],
+      "answer": 2,
+      "fact": "They were domesticated in the Andes mountains thousands of years ago.",
+      "src": "en.wikipedia.org/wiki/Guinea_pig (domesticated in the Andean region of South America as early as 5000 BC)"
+     },
+     {
+      "value": 300,
+      "q": "Sea-Monkeys, sold through comic book ads in the 1960s, are actually what?",
+      "options": [
+       "Brine shrimp",
+       "Tadpoles",
+       "Water fleas",
+       "Baby crabs"
+      ],
+      "answer": 0,
+      "fact": "The comic ads showed smiling humanlike creatures that looked nothing like the real tiny shrimp.",
+      "src": "en.wikipedia.org/wiki/Sea-Monkeys (brand of Artemia brine shrimp; von Braunhut 1957; 1960s comic ads drew humanoid creatures)"
+     },
+     {
+      "value": 400,
+      "q": "Which smiling salamander, a popular pet, was added to Minecraft in 2021?",
+      "options": [
+       "Newt",
+       "Hellbender",
+       "Mudpuppy",
+       "Axolotl"
+      ],
+      "answer": 3,
+      "fact": "Wild axolotls come from lakes near Mexico City, and they can regrow lost limbs.",
+      "src": "pcgamer.com minecraft-cave-cliffs-update (Part 1 launched June 8 2021, added axolotls); aquariumofpacific.org axolotl (Xochimilco, Chalco and Chapultepec lakes near Mexico City; regenerate limbs). 'Gecko' (a lizard) replaced with Hellbender so all options are salamanders"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "dino-dig",
+  "blurb": "Dinosaurs, fossil hunters and the prehistoric beasts that weren't dinos",
+  "categories": [
+   {
+    "name": "Terrible Lizards",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The word 'dinosaur' comes from Greek words meaning what?",
+      "options": [
+       "Thunder lizard",
+       "Terrible lizard",
+       "Ancient reptile",
+       "Giant beast"
+      ],
+      "answer": 1,
+      "fact": "British scientist Richard Owen coined the word in 1842.",
+      "src": "nhm.ac.uk how-dinosaurs-got-their-name (Owen, 1842 report; usually rendered 'terrible lizard')"
+     },
+     {
+      "value": 200,
+      "q": "Jurassic Park's (1993) Velociraptors were really modeled on which larger dinosaur?",
+      "options": [
+       "Dilophosaurus",
+       "Allosaurus",
+       "Deinonychus",
+       "Troodon"
+      ],
+      "answer": 2,
+      "fact": "Real Velociraptors stood only about 1.6 feet tall at the hip, and fossils show they had feathers.",
+      "src": "livescience.com 23922-velociraptor-facts (about 1.6 ft / 0.5 m at the hip; 2007 quill knobs; movie raptors modeled after Deinonychus). Original 'about 2 feet tall' was loose"
+     },
+     {
+      "value": 300,
+      "q": "How many fingers did each Tyrannosaurus rex hand have?",
+      "options": [
+       "Two",
+       "Three",
+       "Four",
+       "Five"
+      ],
+      "answer": 0,
+      "fact": "T. rex lived closer in time to us than to Stegosaurus.",
+      "src": "daily.jstor.org five-things-you-probably-have-wrong-about-the-t-rex (T. rex lived closer to the modern day than to Stegosaurus); two-fingered hands textbook"
+     },
+     {
+      "value": 400,
+      "q": "A Stegosaurus's spiked tail is nicknamed what, thanks to a 1982 Far Side cartoon?",
+      "options": [
+       "Tail club",
+       "Spikeball",
+       "Stegomace",
+       "Thagomizer"
+      ],
+      "answer": 3,
+      "fact": "Paleontologist Ken Carpenter adopted Gary Larson's joke word in 1993, and it caught on with scientists.",
+      "src": "en.wikipedia.org/wiki/Thagomizer (1982 Far Side; first adopted by Kenneth Carpenter at the 1993 SVP meeting)"
+     }
+    ]
+   },
+   {
+    "name": "Fossil Finders",
+    "questions": [
+     {
+      "value": 100,
+      "q": "A scientist who studies fossils of ancient life is called a what?",
+      "options": [
+       "Archaeologist",
+       "Paleontologist",
+       "Geologist",
+       "Anthropologist"
+      ],
+      "answer": 1,
+      "fact": "Archaeologists dig up human history. Dinosaurs vanished some 66 million years before people arrived.",
+      "src": "Textbook science"
+     },
+     {
+      "value": 200,
+      "q": "Sue, one of the most complete T. rex skeletons ever found, is on display in which city?",
+      "options": [
+       "New York",
+       "Denver",
+       "Chicago",
+       "Pittsburgh"
+      ],
+      "answer": 2,
+      "fact": "Sue was found in South Dakota in 1990 and named after the fossil hunter who spotted it, Sue Hendrickson.",
+      "src": "en.wikipedia.org/wiki/Sue_(dinosaur) (found Aug 12 1990, South Dakota, by Sue Hendrickson; named after her; Field Museum, Chicago)"
+     },
+     {
+      "value": 300,
+      "q": "Which pioneering fossil hunter made famous finds on the cliffs of Lyme Regis, England, in the early 1800s?",
+      "options": [
+       "Mary Anning",
+       "Gideon Mantell",
+       "Richard Owen",
+       "Charles Darwin"
+      ],
+      "answer": 0,
+      "fact": "Her hunting ground is now part of England's Jurassic Coast, a UNESCO World Heritage Site.",
+      "src": "nationalgeographic.com mary-anning-forgotten-fossil-hunter-british-jurassic-coast (Lyme Regis; ichthyosaur 1811; Jurassic Coast UNESCO site)"
+     },
+     {
+      "value": 400,
+      "q": "In 2016, scientists revealed a feathered dinosaur tail preserved inside what?",
+      "options": [
+       "Tar",
+       "Ice",
+       "Volcanic ash",
+       "Amber"
+      ],
+      "answer": 3,
+      "fact": "The tail was about 99 million years old and came from amber mined in Myanmar.",
+      "src": "nationalgeographic.com feathered-dinosaur-tail-amber-theropod-myanmar-burma-cretaceous (99 million years; Hukawng Valley amber, Myanmar)"
+     }
+    ]
+   },
+   {
+    "name": "Not Dinosaurs",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In the 2002 film Ice Age, Manny is what kind of prehistoric animal?",
+      "options": [
+       "Mastodon",
+       "Woolly mammoth",
+       "Woolly rhino",
+       "Giant sloth"
+      ],
+      "answer": 1,
+      "fact": "A few woolly mammoths survived on Wrangel Island until about 4,000 years ago, after the Great Pyramid was built.",
+      "src": "Ice Age (2002), Manny is a mammoth; ipm.org amomentofscience 2020-02-06 the-last-woolly-mammoths (Wrangel Island until about 4,000 years ago, while Egyptians were building pyramids); Great Pyramid about 2560 BC"
+     },
+     {
+      "value": 200,
+      "q": "The La Brea Tar Pits, famous for saber-toothed cat fossils, are in which city?",
+      "options": [
+       "Los Angeles",
+       "San Diego",
+       "Salt Lake City",
+       "Denver"
+      ],
+      "answer": 0,
+      "fact": "The saber-toothed cat Smilodon has been California's official state fossil since 1973.",
+      "src": "capitolmuseum.ca.gov state-symbols fossil-saber-toothed-cat (AB 940, 1973; Rancho La Brea tar pits, Los Angeles)"
+     },
+     {
+      "value": 300,
+      "q": "Pterosaurs, the flying reptiles of the dinosaur age, had wings made of what?",
+      "options": [
+       "Feathers on the arm",
+       "Scales on the ribs",
+       "Skin on all fingers",
+       "Skin on one long finger"
+      ],
+      "answer": 3,
+      "fact": "Pterosaurs weren't dinosaurs, but close reptile cousins and the first animals with backbones to fly.",
+      "src": "en.wikipedia.org/wiki/Pterosaur (membrane on extremely long fourth finger; earliest vertebrates known to have evolved powered flight); britannica.com/animal/pterosaur (not dinosaurs)"
+     },
+     {
+      "value": 400,
+      "q": "The sail-backed Dimetrodon is often mistaken for a dinosaur. It was actually closer kin to what?",
+      "options": [
+       "Mammals",
+       "Crocodiles",
+       "Birds",
+       "Turtles"
+      ],
+      "answer": 0,
+      "fact": "It died out some 40 million years before the first dinosaurs appeared.",
+      "src": "en.wikipedia.org/wiki/Dimetrodon (synapsid, more closely related to mammals than to dinosaurs; 294-271 Ma; extinct some 40 million years before dinosaurs appeared)"
+     }
+    ]
+   }
+  ]
+ }
+]

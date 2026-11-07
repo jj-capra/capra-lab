@@ -1,0 +1,533 @@
+[
+  {
+    "id": "brewers-story",
+    "blurb": "From a 1969 expansion club to October baseball in Milwaukee",
+    "categories": [
+      {
+        "name": "Pilots to Brewers",
+        "questions": [
+          {
+            "value": 100,
+            "q": "The Brewers began as the 1969 expansion Pilots. Which city did the Pilots call home?",
+            "options": [
+              "San Diego",
+              "Seattle",
+              "Kansas City",
+              "Montreal"
+            ],
+            "answer": 1,
+            "fact": "When the team was sold in 1970, its moving trucks waited in Provo, Utah, until the deal was final.",
+            "src": "mlb.com/news/how-the-seattle-pilots-became-the-milwaukee-brewers (Pilots of Seattle; Royals, Expos, Padres were the other 1969 expansion clubs; trucks left Tempe not knowing Seattle or Milwaukee and 'stopped in Provo' until it settled) - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "Which Milwaukee car dealer led the group that bought the bankrupt Pilots in 1970?",
+            "options": [
+              "Harry Dalton",
+              "Bowie Kuhn",
+              "Bud Selig",
+              "Mark Attanasio"
+            ],
+            "answer": 2,
+            "fact": "Selig became acting MLB commissioner in 1992, took the job officially in 1998 and entered the Hall of Fame in 2017.",
+            "src": "en.wikipedia.org/wiki/1970_Milwaukee_Brewers_season ('a Milwaukee car dealer'); mlb.com Pilots story (group led by Allan H. 'Bud' Selig); en.wikipedia.org/wiki/Bud_Selig (acting Sept 7, 1992; permanent July 9, 1998; inducted July 30, 2017) - reviewer WebFetch. Dalton GM, Kuhn commissioner, Attanasio owner from 2005"
+          },
+          {
+            "value": 300,
+            "q": "In which year did the Brewers switch from the American League to the National League?",
+            "options": [
+              "1994",
+              "2001",
+              "1993",
+              "1998"
+            ],
+            "answer": 3,
+            "fact": "Kansas City was offered the switch first and declined; Milwaukee chose to move in November 1997.",
+            "src": "en.wikipedia.org/wiki/1998_Milwaukee_Brewers_season ('The choice was offered to the Kansas City Royals, who ultimately decided to stay'; Brewers 'on November 6, 1997, elected to move to the National League'; AL Central to NL Central) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "The 1969 Pilots played their only season at which ballpark?",
+            "options": [
+              "Sick's Stadium",
+              "The Kingdome",
+              "Husky Stadium",
+              "Safeco Field"
+            ],
+            "answer": 0,
+            "fact": "A court approved the sale to Milwaukee on March 31, 1970, a week before the Brewers' first game.",
+            "src": "mlb.com Pilots story (Pilots played at Sick's Stadium; sale 'wasn't approved by the bankruptcy court until March 31, 1970'; first Brewers game April 7, 1970) - reviewer WebFetch. Kingdome opened 1976, Safeco 1999, Husky Stadium is UW football"
+          }
+        ]
+      },
+      {
+        "name": "October Runs",
+        "questions": [
+          {
+            "value": 100,
+            "q": "The 1982 Brewers lost a seven-game World Series to which team?",
+            "options": [
+              "Atlanta Braves",
+              "Philadelphia Phillies",
+              "Los Angeles Dodgers",
+              "St. Louis Cardinals"
+            ],
+            "answer": 3,
+            "fact": "Paul Molitor set a World Series record with five hits in Game 1.",
+            "src": "en.wikipedia.org/wiki/Paul_Molitor ('In Game 1, he had five hits, a World Series record'); 1982 WS lost to St. Louis in seven - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "In 2018, the Brewers lost a seven-game NLCS to which team?",
+            "options": [
+              "Los Angeles Dodgers",
+              "Chicago Cubs",
+              "Colorado Rockies",
+              "Atlanta Braves"
+            ],
+            "answer": 0,
+            "fact": "Milwaukee won the NL Central that year by beating the Cubs 3-1 in a Game 163 tiebreaker.",
+            "src": "si.com/mlb/2018/10/01 and cbssports.com (Game 163 at Wrigley, Brewers 3-1 for the NL Central); mlb.com 'Brewers lose to Dodgers in Game 7 of NLCS' - reviewer WebSearch"
+          },
+          {
+            "value": 300,
+            "q": "In the 1982 ALCS, the Brewers rallied from down two games to none to beat which team?",
+            "options": [
+              "Kansas City Royals",
+              "California Angels",
+              "Baltimore Orioles",
+              "Oakland A's"
+            ],
+            "answer": 1,
+            "fact": "They were the first team to win an ALCS after losing the first two games; Cecil Cooper's go-ahead single won Game 5.",
+            "src": "sabr.org/gamesproj/game/october-10-1982-milwaukee-brewers-rally-in-game-five-to-reach-world-series ('first team to overcome a 2-0 deficit in an ALCS'; Cooper's two-run single in the 7th for a 4-3 lead and 4-3 final vs California) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "Whose 10th-inning single beat Arizona in the deciding Game 5 of the 2011 NLDS?",
+            "options": [
+              "Prince Fielder",
+              "Corey Hart",
+              "Nyjer Morgan",
+              "Rickie Weeks"
+            ],
+            "answer": 2,
+            "fact": "Carlos Gomez scored from second for a 3-2 win. Morgan often went by his alter ego, Tony Plush.",
+            "src": "foxsports.com/stories/mlb/morgan-leads-brewers-past-d-backs (Morgan RBI single in the 10th, Game 5, 3-2 over Arizona; Gomez scored from second; alter ego 'Tony Plush') - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "Deals & Dugouts",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which former Brewers infielder, raised in suburban Milwaukee, managed the team from 2015 to 2023?",
+            "options": [
+              "Ron Roenicke",
+              "Ned Yost",
+              "Pat Murphy",
+              "Craig Counsell"
+            ],
+            "answer": 3,
+            "fact": "His father, John, was the Brewers' director of community relations from 1979 to 1987.",
+            "src": "sabr.org/bioproj/person/craig-counsell (grew up in Whitefish Bay; father John 'director of community relations for the Brewers from 1979-87'; hired May 2015 replacing Roenicke; Brewers infielder 2004, 2007-11); en.wikipedia.org/wiki/List_of_Milwaukee_Brewers_managers (Counsell 2015-2023; Yost 2003-08; Roenicke 2011-15; Murphy from 2024) - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "In July 2008, the Brewers traded for which ace from Cleveland?",
+            "options": [
+              "CC Sabathia",
+              "Cliff Lee",
+              "Zack Greinke",
+              "Jake Peavy"
+            ],
+            "answer": 0,
+            "fact": "Sabathia went 11-2 with a 1.65 ERA and seven complete games in 17 starts as a Brewer.",
+            "src": "mlbtraderumors.com/2020/05/when-cc-sabathia-put-a-team-on-his-back.html (July 7, 2008 from Cleveland; 'won 11 of his 13 decisions', 1.65 ERA, 17 starts, seven complete games) - reviewer WebFetch. Lee left Cleveland in 2009, Greinke came from KC in 2010"
+          },
+          {
+            "value": 300,
+            "q": "Who took over as manager in June 1982 and led the Brewers to the AL pennant?",
+            "options": [
+              "George Bamberger",
+              "Harvey Kuenn",
+              "Buck Rodgers",
+              "Tom Trebelhorn"
+            ],
+            "answer": 1,
+            "fact": "Milwaukee started 23-24 under Buck Rodgers, then went 72-43 under Kuenn.",
+            "src": "baseball-reference.com/bullpen/1982_Brewers (Rodgers 23-24, Kuenn 72-43, 95-67, clinched Oct 3 at Baltimore); en.wikipedia.org/wiki/List_of_Milwaukee_Brewers_managers (Rodgers let go in early June 1982, Kuenn took over) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "In August 1982, the Brewers acquired which future Hall of Fame pitcher from Houston?",
+            "options": [
+              "Nolan Ryan",
+              "Gaylord Perry",
+              "Don Sutton",
+              "Phil Niekro"
+            ],
+            "answer": 2,
+            "fact": "Sutton won the season's final game against Baltimore to clinch the AL East title.",
+            "src": "sabr.org/gamesproj/game/september-8-1982-sutton-tosses-shutout-for-first-win-in-al-to-keep-brewers-in-the-hunt (acquired from Houston Aug 30, 1982; on the last day 'pitched eight strong innings against the Orioles to notch the victory that gave the Brewers the division crown') - reviewer WebFetch. Ryan was an Astro but stayed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "brewers-legends",
+    "blurb": "Hall of Famers, MVPs and milestone moments from Milwaukee's greats",
+    "categories": [
+      {
+        "name": "Retired Numbers",
+        "questions": [
+          {
+            "value": 100,
+            "q": "The Brewers retired No. 19 for which Hall of Famer?",
+            "options": [
+              "Paul Molitor",
+              "Cecil Cooper",
+              "Robin Yount",
+              "Jim Gantner"
+            ],
+            "answer": 2,
+            "fact": "Drafted third overall in 1973, he debuted with Milwaukee the next April at age 18.",
+            "src": "mlb.com/brewers/history/retired-numbers (No. 19 Yount, May 29, 1994; Molitor No. 4); en.wikipedia.org/wiki/Robin_Yount (third pick, June 1973; debut April 5, 1974, at 18) - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "Whose No. 44 is retired by both the Brewers and the Braves?",
+            "options": [
+              "Hank Aaron",
+              "Willie McCovey",
+              "Reggie Jackson",
+              "Eddie Mathews"
+            ],
+            "answer": 0,
+            "fact": "Aaron returned to Milwaukee for 1975 and 1976, playing mostly as a designated hitter.",
+            "src": "mlb.com/brewers/history/retired-numbers (44 retired after 1976); mlb.com/news/braves-retired-numbers (Aaron 44 retired April 15, 1977; Mathews No. 41); mlb.com/news/hank-aaron-cemented-legacy-with-brewers (Milwaukee 1975-76, DH rule made the return possible) - reviewer WebFetch. McCovey 44 Giants, Reggie 44 Yankees"
+          },
+          {
+            "value": 300,
+            "q": "The Brewers retired No. 34 for which closer, famous for his handlebar mustache?",
+            "options": [
+              "Goose Gossage",
+              "Bruce Sutter",
+              "Dan Quisenberry",
+              "Rollie Fingers"
+            ],
+            "answer": 3,
+            "fact": "In 1981 he won both the AL Cy Young Award and the AL MVP award.",
+            "src": "mlb.com/brewers/history/retired-numbers (No. 34 retired Aug 9, 1992; 'made the Handlebar Mustache famous'); baseballhall.org 'Fingers wins MVP' (1981 AL MVP three weeks after the AL Cy Young) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "Paul Molitor, whose No. 4 the Brewers retired, played his final season in 1998 for which team?",
+            "options": [
+              "Toronto Blue Jays",
+              "Minnesota Twins",
+              "Chicago White Sox",
+              "Kansas City Royals"
+            ],
+            "answer": 1,
+            "fact": "With the Twins in 1996, he became the first player to reach 3,000 hits with a triple.",
+            "src": "en.wikipedia.org/wiki/Paul_Molitor (Twins for his final three seasons, 1996-98; 3,000th hit Sept 16, 1996 at Kansas City, 'first player to reach the 3,000 hits plateau with a triple'; No. 4 retired June 11, 1999) - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "Hardware",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which Brewer won the 2018 NL MVP award?",
+            "options": [
+              "Lorenzo Cain",
+              "Christian Yelich",
+              "Jesus Aguilar",
+              "Travis Shaw"
+            ],
+            "answer": 1,
+            "fact": "Acquired from Miami that January, he also won the NL batting title by hitting .326.",
+            "src": "sabr.org/gamesproj/game/september-17-2018-christian-yelich-makes-history-with-second-cycle-of-the-season (traded to Milwaukee January 2018; .326 led the NL; 2018 NL MVP) - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "Robin Yount won the 1982 AL MVP as a shortstop. At which position did he win it again in 1989?",
+            "options": [
+              "Third base",
+              "First base",
+              "Center field",
+              "Left field"
+            ],
+            "answer": 2,
+            "fact": "He was the third player to win MVPs at two positions, after Hank Greenberg and Stan Musial.",
+            "src": "en.wikipedia.org/wiki/Robin_Yount (1982 MVP at shortstop; regular CF from 1986, 1989 MVP; 'only the third player to win MVPs at two positions', joining Greenberg and Musial) - reviewer WebFetch"
+          },
+          {
+            "value": 300,
+            "q": "Devin Williams's changeup, a big part of his 2020 Rookie of the Year season, was nicknamed what?",
+            "options": [
+              "The Airbender",
+              "The Vulcan",
+              "The Boomerang",
+              "The Warp Drive"
+            ],
+            "answer": 0,
+            "fact": "He went 4-1 with a 0.33 ERA, allowing one earned run and striking out 53 in 27 innings.",
+            "src": "mlb.com/brewers/news/devin-williams-wins-2020-nl-rookie-of-the-year-award (Rob Friedman dubbed the change 'The Airbender'; one ER in 27 innings; struck out 53 of 100 hitters); baseball-reference.com/bullpen/Devin_Williams (4-1, 0.33 ERA, 27 IP, no saves) - reviewer WebFetch. Draft fact 'no win or save' was wrong: he had 4 wins"
+          },
+          {
+            "value": 400,
+            "q": "In 2021, who became the first Brewers pitcher to win the NL Cy Young Award?",
+            "options": [
+              "Brandon Woodruff",
+              "Josh Hader",
+              "Corbin Burnes",
+              "Freddy Peralta"
+            ],
+            "answer": 2,
+            "fact": "His 2.43 ERA led the majors, and he struck out 234 batters while walking just 34.",
+            "src": "fox6now.com/sports/brewers-corbin-burnes-cy-young (first Brewer to win it in the NL; Fingers 1981 and Vuckovich 1982 won in the AL; MLB-best 2.43 ERA, 234 K, 34 BB, 167 IP) - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "Milestones",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In 2007, which 23-year-old Brewer slugged 50 home runs?",
+            "options": [
+              "Corey Hart",
+              "Rickie Weeks",
+              "J.J. Hardy",
+              "Prince Fielder"
+            ],
+            "answer": 3,
+            "fact": "He was then the youngest player to hit 50 in a season; his father, Cecil, hit 51 in 1990.",
+            "src": "mlb.com/news/prince-fielder-50-home-runs-in-2007 (No. 50 on Sept 25, 2007, at 23 years, 139 days; Cecil hit 51 in 1990); thisdayinbaseball.com (youngest to hit 50 in a season) - reviewer WebFetch/WebSearch"
+          },
+          {
+            "value": 200,
+            "q": "Which Brewer put together a 39-game hitting streak in 1987?",
+            "options": [
+              "Robin Yount",
+              "Paul Molitor",
+              "Cecil Cooper",
+              "B.J. Surhoff"
+            ],
+            "answer": 1,
+            "fact": "It ended with Molitor in the on-deck circle when Rick Manning got a game-ending hit.",
+            "src": "en.wikipedia.org/wiki/Paul_Molitor (39-game streak, 1987; 'ended with Molitor in the on-deck circle when Rick Manning got a game-ending hit') - reviewer WebFetch"
+          },
+          {
+            "value": 300,
+            "q": "In 2010, which Brewers reliever became the first pitcher to reach 600 career saves?",
+            "options": [
+              "Trevor Hoffman",
+              "Mariano Rivera",
+              "Billy Wagner",
+              "John Axford"
+            ],
+            "answer": 0,
+            "fact": "The 42-year-old earned No. 600 on Sept. 7, 2010, in a 4-2 win over the Cardinals.",
+            "src": "foxnews.com 'Trevor Hoffman earns 600th save in Milwaukee Brewers 4-2 win over Cardinals' (Sept 7, 2010; 'the 42-year-old reliever'); nesn.com 'Trevor Hoffman Becomes First 600-Save Closer in Major League History' - reviewer WebFetch/WebSearch. Rivera reached 600 in 2011; Axford was the Brewers' closer from 2010"
+          },
+          {
+            "value": 400,
+            "q": "Who threw the first no-hitter in Brewers history, in April 1987?",
+            "options": [
+              "Teddy Higuera",
+              "Juan Nieves",
+              "Chris Bosio",
+              "Bill Wegman"
+            ],
+            "answer": 1,
+            "fact": "Robin Yount's diving catch in the ninth made the final out of the 7-0 win at Baltimore.",
+            "src": "sabr.org/gamesproj/game/april-15-1987-milwaukees-juan-nieves-throws-no-hitter-against-orioles (7-0 at Baltimore; Yount's diving catch of Eddie Murray's drive for the last out; the only Brewers no-hitter through 2019); en.wikipedia.org/wiki/Robin_Yount (game-ending diving catch) - reviewer WebFetch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "brewers-ballpark",
+    "blurb": "County Stadium, the roof, Bernie Brewer and game-day traditions",
+    "categories": [
+      {
+        "name": "County Stadium",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which team moved from Boston in 1953 to make County Stadium its new home?",
+            "options": [
+              "Braves",
+              "Red Sox",
+              "Athletics",
+              "Browns"
+            ],
+            "answer": 0,
+            "fact": "The Milwaukee Braves won the 1957 World Series and left for Atlanta after the 1965 season.",
+            "src": "britannica.com/topic/Atlanta-Braves ('moved to Milwaukee in 1953'; beat the Yankees in 1957; relocated 'after the 1965 season') - reviewer WebFetch. Red Sox stayed in Boston; A's and Browns left Philadelphia and St. Louis"
+          },
+          {
+            "value": 200,
+            "q": "Which slugger hit his 755th and final home run at County Stadium in 1976?",
+            "options": [
+              "Willie Mays",
+              "Harmon Killebrew",
+              "Frank Robinson",
+              "Hank Aaron"
+            ],
+            "answer": 3,
+            "fact": "He hit it on July 20, 1976, off the California Angels' Dick Drago.",
+            "src": "mlb.com/news/hank-aaron-cemented-legacy-with-brewers ('a solo shot off California reliever Dick Drago', July 20, 1976, County Stadium) - reviewer WebFetch"
+          },
+          {
+            "value": 300,
+            "q": "In 1970, fan Milt Mason lived atop County Stadium's scoreboard, vowing to stay until what happened?",
+            "options": [
+              "The team reached .500",
+              "A 10-game win streak",
+              "A Brewers no-hitter",
+              "A crowd topped 40,000"
+            ],
+            "answer": 3,
+            "fact": "He came down on Aug. 16, 1970, when 44,387 fans came for Bat Day. He was the original Bernie Brewer.",
+            "src": "sabr.org/gamesproj/game/august-16-1970-bat-day-crowd-brings-the-original-bernie-brewer-down-in-milwaukee (stay 'until the Brewers drew 40,000 fans or more'; down Aug 16, 1970, Bat Day, 44,387); mlb.com/brewers/fans/mascots/bernie-brewer ('trailer atop the scoreboard'; the original Bernie) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "Which Little League field was built near the old County Stadium infield?",
+            "options": [
+              "Helfaer Field",
+              "Story Hill Field",
+              "Menomonee Field",
+              "Kuenn Field"
+            ],
+            "answer": 0,
+            "fact": "It opened in 2002 and honors Evan Helfaer, a part-owner when the team came to Milwaukee.",
+            "src": "en.wikipedia.org/wiki/Helfaer_Field ('built near the infield of the former Milwaukee County Stadium'; opened 2002; named for Evan Helfaer, 'a part owner of the Brewers at the time of their arrival in Milwaukee') - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "AmFam Field",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Before it became American Family Field in 2021, the Brewers' ballpark was called what?",
+            "options": [
+              "Lakefront Park",
+              "Cream City Park",
+              "Miller Park",
+              "Badger Park"
+            ],
+            "answer": 2,
+            "fact": "It opened on April 6, 2001, when the Brewers moved over from County Stadium.",
+            "src": "en.wikipedia.org/wiki/American_Family_Field ('known as Miller Park until 2020'; American Family naming deal from 2021; opened April 6, 2001) - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "The Brewers' ballpark opened with a retractable roof shaped like what?",
+            "options": [
+              "A sail",
+              "A fan",
+              "A pyramid",
+              "A crown"
+            ],
+            "answer": 1,
+            "fact": "The roof was built to open or close in less than 10 minutes.",
+            "src": "en.wikipedia.org/wiki/American_Family_Field ('North America's only fan-shaped convertible roof, which can open and close in less than 10 minutes') - reviewer WebFetch"
+          },
+          {
+            "value": 300,
+            "q": "In 2010, a statue of which Brewers figure was unveiled outside the ballpark?",
+            "options": [
+              "Bob Uecker",
+              "Paul Molitor",
+              "Rollie Fingers",
+              "Bud Selig"
+            ],
+            "answer": 3,
+            "fact": "The Brewers also put up statues of Robin Yount, Hank Aaron and Bob Uecker outside the park.",
+            "src": "en.wikipedia.org/wiki/Bud_Selig (Selig Monument unveiled Aug 24, 2010); en.wikipedia.org/wiki/Bob_Uecker (Uecker Monument Aug 31, 2012); foxsports.com 'Uecker the fourth to get Miller Park statue' (joins Aaron, Yount, Selig) - reviewer WebFetch. Molitor and Fingers have none"
+          },
+          {
+            "value": 400,
+            "q": "The 2002 All-Star Game, hosted by the Brewers, ended in what unusual way?",
+            "options": [
+              "A forfeit",
+              "A walk-off balk",
+              "A 7-7 tie",
+              "A triple play"
+            ],
+            "answer": 2,
+            "fact": "Both teams ran out of pitchers after 11 innings. From 2003 to 2016, the All-Star winner got World Series home field.",
+            "src": "mlb.com/news/2002-all-star-game-s-tie-led-to-changes ('7-7 tie after 11 innings'; both managers had used all their pitchers); cbsnews.com (home-field rule approved Jan 2003, ended by the late-2016 CBA) - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "Game Day",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In the Brewers' famous mid-game race, the costumed runners are what kind of food?",
+            "options": [
+              "Pierogies",
+              "Cheese wedges",
+              "Pretzels",
+              "Sausages"
+            ],
+            "answer": 3,
+            "fact": "It began as a scoreboard cartoon in the early 1990s; costumed sausages first ran in 1993.",
+            "src": "mlb.com/news/brewers-sausage-race-history (scoreboard feature in the early 1990s; first live race June 27, 1993, County Stadium) - reviewer WebFetch. Pierogies race in Pittsburgh"
+          },
+          {
+            "value": 200,
+            "q": "Which nickname did Johnny Carson jokingly give broadcaster Bob Uecker?",
+            "options": [
+              "Mr. October",
+              "Mr. Baseball",
+              "Mr. Cub",
+              "Mr. Milwaukee"
+            ],
+            "answer": 1,
+            "fact": "A former catcher, Uecker won a World Series ring with the 1964 St. Louis Cardinals.",
+            "src": "en.wikipedia.org/wiki/Bob_Uecker (Carson 'facetiously' gave him 'Mr. Baseball'; backup catcher 1962-67, 'a member of the 1964 World Series champions with the Cardinals'); mlb.com Uecker pop-culture moments - reviewer WebFetch. Mr. October = Reggie Jackson, Mr. Cub = Ernie Banks"
+          },
+          {
+            "value": 300,
+            "q": "Bernie Brewer's dugout, home of his home-run slide, was placed in which part of American Family Field?",
+            "options": [
+              "Left-field bleachers",
+              "Right-field bleachers",
+              "Behind home plate",
+              "First-base upper deck"
+            ],
+            "answer": 0,
+            "fact": "Fans voted Bernie back in 1993, after his County Stadium chalet was removed in 1984.",
+            "src": "mlb.com/brewers/fans/mascots/bernie-brewer ('his Dugout located in the left field bleachers'; chalet replaced by a sound tower in 1984; back in 1993 by fan demand); en.wikipedia.org/wiki/Bernie_Brewer ('atop the bleachers behind left field'; fans voted him back in 1993) - reviewer WebFetch. 'Atop center field' swapped out: the 1993 County Stadium chalet sat above left-center"
+          },
+          {
+            "value": 400,
+            "q": "On which 1980s sitcom did Bob Uecker play sportswriter George Owens?",
+            "options": [
+              "Who's the Boss?",
+              "Growing Pains",
+              "Mr. Belvedere",
+              "Webster"
+            ],
+            "answer": 2,
+            "fact": "He also played Cleveland broadcaster Harry Doyle in the Major League films.",
+            "src": "en.wikipedia.org/wiki/Bob_Uecker (George Owens, 'a father and sportswriter', 1985-1990 sitcom Mr. Belvedere; Cleveland radio broadcaster Harry Doyle in the Major League films); mlb.com Uecker pop-culture moments - reviewer WebFetch"
+          }
+        ]
+      }
+    ]
+  }
+]

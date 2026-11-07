@@ -1,0 +1,533 @@
+[
+  {
+    "id": "king-james-rise",
+    "blurb": "Akron, high school stardom, the 2003 draft and the first Cleveland years",
+    "categories": [
+      {
+        "name": "Akron Kid",
+        "questions": [
+          {
+            "value": 100,
+            "q": "LeBron James was born and raised in which Ohio city?",
+            "options": [
+              "Cleveland",
+              "Akron",
+              "Columbus",
+              "Canton"
+            ],
+            "answer": 1,
+            "fact": "He was born there on December 30, 1984.",
+            "src": "Checked: en.wikipedia.org/wiki/LeBron_James ('born on December 30, 1984' in Akron, Ohio)"
+          },
+          {
+            "value": 200,
+            "q": "Besides basketball, LeBron earned all-state honors in high school in which sport?",
+            "options": [
+              "Baseball",
+              "Soccer",
+              "Football",
+              "Track and field"
+            ],
+            "answer": 2,
+            "fact": "He was a first-team all-state wide receiver in Ohio as a sophomore.",
+            "src": "Checked: en.wikipedia.org/wiki/LeBron_James (played wide receiver for St. Vincent-St. Mary; 'At the end of his second year, James was named first team all-state')"
+          },
+          {
+            "value": 300,
+            "q": "LeBron starred for the Fighting Irish of which Akron Catholic high school?",
+            "options": [
+              "Archbishop Hoban",
+              "Walsh Jesuit",
+              "Oak Hill Academy",
+              "St. Vincent-St. Mary"
+            ],
+            "answer": 3,
+            "fact": "Crowds grew so big that some home games moved to the University of Akron's Rhodes Arena.",
+            "src": "Checked: en.wikipedia.org/wiki/LeBron_James (St. Vincent-St. Mary Fighting Irish; 'For some home games... played at the University of Akron's 5,492-seat Rhodes Arena'). Hoban and Walsh Jesuit are other area Catholic schools; Oak Hill is in Virginia"
+          },
+          {
+            "value": 400,
+            "q": "Which documentary follows LeBron and his childhood teammates through their high school years?",
+            "options": [
+              "More Than a Game",
+              "Hoop Dreams",
+              "Through the Fire",
+              "The Last Dance"
+            ],
+            "answer": 0,
+            "fact": "Director Kristopher Belman began it as a 10-minute class project at Loyola Marymount University.",
+            "src": "Checked: clevelandmagazine.com/articles/more-than-a-homework-assignment (Belman, a junior at Loyola Marymount, assigned a 10-minute documentary; follows SVSM starters James, Cotton, Joyce III, Travis, McGee). Hoop Dreams, Through the Fire, The Last Dance follow others"
+          }
+        ]
+      },
+      {
+        "name": "Chosen One",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which team picked LeBron first overall in the 2003 NBA draft?",
+            "options": [
+              "Detroit Pistons",
+              "Cleveland Cavaliers",
+              "Denver Nuggets",
+              "Toronto Raptors"
+            ],
+            "answer": 1,
+            "fact": "In his NBA debut that fall, he scored 25 points against the Sacramento Kings.",
+            "src": "Checked: en.wikipedia.org/wiki/2003_NBA_draft (No. 1 James, Cleveland); en.wikipedia.org/wiki/LeBron_James ('In his first regular season game, James scored 25 points in a 106-92 loss to the Sacramento Kings')"
+          },
+          {
+            "value": 200,
+            "q": "Before his first NBA game, LeBron signed a shoe deal reported at about $90 million with which brand?",
+            "options": [
+              "Reebok",
+              "Adidas",
+              "And1",
+              "Nike"
+            ],
+            "answer": 3,
+            "fact": "Reebok reportedly bid more, but he chose Nike's seven-year deal.",
+            "src": "Checked: vault.si.com 2003/06/02 'James and the Giant Deal' (seven-year Nike deal, reported $90 million; Nike's offer 'more than $15 million lower than a bid by Reebok, according to one shoe-company executive')"
+          },
+          {
+            "value": 300,
+            "q": "In February 2002, which magazine put high school junior LeBron on its cover as 'The Chosen One'?",
+            "options": [
+              "Sports Illustrated",
+              "ESPN The Magazine",
+              "Slam",
+              "The Sporting News"
+            ],
+            "answer": 0,
+            "fact": "He was the first high school basketball underclassman to appear on that cover.",
+            "src": "Checked: si.com/nba/2018/05/30/origin-lebron-james-chosen-1-tattoo (SI cover Feb. 18, 2002, 'The Chosen One', then a high school junior); en.wikipedia.org/wiki/LeBron_James ('first high school basketball underclassman to do so'); gocollect.com/magazine/slam-62 (his first SLAM cover was Aug. 2002)"
+          },
+          {
+            "value": 400,
+            "q": "Who was picked right after LeBron, at No. 2, in the 2003 NBA draft?",
+            "options": [
+              "Carmelo Anthony",
+              "Chris Bosh",
+              "Darko Milicic",
+              "Dwyane Wade"
+            ],
+            "answer": 2,
+            "fact": "Carmelo Anthony, Chris Bosh and Dwyane Wade went third, fourth and fifth.",
+            "src": "Checked: en.wikipedia.org/wiki/2003_NBA_draft (1 James CLE, 2 Darko Milicic DET, 3 Carmelo Anthony DEN, 4 Chris Bosh TOR, 5 Dwyane Wade MIA)"
+          }
+        ]
+      },
+      {
+        "name": "Cleveland Years",
+        "questions": [
+          {
+            "value": 100,
+            "q": "After his first NBA season, 2003-04, LeBron won which award?",
+            "options": [
+              "Most Improved Player",
+              "Sixth Man of the Year",
+              "Most Valuable Player",
+              "Rookie of the Year"
+            ],
+            "answer": 3,
+            "fact": "He was the first Cleveland Cavalier ever to win it.",
+            "src": "Checked: en.wikipedia.org/wiki/LeBron_James ('James became the first Cavalier to receive the NBA Rookie of the Year Award'); upi.com 2004/04/20 (named Rookie of the Year)"
+          },
+          {
+            "value": 200,
+            "q": "In July 2010, LeBron announced he was joining Miami during a live ESPN special called what?",
+            "options": [
+              "The Announcement",
+              "The Decision",
+              "The Next Chapter",
+              "The Choice"
+            ],
+            "answer": 1,
+            "fact": "ESPN aired it from a Boys & Girls Club in Greenwich, Connecticut, and its ad money went to the clubs.",
+            "src": "Checked: csmonitor.com/USA/2010/0709 (ESPN special with Jim Gray, in a Boys and Girls Club gym in Greenwich, Conn.; all ad proceeds to Boys & Girls Clubs of America); andscape.com (aired July 8, 2010). Old fact's $2.5 million dropped: sources give $2M to $3M"
+          },
+          {
+            "value": 300,
+            "q": "LeBron's Cavaliers reached their first NBA Finals in 2007 but were swept by which team?",
+            "options": [
+              "Dallas Mavericks",
+              "Phoenix Suns",
+              "San Antonio Spurs",
+              "Utah Jazz"
+            ],
+            "answer": 2,
+            "fact": "Spurs point guard Tony Parker was named Finals MVP.",
+            "src": "Checked: en.wikipedia.org/wiki/2007_NBA_Finals (Spurs swept Cleveland 4-0; Cavaliers' 'first trip to the NBA Finals in their franchise history'; Tony Parker Finals MVP)"
+          },
+          {
+            "value": 400,
+            "q": "In Game 5 of the 2007 East finals, LeBron scored 29 of Cleveland's last 30 points against which team?",
+            "options": [
+              "Detroit Pistons",
+              "Boston Celtics",
+              "New Jersey Nets",
+              "Orlando Magic"
+            ],
+            "answer": 0,
+            "fact": "He finished with 48 points, including the team's final 25, in a 109-107 double-overtime win.",
+            "src": "Checked: nba.com/news/history-top-moments-lebron-james-pistons-2007 ('29 of Cleveland's 30 points, including the team's final 25 points'; 109-107 in double overtime vs Detroit); en.wikipedia.org/wiki/LeBron_James (Game 5: 48 points). Nets were the 2007 second-round foe"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "king-james-rings",
+    "blurb": "Titles in Miami, Cleveland and LA, MVP trophies and Olympic medals",
+    "categories": [
+      {
+        "name": "Title Runs",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In the 2016 Finals, LeBron's Cavaliers came back from down 3 games to 1 to beat which team?",
+            "options": [
+              "San Antonio Spurs",
+              "Golden State Warriors",
+              "Houston Rockets",
+              "Oklahoma City Thunder"
+            ],
+            "answer": 1,
+            "fact": "The title was Cleveland's first in any major pro sport since 1964.",
+            "src": "Checked: en.wikipedia.org/wiki/The_Block_(basketball) (Golden State led 3-1; Cavaliers won the city's 'first major sports title since 1964'); en.wikipedia.org/wiki/List_of_NBA_champions (2016 Cleveland over Golden State 4-3)"
+          },
+          {
+            "value": 200,
+            "q": "LeBron won his first NBA title in 2012 by beating which team in the Finals?",
+            "options": [
+              "Oklahoma City Thunder",
+              "San Antonio Spurs",
+              "Dallas Mavericks",
+              "Los Angeles Lakers"
+            ],
+            "answer": 0,
+            "fact": "That Thunder team featured Kevin Durant, Russell Westbrook and a young James Harden.",
+            "src": "Checked: en.wikipedia.org/wiki/2012_NBA_Finals (Heat beat Oklahoma City 4-1; James Finals MVP; 'earned James his first championship'; Durant, Westbrook and Harden on the Thunder)"
+          },
+          {
+            "value": 300,
+            "q": "Whose corner three in Game 6 of the 2013 Finals tied the game and saved LeBron's Heat?",
+            "options": [
+              "Mike Miller",
+              "Shane Battier",
+              "Mario Chalmers",
+              "Ray Allen"
+            ],
+            "answer": 3,
+            "fact": "The shot came with 5.2 seconds left; Miami won in overtime, then beat the Spurs in Game 7.",
+            "src": "Checked: nba.com/news/history-top-moments-ray-allen-3-pointer-2013-finals (right-corner three tied it with 5.2 seconds left; Miami won 103-100 in OT, then won Game 7 vs San Antonio)"
+          },
+          {
+            "value": 400,
+            "q": "In Game 7 of the 2016 Finals, LeBron's famous chase-down block stopped a layup by which Warrior?",
+            "options": [
+              "Stephen Curry",
+              "Andre Iguodala",
+              "Klay Thompson",
+              "Draymond Green"
+            ],
+            "answer": 1,
+            "fact": "The game was tied at 89; Kyrie Irving's three over Stephen Curry soon put Cleveland ahead for good.",
+            "src": "Checked: en.wikipedia.org/wiki/The_Block_(basketball) (blocked Andre Iguodala's layup with the game tied 89 and 1:50 left; Irving's three over Curry with 53 seconds left gave Cleveland the lead; won 93-89)"
+          }
+        ]
+      },
+      {
+        "name": "MVP Hardware",
+        "questions": [
+          {
+            "value": 100,
+            "q": "LeBron won his first two regular-season MVP awards, in 2009 and 2010, with which team?",
+            "options": [
+              "Miami Heat",
+              "Orlando Magic",
+              "Cleveland Cavaliers",
+              "Los Angeles Lakers"
+            ],
+            "answer": 2,
+            "fact": "He won his next two, in 2012 and 2013, with the Miami Heat.",
+            "src": "Checked: en.wikipedia.org/wiki/LeBron_James (MVP in 2009 and 2010 with Cleveland; 2012 and 2013 with Miami)"
+          },
+          {
+            "value": 200,
+            "q": "The NBA Finals MVP trophy LeBron first won in 2012 is named for which Celtics legend?",
+            "options": [
+              "Larry Bird",
+              "Bob Cousy",
+              "John Havlicek",
+              "Bill Russell"
+            ],
+            "answer": 3,
+            "fact": "The NBA named the award for Russell, an 11-time champion, in February 2009.",
+            "src": "Checked: en.wikipedia.org/wiki/Bill_Russell_NBA_Finals_Most_Valuable_Player_Award (renamed Feb. 14, 2009, at All-Star Weekend in Phoenix); en.wikipedia.org/wiki/2012_NBA_Finals (James's first Finals MVP). Russell's 11 titles: textbook"
+          },
+          {
+            "value": 300,
+            "q": "LeBron was Finals MVP in 2020 when his Lakers beat which team for the title?",
+            "options": [
+              "Boston Celtics",
+              "Miami Heat",
+              "Milwaukee Bucks",
+              "Toronto Raptors"
+            ],
+            "answer": 1,
+            "fact": "He became the first player to win Finals MVP with three different franchises.",
+            "src": "Checked: en.wikipedia.org/wiki/List_of_NBA_champions (2020 Lakers over Miami 4-2, James Finals MVP); en.wikipedia.org/wiki/LeBron_James ('the first player to win Finals MVP with three different teams')"
+          },
+          {
+            "value": 400,
+            "q": "LeBron was MVP of the 2018 All-Star Game, the first with captains drafting teams. Who was the other captain?",
+            "options": [
+              "Kevin Durant",
+              "Stephen Curry",
+              "James Harden",
+              "Giannis Antetokounmpo"
+            ],
+            "answer": 1,
+            "fact": "Team LeBron beat Team Stephen 148-145 in Los Angeles, and it was his third All-Star Game MVP.",
+            "src": "Replaced (old 2013 lone-MVP-vote question echoed B5's Shaq '120 of 121' fact and a media dispute). Checked: en.wikipedia.org/wiki/2018_NBA_All-Star_Game (captains James and Curry; draft format replaced East vs West; Team LeBron 148-145 at Staples Center; James MVP, his third); nba.com/news/storylines-abound-after-2018-nba-all-star-draft ('inaugural draft' by captains James and Curry)"
+          }
+        ]
+      },
+      {
+        "name": "Team USA",
+        "questions": [
+          {
+            "value": 100,
+            "q": "LeBron won his first Olympic gold with the 2008 'Redeem Team' at which Games?",
+            "options": [
+              "Beijing",
+              "Athens",
+              "Sydney",
+              "London"
+            ],
+            "answer": 0,
+            "fact": "Mike Krzyzewski's team brought home the first US men's basketball gold since 2000.",
+            "src": "Checked: heraldnet.com 'Redeem team beats Spain for men's hoops gold' (Beijing, 118-107; coach Mike Krzyzewski; 'the first U.S. gold medal since the 2000 Olympics')"
+          },
+          {
+            "value": 200,
+            "q": "At the 2004 Athens Olympics, a 19-year-old LeBron and Team USA won which medal?",
+            "options": [
+              "Gold medal",
+              "Silver medal",
+              "Bronze medal",
+              "No medal"
+            ],
+            "answer": 2,
+            "fact": "The US lost three games in Athens after going 109-2 in all earlier Olympics.",
+            "src": "Checked: click2houston.com 2020/08/16 'AP Was There: 2004 Athens Olympics' (US entered 109-2 in prior Olympics; lost to Puerto Rico, Lithuania and Argentina; bronze; James on the team). Born Dec. 30, 1984, so 19 in Aug. 2004"
+          },
+          {
+            "value": 300,
+            "q": "At the Paris 2024 opening ceremony, LeBron carried the US flag alongside which athlete?",
+            "options": [
+              "Simone Biles",
+              "Katie Ledecky",
+              "Sha'Carri Richardson",
+              "Coco Gauff"
+            ],
+            "answer": 3,
+            "fact": "He was later named tournament MVP as the US beat France 98-87 for gold.",
+            "src": "Checked: cbssports.com 2024 'Coco Gauff joins LeBron James as flag bearer for Team USA at Opening Ceremony'; nba.com/news/lebron-james-olympic-basketball-mvp (US beat France 98-87; James tournament MVP)"
+          },
+          {
+            "value": 400,
+            "q": "In both the 2008 and 2012 Olympic finals, LeBron and Team USA beat which country?",
+            "options": [
+              "Argentina",
+              "Spain",
+              "France",
+              "Lithuania"
+            ],
+            "answer": 1,
+            "fact": "The scores were 118-107 in Beijing and 107-100 in London.",
+            "src": "Checked: heraldnet.com (2008 final, 118-107 over Spain); bangordailynews.com 2012/08/12 'US wins gold, beats Spain 107-100 in men's basketball'"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "king-james-more",
+    "blurb": "Milestone nights, family ties and LeBron's life off the court",
+    "categories": [
+      {
+        "name": "Milestone Nights",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In February 2023, LeBron broke whose NBA career scoring record, which had stood since 1984?",
+            "options": [
+              "Karl Malone",
+              "Michael Jordan",
+              "Kareem Abdul-Jabbar",
+              "Wilt Chamberlain"
+            ],
+            "answer": 2,
+            "fact": "Kareem watched from a courtside seat in Los Angeles as the record fell.",
+            "src": "Checked: thegrio.com 2023/02/08 AP (passed Abdul-Jabbar Feb. 7, 2023, vs Oklahoma City; Kareem set the record in April 1984; Kareem sat in a baseline seat near the Lakers' bench). Wilt's record ended in 1984, so the question's wording excludes him"
+          },
+          {
+            "value": 200,
+            "q": "On March 2, 2024, LeBron became the first NBA player to reach how many career points?",
+            "options": [
+              "30,000",
+              "35,000",
+              "38,000",
+              "40,000"
+            ],
+            "answer": 3,
+            "fact": "He got there in the first half of a home game against the Denver Nuggets.",
+            "src": "Checked: nbcdfw.com 'LeBron James becomes the first and only player in NBA to score 40,000 career points' (March 2, 2024, vs Denver at Crypto.com Arena, early second quarter). Wilt first to 30,000; Kareem first to 35,000 and 38,000"
+          },
+          {
+            "value": 300,
+            "q": "LeBron scored 61 points for the Miami Heat in March 2014 against which team?",
+            "options": [
+              "Orlando Magic",
+              "Atlanta Hawks",
+              "Charlotte Bobcats",
+              "Washington Wizards"
+            ],
+            "answer": 2,
+            "fact": "He made 8 of 10 threes and broke Glen Rice's Heat record of 56 points, set in 1995.",
+            "src": "Replaced (old record-shot question repeated the $100's event, and outlets describe the shot differently: step-back, fallaway, fadeaway). Checked: si.com/nba/2014/03/04/lebron-james-61-points-career-high-heat-bobcats (61 vs Charlotte Bobcats, Heat won 124-107; 8-of-10 from three; Glen Rice's 56 vs Orlando, April 15, 1995); washingtontimes.com AP capsules March 3, 2014"
+          },
+          {
+            "value": 400,
+            "q": "LeBron was MVP of the NBA's first In-Season Tournament in 2023. Whom did the Lakers beat in the final?",
+            "options": [
+              "Milwaukee Bucks",
+              "Indiana Pacers",
+              "New Orleans Pelicans",
+              "Boston Celtics"
+            ],
+            "answer": 1,
+            "fact": "The Lakers won the final 123-109 in Las Vegas.",
+            "src": "Checked: cbssports.com 'Lakers defeat Pacers to win inaugural NBA Cup' (123-109 over Indiana in Las Vegas; James tournament MVP); en.wikipedia.org/wiki/LeBron_James (Dec. 9, 2023, Tournament MVP)"
+          }
+        ]
+      },
+      {
+        "name": "Family & Crew",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In October 2024, LeBron made NBA history by playing in a game alongside which family member?",
+            "options": [
+              "His brother",
+              "His nephew",
+              "His son",
+              "His cousin"
+            ],
+            "answer": 2,
+            "fact": "He and Bronny shared the court in the Lakers' season opener against Minnesota.",
+            "src": "Checked: aljazeera.com 2024/10/23 (LeBron and Bronny share court as Lakers beat Wolves in the season opener); cbssports.com (first father-son duo to play together in an NBA game)"
+          },
+          {
+            "value": 200,
+            "q": "In 2012, LeBron's longtime friend Rich Paul launched Klutch Sports Group. What kind of company is it?",
+            "options": [
+              "A sneaker brand",
+              "A sports agency",
+              "A TV network",
+              "A training academy"
+            ],
+            "answer": 1,
+            "fact": "They met at the Akron-Canton Airport, where LeBron admired Paul's Warren Moon throwback jersey.",
+            "src": "Replaced (old question on his mother's name; no family matters). Checked: en.wikipedia.org/wiki/Rich_Paul (met James at Akron-Canton Airport, impressed by Paul's 'authentic Warren Moon throwback jersey'; Paul and James left CAA in 2012 and founded Klutch Sports Group, a sports agency led by Paul). Sources differ on the meeting year, so it's left out"
+          },
+          {
+            "value": 300,
+            "q": "LeBron's 2009 book 'Shooting Stars' was co-written by the author of which football book?",
+            "options": [
+              "The Blind Side",
+              "Paper Lion",
+              "Friday Night Lights",
+              "North Dallas Forty"
+            ],
+            "answer": 2,
+            "fact": "The title is what LeBron and his friends called themselves as 10-year-old teammates in Akron.",
+            "src": "Replaced (old Bronny-at-USC question; family matter, and close to his 2023 health scare and draft criticism). Checked: penguinrandomhouse.com/books/304787 (Shooting Stars by LeBron James and Buzz Bissinger, 2009; Akron ten-year-olds 'who called themselves the Shooting Stars'; Bissinger wrote Friday Night Lights). Others: Michael Lewis, George Plimpton, Peter Gent"
+          },
+          {
+            "value": 400,
+            "q": "LeBron's SpringHill media company was named after what kind of place from his Akron childhood?",
+            "options": [
+              "An apartment complex",
+              "A youth gym",
+              "A summer camp",
+              "A city park"
+            ],
+            "answer": 0,
+            "fact": "Maverick Carter, his friend and high school teammate, co-founded the company with him.",
+            "src": "Checked: en.wikipedia.org/wiki/Maverick_Carter (SpringHill named for the Akron apartment complex where James lived in sixth grade; Carter co-founded The SpringHill Company with James; both played at St. Vincent-St. Mary); tubefilter.com 2020/06/26 ('named for the apartment complex where the NBA icon came of age')"
+          }
+        ]
+      },
+      {
+        "name": "Off the Court",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In 2021's 'Space Jam: A New Legacy,' LeBron teams up with cartoon characters from which studio?",
+            "options": [
+              "Disney",
+              "Warner Bros.",
+              "Paramount",
+              "DreamWorks"
+            ],
+            "answer": 1,
+            "fact": "Don Cheadle played the villain, a rogue AI called Al-G Rhythm.",
+            "src": "Replaced (old question's answer, Michael Jordan in 1996's Space Jam, is the B2 sports-movies draft's Big Screen $100). Checked: en.wikipedia.org/wiki/Space_Jam:_A_New_Legacy (Warner Bros. Pictures; Looney Tunes; Al-G Rhythm, an AI played by Don Cheadle, presides over the Warner Bros. Serververse; released July 16, 2021)"
+          },
+          {
+            "value": 200,
+            "q": "What is the name of the public school LeBron's foundation helped open in Akron in 2018?",
+            "options": [
+              "Chosen One Academy",
+              "I Promise School",
+              "Witness Academy",
+              "King James Prep"
+            ],
+            "answer": 1,
+            "fact": "It opened on July 30, 2018, with about 240 third and fourth graders.",
+            "src": "Checked: en.wikipedia.org/wiki/I_Promise_School (public school in the Akron district, supported by the LeBron James Family Foundation; first day July 30, 2018; 240 third and fourth graders)"
+          },
+          {
+            "value": 300,
+            "q": "In 2019, LeBron's company tried and failed to trademark which phrase?",
+            "options": [
+              "Throwback Thursday",
+              "Wing Wednesday",
+              "Motivation Monday",
+              "Taco Tuesday"
+            ],
+            "answer": 3,
+            "fact": "The US Patent and Trademark Office called it a 'commonplace term.'",
+            "src": "Checked: nba.com/news/lebron-james-taco-tuesday-trademark-bid-denied (LBJ Trademarks; USPTO refused it as 'a commonplace term'); si.com/nba/2019/09/11 (denied Sept. 2019)"
+          },
+          {
+            "value": 400,
+            "q": "In 2011, LeBron became a minority owner of which English soccer club?",
+            "options": [
+              "Liverpool",
+              "Manchester United",
+              "Arsenal",
+              "Chelsea"
+            ],
+            "answer": 0,
+            "fact": "In 2021 he became a partner in Fenway Sports Group, Liverpool's parent company.",
+            "src": "Checked: foxsports.com 'LeBron takes stake in Liverpool' (Apr. 7, 2011, minority interest from Fenway Sports Group); thescore.com/nba/news/2144791 (held 2%; March 31, 2021, became a partner in FSG)"
+          }
+        ]
+      }
+    ]
+  }
+]

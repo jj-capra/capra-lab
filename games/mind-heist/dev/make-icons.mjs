@@ -1,0 +1,21 @@
+import fs from 'node:fs';
+import pw from '/opt/npm-tools/node_modules/playwright/index.js';
+const { chromium } = pw;
+import { iconSVG } from '../assets/icon-art.mjs';
+const out = new URL('../assets/', import.meta.url).pathname;
+fs.writeFileSync(out + 'icon.svg', iconSVG({ size: 64, rounded: true }));
+const b = await chromium.launch();
+const pg = await b.newPage({ viewport: { width: 1024, height: 1024 } });
+const shot = async (file, size, opts) => {
+  await pg.setViewportSize({ width: size, height: size });
+  await pg.setContent(`<html><body style="margin:0;background:transparent">${iconSVG({ size, ...opts })}</body></html>`);
+  await pg.screenshot({ path: out + file, omitBackground: true, clip: { x: 0, y: 0, width: size, height: size } });
+};
+await shot('icon-1024.png', 1024, {});
+await shot('icon-512.png', 512, {});
+await shot('icon-192.png', 192, {});
+await shot('apple-touch-icon.png', 180, {});
+await shot('icon-maskable-512.png', 512, { scale: 0.78 });
+await shot('icon-preview.png', 1024, { rounded: true });
+await b.close();
+console.log('icons written');

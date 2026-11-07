@@ -6,6 +6,10 @@ public/primal-survival/
 public/par-tee-time/
 public/swerve-planet/
 public/dont-look/
+public/mind-heist/
+netlify/functions/mind-heist.mjs
+games/mind-heist/src/server/decks.gen.json
+games/mind-heist/netlify/
 # each game's own local-dev output
 games/*/public/
 games/*/dist/

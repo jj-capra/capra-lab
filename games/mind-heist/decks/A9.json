@@ -1,0 +1,887 @@
+[
+  {
+    "id": "game-night",
+    "blurb": "Board games, card tables and arcade cabinets across the generations",
+    "categories": [
+      {
+        "name": "On the Board",
+        "questions": [
+          {
+            "value": 100,
+            "q": "On the classic US Monopoly board, which property costs the most to buy?",
+            "options": [
+              "Park Place",
+              "Boardwalk",
+              "Marvin Gardens",
+              "Illinois Avenue"
+            ],
+            "answer": 1,
+            "fact": "The classic US board's street names come from Atlantic City, New Jersey.",
+            "src": "wshu.org 2021-08-26 'secret behind the Monopoly board': Atlantic City names, Boardwalk $400 most expensive"
+          },
+          {
+            "value": 200,
+            "q": "In Scrabble, how many bonus points do you earn for using all seven of your tiles in one turn?",
+            "options": [
+              "25",
+              "50",
+              "70",
+              "100"
+            ],
+            "answer": 1,
+            "fact": "Inventor Alfred Butts, an architect, first called his game Lexiko, then Criss Cross Words.",
+            "src": "en.wikipedia.org/wiki/Bingo_(Scrabble) (50-point bonus); en.wikipedia.org/wiki/Alfred_Mosher_Butts (architect, Lexiko, Criss Cross Words)"
+          },
+          {
+            "value": 300,
+            "q": "Trivial Pursuit was dreamed up in 1979 by two journalists from which country?",
+            "options": [
+              "England",
+              "United States",
+              "Canada",
+              "Australia"
+            ],
+            "answer": 2,
+            "fact": "Chris Haney and Scott Abbott worked out the basic idea in a few hours one December day in Montreal.",
+            "src": "thecanadianencyclopedia.ca/en/article/trivial-pursuit: devised 15 Dec 1979, Haney (Montreal Gazette) and Abbott (Canadian Press), concept in a few hours"
+          },
+          {
+            "value": 400,
+            "q": "The hit board game Catan was first published in 1995 in which country?",
+            "options": [
+              "Netherlands",
+              "Denmark",
+              "Austria",
+              "Germany"
+            ],
+            "answer": 3,
+            "fact": "Designer Klaus Teuber was working as a dental technician when he created it.",
+            "src": "en.wikipedia.org/wiki/Klaus_Teuber (dental technician, 1995, Spiel des Jahres); opinionatedgamers.com SdJ re-review: published 1995 by Kosmos"
+          }
+        ]
+      },
+      {
+        "name": "Cards & Puzzles",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In a standard Sudoku, each row, column and box must hold which numbers?",
+            "options": [
+              "0 through 8",
+              "1 through 9",
+              "1 through 10",
+              "0 through 9"
+            ],
+            "answer": 1,
+            "fact": "The modern puzzle first ran in a 1979 Dell magazine as 'Number Place'; Japan's Nikoli later named it Sudoku.",
+            "src": "en.wikipedia.org/wiki/Sudoku: Garns' puzzle published 1979 by Dell as Number Place; 1890s French precursors; Nikoli (Maki Kaji) named it 1984/1986"
+          },
+          {
+            "value": 200,
+            "q": "In Wordle, how many guesses do you get to find the hidden five-letter word?",
+            "options": [
+              "Six",
+              "Five",
+              "Eight",
+              "Seven"
+            ],
+            "answer": 0,
+            "fact": "Creator Josh Wardle named it as a play on his own surname; The New York Times bought it in 2022.",
+            "src": "en.wikipedia.org/wiki/Wordle: six attempts, NYT bought Jan 31 2022, name is a play on Wardle's surname"
+          },
+          {
+            "value": 300,
+            "q": "The card game UNO was invented in 1971 by Merle Robbins, who worked as what?",
+            "options": [
+              "Mail carrier",
+              "Barber",
+              "Pharmacist",
+              "Bus driver"
+            ],
+            "answer": 1,
+            "fact": "He made it to settle a family argument over Crazy Eights rules, then sold the rights for $50,000 plus royalties.",
+            "src": "en.wikipedia.org/wiki/Merle_Robbins: barber, Reading, Ohio; 1971; argument with son Ray over Crazy Eights; 1972 sold to International Games for $50,000 plus 10 cents/game royalties"
+          },
+          {
+            "value": 400,
+            "q": "The earliest commercial jigsaw puzzles, sold in London in the 1760s, showed what?",
+            "options": [
+              "Royal portraits",
+              "Sailing ships",
+              "Maps",
+              "Farm animals"
+            ],
+            "answer": 2,
+            "fact": "Engraver John Spilsbury sold these 'dissected maps' as tools for teaching geography.",
+            "src": "en.wikipedia.org/wiki/John_Spilsbury_(cartographer): engraver/cartographer, 1766, world map cut by country, 'Dissected Maps' to teach geography, 'almost certainly the earliest commercial producer' (Mme de Beaumont's 1759 wooden maps were also maps)"
+          }
+        ]
+      },
+      {
+        "name": "Press Start",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Every falling piece in Tetris is made from how many squares?",
+            "options": [
+              "Three",
+              "Five",
+              "Four",
+              "Six"
+            ],
+            "answer": 2,
+            "fact": "Alexey Pajitnov created it at a Moscow computer center; the name blends 'tetra,' Greek for four, with tennis.",
+            "src": "en.wikipedia.org/wiki/Tetris: tetrominoes (four blocks); Pajitnov at Dorodnitsyn Computing Center, Academy of Sciences; tetra + tennis; sources differ on 1984 vs 1985, so year dropped"
+          },
+          {
+            "value": 200,
+            "q": "In Mario Kart, the dreaded blue Spiny Shell homes in on which racer?",
+            "options": [
+              "Whoever is in first",
+              "Whoever is in last",
+              "The nearest racer",
+              "Whoever is in second"
+            ],
+            "answer": 0,
+            "fact": "The blue shell made its debut in Mario Kart 64, first released in Japan in 1996.",
+            "src": "mariowiki.com/Spiny_Shell_(blue): targets the leader, first appears in Mario Kart 64; en.wikipedia.org/wiki/Blue_shell: Mario Kart 64 (1996)"
+          },
+          {
+            "value": 300,
+            "q": "In the 1980 arcade classic Pac-Man, what is the name of the red ghost?",
+            "options": [
+              "Pinky",
+              "Inky",
+              "Clyde",
+              "Blinky"
+            ],
+            "answer": 3,
+            "fact": "Creator Toru Iwatani has said a pizza missing a slice helped inspire Pac-Man's shape.",
+            "src": "en.wikipedia.org/wiki/Pac-Man: Blinky red; Iwatani pizza story, which he called only partly true (also the kanji for mouth); Japan May 1980"
+          },
+          {
+            "value": 400,
+            "q": "Minecraft's maker, the studio Mojang, was founded in which country?",
+            "options": [
+              "Norway",
+              "Sweden",
+              "Iceland",
+              "Denmark"
+            ],
+            "answer": 1,
+            "fact": "Microsoft bought his studio, Mojang, for $2.5 billion in 2014.",
+            "src": "Mojang Studios: founded 2009 in Stockholm, Sweden (en.wikipedia.org/wiki/Mojang_Studios); Microsoft bought Mojang for $2.5B in 2014. Reworded Nov 2026 to leave out the creator's name."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "monday-mixer-5",
+    "blurb": "Nicknames, the workbench and a few brain benders to start the week",
+    "categories": [
+      {
+        "name": "Also Known As",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which city is famously nicknamed 'The Big Apple'?",
+            "options": [
+              "Chicago",
+              "New York City",
+              "Boston",
+              "Philadelphia"
+            ],
+            "answer": 1,
+            "fact": "Sportswriter John J. Fitz Gerald helped popularize the name with a 1920s newspaper column.",
+            "src": "en.wikipedia.org/wiki/Big_Apple: Fitz Gerald, NY Morning Telegraph sportswriter, 1920s columns, 'Around the Big Apple' Feb 18 1924"
+          },
+          {
+            "value": 200,
+            "q": "Which nurse became known as 'The Lady with the Lamp'?",
+            "options": [
+              "Florence Nightingale",
+              "Clara Barton",
+              "Mary Seacole",
+              "Dorothea Dix"
+            ],
+            "answer": 0,
+            "fact": "She earned the name making nighttime rounds of hospital wards during the Crimean War.",
+            "src": "Textbook history (Nightingale at Scutari, Crimean War, night rounds with a lamp)"
+          },
+          {
+            "value": 300,
+            "q": "On The Mandalorian, the character fans nicknamed 'Baby Yoda' has what real name?",
+            "options": [
+              "Greedo",
+              "Groot",
+              "Grogu",
+              "Gizmo"
+            ],
+            "answer": 2,
+            "fact": "Ahsoka Tano reveals the name in the show's second season, which aired in 2020.",
+            "src": "en.wikipedia.org/wiki/Chapter_13:_The_Jedi: Ahsoka Tano learns his name is Grogu; season 2, Disney+ Nov 27 2020"
+          },
+          {
+            "value": 400,
+            "q": "Actor John Wayne got his famous nickname 'Duke' from what?",
+            "options": [
+              "A western film role",
+              "His college team",
+              "His childhood dog",
+              "A family title"
+            ],
+            "answer": 2,
+            "fact": "Wayne was born Marion Morrison in Winterset, Iowa, in 1907.",
+            "src": "en.wikipedia.org/wiki/John_Wayne: fireman called him 'Little Duke' after his Airedale Duke; born Marion Robert Morrison (often given as Marion Michael, so middle name dropped), Winterset, Iowa, May 26 1907"
+          }
+        ]
+      },
+      {
+        "name": "The Workbench",
+        "questions": [
+          {
+            "value": 100,
+            "q": "A Phillips screwdriver has a tip shaped like what?",
+            "options": [
+              "A flat blade",
+              "A square",
+              "A plus sign",
+              "A six-point star"
+            ],
+            "answer": 2,
+            "fact": "Square-drive screws are called Robertson screws, after Canadian inventor P. L. Robertson.",
+            "src": "en.wikipedia.org/wiki/P._L._Robertson: Canadian inventor; square-socket drive 'often called the Robertson drive'"
+          },
+          {
+            "value": 200,
+            "q": "On sandpaper, what does a higher grit number such as 220 tell you?",
+            "options": [
+              "Coarser, rougher grit",
+              "Finer, smoother grit",
+              "Thicker paper backing",
+              "It's waterproof"
+            ],
+            "answer": 1,
+            "fact": "Grit numbers trace back to the mesh screens once used to sort abrasive grains by size.",
+            "src": "seriousgrit.com 'what do the numbers mean in sandpaper': higher = finer; grains historically sorted by woven wire screens (80 mesh = 80 openings per inch), now FEPA/CAMI sieve analysis"
+          },
+          {
+            "value": 300,
+            "q": "A standard 'two-by-four' board actually measures about how many inches?",
+            "options": [
+              "2 x 4",
+              "1.75 x 3.75",
+              "1 x 3",
+              "1.5 x 3.5"
+            ],
+            "answer": 3,
+            "fact": "It starts near 2 by 4 inches when rough-sawn, then shrinks as it is dried and planed smooth.",
+            "src": "hansenpolebuildings.com lumber-size: modern dry 2x4 is 1-1/2 x 3-1/2; rough-sawn was about 2 x 4; planing and drying shrink it; older planed size 1-5/8 x 3-5/8 (not an option)"
+          },
+          {
+            "value": 400,
+            "q": "In nail sizes such as '16d,' what does the 'd' stand for?",
+            "options": [
+              "Penny",
+              "Diameter",
+              "Depth",
+              "Dozen"
+            ],
+            "answer": 0,
+            "fact": "The 'd' is the old British symbol for a penny, which comes from the denarius, a Roman coin.",
+            "src": "extremehowto.com 'why are nails designated in penny sizes' (d = penny, from denarius); worldwidewords.org qa-six2 (d = pre-decimal penny, from Latin denarius)"
+          }
+        ]
+      },
+      {
+        "name": "Think It Through",
+        "questions": [
+          {
+            "value": 100,
+            "q": "A drawer holds only black and white socks. How many must you grab in the dark to be sure of a matching pair?",
+            "options": [
+              "2",
+              "3",
+              "4",
+              "5"
+            ],
+            "answer": 1,
+            "fact": "It's the pigeonhole principle: with two colors, the third sock must match one of the first two.",
+            "src": "Logic, solved independently: 2 can be one of each; the 3rd must match one (pigeonhole). 'Matching' added so 2 can't be argued"
+          },
+          {
+            "value": 200,
+            "q": "Ferry a wolf, goat and cabbage over a river, one per trip. Never leave the goat with either. What goes first?",
+            "options": [
+              "The wolf",
+              "The goat",
+              "The cabbage",
+              "Nothing"
+            ],
+            "answer": 1,
+            "fact": "Versions of this river-crossing puzzle appear in a collection linked to Alcuin of York, around the year 800.",
+            "src": "Solved independently: wolf first leaves goat+cabbage, cabbage first leaves wolf+goat, crossing empty leaves both; only goat works. en.wikipedia.org/wiki/Wolf,_goat_and_cabbage_problem: earliest in Propositiones ad Acuendos Juvenes, linked to Alcuin, 9th c."
+          },
+          {
+            "value": 300,
+            "q": "A bat and ball cost $1.10 in total. The bat costs $1.00 more than the ball. How much is the ball?",
+            "options": [
+              "10 cents",
+              "15 cents",
+              "5 cents",
+              "1 cent"
+            ],
+            "answer": 2,
+            "fact": "The quick gut answer, 10 cents, is the most common wrong reply to this well-known puzzle.",
+            "src": "Solved: ball x, bat x+1.00, 2x+1.00=1.10, x=0.05 (10 cents gives total 1.20). Most common wrong answer 10 cents: Judgment and Decision Making 2019 (dlab.sauder.ubc.ca jdm181112) citing Frederick 2005"
+          },
+          {
+            "value": 400,
+            "q": "What letter comes next in this series: O, T, T, F, F, S, S, ...?",
+            "options": [
+              "N",
+              "T",
+              "S",
+              "E"
+            ],
+            "answer": 3,
+            "fact": "Each letter starts a counting word: One, Two, Three, Four, Five, Six, Seven... so Eight is next.",
+            "src": "Solved: initials of One..Seven, next Eight. No other option fits a rule (N is Nine, after E)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "monday-mixer-6",
+    "blurb": "Solstice week: backyard birds, maps and winter garden know-how",
+    "categories": [
+      {
+        "name": "For the Birds",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Hummingbirds get their name from what?",
+            "options": [
+              "Their soft, low song",
+              "The hum of their wings",
+              "The flowers they visit",
+              "Their nesting calls"
+            ],
+            "answer": 1,
+            "fact": "Hummingbirds live only in the Americas, and the rufous hummingbird nests as far north as Alaska.",
+            "src": "fs.usda.gov Hummingbird Guide AK: 'Hummingbirds only occur in the Americas'; rufous hummingbirds nest in Alaska. Name from wing hum is textbook"
+          },
+          {
+            "value": 200,
+            "q": "In the Peanuts comic strip, what is the name of Snoopy's little yellow bird friend?",
+            "options": [
+              "Tweety",
+              "Woody",
+              "Woodstock",
+              "Iago"
+            ],
+            "answer": 2,
+            "fact": "Charles Schulz named him after the 1969 Woodstock music festival.",
+            "src": "en.wikipedia.org/wiki/Woodstock_(Peanuts): first appeared 1966, named June 22 1970, named after the 1969 festival (Schulz interviews)"
+          },
+          {
+            "value": 300,
+            "q": "In Disney's The Lion King, Zazu the royal adviser is what kind of bird?",
+            "options": [
+              "Toucan",
+              "Parrot",
+              "Stork",
+              "Hornbill"
+            ],
+            "answer": 3,
+            "fact": "Rowan Atkinson voiced Zazu in 1994, and John Oliver took the role in the 2019 remake.",
+            "src": "mylionking.com/wiki/Zazu: red-billed hornbill, Rowan Atkinson 1994; CBS News 'John Oliver joins Lion King reboot' (2019 remake)"
+          },
+          {
+            "value": 400,
+            "q": "A blue jay's feathers look blue because of what?",
+            "options": [
+              "How they scatter light",
+              "A blue pigment",
+              "Pigment from berries",
+              "Oils from preening"
+            ],
+            "answer": 0,
+            "fact": "Crush a blue jay feather and the blue vanishes, because the tiny structures that scatter the light are destroyed.",
+            "src": "bangordailynews.com 2014-01-10 'blue jays blueness is a trick of light': structural color over melanin; crushing the feather makes the blue disappear"
+          }
+        ]
+      },
+      {
+        "name": "Which Way?",
+        "questions": [
+          {
+            "value": 100,
+            "q": "The phrase 'Never Eat Soggy Waffles' helps people remember what?",
+            "options": [
+              "Planet order",
+              "Compass directions",
+              "Rainbow colors",
+              "Musical notes"
+            ],
+            "answer": 1,
+            "fact": "A version popular in Britain, 'Never Eat Shredded Wheat,' gives the same clockwise N-E-S-W order.",
+            "src": "Common mnemonic; UK school geography pages (scholeselmet.leeds.sch.uk) use 'Never Eat Shredded Wheat'"
+          },
+          {
+            "value": 200,
+            "q": "On a topographic map, what do contour lines bunched tightly together mean?",
+            "options": [
+              "Flat ground",
+              "A lake",
+              "Steep ground",
+              "Thick forest"
+            ],
+            "answer": 2,
+            "fact": "On a standard USGS 1:24,000 topo map, one inch on paper equals 2,000 feet on the ground.",
+            "src": "Textbook map reading; 24,000 in / 12 = 2,000 ft (computed); USGS 7.5-minute quads use 1:24,000"
+          },
+          {
+            "value": 300,
+            "q": "On the December solstice, the noon sun is directly overhead along which line?",
+            "options": [
+              "Tropic of Cancer",
+              "The Equator",
+              "Arctic Circle",
+              "Tropic of Capricorn"
+            ],
+            "answer": 3,
+            "fact": "That's why the December solstice brings the longest day of the year to the Southern Hemisphere.",
+            "src": "Textbook astronomy/geography"
+          },
+          {
+            "value": 400,
+            "q": "Greenland looks about as big as Africa on a Mercator map. Africa is really about how many times bigger?",
+            "options": [
+              "About 3 times",
+              "About 6 times",
+              "About 14 times",
+              "About 30 times"
+            ],
+            "answer": 2,
+            "fact": "Gerardus Mercator designed the projection in 1569 to help sailors steer straight courses.",
+            "src": "Areas: Africa ~30.37M sq km, Greenland ~2.166M sq km, ratio 14.0 (computed); Mercator 1569 is textbook"
+          }
+        ]
+      },
+      {
+        "name": "Potting Shed",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Trees that drop all their leaves every autumn are called what?",
+            "options": [
+              "Evergreen",
+              "Deciduous",
+              "Coniferous",
+              "Annual"
+            ],
+            "answer": 1,
+            "fact": "The larch is a cone-bearing tree that turns gold and drops its needles every fall.",
+            "src": "Textbook botany (larch is a deciduous conifer)"
+          },
+          {
+            "value": 200,
+            "q": "The poinsettia, a popular December plant, is native to which country?",
+            "options": [
+              "Brazil",
+              "Spain",
+              "Mexico",
+              "Peru"
+            ],
+            "answer": 2,
+            "fact": "It's named for Joel Poinsett, the first US minister to Mexico, who sent it north in the 1820s.",
+            "src": "nbcnewyork.com poinsettia history: native to Mexico (Pacific coast, into Central America); Joel Poinsett, first US minister to Mexico, found it 1828 and sent clippings home to South Carolina"
+          },
+          {
+            "value": 300,
+            "q": "On holly, which plants grow the bright red berries?",
+            "options": [
+              "Only male plants",
+              "Only shaded plants",
+              "Only the oldest plants",
+              "Only female plants"
+            ],
+            "answer": 3,
+            "fact": "Most hollies need a male plant nearby so its pollen can reach the berry-bearing females.",
+            "src": "gardeningknowhow.com male vs female holly: 'all females produce berries. Males do not'; a male must be close by (Chinese holly can berry without one, still female)"
+          },
+          {
+            "value": 400,
+            "q": "USDA plant hardiness zones are based on what?",
+            "options": [
+              "Coldest winter temperatures",
+              "Average yearly rainfall",
+              "Summer high temperatures",
+              "Length of growing season"
+            ],
+            "answer": 0,
+            "fact": "Each zone spans 10 degrees Fahrenheit and is split into 'a' and 'b' halves of 5 degrees.",
+            "src": "extension.purdue.edu 2023 USDA map story: average annual extreme minimum winter temperature; 13 zones of 10 F; a/b half zones of 5 F"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fireside-mixer",
+    "blurb": "A cozy, easy mix by the fire: home comforts, famous pairs and letters",
+    "categories": [
+      {
+        "name": "Hearth & Home",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What do you call the shelf above a fireplace?",
+            "options": [
+              "Hearth",
+              "Mantel",
+              "Grate",
+              "Flue"
+            ],
+            "answer": 1,
+            "fact": "The hearth is the fireproof floor of the fireplace, often reaching out into the room.",
+            "src": "Textbook household vocabulary"
+          },
+          {
+            "value": 200,
+            "q": "A classic quilt is made of how many layers?",
+            "options": [
+              "Two",
+              "Four",
+              "Three",
+              "Five"
+            ],
+            "answer": 2,
+            "fact": "The soft middle layer, tucked between the top and the backing, is called batting.",
+            "src": "Textbook quilting (top, batting, backing)"
+          },
+          {
+            "value": 300,
+            "q": "On a laundry care tag, what does a square with a circle inside mean?",
+            "options": [
+              "Machine wash",
+              "Dry clean",
+              "Hand wash",
+              "Tumble dry"
+            ],
+            "answer": 3,
+            "fact": "A plain circle means dry clean, and a triangle covers bleach instructions.",
+            "src": "expertreviews.co.uk laundry symbols: circle in square = tumble dry; plain circle = dry cleaning; triangle = bleach"
+          },
+          {
+            "value": 400,
+            "q": "What is the metal flap that closes off a chimney when the fire is out?",
+            "options": [
+              "Andiron",
+              "Damper",
+              "Grate",
+              "Firebox"
+            ],
+            "answer": 1,
+            "fact": "Andirons are the metal stands that lift logs so air can flow underneath them.",
+            "src": "Textbook fireplace vocabulary"
+          }
+        ]
+      },
+      {
+        "name": "Perfect Pairs",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In the comic strip Calvin and Hobbes, Hobbes is a stuffed what?",
+            "options": [
+              "Tiger",
+              "Lion",
+              "Bear",
+              "Leopard"
+            ],
+            "answer": 0,
+            "fact": "Bill Watterson named the pair after theologian John Calvin and philosopher Thomas Hobbes.",
+            "src": "en.wikipedia.org/wiki/Bill_Watterson: in The Complete Calvin and Hobbes he names the 16th-century theologian and 17th-century philosopher"
+          },
+          {
+            "value": 200,
+            "q": "Sonic the Hedgehog's two-tailed sidekick, Tails, is what kind of animal?",
+            "options": [
+              "Squirrel",
+              "Raccoon",
+              "Fox",
+              "Cat"
+            ],
+            "answer": 2,
+            "fact": "His full name is Miles 'Tails' Prower, a pun on 'miles per hour.'",
+            "src": "en.wikipedia.org/wiki/Tails_(Sonic_the_Hedgehog): fox; 'Miles Prower is a pun on miles per hour'"
+          },
+          {
+            "value": 300,
+            "q": "In the classic cartoon, Rocky the flying squirrel's best pal Bullwinkle is what animal?",
+            "options": [
+              "Elk",
+              "Moose",
+              "Reindeer",
+              "Bison"
+            ],
+            "answer": 1,
+            "fact": "The pair hailed from the fictional town of Frostbite Falls, Minnesota.",
+            "src": "en.wikipedia.org/wiki/Bullwinkle_J._Moose: moose; Frostbite Falls, Minnesota (spoof of International Falls)"
+          },
+          {
+            "value": 400,
+            "q": "Which comedy duo made the baseball routine 'Who's on First?' famous?",
+            "options": [
+              "Laurel and Hardy",
+              "Martin and Lewis",
+              "Burns and Allen",
+              "Abbott and Costello"
+            ],
+            "answer": 3,
+            "fact": "Bud Abbott played the straight man to Lou Costello, and they performed the bit for years on radio and film.",
+            "src": "baseballhall.org 'Who's on First': Abbott the straight man; Kate Smith Hour radio 1938; film The Naughty Nineties 1945"
+          }
+        ]
+      },
+      {
+        "name": "Letter Perfect",
+        "questions": [
+          {
+            "value": 100,
+            "q": "'The quick brown fox jumps over the lazy dog' is famous for containing what?",
+            "options": [
+              "No repeated letters",
+              "Only one-syllable words",
+              "Every letter of the alphabet",
+              "Exactly 26 words"
+            ],
+            "answer": 2,
+            "fact": "A sentence that uses every letter is called a pangram, and typists have practiced on this one for generations.",
+            "src": "Checked with python: contains all 26 letters; has repeats; 'over' and 'lazy' are two syllables; 9 words"
+          },
+          {
+            "value": 200,
+            "q": "Which letter is used most often in written English?",
+            "options": [
+              "A",
+              "T",
+              "E",
+              "S"
+            ],
+            "answer": 2,
+            "fact": "In Morse code, E gets the shortest signal of all: a single dot.",
+            "src": "Letter frequency textbook; cs4fn.org Alfred Vail: E is a single dot as the most common letter (code letters largely Vail's work, so Morse credit dropped)"
+          },
+          {
+            "value": 300,
+            "q": "On a standard phone keypad, which number key also carries the letters P, Q, R and S?",
+            "options": [
+              "6",
+              "7",
+              "8",
+              "9"
+            ],
+            "answer": 1,
+            "fact": "On many older US phones, the 7 key showed only P, R and S, with no Q.",
+            "src": "en.wikipedia.org/wiki/Telephone_keypad: modern 7 = PQRS, 9 = WXYZ; older phones had 7 = PRS, 9 = WXY ('classic' changed to 'standard')"
+          },
+          {
+            "value": 400,
+            "q": "Which letter of the alphabet appears in none of the 50 US state names?",
+            "options": [
+              "Z",
+              "X",
+              "J",
+              "Q"
+            ],
+            "answer": 3,
+            "fact": "J appears in just one state name, New Jersey, and Z only in Arizona.",
+            "src": "Checked with python over all 50 state names: q absent; j only New Jersey; z only Arizona; x in Texas and New Mexico"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "monday-mixer-7",
+    "blurb": "Trains and planes, decade guessing and America's national parks",
+    "categories": [
+      {
+        "name": "Trains & Planes",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In Harry Potter, the Hogwarts Express leaves London from which platform?",
+            "options": [
+              "7 1/2",
+              "9 3/4",
+              "10 1/2",
+              "12 3/4"
+            ],
+            "answer": 1,
+            "fact": "London's King's Cross station has a 'Platform 9 3/4' sign with a luggage cart half-vanished into the wall.",
+            "src": "Books/films textbook; atlasobscura.com/places/platform-9-3-4: marker with a baggage trolley disappearing into the wall at King's Cross"
+          },
+          {
+            "value": 200,
+            "q": "Which Boeing airliner earned the nickname 'Jumbo Jet'?",
+            "options": [
+              "Boeing 707",
+              "Boeing 727",
+              "Boeing 747",
+              "Boeing 777"
+            ],
+            "answer": 2,
+            "fact": "Its famous hump holds the cockpit and an upper deck, which early airlines used as a lounge.",
+            "src": "insideflyer.com '747 upper deck evolved from lounge to cargo asset': cockpit above main deck; original -100s used the upper deck as lounges"
+          },
+          {
+            "value": 300,
+            "q": "On a plane or a ship, which side is called 'port'?",
+            "options": [
+              "Left",
+              "Right",
+              "Front",
+              "Rear"
+            ],
+            "answer": 0,
+            "fact": "Planes carry a red light on the left wingtip and a green one on the right, just like ships.",
+            "src": "en.wikipedia.org/wiki/Navigation_light: red on left wingtip, green on right, following marine convention (red port)"
+          },
+          {
+            "value": 400,
+            "q": "Howard Hughes' giant 'Spruce Goose' flying boat was built mostly from what wood?",
+            "options": [
+              "Spruce",
+              "Balsa",
+              "Oak",
+              "Birch"
+            ],
+            "answer": 3,
+            "fact": "It flew only once, in 1947, for about a mile at roughly 70 feet above the water.",
+            "src": "en.wikipedia.org/wiki/Hughes_H-4_Hercules: 'made almost entirely of birch' (Duramold); only flight Nov 2 1947, about 1 mile, about 70 ft up, 26 seconds"
+          }
+        ]
+      },
+      {
+        "name": "Decade Detective",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Disneyland first opened its gates in California in which decade?",
+            "options": [
+              "1930s",
+              "1950s",
+              "1960s",
+              "1940s"
+            ],
+            "answer": 1,
+            "fact": "Walt Disney World in Florida followed in 1971.",
+            "src": "AP 'This Day in History July 17' (wtap.com 2026-07-17): Disneyland opened July 17 1955 (construction began 1954); Walt Disney World opened Oct 1 1971"
+          },
+          {
+            "value": 200,
+            "q": "The first US transcontinental railroad was completed in which decade?",
+            "options": [
+              "1860s",
+              "1840s",
+              "1880s",
+              "1890s"
+            ],
+            "answer": 0,
+            "fact": "A ceremonial golden spike marked its completion at Promontory Summit, Utah.",
+            "src": "Textbook US history: golden spike, Promontory Summit, May 10 1869; construction 1863-69, all inside the 1860s"
+          },
+          {
+            "value": 300,
+            "q": "AT&T's toll-free '800' phone numbers were first introduced in which decade?",
+            "options": [
+              "1950s",
+              "1980s",
+              "1960s",
+              "1940s"
+            ],
+            "answer": 2,
+            "fact": "Toll-free numbers that spell words with keypad letters are called phonewords; they boomed in the 1980s and 1990s.",
+            "src": "en.wikipedia.org/wiki/Phoneword: 'Toll-free numbering, as originally introduced by AT&T in 1967'; phonewords grew in the 1980s and 1990s"
+          },
+          {
+            "value": 400,
+            "q": "The US 'Forever' stamp, good for first-class mail even after prices rise, debuted in which decade?",
+            "options": [
+              "1980s",
+              "1990s",
+              "2010s",
+              "2000s"
+            ],
+            "answer": 3,
+            "fact": "The first Forever stamp, issued in April 2007, pictured the Liberty Bell.",
+            "src": "news.usps.com 2024-04-12 'One for the ages': first Forever stamp, the Liberty Bell, issued April 12 2007"
+          }
+        ]
+      },
+      {
+        "name": "Park Rangers",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Cartoon character Yogi Bear's 'Jellystone Park' is a spoof of which national park?",
+            "options": [
+              "Yosemite",
+              "Yellowstone",
+              "Glacier",
+              "Grand Teton"
+            ],
+            "answer": 1,
+            "fact": "Yogi Bear debuted in 1958 on The Huckleberry Hound Show and got his own series in 1961.",
+            "src": "centerofthewest.org 2017-01-07 'Yellowstone, Jellystone, Yogi Bear': Jellystone inspired by Yellowstone; Yogi debuted Oct 1958 on The Huckleberry Hound Show, own show 1961"
+          },
+          {
+            "value": 200,
+            "q": "Which animal appears on the National Park Service's arrowhead emblem?",
+            "options": [
+              "Elk",
+              "Grizzly bear",
+              "Bald eagle",
+              "Bison"
+            ],
+            "answer": 3,
+            "fact": "The emblem also shows a sequoia tree, mountains and water; the arrowhead shape stands for history.",
+            "src": "nps.gov/mana 'The National Park Service Arrowhead': sequoia and bison (plants, wildlife), mountains and water (scenery, recreation), arrowhead (historical and archeological values)"
+          },
+          {
+            "value": 300,
+            "q": "The giant tree named General Sherman grows in which national park?",
+            "options": [
+              "Sequoia",
+              "Redwood",
+              "Yosemite",
+              "Olympic"
+            ],
+            "answer": 0,
+            "fact": "It's a giant sequoia, and its trunk measures more than 100 feet around at the ground.",
+            "src": "nps.gov/seki/learn/nature/sherman.htm: north end of Giant Forest (Sequoia NP); circumference at ground 102.6 ft. Kings Canyon dropped (NPS runs them as one unit)"
+          },
+          {
+            "value": 400,
+            "q": "Theodore Roosevelt National Park is in which state?",
+            "options": [
+              "South Dakota",
+              "Montana",
+              "North Dakota",
+              "Wyoming"
+            ],
+            "answer": 2,
+            "fact": "Roosevelt ran cattle ranches in the Dakota Badlands in the 1880s, before he became president.",
+            "src": "home.nps.gov/thro 'Theodore Roosevelt the Rancher': entered ranching 1883, Maltese Cross and Elkhorn ranches near Medora; park address Medora, ND"
+          }
+        ]
+      }
+    ]
+  }
+]

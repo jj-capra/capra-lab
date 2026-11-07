@@ -1,0 +1,710 @@
+[
+  {
+    "id": "ballpark",
+    "blurb": "MLB rules, records and ballparks from the 1880s to the pitch clock",
+    "categories": [
+      {
+        "name": "By the Rules",
+        "questions": [
+          {
+            "value": 100,
+            "q": "How many balls does it take for a batter to draw a walk?",
+            "options": [
+              "3",
+              "4",
+              "5",
+              "6"
+            ],
+            "answer": 1,
+            "fact": "In 1880 a walk took eight balls, and the modern count of four arrived in 1889.",
+            "src": "Checked: Wikipedia, Base on balls (1880 NL nine to eight; 1889 four)"
+          },
+          {
+            "value": 200,
+            "q": "How far apart are the bases on a Major League Baseball diamond?",
+            "options": [
+              "60 feet",
+              "80 feet",
+              "100 feet",
+              "90 feet"
+            ],
+            "answer": 3,
+            "fact": "The pitching distance of 60 feet, 6 inches dates to 1893, when a rubber slab replaced the pitcher's box.",
+            "src": "Checked: textbook 90-ft bases; mlb.com, How baseball settled on 60 feet, 6 inches (1893, slab replaced box)"
+          },
+          {
+            "value": 300,
+            "q": "In baseball scorekeeping, which position number is given to the shortstop?",
+            "options": [
+              "4",
+              "5",
+              "6",
+              "7"
+            ],
+            "answer": 2,
+            "fact": "That's why a double play that goes shortstop to second base to first is scored 6-4-3.",
+            "src": "Checked: textbook scorekeeping (6 = SS; 6-4-3 double play)"
+          },
+          {
+            "value": 400,
+            "q": "When MLB's pitch clock debuted in 2023, how many seconds did a pitcher get with the bases empty?",
+            "options": [
+              "15",
+              "12",
+              "18",
+              "20"
+            ],
+            "answer": 0,
+            "fact": "With runners on base the limit was 20 seconds, and it was cut to 18 seconds in 2024.",
+            "src": "Checked: mlb.com glossary, Pitch Timer (2023: 15 empty / 20 runners; 2024: 18 with runners)"
+          }
+        ]
+      },
+      {
+        "name": "Record Book",
+        "questions": [
+          {
+            "value": 100,
+            "q": "MLB's yearly award for the best pitcher in each league is named after whom?",
+            "options": [
+              "Walter Johnson",
+              "Cy Young",
+              "Christy Mathewson",
+              "Satchel Paige"
+            ],
+            "answer": 1,
+            "fact": "From 1956 to 1966, only one Cy Young Award was given each year, covering both leagues.",
+            "src": "Checked: Wikipedia, Cy Young Award (first 1956; one MLB-wide award through 1966; split 1967)"
+          },
+          {
+            "value": 200,
+            "q": "Shohei Ohtani won the 2021 American League MVP award playing for which team?",
+            "options": [
+              "Los Angeles Dodgers",
+              "Seattle Mariners",
+              "Los Angeles Angels",
+              "New York Yankees"
+            ],
+            "answer": 2,
+            "fact": "The vote was unanimous: Ohtani received all 30 first-place votes.",
+            "src": "Checked: NBC LA, WTOP, CBS Sports, mlb.com headlines (Angels' Ohtani unanimous 2021 AL MVP)"
+          },
+          {
+            "value": 300,
+            "q": "In 2016, the Chicago Cubs won their first World Series title since which year?",
+            "options": [
+              "1908",
+              "1918",
+              "1932",
+              "1945"
+            ],
+            "answer": 0,
+            "fact": "Game 7 against Cleveland went 10 innings, with a 17-minute rain delay before the 10th.",
+            "src": "Checked: WABE/NPR (first title since 1908); mlb.com, Game 7 delayed by rain entering 10th (17 min, after 9th)"
+          },
+          {
+            "value": 400,
+            "q": "Joe DiMaggio's 56-game hitting streak and Ted Williams' .406 season both came in which year?",
+            "options": [
+              "1927",
+              "1938",
+              "1947",
+              "1941"
+            ],
+            "answer": 3,
+            "fact": "Williams entered the final day at .3995 but played a doubleheader anyway and went 6-for-8.",
+            "src": "Checked: baseballhall.org, Ted Williams goes 6-for-8 (.3995 entering final day, .406); DiMaggio streak 1941"
+          }
+        ]
+      },
+      {
+        "name": "Famous Parks",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which ballpark's towering left-field wall is nicknamed the Green Monster?",
+            "options": [
+              "Wrigley Field",
+              "Yankee Stadium",
+              "Fenway Park",
+              "Camden Yards"
+            ],
+            "answer": 2,
+            "fact": "Ads covered the wall until 1947, when they came down and it was painted green.",
+            "src": "Checked: mlb.com Red Sox museum, Features of Fenway 1947 (ads removed, wall painted green)"
+          },
+          {
+            "value": 200,
+            "q": "The outfield walls at Chicago's Wrigley Field are famously covered in what?",
+            "options": [
+              "Ivy",
+              "Ad banners",
+              "Painted murals",
+              "Pennant flags"
+            ],
+            "answer": 0,
+            "fact": "The ivy went up in September 1937, with bittersweet vines mixed in to help it fill in faster.",
+            "src": "Checked: mlb.com, Fact vs. Fiction: Origin of Wrigley's ivy (Sept 4, 1937; Boston ivy plus Japanese bittersweet)"
+          },
+          {
+            "value": 300,
+            "q": "Chase Field, which opened in 1998 with a swimming pool beyond the outfield, was built for which team?",
+            "options": [
+              "Texas Rangers",
+              "Arizona Diamondbacks",
+              "Tampa Bay Rays",
+              "Florida Marlins"
+            ],
+            "answer": 1,
+            "fact": "It was the first US stadium with a retractable roof over a natural grass field.",
+            "src": "Checked: Wikipedia, Chase Field (opened Mar 31, 1998 for Diamondbacks; pool right-center; first US retractable roof over natural grass)"
+          },
+          {
+            "value": 400,
+            "q": "Willie Mays made his famous over-the-shoulder catch in the 1954 World Series at which ballpark?",
+            "options": [
+              "Ebbets Field",
+              "Yankee Stadium",
+              "Cleveland Stadium",
+              "Polo Grounds"
+            ],
+            "answer": 3,
+            "fact": "He robbed Cleveland's Vic Wertz in Game 1, and the New York Giants went on to sweep the Series.",
+            "src": "Checked: Wikipedia, 1954 World Series (Game 1 at Polo Grounds; Vic Wertz; Giants swept)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "puck-drop",
+    "blurb": "Stanley Cup lore, NHL legends and the rules of the rink",
+    "categories": [
+      {
+        "name": "Rink Rules",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In hockey, what is it called when one player scores three goals in a game?",
+            "options": [
+              "Hat trick",
+              "Triple play",
+              "Grand slam",
+              "Turkey"
+            ],
+            "answer": 0,
+            "fact": "It comes from cricket: in 1858, fans bought a hat for a bowler who took three wickets with three straight balls.",
+            "src": "Checked: Wikipedia, Hat-trick (H.H. Stephenson 1858, three wickets in three balls, hat from collection; in print 1865)"
+          },
+          {
+            "value": 200,
+            "q": "A minor penalty in the NHL sends a player to the penalty box for how long?",
+            "options": [
+              "1 minute",
+              "2 minutes",
+              "3 minutes",
+              "5 minutes"
+            ],
+            "answer": 1,
+            "fact": "After the 1955-56 season, the NHL let a power-play goal end a minor early, because Montreal kept scoring in bunches.",
+            "src": "Checked: Wikipedia, Penalty (ice hockey) (minor 2 min; rule changed after 1955-56 because of Montreal)"
+          },
+          {
+            "value": 300,
+            "q": "Shooting the puck from your own half across the other team's goal line, untouched, is called what?",
+            "options": [
+              "Offside",
+              "Two-line pass",
+              "Cross-checking",
+              "Icing"
+            ],
+            "answer": 3,
+            "fact": "A team that is shorthanded because of a penalty is allowed to ice the puck.",
+            "src": "Checked: Wikipedia, Icing (ice hockey) (definition; waved off for shorthanded team)"
+          },
+          {
+            "value": 400,
+            "q": "When the NHL returned from its 2004-05 lockout, what did it add to settle tied games?",
+            "options": [
+              "4-on-4 overtime",
+              "3-on-3 overtime",
+              "The shootout",
+              "A second overtime"
+            ],
+            "answer": 2,
+            "fact": "Before then, regular-season games still tied after overtime simply ended in a tie.",
+            "src": "Checked: Wikipedia, Overtime (ice hockey) (shootout 2005-06; ties 1983-2004; 3-on-3 2015-16)"
+          }
+        ]
+      },
+      {
+        "name": "The Cup",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Lord Stanley bought hockey's Stanley Cup in 1892 while serving as governor general of which country?",
+            "options": [
+              "Australia",
+              "Canada",
+              "New Zealand",
+              "Ireland"
+            ],
+            "answer": 1,
+            "fact": "He paid 10 guineas for the silver bowl, about $48.67 at the time.",
+            "src": "Checked: Wikipedia, Stanley Cup (Governor General of Canada; bought 1892; 10 guineas = US$48.67)"
+          },
+          {
+            "value": 200,
+            "q": "Which team won five straight Stanley Cups from 1956 to 1960?",
+            "options": [
+              "Detroit Red Wings",
+              "Toronto Maple Leafs",
+              "Montreal Canadiens",
+              "New York Islanders"
+            ],
+            "answer": 2,
+            "fact": "Coach Toe Blake was behind the bench for all five of those championships.",
+            "src": "Checked: Hockey Hall of Fame, Montreal Canadiens 1955-56 to 1959-60 (Toe Blake coached all five)"
+          },
+          {
+            "value": 300,
+            "q": "In 2018, which team won its first Stanley Cup by beating the Vegas Golden Knights in the Final?",
+            "options": [
+              "Washington Capitals",
+              "St. Louis Blues",
+              "Pittsburgh Penguins",
+              "Tampa Bay Lightning"
+            ],
+            "answer": 0,
+            "fact": "Captain Alex Ovechkin won the Conn Smythe Trophy as the playoff MVP.",
+            "src": "Checked: CBS News, CBS Sports, Globe and Mail (Capitals' first Cup, Game 5 vs Vegas; Ovechkin Conn Smythe)"
+          },
+          {
+            "value": 400,
+            "q": "When the Stanley Cup's bottom band fills up with names, what happens to its top band?",
+            "options": [
+              "Melted down for a new band",
+              "Flipped and re-engraved",
+              "Given to the oldest team",
+              "Retired to the Hall of Fame"
+            ],
+            "answer": 3,
+            "fact": "The other bands each move up a spot, and a new blank band is added at the bottom.",
+            "src": "Checked: Wikipedia, Stanley Cup (top band retired to HHOF vault; bands slide up; new blank band)"
+          }
+        ]
+      },
+      {
+        "name": "Ice Legends",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which hockey legend was nicknamed 'Mr. Hockey'?",
+            "options": [
+              "Bobby Orr",
+              "Gordie Howe",
+              "Mario Lemieux",
+              "Bobby Hull"
+            ],
+            "answer": 1,
+            "fact": "He played pro hockey in six different decades, the last a single game in 1997 at age 69.",
+            "src": "Checked: history.com, Oct 3, 1997 (Howe, 69, one shift for Detroit Vipers; only pro in six decades)"
+          },
+          {
+            "value": 200,
+            "q": "In 1988, Wayne Gretzky was traded from Edmonton to which team?",
+            "options": [
+              "New York Rangers",
+              "St. Louis Blues",
+              "Detroit Red Wings",
+              "Los Angeles Kings"
+            ],
+            "answer": 3,
+            "fact": "Edmonton got Jimmy Carson, Martin Gelinas, three first-round picks and $15 million.",
+            "src": "Checked: nhl.com, This date in NHL history: Aug. 9 (Carson, Gelinas, three 1st-rounders, $15 million)"
+          },
+          {
+            "value": 300,
+            "q": "In 2015, Connor McDavid was drafted first overall by which team?",
+            "options": [
+              "Edmonton Oilers",
+              "Buffalo Sabres",
+              "Arizona Coyotes",
+              "Toronto Maple Leafs"
+            ],
+            "answer": 0,
+            "fact": "Edmonton won the draft lottery with 11.5% odds, landing its fourth No. 1 pick in six years.",
+            "src": "Checked: AP via abc7.com, Oilers win 2015 draft lottery (11.5% odds; No. 1 picks 2010, 2011, 2012, 2015)"
+          },
+          {
+            "value": 400,
+            "q": "Who was the first NHL player to score 50 goals in a single season?",
+            "options": [
+              "Bobby Hull",
+              "Bernie Geoffrion",
+              "Maurice Richard",
+              "Phil Esposito"
+            ],
+            "answer": 2,
+            "fact": "He scored No. 50 in the final game of the 1944-45 season, which was his 50th game.",
+            "src": "Checked: Wikipedia, 50 goals in 50 games (Richard, Mar 18, 1945, 50th and final game; Geoffrion second)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "the-beautiful-game",
+    "blurb": "World Cup glory, legendary clubs and the laws of the pitch",
+    "categories": [
+      {
+        "name": "Laws of the Game",
+        "questions": [
+          {
+            "value": 100,
+            "q": "How many players does each soccer team have on the field at once, including the goalkeeper?",
+            "options": [
+              "9",
+              "10",
+              "11",
+              "12"
+            ],
+            "answer": 2,
+            "fact": "Under the Laws of the Game, a match can't go on if a team is down to fewer than seven players.",
+            "src": "Checked: The FA, Laws of the Game Law 3 (max 11; may not start or continue with fewer than 7)"
+          },
+          {
+            "value": 200,
+            "q": "Video assistant referees (VAR) were first used at a men's World Cup in which year?",
+            "options": [
+              "2010",
+              "2014",
+              "2018",
+              "2022"
+            ],
+            "answer": 2,
+            "fact": "Goal-line technology made its World Cup debut four years earlier, in Brazil.",
+            "src": "Checked: FourFourTwo, When was VAR first used at the World Cup (2018); Quartz (goal-line tech debut 2014 Brazil)"
+          },
+          {
+            "value": 300,
+            "q": "Yellow and red cards were first used at the World Cup held in which year?",
+            "options": [
+              "1962",
+              "1966",
+              "1970",
+              "1974"
+            ],
+            "answer": 2,
+            "fact": "English referee Ken Aston came up with the idea while stopped at a London traffic light.",
+            "src": "Checked: Wikipedia, Ken Aston (Kensington High Street traffic light; cards first used 1970 World Cup)"
+          },
+          {
+            "value": 400,
+            "q": "How far is the penalty mark from the goal line on a soccer field?",
+            "options": [
+              "10 yards",
+              "12 yards",
+              "15 yards",
+              "18 yards"
+            ],
+            "answer": 1,
+            "fact": "Irish linen manufacturer William McCrum proposed the penalty kick, and it entered the Laws of the Game in 1891.",
+            "src": "Checked: Wikipedia, William McCrum (Irish linen manufacturer; proposed 1890, approved June 2, 1891; 12 yards)"
+          }
+        ]
+      },
+      {
+        "name": "World Cup",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which country hosted the 2010 World Cup, the first one held in Africa?",
+            "options": [
+              "South Africa",
+              "Nigeria",
+              "Egypt",
+              "Morocco"
+            ],
+            "answer": 0,
+            "fact": "Spain won its first World Cup there, beating the Netherlands on Andres Iniesta's extra-time goal.",
+            "src": "Checked: Wikipedia, 2010 FIFA World Cup final (Spain 1-0 aet, Iniesta 116', Spain's first title)"
+          },
+          {
+            "value": 200,
+            "q": "Which country won the 1966 World Cup on home soil?",
+            "options": [
+              "West Germany",
+              "England",
+              "Brazil",
+              "Italy"
+            ],
+            "answer": 1,
+            "fact": "Geoff Hurst scored three times in the final, the first hat trick ever in a World Cup final.",
+            "src": "Checked: TSN, Mbappe second to score hat trick in World Cup final (Hurst first, 1966)"
+          },
+          {
+            "value": 300,
+            "q": "Which country won the first FIFA Women's World Cup, held in China in 1991?",
+            "options": [
+              "Norway",
+              "Germany",
+              "China",
+              "United States"
+            ],
+            "answer": 3,
+            "fact": "Michelle Akers scored both US goals in a 2-1 final win over Norway.",
+            "src": "Checked: Wikipedia, 1991 FIFA Women's World Cup final (USA 2-1 Norway, Akers 20' and 78', Guangzhou)"
+          },
+          {
+            "value": 400,
+            "q": "The original World Cup trophy, awarded from 1930 to 1970, was named after whom?",
+            "options": [
+              "Henri Delaunay",
+              "Pierre de Coubertin",
+              "Joao Havelange",
+              "Jules Rimet"
+            ],
+            "answer": 3,
+            "fact": "It was first called Victory and was renamed in 1946 in honor of Rimet, the FIFA president who launched the tournament.",
+            "src": "Checked: Wikipedia, FIFA World Cup Trophy (first called Victory; renamed 1946 for Rimet; awarded 1930-1970)"
+          }
+        ]
+      },
+      {
+        "name": "Club Legends",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Lionel Messi played for which club from 2004 until his 2021 move to Paris Saint-Germain?",
+            "options": [
+              "Barcelona",
+              "Real Madrid",
+              "Valencia",
+              "Newell's Old Boys"
+            ],
+            "answer": 0,
+            "fact": "Barcelona's first promise to sign him, when he was 13, was famously written on a paper napkin.",
+            "src": "Checked: NPR/AP, Messi napkin contract (Dec 14, 2000, Carles Rexach, age 13)"
+          },
+          {
+            "value": 200,
+            "q": "Which club went unbeaten through the 2003-04 Premier League season, earning the name 'The Invincibles'?",
+            "options": [
+              "Chelsea",
+              "Manchester United",
+              "Liverpool",
+              "Arsenal"
+            ],
+            "answer": 3,
+            "fact": "They won 26 and drew 12 of their 38 league matches.",
+            "src": "Checked: premierleague.com, 2003/04 Season Review: Invincible Arsenal (26W 12D 0L)"
+          },
+          {
+            "value": 300,
+            "q": "Johan Cruyff and 'Total Football' led which Dutch club to three straight European Cups, 1971 to 1973?",
+            "options": [
+              "Ajax",
+              "Feyenoord",
+              "PSV Eindhoven",
+              "AZ Alkmaar"
+            ],
+            "answer": 0,
+            "fact": "Cruyff scored both goals in the 1972 final, a 2-0 win over Inter Milan.",
+            "src": "Checked: Wikipedia, 1972 European Cup final (Ajax 2-0 Inter, Cruyff both goals); Ajax won 1971-73"
+          },
+          {
+            "value": 400,
+            "q": "Manchester United signed a teenage Cristiano Ronaldo in 2003 from which club?",
+            "options": [
+              "Benfica",
+              "FC Porto",
+              "Sporting CP",
+              "Boavista"
+            ],
+            "answer": 2,
+            "fact": "He won United over in a 2003 friendly played to open Sporting's new stadium.",
+            "src": "Checked: Planet Football (Aug 6, 2003 friendly opening Estadio Jose Alvalade; United signed him five days later)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fairways-and-courts",
+    "blurb": "Majors, Grand Slams and the legends of golf and tennis",
+    "categories": [
+      {
+        "name": "Golf Greats",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which golf legend, nicknamed 'The Golden Bear,' won 18 major championships?",
+            "options": [
+              "Arnold Palmer",
+              "Jack Nicklaus",
+              "Gary Player",
+              "Tom Watson"
+            ],
+            "answer": 1,
+            "fact": "His last major came at the 1986 Masters, which he won at age 46.",
+            "src": "Checked: Wikipedia, Jack Nicklaus (Golden Bear; 18 majors; 1986 Masters at 46)"
+          },
+          {
+            "value": 200,
+            "q": "In 2001, who became the first woman to shoot 59 in an LPGA event?",
+            "options": [
+              "Annika Sorenstam",
+              "Karrie Webb",
+              "Lorena Ochoa",
+              "Se Ri Pak"
+            ],
+            "answer": 0,
+            "fact": "In 2003 she played the PGA Tour's Colonial, the first woman in a PGA Tour event since 1945.",
+            "src": "Checked: Wikipedia, Annika Sorenstam (only woman to shoot 59 in competition, 2001 Standard Register PING; 2003 Colonial, first since Zaharias 1945)"
+          },
+          {
+            "value": 300,
+            "q": "In 2021, who became the first Japanese man to win one of golf's major championships?",
+            "options": [
+              "Ryo Ishikawa",
+              "Satoshi Kodaira",
+              "Hideki Matsuyama",
+              "Takumi Kanaya"
+            ],
+            "answer": 2,
+            "fact": "After his Masters win, caddie Shota Hayafuji put the pin back in the 18th hole, took off his cap and bowed to the course.",
+            "src": "Checked: AP via WITF and The Comeback (first Japanese man to win a men's major); Golf Channel (Hayafuji removed flag, replaced pin, bowed)"
+          },
+          {
+            "value": 400,
+            "q": "Who became the first four-time winner of the Masters, in 1964?",
+            "options": [
+              "Sam Snead",
+              "Ben Hogan",
+              "Jack Nicklaus",
+              "Arnold Palmer"
+            ],
+            "answer": 3,
+            "fact": "Palmer won in 1958, 1960, 1962 and 1964, cheered on by fans known as Arnie's Army.",
+            "src": "Checked: Wikipedia, 1964 Masters (first four-time winner); golfcompendium (1958, 1960, 1962, 1964)"
+          }
+        ]
+      },
+      {
+        "name": "Grand Slams",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which Grand Slam tennis tournament is played on red clay?",
+            "options": [
+              "Wimbledon",
+              "French Open",
+              "US Open",
+              "Australian Open"
+            ],
+            "answer": 1,
+            "fact": "Its stadium is named for Roland Garros, a French pilot who flew across the Mediterranean in 1913.",
+            "src": "Checked: textbook clay; thisdayinaviation.com, 23 September 1913 (Garros first to fly across the Mediterranean)"
+          },
+          {
+            "value": 200,
+            "q": "In 2013, who became the first British man since Fred Perry in 1936 to win the Wimbledon singles title?",
+            "options": [
+              "Tim Henman",
+              "Greg Rusedski",
+              "Andy Murray",
+              "Cameron Norrie"
+            ],
+            "answer": 2,
+            "fact": "He beat Novak Djokovic in straight sets in the final.",
+            "src": "Checked: Wikipedia, 2013 Wimbledon men's singles (beat Djokovic 6-4 7-5 6-4; first Briton since Perry 1936)"
+          },
+          {
+            "value": 300,
+            "q": "Who won tennis's first 'Golden Slam' in 1988: all four majors plus Olympic gold?",
+            "options": [
+              "Steffi Graf",
+              "Martina Navratilova",
+              "Chris Evert",
+              "Monica Seles"
+            ],
+            "answer": 0,
+            "fact": "She beat Gabriela Sabatini in the Olympic final at the Seoul Games.",
+            "src": "Checked: olympics.com (IOC), Steffi Graf's 1988 Golden Slam (first ever; beat Sabatini 6-3 6-3 in Seoul)"
+          },
+          {
+            "value": 400,
+            "q": "In 1969, which Australian won all four Grand Slam singles titles in the same calendar year?",
+            "options": [
+              "Ken Rosewall",
+              "Roy Emerson",
+              "John Newcombe",
+              "Rod Laver"
+            ],
+            "answer": 3,
+            "fact": "He had also swept all four majors in 1962, as an amateur.",
+            "src": "Checked: Tennis Majors, Sept 9, 1969: Laver's second calendar Grand Slam (1962 as amateur)"
+          }
+        ]
+      },
+      {
+        "name": "Rules & Rituals",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which fruit, served with cream, is the classic snack at Wimbledon?",
+            "options": [
+              "Raspberries",
+              "Cherries",
+              "Blueberries",
+              "Strawberries"
+            ],
+            "answer": 3,
+            "fact": "The first Wimbledon, in 1877, had only one event, men's singles; women's singles was added in 1884.",
+            "src": "Checked: textbook tradition; topendsports Wimbledon History (1877 gentlemen's singles only; ladies' singles 1884)"
+          },
+          {
+            "value": 200,
+            "q": "In golf, what is a score of one under par on a single hole called?",
+            "options": [
+              "Birdie",
+              "Eagle",
+              "Bogey",
+              "Albatross"
+            ],
+            "answer": 0,
+            "fact": "Three under par on a hole is called an albatross, also known as a double eagle.",
+            "src": "Checked: textbook golf scoring terms (birdie -1, eagle -2, albatross/double eagle -3)"
+          },
+          {
+            "value": 300,
+            "q": "In 1979, the team facing the US in golf's Ryder Cup expanded to take in players from where?",
+            "options": [
+              "Japan",
+              "Australia",
+              "Continental Europe",
+              "South Africa"
+            ],
+            "answer": 2,
+            "fact": "Spaniards Seve Ballesteros and Antonio Garrido were the first players from continental Europe to take part.",
+            "src": "Checked: golfcompendium, 1979 Ryder Cup (GB&I expanded to continental Europe; Ballesteros and Garrido first); Wikipedia, List of European Ryder Cup golfers (Irish players since 1953, 1973 a rename)"
+          },
+          {
+            "value": 400,
+            "q": "In 2022, all four Grand Slams began using one rule for a final set tied at 6-6. What was it?",
+            "options": [
+              "A 7-point tiebreak",
+              "A 10-point tiebreak",
+              "A 12-point tiebreak",
+              "Play on, win by 2 games"
+            ],
+            "answer": 1,
+            "fact": "Before then, the French Open had no final-set tiebreak, and Wimbledon waited until 12-12.",
+            "src": "Checked: tennis.com, All Grand Slams to use 10-point tiebreaker at 6-6 (March 2022; prior rules per Slam)"
+          }
+        ]
+      }
+    ]
+  }
+]

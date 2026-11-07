@@ -1,0 +1,399 @@
+/* =====================================================================
+   SPORTS BAR (`sports`): a neighborhood sports bar on game night.
+   Hunter-green walls under a string of felt pennants. Two signature pieces:
+   - The scoreboard: the board, the score strip and the shot clock are black
+     panels in a steel frame with amber LED digits and HOME / AWAY plates.
+   - The hardwood: the question is played on a maple court with a painted
+     center circle; answers are white jersey panels with varsity letters.
+   Supporting: varsity felt patches with stitched edges (hot seat, Play/Host,
+   stamps, captains). Crews are home (red) and away (blue).
+   Graduate for varsity lettering, DotGothic16 for scoreboard digits.
+   Parody only: no team, league, network or bar names or marks.
+   ===================================================================== */
+[data-theme="sports"] {
+  color-scheme: dark;
+  --night: #133621;
+  --deep: #0a140e;
+  --deep-2: #142a1c;
+  --deep-3: #1e3d2a;
+  --edge: #356547;
+  --cobalt: #000000;
+  --cobalt-dim: #000000;
+  --chalk: #f7f2e4;
+  --chalk-dim: #bccdbf;
+  --ink: #0a0d0b;
+  --hi: #ffc62e;
+  --gum: #ff5236;
+  --aqua: #4a93ff;
+  --right: #3ee27f;
+  --wrong: #ff3d5e;
+  --money: #ffc62e;
+  --focus: #ffc62e;
+  --veil: rgba(3, 9, 5, .84);
+  --placeholder: #82a08c;
+  --on-hi-dim: #5c4410;
+  --r-lg: 12px;
+  --r-md: 10px;
+  --jewel: #8ff3ff;
+  --pc-ink: #0a0d0b;
+  --gain: #ffc62e;
+  /* the scoreboard */
+  --sb-panel: #070a08;
+  --sb-led: #ffb21e;
+  --sb-led-hot: #ffd76a;
+  --sb-glow: rgba(255, 178, 30, .55);
+  --sb-steel: #5b655e;
+  --sb-steel-lo: #2a312c;
+  /* the hardwood */
+  --wood: #e4b979;
+  --wood-2: #d9ab6b;
+  --wood-3: #ebc58f;
+  --wood-seam: rgba(110, 66, 24, .3);
+  --wood-ink: #22150a;
+  --wood-dim: #5b3a1b;
+  --paint: rgba(206, 56, 34, .3);
+  --planks: repeating-linear-gradient(180deg, var(--wood-3) 0 46px, var(--wood-seam) 46px 48px, var(--wood) 48px 94px, var(--wood-seam) 94px 96px, var(--wood-2) 96px 142px, var(--wood-seam) 142px 144px);
+  /* felt stitching */
+  --stitch: rgba(255, 250, 235, .72);
+  --stitch-dk: rgba(10, 13, 11, .5);
+}
+
+/* ---------- the bar: green walls, a big-screen glow, pennants over the top ---------- */
+html[data-theme="sports"] body {
+  background-color: var(--night);
+  background-image:
+    radial-gradient(1100px 460px at 50% -150px, rgba(255, 240, 200, .2), transparent 70%),
+    radial-gradient(1400px 900px at 50% 125%, rgba(0, 0, 0, .55), transparent 70%),
+    repeating-linear-gradient(90deg, #133621 0 120px, #163d26 120px 240px);
+  background-attachment: fixed;
+}
+html[data-theme="sports"] body::before {
+  content: ""; position: absolute; top: var(--safe-t); left: 0; right: 0; height: 36px; z-index: -1; pointer-events: none; opacity: .8;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='64'%3E%3Cpath d='M0 6Q120 30 240 6' fill='none' stroke='%23050806' stroke-width='3'/%3E%3Cpath d='M22 10L58 14.8L40 52Z' fill='%23ff5236' stroke='%23050806' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cpath d='M102 17.7L138 17.7L120 58Z' fill='%23ffc62e' stroke='%23050806' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cpath d='M182 14.8L218 10L200 52Z' fill='%234a93ff' stroke='%23050806' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0 / 128px 34px repeat-x;
+}
+
+/* ---------- type ---------- */
+[data-theme="sports"] h1, [data-theme="sports"] h2:not(.q-text), [data-theme="sports"] h3 { font-family: var(--f-varsity); font-weight: 400; letter-spacing: 0; }
+[data-theme="sports"] .logo { font-family: var(--f-varsity); font-weight: 400; font-size: 21px; letter-spacing: .02em; text-transform: uppercase; color: var(--chalk); text-shadow: 2px 2px 0 var(--gum), 3px 3px 0 var(--ink); }
+[data-theme="sports"] .logo b { background: var(--hi); color: var(--ink); text-shadow: none; padding: 1px 8px 2px; border: 2px solid var(--ink); border-radius: 6px; box-shadow: 2px 2px 0 var(--ink); transform: rotate(-3deg); }
+[data-theme="sports"] .logo img { border: 2px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); }
+
+/* ---------- surfaces, stickers, buttons ---------- */
+[data-theme="sports"] .stk { border-width: 3px; border-color: #000; box-shadow: 6px 6px 0 #000; }
+[data-theme="sports"] .btn { border-color: #000; }
+[data-theme="sports"] .btn.hi:hover:not(:disabled) { background: #ffd65e; }
+[data-theme="sports"] .btn.gum:hover:not(:disabled) { background: #ff7358; }
+[data-theme="sports"] .btn.flat { background: transparent; border-color: var(--edge); box-shadow: none; }
+[data-theme="sports"] .btn.flat:hover:not(:disabled) { background: var(--deep-2); }
+[data-theme="sports"] .chip, [data-theme="sports"] .pill, [data-theme="sports"] .tab, [data-theme="sports"] .x { border-color: #000; }
+[data-theme="sports"] input.field { background: var(--deep); border: 3px solid var(--edge); }
+[data-theme="sports"] .code-in { font-family: var(--f-led); font-weight: 400; letter-spacing: .3em; }
+[data-theme="sports"] .tab { font-family: var(--f-varsity); font-weight: 400; }
+[data-theme="sports"] .tab[aria-selected="true"] { background: var(--chalk); color: var(--ink); border-color: #000; box-shadow: 3px 3px 0 #000; }
+[data-theme="sports"] .pill[aria-pressed="true"] { border-color: #000; box-shadow: 2px 2px 0 #000; }
+[data-theme="sports"] .tag.hi, [data-theme="sports"] .tag.gum, [data-theme="sports"] .tag.aqua { box-shadow: inset 0 0 0 2px rgba(10, 13, 11, .35); }
+[data-theme="sports"] .av { background: var(--deep-2); }
+[data-theme="sports"] .av.c0 { background: #4d1810; border-color: var(--gum); }
+[data-theme="sports"] .av.c1 { background: #102a52; border-color: var(--aqua); }
+[data-theme="sports"] .floater small { background: var(--hi); color: var(--ink); }
+[data-theme="sports"] .choice-btn, [data-theme="sports"] .deck-opt, [data-theme="sports"] .th-opt { border-color: #000; }
+[data-theme="sports"] .choice-btn b, [data-theme="sports"] .deck-opt b, [data-theme="sports"] .th-name b { font-family: var(--f-varsity); font-weight: 400; }
+[data-theme="sports"] .keybox { font-family: var(--f-led); font-weight: 400; }
+[data-theme="sports"] .empty { border-color: var(--edge); }
+
+/* ---------- home: today's matchup with jersey stripes; Play and Host are felt patches ---------- */
+[data-theme="sports"] .drop-card { padding-top: 40px; }
+[data-theme="sports"] .drop-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 21px; border-bottom: 3px solid #000;
+  background: linear-gradient(180deg, var(--gum) 0 6px, var(--chalk) 6px 12px, var(--aqua) 12px 18px); }
+[data-theme="sports"] .drop-card h1 { font-size: clamp(38px, 5vw, 72px); line-height: 1; letter-spacing: 0; }
+[data-theme="sports"] .cat-chip { background: transparent; border: 2px solid var(--chalk-dim); border-radius: 6px; font-family: var(--f-varsity); font-weight: 400; text-transform: uppercase; letter-spacing: .03em; font-size: 13px; }
+[data-theme="sports"] .daily-line { border-top: 3px dashed var(--edge); }
+[data-theme="sports"] .daily-line .score { font-family: var(--f-led); font-weight: 400; color: var(--sb-led); text-shadow: 0 0 12px var(--sb-glow); }
+[data-theme="sports"] .mode-btn { border: 4px solid #000; border-radius: 14px; box-shadow: 7px 7px 0 #000; outline: 3px dashed var(--stitch-dk); outline-offset: -11px; }
+[data-theme="sports"] .mode-btn.host { outline-color: var(--stitch); }
+[data-theme="sports"] .mode-btn:hover { box-shadow: 9px 9px 0 #000; }
+[data-theme="sports"] .mode-btn:active { box-shadow: 2px 2px 0 #000; }
+[data-theme="sports"] .mode-btn .t { font-family: var(--f-varsity); font-weight: 400; letter-spacing: 0; text-transform: uppercase; }
+[data-theme="sports"] .joke-card { border: 3px dashed var(--hi); }
+[data-theme="sports"] .lb li { background: var(--deep-2); border: 2px solid #000; }
+[data-theme="sports"] .lb .pos { font-family: var(--f-varsity); font-weight: 400; }
+[data-theme="sports"] .lb li:not(.me) .val { color: var(--sb-led); }
+[data-theme="sports"] .lb li.me { border-color: #000; box-shadow: 3px 3px 0 #000; }
+[data-theme="sports"] .stat b, [data-theme="sports"] .mine .big { font-family: var(--f-led); font-weight: 400; color: var(--sb-led); text-shadow: 0 0 12px var(--sb-glow); }
+[data-theme="sports"] .rejoin { background: var(--hi); }
+
+/* ---------- the hot seat: a felt patch in the crew's colors, stitched round the edge ---------- */
+[data-theme="sports"] .seat { border: 3px solid var(--ink); border-radius: 12px; box-shadow: 6px 6px 0 #000; outline: 3px dashed var(--stitch); outline-offset: -9px; }
+[data-theme="sports"] .seat.solo, [data-theme="sports"] .seat.duel { outline-color: var(--stitch-dk); }
+[data-theme="sports"] .seat .who b { font-family: var(--f-varsity); font-weight: 400; letter-spacing: 0; }
+[data-theme="sports"] .seat .who span { text-transform: uppercase; letter-spacing: .04em; font-size: 13px; }
+[data-theme="sports"] .seat .act { font-family: var(--f-varsity); font-weight: 400; border-radius: 6px; background: var(--ink); color: var(--chalk); }
+[data-theme="sports"] .seat .av { background: rgba(255, 250, 235, .6); border-color: var(--ink); }
+[data-theme="sports"] .take-banner { border-radius: 10px; box-shadow: 4px 4px 0 var(--ink); }
+[data-theme="sports"] .take-banner b { font-family: var(--f-varsity); font-weight: 400; }
+[data-theme="sports"] .tk-tag { background: #000; color: var(--hi); border: 2px solid var(--hi); border-radius: 4px; font-family: var(--f-varsity); font-weight: 400; }
+[data-theme] .q-card.hack .tk-tag { background: #0f3a1d; color: var(--term); border-color: var(--term); }
+
+/* ---------- the scoreboard: score strip, crew cards, the board ---------- */
+[data-theme="sports"] .scores { gap: 0; border-radius: 10px; box-shadow: 0 0 0 3px var(--sb-steel), 5px 5px 0 3px #000; }
+[data-theme="sports"] .scores .score { background: var(--sb-panel); color: var(--chalk); border: 0; border-radius: 0; }
+[data-theme="sports"] .scores .score:first-child { border-radius: 10px 0 0 10px; }
+[data-theme="sports"] .scores .score:last-child { border-radius: 0 10px 10px 0; }
+[data-theme="sports"] .scores .score:only-child { border-radius: 10px; }
+[data-theme="sports"] .scores .score + .score { border-left: 3px solid var(--sb-steel-lo); }
+[data-theme="sports"] .scores .score.on { box-shadow: inset 0 -5px 0 var(--c); }
+[data-theme="sports"] .score.c0::before, [data-theme="sports"] .crew-card.c0 .nm::before { content: "HOME"; }
+[data-theme="sports"] .score.c1::before, [data-theme="sports"] .crew-card.c1 .nm::before { content: "AWAY"; }
+[data-theme="sports"] .score.c0::before, [data-theme="sports"] .score.c1::before, [data-theme="sports"] .crew-card.c0 .nm::before, [data-theme="sports"] .crew-card.c1 .nm::before {
+  flex: none; padding: 2px 7px 1px; border-radius: 5px; background: var(--c); color: var(--ink); border: 2px solid #000; font-family: var(--f-varsity); font-size: 13px; line-height: 1.15; letter-spacing: .05em; }
+[data-theme="sports"] .scores .score:not(.on)::before, [data-theme="sports"] .crew-card:not(.on) .nm::before { filter: saturate(.55) brightness(.8); }
+[data-theme="sports"] .scores .score .nm { color: var(--chalk); }
+[data-theme="sports"] .scores .score .amt, [data-theme="sports"] .crew-card .haul { font-family: var(--f-led); font-weight: 400; letter-spacing: .02em; color: var(--sb-led); text-shadow: 0 0 12px var(--sb-glow); }
+[data-theme="sports"] .scores .score .amt, [data-theme="sports"] .crew-card .haul { white-space: nowrap; }
+[data-theme="sports"] .scores .score .amt.neg, [data-theme="sports"] .crew-card .haul.neg { color: #ff5a44; text-shadow: 0 0 12px rgba(255, 90, 68, .55); }
+[data-theme="sports"] .score .life, [data-theme="sports"] .crew-card .life { background: transparent; border-color: var(--sb-steel); color: var(--chalk-dim); }
+[data-theme="sports"] .crew-card { background: var(--sb-panel); border: 3px solid #000; border-radius: 10px; box-shadow: 0 0 0 3px var(--sb-steel), 5px 5px 0 3px #000; }
+[data-theme="sports"] .crew-card.on { border-color: #000; box-shadow: 0 0 0 3px var(--c), 5px 5px 0 3px #000; }
+[data-theme="sports"] .crew-card .nm { justify-content: flex-start; font-family: var(--f-read); font-weight: 700; font-size: 15px; }
+[data-theme="sports"] .heat { background: var(--hi); color: var(--ink); }
+[data-theme="sports"] .feed li i { border-radius: 2px; }
+
+[data-theme="sports"] .board {
+  padding: 16px; border: 4px solid #000; border-radius: 14px;
+  background:
+    radial-gradient(circle, #8b948e 0 3.5px, #000 4px 5.5px, transparent 6px) left 3px top 3px / 14px 14px no-repeat,
+    radial-gradient(circle, #8b948e 0 3.5px, #000 4px 5.5px, transparent 6px) right 3px top 3px / 14px 14px no-repeat,
+    radial-gradient(circle, #8b948e 0 3.5px, #000 4px 5.5px, transparent 6px) left 3px bottom 3px / 14px 14px no-repeat,
+    radial-gradient(circle, #8b948e 0 3.5px, #000 4px 5.5px, transparent 6px) right 3px bottom 3px / 14px 14px no-repeat,
+    var(--sb-panel);
+  box-shadow: 0 0 0 6px var(--sb-steel), 0 0 0 9px #000, 10px 10px 0 9px #000;
+}
+[data-theme="sports"] .col-head { background: #13261a; color: var(--chalk); border: 2px solid #000; border-radius: 6px; box-shadow: inset 0 -5px 0 var(--hi); padding-bottom: 12px;
+  font-family: var(--f-varsity); font-weight: 400; text-transform: uppercase; letter-spacing: .03em; font-size: clamp(14px, 1.45vw, 19px); }
+[data-theme="sports"] .tile { background: #0e120f; color: var(--sb-led); border: 3px solid #252d27; border-radius: 8px; box-shadow: inset 0 0 0 2px #000;
+  font-family: var(--f-led); font-weight: 400; letter-spacing: 0; text-shadow: 0 0 14px var(--sb-glow); }
+[data-theme="sports"] .tile.can { border-color: var(--sb-led); color: var(--sb-led-hot); box-shadow: inset 0 0 0 2px #000, 0 0 18px rgba(255, 178, 30, .25); }
+[data-theme="sports"] .tile.can:hover { background: var(--sb-led); color: var(--ink); text-shadow: none; transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--sb-steel); }
+[data-theme="sports"] .tile.can:active { transform: translate(2px, 2px); box-shadow: none; }
+[data-theme="sports"] .tile.wait { color: #b08a3c; text-shadow: none; box-shadow: inset 0 0 0 2px #000; }
+[data-theme="sports"] .tile.taken { background: transparent; border: 3px dashed #2c352f; color: #75817a; box-shadow: none; text-shadow: none; font-family: var(--f-read); }
+[data-theme="sports"] .tile.taken.r0 { background: var(--gum); border: 3px solid #000; color: var(--ink); }
+[data-theme="sports"] .tile.taken.r1 { background: var(--aqua); border: 3px solid #000; color: var(--ink); }
+[data-theme="sports"] .tile.taken.rs { background: var(--hi); border: 3px solid #000; color: var(--ink); }
+[data-theme="sports"] .tile .res b { font-family: var(--f-varsity); font-weight: 400; }
+[data-theme="sports"] .board-hint { font-weight: 700; }
+
+/* ---------- the question: tip-off on the hardwood ---------- */
+[data-theme="sports"] .q-card {
+  position: relative; color: var(--wood-ink); border: 4px solid #000; border-radius: 12px; box-shadow: 8px 8px 0 #000;
+  background-color: var(--wood);
+  background-image: radial-gradient(circle at calc(100% + 70px) 50%, transparent 0 170px, var(--paint) 171px 180px, transparent 181px), var(--planks);
+}
+[data-theme="sports"] .q-card.hack { border-width: 3px; }
+[data-theme="sports"] .q-head .cat { font-family: var(--f-varsity); font-weight: 400; text-transform: uppercase; letter-spacing: .02em; }
+[data-theme="sports"] .q-head .val { font-family: var(--f-led); font-weight: 400; background: var(--sb-panel); color: var(--sb-led); border: 2px solid #000; border-radius: 6px; padding: 1px 10px 0; text-shadow: 0 0 10px var(--sb-glow); box-shadow: 0 0 0 2px var(--sb-steel); }
+[data-theme="sports"] .q-head .tag { border: 2px solid var(--ink); }
+[data-theme="sports"] .q-card .hint { color: var(--wood-dim); }
+[data-theme="sports"] .q-text { color: var(--wood-ink); }
+/* the shot clock */
+[data-theme="sports"] .timer .track { position: relative; height: 20px; border-radius: 4px; background: var(--sb-panel); border: 3px solid #000; box-shadow: 0 0 0 2px var(--sb-steel); }
+[data-theme="sports"] .timer .track::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(90deg, transparent 0 calc(10% - 3px), var(--sb-panel) calc(10% - 3px) 10%); }
+[data-theme="sports"] .timer .fill { background: var(--sb-led); box-shadow: 0 0 12px var(--sb-glow); }
+[data-theme="sports"] .timer.late .fill { background: #ff4a32; }
+[data-theme="sports"] .timer.frozen .fill { background: #7d6a44; box-shadow: none; }
+[data-theme="sports"] .timer .secs { font-family: var(--f-led); font-weight: 400; line-height: 1; min-width: 2.4ch; padding: 4px 10px 2px; text-align: center; color: var(--sb-led); background: var(--sb-panel); border: 3px solid #000; border-radius: 8px; box-shadow: 0 0 0 3px var(--sb-steel); text-shadow: 0 0 12px var(--sb-glow); }
+[data-theme="sports"] .timer.late .secs { color: #ff4a32; text-shadow: 0 0 12px rgba(255, 74, 50, .7); }
+[data-theme="sports"] .timer.frozen .secs { color: #8f7c55; text-shadow: none; }
+[data-theme="sports"] .late-lbl { font-family: var(--f-varsity); font-weight: 400; background: var(--sb-panel); color: #ff5a3a; padding: 3px 8px 2px; border-radius: 6px; }
+[data-theme] .q-card.hack .timer .track::after { display: none; }
+[data-theme] .q-card.hack .timer .secs { box-shadow: none; border-color: transparent; }
+[data-theme] .q-card.hack .q-head .val { box-shadow: none; }
+/* answers: white jersey panels with a varsity letter */
+[data-theme="sports"] .opt { background: #fffaf0; color: var(--ink); border: 3px solid var(--ink); border-radius: 10px; box-shadow: 4px 4px 0 var(--ink); }
+[data-theme="sports"] .opt .L { background: var(--ink); color: var(--hi); border-radius: 8px; font-family: var(--f-varsity); font-weight: 400; }
+[data-theme="sports"] .opt.can:not(.sel):hover { background: #fff0c4; border-color: var(--ink); box-shadow: 6px 6px 0 var(--ink); transform: translate(-2px, -2px); }
+[data-theme="sports"] .opt.sel { background: var(--hi); color: var(--ink); border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); }
+[data-theme="sports"] .opt.sel .L { background: var(--ink); color: #fff; }
+[data-theme="sports"] .opt.right { background: var(--right); }
+[data-theme="sports"] .opt.wrong { background: var(--wrong); }
+[data-theme="sports"] .opt.right .L, [data-theme="sports"] .opt.wrong .L { background: var(--ink); color: #fff; }
+[data-theme="sports"] .opt.dim { opacity: .45; }
+[data-theme="sports"] .opt-ph { background: rgba(255, 250, 240, .4); border: 3px dashed rgba(34, 21, 10, .3); border-radius: 10px; }
+[data-theme="sports"] .opt.blank .blank-bar { background: repeating-linear-gradient(90deg, rgba(10, 13, 11, .45) 0 22px, transparent 22px 30px); opacity: 1; }
+[data-theme="sports"] .opt.blank.sel .blank-bar { background: repeating-linear-gradient(90deg, var(--ink) 0 22px, transparent 22px 30px); }
+[data-theme="sports"] .blurred { background: rgba(7, 10, 8, .86); color: var(--chalk); border: 3px dashed var(--hi); border-radius: 12px; }
+[data-theme="sports"] .blurred .msg b { font-family: var(--f-varsity); font-weight: 400; color: var(--hi); }
+[data-theme="sports"] .sd-pick { color: var(--chalk); border-color: #000; }
+/* the call: a felt patch, stitched */
+[data-theme="sports"] .stamp { font-family: var(--f-varsity); font-weight: 400; letter-spacing: 0; line-height: 1; font-size: clamp(28px, 3.6vw, 48px); padding: 12px 20px 12px; background: var(--right); color: var(--ink);
+  border: 3px solid var(--ink); border-radius: 12px; box-shadow: 5px 5px 0 var(--ink); outline: 3px dashed var(--stitch-dk); outline-offset: -8px; transform: rotate(-2.5deg); }
+[data-theme="sports"] .stamp.bad { background: var(--wrong); transform: rotate(2deg); }
+[data-theme="sports"] .rp-verdict { row-gap: 12px; }
+[data-theme="sports"] .delta { font-family: var(--f-led); font-weight: 400; line-height: 1.1; display: inline-block; padding: 3px 12px 1px; background: var(--sb-panel); border: 3px solid #000; border-radius: 8px; box-shadow: 0 0 0 3px var(--sb-steel); }
+[data-theme="sports"] .delta.pos { color: var(--right); text-shadow: 0 0 12px rgba(62, 226, 127, .55); }
+[data-theme="sports"] .delta.neg { color: #ff5a44; text-shadow: 0 0 12px rgba(255, 90, 68, .55); }
+[data-theme] .q-card.hack .delta { box-shadow: none; text-shadow: none; }
+[data-theme="sports"] .fact { border-left-color: var(--gum); color: var(--wood-ink); }
+[data-theme="sports"] .fact b { color: #9c2412; font-family: var(--f-varsity); font-weight: 400; }
+[data-theme="sports"] .next-bar { background: rgba(34, 21, 10, .2); border: 2px solid var(--ink); height: 10px; }
+[data-theme="sports"] .next-bar i { background: var(--ink); }
+[data-theme="sports"] .hostbar { background: var(--deep); border: 2px dashed var(--edge); }
+
+/* the fun fact: still on the court */
+[data-theme="sports"] .fc-text { color: var(--wood-ink); }
+[data-theme="sports"] .fc-head .tag { border: 2px solid var(--ink); }
+[data-theme="sports"] .fc-head .muted { color: var(--wood-dim); font-weight: 700; }
+[data-theme="sports"] .fc-ans { border-radius: 10px; box-shadow: 4px 4px 0 var(--ink); }
+[data-theme="sports"] .fc-ans .L { color: var(--hi); font-family: var(--f-varsity); font-weight: 400; border-radius: 8px; }
+
+/* ---------- specials: Overtime flashes on the scoreboard; the Hacker still takes over ---------- */
+[data-theme="sports"] .takeover { border: 4px solid #000; border-radius: 14px; box-shadow: 8px 8px 0 #000; }
+[data-theme="sports"] .takeover.double { background: var(--sb-panel); color: var(--chalk); box-shadow: 0 0 0 8px var(--sb-steel), 0 0 0 11px #000, 12px 12px 0 11px #000; }
+[data-theme="sports"] .takeover.double .big { font-family: var(--f-led); font-weight: 400; letter-spacing: .05em; text-transform: uppercase; line-height: 1; font-size: clamp(56px, 12vw, 160px); color: var(--sb-led);
+  text-shadow: 0 0 16px rgba(255, 178, 30, .8), 0 0 46px rgba(255, 178, 30, .4); animation: slam .5s cubic-bezier(.2, 1.6, .4, 1), sb-blink .9s steps(1) .5s 3; }
+@keyframes sb-blink { 50% { opacity: .25; } }
+
+/* ---------- face-off: center court ---------- */
+[data-theme="sports"] .takeover.faceoff { color: var(--wood-ink); background-color: var(--wood);
+  background-image: radial-gradient(circle at 50% 50%, var(--paint) 0 64px, transparent 65px 168px, var(--paint) 169px 179px, transparent 180px), var(--planks); }
+[data-theme="sports"] .takeover.faceoff .big { font-family: var(--f-varsity); font-weight: 400; letter-spacing: 0; line-height: .95; font-size: clamp(54px, 10vw, 128px); color: var(--ink); text-shadow: 4px 4px 0 var(--hi); }
+[data-theme="sports"] .fo-p { border-radius: 12px; outline: 2px dashed var(--stitch); outline-offset: -6px; padding: 12px 16px; }
+[data-theme="sports"] .fo-p b { font-family: var(--f-varsity); font-weight: 400; }
+[data-theme="sports"] .fo-p .av { background: rgba(255, 250, 235, .6); border-color: var(--ink); }
+[data-theme="sports"] .fo-vs .vs { display: grid; place-items: center; width: 1.9em; height: 1.9em; border-radius: 50%; background: var(--ink); color: var(--hi); border: 3px solid var(--hi); font-family: var(--f-varsity); font-weight: 400; font-size: clamp(20px, 2.6vw, 30px); box-shadow: 3px 3px 0 #000; }
+[data-theme="sports"] .takeover.faceoff .fo-how { opacity: 1; color: var(--wood-dim); }
+[data-theme="sports"] .duel-p { background: var(--sb-panel); color: var(--chalk); border: 3px solid var(--c); border-radius: 10px; box-shadow: 3px 3px 0 var(--ink); }
+[data-theme="sports"] .duel-p b { font-family: var(--f-led); font-weight: 400; color: var(--sb-led); }
+[data-theme="sports"] .duel-p.locked { background: var(--c); color: var(--ink); border-color: var(--ink); }
+[data-theme="sports"] .duel-p.locked b { color: var(--ink); }
+/* the replay: a broadcast graphic over the court, then the chains come out */
+[data-theme="sports"] .zone { background: var(--sb-panel); color: var(--chalk); border: 4px solid #000; border-radius: 10px; box-shadow: 0 0 0 3px var(--sb-steel), 6px 6px 0 3px #000; }
+[data-theme="sports"] .zone-sq .L { font-family: var(--f-varsity); font-weight: 400; background: var(--deep-3); }
+[data-theme="sports"] .zone-sq.hit .L { background: var(--ink); color: var(--right); }
+[data-theme="sports"] .measure .field { border-color: #000; box-shadow: 4px 4px 0 #000; }
+[data-theme="sports"] .measure .yd { width: 4px; background: rgba(255, 255, 255, .7); }
+[data-theme="sports"] .measure .scale small { color: var(--wood-dim); font-family: var(--f-led); font-weight: 400; font-size: 12px; }
+[data-theme="sports"] .rp-setup { color: var(--wood-ink); }
+
+/* ---------- lobby, captains, draft, final ---------- */
+[data-theme="sports"] .invite .code { font-family: var(--f-led); font-weight: 400; letter-spacing: .1em; line-height: 1; color: var(--sb-led); background: var(--sb-panel); padding: 12px 18px 8px; border: 3px solid #000; border-radius: 10px;
+  box-shadow: 0 0 0 4px var(--sb-steel), 6px 6px 0 4px #000; text-shadow: 0 0 18px var(--sb-glow); margin: 4px; }
+[data-theme="sports"] .qr { border-color: #000; box-shadow: 4px 4px 0 #000; }
+[data-theme="sports"] .mem { background: var(--deep-2); border: 2px solid #000; border-top: 8px solid var(--hi); border-radius: 8px; box-shadow: 3px 3px 0 #000; }
+[data-theme="sports"] .mem b { font-family: var(--f-varsity); font-weight: 400; }
+[data-theme="sports"] .cap, [data-theme="sports"] .draft .crew-col { border-radius: 12px; box-shadow: 6px 6px 0 #000; outline: 3px dashed var(--stitch); outline-offset: -10px; }
+[data-theme="sports"] .cap b { font-family: var(--f-varsity); font-weight: 400; }
+[data-theme="sports"] .cap .av, [data-theme="sports"] .draft .crew-col .av { background: rgba(255, 250, 235, .6); }
+[data-theme="sports"] .cap.c0::before, [data-theme="sports"] .draft .crew-col.c0 h3::before { content: "HOME"; }
+[data-theme="sports"] .cap.c1::before, [data-theme="sports"] .draft .crew-col.c1 h3::before { content: "AWAY"; }
+[data-theme="sports"] .cap::before, [data-theme="sports"] .draft .crew-col h3::before { display: block; width: max-content; padding: 2px 10px 1px; border-radius: 5px; background: var(--ink); color: var(--chalk); font-family: var(--f-varsity); font-size: 15px; letter-spacing: .08em; line-height: 1.2; }
+[data-theme="sports"] .draft .crew-col h3::before { margin-bottom: 6px; font-size: 13px; }
+[data-theme="sports"] .vs { font-family: var(--f-varsity); font-weight: 400; color: var(--hi); text-shadow: 3px 3px 0 #000; }
+[data-theme="sports"] .face { border-color: #000; }
+[data-theme="sports"] .pick-btn { border-color: #000; }
+[data-theme="sports"] .winner { border: 4px solid #000; border-radius: 12px; box-shadow: 8px 8px 0 #000; outline: 3px dashed var(--stitch); outline-offset: -12px; }
+[data-theme="sports"] .winner.tie, [data-theme="sports"] .winner.solo { outline-color: var(--stitch-dk); }
+[data-theme="sports"] .winner h1 { letter-spacing: 0; line-height: .98; }
+[data-theme="sports"] .winner.solo h1 { font-family: var(--f-led); font-weight: 400; }
+[data-theme="sports"] .haul-card { border: 3px solid #000; border-radius: 10px; box-shadow: 5px 5px 0 #000; }
+[data-theme="sports"] .haul-card .amt { font-family: var(--f-varsity); font-weight: 400; }
+[data-theme="sports"] .badge, [data-theme="sports"] .badge-card, [data-theme="sports"] .trophy { border-color: #000; }
+[data-theme="sports"] .recap details summary { font-family: var(--f-varsity); font-weight: 400; }
+
+/* ---------- corners: sound, mic, emoji ---------- */
+[data-theme="sports"] .sound, [data-theme="sports"] .mic-btn, [data-theme="sports"] .emo-row { border-color: #000; background: var(--deep-3); }
+[data-theme="sports"] .mic-btn.on { background: var(--c); border-color: var(--ink); }
+[data-theme="sports"] .emo-pick { border-color: #000; border-radius: 14px; }
+[data-theme="sports"] .toast { border-color: #000; }
+
+/* ---------- Vault Jam: the equipment room, on the hardwood ---------- */
+[data-theme="sports"] .jam-frame { background: var(--sb-steel-lo); border-color: #000; border-radius: 12px; box-shadow: 0 0 0 3px var(--sb-steel), 7px 7px 0 3px #000; }
+[data-theme="sports"] .jam-floor { border-radius: 4px; background-color: var(--wood);
+  background-image: linear-gradient(to right, rgba(91, 58, 27, .4) 3px, transparent 3px), linear-gradient(to bottom, rgba(91, 58, 27, .4) 3px, transparent 3px);
+  background-size: calc(100% / 6) calc(100% / 6); }
+[data-theme="sports"] .jam-door { background: var(--wood); border-color: var(--hi); }
+[data-theme="sports"] .jam-door span { font-family: var(--f-varsity); font-weight: 400; }
+[data-theme="sports"] .jam-wall::before { background: var(--sb-steel); border-color: #000; }
+[data-theme="sports"] .pc.k0 { --fill: #9aa49d; } [data-theme="sports"] .pc.k1 { --fill: var(--gum); } [data-theme="sports"] .pc.k2 { --fill: var(--aqua); }
+[data-theme="sports"] .pc.k3 { --fill: #f2e9d2; } [data-theme="sports"] .pc.k4 { --fill: #2f7a4c; }
+[data-theme="sports"] .pc::before { border-radius: 8px; }
+[data-theme="sports"] .pc.jewel { --fill: var(--hi); }
+[data-theme="sports"] .gems, [data-theme="sports"] .chip.gems { background: var(--sb-panel); }
+
+/* ---------- the daily draw: trading cards ---------- */
+[data-theme="sports"] .fl-back { border-color: #000; box-shadow: inset 0 0 0 10px var(--deep), inset 0 0 0 14px var(--hi), 6px 6px 0 #000;
+  background: linear-gradient(180deg, transparent 38%, #000 38% 39.5%, var(--gum) 39.5% 46%, var(--chalk) 46% 54%, var(--aqua) 54% 60.5%, #000 60.5% 62%, transparent 62%), var(--deep-3); }
+[data-theme="sports"] .fl-back span { font-family: var(--f-varsity); font-weight: 400; box-shadow: 3px 3px 0 #000; transform: rotate(-4deg); }
+[data-theme="sports"] .pcard { border-color: #000; box-shadow: inset 0 0 0 8px #fff8e6, inset 0 0 0 10px var(--ink), 6px 6px 0 #000; padding: 24px; }
+[data-theme="sports"] .pcard b { font-family: var(--f-varsity); font-weight: 400; }
+[data-theme="sports"] .pcard.dud { background: var(--deep-3); }
+
+/* ---------- the look picker preview ---------- */
+.th-prev[data-theme="sports"] {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='64'%3E%3Cpath d='M0 6Q120 30 240 6' fill='none' stroke='%23050806' stroke-width='3'/%3E%3Cpath d='M22 10L58 14.8L40 52Z' fill='%23ff5236' stroke='%23050806' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cpath d='M102 17.7L138 17.7L120 58Z' fill='%23ffc62e' stroke='%23050806' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cpath d='M182 14.8L218 10L200 52Z' fill='%234a93ff' stroke='%23050806' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0 / 120px 32px repeat-x,
+    repeating-linear-gradient(90deg, #133621 0 30px, #163d26 30px 60px);
+  padding-top: 14px;
+}
+.th-prev[data-theme="sports"] .tp-logo { font-family: var(--f-varsity); font-weight: 400; text-transform: uppercase; text-shadow: 1px 1px 0 var(--gum), 2px 2px 0 var(--ink); }
+.th-prev[data-theme="sports"] .tp-logo b { border: 1.5px solid var(--ink); text-shadow: none; }
+.th-prev[data-theme="sports"] .tp-seat { font-family: var(--f-varsity); font-weight: 400; border-radius: 7px; outline: 1.5px dashed var(--stitch); outline-offset: -4px; box-shadow: 2px 2px 0 #000; }
+.th-prev[data-theme="sports"] .tp-card { background: var(--wood) var(--planks); background-size: 100% 72px; color: var(--wood-ink); border: 2px solid #000; border-radius: 6px; box-shadow: 3px 3px 0 #000; }
+.th-prev[data-theme="sports"] .tp-opt { background: #fffaf0; color: var(--ink); border: 1.5px solid var(--ink); border-radius: 4px; }
+.th-prev[data-theme="sports"] .tp-opt i { background: var(--ink); color: var(--hi); font-family: var(--f-varsity); font-weight: 400; }
+.th-prev[data-theme="sports"] .tp-tile { background: var(--sb-panel); border: 2px solid var(--sb-led); color: var(--sb-led); font-family: var(--f-led); font-weight: 400; border-radius: 6px; box-shadow: 0 0 0 2px var(--sb-steel), 3px 3px 0 2px #000; text-shadow: 0 0 6px var(--sb-glow); }
+
+/* ---------- phones: slimmer frames and stitches, same pieces ---------- */
+@media (max-width: 640px) {
+  html[data-theme="sports"] body { background-image: radial-gradient(520px 280px at 50% -60px, rgba(255, 240, 200, .18), transparent 70%), repeating-linear-gradient(90deg, #133621 0 64px, #163d26 64px 128px); }
+  html[data-theme="sports"] body::before { height: 28px; background-size: 104px 28px; }
+  [data-theme="sports"] .drop-card { padding-top: 28px; }
+  [data-theme="sports"] .drop-card::before { height: 15px; background: linear-gradient(180deg, var(--gum) 0 4px, var(--chalk) 4px 8px, var(--aqua) 8px 12px); }
+  [data-theme="sports"] .drop-card h1 { font-size: 30px; }
+  [data-theme="sports"] .cat-chip { font-size: 11px; }
+  [data-theme="sports"] .mode-btn { border-width: 3px; box-shadow: 5px 5px 0 #000; outline-width: 2px; outline-offset: -8px; }
+  [data-theme="sports"] .mode-btn .t { font-size: 28px; }
+  [data-theme="sports"] .seat { border-width: 2px; box-shadow: 4px 4px 0 #000; outline-width: 2px; outline-offset: -5px; }
+  [data-theme="sports"] .seat .who b { font-size: 16px; }
+  [data-theme="sports"] .seat .who span { font-size: 11px; }
+  [data-theme="sports"] .scores { box-shadow: 0 0 0 2px var(--sb-steel), 3px 3px 0 2px #000; }
+  [data-theme="sports"] .scores .score { padding: 3px 8px; gap: 6px; }
+  [data-theme="sports"] .scores .score.on { box-shadow: inset 0 -3px 0 var(--c); }
+  [data-theme="sports"] .score.c0::before, [data-theme="sports"] .score.c1::before, [data-theme="sports"] .crew-card.c0 .nm::before, [data-theme="sports"] .crew-card.c1 .nm::before { font-size: 10px; padding: 1px 4px 0; border-width: 1.5px; }
+  [data-theme="sports"] .crew-card { border-width: 2px; box-shadow: 0 0 0 2px var(--sb-steel), 3px 3px 0 2px #000; }
+  [data-theme="sports"] .crew-card.on { box-shadow: 0 0 0 2px var(--c), 3px 3px 0 2px #000; }
+  [data-theme="sports"] .crew-card .nm { font-size: 13px; gap: 6px; }
+  [data-theme="sports"] .board { padding: 6px; border-width: 2px; border-radius: 10px; background: var(--sb-panel); box-shadow: 0 0 0 3px var(--sb-steel), 0 0 0 5px #000, 5px 5px 0 5px #000; }
+  [data-theme="sports"] .col-head { font-size: 11px; padding: 3px 3px 7px; letter-spacing: 0; box-shadow: inset 0 -3px 0 var(--hi); }
+  [data-theme="sports"] .tile { border-width: 2px; border-radius: 7px; }
+  [data-theme="sports"] .tile.taken { border-width: 2px; }
+  [data-theme="sports"] .q-card { border-width: 3px; box-shadow: 5px 5px 0 #000; background-image: radial-gradient(circle at calc(100% + 60px) 50%, transparent 0 110px, var(--paint) 111px 117px, transparent 118px), var(--planks); }
+  [data-theme="sports"] .opt { border-width: 2px; box-shadow: 3px 3px 0 var(--ink); border-radius: 9px; }
+  [data-theme="sports"] .opt .L { border-radius: 7px; }
+  [data-theme="sports"] .opt.sel { border-width: 2px; box-shadow: 3px 3px 0 var(--ink); }
+  [data-theme="sports"] .timer .track { height: 14px; border-width: 2px; }
+  [data-theme="sports"] .timer .secs { padding: 3px 7px 1px; border-width: 2px; box-shadow: 0 0 0 2px var(--sb-steel); }
+  [data-theme="sports"] .stamp { font-size: 21px; padding: 7px 12px 6px; border-width: 2px; outline-width: 2px; outline-offset: -5px; box-shadow: 3px 3px 0 var(--ink); }
+  [data-theme="sports"] .delta { font-size: 21px; padding: 2px 8px 0; border-width: 2px; box-shadow: 0 0 0 2px var(--sb-steel); }
+  [data-theme="sports"] .takeover { border-width: 3px; box-shadow: 5px 5px 0 #000; }
+  [data-theme="sports"] .takeover.double { box-shadow: 0 0 0 5px var(--sb-steel), 0 0 0 7px #000, 6px 6px 0 7px #000; }
+  [data-theme="sports"] .takeover.faceoff { background-image: radial-gradient(circle at 50% 50%, var(--paint) 0 44px, transparent 45px 120px, var(--paint) 121px 128px, transparent 129px), var(--planks); }
+  [data-theme="sports"] .takeover.faceoff .big { font-size: 44px; text-shadow: 3px 3px 0 var(--hi); }
+  [data-theme="sports"] .fo-p { padding: 6px 10px; outline-offset: -5px; }
+  [data-theme="sports"] .duel-p { border-width: 2px; gap: 4px; padding: 3px 6px 3px 3px; }
+  [data-theme="sports"] .duel-p .av.sm { width: 24px; height: 24px; font-size: 14px; }
+  [data-theme="sports"] .duel-p .nm { font-size: 14px; }
+  [data-theme="sports"] .duel-p b { font-family: var(--f-read); font-weight: 700; font-size: 11px; letter-spacing: -.01em; }
+  [data-theme="sports"] .zone { border-width: 3px; box-shadow: 0 0 0 2px var(--sb-steel), 4px 4px 0 2px #000; }
+  [data-theme="sports"] .invite .code { padding: 8px 12px 4px; box-shadow: 0 0 0 3px var(--sb-steel), 4px 4px 0 3px #000; }
+  [data-theme="sports"] .cap, [data-theme="sports"] .draft .crew-col { outline-width: 2px; outline-offset: -7px; }
+  [data-theme="sports"] .winner { outline-width: 2px; outline-offset: -8px; box-shadow: 5px 5px 0 #000; }
+  [data-theme="sports"] .pcard { box-shadow: inset 0 0 0 6px #fff8e6, inset 0 0 0 8px var(--ink), 5px 5px 0 #000; }
+  [data-theme="sports"] .q-head .val { padding: 0 8px; line-height: 1.3; }
+  /* The blank round carries an extra banner: tighten it so the duel bar stays above the dock. */
+  [data-theme="sports"] .q-card:has(.opt.blank) { gap: 6px; }
+  [data-theme="sports"] .opt.blank { min-height: 40px; padding-block: 3px; }
+  [data-theme="sports"] .opt.blank .L { width: 30px; height: 30px; font-size: 17px; }
+  [data-theme="sports"] .duel-banner { padding: 5px 10px; gap: 2px 10px; }
+  [data-theme="sports"] .duel-banner b { font-size: 18px; }
+  [data-theme="sports"] .duel-banner span { font-size: 12.5px; line-height: 1.25; }
+}

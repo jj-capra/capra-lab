@@ -1,0 +1,1064 @@
+[
+  {
+    "id": "jokes-07",
+    "blurb": "Chemistry, physics and biology jokes, tested in the lab for maximum groan",
+    "categories": [
+      {
+        "name": "Lab Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why can't you trust an atom?",
+            "options": [
+              "They're too small to see",
+              "They move around a lot",
+              "They make up everything",
+              "They come in many kinds"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What did the scientist say when she found two helium atoms? HeHe.",
+            "src": "classic (reserved for Lab Rats); premise: atoms make up all ordinary matter; He is the symbol for helium"
+          },
+          {
+            "value": 200,
+            "q": "Why are chemists so good at solving problems?",
+            "options": [
+              "They have all the solutions",
+              "They wear safety goggles",
+              "They follow the steps",
+              "They work in big labs"
+            ],
+            "answer": 0,
+            "fact": "Bonus: I'd tell you a chemistry joke, but I know I wouldn't get a reaction.",
+            "src": "classic; premise: a solution is a substance dissolved in a liquid"
+          },
+          {
+            "value": 300,
+            "q": "Why do scientists always look for things twice?",
+            "options": [
+              "Their labs are so messy",
+              "They like to double-check",
+              "They forget the first time",
+              "They're doing re-search"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why does the microscope always overreact? It blows everything out of proportion.",
+            "src": "classic (replaces the No-bell Prize door knocker, which repeats J1 Knock Knock's 'Nobel who? No bell' question and its 'no-bell prize' bonus); premise: research = re-search, to search again; microscopes magnify"
+          },
+          {
+            "value": 400,
+            "q": "What does a subatomic duck say?",
+            "options": [
+              "Quack!",
+              "Quark!",
+              "Proton!",
+              "Ion!"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What did the nuclear physicist have for lunch? Fission chips.",
+            "src": "classic (replaces the thermometer 'more degrees' joke, which repeated J3 Space Cadets' sun 'millions of degrees' pun); premise: quarks are subatomic particles that make up protons and neutrons; fission is splitting atoms"
+          }
+        ]
+      },
+      {
+        "name": "Pun-odic Table",
+        "questions": [
+          {
+            "value": 100,
+            "q": "I'm reading a book about anti-gravity. ___",
+            "options": [
+              "It's impossible to put down",
+              "It's full of big words",
+              "It took me all week",
+              "It has lots of pictures"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the arm bone love jokes? It found everything humerus.",
+            "src": "classic; premise: the humerus is the upper arm bone"
+          },
+          {
+            "value": 200,
+            "q": "What do biologists wear to look sharp?",
+            "options": [
+              "Pressed lab coats",
+              "Tie-dye T-shirts",
+              "Shiny goggles",
+              "Designer genes"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why do chemists like working with ammonia? It's pretty basic stuff.",
+            "src": "classic; premise: genes are units of heredity; ammonia is a base"
+          },
+          {
+            "value": 300,
+            "q": "A neutron walks into a cafe and asks how much a coffee costs. The barista says ___",
+            "options": [
+              "Two dollars, please",
+              "For you, no charge",
+              "Just pay at the end",
+              "It's half price today"
+            ],
+            "answer": 1,
+            "fact": "Bonus: A photon checks into a hotel. Any bags? 'No thanks, I'm traveling light.'",
+            "src": "classic; premise: neutrons have no electric charge; photons are particles of light"
+          },
+          {
+            "value": 400,
+            "q": "What do you call a tooth in a glass of water?",
+            "options": [
+              "A really clean tooth",
+              "A dental rinse",
+              "A one-molar solution",
+              "A floating filling"
+            ],
+            "answer": 2,
+            "fact": "The pun: a molar is a back tooth, and in chemistry a one-molar solution has one mole of a substance per liter.",
+            "src": "classic; premise: a molar is a back tooth; a 1 molar (1 M) solution has 1 mole of solute per liter of solution"
+          }
+        ]
+      },
+      {
+        "name": "Chain Reactions",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Two atoms bump into each other. One says, 'I lost an electron!' The other asks, 'Are you sure?' ___",
+            "options": [
+              "No, let me look again",
+              "Yes, I'm positive",
+              "I think it fell off",
+              "Maybe, I'm not sure"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Want to hear a joke about sodium? Na.",
+            "src": "classic; premise: an atom that loses an electron becomes a positive ion; Na is the symbol for sodium"
+          },
+          {
+            "value": 200,
+            "q": "What did the cell say right after it split in two?",
+            "options": [
+              "That went really well",
+              "Now there are two of us",
+              "I'm beside myself",
+              "I need a long nap"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Oxygen and potassium did a group project together. It went OK.",
+            "src": "original; premise: cells reproduce by dividing in two; O is oxygen, K is potassium"
+          },
+          {
+            "value": 300,
+            "q": "Biology is the only science where ___",
+            "options": [
+              "multiplying means dividing",
+              "you study living things",
+              "the tests use microscopes",
+              "cells are the main topic"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the virus get a million followers? Everything it posted went viral.",
+            "src": "classic; premise: cells multiply by dividing"
+          },
+          {
+            "value": 400,
+            "q": "A quantum physicist gets pulled over. 'Do you know how fast you were going?' He says ___",
+            "options": [
+              "Yes, and I'm very sorry",
+              "About the speed limit",
+              "No, my dial is broken",
+              "No, but I know where I am"
+            ],
+            "answer": 3,
+            "fact": "The pun: in quantum physics you can't know a particle's exact speed and exact spot at once. It's called the uncertainty principle.",
+            "src": "classic (folk physics joke, adapted without naming Heisenberg); premise: Heisenberg uncertainty principle, position and momentum"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-08",
+    "blurb": "Jokes from every field, court, course and lane. No refs required.",
+    "categories": [
+      {
+        "name": "Locker Room Groans",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why did the golfer bring two pairs of pants?",
+            "options": [
+              "In case it rained all day",
+              "To look good in the photos",
+              "In case he got a hole in one",
+              "To match his new golf bag"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What's a golfer's favorite letter? Tee.",
+            "src": "classic; premise: a hole in one is sinking the ball with the first shot; golf balls sit on tees"
+          },
+          {
+            "value": 200,
+            "q": "Where do baseball catchers sit at dinner?",
+            "options": [
+              "Behind the plate",
+              "At the end of the table",
+              "Near the kitchen door",
+              "In the corner seat"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What did the baseball glove say to the ball? Catch you later.",
+            "src": "classic; premise: the catcher crouches behind home plate"
+          },
+          {
+            "value": 300,
+            "q": "Why did the softball player bring string to the game?",
+            "options": [
+              "To fix her glove",
+              "So she could tie the score",
+              "To mark the base lines",
+              "To hang up her jersey"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Which sport is always getting into trouble? Bad-minton.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "What has 18 legs and catches flies?",
+            "options": [
+              "A spider family",
+              "A hockey team",
+              "A soccer team",
+              "A baseball team"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why is tennis such a noisy sport? Every player raises a racket.",
+            "src": "classic; premise: a baseball team fields nine players (18 legs) who catch fly balls; hockey fields 6 (12 legs), soccer 11 (22 legs)"
+          }
+        ]
+      },
+      {
+        "name": "Pun-alty Box",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why do basketball players love cookies?",
+            "options": [
+              "They can dunk them",
+              "They're a quick snack",
+              "They come in big packs",
+              "They're round like a ball"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why are basketball players such messy eaters? They're always dribbling.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "I don't play soccer because I'm good at it. I just do it for ___",
+            "options": [
+              "the exercise",
+              "the team photo",
+              "my friends",
+              "the kicks"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What lights up a soccer stadium? A soccer match.",
+            "src": "classic, adapted"
+          },
+          {
+            "value": 300,
+            "q": "What do runners eat before a big race?",
+            "options": [
+              "Pasta, for energy",
+              "Nothing, they fast",
+              "A big breakfast",
+              "Just a banana"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the football coach go to the bank? To get his quarter back.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "I gave up archery. There were just too many ___",
+            "options": [
+              "hidden costs",
+              "rules to learn",
+              "drawbacks",
+              "early mornings"
+            ],
+            "answer": 2,
+            "fact": "The pun: to shoot, an archer draws back the bowstring. A drawback is also a downside.",
+            "src": "classic one-liner; premise: archers draw back the bowstring before releasing"
+          }
+        ]
+      },
+      {
+        "name": "Overtime Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why was the stadium so hot after the game?",
+            "options": [
+              "The sun came out",
+              "The lights stayed on",
+              "The team ran laps",
+              "All the fans had left"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why can't track stars listen to vinyl? They keep breaking records.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "My ski lessons started out great, but then ___",
+            "options": [
+              "I lost a glove",
+              "it all went downhill",
+              "the lift broke down",
+              "it got too cold"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why is Cinderella so bad at soccer? She keeps running away from the ball.",
+            "src": "classic one-liner, adapted; Cinderella is a folk tale"
+          },
+          {
+            "value": 300,
+            "q": "I almost quit the hurdles team, but then ___",
+            "options": [
+              "I got over it",
+              "I found a coach",
+              "I bought new shoes",
+              "I won a ribbon"
+            ],
+            "answer": 0,
+            "fact": "Bonus: I'd tell you a yoga joke, but it's a bit of a stretch.",
+            "src": "classic one-liner, adapted"
+          },
+          {
+            "value": 400,
+            "q": "I shot 160 in golf and bowled a 90 this week. If only I could ___",
+            "options": [
+              "practice a bit more",
+              "find a better coach",
+              "swap the two scores",
+              "play both on one day"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why do basketball players never go on vacation? They'd get called for traveling.",
+            "src": "original; premise: in golf the lower score is better, in bowling the higher score is better (300 max); traveling is a basketball violation"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-09",
+    "blurb": "Computer, phone and internet jokes, with no hold music",
+    "categories": [
+      {
+        "name": "Help Desk Groans",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why did the computer go to the doctor?",
+            "options": [
+              "It was running slow",
+              "It had a virus",
+              "Its screen was cracked",
+              "It needed a checkup"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why was the computer cold? It left its Windows open.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Why was the computer so tired when it got home?",
+            "options": [
+              "It worked all day",
+              "Its battery was low",
+              "It stayed up too late",
+              "It had a hard drive"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why was the computer so smart? It listened to its motherboard.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "What does a baby computer call its father?",
+            "options": [
+              "Data",
+              "Pixel",
+              "Router",
+              "Webcam"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What did the computer do at lunchtime? It had a byte.",
+            "src": "classic; 'Data' sounds like 'Dada'"
+          },
+          {
+            "value": 400,
+            "q": "Why did the web browser go broke?",
+            "options": [
+              "It paid for extra storage",
+              "It lost its password",
+              "It spent all its cache",
+              "It forgot to log out"
+            ],
+            "answer": 2,
+            "fact": "The pun: a browser's cache saves bits of websites so pages load faster, and 'cache' sounds just like 'cash.'",
+            "src": "original twist on a classic programmer pun; premise: browsers keep a cache of site files"
+          }
+        ]
+      },
+      {
+        "name": "Byte-Sized Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What's a computer's favorite snack?",
+            "options": [
+              "Potato chips",
+              "Pretzels",
+              "Microchips",
+              "Popcorn"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the computer go to the beach? To surf the web.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Why did the phone wear glasses?",
+            "options": [
+              "It lost its contacts",
+              "Its screen was blurry",
+              "To read small text",
+              "It had a big meeting"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the email feel so clingy? It had too many attachments.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "What do you get when you cross a computer with a lifeguard?",
+            "options": [
+              "A waterproof laptop",
+              "A beach computer",
+              "A swim app",
+              "A screen saver"
+            ],
+            "answer": 3,
+            "fact": "Bonus: How do trees get online? They log in.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "What's a computer's favorite kind of beat?",
+            "options": [
+              "A heartbeat",
+              "An algo-rhythm",
+              "A dance beat",
+              "A drum solo"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why is the keyboard always so tired? It works two shifts.",
+            "src": "classic; premise: an algorithm is a set of steps a computer follows; keyboards have two Shift keys"
+          }
+        ]
+      },
+      {
+        "name": "Plot Glitches",
+        "questions": [
+          {
+            "value": 100,
+            "q": "I set my password to 'incorrect.' Now when I forget it, the computer tells me ___",
+            "options": [
+              "to try again in a minute",
+              "to reset it by email",
+              "my password is incorrect",
+              "that my account is locked"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What's a computer's least favorite food? Spam.",
+            "src": "classic (anonymous internet joke)"
+          },
+          {
+            "value": 200,
+            "q": "Our Wi-Fi was down for an hour, so I had to talk to my family. They ___",
+            "options": [
+              "didn't mind at all",
+              "had a lot to say",
+              "fixed it pretty fast",
+              "seem like nice people"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the robot go on vacation? To recharge its batteries.",
+            "src": "classic (anonymous internet joke), adapted"
+          },
+          {
+            "value": 300,
+            "q": "Why do programmers prefer dark mode?",
+            "options": [
+              "Light attracts bugs",
+              "It's easier on the eyes",
+              "It saves battery life",
+              "It looks more serious"
+            ],
+            "answer": 0,
+            "fact": "Bonus: A USB plug has only two sides, yet it always takes me three tries to plug it in.",
+            "src": "classic programmer joke; premise: software errors are called bugs, and light draws insects"
+          },
+          {
+            "value": 400,
+            "q": "I told my phone's voice assistant, 'Call me a taxi.' It said ___",
+            "options": [
+              "Sorry, I can't do that",
+              "OK. From now on, you're Taxi",
+              "Your ride is on the way",
+              "Calling the nearest one"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the computer squeak? Someone stepped on its mouse.",
+            "src": "classic 'call me a cab' joke, updated for voice assistants"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-10",
+    "blurb": "Friendly jokes from the Stone Age to the Statue of Liberty",
+    "categories": [
+      {
+        "name": "Old-School Groans",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Where was the Declaration of Independence signed?",
+            "options": [
+              "In Philadelphia",
+              "At the bottom",
+              "In a big hall",
+              "On a wooden desk"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why was the printing press such a hit? It made a great impression.",
+            "src": "classic; premise: signed in Philadelphia, signatures below the text; printing presses press ink onto paper"
+          },
+          {
+            "value": 200,
+            "q": "Why were the early Middle Ages called the Dark Ages?",
+            "options": [
+              "Not much was written down",
+              "Candles were very costly",
+              "There were so many knights",
+              "The castles had few windows"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What was the most popular dance in 1776? The Indepen-dance.",
+            "src": "classic; premise: 'Dark Ages' is an old (now debated) name for the early Middle Ages, and the joke only says it was called that"
+          },
+          {
+            "value": 300,
+            "q": "Which old English king invented the fireplace?",
+            "options": [
+              "Edward the Elder",
+              "Ethelred the Unready",
+              "William the Conqueror",
+              "Alfred the Grate"
+            ],
+            "answer": 3,
+            "fact": "The pun: Alfred the Great ruled Wessex in the 800s, and a grate is the iron rack that holds logs in a fireplace.",
+            "src": "classic; premise: Alfred the Great, king of Wessex 871-899; Edward the Elder (899-924), Ethelred the Unready (978-1016) and William the Conqueror (1066-1087) were real English kings"
+          },
+          {
+            "value": 400,
+            "q": "How was the Roman Empire cut in half?",
+            "options": [
+              "Down the middle",
+              "With a pair of Caesars",
+              "Along a big river",
+              "With a line on a map"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the medieval king go to the dentist? To get his teeth crowned.",
+            "src": "classic; premise: the Roman Empire was split into Eastern and Western halves (395 AD); Caesar became an imperial title"
+          }
+        ]
+      },
+      {
+        "name": "Pun Dynasty",
+        "questions": [
+          {
+            "value": 100,
+            "q": "How did the Vikings send secret messages?",
+            "options": [
+              "By Norse code",
+              "By carrier pigeon",
+              "By longship",
+              "By smoke signal"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the pyramid builders finally stop? They got to the point.",
+            "src": "classic; premise: Vikings were Norse; pyramids rise to a point"
+          },
+          {
+            "value": 200,
+            "q": "What came after the Stone Age and the Bronze Age?",
+            "options": [
+              "The Space Age",
+              "The Iron Age",
+              "The Ice Age",
+              "The Saus-Age"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the cave painters pick such big caves? They wanted to draw a crowd.",
+            "src": "classic; premise: Stone, Bronze, Iron Age sequence; prehistoric cave paintings are real"
+          },
+          {
+            "value": 300,
+            "q": "Why do visitors love the Liberty Bell?",
+            "options": [
+              "It's older than the country",
+              "It's easy to find downtown",
+              "It's all it's cracked up to be",
+              "It sits in a big glass hall"
+            ],
+            "answer": 2,
+            "fact": "The pun: the Liberty Bell in Philadelphia has a famous crack, and being 'all it's cracked up to be' means living up to the hype.",
+            "src": "original; premise: the Liberty Bell is cracked and on public display in the glass-walled Liberty Bell Center, Philadelphia; cast 1752-53, before 1776"
+          },
+          {
+            "value": 400,
+            "q": "Why is the Leaning Tower of Pisa so agreeable?",
+            "options": [
+              "It's very old and wise",
+              "It's always inclined to agree",
+              "It doesn't like to argue",
+              "It has seen it all before"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What's the hardest part of visiting the Great Wall of China? Getting around it.",
+            "src": "original; premise: the tower began tilting during construction in the 1100s; the Great Wall is thousands of miles long"
+          }
+        ]
+      },
+      {
+        "name": "Twists of Fate",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What's the first thing Queen Elizabeth I did after she took the throne?",
+            "options": [
+              "She held a feast",
+              "She gave a speech",
+              "She signed a law",
+              "She sat down"
+            ],
+            "answer": 3,
+            "fact": "Bonus: I wanted to be a history teacher, but there was no future in it.",
+            "src": "classic; premise: Elizabeth I became queen in 1558"
+          },
+          {
+            "value": 200,
+            "q": "What happened at the Boston Tea Party?",
+            "options": [
+              "No idea, I wasn't invited",
+              "The colonists dumped tea",
+              "People held a protest",
+              "Ships came into port"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What kind of tea did the American colonists want? Liber-tea.",
+            "src": "classic; premise: in 1773 colonists dumped British tea into Boston Harbor"
+          },
+          {
+            "value": 300,
+            "q": "I studied for years to become an archaeologist, but now my career ___",
+            "options": [
+              "is going well",
+              "is on hold",
+              "is in ruins",
+              "is just starting"
+            ],
+            "answer": 2,
+            "fact": "Bonus: My friend says history class is boring. I told him that's old news.",
+            "src": "classic one-liner, told in first person; premise: archaeologists dig up ruins"
+          },
+          {
+            "value": 400,
+            "q": "I'd tell you a long joke about ancient Mesopotamia, but I'd just ___",
+            "options": [
+              "Babylon",
+              "ramble on",
+              "talk for hours",
+              "lose my place"
+            ],
+            "answer": 0,
+            "fact": "The pun: Babylon was a great city of ancient Mesopotamia, and 'Babylon' sounds just like 'babble on.'",
+            "src": "classic; premise: Babylon was in Mesopotamia (modern Iraq)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-11",
+    "blurb": "Math and number jokes that always add up, eventually",
+    "categories": [
+      {
+        "name": "Number Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why was six afraid of seven?",
+            "options": [
+              "Seven was bigger",
+              "Seven came next",
+              "Seven ate nine",
+              "Seven was louder"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What do you call a man who spends all summer at the beach? A tangent.",
+            "src": "classic; premise: a tangent is a line that touches a curve"
+          },
+          {
+            "value": 200,
+            "q": "What did the zero say to the eight?",
+            "options": [
+              "Nice belt",
+              "Nice hat",
+              "Long time no see",
+              "Move over"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What do you call friends who love math? Algebros.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Why is the obtuse angle always so upset?",
+            "options": [
+              "It's too wide",
+              "It has no friends",
+              "It lost its ruler",
+              "It's never right"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why can't you trust someone holding graph paper? They're plotting something.",
+            "src": "classic; premise: an obtuse angle is more than 90 degrees, so never a right angle"
+          },
+          {
+            "value": 400,
+            "q": "Why don't people ever talk about the number 288?",
+            "options": [
+              "It's hard to say",
+              "It's two gross",
+              "It's not prime",
+              "It's too even"
+            ],
+            "answer": 1,
+            "fact": "The pun: a gross is an old word for 144, a dozen dozens. So 288 is two gross.",
+            "src": "classic; premise: a gross = 144, 2 x 144 = 288; 288 is not prime"
+          }
+        ]
+      },
+      {
+        "name": "Sum Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What did the calculator say to the student?",
+            "options": [
+              "Press the buttons",
+              "Check your work",
+              "You can count on me",
+              "I need batteries"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why was the math book sad? It had too many problems.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "What's a math teacher's favorite place in New York City?",
+            "options": [
+              "Times Square",
+              "Central Park",
+              "Wall Street",
+              "Broadway"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the student do multiplication on the floor? The teacher said not to use tables.",
+            "src": "classic; premise: Times Square is in New York City"
+          },
+          {
+            "value": 300,
+            "q": "What do you call an empty parrot cage?",
+            "options": [
+              "A pentagon",
+              "A hexagon",
+              "An octagon",
+              "A polygon"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Who invented fractions? Henry the 1/8th.",
+            "src": "classic (replaces Sir Cumference, the title character of a well-known children's math book series); premise: a polygon is a closed shape with straight sides, and 'Polly' is the stock parrot name, so 'Polly gone'; Henry VIII"
+          },
+          {
+            "value": 400,
+            "q": "Why did the number get upset when someone called it average?",
+            "options": [
+              "It thought it was the median",
+              "It was way out of its range",
+              "It knew it was above average",
+              "That was a mean thing to say"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What do you call a number that can't sit still? A roamin' numeral.",
+            "src": "classic, adapted; premise: the mean is the average; median, mode and range are other statistics"
+          }
+        ]
+      },
+      {
+        "name": "Word Problems",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Parallel lines have so much in common. It's a shame they'll ___",
+            "options": [
+              "need a ruler",
+              "never meet",
+              "be on a test",
+              "be drawn in pencil"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why wasn't the number 4 invited to the party? It was too square.",
+            "src": "classic; premise: parallel lines never meet; 4 is a square number"
+          },
+          {
+            "value": 200,
+            "q": "Studies show that five out of four people ___",
+            "options": [
+              "have trouble with fractions",
+              "prefer summer to winter",
+              "like pizza for lunch",
+              "own at least one pet"
+            ],
+            "answer": 0,
+            "fact": "Bonus: There's a fine line between a numerator and a denominator.",
+            "src": "classic one-liner; premise: the line in a fraction separates numerator and denominator"
+          },
+          {
+            "value": 300,
+            "q": "Why is pi a terrible seatmate on a long flight?",
+            "options": [
+              "It hogs the armrest",
+              "It always wants the window",
+              "It goes on and on forever",
+              "It packs too many bags"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why does everyone like the circle? It's so well-rounded.",
+            "src": "original twist on a classic; premise: pi is irrational and its digits never end; 'well-rounded' means having many good qualities"
+          },
+          {
+            "value": 400,
+            "q": "How do you make seven even?",
+            "options": [
+              "Add one to it",
+              "Take away the s",
+              "Subtract one",
+              "Double it"
+            ],
+            "answer": 1,
+            "fact": "Bonus: There are 10 kinds of people: those who understand binary and those who don't.",
+            "src": "classic; premise: 'seven' minus the s spells 'even'; 10 in binary is 2"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-12",
+    "blurb": "Music and instrument jokes, from the garage band to the grand piano",
+    "categories": [
+      {
+        "name": "Off-Key Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why did the singer climb a ladder?",
+            "options": [
+              "To fix the stage lights",
+              "To reach the high notes",
+              "To hang a banner",
+              "To get to the balcony"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the music note go to school? To get a little sharper.",
+            "src": "classic; premise: a sharp raises a note a half step"
+          },
+          {
+            "value": 200,
+            "q": "What has lots of keys but can't open a single door?",
+            "options": [
+              "A janitor",
+              "A key ring",
+              "A locksmith",
+              "A piano"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What did the guitar say to the guitarist? Stop picking on me.",
+            "src": "classic riddle; premise: a standard piano has 88 keys"
+          },
+          {
+            "value": 300,
+            "q": "Why did the drummer take a long nap after the show?",
+            "options": [
+              "He was totally beat",
+              "The show ran very late",
+              "His arms were tired",
+              "The bus left early"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why are pianos so classy? They're either upright or grand.",
+            "src": "classic; premise: pianos come as uprights and grands"
+          },
+          {
+            "value": 400,
+            "q": "What do you call a musician with lots of problems?",
+            "options": [
+              "A bass player",
+              "A sharp dresser",
+              "A trebled man",
+              "A one-man band"
+            ],
+            "answer": 2,
+            "fact": "The pun: the treble clef marks the high notes in music, and 'trebled' sounds a lot like 'troubled.'",
+            "src": "classic; premise: the treble clef is used for higher notes"
+          }
+        ]
+      },
+      {
+        "name": "Note-worthy Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What do you get when you cross a fridge with a radio?",
+            "options": [
+              "A loud kitchen",
+              "Cool music",
+              "A snack radio",
+              "Cold leftovers"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the singer make a great baseball player? She had perfect pitch.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "What's a balloon's least favorite kind of music?",
+            "options": [
+              "Jazz",
+              "Country",
+              "Pop",
+              "Classical"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What did the drummer name his twin daughters? Anna One and Anna Two.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Why was the violin so nervous before the concert?",
+            "options": [
+              "It was high-strung",
+              "It was out of tune",
+              "It had a big solo",
+              "It was brand new"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why are music notes never lonely? They always have the staff around.",
+            "src": "classic; premise: violin strings are tightened to pitch; notes are written on a staff"
+          },
+          {
+            "value": 400,
+            "q": "How do you fix a broken tuba?",
+            "options": [
+              "With some duct tape",
+              "With a tuba repair kit",
+              "With a new mouthpiece",
+              "With a tuba glue"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What kind of music do shoes like best? Sole music.",
+            "src": "classic; 'a tuba glue' sounds like 'a tube of glue'"
+          }
+        ]
+      },
+      {
+        "name": "Encore Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "I used to play the piano by ear. Now ___",
+            "options": [
+              "I read the notes",
+              "I take real lessons",
+              "I use my hands",
+              "I play by memory"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the composer spend all day in bed? He was writing sheet music.",
+            "src": "classic one-liner (anonymous; Barry Popik traces versions with no known author)"
+          },
+          {
+            "value": 200,
+            "q": "How do you make a bandstand?",
+            "options": [
+              "Take away their chairs",
+              "Build a wooden stage",
+              "Sell lots of tickets",
+              "Hire a big crew"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why was the trumpet so annoying at parties? It kept tooting its own horn.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "My band is called Duvet. We're mostly a ___",
+            "options": [
+              "rock band",
+              "jazz trio",
+              "garage band",
+              "cover band"
+            ],
+            "answer": 3,
+            "fact": "Bonus: I wrote a song about my guitar. I hope it strikes a chord.",
+            "src": "classic one-liner, adapted; premise: a cover band plays other artists' songs; a duvet goes in a cover"
+          },
+          {
+            "value": 400,
+            "q": "There's a new band called 1023 Megabytes. Sadly, ___",
+            "options": [
+              "they're way too loud",
+              "they haven't had a gig yet",
+              "they need a new drummer",
+              "they only know one song"
+            ],
+            "answer": 1,
+            "fact": "The pun: in the binary count computers use, 1,024 megabytes make a gigabyte, so 1,023 is one short of a gig.",
+            "src": "classic internet joke; premise: 1 GB = 1,024 MB in the binary convention (1 GiB = 1,024 MiB); disk makers often use 1,000"
+          }
+        ]
+      }
+    ]
+  }
+]

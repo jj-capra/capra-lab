@@ -1,0 +1,1064 @@
+[
+  {
+    "id": "jokes-13",
+    "blurb": "Planets, rockets and astronauts: jokes that are out of this world",
+    "categories": [
+      {
+        "name": "Rocket Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "How do you throw a party in outer space?",
+            "options": [
+              "You call the moon",
+              "You planet",
+              "You invite aliens",
+              "You bring snacks"
+            ],
+            "answer": 1,
+            "fact": "Bonus: How do you put a baby astronaut to sleep? You rock-et.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "What did Mars say to Saturn?",
+            "options": [
+              "How have you been?",
+              "Let's grab lunch soon",
+              "Have a great day",
+              "Give me a ring sometime"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Where do astronauts keep their sandwiches? In a launch box.",
+            "src": "classic; premise: Saturn has rings; checker: 'See you next orbit' was a space pun and 'Stay warm out there' leaned on Saturn's cold, both swapped for flat sign-offs"
+          },
+          {
+            "value": 300,
+            "q": "How does the moon cut its hair?",
+            "options": [
+              "Eclipse it",
+              "With moon scissors",
+              "At a star salon",
+              "At the barbershop"
+            ],
+            "answer": 0,
+            "fact": "Bonus: How does the solar system hold up its pants? With an asteroid belt.",
+            "src": "classic; premise: the asteroid belt lies between Mars and Jupiter; checker: 'It lets it grow out' could read as the waxing moon, swapped"
+          },
+          {
+            "value": 400,
+            "q": "What do you call a magician in outer space?",
+            "options": [
+              "A comet-dian",
+              "A moon-sician",
+              "A flying sorcerer",
+              "A star-chitect"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What did the astronaut spot in the frying pan? An unidentified frying object.",
+            "src": "classic (flying saucer / sorcerer); distractors are puns on the wrong jobs"
+          }
+        ]
+      },
+      {
+        "name": "Spaced-Out Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What kind of star wears sunglasses?",
+            "options": [
+              "A movie star",
+              "A North Star",
+              "A distant star",
+              "A baby star"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the moon skip dessert? It was already full.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "The moon has looked gloomy lately. Don't worry, it's just going through ___",
+            "options": [
+              "a slump",
+              "a funk",
+              "a phase",
+              "a lot"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What's an astronaut's favorite key on the keyboard? The space bar.",
+            "src": "classic; premise: the moon goes through phases"
+          },
+          {
+            "value": 300,
+            "q": "Why didn't the sun go to college?",
+            "options": [
+              "It had no time to study",
+              "It had millions of degrees",
+              "It lived too far away",
+              "It couldn't find a ride"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What did the sun say when it met Earth? Nice to heat you.",
+            "src": "classic; premise: the sun's core is about 15 million degrees C (NASA)"
+          },
+          {
+            "value": 400,
+            "q": "How can you tell the moon is running low on money?",
+            "options": [
+              "It looks a little pale",
+              "It keeps asking for loans",
+              "It stays out all night",
+              "It's down to its last quarter"
+            ],
+            "answer": 3,
+            "fact": "The pun: a quarter is a coin, and the last quarter is a real moon phase, when half of the moon's face is lit.",
+            "src": "classic; premise: last (third) quarter moon phase shows half the disk lit; checker: 'hiding behind clouds' could read as dodging bills, swapped for a flat literal"
+          }
+        ]
+      },
+      {
+        "name": "Far-Out Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Did you hear about the new restaurant on the moon? Great food, but ___",
+            "options": [
+              "no parking",
+              "no atmosphere",
+              "tiny portions",
+              "no napkins"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the astronaut get in trouble in class? He kept spacing out.",
+            "src": "classic; premise: the moon has almost no atmosphere"
+          },
+          {
+            "value": 200,
+            "q": "Why haven't aliens ever visited our solar system?",
+            "options": [
+              "It's too far off the map",
+              "They lost our address",
+              "It's rated only one star",
+              "Earth's traffic is awful"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What do planets like to read? Comet books.",
+            "src": "classic; premise: our solar system has one star, the Sun"
+          },
+          {
+            "value": 300,
+            "q": "The satellites held an awards night. The speeches ran long, but ___",
+            "options": [
+              "the music was great",
+              "the food was great",
+              "the prizes were great",
+              "the reception was great"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the star win an award? It was a shining example.",
+            "src": "classic, adapted from the folk joke about two antennas (or satellites) whose wedding reception was excellent; premise: satellites receive and relay signals"
+          },
+          {
+            "value": 400,
+            "q": "My parents always said the sky's the limit. That's why I never became ___",
+            "options": [
+              "an astronaut",
+              "a pilot",
+              "a bird watcher",
+              "a mountain climber"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the rocket go to the party? It wanted to have a blast.",
+            "src": "classic, adapted"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-14",
+    "blurb": "Rain, wind, clouds and storms: today's forecast calls for groans",
+    "categories": [
+      {
+        "name": "Forecast Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why did the weather reporter bring a bar of soap to work?",
+            "options": [
+              "Their hands were muddy",
+              "To wash the news van",
+              "They were expecting showers",
+              "To clean the green screen"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What did the cloud say when it couldn't make it to the party? Can I take a rain check?",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "How does a hurricane see where it's going?",
+            "options": [
+              "With its one eye",
+              "With a weather map",
+              "It follows the wind",
+              "With its radar"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why was the thunder upset with the lightning? The lightning always got there first and stole its thunder.",
+            "src": "classic; premise: a hurricane has an eye; light travels faster than sound, so lightning is seen before thunder is heard"
+          },
+          {
+            "value": 300,
+            "q": "What does a cloud wear under its raincoat?",
+            "options": [
+              "A warm sweater",
+              "Rain boots",
+              "A cozy vest",
+              "Thunderwear"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What did the puddle say to the rain? Drop in anytime!",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "What's worse than when it's raining cats and dogs?",
+            "options": [
+              "When it's pouring buckets",
+              "When it's hailing taxis",
+              "When it's coming down hard",
+              "When it's blowing a gale"
+            ],
+            "answer": 1,
+            "fact": "The pun: you 'hail' a taxi by waving one down, and hail is also the balls of ice that fall in a storm.",
+            "src": "classic (in print since at least 1911, no known author, per Barry Popik); replaced 'Fowl weather', which shared its fowl/foul pun with Turkey Talk's 'fowl language'"
+          }
+        ]
+      },
+      {
+        "name": "Rainy Day Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why don't people trust clouds?",
+            "options": [
+              "They float too high",
+              "They're too far away",
+              "They're always gray",
+              "They're a little shady"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What do clouds wear in their hair? Rainbows.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Why does the cloud never spend its allowance?",
+            "options": [
+              "It's saving for a rainy day",
+              "It's saving for a car",
+              "It has nothing to buy",
+              "It lost its wallet"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What's the difference between weather and climate? You can't weather a tree, but you can climate.",
+            "src": "classic; bonus is the classic weather/climate (climb it) joke"
+          },
+          {
+            "value": 300,
+            "q": "Why does lightning never need to borrow a phone charger?",
+            "options": [
+              "It doesn't own a phone",
+              "It's already fully charged",
+              "It forgot its cable",
+              "It only lasts a second"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What's the opposite of a cold front? A warm back.",
+            "src": "original; premise: lightning is a discharge of built-up electric charge; checker: 'outlet' distractor echoed Road Trip's keyed 'outlet' punchline, swapped"
+          },
+          {
+            "value": 400,
+            "q": "What did one raindrop say to the other?",
+            "options": [
+              "Two heads are better than one",
+              "Great minds think alike",
+              "Two's company, three's a cloud",
+              "The more, the merrier"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What kind of dance does a tornado do best? The twist.",
+            "src": "classic (two's company, three's a crowd)"
+          }
+        ]
+      },
+      {
+        "name": "Partly Twisty",
+        "questions": [
+          {
+            "value": 100,
+            "q": "I'd tell you a joke about the wind, but ___",
+            "options": [
+              "it's way too long",
+              "I forgot the ending",
+              "you'd just blow it off",
+              "it's not that funny"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the cloud get kicked out of the group chat? It kept raining on everyone's parade.",
+            "src": "original"
+          },
+          {
+            "value": 200,
+            "q": "The forecast says a 50 percent chance of rain, so today I'm carrying ___",
+            "options": [
+              "half an umbrella",
+              "my rain boots",
+              "a big raincoat",
+              "an extra jacket"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did Dad stand outside holding his wallet wide open? He heard there'd be some change in the weather.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "I tried to catch some fog this morning, but ___",
+            "options": [
+              "it got away",
+              "I mist",
+              "it was too thick",
+              "the sun came out"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What does a cloud do when it's itchy? It finds the nearest skyscraper.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "What happens when the fog finally lifts in Los Angeles?",
+            "options": [
+              "USC",
+              "LAX",
+              "Malibu",
+              "UCLA"
+            ],
+            "answer": 3,
+            "fact": "The pun: when the fog lifts, 'you see LA,' which sounds just like UCLA, the big university in Los Angeles.",
+            "src": "classic; premise: UCLA is the University of California, Los Angeles; LA gets coastal fog"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-15",
+    "blurb": "Books, readers and libraries: jokes with a strong spine",
+    "categories": [
+      {
+        "name": "Bookish Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Where do books sleep?",
+            "options": [
+              "Under the covers",
+              "On the top shelf",
+              "In a bookcase",
+              "In the library"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why are bookends such good friends? They always support each other.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Why did the library book go to the doctor?",
+            "options": [
+              "It had a really bad cough",
+              "It was feeling very tired",
+              "It needed to be checked out",
+              "It needed new glasses"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the writer shut the window? There was a draft.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Why was the book always so cold?",
+            "options": [
+              "It sat near a window",
+              "Its pages were thin",
+              "It was left outside",
+              "It lost its jacket"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why is a bookmark such a loyal friend? It always saves your place.",
+            "src": "classic; premise: hardcover books wear paper dust jackets"
+          },
+          {
+            "value": 400,
+            "q": "What do librarians take with them when they go fishing?",
+            "options": [
+              "A big tackle box",
+              "Some bookworms",
+              "Their library cards",
+              "A folding chair"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Which section of the library is the most slippery? Non-friction.",
+            "src": "classic; premise: a bookworm is a keen reader, and worms are fishing bait; replaced 'ashamed of our shelves', the deck's third shelf/self pun"
+          }
+        ]
+      },
+      {
+        "name": "Novel Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why are libraries the tallest buildings in town?",
+            "options": [
+              "They have tall shelves",
+              "They need the most space",
+              "They have the most stories",
+              "They were built first"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the reader buy a brighter lamp? She wanted to do some light reading.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "What do you call a photo a book takes of itself?",
+            "options": [
+              "A book look",
+              "A page pic",
+              "A story snap",
+              "A shelfie"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the old library book look like a puppy? It was dog-eared.",
+            "src": "classic; premise: dog-eared means page corners folded down"
+          },
+          {
+            "value": 300,
+            "q": "I just started a book about mazes, and ___",
+            "options": [
+              "I'm already lost in it",
+              "it has great maps",
+              "it's really long",
+              "I lent it to a friend"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What's a librarian's favorite vegetable? Quiet peas.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "I'm reading a book about teleportation. ___",
+            "options": [
+              "It's a real page-turner",
+              "It's bound to take me places",
+              "It has a sturdy spine",
+              "It has a shiny cover"
+            ],
+            "answer": 1,
+            "fact": "The pun: a book is 'bound' when its pages are sewn or glued into a cover, and 'bound to' also means 'sure to.'",
+            "src": "classic"
+          }
+        ]
+      },
+      {
+        "name": "Twist Endings",
+        "questions": [
+          {
+            "value": 100,
+            "q": "They say never judge a book by its cover. That's why I always ___",
+            "options": [
+              "read the first page",
+              "judge it by the movie",
+              "check the reviews",
+              "ask a librarian"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What kind of stories do giraffes tell? Tall tales.",
+            "src": "classic, adapted"
+          },
+          {
+            "value": 200,
+            "q": "My e-reader's battery died on the last page of a mystery novel. ___",
+            "options": [
+              "I'll charge it tonight",
+              "I guessed the ending",
+              "Talk about a cliffhanger",
+              "I'll buy the paperback"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why do books love autumn? They get to turn over a new leaf.",
+            "src": "original; premise: a leaf is also a page of a book"
+          },
+          {
+            "value": 300,
+            "q": "I asked the library for a book on patience. They told me ___",
+            "options": [
+              "it's on the third floor",
+              "it's in the back corner",
+              "they close at five",
+              "there's a long waitlist"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the library book finally say sorry? The apology was long overdue.",
+            "src": "original"
+          },
+          {
+            "value": 400,
+            "q": "Why is the self-help shelf at my library always empty?",
+            "options": [
+              "Everyone helps themselves",
+              "They're all on hold",
+              "It's being dusted",
+              "It moved upstairs"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the book join a gym? It wanted a stronger spine.",
+            "src": "original; checker: 'checked out' was the deck's $200 punchline, swapped"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-16",
+    "blurb": "Cars, trains, planes and vacations: jokes for the long drive",
+    "categories": [
+      {
+        "name": "Backseat Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "How do trains eat their food?",
+            "options": [
+              "In the dining car",
+              "They chew-chew",
+              "Very, very fast",
+              "Off paper plates"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why was the old car so sleepy? It was totally exhausted.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Why couldn't the bicycle stand up on its own?",
+            "options": [
+              "Its kickstand broke",
+              "It was too heavy",
+              "It lost its balance",
+              "It was two-tired"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What did the traffic light say to the car? Don't look, I'm changing.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Why did the car get a flat tire?",
+            "options": [
+              "There was a fork in the road",
+              "It ran over a nail",
+              "The road was too bumpy",
+              "It hit a sharp rock"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why is camping so tiring? It's in-tents.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "What did the jack say to the car?",
+            "options": [
+              "Let's hit the road",
+              "Hold still, please",
+              "Can I give you a lift?",
+              "Time for an oil change"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Where do pencils go on vacation? Pencil-vania.",
+            "src": "classic; premise: a jack lifts a car so a tire can be changed; replaced the frog 'toad away' joke (frogs are Animal Crackers' lane and a likely repeat)"
+          }
+        ]
+      },
+      {
+        "name": "Puns for the Road",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Where do cars go swimming?",
+            "options": [
+              "The parking lot",
+              "The gas station",
+              "The lake",
+              "The car pool"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the old road map have so many fans? It was a legend.",
+            "src": "classic; premise: a map's legend is its key"
+          },
+          {
+            "value": 200,
+            "q": "Why was the train late?",
+            "options": [
+              "It got side-tracked",
+              "It ran out of fuel",
+              "It stopped for snacks",
+              "It missed its station"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the highway get a promotion? It always went the extra mile.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Why did the car apply for a new job?",
+            "options": [
+              "It needed gas money",
+              "It wanted to be more driven",
+              "It wanted a parking spot",
+              "It was bored at home"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why is the suitcase so convincing? It always makes a strong case.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "Why did the airplane get sent to its room?",
+            "options": [
+              "It flew past bedtime",
+              "It skipped its homework",
+              "It had a bad altitude",
+              "It wouldn't share peanuts"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did my phone love the long flight? It got to relax in airplane mode all day.",
+            "src": "classic"
+          }
+        ]
+      },
+      {
+        "name": "Detour Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What has four wheels and flies?",
+            "options": [
+              "A shopping cart",
+              "A garbage truck",
+              "A school bus",
+              "A minivan"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why is a bicycle bad at keeping promises? It always backpedals.",
+            "src": "classic; checker: 'A small airplane' and 'A flying car' really do have four wheels and fly, replaced with vehicles that do neither"
+          },
+          {
+            "value": 200,
+            "q": "I couldn't figure out how my seatbelt worked. Then ___",
+            "options": [
+              "I read the manual",
+              "my kid showed me",
+              "it clicked",
+              "I gave up"
+            ],
+            "answer": 2,
+            "fact": "Bonus: How is the pilot's new business going? It really took off.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Paper road maps tell you everything you need to know, except ___",
+            "options": [
+              "how to fold them back up",
+              "where the gas stations are",
+              "which roads have traffic",
+              "how long the drive is"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What's a highway's favorite fruit spread? Traffic jam.",
+            "src": "classic folk observation"
+          },
+          {
+            "value": 400,
+            "q": "I went on vacation to unplug from everything. I spent the whole trip ___",
+            "options": [
+              "sleeping by the pool",
+              "plugging my ears",
+              "trying new foods",
+              "looking for an outlet"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What do you get when you put a car in the oven? A hot rod.",
+            "src": "original"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-17",
+    "blurb": "Fish, whales, crabs and waves: jokes that make a big splash",
+    "categories": [
+      {
+        "name": "Deep-Sea Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why don't oysters share their pearls?",
+            "options": [
+              "They're too valuable",
+              "They're very shy",
+              "They're shellfish",
+              "They hide them well"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why are fish so smart? They live in schools.",
+            "src": "classic (reserved for this deck); premise: oysters make pearls"
+          },
+          {
+            "value": 200,
+            "q": "What do you call a fish wearing a bow tie?",
+            "options": [
+              "Sofishticated",
+              "A fancy fish",
+              "Well-dressed",
+              "Overdressed"
+            ],
+            "answer": 0,
+            "fact": "Bonus: How does a clam call its friends? On its shell phone.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "How do you make a squid laugh?",
+            "options": [
+              "Tell it fish jokes",
+              "Make silly faces",
+              "Swim in circles",
+              "With ten-tickles"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the whale go to the party? It wanted to have a whale of a time.",
+            "src": "classic; premise: a squid has ten limbs, eight arms plus two tentacles"
+          },
+          {
+            "value": 400,
+            "q": "What do you call a fish that performs surgery?",
+            "options": [
+              "A carp-enter",
+              "A sturgeon",
+              "A bass player",
+              "A sole singer"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What part of a fish weighs the most? The scales.",
+            "src": "classic; premise: the sturgeon is a real fish; distractors are puns on the wrong jobs"
+          }
+        ]
+      },
+      {
+        "name": "Fin-tastic Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What kind of hair do oceans have?",
+            "options": [
+              "Blue",
+              "Long",
+              "Salty",
+              "Wavy"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What did one fish say to the other after a year apart? Long time, no sea.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Why won't fish ever go on the internet?",
+            "options": [
+              "Their fins can't type",
+              "They're afraid of the net",
+              "The Wi-Fi is too weak",
+              "Phones don't float"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the family buy the boat? It was for sail.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "What's the best way to talk to a fish?",
+            "options": [
+              "Drop it a line",
+              "Tap on the glass",
+              "Speak very slowly",
+              "Send it a text"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What kind of fish only comes out at night? A starfish.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "What does an octopus wear on a cold day?",
+            "options": [
+              "A thick wet suit",
+              "A wool sweater",
+              "A coat of arms",
+              "A long scarf"
+            ],
+            "answer": 2,
+            "fact": "The pun: a coat of arms is a family crest from the days of knights, and an octopus has eight arms to keep warm.",
+            "src": "classic; premise: octopuses have eight arms"
+          }
+        ]
+      },
+      {
+        "name": "Tidal Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why do fish live in salt water?",
+            "options": [
+              "It helps them float",
+              "They like the taste",
+              "Pepper makes them sneeze",
+              "That's where food is"
+            ],
+            "answer": 2,
+            "fact": "Bonus: How do little fish get to school? They ride the octobus.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Two fish are in a tank. One turns to the other and says ___",
+            "options": [
+              "I think we need more water",
+              "Do you know how to drive this?",
+              "Is it almost feeding time?",
+              "This water feels too cold"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What do you get when you cross a fish with an elephant? Swimming trunks.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Why is the ocean so salty?",
+            "options": [
+              "The land never waves back",
+              "Rivers carry salt into it",
+              "Rocks wash into it",
+              "It's very, very old"
+            ],
+            "answer": 0,
+            "fact": "The pun: 'salty' also means grumpy, and waves are the sea's hello. The real salt comes mostly from rocks, carried in by rivers.",
+            "src": "classic; premise: sea salt is mostly minerals weathered from rock and carried by rivers (NOAA)"
+          },
+          {
+            "value": 400,
+            "q": "Everyone thinks a pirate's favorite letter is R, but his real favorite is ___",
+            "options": [
+              "the B",
+              "the D",
+              "the M",
+              "the C"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Where do fish go on vacation? Finland.",
+            "src": "classic pirate joke (you'd think it's R, but it's the C / sea); replaced the seagull 'bagels' joke (bread is Rise and Shine's lane, and its flying bagel echoed Rise and Shine's 'plain bagel')"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-18",
+    "blurb": "Dinosaurs and fossils: jokes from way, way, way back",
+    "categories": [
+      {
+        "name": "Jurassic Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What do you call a sleeping dinosaur?",
+            "options": [
+              "A tired T. rex",
+              "A napping lizard",
+              "A dino-snore",
+              "A bedtime beast"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What do you get when you cross a dinosaur with fireworks? Dino-mite!",
+            "src": "classic (reserved for this deck)"
+          },
+          {
+            "value": 200,
+            "q": "What do you call a dinosaur that knows lots of big words?",
+            "options": [
+              "A thesaurus",
+              "A brainy raptor",
+              "A smart T. rex",
+              "A chatty lizard"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Which dinosaur is the best at cleaning the house? The Tricera-mops.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "What did the dinosaur put on its kitchen floor?",
+            "options": [
+              "A fossil rug",
+              "Stone slabs",
+              "Muddy footprints",
+              "Rep-tiles"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What do you call a dinosaur that never gives up? A Try-and-try-and-try-ceratops.",
+            "src": "classic; premise: dinosaurs are reptiles"
+          },
+          {
+            "value": 400,
+            "q": "How do you ask a dinosaur if it wants a hot drink?",
+            "options": [
+              "Cocoa, Raptor?",
+              "Tea, Rex?",
+              "Coffee, Bronto?",
+              "Hot milk, Stego?"
+            ],
+            "answer": 1,
+            "fact": "The pun: 'Tea, Rex?' sounds like T. rex, short for Tyrannosaurus rex, a name that means 'tyrant lizard king.'",
+            "src": "classic; premise: Tyrannosaurus rex means tyrant lizard king"
+          }
+        ]
+      },
+      {
+        "name": "Prehistoric Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why was the fossil so famous?",
+            "options": [
+              "It was a rock star",
+              "It was very old",
+              "It was in a museum",
+              "It was on TV"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What do you call a dinosaur that's great at hide-and-seek? Do-you-think-he-saw-us.",
+            "src": "original; premise: fossils are preserved in rock"
+          },
+          {
+            "value": 200,
+            "q": "Why do paleontologists love their jobs?",
+            "options": [
+              "They love old things",
+              "They work outside",
+              "They get to travel",
+              "They really dig it"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What did the paleontologist say to the messy fossil? I have a bone to pick with you.",
+            "src": "classic; premise: paleontologists dig up fossils"
+          },
+          {
+            "value": 300,
+            "q": "What kind of dinosaur can you ride in a rodeo?",
+            "options": [
+              "A Veloci-rapper",
+              "A Bronco-saurus",
+              "A Ptero-doodle",
+              "A Tyranno-sorry-us"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What do dinosaurs use to pay their bills? Tyrannosaurus checks.",
+            "src": "classic (Brontosaurus / bronco); checker: distractors are now coined dino puns that don't connect to a rodeo, so it isn't a spot-the-misspelling"
+          },
+          {
+            "value": 400,
+            "q": "Why did the dinosaur eat the whole factory?",
+            "options": [
+              "It skipped breakfast",
+              "It was a meat-eater",
+              "It was a plant-eater",
+              "It was really hungry"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the T. rex lose the arm-wrestling match? It came up a little short.",
+            "src": "classic; premise: many dinosaurs were plant-eaters; T. rex had very short arms"
+          }
+        ]
+      },
+      {
+        "name": "Twistosaurus",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What makes more noise than a dinosaur?",
+            "options": [
+              "A volcano",
+              "A thunderstorm",
+              "A rocket launch",
+              "Two dinosaurs"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why do museums keep showing old dinosaur bones? They can't afford new ones.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Why did the dinosaur cross the road?",
+            "options": [
+              "Chickens weren't around yet",
+              "To find some lunch",
+              "To stretch its long legs",
+              "It was late for dinner"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the Stegosaurus offer to set the table? It already had the plates.",
+            "src": "classic; premise: chickens appeared tens of millions of years after the non-bird dinosaurs; Stegosaurus had bony back plates"
+          },
+          {
+            "value": 300,
+            "q": "How should you start a conversation with a T. rex?",
+            "options": [
+              "Speak up loudly",
+              "In dinosaur language",
+              "From very far away",
+              "Look it in the eye"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why shouldn't you race a velociraptor for the last cookie? Its name means 'swift thief.'",
+            "src": "classic; checker reworded the setup so it doesn't echo Under the Sea's 'best way to talk to a fish'; premise: Velociraptor means swift seizer or swift thief"
+          },
+          {
+            "value": 400,
+            "q": "The museum guide said the dinosaur skeleton is 70 million and 3 years old. Why the 3?",
+            "options": [
+              "The sign has a typo",
+              "The guide started 3 years ago",
+              "Experts like exact numbers",
+              "The 3 is for good luck"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the dinosaur buy a new phone? Its old one was a total fossil.",
+            "src": "classic; premise: many dinosaur fossils are around 66 to 70+ million years old"
+          }
+        ]
+      }
+    ]
+  }
+]

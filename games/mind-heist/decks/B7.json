@@ -1,0 +1,470 @@
+[
+  {
+    "id": "no-cap",
+    "blurb": "Gen Z slang and internet words, decoded with a dictionary",
+    "categories": [
+      {
+        "name": "Say Less",
+        "questions": [
+          {
+            "value": 100,
+            "q": "When a teen says 'no cap,' what do they mean?",
+            "options": ["No rush", "No lie", "No thanks", "No problem"],
+            "answer": 1,
+            "fact": "Dictionary.com says 'to cap,' meaning to brag, exaggerate or lie, dates to the early 1900s in Black slang.",
+            "src": "Checked: https://www.dictionary.com/e/slang/no-cap/ (no cap = 'no lie' / 'for real'; 'to cap' = brag, exaggerate, lie in Black slang, early 1900s; no vulgar sense). Dictionary.com also lists a literal 'no limit' sense, so 'No limit' is deliberately not an option."
+          },
+          {
+            "value": 200,
+            "q": "You ask a teen to take out the trash and they reply 'Bet.' What do they mean?",
+            "options": ["Maybe later", "Want to bet?", "Okay, will do", "Not my turn"],
+            "answer": 2,
+            "fact": "Merriam-Webster traces this 'bet' to 1980s African American English, likely short for 'you bet.'",
+            "src": "Checked: https://www.merriam-webster.com/slang/bet ('an informal affirmative'; 'originated in African American English slang in the 1980s'; 'likely shortened from... you bet')"
+          },
+          {
+            "value": 300,
+            "q": "If a teen says the tacos are 'bussin,' what do they think of them?",
+            "options": ["Way too spicy", "Overpriced", "Undercooked", "Really delicious"],
+            "answer": 3,
+            "fact": "Merriam-Webster dates 'bussin' to 2002 and says it is probably a form of 'busting.'",
+            "src": "Checked: https://www.merriam-webster.com/dictionary/bussin ('extremely good : excellent; especially : delicious, tasty'; first known use 2002; probably variant of busting; only sense listed, no vulgar sense)"
+          },
+          {
+            "value": 400,
+            "q": "If a teen says 'I'm finna eat,' what do they mean?",
+            "options": ["I just ate", "I'm not hungry", "I'm about to eat", "I'm still hungry"],
+            "answer": 2,
+            "fact": "It stands in for 'fixing to,' and Merriam-Webster dates it to 1985 in African American English.",
+            "src": "Checked: https://www.merriam-webster.com/dictionary/finna ('about to : intending to - used for fixing to'; usage originated in African American English; first known use 1985; only sense). Replaces the draft's 'stan' question (the Eminem song it comes from is about a murder-suicide)."
+          }
+        ]
+      },
+      {
+        "name": "Word of the Year",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Collins Dictionary's 2015 Word of the Year was 'binge-watch.' What does it mean?",
+            "options": ["Rewatch an old favorite", "Watch many episodes in a row", "Watch a show on your phone", "Watch with friends online"],
+            "answer": 1,
+            "fact": "A year earlier, Collins chose 'photobomb,' a word it first recorded in 2008.",
+            "src": "Checked: https://time.com/4102569/collins-dictionary-word-of-the-year (Collins 2015 binge-watch, 'to watch a large number of television programs... in succession'); https://itv.com/news/2014-10-23/photobomb-named-word-of-the-year (Collins 2014 photobomb, 'first recorded in 2008')"
+          },
+          {
+            "value": 200,
+            "q": "Dictionary.com's 2024 Word of the Year took off with TikTok's 'very ___, very mindful' trend. What was it?",
+            "options": ["Classy", "Humble", "Cutesy", "Demure"],
+            "answer": 3,
+            "fact": "Searches for the word on Dictionary.com topped 13 million in a single week of August 2024.",
+            "src": "Checked: https://www.ktvu.com/news/demure-meaning-dictionary-word-of-the-year-2024 (Dictionary.com 2024 WOTY demure; 'very demure, very mindful'; over 13,000,000 queries in the week of August 19). Creator's name removed from the fact."
+          },
+          {
+            "value": 300,
+            "q": "Oxford's 2024 Word of the Year names the dulling effect of too much trivial online content. What is it?",
+            "options": ["Brain rot", "Brain fog", "Doomscrolling", "Burnout"],
+            "answer": 0,
+            "fact": "Oxford says the first recorded use is in Henry David Thoreau's 1854 book Walden.",
+            "src": "Checked: https://www.opb.org/article/2024/12/02/thoreau-warned-of-brain-rot-in-1854-now-its-oxford-word-of-the-year-2024/ (Oxford WOTY 2024 brain rot; per OUP first recorded use Thoreau's Walden, 1854; shortlist demure, dynamic pricing, romantasy, slop, lore)"
+          },
+          {
+            "value": 400,
+            "q": "Oxford's 2012 US Word of the Year was chosen for its new life as a verb. What was it?",
+            "options": ["YOLO", "Selfie", "GIF", "Tweet"],
+            "answer": 2,
+            "fact": "YOLO was the runner-up, and the GIF image format itself turned 25 that year.",
+            "src": "Checked: https://www.npr.org/sections/thetwo-way/2012/11/12/164991502/gif-beats-out-yolo-as-oxford-dictionary-word-of-2012 (Oxford American word of 2012 GIF, 'gaining traction as a verb'; YOLO runner-up; format turned 25). Selfie was Oxford's 2013 word."
+          }
+        ]
+      },
+      {
+        "name": "Text Talk",
+        "questions": [
+          {
+            "value": 100,
+            "q": "When fans call an athlete 'the GOAT,' what are they saying?",
+            "options": ["Greatest of all time", "Most improved player", "Rookie of the year", "Captain of the team"],
+            "answer": 0,
+            "fact": "Merriam-Webster added GOAT in 2018; Muhammad Ali's wife, Lonnie, formed G.O.A.T. Inc. in 1992.",
+            "src": "Checked: https://en.wikipedia.org/wiki/GOAT_(sports_culture) (Lonnie Ali incorporated G.O.A.T. Inc. in 1992; M-W 2018); M-W addition confirmed in Sept 2018 new-words coverage, e.g. https://www.bostonglobe.com/metro/2018/09/04/merriam-webster-adds-goat-hangry-and-bingeable-dictionary/L9oYaKGJDxehSpijUDkxtN/story.html"
+          },
+          {
+            "value": 200,
+            "q": "In a text, SMH stands for 'shaking my' what?",
+            "options": ["Hand", "Phone", "Fist", "Head"],
+            "answer": 3,
+            "fact": "Merriam-Webster's earliest example of SMH comes from a 1994 online newsgroup post.",
+            "src": "Checked: https://www.merriam-webster.com/slang/smh ('shaking my head'; sometimes glossed 'scratching my head', which also ends in head; in use since at least the early 1990s; earliest cited example a 15 July 1994 post on news.newusers.questions). Replaces the draft's TL;DR question, which repeated A8 the-first-job / Inbox Shorthand / 300."
+          },
+          {
+            "value": 300,
+            "q": "A post captioned 'IYKYK' is flagging what?",
+            "options": ["A paid ad", "An inside joke", "Breaking news", "A trick question"],
+            "answer": 1,
+            "fact": "It stands for 'if you know, you know,' and Dictionary.com says it's been used online since at least 2009.",
+            "src": "Checked: https://www.dictionary.com/e/slang/iykyk/ (signals an inside joke or reference; 'used on social media since at least 2009'). Moved from $200 to $300."
+          },
+          {
+            "value": 400,
+            "q": "On social media, OOMF stands for 'one of my' what?",
+            "options": ["Favorites", "Feeds", "Followers", "Filters"],
+            "answer": 2,
+            "fact": "Dictionary.com says #oomf has been used on Twitter since March 2010; some read the F as 'friends.'",
+            "src": "Checked: https://www.dictionary.com/e/acronyms/oomf/ (one of my followers / one of my friends; hashtag since March 2010; no vulgar sense). 'Friends' is deliberately not an option."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gone-viral",
+    "blurb": "Challenges, dances and memes that broke the internet, 2010 to 2024",
+    "categories": [
+      {
+        "name": "Challenge Accepted",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In 2016's Mannequin Challenge, what did everyone in the video do?",
+            "options": ["Dance in a line", "Freeze in place", "Lip-sync a song", "Dump ice water"],
+            "answer": 1,
+            "fact": "Rae Sremmurd's 'Black Beatles,' heard in many of the videos, rode the craze to No. 1 on the Hot 100.",
+            "src": "Checked: https://www.billboard.com/pro/hot-100-rae-sremmurd-black-beatles-number-one/ (No. 1 on chart dated Nov 26, 2016; 'a big boost from its usage in viral Mannequin Challenge videos'); https://en.wikipedia.org/wiki/Mannequin_Challenge"
+          },
+          {
+            "value": 200,
+            "q": "A 2022 TikTok dance craze copied a school-dance scene from which Netflix series?",
+            "options": ["Stranger Things", "Cobra Kai", "Wednesday", "Outer Banks"],
+            "answer": 2,
+            "fact": "Star Jenna Ortega choreographed the dance herself; on the show it's set to The Cramps' 'Goo Goo Muck.'",
+            "src": "Checked: https://www.gamesradar.com/wednesday-dance-scene-viral-tiktok (Nov 2022; Nevermore school dance; 'choreographed by star Jenna Ortega herself'; set to 'Goo Goo Muck' by The Cramps; TikTok versions used a sped-up Lady Gaga track). New question, replaces the draft's Renegade question (tied to a creator-credit controversy)."
+          },
+          {
+            "value": 300,
+            "q": "The 'floss' dance blew up in 2017 after a teen did it on SNL while which singer performed?",
+            "options": ["Katy Perry", "Taylor Swift", "Lady Gaga", "Ariana Grande"],
+            "answer": 0,
+            "fact": "She sang 'Swish Swish' on the May 2017 season finale, and the dancing teen became known as the Backpack Kid.",
+            "src": "Checked: https://en.wikipedia.org/wiki/Floss_(dance) (Horning on SNL, May 2017, Katy Perry's 'Swish Swish'); https://www.etonline.com/tv/217977_katy_perry_delivers_wild_surreal_performances_of_swish_swish_and_bon_appetite_on_snl_season_finale (season finale). Fortnite emote dropped from the fact: the dancer's family sued Epic Games over it in Dec 2018."
+          },
+          {
+            "value": 400,
+            "q": "The 2016 water bottle flip craze took off after a teen landed one at what kind of event?",
+            "options": ["A basketball game", "A pep rally", "A science fair", "A talent show"],
+            "answer": 3,
+            "fact": "The viral flip was filmed at Ardrey Kell High School in Charlotte, North Carolina.",
+            "src": "Checked: https://en.wikipedia.org/wiki/Bottle_flipping (teen flipped a bottle 'at a talent show at Ardrey Kell High School in Charlotte, North Carolina'; sources dated May 2016). Moved from $200 to $400; 'A school talent show' shortened to match the other options."
+          }
+        ]
+      },
+      {
+        "name": "On Repeat",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In 2022, which kids' video became the first on YouTube to pass 10 billion views?",
+            "options": ["Wheels on the Bus", "Johny Johny Yes Papa", "Baby Shark Dance", "Bath Song"],
+            "answer": 2,
+            "fact": "South Korea's Pinkfong first uploaded it in 2016, and Guinness World Records confirmed the milestone.",
+            "src": "Checked: https://www.guinnessworldrecords.com/news/2022/1/baby-shark-becomes-first-youtube-video-to-reach-10-billion-views-689527 (first YouTube video to 10 billion, Jan 2022; Pinkfong, Republic of Korea; first uploaded 2016). Singer's name and age dropped: Guinness doesn't clearly tie her to the upload."
+          },
+          {
+            "value": 200,
+            "q": "In 2021, the song behind every 'rickroll' prank passed 1 billion YouTube views. What is it?",
+            "options": ["Never Gonna Give You Up", "Take On Me", "Here I Go Again", "Don't Stop Believin'"],
+            "answer": 0,
+            "fact": "Rick Astley's 1987 song reached No. 1 on the US Billboard Hot 100 in March 1988.",
+            "src": "Checked: https://en.wikipedia.org/wiki/Never_Gonna_Give_You_Up (released 27 July 1987; Hot 100 No. 1 week ending 12 March 1988; video passed 1 billion views 28 July 2021); https://www.npr.org/2021/07/30/1022642106/rick-astleys-hit-never-gonna-give-you-up-passes-1-billion-views-on-youtube"
+          },
+          {
+            "value": 300,
+            "q": "Lil Nas X's TikTok hit 'Old Town Road' got a 2019 remix with which country star?",
+            "options": ["Garth Brooks", "Blake Shelton", "Keith Urban", "Billy Ray Cyrus"],
+            "answer": 3,
+            "fact": "The remix spent 19 straight weeks at No. 1 on the Billboard Hot 100 in 2019.",
+            "src": "Checked: https://www.wikiwand.com/en/articles/Old_Town_Road (Billy Ray Cyrus remix April 5, 2019; took off on TikTok from late Dec 2018, so 'blew up in 2019' reworded; 19 consecutive weeks at No. 1, Apr 13 to Aug 17, 2019; other remixes featured Diplo, Young Thug, Mason Ramsey and RM, none of them a distractor). 'Record' wording avoided: it was tied in 2024."
+          },
+          {
+            "value": 400,
+            "q": "Which 2013 meme song debuted at No. 1 on the Billboard Hot 100 and stayed on top for five weeks?",
+            "options": ["Gangnam Style", "Harlem Shake", "Thrift Shop", "The Fox"],
+            "answer": 1,
+            "fact": "Billboard had just begun counting YouTube views; without them, it would have debuted only in the top 15.",
+            "src": "Checked: https://www.yahoo.com/music/chart-watch-black-beatles-zooms-to-1-thanks-to-mannequin-challenge-225044791.html (Harlem Shake 'debuted at #1 and spent five weeks on top'; Gangnam Style seven weeks at #2 in 2012); https://en.wikipedia.org/wiki/Harlem_Shake_(meme) (No. 1 debut because Billboard brought forward counting YouTube views; 'Without the change the song would only have debuted in the Top 15'); https://www.tubefilter.com/2013/02/21/billboard-harlem-shake-hot-100/"
+          }
+        ]
+      },
+      {
+        "name": "Internet Famous",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In the 'This is fine' meme, a cartoon dog sips coffee in a room that is what?",
+            "options": ["Flooding", "Upside down", "On fire", "Caving in"],
+            "answer": 2,
+            "fact": "The image comes from a 2013 strip in KC Green's webcomic Gunshow.",
+            "src": "Checked: https://npr.org/2023/01/16/1149232763/this-is-fine-meme-anniversary-gunshow-web-comic (smiling dog with coffee 'as a room goes up in flames'; KC Green first published it in 2013 in his Gunshow strip, 'On Fire')"
+          },
+          {
+            "value": 200,
+            "q": "Moo Deng, the internet's favorite baby animal of 2024, is what kind of animal?",
+            "options": ["Pygmy hippo", "Baby rhino", "Red panda", "Capybara"],
+            "answer": 0,
+            "fact": "She was born at Khao Kheow Open Zoo in Thailand, and her name means 'bouncy pork.'",
+            "src": "Checked: https://huffingtonpost.co.uk/entry/moo-deng-name-meaning_uk_66f12785e4b03a18c4a20cd3 (pygmy hippo; born at Khao Kheow Open Zoo, Chonburi, Thailand; Thai name translates as 'bouncy pork', a springy meatball)"
+          },
+          {
+            "value": 300,
+            "q": "In a viral 2020 TikTok, a man skateboarded while sipping Ocean Spray to a song by which band?",
+            "options": ["The Cranberries", "Eagles", "Fleetwood Mac", "The Doobie Brothers"],
+            "answer": 2,
+            "fact": "The song was 'Dreams' from 1977, and drummer Mick Fleetwood soon filmed his own version, juice in hand.",
+            "src": "Checked: https://www.npr.org/2020/10/11/922554253 (Nathan Apodaca, longboard, Ocean Spray Cran-Raspberry, Fleetwood Mac's 'Dreams'; Mick Fleetwood 'recorded his own version on a skateboard, juice in hand'). Juice was Cran-Raspberry, so 'cranberry juice' changed to 'Ocean Spray'; creator's name taken out of the question. The Cranberries' 'Dreams' (1992) is a different song."
+          },
+          {
+            "value": 400,
+            "q": "TikTok's viral baked feta pasta of 2021 began as a recipe craze in which country?",
+            "options": ["Greece", "Italy", "Sweden", "Finland"],
+            "answer": 3,
+            "fact": "The Finnish dish, uunifetapasta, was so popular in 2019 that stores in Finland reportedly ran out of feta.",
+            "src": "Checked: https://refinery29.com/en-us/2021/02/10308754/feta-cheese-tiktok-pasta-recipe-ingredients-sales (Finnish blogger Jenni Hayrinen shared it in 2019; #uunifetapasta was Finland's phenomenon of the year in 2019; Finnish stores reportedly ran out of feta)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "for-you-page",
+    "blurb": "The apps, streams and creators Gen Z grew up scrolling",
+    "categories": [
+      {
+        "name": "App Origins",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Snapchat became famous for photo messages that do what after they're viewed?",
+            "options": ["Turn into GIFs", "Disappear", "Go public", "Get printed"],
+            "answer": 1,
+            "fact": "Snapchat's ghost mascot is nicknamed Ghostface Chillah.",
+            "src": "Checked: https://en.wikipedia.org/wiki/Snapchat (snaps are only accessible briefly; ghost mascot 'Ghostface Chillah')"
+          },
+          {
+            "value": 200,
+            "q": "In 2018, TikTok merged with which lip-sync video app?",
+            "options": ["Vine", "Dubsmash", "Musical.ly", "Triller"],
+            "answer": 2,
+            "fact": "When the apps merged in August 2018, Musical.ly users' accounts moved over to TikTok.",
+            "src": "Checked: https://en.wikipedia.org/wiki/Musical.ly (ByteDance acquired it Nov 10, 2017; merged into TikTok Aug 2, 2018; existing accounts and data consolidated into one app under the TikTok name). Fact reworded to avoid the ownership and China angle."
+          },
+          {
+            "value": 300,
+            "q": "When BeReal's once-a-day alert goes off, how many minutes do you have to post on time?",
+            "options": ["1", "2", "5", "10"],
+            "answer": 1,
+            "fact": "BeReal, a French app first released in 2020, was Apple's iPhone App of the Year for 2022.",
+            "src": "Checked: https://en.wikipedia.org/wiki/BeReal ('a two-minute window to post'; French app first released 2020; Apple's iPhone App of the Year 2022)"
+          },
+          {
+            "value": 400,
+            "q": "Snapchat launched in 2011 under what original name?",
+            "options": ["Flashpic", "Ghostgram", "Snaptalk", "Picaboo"],
+            "answer": 3,
+            "fact": "Picaboo arrived on iPhones in July 2011 and was relaunched as Snapchat that September.",
+            "src": "Checked: https://en.wikipedia.org/wiki/Snapchat (launched as Picaboo on iOS July 8, 2011; relaunched as Snapchat September 2011)"
+          }
+        ]
+      },
+      {
+        "name": "Streamer Mode",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which company bought the game-streaming site Twitch in 2014?",
+            "options": ["Amazon", "Google", "Microsoft", "Facebook"],
+            "answer": 0,
+            "fact": "Amazon paid about $970 million in cash for the site.",
+            "src": "Checked: https://www.engadget.com/2014/08/25/twitch-confirms-amazon-purchase/ (Aug 25, 2014; 'approximately $970 million in cash')"
+          },
+          {
+            "value": 200,
+            "q": "When Discord launched in 2015, it was built mainly for which group?",
+            "options": ["College students", "Musicians", "Gamers", "Office teams"],
+            "answer": 2,
+            "fact": "Discord's mascot is a creature named Wumpus.",
+            "src": "Checked: https://gigazine.net/gsc_news/en/20210207-discord-invent-internet-future/ (launched 2015 as a voice-chat app aimed mainly at gamers; official start May 13, 2015); https://webcf.waybackmachine.org/web/20220322104225/https://en.wikipedia.org/wiki/Discord_(software) (released May 2015; mascot Wumpus). 'Small, fuzzy' dropped from the fact (not confirmed)."
+          },
+          {
+            "value": 300,
+            "q": "In 2014's 'Twitch Plays Pokémon,' how did viewers control the game together?",
+            "options": ["Voting on Twitter", "Typing moves in chat", "Passing one controller", "Clicking an on-screen pad"],
+            "answer": 1,
+            "fact": "The crowd played Pokémon Red and finished it in about 16 days.",
+            "src": "Checked: https://en.wikipedia.org/wiki/Twitch_Plays_Pok%C3%A9mon (commands typed in the stream's chat; Pokemon Red; Feb 12 to Mar 1, 2014; 16 days 7 hours)"
+          },
+          {
+            "value": 400,
+            "q": "Twitch was spun off in 2011 from which site, where a co-founder streamed his own life 24/7?",
+            "options": ["Ustream", "Stickam", "Livestream", "Justin.tv"],
+            "answer": 3,
+            "fact": "Justin Kan began streaming his daily life in 2007 with a camera mounted on his cap.",
+            "src": "Checked: https://en.wikipedia.org/wiki/Justin.tv (launched March 19, 2007; Kan wore a webcam attached to a baseball cap around the clock; gaming section split off as Twitch.tv in June 2011)"
+          }
+        ]
+      },
+      {
+        "name": "Creator Corner",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which company bought YouTube in 2006, less than two years after it launched?",
+            "options": ["Google", "Yahoo", "Microsoft", "Facebook"],
+            "answer": 0,
+            "fact": "Google paid $1.65 billion in stock; YouTube's three founders had met while working at PayPal.",
+            "src": "Checked: https://wikipedia.classicistranieri.com/en/articles/c/h/a/Chad_Hurley_0d29.html (sold to Google for $1.65 billion, Oct 2006, founders paid in Google shares; Hurley met Chen and Karim at PayPal)"
+          },
+          {
+            "value": 200,
+            "q": "The word 'vlog' blends 'blog' with which other word?",
+            "options": ["Viral", "Video", "Visual", "Voice"],
+            "answer": 1,
+            "fact": "Merriam-Webster dates 'vlog' to 2002, three years before YouTube launched in 2005.",
+            "src": "Checked: https://merriam-webster.com/dictionary/vlog ('a blog that contains video material'; blend of video + blog; first known use 2002). New question, replaces the draft's Charli D'Amelio question (tied to a specific living creator)."
+          },
+          {
+            "value": 300,
+            "q": "YouTube's Gold Play Button honors a channel reaching how many subscribers?",
+            "options": ["100,000", "1 million", "10 million", "50 million"],
+            "answer": 1,
+            "fact": "The Silver Play Button marks 100,000 subscribers, and the Diamond marks 10 million.",
+            "src": "Checked: https://support.google.com/youtube/answer/7682560?hl=en (Silver 100,000; Gold 1,000,000; Diamond 10,000,000; Red Diamond 100,000,000; no award at 50 million). Moved from $200 to $300."
+          },
+          {
+            "value": 400,
+            "q": "YouTube creators' 2019 #TeamTrees fundraiser set out to plant how many trees?",
+            "options": ["1 million", "5 million", "20 million", "100 million"],
+            "answer": 2,
+            "fact": "Each dollar planted one tree through the Arbor Day Foundation, and donors hit the goal on December 19, 2019.",
+            "src": "Checked: https://arborday.org/news/arbor-day-foundation-and-youtube-surpass-donation-goal-plant-20-million-trees-through-viral (launched Oct 25, 2019; $20 million to plant 20 million trees; every dollar plants a tree; goal reached Dec 19, 2019). Creator names taken out of the question and fact."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "respawn",
+    "blurb": "Minecraft, Pokémon, Fortnite and the games Gen Z grew up on",
+    "categories": [
+      {
+        "name": "Block Party",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What is the name of the money players spend in Roblox?",
+            "options": ["V-Bucks", "Robux", "Minecoins", "Gems"],
+            "answer": 1,
+            "fact": "Roblox launched in 2006; during its early testing it was called DynaBlocks.",
+            "src": "Checked: https://www.sportskeeda.com/roblox-news/when-did-roblox-come-out (Robux is Roblox's currency; first called GoBlocks and DynaBlocks, DynaBlocks the 2004 beta; formally released September 2006). V-Bucks is Fortnite's, Minecoins Minecraft Marketplace's."
+          },
+          {
+            "value": 200,
+            "q": "In Minecraft, which green mob sneaks up on players and explodes?",
+            "options": ["Creeper", "Zombie", "Slime", "Enderman"],
+            "answer": 0,
+            "fact": "The Creeper began as a coding mistake: a pig model that came out tall instead of long.",
+            "src": "Checked: https://en.wikipedia.org/wiki/Creeper_(Minecraft) (made in 2009 while building the pig, with length and height swapped; green texture; 'creeps up on the player before exploding'). Creator's name taken out of the fact."
+          },
+          {
+            "value": 300,
+            "q": "In Minecraft, villagers trade their goods for which gem?",
+            "options": ["Diamonds", "Rubies", "Amethyst", "Emeralds"],
+            "answer": 3,
+            "fact": "Emerald ore is rare and forms only in mountain biomes.",
+            "src": "Checked: https://minecraft-archive.fandom.com/wiki/Emerald (emerald 'is the main currency used in the villager trading system'; ore 'can only be found in the same chunks as Mountains biomes')"
+          },
+          {
+            "value": 400,
+            "q": "A full Minecraft day, from one sunrise to the next, lasts how many real-world minutes?",
+            "options": ["10", "20", "30", "60"],
+            "answer": 1,
+            "fact": "Daytime fills about 10 of those minutes, and sleeping in a bed skips ahead to morning.",
+            "src": "Checked: https://minecraft.fandom.com/wiki/Daylight_cycle ('a 20-minute-long cycle'; daytime 'lasting 10 minutes'; sleeping advances the cycle to dawn)"
+          }
+        ]
+      },
+      {
+        "name": "Pikachu & Nook",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Pikachu, the face of Pokémon, is which type?",
+            "options": ["Fire", "Psychic", "Normal", "Electric"],
+            "answer": 3,
+            "fact": "'Pika' is a Japanese sound word for a flash of light, and 'chu' is the squeak a mouse makes.",
+            "src": "Checked: https://soranews24.com/2018/05/03/shocking-news-star-pokemon-pikachus-design-isnt-based-on-a-mouse/amp/ (name from two Japanese onomatopoeias: pika, a flash of light; chu, a mouse's squeak). Electric type is textbook."
+          },
+          {
+            "value": 200,
+            "q": "In Animal Crossing, which raccoon-like businessman sells you a house on a loan?",
+            "options": ["K.K. Slider", "Tom Nook", "Isabelle", "Blathers"],
+            "answer": 1,
+            "fact": "Tom Nook is based on the tanuki, or raccoon dog, and New Horizons came out on Nintendo Switch in March 2020.",
+            "src": "Checked: https://en.wikipedia.org/wiki/Tom_Nook ('based on the tanuki, the raccoon dog'; sells the player a house with a set mortgage, a tent in New Leaf and New Horizons); https://nookipedia.com/wiki/New_Horizons (Nintendo Switch, March 20, 2020)"
+          },
+          {
+            "value": 300,
+            "q": "The first Pokémon games launched in Japan in 1996 on which Nintendo system?",
+            "options": ["Game Boy Color", "Nintendo 64", "Game Boy", "Virtual Boy"],
+            "answer": 2,
+            "fact": "In Japan they were Pocket Monsters Red and Green; the US got Red and Blue in 1998.",
+            "src": "Checked: https://www.serebii.net/games/generation1.shtml (Red and Green, Game Boy, Japan Feb 27, 1996; Red and Blue, Game Boy, North America Sept 28, 1998)"
+          },
+          {
+            "value": 400,
+            "q": "The Animal Crossing series began in Japan in April 2001 on which Nintendo console?",
+            "options": ["Nintendo 64", "GameCube", "Game Boy Advance", "Wii"],
+            "answer": 0,
+            "fact": "It reached North America in 2002 as a GameCube remake, under the name Animal Crossing.",
+            "src": "Checked: https://nookipedia.com/wiki/Doubutsu_no_Mori (first installment, Nintendo 64, Japan April 14, 2001; GameCube Doubutsu no Mori+ Dec 14, 2001, localized as Animal Crossing in 2002). Reworded from 'came out in Japan in 2001', because the GameCube version also came out in Japan in 2001."
+          }
+        ]
+      },
+      {
+        "name": "Squad Up",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In Among Us, what are the players secretly sabotaging the crew called?",
+            "options": ["Traitors", "Impostors", "Spies", "Moles"],
+            "answer": 1,
+            "fact": "Among Us came out in 2018 but became a smash in 2020, when streamers started playing it.",
+            "src": "Checked: https://en.wikipedia.org/wiki/Among_Us (Innersloth, June 2018; surged in 2020 when streamers and YouTubers played it; saboteurs are 'Impostors')"
+          },
+          {
+            "value": 200,
+            "q": "When Fortnite Battle Royale launched in 2017, players dropped onto the island from what?",
+            "options": ["A cargo plane", "A blimp", "The Battle Bus", "A helicopter"],
+            "answer": 2,
+            "fact": "The bus hung from a hot-air balloon; Fortnite's co-op Save the World mode had launched two months earlier.",
+            "src": "Checked: https://www.inverse.com/article/45683-how-does-the-fortnite-battle-bus-work-in-battle-royale (players skydive out of the Battle Bus, a school bus flying via a hot-air balloon); https://www.esports.net/news/fortnite/when-did-fortnite-come-out/ (Save the World July 25, 2017; Battle Royale Sept 26, 2017); https://frvr.com/blog/news/fortnite-battle-pass-removal/ (Battle Bus retired at the Chapter 7 launch, Nov 29). Present tense changed to 2017; 'A hot-air balloon' option replaced because the bus hangs from one."
+          },
+          {
+            "value": 300,
+            "q": "In February 2019, which masked DJ played a live concert inside Fortnite?",
+            "options": ["deadmau5", "Marshmello", "Daft Punk", "Skrillex"],
+            "answer": 1,
+            "fact": "More than 10.7 million players attended the show, held at the in-game spot Pleasant Park.",
+            "src": "Checked: https://en.wikipedia.org/wiki/Fortnite_Marshmello_concert (Feb 2, 2019, Pleasant Park; 'attended by over 10.7 million players', citing NBC News). deadmau5's Fortnite set was in May 2020, so the date rules him out."
+          },
+          {
+            "value": 400,
+            "q": "In 2019, a 16-year-old won the solo final at the first Fortnite World Cup. How much did he win?",
+            "options": ["$300,000", "$1 million", "$3 million", "$10 million"],
+            "answer": 2,
+            "fact": "The finals were held in New York at Arthur Ashe Stadium, home of tennis's US Open.",
+            "src": "Checked: https://abc7ny.com/fortnite-world-cup-kyle-giersdorf-harrison-chang-bugha/5427223 (Kyle 'Bugha' Giersdorf, 16, won $3 million; final at Arthur Ashe Stadium in New York). Player's name taken out of the question."
+          }
+        ]
+      }
+    ]
+  }
+]

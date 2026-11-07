@@ -1,0 +1,1595 @@
+[
+  {
+    "id": "around-the-world",
+    "blurb": "Landmarks, old country names and the languages of the world",
+    "categories": [
+      {
+        "name": "Landmarks",
+        "questions": [
+          {
+            "value": 100,
+            "q": "The Inca citadel of Machu Picchu sits high in the Andes of which country?",
+            "options": [
+              "Bolivia",
+              "Ecuador",
+              "Chile",
+              "Peru"
+            ],
+            "answer": 3,
+            "fact": "American explorer Hiram Bingham brought Machu Picchu to world attention in 1911.",
+            "src": "Verified: history.com/articles/machu-picchu (Inca, 15th c.; Bingham 1911)"
+          },
+          {
+            "value": 200,
+            "q": "The ancient city of Petra, seen in Indiana Jones and the Last Crusade, is in which country?",
+            "options": [
+              "Jordan",
+              "Egypt",
+              "Syria",
+              "Saudi Arabia"
+            ],
+            "answer": 0,
+            "fact": "The Nabataeans carved Petra's famous Treasury facade into a sandstone cliff about 2,000 years ago.",
+            "src": "Verified: en.wikipedia.org/wiki/Al-Khazneh (1989 film; Nabataean; early 1st century AD)"
+          },
+          {
+            "value": 300,
+            "q": "Tom Cruise climbed the outside of which skyscraper in Mission: Impossible - Ghost Protocol?",
+            "options": [
+              "Taipei 101",
+              "Burj Khalifa",
+              "Petronas Towers",
+              "Shanghai Tower"
+            ],
+            "answer": 1,
+            "fact": "The Dubai tower was called Burj Dubai until it opened in January 2010, when it was renamed.",
+            "src": "Verified: en.wikipedia.org/wiki/Burj_Khalifa (renamed at 4 Jan 2010 opening); khaleejtimes.com (Cruise stunt, 2011 film)"
+          },
+          {
+            "value": 400,
+            "q": "Which king built Neuschwanstein, the castle that inspired Disneyland's Sleeping Beauty Castle?",
+            "options": [
+              "Maximilian II",
+              "Frederick the Great",
+              "Ludwig II",
+              "Wilhelm I"
+            ],
+            "answer": 2,
+            "fact": "Construction of Neuschwanstein began in 1869, atop the ruins of older castles.",
+            "src": "Verified: nationalgeographic.com Neuschwanstein article (Ludwig II; begun 1869 on castle ruins; inspired Disneyland castle)"
+          }
+        ]
+      },
+      {
+        "name": "Old Names",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which country changed its name from Siam in 1939?",
+            "options": [
+              "Cambodia",
+              "Laos",
+              "Myanmar",
+              "Thailand"
+            ],
+            "answer": 3,
+            "fact": "It briefly went back to Siam in 1945, but the name Thailand became permanent in 1949.",
+            "src": "Verified: ebsco.com research starter 'Siam Changes Its Name to Thailand' (5 Jun 1939; back to Siam 1945; permanent 1949)"
+          },
+          {
+            "value": 200,
+            "q": "Which island nation was called Ceylon until 1972?",
+            "options": [
+              "Maldives",
+              "Sri Lanka",
+              "Mauritius",
+              "Madagascar"
+            ],
+            "answer": 1,
+            "fact": "The tea industry kept the old name, so Sri Lankan tea is marketed as Ceylon tea.",
+            "src": "Verified: worldatlas.com/articles/what-was-ceylon.html (22 May 1972); srilankateaboard.lk/ceylon-tea (name retained)"
+          },
+          {
+            "value": 300,
+            "q": "Which country was called Zaire from 1971 to 1997?",
+            "options": [
+              "Dem. Rep. of the Congo",
+              "Republic of the Congo",
+              "Gabon",
+              "Cameroon"
+            ],
+            "answer": 0,
+            "fact": "Muhammad Ali and George Foreman's 1974 Rumble in the Jungle was fought in Kinshasa, Zaire.",
+            "src": "Verified: worldatlas.com 'which country was formerly called Zaire' (1971-1997); en.wikipedia.org/wiki/The_Rumble_in_the_Jungle"
+          },
+          {
+            "value": 400,
+            "q": "Which country officially renamed itself Eswatini in 2018?",
+            "options": [
+              "Lesotho",
+              "Botswana",
+              "Swaziland",
+              "Zambia"
+            ],
+            "answer": 2,
+            "fact": "The change was announced during celebrations of 50 years of independence; eSwatini means place of the Swazi.",
+            "src": "Verified: aljazeera.com 2018/04 'Swaziland king changes country's name to Kingdom of Eswatini' (19 Apr 2018, during 50-years-of-independence celebrations; 'place of the Swazi')"
+          }
+        ]
+      },
+      {
+        "name": "Mother Tongues",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What is the official language of Brazil?",
+            "options": [
+              "Spanish",
+              "Portuguese",
+              "Italian",
+              "French"
+            ],
+            "answer": 1,
+            "fact": "Brazil is home to more Portuguese speakers than any other country, Portugal included.",
+            "src": "Textbook (Brazil ~210M people vs Portugal ~10M)"
+          },
+          {
+            "value": 200,
+            "q": "In The Lion King, the name Simba is the word for lion in which language?",
+            "options": [
+              "Zulu",
+              "Amharic",
+              "Yoruba",
+              "Swahili"
+            ],
+            "answer": 3,
+            "fact": "In Swahili, Rafiki means friend and hakuna matata means no worries.",
+            "src": "Verified: jenmansafaris.com 'real meanings of Lion King names'"
+          },
+          {
+            "value": 300,
+            "q": "Black Panther used which real South African language as the official language of Wakanda?",
+            "options": [
+              "Xhosa",
+              "Zulu",
+              "Afrikaans",
+              "Sesotho"
+            ],
+            "answer": 0,
+            "fact": "Actor John Kani, who played King T'Chaka, pushed for Xhosa and was one of the film's language consultants.",
+            "src": "Verified: okayafrica.com 'How isiXhosa became the official language of Wakanda' (Kani proposed it on Civil War set; one of the main language consultants)"
+          },
+          {
+            "value": 400,
+            "q": "Switzerland has four national languages: German, French, Italian and which other?",
+            "options": [
+              "Occitan",
+              "Flemish",
+              "Romansh",
+              "Luxembourgish"
+            ],
+            "answer": 2,
+            "fact": "Romansh, a descendant of Latin, is spoken mainly in the southeastern canton of Graubunden.",
+            "src": "Textbook (Swiss constitution; Romansh in Graubunden)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "capitals-countries",
+    "blurb": "Capital cities, shared borders and which country sits where",
+    "categories": [
+      {
+        "name": "Capital Cities",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What is the capital of Canada?",
+            "options": [
+              "Toronto",
+              "Ottawa",
+              "Montreal",
+              "Vancouver"
+            ],
+            "answer": 1,
+            "fact": "Queen Victoria chose Ottawa as the capital in 1857, over Toronto, Montreal, Kingston and Quebec City.",
+            "src": "Verified: historicalsocietyottawa.ca 'Queen Victoria chooses Ottawa' (letter 31 Dec 1857; rival cities)"
+          },
+          {
+            "value": 200,
+            "q": "What is the capital of Australia?",
+            "options": [
+              "Sydney",
+              "Melbourne",
+              "Canberra",
+              "Brisbane"
+            ],
+            "answer": 2,
+            "fact": "Canberra was built as a planned capital, a compromise between rivals Sydney and Melbourne.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "Casablanca is Morocco's largest city, but which city is its capital?",
+            "options": [
+              "Rabat",
+              "Marrakesh",
+              "Fez",
+              "Tangier"
+            ],
+            "answer": 0,
+            "fact": "The classic 1942 film Casablanca was shot in California, not Morocco.",
+            "src": "Textbook (Warner Bros. studio production)"
+          },
+          {
+            "value": 400,
+            "q": "Which city is the southernmost capital of an independent country?",
+            "options": [
+              "Cape Town",
+              "Buenos Aires",
+              "Montevideo",
+              "Wellington"
+            ],
+            "answer": 3,
+            "fact": "New Zealand moved its capital from Auckland to Wellington in 1865.",
+            "src": "Textbook (Wellington ~41.3 S; others ~34-35 S). Verified: nzhistory.govt.nz 'Parliament sits for the first time in Wellington' (capital moved from Auckland, 1865)"
+          }
+        ]
+      },
+      {
+        "name": "Next Door",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which tiny country on the Mediterranean coast is bordered on land only by France?",
+            "options": [
+              "Monaco",
+              "Andorra",
+              "Liechtenstein",
+              "Luxembourg"
+            ],
+            "answer": 0,
+            "fact": "Monaco is the world's second-smallest country by area; the first Monaco Grand Prix was held in 1929.",
+            "src": "Verified: en.wikipedia.org/wiki/Monaco_Grand_Prix (first race 14 Apr 1929; not held 1938-47, 1949, 1951, 1953-54, 2020). Area: textbook (Vatican smaller)"
+          },
+          {
+            "value": 200,
+            "q": "Besides Belize, which country borders Mexico to the south?",
+            "options": [
+              "Honduras",
+              "Guatemala",
+              "El Salvador",
+              "Nicaragua"
+            ],
+            "answer": 1,
+            "fact": "Guatemala is home to Tikal, one of the largest cities of the ancient Maya.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "Victoria Falls lies on the border between Zambia and which country?",
+            "options": [
+              "Botswana",
+              "Mozambique",
+              "Zimbabwe",
+              "Malawi"
+            ],
+            "answer": 2,
+            "fact": "Its local name, Mosi-oa-Tunya, means the smoke that thunders.",
+            "src": "Textbook"
+          },
+          {
+            "value": 400,
+            "q": "Which country borders every other South American country except Chile and Ecuador?",
+            "options": [
+              "Argentina",
+              "Peru",
+              "Colombia",
+              "Brazil"
+            ],
+            "answer": 3,
+            "fact": "Brazil also borders France, through the overseas region of French Guiana.",
+            "src": "Textbook (Brazil borders 9 of the other 11 SA states plus French Guiana)"
+          }
+        ]
+      },
+      {
+        "name": "On the Map",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which European country is famously shaped like a boot?",
+            "options": [
+              "Greece",
+              "Spain",
+              "Portugal",
+              "Italy"
+            ],
+            "answer": 3,
+            "fact": "Italy completely surrounds two independent countries: San Marino and Vatican City.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "Game of Thrones filmed King's Landing in Dubrovnik, a walled city in which country?",
+            "options": [
+              "Croatia",
+              "Montenegro",
+              "Greece",
+              "Albania"
+            ],
+            "answer": 0,
+            "fact": "Visitors can walk the medieval stone walls that encircle Dubrovnik's entire old town.",
+            "src": "Textbook / widely documented filming location"
+          },
+          {
+            "value": 300,
+            "q": "Which country is completely surrounded by South Africa?",
+            "options": [
+              "Eswatini",
+              "Lesotho",
+              "Botswana",
+              "Namibia"
+            ],
+            "answer": 1,
+            "fact": "Lesotho's lowest point is about 1,400 meters up, the highest low point of any country.",
+            "src": "Verified: en.wikipedia.org/wiki/Geography_of_Lesotho (enclave; lowest point 1,400 m)"
+          },
+          {
+            "value": 400,
+            "q": "The fabled desert city of Timbuktu is in which African country?",
+            "options": [
+              "Niger",
+              "Mauritania",
+              "Mali",
+              "Chad"
+            ],
+            "answer": 2,
+            "fact": "Timbuktu sits near the Niger River on the southern edge of the Sahara.",
+            "src": "Textbook"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "restless-earth",
+    "blurb": "Volcanoes, earthquakes, geysers and the rocks beneath our feet",
+    "categories": [
+      {
+        "name": "Hot Spots",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Old Faithful geyser is in which national park?",
+            "options": [
+              "Yosemite",
+              "Yellowstone",
+              "Grand Teton",
+              "Glacier"
+            ],
+            "answer": 1,
+            "fact": "Yellowstone, established in 1872, is widely considered the world's first national park.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "Johnny Cash's 1963 hit shares its name with which zone of volcanoes around the Pacific?",
+            "options": [
+              "Pacific Rim",
+              "Circle of Fire",
+              "Ring of Fire",
+              "Arc of Fire"
+            ],
+            "answer": 2,
+            "fact": "Most of the world's earthquakes and active volcanoes occur along the Ring of Fire.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "In 2010, ash from Eyjafjallajokull grounded flights across Europe. Which country is it in?",
+            "options": [
+              "Iceland",
+              "Norway",
+              "Italy",
+              "Sweden"
+            ],
+            "answer": 0,
+            "fact": "The name roughly means island mountain glacier in Icelandic.",
+            "src": "Textbook (April 2010 eruption; eyja=island, fjalla=mountain, jokull=glacier)"
+          },
+          {
+            "value": 400,
+            "q": "Which volcano was born in a Mexican farmer's cornfield in 1943?",
+            "options": [
+              "Popocatepetl",
+              "Colima",
+              "Orizaba",
+              "Paricutin"
+            ],
+            "answer": 3,
+            "fact": "Paricutin kept erupting for nine years before finally going quiet in 1952.",
+            "src": "Verified: en.wikipedia.org/wiki/Paricutin (began 20 Feb 1943 in Dionisio Pulido's cornfield; eruptions ended 1952)"
+          }
+        ]
+      },
+      {
+        "name": "Shaky Ground",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which scale, devised in 1935, became the best-known way to rate earthquake strength?",
+            "options": [
+              "Beaufort",
+              "Mercalli",
+              "Fujita",
+              "Richter"
+            ],
+            "answer": 3,
+            "fact": "Each whole-number step up the Richter scale means seismic waves about 10 times larger.",
+            "src": "Textbook (Charles Richter, 1935; Mercalli dates from 1902; USGS: each whole number = tenfold increase in measured amplitude)"
+          },
+          {
+            "value": 200,
+            "q": "What is the point on Earth's surface directly above an earthquake's origin called?",
+            "options": [
+              "Epicenter",
+              "Hypocenter",
+              "Fault line",
+              "Seismic zone"
+            ],
+            "answer": 0,
+            "fact": "The underground spot where a quake actually starts is called the hypocenter, or focus.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "Which supercontinent's name comes from the Greek for all the Earth?",
+            "options": [
+              "Gondwana",
+              "Laurasia",
+              "Pangaea",
+              "Rodinia"
+            ],
+            "answer": 2,
+            "fact": "German scientist Alfred Wegener argued in the early 1900s that the continents had drifted apart.",
+            "src": "Textbook (pan = all, Gaia = Earth; Gondwana from an Indian region, Laurasia = Laurentia+Eurasia, Rodinia from Russian)"
+          },
+          {
+            "value": 400,
+            "q": "California's San Andreas Fault marks where the Pacific Plate meets which other plate?",
+            "options": [
+              "Juan de Fuca",
+              "North American",
+              "Cocos",
+              "Nazca"
+            ],
+            "answer": 1,
+            "fact": "Along the fault, the two plates grind sideways past each other rather than colliding head-on.",
+            "src": "Textbook (transform boundary)"
+          }
+        ]
+      },
+      {
+        "name": "Rock Stars",
+        "questions": [
+          {
+            "value": 100,
+            "q": "On the Mohs hardness scale, which mineral ranks at the top with a 10?",
+            "options": [
+              "Quartz",
+              "Topaz",
+              "Diamond",
+              "Corundum"
+            ],
+            "answer": 2,
+            "fact": "German mineralogist Friedrich Mohs created the scale in 1812; soft talc sits at the bottom with a 1.",
+            "src": "Textbook (Mohs 1812)"
+          },
+          {
+            "value": 200,
+            "q": "Which light, bubbly volcanic rock is famous for floating on water?",
+            "options": [
+              "Pumice",
+              "Basalt",
+              "Granite",
+              "Shale"
+            ],
+            "answer": 0,
+            "fact": "Pumice stones are tumbled with denim to give jeans their stonewashed look.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "Which volcanic glass, used to build Nether portals in Minecraft, forms when lava cools very fast?",
+            "options": [
+              "Basalt",
+              "Obsidian",
+              "Jet",
+              "Onyx"
+            ],
+            "answer": 1,
+            "fact": "Ancient peoples, including the Aztecs, used obsidian for knives, arrowheads and mirrors.",
+            "src": "Textbook (geology); Minecraft Nether portal frame is obsidian"
+          },
+          {
+            "value": 400,
+            "q": "Marble forms when heat and pressure transform which rock?",
+            "options": [
+              "Granite",
+              "Sandstone",
+              "Slate",
+              "Limestone"
+            ],
+            "answer": 3,
+            "fact": "That makes marble a metamorphic rock, from the Greek for change of form.",
+            "src": "Textbook"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "flags-symbols",
+    "blurb": "Flags described in words, national animals and famous emblems",
+    "categories": [
+      {
+        "name": "Flying Colors",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which country's flag has a red maple leaf on a white square between two red bands?",
+            "options": [
+              "Peru",
+              "Austria",
+              "Canada",
+              "Switzerland"
+            ],
+            "answer": 2,
+            "fact": "Canada's maple leaf flag was first raised in 1965.",
+            "src": "Textbook (15 Feb 1965)"
+          },
+          {
+            "value": 200,
+            "q": "Which country's flag shows a blue starry globe inside a yellow diamond on a green field?",
+            "options": [
+              "Brazil",
+              "Portugal",
+              "Jamaica",
+              "Colombia"
+            ],
+            "answer": 0,
+            "fact": "The banner across the globe reads Ordem e Progresso, Portuguese for order and progress.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "On Mexico's flag, an eagle eating a snake is perched on what?",
+            "options": [
+              "A pyramid",
+              "A tree branch",
+              "A shield",
+              "A cactus"
+            ],
+            "answer": 3,
+            "fact": "It recalls the Aztec legend of the sign that showed where to found Tenochtitlan, now Mexico City.",
+            "src": "Textbook (eagle on a prickly pear cactus)"
+          },
+          {
+            "value": 400,
+            "q": "Which country has a national flag shaped like two stacked triangles?",
+            "options": [
+              "Bhutan",
+              "Nepal",
+              "Switzerland",
+              "Vatican City"
+            ],
+            "answer": 1,
+            "fact": "It is the only national flag that is not a rectangle or square; it is crimson with a blue border.",
+            "src": "Textbook"
+          }
+        ]
+      },
+      {
+        "name": "National Animals",
+        "questions": [
+          {
+            "value": 100,
+            "q": "New Zealanders are often nicknamed after which flightless bird?",
+            "options": [
+              "Emu",
+              "Moa",
+              "Kiwi",
+              "Kakapo"
+            ],
+            "answer": 2,
+            "fact": "Kiwi are about the size of a chicken and come out mostly at night.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "What mythical creature is the national animal of Scotland?",
+            "options": [
+              "Unicorn",
+              "Dragon",
+              "Griffin",
+              "Phoenix"
+            ],
+            "answer": 0,
+            "fact": "A unicorn and a lion hold up the shield on the royal coat of arms of the United Kingdom.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "The peacock is the national bird of which country?",
+            "options": [
+              "Thailand",
+              "Sri Lanka",
+              "Indonesia",
+              "India"
+            ],
+            "answer": 3,
+            "fact": "India's national animal is the Bengal tiger.",
+            "src": "Textbook"
+          },
+          {
+            "value": 400,
+            "q": "Which antelope is South Africa's national animal and the nickname of its rugby team?",
+            "options": [
+              "Impala",
+              "Springbok",
+              "Kudu",
+              "Eland"
+            ],
+            "answer": 1,
+            "fact": "Springboks are known for pronking: bouncing high into the air on stiff legs.",
+            "src": "Textbook"
+          }
+        ]
+      },
+      {
+        "name": "Emblems",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Since 1782, which bird has been the emblem on the Great Seal of the United States?",
+            "options": [
+              "Golden eagle",
+              "Wild turkey",
+              "Bald eagle",
+              "Peregrine falcon"
+            ],
+            "answer": 2,
+            "fact": "Benjamin Franklin once wrote to his daughter that the turkey was a more respectable bird.",
+            "src": "Textbook (Great Seal adopted 1782; Franklin letter 1784)"
+          },
+          {
+            "value": 200,
+            "q": "Which two animals hold up the shield on Australia's coat of arms?",
+            "options": [
+              "Kangaroo and emu",
+              "Koala and kangaroo",
+              "Emu and platypus",
+              "Kangaroo and dingo"
+            ],
+            "answer": 0,
+            "fact": "Sprays of golden wattle, Australia's national flower, frame the shield.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "The Red Cross emblem is a color-reversed version of which country's flag?",
+            "options": [
+              "Denmark",
+              "Norway",
+              "Finland",
+              "Switzerland"
+            ],
+            "answer": 3,
+            "fact": "The Red Cross movement was founded in Geneva, Switzerland, in 1863.",
+            "src": "Textbook"
+          },
+          {
+            "value": 400,
+            "q": "Which flower is the emblem of Japan's imperial family?",
+            "options": [
+              "Cherry blossom",
+              "Chrysanthemum",
+              "Lotus",
+              "Plum blossom"
+            ],
+            "answer": 1,
+            "fact": "Japan's monarchy is often called the Chrysanthemum Throne.",
+            "src": "Textbook"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "travel-bug",
+    "blurb": "Famous routes, airports and bucket-list landmarks",
+    "categories": [
+      {
+        "name": "Famous Routes",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which famous US highway ran from Chicago to Los Angeles?",
+            "options": [
+              "Route 1",
+              "Interstate 80",
+              "Route 66",
+              "Lincoln Highway"
+            ],
+            "answer": 2,
+            "fact": "Route 66 opened in 1926, and Pixar's 2006 film Cars is set in a town along it.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "The Appalachian Trail runs from Georgia to which state?",
+            "options": [
+              "Maine",
+              "Vermont",
+              "New York",
+              "New Hampshire"
+            ],
+            "answer": 0,
+            "fact": "Its northern end is Mount Katahdin, the highest peak in Maine.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "The famous Orient Express train made its first run in 1883 from which city?",
+            "options": [
+              "London",
+              "Paris",
+              "Vienna",
+              "Berlin"
+            ],
+            "answer": 1,
+            "fact": "Its eastern goal was Constantinople, today's Istanbul; Belgian Georges Nagelmackers created it.",
+            "src": "Verified: smithsonianmag.com 'True history of the Orient Express' (left Paris 4 Oct 1883 for Constantinople; Belgian Georges Nagelmackers)"
+          },
+          {
+            "value": 400,
+            "q": "The Trans-Siberian Railway runs from Moscow to which Pacific port city?",
+            "options": [
+              "Murmansk",
+              "Irkutsk",
+              "Khabarovsk",
+              "Vladivostok"
+            ],
+            "answer": 3,
+            "fact": "Along the way, the line crosses the Ural Mountains, from Europe into Asia.",
+            "src": "Textbook"
+          }
+        ]
+      },
+      {
+        "name": "Jet Set",
+        "questions": [
+          {
+            "value": 100,
+            "q": "LAX is the airport code for which city?",
+            "options": [
+              "Las Vegas",
+              "Los Angeles",
+              "Salt Lake City",
+              "Long Beach"
+            ],
+            "answer": 1,
+            "fact": "The X has no meaning; it was added when airport codes grew from two letters to three.",
+            "src": "Verified: knaviation.net and airwaysmag.com history of LAX (old code LA; X is a filler with no meaning)"
+          },
+          {
+            "value": 200,
+            "q": "Which supersonic airliner flew passengers across the Atlantic from 1976 to 2003?",
+            "options": [
+              "Boeing 747",
+              "Tupolev Tu-144",
+              "Concorde",
+              "Lockheed L-1011"
+            ],
+            "answer": 2,
+            "fact": "Concorde could fly from London to New York in about three and a half hours.",
+            "src": "Verified: historyhit.com Concorde facts (service 1976-2003; London/Paris-New York about 3.5 hours)"
+          },
+          {
+            "value": 300,
+            "q": "Changi Airport, home to an indoor waterfall called the Rain Vortex, serves which country?",
+            "options": [
+              "Malaysia",
+              "Thailand",
+              "Indonesia",
+              "Singapore"
+            ],
+            "answer": 3,
+            "fact": "The waterfall sits inside Jewel Changi, a garden-filled complex that opened in 2019.",
+            "src": "Verified: en.wikipedia.org/wiki/Jewel_Changi_Airport (Rain Vortex inside Jewel; opened 17 Apr 2019, official opening Oct 2019)"
+          },
+          {
+            "value": 400,
+            "q": "Chicago O'Hare's airport code, ORD, comes from its original name. What was it?",
+            "options": [
+              "Orchard Field",
+              "Midway Field",
+              "Meigs Field",
+              "Lincoln Field"
+            ],
+            "answer": 0,
+            "fact": "The airport was later renamed for Navy pilot Edward Butch O'Hare.",
+            "src": "Verified: en.wikipedia.org/wiki/O'Hare_International_Airport (originally Orchard Field; renamed 1949 for Navy ace Edward 'Butch' O'Hare)"
+          }
+        ]
+      },
+      {
+        "name": "Bucket List",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which city's opera house is famous for its roof of white, sail-like shells?",
+            "options": [
+              "Sydney",
+              "Auckland",
+              "Melbourne",
+              "Cape Town"
+            ],
+            "answer": 0,
+            "fact": "Danish architect Jorn Utzon quit the project in 1966 and never saw the finished building in person.",
+            "src": "Verified: smithsonianmag.com and en.wikipedia.org/wiki/Jorn_Utzon (resigned 1966; opened 1973; never saw it)"
+          },
+          {
+            "value": 200,
+            "q": "When it was built in 1923, what did the Hollywood sign originally say?",
+            "options": [
+              "Hollywood Hills",
+              "Hollywoodland",
+              "Hollywood USA",
+              "Hollywoodtown"
+            ],
+            "answer": 1,
+            "fact": "It began as an ad for a housing development; the last four letters came down in 1949.",
+            "src": "Verified: en.wikipedia.org/wiki/Hollywood_Sign (1923 HOLLYWOODLAND housing ad; LAND removed 1949)"
+          },
+          {
+            "value": 300,
+            "q": "In the Harry Potter films, the Hogwarts Express crosses which real Scottish railway landmark?",
+            "options": [
+              "Forth Bridge",
+              "Tay Bridge",
+              "Ribblehead Viaduct",
+              "Glenfinnan Viaduct"
+            ],
+            "answer": 3,
+            "fact": "The curving concrete viaduct carries Scotland's West Highland Line near Loch Shiel.",
+            "src": "Textbook / widely documented filming location"
+          },
+          {
+            "value": 400,
+            "q": "Which is the oldest of the bridges that span Venice's Grand Canal?",
+            "options": [
+              "Bridge of Sighs",
+              "Accademia Bridge",
+              "Rialto Bridge",
+              "Ponte Vecchio"
+            ],
+            "answer": 2,
+            "fact": "The stone Rialto Bridge was completed in 1591, replacing earlier wooden bridges.",
+            "src": "Verified: en.wikipedia.org/wiki/Rialto_Bridge (stone bridge 1588-1591; oldest of four Grand Canal bridges; replaced wooden bridges)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "peaks-rivers",
+    "blurb": "Mountains, rivers, lakes and deserts around the globe",
+    "categories": [
+      {
+        "name": "Mountain High",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Mount Everest is part of which mountain range?",
+            "options": [
+              "Andes",
+              "Alps",
+              "Himalayas",
+              "Karakoram"
+            ],
+            "answer": 2,
+            "fact": "Everest is named for George Everest, a British surveyor general of India in the 1800s.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "Mount Kilimanjaro, Africa's highest peak, is in which country?",
+            "options": [
+              "Tanzania",
+              "Kenya",
+              "Uganda",
+              "Ethiopia"
+            ],
+            "answer": 0,
+            "fact": "Kilimanjaro is a dormant volcano standing only about 3 degrees south of the equator.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "In the 2018 film Free Solo, Alex Honnold climbs which Yosemite wall without ropes?",
+            "options": [
+              "Half Dome",
+              "El Capitan",
+              "Glacier Point",
+              "Sentinel Rock"
+            ],
+            "answer": 1,
+            "fact": "Free Solo won the Academy Award for Best Documentary Feature.",
+            "src": "Textbook (climb June 2017; Oscar at 2019 ceremony)"
+          },
+          {
+            "value": 400,
+            "q": "Because Earth bulges at the equator, which peak's summit is farthest from Earth's center?",
+            "options": [
+              "Everest",
+              "Kilimanjaro",
+              "Aconcagua",
+              "Chimborazo"
+            ],
+            "answer": 3,
+            "fact": "Ecuador's Chimborazo summit sits about 2 kilometers farther from Earth's center than Everest's.",
+            "src": "Verified: guinnessworldrecords.com 'Farthest mountain peak from Earth's centre' (Chimborazo ~6,384 km; more than 2 km farther than Everest)"
+          }
+        ]
+      },
+      {
+        "name": "River Run",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which river carved the Grand Canyon?",
+            "options": [
+              "Rio Grande",
+              "Snake",
+              "Colorado",
+              "Missouri"
+            ],
+            "answer": 2,
+            "fact": "In places, the Grand Canyon is more than a mile deep.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "Which river flows through the heart of Paris?",
+            "options": [
+              "Seine",
+              "Loire",
+              "Rhone",
+              "Rhine"
+            ],
+            "answer": 0,
+            "fact": "Despite a name meaning new bridge, the Pont Neuf is the oldest standing bridge across the Seine in Paris.",
+            "src": "Verified: structurae.net Pont Neuf (oldest standing bridge across the Seine in Paris; completed 1606-07)"
+          },
+          {
+            "value": 300,
+            "q": "Which river flows through Vienna, Budapest and Belgrade?",
+            "options": [
+              "Rhine",
+              "Danube",
+              "Elbe",
+              "Vltava"
+            ],
+            "answer": 1,
+            "fact": "It inspired The Blue Danube, the famous 1867 waltz by Johann Strauss II.",
+            "src": "Textbook"
+          },
+          {
+            "value": 400,
+            "q": "Which wide estuary lies between Buenos Aires and Montevideo?",
+            "options": [
+              "Parana",
+              "Orinoco",
+              "Magdalena",
+              "Rio de la Plata"
+            ],
+            "answer": 3,
+            "fact": "Its name means river of silver, and Argentina's name also comes from argentum, Latin for silver.",
+            "src": "Verified: en.wikipedia.org/wiki/Etymology_of_Argentina"
+          }
+        ]
+      },
+      {
+        "name": "Lakes & Deserts",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What is the largest hot desert in the world?",
+            "options": [
+              "Gobi",
+              "Kalahari",
+              "Sahara",
+              "Arabian"
+            ],
+            "answer": 2,
+            "fact": "Counting cold deserts too, Antarctica is the largest desert on Earth.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "Which of the Great Lakes lies entirely within the United States?",
+            "options": [
+              "Superior",
+              "Huron",
+              "Erie",
+              "Michigan"
+            ],
+            "answer": 3,
+            "fact": "Lakes Michigan and Huron meet at the Straits of Mackinac and share the same water level.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "Luke Skywalker's desert home, Tatooine, was mostly filmed in which country for 1977's Star Wars?",
+            "options": [
+              "Tunisia",
+              "Morocco",
+              "Egypt",
+              "Jordan"
+            ],
+            "answer": 0,
+            "fact": "The planet's name comes from Tataouine, a real town in southern Tunisia.",
+            "src": "Textbook"
+          },
+          {
+            "value": 400,
+            "q": "Which is the world's deepest lake, plunging more than a mile down?",
+            "options": [
+              "Lake Tanganyika",
+              "Lake Baikal",
+              "Lake Superior",
+              "Crater Lake"
+            ],
+            "answer": 1,
+            "fact": "Siberia's Lake Baikal holds roughly a fifth of the world's unfrozen surface fresh water.",
+            "src": "Textbook (max depth ~1,642 m; ~20% of surface fresh water)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "weather-watch",
+    "blurb": "Clouds, storms and the science behind the forecast",
+    "categories": [
+      {
+        "name": "Cloud Nine",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which puffy, cotton-ball clouds usually mean fair weather?",
+            "options": [
+              "Cirrus",
+              "Stratus",
+              "Nimbus",
+              "Cumulus"
+            ],
+            "answer": 3,
+            "fact": "Cumulus comes from the Latin word for heap or pile.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "Towering thunderstorm clouds with flat, anvil-shaped tops are called what?",
+            "options": [
+              "Nimbostratus",
+              "Cumulonimbus",
+              "Altocumulus",
+              "Cirrostratus"
+            ],
+            "answer": 1,
+            "fact": "Big ones can tower more than 10 kilometers high, taller than Mount Everest.",
+            "src": "Textbook (Cb tops commonly 12-18 km; Everest 8.85 km)"
+          },
+          {
+            "value": 300,
+            "q": "Fog is essentially which type of cloud resting at ground level?",
+            "options": [
+              "Stratus",
+              "Cirrus",
+              "Cumulus",
+              "Altocumulus"
+            ],
+            "answer": 0,
+            "fact": "Fog forms when air near the ground reaches its dew point, usually by cooling but sometimes by gaining moisture.",
+            "src": "Verified: en.wikipedia.org/wiki/Fog (fog 'usually resembling stratus'; forms by cooling or by added moisture/evaporation)"
+          },
+          {
+            "value": 400,
+            "q": "Which English amateur scientist gave clouds names like cumulus and cirrus in the early 1800s?",
+            "options": [
+              "Robert FitzRoy",
+              "John Dalton",
+              "Luke Howard",
+              "Charles Darwin"
+            ],
+            "answer": 2,
+            "fact": "Howard, a London chemist, first presented his Latin cloud names in a lecture in 1802.",
+            "src": "Verified: lindahall.org Scientist of the Day 'Luke Howard' (English chemist; Askesian Society, Dec 1802)"
+          }
+        ]
+      },
+      {
+        "name": "Storm Chasers",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What is the calm center of a hurricane called?",
+            "options": [
+              "The core",
+              "The eye",
+              "The funnel",
+              "The vortex"
+            ],
+            "answer": 1,
+            "fact": "The strongest winds swirl in the eyewall, the ring of storms surrounding the eye.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "What are hurricanes called when they form in the Pacific near Japan and the Philippines?",
+            "options": [
+              "Monsoons",
+              "Squalls",
+              "Tornadoes",
+              "Typhoons"
+            ],
+            "answer": 3,
+            "fact": "Hurricane, typhoon and cyclone are all regional names for the same kind of storm.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "To guess how many miles away lightning struck, count seconds until thunder, then divide by what?",
+            "options": [
+              "2",
+              "3",
+              "5",
+              "10"
+            ],
+            "answer": 2,
+            "fact": "Thunder is the boom of air expanding explosively after lightning heats it in an instant.",
+            "src": "Textbook (sound travels ~1 mile per 5 seconds)"
+          },
+          {
+            "value": 400,
+            "q": "In 1971, which scientist introduced a scale rating tornadoes by the damage they cause?",
+            "options": [
+              "Ted Fujita",
+              "Herbert Saffir",
+              "Charles Richter",
+              "Robert Simpson"
+            ],
+            "answer": 0,
+            "fact": "An updated version, the Enhanced Fujita or EF scale, took over in the US in 2007.",
+            "src": "Verified: en.wikipedia.org/wiki/Enhanced_Fujita_scale (Fujita scale introduced 1971; EF in US use from 1 Feb 2007)"
+          }
+        ]
+      },
+      {
+        "name": "Forecast",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which instrument measures air pressure?",
+            "options": [
+              "Barometer",
+              "Thermometer",
+              "Anemometer",
+              "Hygrometer"
+            ],
+            "answer": 0,
+            "fact": "Italian scientist Evangelista Torricelli invented the mercury barometer around 1643.",
+            "src": "Verified: encyclopedia.com 'Barometers' (Torricelli, about 1643; first apparatus 1644)"
+          },
+          {
+            "value": 200,
+            "q": "By tradition, if Punxsutawney Phil sees his shadow, how many more weeks of winter are left?",
+            "options": [
+              "Two",
+              "Four",
+              "Eight",
+              "Six"
+            ],
+            "answer": 3,
+            "fact": "The first official Groundhog Day at Gobbler's Knob, Pennsylvania, was held in 1887.",
+            "src": "Verified: history.com Groundhog Day history (first official, Gobbler's Knob, 2 Feb 1887; six more weeks)"
+          },
+          {
+            "value": 300,
+            "q": "In 1934, observers on Mount Washington measured a 231 mph wind gust. Which state is it in?",
+            "options": [
+              "Vermont",
+              "New Hampshire",
+              "Maine",
+              "New York"
+            ],
+            "answer": 1,
+            "fact": "It stood as the world record for a surface wind gust until a 1996 cyclone in Australia beat it.",
+            "src": "Verified: mprnews.org 2010/01/27 'New world wind record verified' (231 mph 1934 stood 62 years; 253 mph Barrow Island, Cyclone Olivia, 10 Apr 1996)"
+          },
+          {
+            "value": 400,
+            "q": "On the Beaufort wind scale, which runs from 0 to 12, what is Force 12?",
+            "options": [
+              "Gale",
+              "Storm",
+              "Hurricane",
+              "Violent storm"
+            ],
+            "answer": 2,
+            "fact": "The scale is named for Francis Beaufort, a Royal Navy officer who devised it in 1805.",
+            "src": "Verified: rmets.org 'The Beaufort Wind Scale' (devised 1805 by Royal Navy officer Francis Beaufort; Force 10 storm, 11 violent storm, 12 hurricane)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "island-hopping",
+    "blurb": "Island nations, famous isles and castaways on page and screen",
+    "categories": [
+      {
+        "name": "Island Nations",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which island country is nicknamed the Emerald Isle?",
+            "options": [
+              "Iceland",
+              "Jamaica",
+              "Ireland",
+              "Sri Lanka"
+            ],
+            "answer": 2,
+            "fact": "Ireland is Europe's third-largest island, after Great Britain and Iceland.",
+            "src": "Verified: worldatlas.com largest islands of Europe (Great Britain, Iceland, Ireland)"
+          },
+          {
+            "value": 200,
+            "q": "Honshu, Hokkaido, Kyushu and Shikoku are the four main islands of which country?",
+            "options": [
+              "Japan",
+              "China",
+              "Indonesia",
+              "South Korea"
+            ],
+            "answer": 0,
+            "fact": "Honshu, the largest of the four, is home to Tokyo, Osaka and Kyoto.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "Which Mediterranean island nation lies just south of Sicily?",
+            "options": [
+              "Cyprus",
+              "Crete",
+              "Corsica",
+              "Malta"
+            ],
+            "answer": 3,
+            "fact": "Maltese and English are both official languages of Malta.",
+            "src": "Textbook"
+          },
+          {
+            "value": 400,
+            "q": "Which island nation is named after a 16th-century king of Spain?",
+            "options": [
+              "Solomon Islands",
+              "Philippines",
+              "Marshall Islands",
+              "Seychelles"
+            ],
+            "answer": 1,
+            "fact": "They were named in the 1540s for Spain's Prince Philip, later King Philip II; there are over 7,000 islands.",
+            "src": "Verified: en.wikipedia.org/wiki/Names_of_the_Philippines (named 1543 by Villalobos's expedition for crown prince Philip, later Philip II)"
+          }
+        ]
+      },
+      {
+        "name": "Lay of the Land",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Not counting Australia, what is the largest island in the world?",
+            "options": [
+              "New Guinea",
+              "Greenland",
+              "Borneo",
+              "Madagascar"
+            ],
+            "answer": 1,
+            "fact": "Despite its name, about 80 percent of Greenland is covered by an ice sheet.",
+            "src": "Verified: livescience.com Greenland facts (ice sheet covers more than 80 percent)"
+          },
+          {
+            "value": 200,
+            "q": "The Galapagos Islands, famous for giant tortoises, belong to which country?",
+            "options": [
+              "Peru",
+              "Colombia",
+              "Ecuador",
+              "Costa Rica"
+            ],
+            "answer": 2,
+            "fact": "Charles Darwin visited the islands aboard HMS Beagle in 1835.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "Haiti shares the island of Hispaniola with which country?",
+            "options": [
+              "Dominican Republic",
+              "Cuba",
+              "Jamaica",
+              "Puerto Rico"
+            ],
+            "answer": 0,
+            "fact": "Christopher Columbus landed there in 1492 and named it La Isla Espanola.",
+            "src": "Textbook"
+          },
+          {
+            "value": 400,
+            "q": "The island of Zanzibar is part of which country?",
+            "options": [
+              "Kenya",
+              "Mozambique",
+              "Madagascar",
+              "Tanzania"
+            ],
+            "answer": 3,
+            "fact": "Queen's Freddie Mercury was born there, and Tanzania's name blends Tanganyika and Zanzibar.",
+            "src": "Textbook (union 1964; Mercury born Zanzibar 1946)"
+          }
+        ]
+      },
+      {
+        "name": "Island Tales",
+        "questions": [
+          {
+            "value": 100,
+            "q": "The 2008 movie Mamma Mia! is set on a fictional island in which country?",
+            "options": [
+              "Italy",
+              "Greece",
+              "Spain",
+              "Croatia"
+            ],
+            "answer": 1,
+            "fact": "Many of its location scenes were shot on the real Greek island of Skopelos.",
+            "src": "Textbook / widely documented filming location"
+          },
+          {
+            "value": 200,
+            "q": "In the 2000 film Cast Away, Tom Hanks's character befriends a volleyball named what?",
+            "options": [
+              "Spalding",
+              "Rawlings",
+              "Wilson",
+              "Mikasa"
+            ],
+            "answer": 2,
+            "fact": "Its island scenes were shot on Monuriki, a small uninhabited island in Fiji.",
+            "src": "Verified: en.wikipedia.org/wiki/Monuriki (Cast Away filmed there; small uninhabited island, Mamanuca group, Fiji)"
+          },
+          {
+            "value": 300,
+            "q": "On Gilligan's Island, what was the name of the boat that got shipwrecked?",
+            "options": [
+              "S.S. Guppy",
+              "S.S. Marlin",
+              "S.S. Pelican",
+              "S.S. Minnow"
+            ],
+            "answer": 3,
+            "fact": "Bob Denver played Gilligan, and Alan Hale Jr. played the Skipper.",
+            "src": "Textbook"
+          },
+          {
+            "value": 400,
+            "q": "Robinson Crusoe Island, named for the castaway in Defoe's 1719 novel, belongs to which country?",
+            "options": [
+              "Chile",
+              "Peru",
+              "Argentina",
+              "Brazil"
+            ],
+            "answer": 0,
+            "fact": "Scottish sailor Alexander Selkirk, a likely model for Crusoe, lived alone there for over four years.",
+            "src": "Textbook (Selkirk 1704-1709, Mas a Tierra)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "winter-wonderland",
+    "blurb": "Snowflakes, ice and the animals that thrive in the cold",
+    "categories": [
+      {
+        "name": "Let It Snow",
+        "questions": [
+          {
+            "value": 100,
+            "q": "How many sides does a typical snowflake have?",
+            "options": [
+              "Four",
+              "Five",
+              "Six",
+              "Eight"
+            ],
+            "answer": 2,
+            "fact": "Snowflakes are six-sided because water molecules freeze into a hexagonal pattern.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "In the Inuit language Inuktitut, the word igloo means what?",
+            "options": [
+              "House",
+              "Snow",
+              "Ice",
+              "Winter"
+            ],
+            "answer": 0,
+            "fact": "Iglu can mean any kind of house, not just one built from blocks of snow.",
+            "src": "Textbook"
+          },
+          {
+            "value": 300,
+            "q": "Buffalo, New York, is famous for lake-effect snow blowing off which Great Lake?",
+            "options": [
+              "Lake Superior",
+              "Lake Huron",
+              "Lake Michigan",
+              "Lake Erie"
+            ],
+            "answer": 3,
+            "fact": "Lake-effect snow forms when frigid air crosses warmer lake water and picks up moisture.",
+            "src": "Textbook"
+          },
+          {
+            "value": 400,
+            "q": "In 1885, Wilson Bentley became the first to photograph a single snowflake. In which state?",
+            "options": [
+              "Maine",
+              "Vermont",
+              "Minnesota",
+              "Michigan"
+            ],
+            "answer": 1,
+            "fact": "Bentley photographed more than 5,000 snowflakes and found no two exactly alike.",
+            "src": "Verified: en.wikipedia.org/wiki/Wilson_Bentley (first snowflake photo 15 Jan 1885; Jericho, VT farm; more than 5,000 images)"
+          }
+        ]
+      },
+      {
+        "name": "On Thin Ice",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which continent holds most of the world's ice?",
+            "options": [
+              "Asia",
+              "Antarctica",
+              "North America",
+              "Europe"
+            ],
+            "answer": 1,
+            "fact": "In places, Antarctica's ice sheet is more than 4 kilometers thick.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "Roughly how much of an iceberg's bulk is hidden below the waterline?",
+            "options": [
+              "About 25 percent",
+              "About 50 percent",
+              "About 70 percent",
+              "About 90 percent"
+            ],
+            "answer": 3,
+            "fact": "Icebergs are frozen fresh water that broke off glaciers or ice shelves.",
+            "src": "Textbook (~87-90% submerged)"
+          },
+          {
+            "value": 300,
+            "q": "Ground that stays frozen for at least two years in a row is called what?",
+            "options": [
+              "Permafrost",
+              "Tundra",
+              "Hardpan",
+              "Glacier"
+            ],
+            "answer": 0,
+            "fact": "Permafrost lies beneath large parts of Alaska, northern Canada and Siberia.",
+            "src": "Textbook"
+          },
+          {
+            "value": 400,
+            "q": "At what temperature do the Fahrenheit and Celsius scales show the same number?",
+            "options": [
+              "0",
+              "-32",
+              "-40",
+              "-100"
+            ],
+            "answer": 2,
+            "fact": "That makes minus 40 the one temperature you never need to convert.",
+            "src": "Textbook (F = 9/5 C + 32)"
+          }
+        ]
+      },
+      {
+        "name": "Polar Pals",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What color is a polar bear's skin underneath its fur?",
+            "options": [
+              "White",
+              "Pink",
+              "Gray",
+              "Black"
+            ],
+            "answer": 3,
+            "fact": "Polar bear fur is not truly white; each hair is see-through and scatters light, so it looks white.",
+            "src": "Textbook"
+          },
+          {
+            "value": 200,
+            "q": "In the 2006 animated film Happy Feet, Mumble is which kind of penguin?",
+            "options": [
+              "King",
+              "Adelie",
+              "Emperor",
+              "Gentoo"
+            ],
+            "answer": 2,
+            "fact": "Emperors are the largest living penguins, and they breed through the bitter Antarctic winter.",
+            "src": "Verified: antarctica.gov.au emperor penguin page (largest of 18 species; breed during Antarctic winter)"
+          },
+          {
+            "value": 300,
+            "q": "Which Arctic animal's coat turns from brown or gray in summer to white in winter?",
+            "options": [
+              "Arctic fox",
+              "Polar bear",
+              "Walrus",
+              "Narwhal"
+            ],
+            "answer": 0,
+            "fact": "Even the Arctic fox's paw pads are covered in fur, which helps it walk on snow and ice.",
+            "src": "Textbook"
+          },
+          {
+            "value": 400,
+            "q": "Qiviut, one of the warmest natural wools, comes from which Arctic animal?",
+            "options": [
+              "Caribou",
+              "Musk ox",
+              "Arctic hare",
+              "Yak"
+            ],
+            "answer": 1,
+            "fact": "When threatened, musk oxen form a circle facing outward, with their young in the middle.",
+            "src": "Textbook"
+          }
+        ]
+      }
+    ]
+  }
+]

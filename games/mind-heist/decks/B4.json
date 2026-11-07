@@ -1,0 +1,533 @@
+[
+  {
+    "id": "titletown",
+    "blurb": "Packers history: founding days, title runs, coaches and classic games",
+    "categories": [
+      {
+        "name": "Since 1919",
+        "questions": [
+          {
+            "value": 100,
+            "q": "The Packers got their name from an early team sponsor in what line of business?",
+            "options": [
+              "Papermaking",
+              "Meatpacking",
+              "Shipbuilding",
+              "Cheesemaking"
+            ],
+            "answer": 1,
+            "fact": "Lambeau's employer, the Indian Packing Company, gave the team $500 for uniforms and equipment.",
+            "src": "Checked: en.wikipedia.org/wiki/1919_Green_Bay_Packers_season (Lambeau's employer Indian Packing Company gave $500 for uniforms and equipment; team named for sponsor); en.wikipedia.org/wiki/History_of_the_Green_Bay_Packers (same $500)."
+          },
+          {
+            "value": 200,
+            "q": "In what year did Curly Lambeau and George Calhoun found the Packers?",
+            "options": [
+              "1915",
+              "1921",
+              "1919",
+              "1925"
+            ],
+            "answer": 2,
+            "fact": "The team was organized on August 11, 1919, in the editorial room of the Green Bay Press-Gazette.",
+            "src": "Checked: en.wikipedia.org/wiki/1919_Green_Bay_Packers_season (formed by Lambeau and Calhoun; Aug 11 meeting in the Press-Gazette editorial room); History_of_the_Green_Bay_Packers ('founded on August 11, 1919'). 1921 = joined APFA."
+          },
+          {
+            "value": 300,
+            "q": "From 1933 to 1994, the Packers split their home games between Green Bay and which city?",
+            "options": [
+              "Madison",
+              "Appleton",
+              "Chicago",
+              "Milwaukee"
+            ],
+            "answer": 3,
+            "fact": "From 1953 on, those Milwaukee games were played at Milwaukee County Stadium.",
+            "src": "Checked: en.wikipedia.org/wiki/Green_Bay_Packers_home_games_in_Milwaukee (split 1933-1994; Milwaukee County Stadium 1953-1994; no other city hosted Packers home games)."
+          },
+          {
+            "value": 400,
+            "q": "Curly Lambeau's Packers won three straight NFL titles starting in which year?",
+            "options": [
+              "1929",
+              "1936",
+              "1939",
+              "1944"
+            ],
+            "answer": 0,
+            "fact": "There was no title game then; the champion was decided by the final league standings.",
+            "src": "Checked: en.wikipedia.org/wiki/History_of_the_Green_Bay_Packers (titles 1929, 1930, 1931); title game began 1933 (champion by standings before). 1936/1939/1944 were single titles."
+          }
+        ]
+      },
+      {
+        "name": "Big Games",
+        "questions": [
+          {
+            "value": 100,
+            "q": "The 1967 NFL title game the Packers won at 13 degrees below zero is known as what?",
+            "options": [
+              "Freezer Bowl",
+              "Snow Bowl",
+              "Ice Bowl",
+              "Tundra Bowl"
+            ],
+            "answer": 2,
+            "fact": "Bart Starr's 1-yard quarterback sneak in the final seconds beat the Dallas Cowboys 21-17.",
+            "src": "Checked: profootballhof.com/football-history/the-ice-bowl (Dec 31, 1967 NFL Championship at Lambeau; 13 below at game time; Starr 1-yard QB sneak with 16 seconds left; 21-17 over Dallas). Freezer Bowl = Bengals-Chargers AFC title game."
+          },
+          {
+            "value": 200,
+            "q": "Who did the Packers beat in Super Bowl XXXI in January 1997?",
+            "options": [
+              "Denver Broncos",
+              "New England Patriots",
+              "Buffalo Bills",
+              "Pittsburgh Steelers"
+            ],
+            "answer": 1,
+            "fact": "The 35-21 win in New Orleans featured Brett Favre's 81-yard TD pass to Antonio Freeman, then a Super Bowl record.",
+            "src": "Checked: en.wikipedia.org/wiki/Super_Bowl_XXXI (Jan 26, 1997, Louisiana Superdome; Packers 35 Patriots 21; 'Favre threw a Super Bowl-record 81-yard touchdown pass to wide receiver Antonio Freeman'). Fact changed so it no longer echoes the A7 gridiron SB I/II fact."
+          },
+          {
+            "value": 300,
+            "q": "In January 2011, the Packers won the NFC Championship Game on the road against which team?",
+            "options": [
+              "Chicago Bears",
+              "Atlanta Falcons",
+              "Philadelphia Eagles",
+              "Seattle Seahawks"
+            ],
+            "answer": 0,
+            "fact": "Nose tackle B.J. Raji's interception return for a touchdown put Green Bay up 21-7 in a 21-14 win at Soldier Field.",
+            "src": "Checked: en.wikipedia.org/wiki/2010_NFC_Championship_Game (Jan 23, 2011, Soldier Field, GB 21-14; Raji pick-six made it 21-7; Sam Shields' late interception sealed it)."
+          },
+          {
+            "value": 400,
+            "q": "Aaron Rodgers' game-winning Hail Mary at Detroit in December 2015 was caught by which tight end?",
+            "options": [
+              "Jared Cook",
+              "Jermichael Finley",
+              "Bubba Franks",
+              "Richard Rodgers"
+            ],
+            "answer": 3,
+            "fact": "The 61-yard heave came on an untimed down after a facemask penalty, capping a rally from 20-0 down.",
+            "src": "Checked: si.com/nfl/packers/news/rodgers-rodgers-hail-mary (Dec 3, 2015; 61-yard Hail Mary to TE Richard Rodgers; facemask gave an untimed down; 27-23 after a 20-0 deficit). Distractor Andrew Quarless swapped for Bubba Franks (Quarless was arrested for firing a gun in July 2015)."
+          }
+        ]
+      },
+      {
+        "name": "Head Coaches",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Who became the Packers' head coach in 1959, a year after a 1-10-1 season?",
+            "options": [
+              "Vince Lombardi",
+              "Weeb Ewbank",
+              "Hank Stram",
+              "Curly Lambeau"
+            ],
+            "answer": 0,
+            "fact": "He had run the New York Giants' offense, while Tom Landry ran their defense.",
+            "src": "Checked: en.wikipedia.org/wiki/Vince_Lombardi (1958 Packers 1-10-1; hired 1959 as head coach and GM; with the Giants he held the job that 'later became known as' offensive coordinator, Tom Landry was defensive coordinator). Options changed: draft set (Landry, Paul Brown) nearly duplicated A7 gridiron's Lombardi Trophy question."
+          },
+          {
+            "value": 200,
+            "q": "Super Bowl-winning coach Mike Holmgren left Green Bay in 1999 to lead which team?",
+            "options": [
+              "San Francisco 49ers",
+              "Seattle Seahawks",
+              "St. Louis Rams",
+              "Philadelphia Eagles"
+            ],
+            "answer": 1,
+            "fact": "He became Seattle's head coach and general manager after seven seasons in Green Bay.",
+            "src": "Checked: packers.com/history/hof/mike-holmgren ('Head Coach: 1992-98'; left 'to become coach and general manager of the Seattle Seahawks in 1999'; previously 49ers assistant)."
+          },
+          {
+            "value": 300,
+            "q": "Who was the Packers' head coach when they won Super Bowl XLV in February 2011?",
+            "options": [
+              "Mike Sherman",
+              "Matt LaFleur",
+              "Mike McCarthy",
+              "Mike Holmgren"
+            ],
+            "answer": 2,
+            "fact": "His Packers beat the Pittsburgh Steelers 31-25 at Cowboys Stadium in Arlington, Texas.",
+            "src": "Checked: en.wikipedia.org/wiki/Super_Bowl_XLV (Feb 6, 2011, Cowboys Stadium, Arlington, Texas; Packers 31 Steelers 25); McCarthy was GB head coach 2006-18 (textbook). en.wikipedia.org/wiki/Mike_Sherman (GB HC 2000-2005; Texas A&M HC in 2010-11), so Sherman is definitely wrong."
+          },
+          {
+            "value": 400,
+            "q": "Bart Starr coached the Packers from 1975 to 1983. Which former teammate replaced him?",
+            "options": [
+              "Jerry Kramer",
+              "Willie Davis",
+              "Ray Nitschke",
+              "Forrest Gregg"
+            ],
+            "answer": 3,
+            "fact": "Gregg came from Cincinnati, where he had coached the Bengals to Super Bowl XVI.",
+            "src": "Checked: en.wikipedia.org/wiki/Bart_Starr (HC 1975-1983; 'dismissed in favor of his former teammate Forrest Gregg'); en.wikipedia.org/wiki/Forrest_Gregg (Bengals HC 1980-83, Super Bowl XVI; Packers HC 1984-87)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "packers-legends",
+    "blurb": "Packers greats: retired numbers, MVPs and the stories behind the legends",
+    "categories": [
+      {
+        "name": "Retired Numbers",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which jersey number did the Packers retire for Brett Favre in 2015?",
+            "options": [
+              "12",
+              "4",
+              "14",
+              "10"
+            ],
+            "answer": 1,
+            "fact": "It was retired at halftime of a Thanksgiving night game against the Bears, with Bart Starr on hand.",
+            "src": "Checked: bleacherreport.com/articles/2593430 (Thanksgiving night, Nov 26, 2015, halftime vs Bears; Bart Starr welcomed back and met Favre at midfield); wikiwand List_of_Green_Bay_Packers_retired_numbers (4 Favre 2015; 14 Hutson). No count question in this deck: the Packers have said they will retire No. 12 for Rodgers 'at the appropriate time' (ESPN/NFP 2023), so a count would go stale."
+          },
+          {
+            "value": 200,
+            "q": "Which hard-hitting middle linebacker wore No. 66, later retired by the Packers?",
+            "options": [
+              "Dick Butkus",
+              "Dave Robinson",
+              "Ray Nitschke",
+              "Willie Davis"
+            ],
+            "answer": 2,
+            "fact": "He was named MVP of the 1962 NFL Championship Game, a 16-7 win over the New York Giants.",
+            "src": "Checked: packers.com/history/hof/ray-nitschke (LB; No. 66 retired Dec 4, 1983; MVP of 1962 NFL title game, 16-7 over Giants). Butkus = Bears; Robinson and Davis = other Packers defenders."
+          },
+          {
+            "value": 300,
+            "q": "Reggie White, whose No. 92 the Packers retired, came to Green Bay in 1993 from which team?",
+            "options": [
+              "Philadelphia Eagles",
+              "Dallas Cowboys",
+              "New York Giants",
+              "Carolina Panthers"
+            ],
+            "answer": 0,
+            "fact": "He signed as an unrestricted free agent in April 1993 and spent six seasons in Green Bay.",
+            "src": "Checked: packers.com/history/hof/reggie-white (eight seasons with the Eagles; signing announced April 6, 1993; 'six-year stay in Green Bay'; No. 92 retired Sept 18, 2005). Panthers came after GB (2000)."
+          },
+          {
+            "value": 400,
+            "q": "Packers great Tony Canadeo, whose No. 3 was retired, was called 'the Gray Ghost of' which school?",
+            "options": [
+              "Fordham",
+              "Marquette",
+              "Notre Dame",
+              "Gonzaga"
+            ],
+            "answer": 3,
+            "fact": "In 1949 he became the third player in NFL history to rush for 1,000 yards in a season.",
+            "src": "Checked: packers.com 'Gray Ghost of Gonzaga was third rusher in NFL history to surpass 1,000 yards' (nickname; 1,052 yards in 1949; 'third in NFL history to surpass 1,000 yards rushing in a season'; No. 3 the second number retired after Hutson's); wikiwand retired-numbers list (No. 3, 1952)."
+          }
+        ]
+      },
+      {
+        "name": "Award Winners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Who was named MVP of both Super Bowl I and Super Bowl II?",
+            "options": [
+              "Jim Taylor",
+              "Bart Starr",
+              "Herb Adderley",
+              "Willie Wood"
+            ],
+            "answer": 1,
+            "fact": "The Packers drafted him in the 17th round in 1956, with the 200th overall pick.",
+            "src": "Checked: en.wikipedia.org/wiki/Bart_Starr (MVP of Super Bowls I and II; 17th round of the 1956 draft, 200th overall)."
+          },
+          {
+            "value": 200,
+            "q": "How many AP NFL MVP awards did Aaron Rodgers win as a Packer?",
+            "options": [
+              "Two",
+              "Three",
+              "Four",
+              "Five"
+            ],
+            "answer": 2,
+            "fact": "He won in 2011, 2014, 2020 and 2021; Brett Favre won three for Green Bay.",
+            "src": "Checked: packers.com 'Packers QB Aaron Rodgers wins fourth NFL MVP award' ('Aaron Rodgers, 4 (2011, '14, '20, '21)'; 'Brett Favre, 3 (1995, '96, '97)'). Settled: Rodgers left GB after 2022."
+          },
+          {
+            "value": 300,
+            "q": "Desmond Howard was named Super Bowl XXXI MVP mainly for what?",
+            "options": [
+              "Kick returns",
+              "Interceptions",
+              "Sacks",
+              "Touchdown catches"
+            ],
+            "answer": 0,
+            "fact": "His 99-yard kickoff return TD helped make him the first special teams player named Super Bowl MVP.",
+            "src": "Checked: en.wikipedia.org/wiki/Super_Bowl_XXXI (99-yard kickoff return TD; 154 kickoff and 90 punt return yards; 'first special teams player ever to be named Super Bowl MVP')."
+          },
+          {
+            "value": 400,
+            "q": "Which Packers cornerback was named the 2009 AP NFL Defensive Player of the Year?",
+            "options": [
+              "Al Harris",
+              "Tramon Williams",
+              "Sam Shields",
+              "Charles Woodson"
+            ],
+            "answer": 3,
+            "fact": "He was the first cornerback to win the award since Deion Sanders in 1994.",
+            "src": "Checked: nfl.com 'Packers CB Woodson voted Defensive Player of the Year' ('The Associated Press 2009 NFL Defensive Player of the Year'; 'first cornerback chosen top defensive player since Deion Sanders in 1994')."
+          }
+        ]
+      },
+      {
+        "name": "Legend Lore",
+        "questions": [
+          {
+            "value": 100,
+            "q": "The Packers traded for Brett Favre in 1992. Which team did they get him from?",
+            "options": [
+              "Atlanta Falcons",
+              "New York Jets",
+              "Minnesota Vikings",
+              "New Orleans Saints"
+            ],
+            "answer": 0,
+            "fact": "General manager Ron Wolf gave up a first-round draft pick to land him.",
+            "src": "Checked: nfl.com 'Brett Favre-Packers trade occurred 23 years ago' (mid-February 1992; GM Ron Wolf sent Atlanta a first-round pick). Jets and Vikings were his later teams."
+          },
+          {
+            "value": 200,
+            "q": "Which longtime Packers receiver won TV's Dancing with the Stars in 2012?",
+            "options": [
+              "Greg Jennings",
+              "Donald Driver",
+              "Jordy Nelson",
+              "James Jones"
+            ],
+            "answer": 1,
+            "fact": "He and partner Peta Murgatroyd won season 14, edging singer Katherine Jenkins.",
+            "src": "Checked: en.wikipedia.org/wiki/Dancing_with_the_Stars_(American_TV_series)_season_14 (winner Packers WR Donald Driver with Peta Murgatroyd; runner-up Katherine Jenkins; finale May 22, 2012)."
+          },
+          {
+            "value": 300,
+            "q": "Which Packer scored the first touchdown in Super Bowl history?",
+            "options": [
+              "Jim Taylor",
+              "Elijah Pitts",
+              "Boyd Dowler",
+              "Max McGee"
+            ],
+            "answer": 3,
+            "fact": "A backup, he got in after Boyd Dowler was hurt early, then caught a 37-yard TD pass from Bart Starr.",
+            "src": "Checked: en.wikipedia.org/wiki/Max_McGee ('ran 37 yards to score the first touchdown in Super Bowl history' on a pass from Starr; 'did not expect to play'; entered after 'Dowler went down with a separated shoulder on the Packers' second drive'; 7 catches, 138 yards, 2 TDs). Taylor's SB I TD came later."
+          },
+          {
+            "value": 400,
+            "q": "Guard Jerry Kramer's diary of the 1967 season became which best-selling book?",
+            "options": [
+              "Run to Daylight",
+              "Paper Lion",
+              "Instant Replay",
+              "North Dallas Forty"
+            ],
+            "answer": 2,
+            "fact": "Written with Dick Schaap, it builds to his Ice Bowl block; Kramer entered the Hall of Fame in 2018.",
+            "src": "Checked: en.wikipedia.org/wiki/Jerry_Kramer (with Dick Schaap, 'the best-selling Instant Replay', a diary of the 1967 season that 'climaxed with Kramer's lead block in front of Bart Starr' in the Ice Bowl; HOF Aug 4, 2018). Run to Daylight = Lombardi; Paper Lion = Plimpton; North Dallas Forty = Gent (textbook)."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lambeau-traditions",
+    "blurb": "Lambeau Field, the Leap, fan ownership and Green Bay's proudest traditions",
+    "categories": [
+      {
+        "name": "Home Field",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Lambeau Field is famously nicknamed 'the Frozen' what?",
+            "options": [
+              "Tundra",
+              "Prairie",
+              "Glacier",
+              "Lake"
+            ],
+            "answer": 0,
+            "fact": "In 1997, the field's old electric heating coils were replaced with pipes carrying an antifreeze solution.",
+            "src": "Checked: en.wikipedia.org/wiki/Lambeau_Field ('the frozen tundra' nickname; 'The underground heating and drainage system was redone in 1997', 'a system of pipes filled with a solution including antifreeze replacing the electric coils'). Fact changed: draft's Ice Bowl heating fact repeated the Ice Bowl a third time across the B4 decks."
+          },
+          {
+            "value": 200,
+            "q": "In 1968, the street outside Lambeau Field was renamed to honor whom?",
+            "options": [
+              "Curly Lambeau",
+              "Bart Starr",
+              "Vince Lombardi",
+              "Don Hutson"
+            ],
+            "answer": 2,
+            "fact": "Highland Avenue became Lombardi Avenue, and the stadium's address became 1265 Lombardi Avenue.",
+            "src": "Checked: photos.nevillepublicmuseum.org caption ('Highland Avenue was rechristened Lombardi Avenue on August 6, 1968', with Lombardi signing autographs under the sign); en.wikipedia.org/wiki/Lambeau_Field ('1265 Lombardi Avenue since August 1968'). Note: Wikipedia History_of_the_Green_Bay_Packers wrongly implies it came after his 1970 death."
+          },
+          {
+            "value": 300,
+            "q": "When it opened in 1957, Lambeau Field was officially called what?",
+            "options": [
+              "Packers Stadium",
+              "Titletown Field",
+              "Fox River Stadium",
+              "City Stadium"
+            ],
+            "answer": 3,
+            "fact": "It opened with a 21-17 upset of the Bears and was renamed for Curly Lambeau in 1965.",
+            "src": "Checked: en.wikipedia.org/wiki/Lambeau_Field ('opened in 1957 as City Stadium', informally New City Stadium; 'the Packers upset the rival Bears 21-17'; renamed Lambeau Field by the city council on Aug 3, 1965)."
+          },
+          {
+            "value": 400,
+            "q": "In 2016, Wisconsin upset which No. 5-ranked college football team at Lambeau Field?",
+            "options": [
+              "Ohio State",
+              "LSU",
+              "Alabama",
+              "Clemson"
+            ],
+            "answer": 1,
+            "fact": "It was the first major college game in Lambeau's history; a 47-yard field goal with 3:47 left won it.",
+            "src": "Checked: uwbadgers.com 2016/9/3 recap (Sept 3, 2016, Lambeau Field, Wisconsin 16, No. 5 LSU 14; Gaglianone's 47-yard FG in the 4th quarter; D'Cota Dixon INT with 57 seconds left sealed it) and uwbadgers.com postgame notes ('game-winning 47-yard field goal with 3:47 remaining'; 'the first major college football game in the history of Lambeau Field'). Draft fact wrongly said the FG 'sealed' it."
+          }
+        ]
+      },
+      {
+        "name": "Pack Traditions",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Since the 1950s, what have Packers players traditionally ridden to training camp practice?",
+            "options": [
+              "Golf carts",
+              "Motor scooters",
+              "A team trolley",
+              "Kids' bicycles"
+            ],
+            "answer": 3,
+            "fact": "A 1958 Press-Gazette photo shows the tradition began before Vince Lombardi became coach in 1959.",
+            "src": "Checked: packers.com 'Packers training camp memory: the start of the bike tradition' (1958 Press-Gazette photo, 'the oldest that I've found'; tradition 'pre-dates the Vince Lombardi era'; ex-players recall it at Stevens Point 1954-57). This supersedes packers.com 'Tracing the roots of players riding bikes' (1961 photo), which the draft fact relied on. Question reworded from present tense so it cannot go stale."
+          },
+          {
+            "value": 200,
+            "q": "Which Packers safety made the first Lambeau Leap, in December 1993?",
+            "options": [
+              "Nick Collins",
+              "Mike Prior",
+              "LeRoy Butler",
+              "George Teague"
+            ],
+            "answer": 2,
+            "fact": "Butler's own hit forced the Raiders fumble, and Reggie White pitched the ball back to him for the score.",
+            "src": "Checked: en.wikipedia.org/wiki/Lambeau_Leap (first Leap Dec 26, 1993 vs LA Raiders; Jordan 'was immediately hit by Packers safety LeRoy Butler and fumbled'; ball 'bounced directly into' Reggie White's hands; White 'tossed the ball to Butler'). Distractors Darren Sharper (later convicted of serial rapes) and Eugene Robinson (Super Bowl-eve solicitation arrest) replaced with Nick Collins (GB S 2005-11) and George Teague (GB S 1993-95, 1993 first-round pick) - wikiwand/Wikipedia bios. Mike Prior = GB S 1993-98 (Wikipedia)."
+          },
+          {
+            "value": 300,
+            "q": "Which Packers receiver popularized the Lambeau Leap and even released a 1996 song about it?",
+            "options": [
+              "Robert Brooks",
+              "Antonio Freeman",
+              "Sterling Sharpe",
+              "Don Beebe"
+            ],
+            "answer": 0,
+            "fact": "The song was 'Jump in the Stands,' and the leap was grandfathered in when the NFL tightened celebration rules.",
+            "src": "Checked: en.wikipedia.org/wiki/Lambeau_Leap (Brooks 'would further popularize the Lambeau Leap'; released the single 'Jump in the Stands' in 1996; Leap grandfathered when the NFL updated celebration rules in 2000 and 2014)."
+          },
+          {
+            "value": 400,
+            "q": "The Packers' famous oval 'G' logo was created in which year?",
+            "options": [
+              "1955",
+              "1961",
+              "1966",
+              "1972"
+            ],
+            "answer": 1,
+            "fact": "The University of Georgia's lookalike G, adopted in 1964, was cleared with the Packers first.",
+            "src": "REPLACED (draft asked which college the early navy-and-gold colors came from; Packers historian Cliff Christl, packers.com 'Were the 1921 Acme Packers jerseys blue/white or blue/gold', says he doesn't know where blue-and-gold began, and packers.com 'Packers first wore green jerseys in 1935' contradicts the draft fact). New Q checked: en.wikipedia.org/wiki/Green_Bay_Packers (oval G added in 1961 at Lombardi's request; Georgia adopted its G in 1964 and Vince Dooley sought the Packers' clearance first); packers.com 'Packers G sails the seven seas' (logo dates to 1961, Braisher designed it at Lombardi's direction)."
+          }
+        ]
+      },
+      {
+        "name": "By the Fans",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Packers fans famously wear foam hats shaped like a wedge of what?",
+            "options": [
+              "Cheese",
+              "Cake",
+              "Pie",
+              "Watermelon"
+            ],
+            "answer": 0,
+            "fact": "The 'cheesehead' nickname plays on Wisconsin's huge cheese production.",
+            "src": "Checked: en.wikipedia.org/wiki/Green_Bay_Packers (cheeseheads, 'a nickname for Wisconsin residents reflecting the state's bountiful cheese production'; triangular cheesehead hats a fixture at games)."
+          },
+          {
+            "value": 200,
+            "q": "In 1923, the Packers were organized as a nonprofit corporation owned by whom?",
+            "options": [
+              "The city of Green Bay",
+              "The Lambeau family",
+              "The state of Wisconsin",
+              "Public shareholders"
+            ],
+            "answer": 3,
+            "fact": "Local backers nicknamed the Hungry Five, for always asking for money, helped organize it.",
+            "src": "Checked: packers.com/community/shareholders ('a publicly owned, nonprofit corporation since 1923'); en.wikipedia.org/wiki/Green_Bay_Packers,_Inc. (1923 civic leaders 'including The Hungry Five' organized 'a publicly owned non-profit corporation'); en.wikipedia.org/wiki/The_Hungry_Five (both nickname accounts say it referred to their constant requests for money). Question moved to past tense; draft fact (200,000-share cap) is a changeable rule."
+          },
+          {
+            "value": 300,
+            "q": "In the Packers' 2011 stock sale, what did one share cost?",
+            "options": [
+              "$25",
+              "$100",
+              "$250",
+              "$1,000"
+            ],
+            "answer": 2,
+            "fact": "About 269,000 shares were sold; in the first sale, in 1923, a share cost just $5.",
+            "src": "Checked: en.wikipedia.org/wiki/Green_Bay_Packers,_Inc. (2011-12: 'approximately 269,000 shares at $250 a piece'; 1923: '$5 a piece'; 1997 was $200 and 2021-22 was $300, neither among the options); packers.com/community/shareholders (sales 1923, 1935, 1950, 1997, 2011, 2022)."
+          },
+          {
+            "value": 400,
+            "q": "Until 1997, the Packers' charter said profits from any sale of the team would go to whom?",
+            "options": [
+              "The city of Green Bay",
+              "An American Legion post",
+              "Green Bay's schools",
+              "The NFL"
+            ],
+            "answer": 1,
+            "fact": "The money was to build a soldiers' memorial, and the clause removed any financial reason for shareholders to sell.",
+            "src": "Checked: en.wikipedia.org/wiki/Green_Bay_Packers,_Inc. (original articles: sale profits 'donated to the Sullivan-Wallen Post of the American Legion', 'earmarked for the purpose of building a proper soldier's memorial'; 'removed any financial incentive for the team to be sold by the shareholders'); en.wikipedia.org/wiki/History_of_the_Green_Bay_Packers (Nov 1997 shareholders changed the beneficiary to the Green Bay Packers Foundation); legion.org Feb 2011 (Post 11 relationship dates to the 1920s; charter since revised). Draft fact said 'move the team' - source says 'sell'; 'original rules' reworded to 'until 1997'."
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,710 @@
+[
+ {
+  "id": "logo-slogan",
+  "blurb": "Mascots, taglines and the surprising stories behind big brands",
+  "categories": [
+   {
+    "name": "Mascot Mania",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which cereal mascot, introduced in 1952, says Frosted Flakes are 'Gr-r-reat!'?",
+      "options": [
+       "Tony the Tiger",
+       "Trix Rabbit",
+       "Cap'n Crunch",
+       "Toucan Sam"
+      ],
+      "answer": 0,
+      "fact": "Tony was created at the Leo Burnett ad agency, where art director Eugene Kolkey designed the original tiger.",
+      "src": "en.wikipedia.org/wiki/Tony_the_Tiger (debuted 1952 for Frosted Flakes; Kolkey, Leo Burnett art director, designed Tony; catchphrase came from voice actor Thurl Ravenscroft, from 1953)"
+     },
+     {
+      "value": 200,
+      "q": "The pink Energizer Bunny began in 1988 as a spoof of a bunny ad from which rival battery brand?",
+      "options": [
+       "Duracell",
+       "Rayovac",
+       "Panasonic",
+       "Varta"
+      ],
+      "answer": 0,
+      "fact": "Duracell's drumming bunny dates to 1973, but a 1992 settlement gave Energizer the bunny rights in the US and Canada.",
+      "src": "en.wikipedia.org/wiki/Energizer_Bunny (first ad 1988, parody of Duracell Bunny; Duracell bunny 1973; Jan 10, 1992 settlement: Energizer exclusive US/Canada rights)"
+     },
+     {
+      "value": 300,
+      "q": "The GEICO Gecko made his first appearance in a TV ad in which year?",
+      "options": [
+       "1993",
+       "1996",
+       "1999",
+       "2003"
+      ],
+      "answer": 2,
+      "fact": "The Martin Agency of Richmond, Virginia created him for a single spot; he wasn't meant to become a campaign.",
+      "src": "shootonline.com/?p=11988 (July 1999 spot 'Press Conference'; Martin Agency's Steve Bassett: 'It wasn't meant to be a campaign')"
+     },
+     {
+      "value": 400,
+      "q": "The Michelin Man, created in the 1890s, has what official name?",
+      "options": [
+       "Bertrand",
+       "Pneumo",
+       "Gaston",
+       "Bibendum"
+      ],
+      "answer": 3,
+      "fact": "Tires were a pale gray-white when he was created; they turned black around 1912, when carbon was added to the rubber.",
+      "src": "en.wikipedia.org/wiki/Michelin_Man (official name Bibendum; introduced 1894 Lyon exhibition; tires originally gray-white, black from 1912 when carbon added)"
+     }
+    ]
+   },
+   {
+    "name": "Say It Again",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which brand adopted the slogan 'Just Do It' in 1988?",
+      "options": [
+       "Reebok",
+       "Nike",
+       "Adidas",
+       "Converse"
+      ],
+      "answer": 1,
+      "fact": "Dan Wieden of Wieden+Kennedy, an ad agency based in Portland, Oregon, wrote the line.",
+      "src": "fox6now.com/sports/dan-wieden-ad-icon-behind-nikes-just-do-it-slogan-dies (Wieden 'famously coined the Nike tagline Just Do It. in 1988', Portland dateline); dezeen.com 2015/03/14 article on Wieden+Kennedy"
+     },
+     {
+      "q": "The 'Got Milk?' ad campaign began in 1993 for milk processors in which state?",
+      "options": [
+       "Wisconsin",
+       "Vermont",
+       "California",
+       "New York"
+      ],
+      "answer": 2,
+      "fact": "Ad agency Goodby Silverstein & Partners created it for the California Milk Processor Board.",
+      "src": "Wikipedia, Got Milk? (https://en.wikipedia.org/wiki/Got_Milk%3F): created by Goodby Silverstein & Partners for the California Milk Processor Board in 1993",
+      "value": 200
+     },
+     {
+      "value": 300,
+      "q": "'Can you hear me now?' was the 2000s ad catchphrase of which wireless carrier?",
+      "options": [
+       "Sprint",
+       "AT&T",
+       "T-Mobile",
+       "Verizon"
+      ],
+      "answer": 3,
+      "fact": "Actor Paul Marcarelli played the 'Test Man' from 2002 to 2011, then turned up in Sprint ads in 2016.",
+      "src": "en.wikipedia.org/wiki/Paul_Marcarelli (Verizon Test Man 2002 to April 2011; Sprint spokesman 2016)"
+     },
+     {
+      "value": 400,
+      "q": "Which car rental company made being No. 2 a selling point with its 1962 slogan 'We Try Harder'?",
+      "options": [
+       "Budget",
+       "Hertz",
+       "Avis",
+       "National"
+      ],
+      "answer": 2,
+      "fact": "The campaign came from ad agency Doyle Dane Bernbach and openly admitted that Avis trailed Hertz.",
+      "src": "en.wikipedia.org/wiki/William_Bernbach (debuted 1962 as Avis lost share to Hertz); wiki/Avis_Rent_a_Car_System (motto adopted 1962, spin on No. 2 status vs larger Hertz); wiki/Doyle_Dane_Bernbach ('We Try Harder Because We're Number 2')"
+     }
+    ]
+   },
+   {
+    "name": "Name Game",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Twitter's bird logo was nicknamed Larry, after which Boston Celtics legend?",
+      "options": [
+       "Bill Russell",
+       "Larry Bird",
+       "Robert Parish",
+       "Kevin McHale"
+      ],
+      "answer": 1,
+      "fact": "Twitter co-founder Biz Stone confirmed the bird's namesake in a 2011 tweet.",
+      "src": "wrtv.com/sports/pacers/did-you-know-the-twitter-logo-was-named-after-larry-bird (Biz Stone tweet, Aug 11, 2011)"
+     },
+     {
+      "value": 200,
+      "q": "IKEA's name starts with its founder's initials. In which country did he start it in 1943?",
+      "options": [
+       "Sweden",
+       "Finland",
+       "Denmark",
+       "Norway"
+      ],
+      "answer": 0,
+      "fact": "Ingvar Kamprad was 17; the E and A stand for Elmtaryd, his family farm, and Agunnaryd, his home village.",
+      "src": "en.wikipedia.org/wiki/IKEA (founded 1943 in Sweden by 17-year-old Ingvar Kamprad; Elmtaryd farm, Agunnaryd village)"
+     },
+     {
+      "value": 300,
+      "q": "Long before phones, Nokia began in 1865 as a Finnish mill serving which industry?",
+      "options": [
+       "Glass",
+       "Paper",
+       "Textiles",
+       "Shipbuilding"
+      ],
+      "answer": 1,
+      "fact": "Fredrik Idestam's first mill made wood pulp; the name comes from the town of Nokia and its Nokianvirta River.",
+      "src": "en.wikipedia.org/wiki/History_of_Nokia (1865 ground wood pulp mill, Tammerkoski rapids, Tampere, Fredrik Idestam; name derived from town of Nokia and Nokianvirta River)"
+     },
+     {
+      "value": 400,
+      "q": "Audi's four rings stand for four carmakers that merged in 1932. What was the new company called?",
+      "options": [
+       "Porsche",
+       "Daimler-Benz",
+       "Volkswagen",
+       "Auto Union"
+      ],
+      "answer": 3,
+      "fact": "The four were Audi, DKW, Horch and Wanderer; the interlocking rings symbolize their unity.",
+      "src": "audi.com/en/company/history/four-brands-four-rings.html (Auto Union formed 29 June 1932; Audi, DKW, Horch, Wanderer; rings symbolise unity of the four)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "shop-talk",
+  "blurb": "Department stores, discount giants and how we learned to shop",
+  "categories": [
+   {
+    "name": "Store Stories",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What is the name of Target's white bull terrier mascot?",
+      "options": [
+       "Spot",
+       "Bullseye",
+       "Rex",
+       "Bingo"
+      ],
+      "answer": 1,
+      "fact": "Target was launched by the Dayton Company, owner of the Dayton's department stores in Minneapolis.",
+      "src": "en.wikipedia.org/wiki/Target_Corporation (Bullseye, white Bull Terrier; Target launched by John Geisse and Douglas Dayton for the Dayton Company)"
+     },
+     {
+      "value": 200,
+      "q": "The first Walmart, Kmart and Target stores all opened in the same year. Which year?",
+      "options": [
+       "1955",
+       "1962",
+       "1969",
+       "1974"
+      ],
+      "answer": 1,
+      "fact": "The first Target opened in Roseville, Minnesota, in May, and the first Walmart in Rogers, Arkansas, on July 2.",
+      "src": "en.wikipedia.org/wiki/Walmart (Rogers, AR, July 2, 1962); wiki/Target_Corporation (Roseville, MN, May 1962); wiki/Kmart (first Kmart-named store San Fernando, CA, Jan 25, 1962; first full-size Garden City, MI, Mar 1, 1962)"
+     },
+     {
+      "value": 300,
+      "q": "James Cash Penney opened his first store, a Golden Rule shop, in 1902 in which state?",
+      "options": [
+       "Wyoming",
+       "Colorado",
+       "Idaho",
+       "Montana"
+      ],
+      "answer": 0,
+      "fact": "He opened it on April 14, 1902, in the small town of Kemmerer, in partnership with two other merchants.",
+      "src": "en.wikipedia.org/wiki/JCPenney (Kemmerer, Wyoming, April 14, 1902; partners Thomas Callahan and Guy Johnson)"
+     },
+     {
+      "value": 400,
+      "q": "Before his famous catalog, Richard Sears got started in 1886 selling what by mail?",
+      "options": [
+       "Seeds",
+       "Bicycles",
+       "Sewing machines",
+       "Watches"
+      ],
+      "answer": 3,
+      "fact": "Sears later sold entire kit houses by mail order, from 1908 to 1940.",
+      "src": "en.wikipedia.org/wiki/Sears (R.W. Sears Watch Company, Minneapolis, 1886; Sears Catalog Home kits 1908-1940)"
+     }
+    ]
+   },
+   {
+    "name": "Shopping Firsts",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which shopping invention did Sylvan Goldman introduce in 1937 at his Oklahoma City stores?",
+      "options": [
+       "Paper grocery bag",
+       "Cash register",
+       "Price tag",
+       "Shopping cart"
+      ],
+      "answer": 3,
+      "fact": "Shoppers balked at first, so Goldman hired models to push the carts around his Humpty Dumpty stores.",
+      "src": "en.wikipedia.org/wiki/Sylvan_Goldman (June 4, 1937, Humpty Dumpty chain, Oklahoma City; hired male and female models to push carts)"
+     },
+     {
+      "value": 200,
+      "q": "In 1974, the first product scanned by a UPC barcode at a supermarket was a pack of what?",
+      "options": [
+       "Breakfast cereal",
+       "Canned soup",
+       "Chewing gum",
+       "Paper towels"
+      ],
+      "answer": 2,
+      "fact": "It was a 10-pack of Wrigley's Juicy Fruit, scanned at 8:01 a.m. at a Marsh supermarket in Troy, Ohio.",
+      "src": "en.wikipedia.org/wiki/Universal_Product_Code (10-pack Wrigley's Juicy Fruit, Marsh supermarket, Troy OH, 8:01 a.m. June 26, 1974; only a facsimile went to the Smithsonian, so that claim was dropped)"
+     },
+     {
+      "value": 300,
+      "q": "The first fully enclosed, climate-controlled US shopping mall opened in 1956 in which state?",
+      "options": [
+       "California",
+       "Ohio",
+       "Minnesota",
+       "New Jersey"
+      ],
+      "answer": 2,
+      "fact": "Southdale Center in Edina was designed by Austrian-born architect Victor Gruen.",
+      "src": "en.wikipedia.org/wiki/Southdale_Center (opened Oct 8, 1956, Edina MN; 'first fully enclosed, climate-controlled shopping mall in the United States'; Victor Gruen, native of Vienna)"
+     },
+     {
+      "value": 400,
+      "q": "Piggly Wiggly, called the first true self-service grocery store, opened in 1916 in which city?",
+      "options": [
+       "Memphis",
+       "Birmingham",
+       "Nashville",
+       "Atlanta"
+      ],
+      "answer": 0,
+      "fact": "Founder Clarence Saunders even received a patent for his 'self-serving store' in 1917.",
+      "src": "en.wikipedia.org/wiki/Piggly_Wiggly (Memphis, 1916; 'first true self-service grocery store'; US Patent 1,242,872 'Self-serving store', Oct 9, 1917)"
+     }
+    ]
+   },
+   {
+    "name": "Holiday Rush",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Black Friday falls on the day after which US holiday?",
+      "options": [
+       "Halloween",
+       "Thanksgiving",
+       "Veterans Day",
+       "Christmas"
+      ],
+      "answer": 1,
+      "fact": "The name caught on in Philadelphia, where police used it by 1961 to describe the day's crowds and traffic jams.",
+      "src": "history.com/news/black-friday-thanksgiving-origins-history (Philadelphia police, 1950s; caption dates the name to 1961)"
+     },
+     {
+      "value": 200,
+      "q": "In 1917, which company's Kansas City store ran out of tissue paper and ended up launching modern gift wrap?",
+      "options": [
+       "American Greetings",
+       "Woolworth's",
+       "Hallmark",
+       "Marshall Field's"
+      ],
+      "answer": 2,
+      "fact": "Out of red, green and white tissue at Christmas, the Hall brothers sold imported French paper instead, at a dime a sheet.",
+      "src": "corporate.hallmark.com/Product/Gift-Wrap-Overview (Christmas 1917, Hall Brothers' Kansas City store ran out of tissue; imported French decorative paper at a dime a sheet; credited with founding modern gift wrap industry). Replaces Rudolph/Montgomery Ward, which duplicates holiday-hits (A1) Origin Stories 400."
+     },
+     {
+      "value": 300,
+      "q": "Which credit card company launched Small Business Saturday in 2010?",
+      "options": [
+       "Discover",
+       "Visa",
+       "Mastercard",
+       "American Express"
+      ],
+      "answer": 3,
+      "fact": "It falls on the Saturday after Thanksgiving, sandwiched between Black Friday and Cyber Monday.",
+      "src": "americanexpress.com/us/small-business/shop-small/supporters ('founded by American Express in 2010'; Saturday after Thanksgiving)"
+     },
+     {
+      "value": 400,
+      "q": "GivingTuesday, the Tuesday after Thanksgiving, was started in 2012 at which New York institution?",
+      "options": [
+       "Carnegie Hall",
+       "Lincoln Center",
+       "92nd Street Y",
+       "Columbia University"
+      ],
+      "answer": 2,
+      "fact": "Henry Timms launched it there, with the United Nations Foundation as a co-founding partner.",
+      "src": "en.wikipedia.org/wiki/GivingTuesday (initiated 2012 by Henry Timms at the 92nd Street Y; co-founding organization the United Nations Foundation)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "log-on",
+  "blurb": "From garage startups to Cyber Monday: computers and the web",
+  "categories": [
+   {
+    "name": "Startup Stories",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Bill Gates and Paul Allen founded which company in 1975?",
+      "options": [
+       "IBM",
+       "Intel",
+       "Apple",
+       "Microsoft"
+      ],
+      "answer": 3,
+      "fact": "It began in Albuquerque, New Mexico, and moved to Bellevue, Washington, in January 1979.",
+      "src": "en.wikipedia.org/wiki/Microsoft (established Apr 4, 1975, Albuquerque; HQ to Bellevue Jan 1979)"
+     },
+     {
+      "value": 200,
+      "q": "Yahoo began in 1994 as a website guide made by two graduate students at which university?",
+      "options": [
+       "Harvard",
+       "MIT",
+       "Stanford",
+       "UC Berkeley"
+      ],
+      "answer": 2,
+      "fact": "Jerry Yang and David Filo first called it 'Jerry and David's Guide to the World Wide Web.'",
+      "src": "en.wikipedia.org/wiki/Yahoo (founded Jan 1994 by Jerry Yang and David Filo, electrical engineering graduate students at Stanford; began as 'Jerry and David's guide to the World Wide Web', renamed Yahoo! March 1994). Replaces Google/googol, which duplicates by-the-numbers (A5) Math Magic 300."
+     },
+     {
+      "value": 300,
+      "q": "Apple's three co-founders in 1976 were Steve Jobs, Steve Wozniak and who?",
+      "options": [
+       "Tim Cook",
+       "John Sculley",
+       "Jony Ive",
+       "Ronald Wayne"
+      ],
+      "answer": 3,
+      "fact": "Wayne sold his share back to Jobs and Wozniak for $800, just 12 days after Apple's April 1, 1976 founding.",
+      "src": "en.wikipedia.org/wiki/Apple_Inc. (founded April 1, 1976 by Jobs, Wozniak, Wayne; Wayne sold share back for $800 twelve days later)"
+     },
+     {
+      "value": 400,
+      "q": "In 1939, Bill Hewlett and Dave Packard formed HP in a garage in which California city?",
+      "options": [
+       "Palo Alto",
+       "Cupertino",
+       "San Jose",
+       "Mountain View"
+      ],
+      "answer": 0,
+      "fact": "The garage, at 367 Addison Avenue, is a California Historical Landmark called the Birthplace of Silicon Valley.",
+      "src": "en.wikipedia.org/wiki/HP_Garage (367 Addison Ave, Palo Alto; used from 1938, partnership formed 1939; California Historical Landmark No. 976, 'Birthplace of Silicon Valley')"
+     }
+    ]
+   },
+   {
+    "name": "Web Firsts",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Amazon got its start in 1995 by selling what online?",
+      "options": [
+       "Books",
+       "Electronics",
+       "Toys",
+       "Music CDs"
+      ],
+      "answer": 0,
+      "fact": "Jeff Bezos first called the company Cadabra before settling on the name Amazon.",
+      "src": "en.wikipedia.org/wiki/History_of_Amazon (incorporated as Cadabra, Inc., July 1994, renamed Amazon.com; opened as online bookseller July 16, 1995)"
+     },
+     {
+      "value": 200,
+      "q": "Who invented the World Wide Web while working at CERN in 1989?",
+      "options": [
+       "Marc Andreessen",
+       "Vint Cerf",
+       "Tim Berners-Lee",
+       "Bill Joy"
+      ],
+      "answer": 2,
+      "fact": "The first website, at info.cern.ch, was all about the World Wide Web project itself.",
+      "src": "home.cern/science/computing/the-birth-of-the-web/short-history-web/ (Berners-Lee first proposal March 1989 at CERN; info.cern.ch first website, its pages about the WWW project). Old fact's 'went online in 1991' dropped: CERN had the server running by end of 1990."
+     },
+     {
+      "value": 300,
+      "q": "The online-shopping term 'Cyber Monday' was coined in which year?",
+      "options": [
+       "1999",
+       "2002",
+       "2005",
+       "2008"
+      ],
+      "answer": 2,
+      "fact": "Ellen Davis of the National Retail Federation introduced it in a November 28, 2005 press release.",
+      "src": "en.wikipedia.org/wiki/Cyber_Monday ('Ellen Davis of the National Retail Federation coined the term ... in a press release on November 28, 2005')"
+     },
+     {
+      "value": 400,
+      "q": "In 1995, eBay, then called AuctionWeb, famously sold which broken item for $14.83?",
+      "options": [
+       "Digital watch",
+       "Laser pointer",
+       "Walkie-talkie",
+       "Pocket calculator"
+      ],
+      "answer": 1,
+      "fact": "Founder Pierre Omidyar checked whether the buyer knew it was broken. The reply: he collected broken laser pointers.",
+      "src": "en.wikipedia.org/wiki/EBay (founded as AuctionWeb Sept 3, 1995; broken laser pointer $14.83; buyer: 'I'm a collector of broken laser pointers'). Wikipedia says 'one of the first items sold', so the 'first thing sold' claim was dropped."
+     }
+    ]
+   },
+   {
+    "name": "Tech Talk",
+    "questions": [
+     {
+      "value": 100,
+      "q": "How many bits make up one byte?",
+      "options": [
+       "4",
+       "8",
+       "10",
+       "16"
+      ],
+      "answer": 1,
+      "fact": "Eight bits can form 256 different patterns, enough to code every letter, digit and symbol on a keyboard.",
+      "src": "Textbook (8 bits = 2^8 = 256 values)"
+     },
+     {
+      "value": 200,
+      "q": "In 1947, engineers found what creature stuck in a Harvard computer, logging an actual 'bug'?",
+      "options": [
+       "A cricket",
+       "A moth",
+       "A beetle",
+       "A spider"
+      ],
+      "answer": 1,
+      "fact": "The moth was taped into the team's logbook, which is now at the Smithsonian's American history museum.",
+      "src": "daily.jstor.org/the-bug-in-the-computer-bug-story/ (Harvard Mark II, 1947, moth taped into logbook 'first actual case of bug being found'; logbook with moth at Smithsonian National Museum of American History)"
+     },
+     {
+      "value": 300,
+      "q": "Junk email is called 'spam' thanks to a 1970 comedy sketch by which group?",
+      "options": [
+       "Monty Python",
+       "The Kids in the Hall",
+       "The Two Ronnies",
+       "The Goodies"
+      ],
+      "answer": 0,
+      "fact": "In the sketch, a cafe serves Spam in almost every dish while a group of Vikings sings about it.",
+      "src": "en.wikipedia.org/wiki/Spam_(Monty_Python_sketch) (premiered 15 Dec 1970; Green Midget Cafe; Vikings singing about Spam; term for unsolicited electronic messages derived from it)"
+     },
+     {
+      "value": 400,
+      "q": "Bluetooth is named after Harald Bluetooth, a 10th-century king of which country?",
+      "options": [
+       "Scotland",
+       "Iceland",
+       "Denmark",
+       "England"
+      ],
+      "answer": 2,
+      "fact": "Intel's Jim Kardach proposed the name in 1997: Harald united Danish tribes, much as Bluetooth unites devices.",
+      "src": "en.wikipedia.org/wiki/Bluetooth (10th-century Danish king Harald Bluetooth, united Danish tribes; name proposed by Intel's Jim Kardach in 1997). Norway deliberately not an option since Harald also ruled it."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "money-talks",
+  "blurb": "Coins, cash and the curious history of how we pay",
+  "categories": [
+   {
+    "name": "Pocket Change",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which president first appeared on the US one-cent coin in 1909?",
+      "options": [
+       "George Washington",
+       "Abraham Lincoln",
+       "Thomas Jefferson",
+       "Ulysses S. Grant"
+      ],
+      "answer": 1,
+      "fact": "1909 marked 100 years since Lincoln's birth, and his cent was the first regular US coin to show a real person.",
+      "src": "en.wikipedia.org/wiki/Lincoln_cent ('before the Lincoln cent, no regularly circulating U.S. coin had featured an actual person'; 1909 centennial of birth); usmint.gov history-of-presidents-on-our-coins (first president on a circulating coin, 1909)"
+     },
+     {
+      "value": 200,
+      "q": "In old American slang, how much money is 'two bits'?",
+      "options": [
+       "2 cents",
+       "10 cents",
+       "25 cents",
+       "50 cents"
+      ],
+      "answer": 2,
+      "fact": "A 'bit' was one-eighth of a Spanish silver dollar, a coin widely used in early America.",
+      "src": "en.wikipedia.org/wiki/Bit_(money) (1 real = 1 bit = 1/8 Spanish dollar; two bits = 25 cents; Spanish dollar most common currency in colonial America)"
+     },
+     {
+      "value": 300,
+      "q": "A US nickel is made mostly of which metal?",
+      "options": [
+       "Nickel",
+       "Copper",
+       "Zinc",
+       "Steel"
+      ],
+      "answer": 1,
+      "fact": "The copper-nickel five-cent coin dates to 1866, and its alloy is 75% copper and only 25% nickel.",
+      "src": "en.wikipedia.org/wiki/Nickel_(United_States_coin) (cupronickel 75% Cu / 25% Ni, issued since 1866; Shield nickel 1866-1883; wartime 1942-45 silver alloy also mostly copper)"
+     },
+     {
+      "value": 400,
+      "q": "Which state's coin led off the 50 State Quarters program in 1999?",
+      "options": [
+       "Delaware",
+       "Pennsylvania",
+       "Virginia",
+       "Massachusetts"
+      ],
+      "answer": 0,
+      "fact": "Quarters came out in the order states ratified the Constitution or joined the Union, and Delaware was first.",
+      "src": "en.wikipedia.org/wiki/50_State_quarters (1999-2008; released in order states ratified the Constitution or were admitted; Delaware first, Jan 1999)"
+     }
+    ]
+   },
+   {
+    "name": "Paper Trail",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Whose portrait appears on the US $100 bill?",
+      "options": [
+       "Benjamin Franklin",
+       "Alexander Hamilton",
+       "George Washington",
+       "Thomas Jefferson"
+      ],
+      "answer": 0,
+      "fact": "The very first $100 Federal Reserve note, issued in 1914, already showed Franklin, who was never president.",
+      "src": "uscurrency.gov/sites/default/files/downloadable-materials/files/100_1914-1990_features.pdf (1914: 'The first $100 Federal Reserve note is issued', features portrait of Benjamin Franklin). Old wording 'first appeared on the $100 in 1914' not directly stated by source, so reworded to what it says."
+     },
+     {
+      "value": 200,
+      "q": "US paper money is made mostly from what material?",
+      "options": [
+       "Wood pulp",
+       "Cotton",
+       "Linen",
+       "Plastic"
+      ],
+      "answer": 1,
+      "fact": "The paper is three-fourths cotton and one-fourth linen, which makes bills far sturdier than ordinary paper.",
+      "src": "uscurrency.gov 100_1914-1990_features.pdf ('Federal Reserve note paper is one-fourth linen and three-fourths cotton'). 'Survives the wash' claim dropped as unsourced."
+     },
+     {
+      "value": 300,
+      "q": "Which country is credited with issuing the world's first paper money?",
+      "options": [
+       "Greece",
+       "Italy",
+       "Egypt",
+       "China"
+      ],
+      "answer": 3,
+      "fact": "Song dynasty China used paper notes called jiaozi as early as the 11th century.",
+      "src": "en.wikipedia.org/wiki/Jiaozi_(currency) (Song dynasty, around the 11th century, Chengdu, Sichuan; numismatists regard it as first paper money in history)"
+     },
+     {
+      "value": 400,
+      "q": "The word 'dollar' comes from 'thaler,' a silver coin first minted in what is now which country?",
+      "options": [
+       "Netherlands",
+       "Sweden",
+       "Spain",
+       "Czech Republic"
+      ],
+      "answer": 3,
+      "fact": "The name comes from Joachimsthal, a Bohemian valley town whose silver mines supplied the coins.",
+      "src": "en.wikipedia.org/wiki/Thaler and etymonline.com/word/dollar (Joachimsthaler, Joachimsthal, Bohemia = Jachymov, Czech Republic; mine opened 1516, coins from 1518/1519; earlier Tyrolean Guldengroschen was not called a thaler, and Austria/Germany are not options)"
+     }
+    ]
+   },
+   {
+    "name": "Bank on It",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What does ATM stand for?",
+      "options": [
+       "Automatic Transfer Machine",
+       "Account Teller Module",
+       "Advance Teller Mechanism",
+       "Automated Teller Machine"
+      ],
+      "answer": 3,
+      "fact": "One of the world's first cash machines was installed at a Barclays branch in Enfield, London, on June 27, 1967.",
+      "src": "en.wikipedia.org/wiki/Barclays_Bank,_Enfield (installed 27 June 1967; called the world's first cash machine). Note: Wikipedia also uses 'automatic teller machine'; no option uses that form, so no second answer."
+     },
+     {
+      "value": 200,
+      "q": "Which card brand was called BankAmericard when it launched in 1958?",
+      "options": [
+       "Mastercard",
+       "Discover",
+       "Visa",
+       "American Express"
+      ],
+      "answer": 2,
+      "fact": "It began in Fresno, California, and its card issuers adopted the name Visa in 1976.",
+      "src": "en.wikipedia.org/wiki/Visa_Inc. (BankAmericard launched Sept 18, 1958, Fresno CA; renamed Visa 1976, adopted by all licensees)"
+     },
+     {
+      "value": 300,
+      "q": "Which 1950 card, first used at New York restaurants, is often called the first general-purpose charge card?",
+      "options": [
+       "American Express",
+       "Carte Blanche",
+       "Diners Club",
+       "Sears"
+      ],
+      "answer": 2,
+      "fact": "It launched with 27 participating restaurants; American Express didn't start its own charge card until 1958.",
+      "src": "en.wikipedia.org/wiki/Diners_Club_International (founded Feb 8, 1950; NYC restaurant concept; 27 participating restaurants at launch); wiki/Credit_card (Diners Club 'first general purpose charge card'; American Express 1958)"
+     },
+     {
+      "value": 400,
+      "q": "When the Dow Jones Industrial Average debuted in 1896, how many stocks did it track?",
+      "options": [
+       "12",
+       "20",
+       "30",
+       "50"
+      ],
+      "answer": 0,
+      "fact": "It started at 40.94, and its name honors Charles Dow and his business partner, statistician Edward Jones.",
+      "src": "en.wikipedia.org/wiki/Dow_Jones_Industrial_Average (debuted May 26, 1896 with 12 industrial stocks at 40.94; named after Charles Dow and associate Edward Jones). Old fact called Dow a WSJ co-founder; source only says his newsletter was the WSJ's precursor, so reworded."
+     }
+    ]
+   }
+  ]
+ }
+]

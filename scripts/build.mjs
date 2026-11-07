@@ -69,7 +69,21 @@ async function buildDontLook() {
   console.log('built public/dont-look/');
 }
 
+/* Mind Heist: its own build validates the decks and bundles the app and the function;
+   here it writes them into public/mind-heist/ and netlify/functions/mind-heist.mjs */
+async function buildMindHeist() {
+  const { execFileSync } = await import('node:child_process');
+  const out = path.join(ROOT, 'public', 'mind-heist');
+  await fs.rm(out, { recursive: true, force: true });
+  execFileSync(process.execPath, [path.join(ROOT, 'games', 'mind-heist', 'build.mjs')], {
+    stdio: 'inherit',
+    env: { ...process.env, MH_PUBLIC: out, MH_FUNCTION: path.join(ROOT, 'netlify', 'functions', 'mind-heist.mjs') },
+  });
+  console.log('built public/mind-heist/');
+}
+
 await buildPrimalSurvival();
+await buildMindHeist();
 await buildParTeeTime();
 await buildSwervePlanet();
 await buildDontLook();

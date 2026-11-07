@@ -1,0 +1,1064 @@
+[
+  {
+    "id": "jokes-01",
+    "blurb": "Cookout-classic dad jokes, plus a few sneaky clever ones",
+    "categories": [
+      {
+        "name": "Cookout Classics",
+        "questions": [
+          {
+            "value": 100,
+            "q": "My teen texted the family group chat, 'I'm bored.' I replied ___",
+            "options": [
+              "Go read a book",
+              "Same here, kiddo",
+              "Hi Bored, I'm Dad",
+              "Go clean your room"
+            ],
+            "answer": 2,
+            "fact": "Bonus: I wanted to be a professional sock folder, but it was only a pair-time job.",
+            "src": "classic ('Hi Hungry, I'm Dad'), adapted to a group chat; bonus original"
+          },
+          {
+            "value": 200,
+            "q": "What do you call a factory that makes okay products?",
+            "options": [
+              "A decent workshop",
+              "An average plant",
+              "A so-so warehouse",
+              "A satisfactory"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why can't a nose be 12 inches long? Then it would be a foot.",
+            "src": "classic; premise: 12 inches = 1 foot"
+          },
+          {
+            "value": 300,
+            "q": "What do you call a man with a rubber toe?",
+            "options": [
+              "Ricardo",
+              "Roberto",
+              "Rupert",
+              "Reginald"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What do you call a man wearing a paper bag on his head? Russell.",
+            "src": "classic; Roberto = rubber toe (sound pun only); distractors mix name origins so the set isn't read as a set of Spanish names; Russell = rustle"
+          },
+          {
+            "value": 400,
+            "q": "What do you call a fake dad?",
+            "options": [
+              "A faux pa",
+              "A stand-in dad",
+              "A pop quiz",
+              "A papa-razzi"
+            ],
+            "answer": 0,
+            "fact": "Bonus: When does a joke become a dad joke? When it becomes apparent.",
+            "src": "classic; faux pas = social slip, faux pa = fake pa"
+          }
+        ]
+      },
+      {
+        "name": "Pop Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "'Did you get a haircut?' 'No, ___'",
+            "options": [
+              "I just washed it",
+              "I got them all cut",
+              "my barber was out",
+              "I combed it back"
+            ],
+            "answer": 1,
+            "fact": "Bonus: My barber is so good at his job, I'd say he's a cut above the rest.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "I used to work at a blanket factory, but it ___",
+            "options": [
+              "closed",
+              "moved",
+              "folded",
+              "downsized"
+            ],
+            "answer": 2,
+            "fact": "Bonus: I quit my job at the trampoline factory. There were just too many ups and downs.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Why did the man take a pencil to bed?",
+            "options": [
+              "To draw the curtains",
+              "To write down his dreams",
+              "To make a to-do list",
+              "To do a crossword puzzle"
+            ],
+            "answer": 0,
+            "fact": "Bonus: I have a great joke about a hole in the ground, but there's nothing to it.",
+            "src": "classic (draw = sketch / pull shut)"
+          },
+          {
+            "value": 400,
+            "q": "What's the difference between a badly dressed man on a unicycle and a well-dressed man on a bike?",
+            "options": [
+              "One wheel",
+              "A tailor",
+              "A spoke of genius",
+              "Attire"
+            ],
+            "answer": 3,
+            "fact": "The pun: 'attire' means clothes and sounds just like 'a tire.' A unicycle has one tire and a bike has two.",
+            "src": "classic; premise: unicycle 1 wheel, bicycle 2"
+          }
+        ]
+      },
+      {
+        "name": "Twist Ending",
+        "questions": [
+          {
+            "value": 100,
+            "q": "My kid asked, 'Dad, can you put my shoes on?' I said ___",
+            "options": [
+              "Only if you sit still",
+              "They won't fit me",
+              "Sure, after lunch",
+              "Go find them first"
+            ],
+            "answer": 1,
+            "fact": "Bonus: I told my kid her shoes were on the wrong feet. She said, 'But these are the only feet I have!'",
+            "src": "classic; bonus classic (replaces the 'run in my jeans' bonus: J2 Lab Rats already has 'Designer genes')"
+          },
+          {
+            "value": 200,
+            "q": "They say money talks. Mine only ever says ___",
+            "options": [
+              "thank you",
+              "good morning",
+              "how are you",
+              "goodbye"
+            ],
+            "answer": 3,
+            "fact": "Bonus: My savings finally hit six figures. Sadly, two of them come after the decimal point.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "My ceiling isn't the best ceiling in the world, but ___",
+            "options": [
+              "it's freshly painted",
+              "it doesn't leak",
+              "it's up there",
+              "it's all mine"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the rope get sent to its room? It was being very knotty.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "I can always tell when someone is being judgmental ___",
+            "options": [
+              "just by looking at them",
+              "because they tell me so",
+              "after we talk a while",
+              "by the questions they ask"
+            ],
+            "answer": 0,
+            "fact": "Bonus: I'm great with names. Just ask my good friend... what's-his-name.",
+            "src": "classic one-liner (anonymous); bonus original"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-02",
+    "blurb": "Puns and double meanings hiding in everyday words",
+    "categories": [
+      {
+        "name": "Household Groans",
+        "questions": [
+          {
+            "value": 100,
+            "q": "When is a door not a door?",
+            "options": [
+              "When it's a wall",
+              "When it's ajar",
+              "When it's broken",
+              "When it's painted"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the window move to a new house? It wanted a better outlook.",
+            "src": "classic riddle; ajar = slightly open / a jar; bonus original"
+          },
+          {
+            "value": 200,
+            "q": "What did the stamp say to the envelope?",
+            "options": [
+              "Please don't lose the address",
+              "I'm a little small for you",
+              "Stick with me, we'll go places",
+              "Try not to get wet out there"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the iron end every argument? It knew how to smooth things over.",
+            "src": "classic; bonus original"
+          },
+          {
+            "value": 300,
+            "q": "How did the rug react to the big news?",
+            "options": [
+              "It got very quiet",
+              "It called the couch",
+              "It asked for details",
+              "It was totally floored"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why is the recliner everyone's favorite chair? It's so laid-back.",
+            "src": "classic-style pun, setup reworded (floored = stunned / lying on the floor); replaces Tim Vine's Hoover 'collecting dust' line (2014 Joke of the Fringe); bonus original"
+          },
+          {
+            "value": 400,
+            "q": "Why didn't anyone recognize the light bulb after summer break?",
+            "options": [
+              "It had a major glow-up",
+              "It got a new lampshade",
+              "It moved to a new lamp",
+              "It changed its color"
+            ],
+            "answer": 0,
+            "fact": "The pun: a 'glow-up' is slang for a big change for the better in how someone looks, and a light bulb really does glow.",
+            "src": "original; glow-up = clean slang for a big positive change in looks (in Merriam-Webster); setup no longer says 'makeover'"
+          }
+        ]
+      },
+      {
+        "name": "Play on Words",
+        "questions": [
+          {
+            "value": 100,
+            "q": "I have a joke about a bed, but ___",
+            "options": [
+              "I forgot how it ends",
+              "it's kind of a long one",
+              "it hasn't been made up yet",
+              "my kid tells it better"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the candles get sent home early? They were being a little wicked.",
+            "src": "classic; bonus original"
+          },
+          {
+            "value": 200,
+            "q": "I tried being a tailor, but it just didn't ___",
+            "options": [
+              "pay enough",
+              "suit me",
+              "go anywhere",
+              "last long"
+            ],
+            "answer": 1,
+            "fact": "Bonus: The dry cleaner just pressed charges against my shirt.",
+            "src": "classic format; bonus classic"
+          },
+          {
+            "value": 300,
+            "q": "Why should you never trust a mattress?",
+            "options": [
+              "It's always lying down",
+              "It's full of springs",
+              "It's way too firm",
+              "It sags in the middle"
+            ],
+            "answer": 0,
+            "fact": "Bonus: I stopped wearing my glasses. Now I'll just see how it goes.",
+            "src": "classic (lie = fib / lie down)"
+          },
+          {
+            "value": 400,
+            "q": "Why did the leaky faucet get so many compliments?",
+            "options": [
+              "It had great pressure",
+              "It was very shiny",
+              "It never got rusty",
+              "It had serious drip"
+            ],
+            "answer": 3,
+            "fact": "The pun: 'drip' is slang for great style, and a leaky faucet drips all day.",
+            "src": "original; drip = slang for stylish outfit"
+          }
+        ]
+      },
+      {
+        "name": "Didn't See It Coming",
+        "questions": [
+          {
+            "value": 100,
+            "q": "I'm not arguing with you. I'm just ___",
+            "options": [
+              "explaining why I'm right",
+              "asking a few questions",
+              "sharing my opinion",
+              "trying to understand"
+            ],
+            "answer": 0,
+            "fact": "Bonus: I'm always open to compromise, as long as we end up doing it my way.",
+            "src": "classic one-liner (anonymous); bonus original"
+          },
+          {
+            "value": 200,
+            "q": "A magician was walking down the street, and then he ___",
+            "options": [
+              "pulled out a coin",
+              "turned into a store",
+              "waved to a friend",
+              "tipped his hat"
+            ],
+            "answer": 1,
+            "fact": "Bonus: The juggler was nervous before his big show. He had way too much on his plate.",
+            "src": "classic; bonus original"
+          },
+          {
+            "value": 300,
+            "q": "I finished a jigsaw puzzle in only six months. Not bad, since the box said ___",
+            "options": [
+              "1,000 pieces",
+              "pieces may be missing",
+              "2-4 years",
+              "picture may vary"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why was the jigsaw puzzle so calm? It knew everything would fall into place.",
+            "src": "classic, retold without the usual target; premise: toy boxes list ages like 2-4 years"
+          },
+          {
+            "value": 400,
+            "q": "I told ten puns to get my friends to laugh. Sadly, ___",
+            "options": [
+              "they'd heard them all",
+              "they groaned at all ten",
+              "I ran out after six",
+              "no pun in ten did"
+            ],
+            "answer": 3,
+            "fact": "The pun: 'no pun in ten did' sounds just like 'no pun intended,' the phrase people say right after a pun.",
+            "src": "classic"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-03",
+    "blurb": "Knock-knock classics and sneaky new ones. Who's there? You'll see.",
+    "categories": [
+      {
+        "name": "Who's There?",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Knock knock. Who's there? Lettuce. Lettuce who?",
+            "options": [
+              "Lettuce from the garden",
+              "Lettuce in, it's cold out here",
+              "Lettuce and a tomato",
+              "Lettuce, the leafy kind"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Knock knock. Who's there? Atch. Atch who? Bless you!",
+            "src": "classic (reserved for this deck)"
+          },
+          {
+            "value": 200,
+            "q": "Knock knock. Who's there? Boo. Boo who?",
+            "options": [
+              "Boo, from down the street",
+              "Boo! Did I scare you?",
+              "Don't cry, it's only a joke",
+              "Open up, it's only me"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Knock knock. Who's there? Owls say. Owls say who? Yes, they do!",
+            "src": "classic (boo-hoo)"
+          },
+          {
+            "value": 300,
+            "q": "Knock knock. Who's there? Tank. Tank who?",
+            "options": [
+              "Tank, the big one",
+              "You're right on time!",
+              "Tank from next door",
+              "You're welcome!"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Knock knock. Who's there? Iva. Iva who? Iva sore hand from all this knocking!",
+            "src": "classic (thank you)"
+          },
+          {
+            "value": 400,
+            "q": "Knock knock. Who's there? Arthur. Arthur who?",
+            "options": [
+              "Arthur any snacks left?",
+              "Arthur, your old pal",
+              "Arthur from down the hall",
+              "Arthur's at the door!"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Knock knock. Who's there? Ice cream. Ice cream who? Ice cream if you don't let me in!",
+            "src": "classic (are there)"
+          }
+        ]
+      },
+      {
+        "name": "Sound It Out",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Knock knock. Who's there? Harry. Harry who?",
+            "options": [
+              "Harry up and open the door!",
+              "Harry, your old neighbor",
+              "Harry with the big dog",
+              "Harry from the corner store"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Knock knock. Who's there? Wanda. Wanda who? Wanda play some video games?",
+            "src": "classic (hurry)"
+          },
+          {
+            "value": 200,
+            "q": "Knock knock. Who's there? Canoe. Canoe who?",
+            "options": [
+              "Canoe, the red one",
+              "Canoe come out and play?",
+              "Canoe from the lake",
+              "Canoe rental is closed"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Knock knock. Who's there? Ken. Ken who? Ken I borrow your phone charger?",
+            "src": "classic (can you)"
+          },
+          {
+            "value": 300,
+            "q": "Knock knock. Who's there? Olive. Olive who?",
+            "options": [
+              "Olive, the green kind",
+              "Olive from the salad bar",
+              "Olive next door, remember?",
+              "Olive oil is on sale!"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Knock knock. Who's there? Justin. Justin who? Justin time for dinner!",
+            "src": "classic (I live)"
+          },
+          {
+            "value": 400,
+            "q": "Knock knock. Who's there? Dozen. Dozen who?",
+            "options": [
+              "Dozen eggs, fresh today",
+              "Dozen cookies, still warm!",
+              "Dozen of my cousins",
+              "Dozen anyone answer the door?"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Knock knock. Who's there? Mikey. Mikey who? Mikey won't fit in the keyhole!",
+            "src": "classic (doesn't)"
+          }
+        ]
+      },
+      {
+        "name": "Twist Who?",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Knock knock. Who's there? Cow says. Cow says who?",
+            "options": [
+              "Cow says it's cold out",
+              "No, the cow went home",
+              "Cow says open the barn",
+              "No, a cow says moo!"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Knock knock. Who's there? Cargo. Cargo who? No, car go beep beep!",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Knock knock. Who's there? Kanga. Kanga who?",
+            "options": [
+              "Kanga, your pen pal",
+              "No, kangaroo!",
+              "No, just Kanga!",
+              "Kanga, back again"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Knock knock. Who's there? Thermos. Thermos who? Thermos be a better joke than this one!",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Knock knock. Who's there? Hike. Hike who?",
+            "options": [
+              "I didn't know you liked poems!",
+              "Hike up the hill with me",
+              "I didn't know you liked hills!",
+              "Hike, from the camping trip"
+            ],
+            "answer": 0,
+            "fact": "The pun: 'Hike who?' sounds like 'haiku,' a very short poem of just three lines.",
+            "src": "classic; premise: a haiku is a three-line poem"
+          },
+          {
+            "value": 400,
+            "q": "Knock knock. Who's there? Deja. Deja who?",
+            "options": [
+              "Deja, from work.",
+              "Please open the door.",
+              "Knock knock.",
+              "Deja, your new neighbor."
+            ],
+            "answer": 2,
+            "fact": "The pun: 'Deja who?' sounds like 'deja vu,' the feeling you've lived this moment before. So the joke starts over.",
+            "src": "classic; premise: deja vu = feeling of having experienced the present before (a French phrase English uses; the joke plays on the phrase, not on the name)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-04",
+    "blurb": "Food and kitchen jokes, served hot with a side of groans",
+    "categories": [
+      {
+        "name": "Kitchen Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What do you call a fake noodle?",
+            "options": [
+              "A noodle fraud",
+              "A rubber noodle",
+              "An impasta",
+              "A pasta faker"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What do you call a sad strawberry? A blueberry.",
+            "src": "classic (reserved for this deck)"
+          },
+          {
+            "value": 200,
+            "q": "Why did the banana go to the doctor?",
+            "options": [
+              "It wasn't peeling well",
+              "It had a brown spot",
+              "It bruised its side",
+              "It was turning yellow"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What do you give a sick lemon? Lemon aid.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "What do you call a potato wearing glasses?",
+            "options": [
+              "A smart potato",
+              "A fancy spud",
+              "A sharp-eyed tater",
+              "A spec-tater"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What do you call two bananas? A pair of slippers.",
+            "src": "classic (spectator)"
+          },
+          {
+            "value": 400,
+            "q": "Why was the chef so nervous at the grilling contest?",
+            "options": [
+              "The judges were picky",
+              "The steaks were high",
+              "His grill wouldn't light",
+              "He forgot his apron"
+            ],
+            "answer": 1,
+            "fact": "The pun: 'the stakes were high' means a lot was riding on it, and steaks are what sizzle on a grill.",
+            "src": "classic pun, original setup"
+          }
+        ]
+      },
+      {
+        "name": "Pun Appetit",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What did the big tomato say to the little tomato?",
+            "options": [
+              "Hurry up!",
+              "Slow down!",
+              "Ketchup!",
+              "Wait for me!"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What's a tomato's favorite dance? The salsa.",
+            "src": "classic; bonus classic (replaces 'fix a broken tomato? tomato paste': J2 has the broken-tuba and J4 the broken-pumpkin version of that joke)"
+          },
+          {
+            "value": 200,
+            "q": "Why did the pepper put on a jacket?",
+            "options": [
+              "It was going outside",
+              "It was feeling a bit chili",
+              "It liked the color",
+              "Its skin was too thin"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why do mushrooms get invited to every party? They're such fungi.",
+            "src": "classic; premise: mushrooms are fungi"
+          },
+          {
+            "value": 300,
+            "q": "How does a cucumber become a pickle?",
+            "options": [
+              "It soaks in brine for weeks",
+              "It turns a darker green",
+              "It sits in vinegar for days",
+              "It has a jarring experience"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the pickle go viral? It was kind of a big dill.",
+            "src": "classic; premise: pickles are cucumbers brined in jars"
+          },
+          {
+            "value": 400,
+            "q": "What does a nosy pepper do?",
+            "options": [
+              "It gets jalapeno business",
+              "It peeks in the windows",
+              "It turns red in the face",
+              "It gets way too spicy"
+            ],
+            "answer": 0,
+            "fact": "The pun: 'jalapeno business' sounds like 'all up in your business,' which is exactly where a nosy pepper gets.",
+            "src": "classic (jalapeno ~ 'all up in your'); premise: many peppers turn red as they ripen"
+          }
+        ]
+      },
+      {
+        "name": "Food Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "I asked my dad to make me a sandwich. He said ___",
+            "options": [
+              "Make it yourself, kiddo",
+              "Only if you say please",
+              "Poof, you're a sandwich",
+              "What kind do you want?"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Is your refrigerator running? Then you'd better go catch it!",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "'Waiter, will my pizza be long?' The waiter says ___",
+            "options": [
+              "About ten more minutes",
+              "No, it will be round",
+              "Not long, it's coming",
+              "It's in the oven now"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What did one plate say to the other plate? Lunch is on me.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "I never use a kitchen timer when I cook. I just wait for ___",
+            "options": [
+              "the smoke alarm",
+              "the water to boil",
+              "the oven to beep",
+              "it to look done"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Did you hear about the person who invented breath mints? They made a mint.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "The recipe said to set the oven to 180 degrees. Now I can't open it, because ___",
+            "options": [
+              "the handle is too hot",
+              "the door is stuck",
+              "it's still preheating",
+              "it's facing the wall"
+            ],
+            "answer": 3,
+            "fact": "Bonus: How do you make a walnut laugh? Crack it up.",
+            "src": "classic; premise: 180 degrees is a common oven setting (Celsius) and also a half turn"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-05",
+    "blurb": "Wild animal jokes from the jungle, the savanna and your backyard",
+    "categories": [
+      {
+        "name": "Wild Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What do you call a bear with no teeth?",
+            "options": [
+              "A hungry bear",
+              "A gummy bear",
+              "A baby bear",
+              "A sleepy bear"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why do bears have such thick fur coats? Fur protection.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "What do you call a lazy kangaroo?",
+            "options": [
+              "A sleepy roo",
+              "A slow hopper",
+              "A pouch potato",
+              "A tired jumper"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What kind of key opens a banana? A monkey.",
+            "src": "classic (couch potato)"
+          },
+          {
+            "value": 300,
+            "q": "What do you call an alligator in a vest?",
+            "options": [
+              "An investigator",
+              "A dressed-up gator",
+              "A fancy reptile",
+              "A swamp gentleman"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What do you call a snake that builds things? A boa constructor.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "How do you stop a rhino from charging?",
+            "options": [
+              "Back away very slowly",
+              "Hide behind a big tree",
+              "Stand perfectly still",
+              "Take away its credit card"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why are pigs such bad drivers? They hog the road.",
+            "src": "classic; premise: rhinos charge when threatened"
+          }
+        ]
+      },
+      {
+        "name": "Pun-imals",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why can't a leopard ever hide?",
+            "options": [
+              "It's way too big",
+              "Its tail sticks out",
+              "It's always spotted",
+              "It's too bright orange"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why can't you play games in the jungle? There are too many cheetahs.",
+            "src": "classic; premise: leopards and cheetahs have spotted coats"
+          },
+          {
+            "value": 200,
+            "q": "What kind of bird works at a construction site?",
+            "options": [
+              "A crane",
+              "A robin",
+              "A sparrow",
+              "A blue jay"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What do you call a bee that can't make up its mind? A maybe.",
+            "src": "classic; premise: crane is both a bird and a machine"
+          },
+          {
+            "value": 300,
+            "q": "Why did the crow sit on the phone line?",
+            "options": [
+              "To get a better view",
+              "To rest its tired wings",
+              "To watch for passing cars",
+              "To make a long-distance caw"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why are skunks so smart? They have a lot of scents.",
+            "src": "classic; premise: crows caw"
+          },
+          {
+            "value": 400,
+            "q": "Why are giraffes so slow to apologize?",
+            "options": [
+              "They rarely make mistakes",
+              "Swallowing pride takes a while",
+              "They're always neck and neck",
+              "They don't like to talk"
+            ],
+            "answer": 1,
+            "fact": "The pun: to 'swallow your pride' means to admit you were wrong, and a giraffe has a very long neck to get it down.",
+            "src": "classic; premise: giraffes have very long necks"
+          }
+        ]
+      },
+      {
+        "name": "Wild Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why do birds fly south for the winter?",
+            "options": [
+              "To find warmer weather",
+              "It's too far to walk",
+              "To follow their friends",
+              "To find more food"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why didn't the owl go to the party? It didn't give a hoot.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Why do hummingbirds hum?",
+            "options": [
+              "They forgot the words",
+              "Their wings beat fast",
+              "To warn other birds",
+              "To scare off bees"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why is the mountain goat so confident? It knows it's the GOAT.",
+            "src": "classic; premise: the hum comes from fast wingbeats; bonus original (GOAT = greatest of all time)"
+          },
+          {
+            "value": 300,
+            "q": "Why don't you ever see hippos hiding in trees?",
+            "options": [
+              "They're far too heavy",
+              "They live in rivers",
+              "They're really good at it",
+              "They can't climb"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the koala get turned down for the job? It didn't have the koala-fications.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "How can you tell an elephant has been in your fridge?",
+            "options": [
+              "The fridge is empty",
+              "The door won't close",
+              "The light stays on",
+              "Footprints in the butter"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What do you call an elephant that doesn't matter? An irrelephant.",
+            "src": "classic (1960s elephant joke)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-06",
+    "blurb": "Meetings, printers, coffee and spreadsheets. Workplace-safe groans only.",
+    "categories": [
+      {
+        "name": "Water Cooler Groans",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why did the coffee taste like dirt?",
+            "options": [
+              "The pot was never rinsed",
+              "It sat out all afternoon",
+              "The beans were too old",
+              "It was ground this morning"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the coffee go to the meeting? To espresso its opinion.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Why did the employee bring a ruler to the meeting?",
+            "options": [
+              "To take very neat notes",
+              "To see how long it would last",
+              "To draw a straight chart",
+              "To measure the big table"
+            ],
+            "answer": 1,
+            "fact": "Bonus: I'd tell you my joke about the weekly status meeting, but it's still going.",
+            "src": "classic format, office version; bonus original"
+          },
+          {
+            "value": 300,
+            "q": "Why did the scissors get promoted?",
+            "options": [
+              "They always cut to the chase",
+              "They were never late to work",
+              "They kept their desk tidy",
+              "They stayed in the drawer"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the paper clip get a raise? It held the whole team together.",
+            "src": "original"
+          },
+          {
+            "value": 400,
+            "q": "What did the conference room get on its performance review?",
+            "options": [
+              "Great view, comfy chairs",
+              "Needs better Wi-Fi",
+              "Room for improvement",
+              "Always booked solid"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why is the filing cabinet so calm? It always has everything in order.",
+            "src": "original setup on a stock phrase (room for improvement); replaces 'opposite of coffee? Sneezy', where Decaf and Warm milk could be argued as opposites; bonus original"
+          }
+        ]
+      },
+      {
+        "name": "Office Supply Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why is the sticky note so good at its job?",
+            "options": [
+              "It's always on time",
+              "It fits on any desk",
+              "It really sticks with it",
+              "It's a cheerful color"
+            ],
+            "answer": 2,
+            "fact": "Bonus: The office printer and I have a lot in common. We both jam under pressure.",
+            "src": "original"
+          },
+          {
+            "value": 200,
+            "q": "What did everyone say about the new whiteboard?",
+            "options": [
+              "It's truly remarkable",
+              "It's truly spotless",
+              "It's really huge",
+              "It's easy to read"
+            ],
+            "answer": 0,
+            "fact": "The pun: 'remarkable' means amazing, and a whiteboard is re-markable: wipe it clean and you can mark on it again.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "What did the cranky printer say?",
+            "options": [
+              "I'm out of paper!",
+              "Watch your toner!",
+              "Try the other tray!",
+              "Leave me alone!"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the coffee break go so well? Everyone was full of beans.",
+            "src": "original (toner / tone)"
+          },
+          {
+            "value": 400,
+            "q": "Why is the spreadsheet the star of the office?",
+            "options": [
+              "It's very well organized",
+              "It works really long hours",
+              "It never forgets a number",
+              "It really knows how to excel"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why was the spreadsheet such a good listener? It took everything into account.",
+            "src": "original; excel = do well / the spreadsheet app; bonus original (account = consider / bookkeeping)"
+          }
+        ]
+      },
+      {
+        "name": "Out of Office",
+        "questions": [
+          {
+            "value": 100,
+            "q": "I gave the best talk of my life on today's video call. Then someone said ___",
+            "options": [
+              "you're on mute",
+              "great job, thank you",
+              "any questions?",
+              "let's take a break"
+            ],
+            "answer": 0,
+            "fact": "Bonus: The coffee machine broke today. Everyone is taking it a latte harder than expected.",
+            "src": "original"
+          },
+          {
+            "value": 200,
+            "q": "I signed up for a workshop on beating procrastination, but it got ___",
+            "options": [
+              "moved to Room B",
+              "postponed",
+              "really crowded",
+              "great reviews"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why are copy machines bad at telling jokes? They just repeat what they've heard.",
+            "src": "classic; bonus original"
+          },
+          {
+            "value": 300,
+            "q": "My boss told me to have a good day, so I ___",
+            "options": [
+              "said thanks",
+              "smiled a lot",
+              "brought coffee",
+              "went home"
+            ],
+            "answer": 3,
+            "fact": "Bonus: I'm great at multitasking. I can waste time, stall and put things off, all at once.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "Interviewer: What's your biggest weakness? Me: Honesty. Interviewer: That's not a weakness. Me: ___",
+            "options": [
+              "Oh, I guess you're right",
+              "Thanks, that's very fair",
+              "I don't care what you think",
+              "Let me think about it more"
+            ],
+            "answer": 2,
+            "fact": "Bonus: They asked me about my greatest strength. I said I can carry all the groceries in one trip.",
+            "src": "folk internet joke, cleaned up (Barry Popik: earliest seen in a 2013 tweet, no comedian credited); bonus original"
+          }
+        ]
+      }
+    ]
+  }
+]

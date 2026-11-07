@@ -1,0 +1,1064 @@
+[
+  {
+    "id": "office-warm-up",
+    "date": null,
+    "title": "Office Warm-Up",
+    "shelf": "General",
+    "scope": "Easy general knowledge anyone in the office can play — a gentle all-ages mix",
+    "agent": "A8"
+  },
+  {
+    "id": "around-the-world",
+    "date": null,
+    "title": "Around the World",
+    "shelf": "Geography",
+    "scope": "Countries, capitals, famous landmarks",
+    "agent": "A4"
+  },
+  {
+    "id": "lab-coats",
+    "date": null,
+    "title": "Lab Coats",
+    "shelf": "Science & Nature",
+    "scope": "Everyday science: elements, physics you can see, the kitchen-table kind",
+    "agent": "A3"
+  },
+  {
+    "id": "prime-time",
+    "date": null,
+    "title": "Prime Time",
+    "shelf": "Movies & TV",
+    "scope": "TV shows across the decades, 1950s to 2020s",
+    "agent": "A1"
+  },
+  {
+    "id": "kitchen-table",
+    "date": null,
+    "title": "Kitchen Table",
+    "shelf": "Food & Drink",
+    "scope": "Everyday foods, where they came from, how they got their names",
+    "agent": "A6"
+  },
+  {
+    "id": "time-machine",
+    "date": null,
+    "title": "Time Machine",
+    "shelf": "History",
+    "scope": "Milestone moments across eras, ancient to the 2000s",
+    "agent": "A5"
+  },
+  {
+    "id": "the-first-job",
+    "date": "2026-10-24",
+    "title": "The First Job",
+    "shelf": "General",
+    "scope": "Light mixed general knowledge, a gentle opener for day one",
+    "agent": "A8"
+  },
+  {
+    "id": "animal-kingdom",
+    "date": "2026-10-25",
+    "title": "Animal Kingdom",
+    "shelf": "Science & Nature",
+    "scope": "Wild animal facts — speed, size, habits, record-holders that won't change",
+    "agent": "A3"
+  },
+  {
+    "id": "monday-mixer",
+    "date": "2026-10-26",
+    "title": "Monday Mixer",
+    "shelf": "General",
+    "scope": "Mixed bag to start the work week",
+    "agent": "A8"
+  },
+  {
+    "id": "capitals-countries",
+    "date": "2026-10-27",
+    "title": "Capitals & Countries",
+    "shelf": "Geography",
+    "scope": "Capitals, borders, which country is where",
+    "agent": "A4"
+  },
+  {
+    "id": "box-office",
+    "date": "2026-10-28",
+    "title": "Box Office",
+    "shelf": "Movies & TV",
+    "scope": "Blockbuster movies across the decades",
+    "agent": "A1"
+  },
+  {
+    "id": "creepy-crawlies",
+    "date": "2026-10-29",
+    "title": "Creepy Crawlies",
+    "shelf": "Science & Nature",
+    "scope": "Halloween week: bats, spiders, owls, insects, nocturnal creatures — fascinating, not gross",
+    "agent": "A3"
+  },
+  {
+    "id": "costume-closet",
+    "date": "2026-10-30",
+    "title": "Costume Closet",
+    "shelf": "Holidays",
+    "scope": "Halloween costumes, candy, pumpkins and jack-o'-lantern history",
+    "agent": "A6"
+  },
+  {
+    "id": "halloween-heist",
+    "date": "2026-10-31",
+    "title": "Halloween Heist",
+    "shelf": "Holidays",
+    "scope": "Halloween traditions worldwide, classic monster stories and their authors, trick-or-treat history",
+    "agent": "A6"
+  },
+  {
+    "id": "space-race",
+    "date": "2026-11-01",
+    "title": "Space Race",
+    "shelf": "Science & Nature",
+    "scope": "Space exploration and astronomy across the decades",
+    "agent": "A3"
+  },
+  {
+    "id": "word-nerds",
+    "date": "2026-11-02",
+    "title": "Word Nerds",
+    "shelf": "Words",
+    "scope": "Word origins, idioms, where everyday phrases came from",
+    "agent": "A7"
+  },
+  {
+    "id": "logo-slogan",
+    "date": "2026-11-03",
+    "title": "Logo & Slogan",
+    "shelf": "Business & Tech",
+    "scope": "Brands, mascots, company origin stories, famous ad campaigns (no political content — this is US election day)",
+    "agent": "A2"
+  },
+  {
+    "id": "chart-toppers",
+    "date": "2026-11-04",
+    "title": "Chart Toppers",
+    "shelf": "Music",
+    "scope": "Hit songs and artists across the decades (titles and facts only, never lyrics)",
+    "agent": "A1"
+  },
+  {
+    "id": "eureka",
+    "date": "2026-11-05",
+    "title": "Eureka!",
+    "shelf": "Business & Tech",
+    "scope": "Inventions and inventors, ancient to modern",
+    "agent": "A5"
+  },
+  {
+    "id": "game-night",
+    "date": "2026-11-06",
+    "title": "Game Night",
+    "shelf": "Sports & Games",
+    "scope": "Board games, card games, puzzles, arcade and video games across generations",
+    "agent": "A9"
+  },
+  {
+    "id": "ocean-deep",
+    "date": "2026-11-07",
+    "title": "Ocean Deep",
+    "shelf": "Science & Nature",
+    "scope": "Oceans, sea life, the deep sea, tides",
+    "agent": "A3"
+  },
+  {
+    "id": "ancient-worlds",
+    "date": "2026-11-08",
+    "title": "Ancient Worlds",
+    "shelf": "History",
+    "scope": "Egypt, Greece, Rome, China, Maya and more",
+    "agent": "A5"
+  },
+  {
+    "id": "monday-mixer-2",
+    "date": "2026-11-09",
+    "title": "Monday Mixer II",
+    "shelf": "General",
+    "scope": "Mixed bag to start the work week",
+    "agent": "A8"
+  },
+  {
+    "id": "body-works",
+    "date": "2026-11-10",
+    "title": "Body Works",
+    "shelf": "Science & Nature",
+    "scope": "The human body — bones, senses, organs (no disease, nothing gross)",
+    "agent": "A3"
+  },
+  {
+    "id": "monuments-memorials",
+    "date": "2026-11-11",
+    "title": "Monuments & Memorials",
+    "shelf": "History",
+    "scope": "Famous monuments, memorials and landmarks; Veterans Day / Armistice Day origins — respectful, no battle death tolls",
+    "agent": "A5"
+  },
+  {
+    "id": "sitcom-central",
+    "date": "2026-11-12",
+    "title": "Sitcom Central",
+    "shelf": "Movies & TV",
+    "scope": "Sitcoms across the decades, I Love Lucy to the 2020s",
+    "agent": "A1"
+  },
+  {
+    "id": "knock-on-wood",
+    "date": "2026-11-13",
+    "title": "Knock on Wood",
+    "shelf": "General",
+    "scope": "Superstitions, luck, Friday the 13th and lucky charms around the world",
+    "agent": "A8"
+  },
+  {
+    "id": "sports-legends",
+    "date": "2026-11-14",
+    "title": "Sports Legends",
+    "shelf": "Sports & Games",
+    "scope": "Iconic athletes across eras and sports (settled career facts only)",
+    "agent": "A7"
+  },
+  {
+    "id": "world-kitchens",
+    "date": "2026-11-15",
+    "title": "World Kitchens",
+    "shelf": "Food & Drink",
+    "scope": "International dishes and where they come from",
+    "agent": "A6"
+  },
+  {
+    "id": "evergreen-state",
+    "date": "2026-11-16",
+    "title": "The Evergreen State",
+    "shelf": "Geography",
+    "scope": "Washington State: symbols, geography, history, firsts, famous Washingtonians and companies (players work at the WA Secretary of State's office — fun, accurate, no politics)",
+    "agent": "A5"
+  },
+  {
+    "id": "spell-check",
+    "date": "2026-11-17",
+    "title": "Spell Check",
+    "shelf": "Words",
+    "scope": "Which spelling is correct, commonly confused words, grammar fun",
+    "agent": "A7"
+  },
+  {
+    "id": "toy-box",
+    "date": "2026-11-18",
+    "title": "Toy Box",
+    "shelf": "Pop Culture",
+    "scope": "Toys, fads and crazes across generations",
+    "agent": "A1"
+  },
+  {
+    "id": "restless-earth",
+    "date": "2026-11-19",
+    "title": "Restless Earth",
+    "shelf": "Science & Nature",
+    "scope": "Volcanoes, earthquakes, geysers, geology (factual; no disaster death tolls)",
+    "agent": "A4"
+  },
+  {
+    "id": "famous-firsts",
+    "date": "2026-11-20",
+    "title": "Famous Firsts",
+    "shelf": "History",
+    "scope": "First people and first times — flight, space, sport, science",
+    "agent": "A5"
+  },
+  {
+    "id": "animation-station",
+    "date": "2026-11-21",
+    "title": "Animation Station",
+    "shelf": "Movies & TV",
+    "scope": "Animated films and cartoons across the decades",
+    "agent": "A1"
+  },
+  {
+    "id": "flags-symbols",
+    "date": "2026-11-22",
+    "title": "Flags & Symbols",
+    "shelf": "Geography",
+    "scope": "Flags described in words, national animals, emblems",
+    "agent": "A4"
+  },
+  {
+    "id": "monday-mixer-3",
+    "date": "2026-11-23",
+    "title": "Monday Mixer III",
+    "shelf": "General",
+    "scope": "Mixed bag to start the work week",
+    "agent": "A8"
+  },
+  {
+    "id": "harvest-table",
+    "date": "2026-11-24",
+    "title": "Harvest Table",
+    "shelf": "Food & Drink",
+    "scope": "Fall produce, harvest foods, apples, squash, cranberries",
+    "agent": "A6"
+  },
+  {
+    "id": "travel-bug",
+    "date": "2026-11-25",
+    "title": "Travel Bug",
+    "shelf": "Geography",
+    "scope": "Landmarks, famous routes, airports, travel firsts",
+    "agent": "A4"
+  },
+  {
+    "id": "thanksgiving-table",
+    "date": "2026-11-26",
+    "title": "Thanksgiving Table",
+    "shelf": "Holidays",
+    "scope": "Thanksgiving traditions and history in the US and Canada — parade, football, the proclamation (light, factual)",
+    "agent": "A6"
+  },
+  {
+    "id": "shop-talk",
+    "date": "2026-11-27",
+    "title": "Shop Talk",
+    "shelf": "Business & Tech",
+    "scope": "Retail history, famous stores, shopping inventions, Black Friday",
+    "agent": "A2"
+  },
+  {
+    "id": "gridiron",
+    "date": "2026-11-28",
+    "title": "Gridiron",
+    "shelf": "Sports & Games",
+    "scope": "American football, NFL and college, across the eras",
+    "agent": "A7"
+  },
+  {
+    "id": "bookworms",
+    "date": "2026-11-29",
+    "title": "Bookworms",
+    "shelf": "Arts & Books",
+    "scope": "Literature, classics to modern bestsellers (no quoting passages)",
+    "agent": "A7"
+  },
+  {
+    "id": "log-on",
+    "date": "2026-11-30",
+    "title": "Log On",
+    "shelf": "Business & Tech",
+    "scope": "Computers and internet history — Cyber Monday",
+    "agent": "A2"
+  },
+  {
+    "id": "peaks-rivers",
+    "date": "2026-12-01",
+    "title": "Peaks & Rivers",
+    "shelf": "Geography",
+    "scope": "Mountains, rivers, lakes, deserts",
+    "agent": "A4"
+  },
+  {
+    "id": "hoops",
+    "date": "2026-12-02",
+    "title": "Hoops",
+    "shelf": "Sports & Games",
+    "scope": "Basketball — NBA, WNBA, college, history and rules",
+    "agent": "A7"
+  },
+  {
+    "id": "gallery-walk",
+    "date": "2026-12-03",
+    "title": "Gallery Walk",
+    "shelf": "Arts & Books",
+    "scope": "Famous paintings, sculptures, artists and museums",
+    "agent": "A7"
+  },
+  {
+    "id": "totally-80s",
+    "date": "2026-12-04",
+    "title": "Totally 80s",
+    "shelf": "Decades",
+    "scope": "The 1980s: tech, fads, movies, music, events (no politics)",
+    "agent": "A2"
+  },
+  {
+    "id": "weather-watch",
+    "date": "2026-12-05",
+    "title": "Weather Watch",
+    "shelf": "Science & Nature",
+    "scope": "Weather science, clouds, storms, records that are settled",
+    "agent": "A4"
+  },
+  {
+    "id": "paws-claws",
+    "date": "2026-12-06",
+    "title": "Paws & Claws",
+    "shelf": "Science & Nature",
+    "scope": "Pets — dog breeds, cats, and other household animals",
+    "agent": "A3"
+  },
+  {
+    "id": "monday-mixer-4",
+    "date": "2026-12-07",
+    "title": "Monday Mixer IV",
+    "shelf": "General",
+    "scope": "Mixed bag to start the work week",
+    "agent": "A8"
+  },
+  {
+    "id": "the-90s",
+    "date": "2026-12-08",
+    "title": "The 90s",
+    "shelf": "Decades",
+    "scope": "The 1990s: tech, fads, movies, music, events (no politics)",
+    "agent": "A2"
+  },
+  {
+    "id": "money-talks",
+    "date": "2026-12-09",
+    "title": "Money Talks",
+    "shelf": "Business & Tech",
+    "scope": "Currency, coins, banking history, economics fun facts (no personal-finance advice)",
+    "agent": "A2"
+  },
+  {
+    "id": "olympic-moments",
+    "date": "2026-12-10",
+    "title": "Olympic Moments",
+    "shelf": "Sports & Games",
+    "scope": "Olympic history, host cities, iconic moments (summer and winter)",
+    "agent": "A7"
+  },
+  {
+    "id": "the-2000s",
+    "date": "2026-12-11",
+    "title": "The 2000s",
+    "shelf": "Decades",
+    "scope": "The 2000s: tech, fads, movies, music, events (no politics)",
+    "agent": "A2"
+  },
+  {
+    "id": "dino-dig",
+    "date": "2026-12-12",
+    "title": "Dino Dig",
+    "shelf": "Science & Nature",
+    "scope": "Dinosaurs, fossils, prehistoric life",
+    "agent": "A3"
+  },
+  {
+    "id": "showstoppers",
+    "date": "2026-12-13",
+    "title": "Showstoppers",
+    "shelf": "Arts & Books",
+    "scope": "Broadway and stage musicals across the decades",
+    "agent": "A1"
+  },
+  {
+    "id": "monday-mixer-5",
+    "date": "2026-12-14",
+    "title": "Monday Mixer V",
+    "shelf": "General",
+    "scope": "Mixed bag to start the work week",
+    "agent": "A9"
+  },
+  {
+    "id": "island-hopping",
+    "date": "2026-12-15",
+    "title": "Island Hopping",
+    "shelf": "Geography",
+    "scope": "Islands of the world",
+    "agent": "A4"
+  },
+  {
+    "id": "the-70s",
+    "date": "2026-12-16",
+    "title": "The 70s",
+    "shelf": "Decades",
+    "scope": "The 1970s: tech, fads, movies, music, events (no politics)",
+    "agent": "A2"
+  },
+  {
+    "id": "sweet-tooth",
+    "date": "2026-12-17",
+    "title": "Sweet Tooth",
+    "shelf": "Food & Drink",
+    "scope": "Candy, desserts and their origins",
+    "agent": "A6"
+  },
+  {
+    "id": "holiday-movie-night",
+    "date": "2026-12-18",
+    "title": "Holiday Movie Night",
+    "shelf": "Movies & TV",
+    "scope": "Holiday and winter films across the decades",
+    "agent": "A1"
+  },
+  {
+    "id": "winter-wonderland",
+    "date": "2026-12-19",
+    "title": "Winter Wonderland",
+    "shelf": "Science & Nature",
+    "scope": "Snow, ice, cold-weather science, polar animals",
+    "agent": "A4"
+  },
+  {
+    "id": "holidays-world",
+    "date": "2026-12-20",
+    "title": "Holidays Around the World",
+    "shelf": "Holidays",
+    "scope": "Winter and year-round celebrations across cultures — Hanukkah, Diwali, Lunar New Year, Kwanzaa, Christmas, Hogmanay, Las Posadas and more; factual customs only, respectful, no belief claims",
+    "agent": "A6"
+  },
+  {
+    "id": "monday-mixer-6",
+    "date": "2026-12-21",
+    "title": "Monday Mixer VI",
+    "shelf": "General",
+    "scope": "Mixed bag to start the work week (winter solstice week)",
+    "agent": "A9"
+  },
+  {
+    "id": "the-60s",
+    "date": "2026-12-22",
+    "title": "The 60s",
+    "shelf": "Decades",
+    "scope": "The 1960s: tech, fads, movies, music, space, events (no politics)",
+    "agent": "A2"
+  },
+  {
+    "id": "holiday-hits",
+    "date": "2026-12-23",
+    "title": "Holiday Hits",
+    "shelf": "Music",
+    "scope": "Holiday songs — who recorded them, when, how they came to be (titles and facts only, never lyrics)",
+    "agent": "A1"
+  },
+  {
+    "id": "winter-tales",
+    "date": "2026-12-24",
+    "title": "Winter Tales",
+    "shelf": "Arts & Books",
+    "scope": "Classic winter and holiday stories, ballets and books — A Christmas Carol, The Nutcracker, Dr. Seuss, and more",
+    "agent": "A7"
+  },
+  {
+    "id": "fireside-mixer",
+    "date": "2026-12-25",
+    "title": "Fireside Mixer",
+    "shelf": "General",
+    "scope": "Cozy, easy all-ages mix for a holiday",
+    "agent": "A9"
+  },
+  {
+    "id": "leftovers",
+    "date": "2026-12-26",
+    "title": "Leftovers",
+    "shelf": "Food & Drink",
+    "scope": "A mixed bag of food trivia",
+    "agent": "A6"
+  },
+  {
+    "id": "by-the-numbers",
+    "date": "2026-12-27",
+    "title": "By the Numbers",
+    "shelf": "General",
+    "scope": "Numbers, math curiosities, measurements, big and small",
+    "agent": "A5"
+  },
+  {
+    "id": "monday-mixer-7",
+    "date": "2026-12-28",
+    "title": "Monday Mixer VII",
+    "shelf": "General",
+    "scope": "Mixed bag to start the work week",
+    "agent": "A9"
+  },
+  {
+    "id": "the-2010s",
+    "date": "2026-12-29",
+    "title": "The 2010s",
+    "shelf": "Decades",
+    "scope": "The 2010s: tech, apps, movies, music, events (no politics)",
+    "agent": "A2"
+  },
+  {
+    "id": "clockwork",
+    "date": "2026-12-30",
+    "title": "Clockwork",
+    "shelf": "History",
+    "scope": "Calendars, clocks, time zones, how the months got their names",
+    "agent": "A5"
+  },
+  {
+    "id": "countdown",
+    "date": "2026-12-31",
+    "title": "Countdown",
+    "shelf": "Holidays",
+    "scope": "New Year's Eve and New Year traditions around the world",
+    "agent": "A6"
+  },
+  {
+    "id": "ballpark",
+    "date": null,
+    "title": "Ballpark",
+    "shelf": "Sports & Games",
+    "scope": "Baseball: MLB history, rules, records and famous ballparks across the eras (no Brewers questions; they have their own decks)",
+    "agent": "B1"
+  },
+  {
+    "id": "puck-drop",
+    "date": null,
+    "title": "Puck Drop",
+    "shelf": "Sports & Games",
+    "scope": "Hockey: NHL history, rules, the Stanley Cup and legends",
+    "agent": "B1"
+  },
+  {
+    "id": "the-beautiful-game",
+    "date": null,
+    "title": "The Beautiful Game",
+    "shelf": "Sports & Games",
+    "scope": "Soccer: World Cup history, famous clubs and players, the rules",
+    "agent": "B1"
+  },
+  {
+    "id": "fairways-and-courts",
+    "date": null,
+    "title": "Fairways & Courts",
+    "shelf": "Sports & Games",
+    "scope": "Golf and tennis: majors, Grand Slams, legends and traditions",
+    "agent": "B1"
+  },
+  {
+    "id": "race-day",
+    "date": null,
+    "title": "Race Day",
+    "shelf": "Sports & Games",
+    "scope": "Motorsports: Indy 500, NASCAR, Formula 1 history and legends",
+    "agent": "B2"
+  },
+  {
+    "id": "sports-at-the-movies",
+    "date": null,
+    "title": "Sports at the Movies",
+    "shelf": "Sports & Games",
+    "scope": "Sports films and TV shows across the decades",
+    "agent": "B2"
+  },
+  {
+    "id": "mascots-and-logos",
+    "date": null,
+    "title": "Mascots & Logos",
+    "shelf": "Sports & Games",
+    "scope": "Team names, mascots, logos, colors and how teams got their names (pro and college)",
+    "agent": "B2"
+  },
+  {
+    "id": "evergreen-sports",
+    "date": null,
+    "title": "Evergreen State Sports",
+    "shelf": "Sports & Games",
+    "scope": "Washington State teams: Seahawks, Mariners, Sounders, Storm, Kraken, Huskies, Cougars, Gonzaga",
+    "agent": "B2"
+  },
+  {
+    "id": "brewers-story",
+    "date": null,
+    "title": "Brewers: The Story",
+    "shelf": "Team Decks",
+    "scope": "Milwaukee Brewers history from the Seattle Pilots on: seasons, postseasons, managers, trades",
+    "agent": "B3"
+  },
+  {
+    "id": "brewers-legends",
+    "date": null,
+    "title": "Brewers Legends",
+    "shelf": "Team Decks",
+    "scope": "Great Milwaukee Brewers players, awards, milestones and retired numbers",
+    "agent": "B3"
+  },
+  {
+    "id": "brewers-ballpark",
+    "date": null,
+    "title": "Brewers Ballpark Life",
+    "shelf": "Team Decks",
+    "scope": "County Stadium, American Family Field, Bernie Brewer, the Racing Sausages, broadcasters and traditions",
+    "agent": "B3"
+  },
+  {
+    "id": "titletown",
+    "date": null,
+    "title": "Titletown",
+    "shelf": "Team Decks",
+    "scope": "Green Bay Packers history: founding, championships, coaches and famous games",
+    "agent": "B4"
+  },
+  {
+    "id": "packers-legends",
+    "date": null,
+    "title": "Packers Legends",
+    "shelf": "Team Decks",
+    "scope": "Great Green Bay Packers players, records, awards and retired numbers",
+    "agent": "B4"
+  },
+  {
+    "id": "lambeau-traditions",
+    "date": null,
+    "title": "Lambeau Traditions",
+    "shelf": "Team Decks",
+    "scope": "Lambeau Field, the Lambeau Leap, fan ownership, Cheeseheads and Packers traditions",
+    "agent": "B4"
+  },
+  {
+    "id": "lakers-dynasties",
+    "date": null,
+    "title": "Lakers Dynasties",
+    "shelf": "Team Decks",
+    "scope": "Lakers championships from Minneapolis to Los Angeles (LeBron-era questions belong to the LeBron decks)",
+    "agent": "B5"
+  },
+  {
+    "id": "lakers-legends",
+    "date": null,
+    "title": "Lakers Legends",
+    "shelf": "Team Decks",
+    "scope": "Great Lakers players and coaches, retired numbers and awards (not LeBron)",
+    "agent": "B5"
+  },
+  {
+    "id": "showtime-and-more",
+    "date": null,
+    "title": "Showtime & More",
+    "shelf": "Team Decks",
+    "scope": "Lakers arenas, broadcasters, famous moments, nicknames, logo and culture",
+    "agent": "B5"
+  },
+  {
+    "id": "king-james-rise",
+    "date": null,
+    "title": "King James: The Rise",
+    "shelf": "Team Decks",
+    "scope": "LeBron James before the NBA and his first Cleveland years (2003-2010)",
+    "agent": "B6"
+  },
+  {
+    "id": "king-james-rings",
+    "date": null,
+    "title": "King James: Rings",
+    "shelf": "Team Decks",
+    "scope": "LeBron James's championships, Finals, MVPs, Olympic medals and teams",
+    "agent": "B6"
+  },
+  {
+    "id": "king-james-more",
+    "date": null,
+    "title": "King James: Records & More",
+    "shelf": "Team Decks",
+    "scope": "LeBron James's milestones, records that can't change, family and off-court life",
+    "agent": "B6"
+  },
+  {
+    "id": "no-cap",
+    "date": null,
+    "title": "No Cap",
+    "shelf": "Gen Z",
+    "scope": "Gen Z slang and internet words with dictionary-verified meanings",
+    "agent": "B7"
+  },
+  {
+    "id": "gone-viral",
+    "date": null,
+    "title": "Gone Viral",
+    "shelf": "Gen Z",
+    "scope": "Memes, challenges, trends and viral moments from 2010 to 2024",
+    "agent": "B7"
+  },
+  {
+    "id": "for-you-page",
+    "date": null,
+    "title": "For You Page",
+    "shelf": "Gen Z",
+    "scope": "Apps, platforms, creators and streaming culture Gen Z grew up with",
+    "agent": "B7"
+  },
+  {
+    "id": "respawn",
+    "date": null,
+    "title": "Respawn",
+    "shelf": "Gen Z",
+    "scope": "Video games Gen Z grew up on: Minecraft, Fortnite, Roblox, Pokemon, Among Us and more",
+    "agent": "B7"
+  },
+  {
+    "id": "jokes-01",
+    "date": null,
+    "title": "Groan Up",
+    "shelf": "Jokes",
+    "scope": "Classic dad jokes everyone has heard at a cookout, plus a few clever ones",
+    "agent": "J1",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-02",
+    "date": null,
+    "title": "Pun Intended",
+    "shelf": "Jokes",
+    "scope": "Puns and wordplay on everyday words",
+    "agent": "J1",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-03",
+    "date": null,
+    "title": "Knock Knock",
+    "shelf": "Jokes",
+    "scope": "Knock-knock jokes (the setup is the whole knock-knock exchange, the punchline is the reveal)",
+    "agent": "J1",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-04",
+    "date": null,
+    "title": "Food for Thought",
+    "shelf": "Jokes",
+    "scope": "Food and kitchen jokes",
+    "agent": "J1",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-05",
+    "date": null,
+    "title": "Animal Crackers",
+    "shelf": "Jokes",
+    "scope": "Animal jokes",
+    "agent": "J1",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-06",
+    "date": null,
+    "title": "Office Hours",
+    "shelf": "Jokes",
+    "scope": "Workplace-safe office jokes: meetings, printers, coffee, spreadsheets (never mean about coworkers)",
+    "agent": "J1",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-07",
+    "date": null,
+    "title": "Lab Rats",
+    "shelf": "Jokes",
+    "scope": "Science jokes: chemistry, physics, biology",
+    "agent": "J2",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-08",
+    "date": null,
+    "title": "Game Day Groaners",
+    "shelf": "Jokes",
+    "scope": "Sports jokes across every sport",
+    "agent": "J2",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-09",
+    "date": null,
+    "title": "Tech Support",
+    "shelf": "Jokes",
+    "scope": "Computer, phone and internet jokes",
+    "agent": "J2",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-10",
+    "date": null,
+    "title": "History Buffs",
+    "shelf": "Jokes",
+    "scope": "History jokes",
+    "agent": "J2",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-11",
+    "date": null,
+    "title": "Mathletes",
+    "shelf": "Jokes",
+    "scope": "Math and number jokes",
+    "agent": "J2",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-12",
+    "date": null,
+    "title": "Drop the Beat",
+    "shelf": "Jokes",
+    "scope": "Music and instrument jokes",
+    "agent": "J2",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-13",
+    "date": null,
+    "title": "Space Cadets",
+    "shelf": "Jokes",
+    "scope": "Space, planets and astronaut jokes",
+    "agent": "J3",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-14",
+    "date": null,
+    "title": "Weather or Not",
+    "shelf": "Jokes",
+    "scope": "Weather jokes",
+    "agent": "J3",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-15",
+    "date": null,
+    "title": "Bookworms",
+    "shelf": "Jokes",
+    "scope": "Books, reading and library jokes",
+    "agent": "J3",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-16",
+    "date": null,
+    "title": "Road Trip",
+    "shelf": "Jokes",
+    "scope": "Travel, car and vacation jokes",
+    "agent": "J3",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-17",
+    "date": null,
+    "title": "Under the Sea",
+    "shelf": "Jokes",
+    "scope": "Ocean and sea-creature jokes",
+    "agent": "J3",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-18",
+    "date": null,
+    "title": "Dino-Mite",
+    "shelf": "Jokes",
+    "scope": "Dinosaur and fossil jokes",
+    "agent": "J3",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-19",
+    "date": null,
+    "title": "Monster Mash",
+    "shelf": "Jokes",
+    "scope": "Friendly spooky jokes: ghosts, vampires, skeletons (nothing scary or gory)",
+    "agent": "J4",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-20",
+    "date": null,
+    "title": "Garden Variety",
+    "shelf": "Jokes",
+    "scope": "Plant, garden and farm jokes",
+    "agent": "J4",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-21",
+    "date": null,
+    "title": "Time Flies",
+    "shelf": "Jokes",
+    "scope": "Clock, calendar and time jokes",
+    "agent": "J4",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-22",
+    "date": null,
+    "title": "Word Nerds",
+    "shelf": "Jokes",
+    "scope": "Grammar, spelling and language jokes",
+    "agent": "J4",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-23",
+    "date": null,
+    "title": "Rise and Shine",
+    "shelf": "Jokes",
+    "scope": "Breakfast, bread and bakery jokes",
+    "agent": "J4",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-24",
+    "date": null,
+    "title": "Turkey Talk",
+    "shelf": "Jokes",
+    "scope": "Thanksgiving jokes: turkeys, pies, the parade, leftovers",
+    "agent": "J4",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-25",
+    "date": null,
+    "title": "Say Cheese",
+    "shelf": "Jokes",
+    "scope": "Cheese and dairy jokes (Wisconsin fans welcome)",
+    "agent": "J5",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-26",
+    "date": null,
+    "title": "Pet Peeves",
+    "shelf": "Jokes",
+    "scope": "Cat, dog and pet jokes",
+    "agent": "J5",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-27",
+    "date": null,
+    "title": "Kid Tested",
+    "shelf": "Jokes",
+    "scope": "Jokes kids and teens tell each other, clean and silly",
+    "agent": "J5",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-28",
+    "date": null,
+    "title": "Hardware Store",
+    "shelf": "Jokes",
+    "scope": "Tools, building and handyman jokes",
+    "agent": "J5",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-29",
+    "date": null,
+    "title": "Galaxy Brain",
+    "shelf": "Jokes",
+    "scope": "The cleverest one-liners and misdirection jokes; the hardest deck",
+    "agent": "J5",
+    "kind": "jokes"
+  },
+  {
+    "id": "jokes-30",
+    "date": null,
+    "title": "Sweater Weather",
+    "shelf": "Jokes",
+    "scope": "Winter and holiday-season jokes: snow, snowmen, reindeer, gifts",
+    "agent": "J5",
+    "kind": "jokes"
+  }
+]

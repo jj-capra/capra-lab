@@ -1,0 +1,710 @@
+[
+  {
+    "id": "race-day",
+    "blurb": "Indy, NASCAR and Formula 1: legends, firsts and traditions",
+    "categories": [
+      {
+        "name": "The Brickyard",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What does the Indianapolis 500 winner traditionally drink right after the race?",
+            "options": [
+              "Lemonade",
+              "Orange juice",
+              "Iced tea",
+              "Milk"
+            ],
+            "answer": 3,
+            "fact": "Louis Meyer started it in 1936, sipping buttermilk after his third Indy 500 win.",
+            "src": "nbcwashington.com 'Why does the Indy 500 winner drink milk?' (Louis Meyer, 1936, buttermilk, his third win)"
+          },
+          {
+            "value": 200,
+            "q": "Indy's start/finish line keeps a strip of the track's original 1909 bricks. How wide is it?",
+            "options": [
+              "One foot",
+              "One yard",
+              "One meter",
+              "Ten feet"
+            ],
+            "answer": 1,
+            "fact": "Dale Jarrett and crew chief Todd Parrott started the kiss-the-bricks tradition after the 1996 Brickyard 400.",
+            "src": "cms.ims.com Yard of Bricks page (36-inch strip of original bricks laid fall 1909; Dale Jarrett and crew chief Todd Parrott kissed the bricks after the 1996 Brickyard 400)"
+          },
+          {
+            "value": 300,
+            "q": "In 2017, which Formula 1 champion skipped the Monaco Grand Prix to race in the Indy 500?",
+            "options": [
+              "Fernando Alonso",
+              "Lewis Hamilton",
+              "Sebastian Vettel",
+              "Kimi Raikkonen"
+            ],
+            "answer": 0,
+            "fact": "Alonso led 27 laps before his engine failed 21 laps from the end, and he was voted the race's Rookie of the Year.",
+            "src": "Wikipedia '2017 Indianapolis 500' (skipped Monaco; led 27 laps; engine failure lap 179 of 200; voted Rookie of the Year)"
+          },
+          {
+            "value": 400,
+            "q": "In 1977, who became the first driver to win the Indianapolis 500 four times?",
+            "options": [
+              "Al Unser",
+              "Rick Mears",
+              "A.J. Foyt",
+              "Bobby Unser"
+            ],
+            "answer": 2,
+            "fact": "Al Unser (1987), Rick Mears (1991) and Helio Castroneves (2021) later joined him as four-time winners.",
+            "src": "indycar.com 2021-07-21 four-time winners story (Foyt first in 1977; Al Unser 1987, Mears 1991, Castroneves 2021). Bobby Unser won three"
+          }
+        ]
+      },
+      {
+        "name": "Stock Car Stars",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which NASCAR legend is known simply as The King?",
+            "options": [
+              "Dale Earnhardt",
+              "Richard Petty",
+              "Darrell Waltrip",
+              "Jeff Gordon"
+            ],
+            "answer": 1,
+            "fact": "Petty won 200 Cup Series races and seven championships.",
+            "src": "nascarhall.com 'Petty's prime years' (calls him The King; 200 Cup wins, 7 titles); Britannica Richard Petty (200 wins, 7 titles)"
+          },
+          {
+            "value": 200,
+            "q": "Which NASCAR race is nicknamed The Great American Race?",
+            "options": [
+              "Daytona 500",
+              "Coca-Cola 600",
+              "Southern 500",
+              "Brickyard 400"
+            ],
+            "answer": 0,
+            "fact": "The winner's trophy honors GM designer Harley Earl and is topped by a model of his Firebird I concept car.",
+            "src": "Nickname textbook; Wikipedia 'Harley J. Earl Trophy' (GM designer, NASCAR's 2nd commissioner; Firebird I model on top; awarded since 1959)"
+          },
+          {
+            "value": 300,
+            "q": "Starting in 2006, Jimmie Johnson won how many NASCAR Cup championships in a row?",
+            "options": [
+              "3",
+              "4",
+              "5",
+              "6"
+            ],
+            "answer": 2,
+            "fact": "His seventh title, in 2016, matched the totals of Richard Petty and Dale Earnhardt.",
+            "src": "Britannica Jimmie Johnson (five straight titles 2006-2010, record-tying seven); Petty and Earnhardt seven each per nascarhall.com/textbook"
+          },
+          {
+            "value": 400,
+            "q": "Who won the first Daytona 500, in 1959, in a finish so close it took three days to decide?",
+            "options": [
+              "Junior Johnson",
+              "Fireball Roberts",
+              "Richard Petty",
+              "Lee Petty"
+            ],
+            "answer": 3,
+            "fact": "Lee, Richard Petty's father, edged Johnny Beauchamp, who was first named the winner.",
+            "src": "history.com This Day in History Feb 22 (Lee Petty beat Johnny Beauchamp in a photo finish; Beauchamp first named winner; Petty named champ three days later)"
+          }
+        ]
+      },
+      {
+        "name": "Formula One",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which Formula 1 team is famous for its red cars and prancing horse badge?",
+            "options": [
+              "Maserati",
+              "Ferrari",
+              "Lamborghini",
+              "Alfa Romeo"
+            ],
+            "answer": 1,
+            "fact": "The badge's yellow background is the color of Modena, Enzo Ferrari's hometown.",
+            "src": "Wikipedia 'Prancing Horse' (canary yellow is the colour of Modena, Enzo Ferrari's hometown)"
+          },
+          {
+            "value": 200,
+            "q": "Which Netflix docuseries, first released in 2019, goes behind the scenes of Formula 1?",
+            "options": [
+              "Full Swing",
+              "Break Point",
+              "Drive to Survive",
+              "Quarterback"
+            ],
+            "answer": 2,
+            "fact": "Its first season followed the 2018 F1 season and arrived on Netflix on March 8, 2019.",
+            "src": "Wikipedia 'Formula 1: Drive to Survive season 1' (released 8 March 2019, documents 2018 season). Distractors are 2023 Netflix golf/tennis/NFL docuseries"
+          },
+          {
+            "value": 300,
+            "q": "Which American won the 1978 Formula 1 world championship?",
+            "options": [
+              "Phil Hill",
+              "Dan Gurney",
+              "Peter Revson",
+              "Mario Andretti"
+            ],
+            "answer": 3,
+            "fact": "Andretti also won the 1967 Daytona 500 and the 1969 Indianapolis 500.",
+            "src": "guinnessworldrecords.com first driver to win Indy 500, Daytona 500 and F1 title (Daytona 1967, Indy 1969, F1 1978). Phil Hill's title was 1961"
+          },
+          {
+            "value": 400,
+            "q": "Lewis Hamilton won his first F1 world title in 2008 driving for which team?",
+            "options": [
+              "McLaren",
+              "Mercedes",
+              "Red Bull",
+              "Williams"
+            ],
+            "answer": 0,
+            "fact": "At 23 he was then F1's youngest champion; Sebastian Vettel broke that mark in 2010.",
+            "src": "formula1.com 'The youngest world champions' (Hamilton 23y300d in 2008, youngest at the time; Vettel 23y133d, 2010 Abu Dhabi). McLaren 2008 textbook"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sports-at-the-movies",
+    "blurb": "Sports on film and TV, from The Bad News Bears to Ted Lasso",
+    "categories": [
+      {
+        "name": "True Stories",
+        "questions": [
+          {
+            "value": 100,
+            "q": "The 1993 film Rudy follows a walk-on who dreams of playing football for which school?",
+            "options": [
+              "Notre Dame",
+              "Michigan",
+              "USC",
+              "Penn State"
+            ],
+            "answer": 0,
+            "fact": "Sean Astin starred, and it was the first film Notre Dame let shoot on campus since Knute Rockne, All American.",
+            "src": "Wikipedia 'Rudy (film)' (1993; Sean Astin; first film Notre Dame allowed on campus since Knute Rockne, All American)"
+          },
+          {
+            "value": 200,
+            "q": "Remember the Titans (2000) tells the story of a 1971 high school football team from which state?",
+            "options": [
+              "Georgia",
+              "Texas",
+              "Virginia",
+              "Alabama"
+            ],
+            "answer": 2,
+            "fact": "Denzel Washington played coach Herman Boone, and the real 1971 Titans won the state title.",
+            "src": "Wikipedia 'Herman Boone' (T.C. Williams HS, Alexandria, Virginia; 1971 Titans 13-0 state champions; Denzel Washington played him)"
+          },
+          {
+            "value": 300,
+            "q": "Ford v Ferrari (2019) recreates Ford's battle to win which race in 1966?",
+            "options": [
+              "Indianapolis 500",
+              "Monaco Grand Prix",
+              "Italian Grand Prix",
+              "24 Hours of Le Mans"
+            ],
+            "answer": 3,
+            "fact": "In the UK it was titled Le Mans '66, and Christian Bale played driver Ken Miles.",
+            "src": "topgear.com first look at 'Le Mans '66' (UK title; Bale as Ken Miles, Damon as Shelby; 1966 24 Hours of Le Mans)"
+          },
+          {
+            "value": 400,
+            "q": "Hoosiers (1986) was inspired by which small Indiana school's 1954 state basketball title?",
+            "options": [
+              "Muncie Central",
+              "Milan",
+              "Crispus Attucks",
+              "Gary Roosevelt"
+            ],
+            "answer": 1,
+            "fact": "Bobby Plump's shot with seconds left beat Muncie Central, a school about ten times Milan's size, 32-30.",
+            "src": "Indiana Historical Bureau marker 'Milan Miracle' (in.gov): 32-30 over Muncie Central, about ten times Milan's size, Plump's winning shot, inspired Hoosiers (1986)"
+          }
+        ]
+      },
+      {
+        "name": "Big Screen",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In Happy Gilmore (1996), Adam Sandler plays a failed hockey player who finds success in which sport?",
+            "options": [
+              "Bowling",
+              "Tennis",
+              "Golf",
+              "Baseball"
+            ],
+            "answer": 2,
+            "fact": "Carl Weathers, Apollo Creed in the Rocky films, played Happy's golf mentor, Chubbs Peterson.",
+            "src": "Wikipedia 'Happy Gilmore' (Feb 1996; hockey to golf; Carl Weathers as Chubbs Peterson). Weathers as Apollo Creed textbook. Replaced Space Jam (repeats B6 draft's Space Jam/Michael Jordan question)"
+          },
+          {
+            "value": 200,
+            "q": "Field of Dreams (1989), starring Kevin Costner, is set on a farm in which state?",
+            "options": [
+              "Iowa",
+              "Kansas",
+              "Nebraska",
+              "Illinois"
+            ],
+            "answer": 0,
+            "fact": "In 2021, MLB played a real game next to the movie field, and the White Sox beat the Yankees 9-8.",
+            "src": "thescore.com Aug 2021 (White Sox 9, Yankees 8 in Dyersville, Iowa, park built beside the 1989 film's site); Iowa setting textbook"
+          },
+          {
+            "value": 300,
+            "q": "Which actor starred as boxer Adonis Creed in the 2015 film Creed?",
+            "options": [
+              "John Boyega",
+              "Michael B. Jordan",
+              "Daniel Kaluuya",
+              "Trevante Rhodes"
+            ],
+            "answer": 1,
+            "fact": "Sylvester Stallone was Oscar-nominated for playing Rocky in both Rocky (1976) and Creed.",
+            "src": "smithsonianmag.com 2016 'Stallone joins Oscars elite team of actors nominated twice for same role' (Rocky 1976 and Creed); Michael B. Jordan as Adonis Creed textbook"
+          },
+          {
+            "value": 400,
+            "q": "Who played the grumpy Little League coach in The Bad News Bears (1976)?",
+            "options": [
+              "Jack Lemmon",
+              "Gene Hackman",
+              "George C. Scott",
+              "Walter Matthau"
+            ],
+            "answer": 3,
+            "fact": "Tatum O'Neal played star pitcher Amanda, two years after winning an Oscar at age 10.",
+            "src": "Wikipedia 'The Bad News Bears' (Matthau as coach Morris Buttermaker; O'Neal as star pitcher Amanda; released April 7, 1976); guinnessworldrecords.com (O'Neal won Paper Moon Oscar 2 April 1974 aged 10)"
+          }
+        ]
+      },
+      {
+        "name": "Small Screen",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In Ted Lasso, an American football coach is hired to manage an English team in which sport?",
+            "options": [
+              "Rugby",
+              "Soccer",
+              "Cricket",
+              "Hockey"
+            ],
+            "answer": 1,
+            "fact": "Jason Sudeikis first played Ted Lasso in 2013 NBC Sports ads for its Premier League coverage.",
+            "src": "si.com 2020 'Ted Lasso and the journey from viral promo' (2013 NBC Sports promo for its Premier League rights; team is AFC Richmond)"
+          },
+          {
+            "value": 200,
+            "q": "TV's Friday Night Lights (2006-2011) followed a high school football team in which state?",
+            "options": [
+              "Oklahoma",
+              "Ohio",
+              "Georgia",
+              "Texas"
+            ],
+            "answer": 3,
+            "fact": "It grew from H.G. Bissinger's 1990 book about Permian High School in Odessa, Texas.",
+            "src": "Wikipedia 'Friday Night Lights: A Town, a Team, and a Dream' (Bissinger, 1990, Permian HS, Odessa, Texas; TV series 2006-2011)"
+          },
+          {
+            "value": 300,
+            "q": "Monday Night Football debuted in 1970 on which TV network?",
+            "options": [
+              "ABC",
+              "CBS",
+              "NBC",
+              "ESPN"
+            ],
+            "answer": 0,
+            "fact": "Keith Jackson, Howard Cosell and Don Meredith called that first game, Browns vs. Jets.",
+            "src": "deseret.com 2024 'Monday Night Football debuted in 1970' (Sept 21, 1970, ABC, Browns 31 Jets 21, Jackson/Cosell/Meredith)"
+          },
+          {
+            "value": 400,
+            "q": "The sitcom Coach (1989-97) starred Craig T. Nelson as a college football coach in which state?",
+            "options": [
+              "Iowa",
+              "Wisconsin",
+              "Minnesota",
+              "Nebraska"
+            ],
+            "answer": 2,
+            "fact": "Hayden Fox coached the fictional Minnesota State Screaming Eagles, then a pro expansion team, the Orlando Breakers.",
+            "src": "Wikipedia 'Coach (TV series)' (ABC 1989-97; Minnesota State University Screaming Eagles, about an hour from the Twin Cities; final two seasons Orlando Breakers expansion team)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mascots-and-logos",
+    "blurb": "How teams got their names, mascots and logos, pro and college",
+    "categories": [
+      {
+        "name": "What's in a Name?",
+        "questions": [
+          {
+            "value": 100,
+            "q": "The Baltimore Ravens took their name from a famous poem by which writer?",
+            "options": [
+              "Walt Whitman",
+              "Robert Frost",
+              "Edgar Allan Poe",
+              "Emily Dickinson"
+            ],
+            "answer": 2,
+            "fact": "In a 1996 Baltimore Sun phone poll, Ravens won 22,463 of 33,748 votes, beating Americans and Marauders.",
+            "src": "baltimoreravens.com 'Naming the team' (Sun 'Sundial' poll March 1996; 33,748 callers, Ravens 22,463; finalists Americans, Marauders; Poe's poem)"
+          },
+          {
+            "value": 200,
+            "q": "The Toronto Raptors' 1994 name was inspired by the dinosaurs of which hit movie?",
+            "options": [
+              "Jurassic Park",
+              "Godzilla",
+              "King Kong",
+              "The Land Before Time"
+            ],
+            "answer": 0,
+            "fact": "Raptors won a 1994 fan vote over finalists that included Bobcats, Dragons and Grizzlies.",
+            "src": "museumoftoronto.com 'The Raptors were almost named the Bobcats' (1994 call-in contest; Jurassic Park dinosaur craze; finalists Grizzlies, Bobcats, Dragons, Hogs)"
+          },
+          {
+            "value": 300,
+            "q": "The NBA's Utah Jazz kept the name they first used in which city?",
+            "options": [
+              "Kansas City",
+              "New Orleans",
+              "Memphis",
+              "St. Louis"
+            ],
+            "answer": 1,
+            "fact": "After the 1979 move to Salt Lake City, a contest sought a new nickname, but the Jazz name stayed.",
+            "src": "historytogo.utah.gov 'Utah Jazz' (New Orleans Jazz expansion 1974; moved for 1979-80; kept name despite a contest for a new one)"
+          },
+          {
+            "value": 400,
+            "q": "The Dodgers' name traces to 1890s Brooklyn, where pedestrians had to dodge what?",
+            "options": [
+              "Horse carriages",
+              "Delivery wagons",
+              "Bicycles",
+              "Streetcars"
+            ],
+            "answer": 3,
+            "fact": "Before Dodgers stuck, the Brooklyn club was also called the Bridegrooms, the Superbas and the Robins.",
+            "src": "news.sportslogos.net 'How the Dodgers finally got their name' (Trolley Dodgers from 1890s electric streetcars; Bridegrooms 1888, Superbas 1899, Robins 1914). Old fact said 'first nicknamed', which was wrong"
+          }
+        ]
+      },
+      {
+        "name": "On the Sidelines",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which NHL team introduced Gritty, its googly-eyed orange mascot, in 2018?",
+            "options": [
+              "Pittsburgh Penguins",
+              "Anaheim Ducks",
+              "Philadelphia Flyers",
+              "New York Islanders"
+            ],
+            "answer": 2,
+            "fact": "Gritty was the Flyers' first mascot since 1976, and he became an internet star almost overnight.",
+            "src": "si.com 2018-09-24 'Flyers unveil new mascot Gritty' (unveiled Sept 24, 2018; team's first mascot since 1976)"
+          },
+          {
+            "value": 200,
+            "q": "Uga, a line of live white English bulldogs, is the mascot of which school?",
+            "options": [
+              "Georgia",
+              "Yale",
+              "Mississippi State",
+              "Butler"
+            ],
+            "answer": 0,
+            "fact": "Uga V made the cover of Sports Illustrated in April 1997.",
+            "src": "georgiadogs.com 'History of Our Mascot' (white English bulldog line from Uga I in 1956, Seiler family of Savannah; Uga V on SI cover April 28, 1997). Yale, Miss. State, Butler bulldogs have other names"
+          },
+          {
+            "value": 300,
+            "q": "The University of Oregon's Duck mascot is modeled on which famous cartoon duck?",
+            "options": [
+              "Daffy Duck",
+              "Scrooge McDuck",
+              "Darkwing Duck",
+              "Donald Duck"
+            ],
+            "answer": 3,
+            "fact": "Athletic director Leo Harris and Walt Disney agreed on it with a 1947 handshake; a written contract followed in 1973.",
+            "src": "University of Oregon Libraries SCUA blog 'The Oregon Mascot, Part 2' (1947 Harris-Disney handshake deal; formal contract 1973)"
+          },
+          {
+            "value": 400,
+            "q": "The San Diego Chicken, a famous 1970s mascot, was first hired to promote what?",
+            "options": [
+              "A fast-food chain",
+              "A radio station",
+              "A car dealership",
+              "A grocery store"
+            ],
+            "answer": 1,
+            "fact": "Ted Giannoulas debuted the suit in 1974, handing out Easter eggs at the San Diego Zoo for radio station KGB.",
+            "src": "Wikipedia 'San Diego Chicken' (Ted Giannoulas; 1974 KGB-FM promotion handing out Easter eggs at the San Diego Zoo)"
+          }
+        ]
+      },
+      {
+        "name": "Logo Lore",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which NFL team's helmets feature a single blue star?",
+            "options": [
+              "Denver Broncos",
+              "Dallas Cowboys",
+              "Chicago Bears",
+              "Detroit Lions"
+            ],
+            "answer": 1,
+            "fact": "Texas is nicknamed the Lone Star State, and the Cowboys began play in 1960.",
+            "src": "Textbook (Cowboys' blue star helmet; Texas the Lone Star State; Cowboys began play 1960)"
+          },
+          {
+            "value": 200,
+            "q": "Which NHL team's logo is a winged wheel, a fitting symbol for the Motor City?",
+            "options": [
+              "Philadelphia Flyers",
+              "Buffalo Sabres",
+              "Detroit Red Wings",
+              "Pittsburgh Penguins"
+            ],
+            "answer": 2,
+            "fact": "The team was called the Cougars, then the Falcons, before becoming the Red Wings in 1932.",
+            "src": "detroithistorical.org Encyclopedia of Detroit 'Detroit Red Wings' (Cougars from 1926, Falcons 1930-31, Red Wings in 1932)"
+          },
+          {
+            "value": 300,
+            "q": "The Golden State Warriors' logo, introduced in 2010, shows which bridge?",
+            "options": [
+              "Bay Bridge",
+              "Golden Gate Bridge",
+              "Richmond-San Rafael Bridge",
+              "Dumbarton Bridge"
+            ],
+            "answer": 0,
+            "fact": "The Bay Bridge links San Francisco and Oakland, the Warriors' home city when the logo debuted.",
+            "src": "Wikipedia 'Golden State Warriors' (2010 logo shows the new eastern span of the San Francisco-Oakland Bay Bridge); secureyourtrademark.com logo history (Bay Bridge replaced Golden Gate)"
+          },
+          {
+            "value": 400,
+            "q": "The Hartford Whalers' famous logo hides which letter in the space between a W and a whale tail?",
+            "options": [
+              "A",
+              "C",
+              "T",
+              "H"
+            ],
+            "answer": 3,
+            "fact": "The Whalers moved to North Carolina in 1997 and became the Carolina Hurricanes.",
+            "src": "ctpublic.org 2023 Peter Good obituary (logo combines whale tail, W and a negative-space H; team moved to North Carolina in 1997). Hurricanes name textbook"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evergreen-sports",
+    "blurb": "Hawks, M's, Zags, Cougs, Dawgs and more: Washington's teams",
+    "categories": [
+      {
+        "name": "Hometown Heroes",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which Mariners superstar was nicknamed The Kid?",
+            "options": [
+              "Edgar Martinez",
+              "Ken Griffey Jr.",
+              "Alex Rodriguez",
+              "Jay Buhner"
+            ],
+            "answer": 1,
+            "fact": "He entered the Hall of Fame in 2016 with 99.3 percent of the vote, a record at the time.",
+            "src": "baseballhall.org 'Griffey Jr. and Piazza elected' (437 of 440, 99.32%, record at the time, topping Seaver's 98.84%); 'The Kid' textbook"
+          },
+          {
+            "value": 200,
+            "q": "Storm star Lauren Jackson, the WNBA's No. 1 draft pick in 2001, is from which country?",
+            "options": [
+              "New Zealand",
+              "Canada",
+              "England",
+              "Australia"
+            ],
+            "answer": 3,
+            "fact": "Jackson won the WNBA MVP award three times, in 2003, 2007 and 2010.",
+            "src": "wnba.com 'Lauren Jackson by the numbers' (No. 1 pick 2001 by Seattle; Australian; MVP 2003, 2007, 2010)"
+          },
+          {
+            "value": 300,
+            "q": "Which future NBA star played college basketball at Washington State from 2008 to 2011?",
+            "options": [
+              "Klay Thompson",
+              "Isaiah Thomas",
+              "Brandon Roy",
+              "Damian Lillard"
+            ],
+            "answer": 0,
+            "fact": "His father, Mychal Thompson, was the No. 1 pick in the 1978 NBA Draft.",
+            "src": "wsucougars.com 2011 draft story (three years at WSU, 2010-11 junior year; father Mychal Thompson No. 1 pick 1978 by Portland). Thomas and Roy played at UW, Lillard at Weber State"
+          },
+          {
+            "value": 400,
+            "q": "Which Seahawks defensive tackle was named NFL Defensive Player of the Year in 1992, when Seattle went 2-14?",
+            "options": [
+              "Jacob Green",
+              "Cortez Kennedy",
+              "Kenny Easley",
+              "Joe Nash"
+            ],
+            "answer": 1,
+            "fact": "Kennedy played all 11 of his NFL seasons in Seattle and entered the Pro Football Hall of Fame in 2012.",
+            "src": "profootballhof.com Cortez Kennedy (DT, 1992 Defensive Player of the Year on a 2-14 team; all 11 seasons 1990-2000 with Seattle; class of 2012). Replaced Steve Largent (later a U.S. congressman: DECK_SPEC rule 4, no politicians after 1950)"
+          }
+        ]
+      },
+      {
+        "name": "Instant Classics",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Marshawn Lynch's famous 2011 playoff touchdown run against New Orleans is nicknamed the Beast what?",
+            "options": [
+              "Charge",
+              "Quake",
+              "Slam",
+              "Rush"
+            ],
+            "answer": 1,
+            "fact": "Fans celebrated so wildly that a seismic station near the stadium recorded the shaking.",
+            "src": "pnsn.org blog 'Marshawn Lynch shakes the PNSN' (Jan 8, 2011, 67-yard TD vs Saints; recorded at station KDK on Occidental Ave)"
+          },
+          {
+            "value": 200,
+            "q": "Edgar Martinez's series-winning 1995 playoff hit, known as The Double, beat which team?",
+            "options": [
+              "Oakland A's",
+              "Baltimore Orioles",
+              "Boston Red Sox",
+              "New York Yankees"
+            ],
+            "answer": 3,
+            "fact": "Ken Griffey Jr. raced all the way home from first base with the winning run in the 11th inning.",
+            "src": "SABR Games Project Oct 8, 1995 (Mariners 6, Yankees 5 in 11, ALDS Game 5; Cora tied it, Griffey scored the winner from first)"
+          },
+          {
+            "value": 300,
+            "q": "Jalen Suggs' overtime buzzer-beater sent Gonzaga to the 2021 title game past which team?",
+            "options": [
+              "Baylor",
+              "Houston",
+              "UCLA",
+              "USC"
+            ],
+            "answer": 2,
+            "fact": "His banked 3-pointer from about 40 feet won it 93-90 and kept Gonzaga unbeaten at 31-0.",
+            "src": "abc7.com April 2021 (Gonzaga 93, UCLA 90 OT, Final Four; banked 3 from about 40 feet; 31-0; Baylor next in the final)"
+          },
+          {
+            "value": 400,
+            "q": "Washington's 12-0 Huskies split the 1991 national title with which team?",
+            "options": [
+              "Miami",
+              "Florida State",
+              "Michigan",
+              "Notre Dame"
+            ],
+            "answer": 0,
+            "fact": "Don James's Huskies beat Michigan in the Rose Bowl; the coaches' poll picked UW, and the AP picked Miami.",
+            "src": "UW Magazine 'The champs wore roses' (12-0; Rose Bowl 34-14 over Michigan; USA Today/CNN coaches' poll No. 1 UW, AP No. 1 Miami; Don James)"
+          }
+        ]
+      },
+      {
+        "name": "Origin Stories",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What is the name of the football rivalry game between UW and Washington State?",
+            "options": [
+              "The Egg Bowl",
+              "The Apple Cup",
+              "The Iron Bowl",
+              "The Big Game"
+            ],
+            "answer": 1,
+            "fact": "The schools first played in 1900 in Seattle, and the game ended in a 5-5 tie.",
+            "src": "Wikipedia 'Apple Cup' (first game Nov 29, 1900, Seattle, 5-5 tie). Draft fact's 'name since 1962' dropped: Wikipedia says trophy first awarded 1963"
+          },
+          {
+            "value": 200,
+            "q": "The SuperSonics' name was inspired by which company's planned supersonic jetliner?",
+            "options": [
+              "Boeing",
+              "Lockheed",
+              "McDonnell Douglas",
+              "Convair"
+            ],
+            "answer": 0,
+            "fact": "Fans picked the name in 1967, just after Boeing won the SST contract. The jet was canceled in 1971 and never flew.",
+            "src": "Museum of Flight blog 'Seattle's Supersonic Legacy' (name chosen Feb 1967; Boeing beat Lockheed for the contract end of Dec 1966; canceled spring 1971; no prototype flew)"
+          },
+          {
+            "value": 300,
+            "q": "When the Kraken began play in 2021, how many teams did the NHL have?",
+            "options": [
+              "30",
+              "31",
+              "32",
+              "33"
+            ],
+            "answer": 2,
+            "fact": "Their home, Climate Pledge Arena, was built under the old KeyArena's landmark roof.",
+            "src": "lex18.com/AP 2021 'Seattle Kraken officially become NHL's 32nd franchise'; constructiondive.com (arena kept KeyArena's 1962 roof, dug down beneath it)"
+          },
+          {
+            "value": 400,
+            "q": "Seattle's first Sounders club began play in 1974 in which league?",
+            "options": [
+              "American Soccer League",
+              "Major Indoor Soccer League",
+              "United Soccer League",
+              "North American Soccer League"
+            ],
+            "answer": 3,
+            "fact": "Those Sounders lost the 1977 Soccer Bowl to the New York Cosmos in Pele's last competitive game.",
+            "src": "historylink.org 'Original Seattle Sounders (1974-1983)' (NASL; lost 1977 Soccer Bowl 2-1 to Cosmos); pdxmonthly.com 2017 (Soccer Bowl '77 in Portland was Pele's final competitive match)"
+          }
+        ]
+      }
+    ]
+  }
+]

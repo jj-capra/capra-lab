@@ -1,9 +1,10 @@
 # Capra Lab on Netlify.
 #
 # The hub is static. Native games are copied into public/<game>/ by the build,
-# and their APIs are Netlify Functions. Each route below is mapped in exactly
-# one place: the functions do not declare config.path, because two systems
-# claiming one route is a known way to get a 404 from both.
+# and their APIs are Netlify Functions. Each route is mapped in exactly one
+# place: a rule below, or a function's own config.path (Swerve Planet, Mind
+# Heist), never both, because two systems claiming one route is a known way to
+# get a 404 from both.
 
 [build]
   command = "node scripts/build.mjs"
@@ -57,9 +58,10 @@
   status = 200
   force = true
 
-# Mind Heist works the same way: its own site (mind-heist.netlify.app, deployed from JC's MH folder), server
-# and data, served here at /mind-heist/. Its pages write every path through src/client/base.js so they work at
-# either address, and inside the lab it signs players in with their Capra Lab profile (/api/me/lab there).
+# Mind Heist is native: Capra Lab's build puts the app in public/mind-heist/ and its server in
+# netlify/functions/mind-heist.mjs, which claims /mind-heist/api/* through its own config.path (a
+# path-configured function runs before these rules, so no API rule here). Invite links
+# (/mind-heist/ABCD), /r/, /c/, /tv/ and /jam all load the app; real files are served as they are.
 [[redirects]]
   from = "/mind-heist"
   to = "/mind-heist/"
@@ -68,9 +70,8 @@
 
 [[redirects]]
   from = "/mind-heist/*"
-  to = "https://mind-heist.netlify.app/:splat"
+  to = "/mind-heist/index.html"
   status = 200
-  force = true
 
 # Modules must be served as JavaScript or the browser refuses them.
 [[headers]]
@@ -93,6 +94,21 @@
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/mind-heist/*.mp3"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/mind-heist/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/mind-heist/"
+  [headers.values]
+    Cache-Control = "no-cache"
 
 [[headers]]
   for = "/manifest.webmanifest"

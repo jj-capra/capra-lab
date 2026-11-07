@@ -1,0 +1,551 @@
+/* =====================================================================
+   GAME SHOW (`gameshow`): a 1970s TV game show set.
+   A rust and chocolate studio under a big orange sunburst. The board and the
+   question sit inside marquee frames of light bulbs that chase (fast when you
+   get one right, dim when you miss). Board tiles are harvest-orange panels
+   with cream numbers, the crews stand at wood-grain contestant podiums with a
+   lit name strip, the hot seat wears 70s racing stripes, and the verdict
+   lights up like a studio applause sign.
+   Signature elements: the marquee bulbs and the sunburst. Wood grain stays on
+   the podiums; the rest is plain chocolate, cream and gold.
+   Shrikhand (groovy script) for the logo, titles and the hot seat;
+   Righteous for tiles, buttons, numbers and the question.
+   ===================================================================== */
+[data-theme="gameshow"] {
+  color-scheme: dark;
+  --night: #2a0f04;
+  --deep: #3e1a09;
+  --deep-2: #55260e;
+  --deep-3: #6d3314;
+  --edge: #b0581f;
+  --cobalt: #140500;
+  --cobalt-dim: #140500;
+  --chalk: #fff2d6;
+  --chalk-dim: #f3cf9f;
+  --ink: #1d0901;
+  --hi: #ffc12b;
+  --gum: #ff5a98;
+  --aqua: #1fcab7;
+  --right: #4fe27f;
+  --wrong: #ff4f3f;
+  --money: #ffc12b;
+  --focus: #ffd75e;
+  --veil: rgba(22, 7, 1, .84);
+  --placeholder: #c58d5f;
+  --on-hi-dim: #6b3a0a;
+  --r-lg: 24px;
+  --r-md: 18px;
+  --jewel: #7ff6e6;
+  --pc-ink: #1d0901;
+  /* face-off replay strip: a stage floor and a white-hot bulb line */
+  --turf: #5a1f07;
+  --turf-2: #6e2a0c;
+  --gain: #fff1a0;
+  /* the set */
+  --gs-orange: #ff8a1f;
+  --gs-orange-lo: #d9520c;
+  --gs-rust: #93380d;
+  --gs-cream: #fff2d6;
+  --gs-shadow: #140500;
+  --gs-lacquer: #6e1a07;
+  /* 70s racing stripes: gold, orange, rust */
+  --gs-stripes: transparent calc(100% - 15px), var(--ink) calc(100% - 15px) calc(100% - 13px), #ffc12b calc(100% - 13px) calc(100% - 9px), #ff8a1f calc(100% - 9px) calc(100% - 5px), #c2410c calc(100% - 5px);
+  /* walnut podium paneling: broad grain, never fine noise */
+  --gs-wood: linear-gradient(180deg, rgba(255, 222, 170, .16), transparent 38%, rgba(20, 5, 0, .22)),
+    repeating-radial-gradient(ellipse 170% 95% at 0% -70%, #8a4720 0 10px, #773c1a 10px 22px, #94522a 22px 27px, #6c3416 27px 40px);
+  /* marquee bulbs: a hot one, a dim one */
+  --gs-band: 24px;
+  --gs-br: 6px;
+  --gs-dim: #d59a3c 0 calc(var(--gs-br) * .5), #8a4a14 calc(var(--gs-br) * .9), rgba(40, 10, 0, .9) var(--gs-br), transparent calc(var(--gs-br) + 1px);
+  --gs-hot: #ffffff 0 calc(var(--gs-br) * .5), #fff1a8 calc(var(--gs-br) * .8), rgba(255, 214, 110, .65) calc(var(--gs-br) + 2px), transparent calc(var(--gs-br) + 5px);
+  --gs-frame: var(--gs-lacquer);
+}
+
+/* ---------- the set: a sunburst behind everything ---------- */
+html[data-theme="gameshow"] body {
+  background-color: var(--night);
+  background-image:
+    radial-gradient(150% 70% at 50% 118%, rgba(24, 6, 0, .94), transparent 62%),
+    radial-gradient(1000px 440px at 50% -90px, rgba(255, 196, 80, .55), transparent 72%),
+    repeating-conic-gradient(from -4.5deg at 50% -170px, #8f360d 0deg 9deg, #5c1f07 9deg 18deg);
+  background-attachment: fixed;
+}
+@media (max-width: 640px) {
+  html[data-theme="gameshow"] body {
+    background-image:
+      radial-gradient(150% 55% at 50% 112%, rgba(24, 6, 0, .92), transparent 62%),
+      radial-gradient(520px 300px at 50% -70px, rgba(255, 196, 80, .5), transparent 72%),
+      repeating-conic-gradient(from -7deg at 50% -100px, #8f360d 0deg 14deg, #5c1f07 14deg 28deg);
+  }
+}
+
+/* ---------- type ---------- */
+[data-theme="gameshow"] h1, [data-theme="gameshow"] h2 { font-family: var(--f-show); font-weight: 400; letter-spacing: 0; }
+[data-theme="gameshow"] h3 { font-family: var(--f-retro); font-weight: 400; letter-spacing: 0; }
+[data-theme="gameshow"] .logo { font-family: var(--f-show); font-weight: 400; font-size: 24px; letter-spacing: 0; color: var(--chalk); gap: 8px; text-shadow: 2px 2px 0 var(--gs-orange-lo), 3px 3px 0 var(--ink); }
+[data-theme="gameshow"] .logo b { background: none; color: var(--hi); padding: 0 2px; border-radius: 0; transform: rotate(-4deg); text-shadow: 2px 2px 0 var(--gs-lacquer), 3px 3px 0 var(--ink); }
+[data-theme="gameshow"] .logo img { border: 2px solid var(--ink); box-shadow: 0 0 0 2px var(--hi); }
+
+/* ---------- surfaces, stickers, buttons ---------- */
+[data-theme="gameshow"] .stk { background: linear-gradient(180deg, #47200c, var(--deep) 140px); border: 3px solid var(--ink); box-shadow: 0 0 0 2px var(--edge), 6px 7px 0 2px var(--gs-shadow); }
+[data-theme="gameshow"] .btn {
+  font-family: var(--f-retro); font-weight: 400; letter-spacing: .01em; border: 3px solid var(--ink); border-radius: 999px; background: var(--deep-2);
+  box-shadow: inset 0 3px 0 rgba(255, 230, 190, .16), inset 0 -4px 0 rgba(0, 0, 0, .28), 4px 4px 0 var(--gs-shadow);
+}
+[data-theme="gameshow"] .btn:hover:not(:disabled) { background: var(--deep-3); box-shadow: inset 0 3px 0 rgba(255, 230, 190, .16), inset 0 -4px 0 rgba(0, 0, 0, .28), 5px 5px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .btn:active:not(:disabled) { box-shadow: inset 0 3px 0 rgba(0, 0, 0, .2), 1px 1px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .btn.hi, [data-theme="gameshow"] .btn.gum, [data-theme="gameshow"] .btn.aqua { border: 3px solid var(--ink); }
+[data-theme="gameshow"] .btn.hi { background: linear-gradient(180deg, #ffe17a, var(--hi) 55%, #eea312); }
+[data-theme="gameshow"] .btn.hi:hover:not(:disabled) { background: linear-gradient(180deg, #ffeba3, #ffd04f 55%, #f4b22c); }
+[data-theme="gameshow"] .btn.gum { background: linear-gradient(180deg, #ff8fbb, var(--gum) 55%, #e83d7e); }
+[data-theme="gameshow"] .btn.gum:hover:not(:disabled) { background: linear-gradient(180deg, #ffa5c8, #ff6ea4 55%, #ef4f8b); }
+[data-theme="gameshow"] .btn.aqua { background: linear-gradient(180deg, #6fe6d8, var(--aqua) 55%, #13a898); }
+[data-theme="gameshow"] .btn.flat { background: transparent; border-color: var(--edge); box-shadow: none; }
+[data-theme="gameshow"] .btn.flat:hover:not(:disabled) { background: var(--deep-2); box-shadow: none; }
+[data-theme="gameshow"] .btn.sm { box-shadow: inset 0 2px 0 rgba(255, 230, 190, .16), inset 0 -3px 0 rgba(0, 0, 0, .28), 3px 3px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .chip { background: var(--deep-2); border: 2px solid var(--ink); box-shadow: 0 0 0 2px var(--edge); }
+[data-theme="gameshow"] .code-chip, [data-theme="gameshow"] .code-in { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .tag { font-family: var(--f-retro); font-weight: 400; letter-spacing: .02em; }
+[data-theme="gameshow"] .tag.gum { background: var(--gs-orange); }
+[data-theme="gameshow"] .pill { background: var(--deep-2); border-color: var(--ink); box-shadow: 0 0 0 2px var(--edge); font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .pill[aria-pressed="true"] { background: var(--hi); color: var(--ink); border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink), 0 0 14px rgba(255, 193, 43, .45); }
+[data-theme="gameshow"] .tab { font-family: var(--f-retro); font-weight: 400; border-radius: 999px; background: var(--deep-2); border-color: var(--ink); box-shadow: 0 0 0 2px var(--edge); }
+[data-theme="gameshow"] .tab[aria-selected="true"] { background: var(--gs-orange); color: var(--ink); border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+[data-theme="gameshow"] .field { background: #250b02; border: 3px solid var(--edge); border-radius: 14px; }
+[data-theme="gameshow"] .field:focus { border-color: var(--hi); }
+[data-theme="gameshow"] .x { border-color: var(--ink); background: var(--deep-2); box-shadow: 0 0 0 2px var(--edge); }
+[data-theme="gameshow"] .av { background: #250b02; border-color: var(--edge); }
+[data-theme="gameshow"] .av.c0 { background: #5c1430; border-color: var(--gum); }
+[data-theme="gameshow"] .av.c1 { background: #0b4741; border-color: var(--aqua); }
+[data-theme="gameshow"] .floater small { background: var(--hi); color: var(--ink); font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .choice-btn, [data-theme="gameshow"] .deck-opt, [data-theme="gameshow"] .th-opt { border-color: var(--ink); box-shadow: 0 0 0 2px var(--edge), 4px 5px 0 2px var(--gs-shadow); }
+[data-theme="gameshow"] .choice-btn b, [data-theme="gameshow"] .deck-opt b, [data-theme="gameshow"] .th-name b { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .deck-opt[aria-pressed="true"], [data-theme="gameshow"] .th-opt[aria-checked="true"] { background: var(--hi); border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink), 4px 5px 0 2px var(--gs-shadow); }
+[data-theme="gameshow"] .toast { background: var(--deep-2); border-color: var(--ink); box-shadow: 0 0 0 2px var(--edge), 4px 4px 0 2px var(--gs-shadow); }
+[data-theme="gameshow"] .toast.err { background: var(--wrong); color: var(--ink); }
+[data-theme="gameshow"] .toast.win { background: var(--hi); color: var(--ink); }
+[data-theme="gameshow"] .empty { border-color: var(--edge); }
+[data-theme="gameshow"] .keybox { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .sheet h2 { color: var(--hi); text-shadow: 2px 2px 0 var(--gs-lacquer), 3px 3px 0 var(--ink); }
+
+/* ---------- home: today's episode under a strip of bulbs, and two big studio buttons ---------- */
+[data-theme="gameshow"] .drop-card { background: linear-gradient(180deg, #55230b, var(--deep) 62%); padding-top: 36px; }
+[data-theme="gameshow"] .drop-card::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 20px; pointer-events: none; border-bottom: 3px solid var(--ink);
+  background: radial-gradient(circle at 50% 50%, var(--gs-hot)) 0 0 / 28px 20px round, var(--gs-lacquer);
+}
+[data-theme="gameshow"] .drop-card h1 { font-family: var(--f-show); font-weight: 400; letter-spacing: 0; line-height: 1; color: var(--hi); text-shadow: 3px 3px 0 var(--gs-lacquer), 6px 6px 0 var(--ink); }
+[data-theme="gameshow"] .drop-card .kicker .tag:first-child { background: var(--gs-orange); color: var(--ink); }
+[data-theme="gameshow"] .cat-chip { background: #250b02; border: 2px solid var(--gs-orange); border-radius: 999px; font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .daily-line { border-top: 3px dotted var(--hi); }
+[data-theme="gameshow"] .daily-line .score { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .mode-btn { border: 4px solid var(--ink); border-radius: 30px; box-shadow: inset 0 5px 0 rgba(255, 255, 255, .35), inset 0 -8px 0 rgba(80, 20, 0, .25), 7px 8px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .mode-btn:hover { box-shadow: inset 0 5px 0 rgba(255, 255, 255, .35), inset 0 -8px 0 rgba(80, 20, 0, .25), 9px 10px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .mode-btn:active { box-shadow: inset 0 3px 0 rgba(0, 0, 0, .2), 2px 2px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .mode-btn .t { font-family: var(--f-show); font-weight: 400; letter-spacing: 0; line-height: 1; text-shadow: 3px 3px 0 rgba(255, 255, 255, .45); }
+[data-theme="gameshow"] .mode-btn .s { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .mode-btn.play { background: linear-gradient(180deg, #ffe17a, var(--hi) 60%, #eea312); }
+[data-theme="gameshow"] .mode-btn.host { background: linear-gradient(180deg, #ffb46a, var(--gs-orange) 60%, #e2600d); }
+[data-theme="gameshow"] .panel-head h2 { font-size: clamp(20px, 2vw, 25px); color: var(--hi); text-shadow: 2px 2px 0 var(--gs-lacquer), 3px 3px 0 var(--ink); }
+[data-theme="gameshow"] .lb li { background: var(--deep-2); border: 2px solid var(--ink); }
+[data-theme="gameshow"] .lb li.me { background: var(--hi); }
+[data-theme="gameshow"] .lb .pos, [data-theme="gameshow"] .lb .val { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .lb .pos { color: var(--hi); }
+[data-theme="gameshow"] .lb li.me .pos { color: var(--ink); }
+[data-theme="gameshow"] .rejoin { background: var(--hi); }
+[data-theme="gameshow"] .badge { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .badge.locked, [data-theme="gameshow"] .badge-card.locked { background: var(--deep-2); }
+[data-theme="gameshow"] .badge-card b, [data-theme="gameshow"] .stat b { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .stat { background: var(--deep-2); border-color: var(--ink); }
+
+/* ---------- the hot seat: a contestant's lit name panel with racing stripes ---------- */
+[data-theme="gameshow"] .seat {
+  border: 3px solid var(--ink); border-radius: 22px 22px 12px 12px; padding-bottom: 20px;
+  background: linear-gradient(180deg, var(--gs-stripes)), var(--c);
+  box-shadow: inset 0 4px 0 rgba(255, 255, 255, .35), 6px 7px 0 var(--gs-shadow);
+}
+[data-theme="gameshow"] .seat.solo { --c: var(--hi); }
+[data-theme="gameshow"] .seat .who b { font-family: var(--f-show); font-weight: 400; letter-spacing: 0; line-height: 1.1; padding-bottom: 2px; }
+[data-theme="gameshow"] .seat .who span { font-weight: 700; }
+[data-theme="gameshow"] .seat .av { background: var(--gs-cream); border: 3px solid var(--ink); box-shadow: 0 0 0 3px var(--hi); }
+[data-theme="gameshow"] .seat .act { background: var(--ink); color: var(--hi); font-family: var(--f-retro); font-weight: 400; display: inline-flex; align-items: center; gap: 8px; }
+[data-theme="gameshow"] .seat .act::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(circle, #fffbe8 0 2px, var(--hi) 4px); box-shadow: 0 0 8px var(--hi); }
+[data-theme="gameshow"] .seat.compact { padding-bottom: 18px; box-shadow: inset 0 4px 0 rgba(255, 255, 255, .35), 4px 5px 0 var(--gs-shadow); }
+@keyframes gs-you { 0%, 100% { box-shadow: inset 0 4px 0 rgba(255, 255, 255, .35), 6px 7px 0 var(--gs-shadow); } 50% { box-shadow: inset 0 4px 0 rgba(255, 255, 255, .35), 6px 7px 0 var(--gs-shadow), 0 0 0 5px var(--hi), 0 0 28px 6px rgba(255, 193, 43, .5); } }
+[data-theme="gameshow"] .seat.you { animation: seat-in .35s cubic-bezier(.2, .9, .3, 1.25), gs-you 1.6s ease-in-out .4s infinite; }
+
+/* ---------- crews: wood-grain podiums with a lit strip in the crew's color ---------- */
+[data-theme="gameshow"] .crew-card, [data-theme="gameshow"] .score {
+  background: var(--gs-wood); border: 3px solid var(--ink); border-top: 10px solid var(--c); border-left-width: 3px; border-radius: 18px 18px 8px 8px;
+  box-shadow: 0 0 0 2px var(--edge), 4px 5px 0 2px var(--gs-shadow);
+}
+[data-theme="gameshow"] .crew-card.on, [data-theme="gameshow"] .score.on { border-color: var(--ink); border-top-color: var(--c); box-shadow: 0 0 0 3px var(--c), 0 0 22px 2px color-mix(in srgb, var(--c) 55%, transparent), 4px 5px 0 3px var(--gs-shadow); }
+[data-theme="gameshow"] .crew-card .nm, [data-theme="gameshow"] .score .nm { font-family: var(--f-retro); font-weight: 400; text-shadow: 2px 2px 0 var(--ink); }
+[data-theme="gameshow"] .crew-card .haul, [data-theme="gameshow"] .score .amt { font-family: var(--f-retro); font-weight: 400; letter-spacing: 0; text-shadow: 2px 2px 0 var(--ink), 3px 3px 0 var(--ink); }
+[data-theme="gameshow"] .life { background: var(--ink); border-color: var(--edge); }
+[data-theme="gameshow"] .heat { background: var(--gs-orange); color: var(--ink); }
+[data-theme="gameshow"] .feed h3 { font-family: var(--f-retro); }
+[data-theme="gameshow"] .feed li i { border-radius: 50%; }
+
+/* ---------- the big board: orange panels in a marquee of bulbs ---------- */
+[data-theme="gameshow"] .board {
+  position: relative; padding: calc(var(--gs-band) + 14px); border: 4px solid var(--ink); border-radius: 30px;
+  background: radial-gradient(120% 90% at 50% 0%, #4d200b, #250c03 70%);
+  box-shadow: inset 0 0 0 var(--gs-band) var(--gs-frame), inset 0 0 0 calc(var(--gs-band) + 3px) var(--hi), inset 0 0 0 calc(var(--gs-band) + 6px) var(--ink), 8px 9px 0 var(--gs-shadow);
+}
+/* Two sets of bulbs, every other one, flashing in turn: a marquee chase. The masks keep
+   the bulbs in the frame band, so the cards and buttons inside never sit under them. */
+[data-theme="gameshow"] .board::before, [data-theme="gameshow"] .board::after,
+[data-theme="gameshow"] .q-card::before, [data-theme="gameshow"] .q-card::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; padding: var(--gs-band);
+  background-size: calc(var(--gs-band) * 2) calc(var(--gs-band) * 2); background-repeat: round;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+[data-theme="gameshow"] .board::before, [data-theme="gameshow"] .q-card::before {
+  background-image: radial-gradient(circle at 25% 25%, var(--gs-hot)), radial-gradient(circle at 75% 75%, var(--gs-hot)), radial-gradient(circle at 75% 25%, var(--gs-dim)), radial-gradient(circle at 25% 75%, var(--gs-dim));
+}
+[data-theme="gameshow"] .board::after, [data-theme="gameshow"] .q-card::after {
+  background-image: radial-gradient(circle at 75% 25%, var(--gs-hot)), radial-gradient(circle at 25% 75%, var(--gs-hot)), radial-gradient(circle at 25% 25%, var(--gs-dim)), radial-gradient(circle at 75% 75%, var(--gs-dim));
+}
+[data-theme="gameshow"] .board::after { animation: gs-chase 1.6s steps(1) infinite; }
+@keyframes gs-chase { 0% { opacity: 1; } 50% { opacity: 0; } }
+[data-theme="gameshow"] .col-head {
+  background: var(--gs-cream); color: var(--ink); border: 3px solid var(--ink); border-radius: 14px; font-family: var(--f-retro); font-weight: 400; letter-spacing: .01em;
+  box-shadow: inset 0 -4px 0 rgba(120, 60, 0, .18), 0 0 0 2px var(--hi);
+}
+[data-theme="gameshow"] .tile {
+  background: linear-gradient(180deg, #ffb252 0%, var(--gs-orange) 42%, var(--gs-orange-lo) 100%); color: #fff6e0; border: 3px solid var(--ink); border-radius: 16px;
+  font-family: var(--f-retro); font-weight: 400; letter-spacing: 0;
+  text-shadow: -2px -2px 0 var(--ink), 2px -2px 0 var(--ink), -2px 2px 0 var(--ink), 2px 2px 0 var(--ink), 0 -2px 0 var(--ink), 0 2px 0 var(--ink), -2px 0 0 var(--ink), 2px 0 0 var(--ink), 4px 5px 0 var(--ink);
+  box-shadow: inset 0 5px 0 rgba(255, 255, 255, .4), inset 0 -7px 0 rgba(110, 30, 0, .35), inset 5px 0 0 rgba(255, 255, 255, .12), inset -5px 0 0 rgba(110, 30, 0, .2), 4px 5px 0 var(--gs-shadow);
+}
+[data-theme="gameshow"] .tile .dollar { font-size: .62em; color: var(--hi); }
+[data-theme="gameshow"] .tile.can { border: 3px solid var(--ink); outline: 3px solid var(--hi); outline-offset: 0; }
+[data-theme="gameshow"] .tile.can:hover {
+  background: linear-gradient(180deg, #fff3c2, var(--hi) 55%, #eea312); color: var(--ink); text-shadow: 3px 3px 0 rgba(255, 255, 255, .55);
+  box-shadow: inset 0 5px 0 rgba(255, 255, 255, .5), inset 0 -7px 0 rgba(120, 60, 0, .3), 6px 7px 0 var(--gs-shadow), 0 0 26px 4px rgba(255, 193, 43, .55);
+}
+[data-theme="gameshow"] .tile.can:hover .dollar { color: var(--ink); }
+[data-theme="gameshow"] .tile.can:active { box-shadow: inset 0 3px 0 rgba(0, 0, 0, .2), 1px 1px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .tile.wait { color: #fff6e0; box-shadow: inset 0 5px 0 rgba(255, 255, 255, .3), inset 0 -7px 0 rgba(110, 30, 0, .35), 4px 5px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .tile.taken { background: rgba(20, 5, 0, .5); border: 3px dashed var(--edge); box-shadow: none; color: var(--chalk-dim); text-shadow: none; font-family: var(--f-retro); }
+[data-theme="gameshow"] .tile.taken.r0, [data-theme="gameshow"] .tile.taken.r1, [data-theme="gameshow"] .tile.taken.rs { border: 3px solid var(--ink); color: var(--ink); box-shadow: inset 0 4px 0 rgba(255, 255, 255, .35), inset 0 -5px 0 rgba(0, 0, 0, .18), 3px 4px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .tile.taken.r0 { background: var(--gum); }
+[data-theme="gameshow"] .tile.taken.r1 { background: var(--aqua); }
+[data-theme="gameshow"] .tile.taken.rs { background: var(--hi); }
+[data-theme="gameshow"] .tile .res b { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .tk-tag { background: var(--ink); color: var(--hi); border: 2px solid var(--hi); font-family: var(--f-retro); font-weight: 400; text-shadow: none; }
+[data-theme="gameshow"] .sp-tag { font-family: var(--f-retro); font-weight: 400; text-shadow: none; }
+[data-theme="gameshow"] .board-hint { font-family: var(--f-retro); }
+[data-theme="gameshow"] .hostbar { background: var(--deep); border: 3px dotted var(--edge); }
+
+/* ---------- the question: the main event, in its own marquee ---------- */
+[data-theme="gameshow"] .q-card {
+  position: relative; padding: calc(var(--gs-band) + clamp(14px, 2.4vw, 28px)); border: 4px solid var(--ink); border-radius: 32px;
+  background: radial-gradient(120% 80% at 50% 0%, #56240c, var(--deep) 70%);
+  box-shadow: inset 0 0 0 var(--gs-band) var(--gs-frame), inset 0 0 0 calc(var(--gs-band) + 3px) var(--hi), inset 0 0 0 calc(var(--gs-band) + 6px) var(--ink), 8px 9px 0 var(--gs-shadow);
+}
+/* Lights on during the reveal; they go wild for a right answer and dim for a miss. */
+[data-theme="gameshow"] .q-card:has(.stamp)::after { animation: gs-chase 1.2s steps(1) infinite; }
+[data-theme="gameshow"] .q-card:has(.stamp:not(.bad))::after, [data-theme="gameshow"] .fact-card.good::after { animation: gs-chase .34s steps(1) infinite; }
+[data-theme="gameshow"] .q-card:has(.stamp.bad)::before, [data-theme="gameshow"] .q-card:has(.stamp.bad)::after { animation: none; opacity: .4; }
+[data-theme="gameshow"] .q-card.hack { padding: clamp(18px, 3vw, 34px); }
+[data-theme="gameshow"] .q-card.hack::before, [data-theme="gameshow"] .q-card.hack::after { display: none; }
+[data-theme="gameshow"] .q-head .cat { font-family: var(--f-retro); font-weight: 400; letter-spacing: .02em; text-transform: uppercase; color: var(--gs-cream); }
+[data-theme="gameshow"] .q-head .val { font-family: var(--f-retro); font-weight: 400; border: 3px solid var(--ink); border-radius: 999px; padding: 0 14px; box-shadow: 0 0 14px rgba(255, 193, 43, .5); }
+[data-theme="gameshow"] .q-text { font-family: var(--f-retro); font-weight: 400; letter-spacing: 0; line-height: 1.16; color: #fffaf0; text-shadow: 3px 3px 0 var(--ink); }
+/* The clock is a row of bulbs that go out one by one. */
+[data-theme="gameshow"] .timer .track {
+  height: 18px; border-radius: 0; background: #4a1e08;
+  -webkit-mask: radial-gradient(circle closest-side, #000 82%, transparent 92%) 0 0 / 22px 18px round; mask: radial-gradient(circle closest-side, #000 82%, transparent 92%) 0 0 / 22px 18px round;
+}
+[data-theme="gameshow"] .timer .fill { background: radial-gradient(circle closest-side, #fffbe8 0 30%, var(--hi) 75%) 0 0 / 22px 18px round; }
+[data-theme="gameshow"] .timer .secs { font-family: var(--f-retro); font-weight: 400; color: var(--hi); text-shadow: 2px 2px 0 var(--ink); }
+[data-theme="gameshow"] .timer.late .fill { background: radial-gradient(circle closest-side, #ffe2dc 0 30%, var(--wrong) 75%) 0 0 / 22px 18px round; }
+[data-theme="gameshow"] .timer.late .secs, [data-theme="gameshow"] .late-lbl { color: var(--wrong); }
+[data-theme="gameshow"] .timer.frozen .fill { background: radial-gradient(circle closest-side, #fff 0 30%, var(--chalk-dim) 75%) 0 0 / 22px 18px round; }
+[data-theme="gameshow"] .late-lbl { font-family: var(--f-show); font-weight: 400; font-size: clamp(18px, 2vw, 24px); text-shadow: 2px 2px 0 var(--ink); }
+[data-theme="gameshow"] .q-card.hack .timer .track { -webkit-mask: none; mask: none; height: 16px; border-radius: 99px; }
+/* Answers are cream plates with an orange bulb for the letter. */
+[data-theme="gameshow"] .opt { background: var(--gs-cream); color: var(--ink); border: 3px solid var(--ink); border-radius: 18px; box-shadow: inset 0 -5px 0 rgba(120, 60, 0, .14), 4px 5px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .opt .L { border-radius: 50%; background: radial-gradient(circle at 38% 32%, #ffd08a, var(--gs-orange) 55%, var(--gs-orange-lo)); color: var(--ink); border: 3px solid var(--ink); font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .opt.can:not(.sel):hover { background: #fffaf0; border-color: var(--ink); box-shadow: inset 0 -5px 0 rgba(120, 60, 0, .14), 6px 7px 0 var(--gs-shadow), 0 0 0 3px var(--gs-orange); }
+[data-theme="gameshow"] .opt.sel { background: linear-gradient(180deg, #ffe17a, var(--hi) 60%, #f2ad22); color: var(--ink); border: 3px solid var(--ink); box-shadow: 0 0 0 4px var(--gs-lacquer), 0 0 24px 6px rgba(255, 193, 43, .55), 4px 5px 0 4px var(--gs-shadow); }
+[data-theme="gameshow"] .opt.sel .L { background: var(--ink); color: var(--hi); }
+[data-theme="gameshow"] .opt.right { background: var(--right); color: var(--ink); border: 3px solid var(--ink); box-shadow: 0 0 0 4px #c8ffd9, 0 0 26px 6px rgba(79, 226, 127, .55); }
+[data-theme="gameshow"] .opt.wrong { background: var(--wrong); color: var(--ink); border: 3px solid var(--ink); }
+[data-theme="gameshow"] .opt.right .L, [data-theme="gameshow"] .opt.wrong .L { background: var(--ink); color: var(--chalk); }
+[data-theme="gameshow"] .opt.dim { opacity: .42; }
+[data-theme="gameshow"] .opt .mark { font-family: var(--f-retro); font-weight: 400; border: 2px solid var(--ink); }
+[data-theme="gameshow"] .opt-ph { background: rgba(255, 242, 214, .1); border: 3px dashed var(--edge); border-radius: 18px; }
+[data-theme="gameshow"] .blurred { background: rgba(37, 12, 3, .84); border: 3px dashed var(--hi); border-radius: 22px; }
+[data-theme="gameshow"] .blurred .msg b { font-family: var(--f-show); font-weight: 400; color: var(--hi); text-shadow: 3px 3px 0 var(--ink); }
+[data-theme="gameshow"] .hint { color: var(--chalk-dim); }
+[data-theme="gameshow"] .take-banner { border-radius: 16px; box-shadow: inset 0 4px 0 rgba(255, 255, 255, .3), 4px 4px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .take-banner b { font-family: var(--f-show); font-weight: 400; }
+
+/* The verdict: a studio applause sign that lights up. */
+[data-theme="gameshow"] .stamp {
+  font-family: var(--f-retro); font-weight: 400; text-transform: uppercase; letter-spacing: .06em; line-height: 1; padding: 14px 24px 16px; transform: rotate(-2deg);
+  background: radial-gradient(120% 140% at 50% 50%, #fffef4, #ffeec0 70%); color: #0b7436; border: 5px solid var(--ink); border-radius: 14px;
+  outline: 6px dotted #fff3b0; outline-offset: -15px;
+  box-shadow: 0 0 0 5px var(--gs-orange), 0 0 0 9px var(--ink), 0 0 40px 12px rgba(255, 220, 130, .55), 8px 10px 0 9px var(--gs-shadow);
+  text-shadow: 0 0 10px rgba(255, 255, 255, .9);
+}
+[data-theme="gameshow"] .stamp.bad { background: radial-gradient(120% 140% at 50% 50%, #ff7a6e, #d4241c 75%); color: #fff6e8; transform: rotate(2deg); outline-color: #ffd0c8; box-shadow: 0 0 0 5px var(--ink), 0 0 0 9px #521010, 0 0 34px 8px rgba(255, 70, 60, .45), 8px 10px 0 9px var(--gs-shadow); text-shadow: 2px 2px 0 #6a0d10; }
+[data-theme="gameshow"] .delta { font-family: var(--f-retro); font-weight: 400; text-shadow: 3px 3px 0 var(--ink); }
+[data-theme="gameshow"] .fact { border-left: 6px solid var(--gs-orange); }
+[data-theme="gameshow"] .fact b { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .next-bar { background: #250b02; height: 8px; }
+[data-theme="gameshow"] .next-bar i { background: var(--hi); }
+
+/* The fun fact, on the same marquee card. */
+[data-theme="gameshow"] .fc-head .tag.hi { background: var(--gs-orange); color: var(--ink); border: 2px solid var(--ink); }
+[data-theme="gameshow"] .fc-text { font-family: var(--f-retro); font-weight: 400; color: #fffaf0; letter-spacing: 0; text-shadow: 3px 3px 0 var(--ink); }
+[data-theme="gameshow"] .fc-ans { border: 3px solid var(--ink); border-radius: 18px; box-shadow: 0 0 0 4px #c8ffd9, 4px 5px 0 4px var(--gs-shadow); }
+[data-theme="gameshow"] .fact-card.bad .fc-ans { box-shadow: 0 0 0 4px var(--gs-cream), 4px 5px 0 4px var(--gs-shadow); }
+[data-theme="gameshow"] .fc-ans .L { border-radius: 50%; font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .fc-ans b { font-family: var(--f-retro); font-weight: 400; }
+
+/* ---------- specials ---------- */
+[data-theme="gameshow"] .takeover { border-radius: 32px; }
+[data-theme="gameshow"] .takeover.double, [data-theme="gameshow"] .takeover.faceoff {
+  background: repeating-conic-gradient(from 0deg at 50% 50%, #ffd34f 0deg 10deg, #ffb52b 10deg 20deg); color: var(--ink); border: 4px solid var(--ink);
+  box-shadow: inset 0 0 0 14px var(--gs-lacquer), inset 0 0 0 18px var(--ink), 8px 9px 0 var(--gs-shadow);
+}
+[data-theme="gameshow"] .takeover.double .big, [data-theme="gameshow"] .takeover.faceoff .big { font-family: var(--f-show); font-weight: 400; letter-spacing: 0; line-height: .95; font-size: clamp(54px, 11vw, 150px); color: var(--gs-cream);
+  text-shadow: -3px -3px 0 var(--ink), 3px -3px 0 var(--ink), -3px 3px 0 var(--ink), 3px 3px 0 var(--ink), 0 -3px 0 var(--ink), 0 3px 0 var(--ink), 7px 8px 0 var(--gs-orange-lo), 10px 11px 0 var(--ink); }
+[data-theme="gameshow"] .takeover.double p { font-family: var(--f-retro); font-weight: 400; background: var(--gs-cream); border: 3px solid var(--ink); border-radius: 999px; padding: 6px 18px; display: inline-block; }
+
+/* ---------- lobby, captains, final ---------- */
+[data-theme="gameshow"] .invite .code { font-family: var(--f-retro); font-weight: 400; color: var(--hi); text-shadow: 4px 4px 0 var(--gs-lacquer), 7px 7px 0 var(--ink); letter-spacing: .08em; }
+[data-theme="gameshow"] .qr { border-color: var(--ink); box-shadow: 0 0 0 4px var(--hi), 6px 7px 0 4px var(--gs-shadow); }
+/* Everyone in the lobby gets a little podium with a name strip. */
+[data-theme="gameshow"] .mem { background: var(--gs-wood); border: 3px solid var(--ink); border-top: 8px solid var(--gs-orange); border-radius: 16px 16px 8px 8px; box-shadow: 3px 4px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .mem b { font-family: var(--f-retro); font-weight: 400; text-shadow: 2px 2px 0 var(--ink); }
+[data-theme="gameshow"] .mem .tag { background: var(--hi); color: var(--ink); border: 2px solid var(--ink); }
+[data-theme="gameshow"] .mem .rm { background: var(--ink); border-color: var(--edge); }
+[data-theme="gameshow"] .cap { border: 4px solid var(--ink); border-radius: 26px 26px 12px 12px; padding-bottom: 28px; background: linear-gradient(180deg, var(--gs-stripes)), var(--gum); box-shadow: inset 0 5px 0 rgba(255, 255, 255, .35), 6px 7px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .cap.c1 { background: linear-gradient(180deg, var(--gs-stripes)), var(--aqua); }
+[data-theme="gameshow"] .cap b { font-family: var(--f-show); font-weight: 400; }
+[data-theme="gameshow"] .cap .tag { background: var(--ink); color: var(--chalk); }
+[data-theme="gameshow"] .vs { font-family: var(--f-show); font-weight: 400; color: var(--hi); text-shadow: 3px 3px 0 var(--gs-lacquer), 5px 5px 0 var(--ink); }
+[data-theme="gameshow"] .show h2 { color: var(--hi); text-shadow: 3px 3px 0 var(--gs-lacquer), 5px 5px 0 var(--ink); }
+[data-theme="gameshow"] .toss-line b { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .face { border-color: var(--ink); box-shadow: inset 0 0 0 10px rgba(255, 255, 255, .45), 0 0 0 5px var(--hi), 0 0 0 9px var(--ink); }
+[data-theme="gameshow"] .draft .crew-col { border: 4px solid var(--ink); border-radius: 24px 24px 10px 10px; box-shadow: inset 0 5px 0 rgba(255, 255, 255, .3), 6px 7px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .draft .crew-col h3 { font-family: var(--f-show); }
+[data-theme="gameshow"] .pick-btn { font-family: var(--f-retro); font-weight: 400; border-color: var(--ink); box-shadow: 0 0 0 2px var(--edge), 3px 4px 0 2px var(--gs-shadow); }
+/* The winner: a sunburst title card in the crew's color, under a strip of bulbs. */
+[data-theme="gameshow"] .winner {
+  border: 4px solid var(--ink); border-radius: 32px; position: relative; overflow: hidden; padding-top: 44px;
+  background-image: repeating-conic-gradient(from 0deg at 50% 120%, rgba(255, 255, 255, .24) 0deg 8deg, transparent 8deg 16deg);
+  box-shadow: inset 0 0 0 10px rgba(255, 255, 255, .25), 0 0 0 4px var(--hi), 8px 10px 0 4px var(--gs-shadow);
+}
+/* .stk paints its own background, so the crew colors go back on here. */
+[data-theme="gameshow"] .winner.c0 { background-color: var(--gum); }
+[data-theme="gameshow"] .winner.c1 { background-color: var(--aqua); }
+[data-theme="gameshow"] .winner.tie, [data-theme="gameshow"] .winner.solo { background-color: var(--hi); }
+/* The bulbs chase: hot and dim swap places every half second. */
+[data-theme="gameshow"] .winner::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 22px; pointer-events: none; border-bottom: 3px solid var(--ink);
+  background: radial-gradient(circle at 25% 50%, var(--gs-hot)) 0 0 / 60px 22px repeat-x, radial-gradient(circle at 75% 50%, var(--gs-dim)) 0 0 / 60px 22px repeat-x, var(--gs-lacquer);
+  animation: gs-strip 1s steps(1) infinite;
+}
+@keyframes gs-strip { 50% { background-position: 30px 0, 30px 0, 0 0; } }
+[data-theme="gameshow"] .winner h1 { font-family: var(--f-show); font-weight: 400; letter-spacing: 0; line-height: 1; font-size: clamp(40px, 5.6vw, 76px); color: var(--gs-cream); text-shadow: -2px -2px 0 var(--ink), 2px -2px 0 var(--ink), -2px 2px 0 var(--ink), 2px 2px 0 var(--ink), 5px 6px 0 var(--ink); }
+[data-theme="gameshow"] .winner .tag { background: var(--ink); color: var(--hi); }
+[data-theme="gameshow"] .haul-card { border: 4px solid var(--ink); border-radius: 22px 22px 10px 10px; box-shadow: inset 0 5px 0 rgba(255, 255, 255, .3), 6px 7px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .haul-card .amt { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .mine .big { font-family: var(--f-retro); font-weight: 400; text-shadow: 3px 3px 0 var(--ink); }
+[data-theme="gameshow"] .recap details summary { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .recap li b { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .rank-bar { background: #250b02; }
+[data-theme="gameshow"] .rank-bar i { background: linear-gradient(90deg, var(--gs-orange), var(--hi)); }
+[data-theme="gameshow"] .sd-pick { background: var(--deep-2); border-color: var(--ink); }
+
+/* ---------- corners: sound, mic, emoji ---------- */
+[data-theme="gameshow"] .sound, [data-theme="gameshow"] .mic-btn { background: var(--deep-2); border: 3px solid var(--ink); box-shadow: 0 0 0 2px var(--edge), 3px 4px 0 2px var(--gs-shadow); }
+[data-theme="gameshow"] .mic-btn { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .mic-btn.on { background: var(--c); color: var(--ink); }
+[data-theme="gameshow"] .reacts, [data-theme="gameshow"] .emo-row { background: var(--deep-2); border-color: var(--ink); box-shadow: 0 0 0 2px var(--edge), 3px 4px 0 2px var(--gs-shadow); }
+[data-theme="gameshow"] .emo-row { border: 3px solid var(--ink); }
+[data-theme="gameshow"] .emo-b:active { background: radial-gradient(circle at 40% 35%, #fff3c2, var(--hi) 55%, #eea312); }
+[data-theme="gameshow"] .emo-pick { background: var(--deep); border: 3px solid var(--ink); box-shadow: 0 0 0 3px var(--gs-orange); border-radius: 24px; }
+[data-theme="gameshow"] .emo-tabs button { background: var(--deep-2); }
+[data-theme="gameshow"] .emo-tabs button small { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .emo-tabs button[aria-selected="true"] { background: var(--hi); border-color: var(--ink); }
+[data-theme="gameshow"] .emo-grid button:hover { background: var(--deep-2); }
+[data-theme="gameshow"] .emo-grid button.on { background: var(--gs-orange); }
+[data-theme="gameshow"] .room::after { background: linear-gradient(to bottom, transparent, #1c0802 42%); }
+
+/* ---------- Vault Jam: behind the curtain, on the stage boards ---------- */
+[data-theme="gameshow"] .vault-card .vc-title b { font-family: var(--f-show); font-weight: 400; color: var(--hi); text-shadow: 2px 2px 0 var(--gs-lacquer), 3px 3px 0 var(--ink); }
+[data-theme="gameshow"] .gems, [data-theme="gameshow"] .chip.gems { font-family: var(--f-retro); font-weight: 400; background: var(--ink); }
+[data-theme="gameshow"] .jb b { font-family: var(--f-retro); font-weight: 400; color: var(--hi); }
+[data-theme="gameshow"] .jam-head h1 { color: var(--hi); text-shadow: 3px 3px 0 var(--gs-lacquer), 5px 5px 0 var(--ink); }
+[data-theme="gameshow"] .jam-result h2 { color: var(--hi); text-shadow: 2px 2px 0 var(--gs-lacquer), 3px 3px 0 var(--ink); }
+[data-theme="gameshow"] .jam-frame {
+  padding: 14px; border-radius: 22px; border: 4px solid var(--ink); box-shadow: 0 0 0 3px var(--hi), 7px 8px 0 3px var(--gs-shadow);
+  /* red velvet curtain pleats around the stage floor: wide folds, not fine lines */
+  background: repeating-linear-gradient(90deg, #6e0f12 0 8px, #a3181c 8px 16px, #c8322a 16px 20px, #a3181c 20px 26px);
+}
+[data-theme="gameshow"] .jam-floor {
+  border-radius: 10px; background-color: #6a3416;
+  background-image: linear-gradient(to right, rgba(29, 9, 1, .55) 3px, transparent 3px), linear-gradient(to bottom, rgba(29, 9, 1, .55) 3px, transparent 3px),
+    repeating-linear-gradient(180deg, #7b3f1c 0 calc(100% / 12), #6a3416 calc(100% / 12) calc(100% / 6));
+  background-size: calc(100% / 6) calc(100% / 6), calc(100% / 6) calc(100% / 6), auto;
+  box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 40px rgba(20, 5, 0, .5);
+}
+[data-theme="gameshow"] .jam-door { background: #2a0f04; border-color: var(--hi); box-shadow: 0 0 14px rgba(255, 193, 43, .6); }
+[data-theme="gameshow"] .jam-door span { background: var(--hi); font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .jam-wall::before { background: var(--deep-3); }
+[data-theme="gameshow"] .pc::before { border-radius: 10px; box-shadow: inset 0 3px 0 rgba(255, 255, 255, .35), 3px 3px 0 var(--pc-ink); }
+[data-theme="gameshow"] .pc.k0 { --fill: var(--gs-orange); } [data-theme="gameshow"] .pc.k1 { --fill: var(--gum); } [data-theme="gameshow"] .pc.k2 { --fill: var(--aqua); }
+[data-theme="gameshow"] .pc.k3 { --fill: #c9a0ff; } [data-theme="gameshow"] .pc.k4 { --fill: var(--gs-cream); }
+[data-theme="gameshow"] .pc.jewel { --fill: var(--hi); }
+[data-theme="gameshow"] .pc.jewel::before { box-shadow: inset 0 3px 0 rgba(255, 255, 255, .5), 3px 3px 0 var(--pc-ink), 0 0 16px 3px rgba(255, 193, 43, .6); }
+/* The card draw: a sunburst on the back of every card. */
+[data-theme="gameshow"] .fl-back { border-radius: 22px; box-shadow: 0 0 0 4px var(--hi), 7px 8px 0 4px var(--gs-shadow);
+  background: repeating-conic-gradient(from 0deg at 50% 50%, var(--gs-orange) 0deg 12deg, #c2410c 12deg 24deg); }
+[data-theme="gameshow"] .fl-back span { font-family: var(--f-show); font-weight: 400; font-size: 24px; background: var(--gs-cream); border-radius: 999px; padding: 8px 18px; box-shadow: 3px 4px 0 var(--ink); }
+[data-theme="gameshow"] .fl-back span b { font-weight: 400; color: #c2410c; }
+[data-theme="gameshow"] .pcard { border-radius: 22px; box-shadow: 0 0 0 4px var(--hi), 7px 8px 0 4px var(--gs-shadow); }
+[data-theme="gameshow"] .pcard b { font-family: var(--f-show); font-weight: 400; }
+[data-theme="gameshow"] .pcard.dud { background: var(--gs-wood); }
+[data-theme="gameshow"] .pcard.dud b { color: var(--hi); text-shadow: 2px 2px 0 var(--ink); }
+[data-theme="gameshow"] .trophy { box-shadow: 0 0 0 2px var(--edge), 3px 4px 0 2px var(--gs-shadow); }
+[data-theme="gameshow"] .trophy b { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .hcard { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .mole-banner { background: var(--deep-2); border-radius: 16px; }
+
+/* ---------- face-off (joke decks): two contestants at their podiums ---------- */
+[data-theme="gameshow"] .joke-card { border: 3px dashed var(--hi); box-shadow: 0 0 0 2px var(--ink), 6px 7px 0 2px var(--gs-shadow); }
+[data-theme="gameshow"] .joke-card h2 { color: var(--hi); line-height: 1.05; text-shadow: 2px 2px 0 var(--gs-lacquer), 4px 4px 0 var(--ink); }
+[data-theme="gameshow"] .joke-card .kicker .tag:first-child { background: var(--gum); color: var(--ink); border: 2px solid var(--ink); }
+[data-theme="gameshow"] .faceoff-note small { color: var(--chalk-dim); }
+[data-theme="gameshow"] .takeover.faceoff .big { font-size: clamp(54px, 10vw, 130px); }
+[data-theme="gameshow"] .fo-vs { align-items: end; }
+[data-theme="gameshow"] .fo-p { background: var(--gs-wood); color: var(--chalk); border: 4px solid var(--ink); border-top: 12px solid var(--c); border-radius: 20px 20px 8px 8px; box-shadow: 5px 6px 0 var(--gs-shadow); padding: 12px 16px 10px; }
+[data-theme="gameshow"] .fo-p .av { background: var(--gs-cream); border: 3px solid var(--ink); box-shadow: 0 0 0 3px var(--hi); }
+[data-theme="gameshow"] .fo-p b { font-family: var(--f-show); font-weight: 400; color: var(--ink); background: var(--c); border: 3px solid var(--ink); border-radius: 999px; padding: 4px 14px 6px; line-height: 1.05; }
+[data-theme="gameshow"] .fo-p small { font-family: var(--f-retro); font-weight: 400; opacity: 1; color: var(--gs-cream); text-shadow: 2px 2px 0 var(--ink); }
+[data-theme="gameshow"] .fo-vs .vs { font-family: var(--f-show); font-weight: 400; color: var(--gs-cream); align-self: center; text-shadow: 3px 3px 0 var(--gs-orange-lo), 5px 5px 0 var(--ink); }
+[data-theme="gameshow"] .takeover.faceoff .fo-setup { font-family: var(--f-retro); font-weight: 400; color: var(--ink); background: var(--gs-cream); border: 4px solid var(--ink); border-radius: 18px; padding: 14px 20px; box-shadow: 5px 6px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .takeover.faceoff .fo-how { font-weight: 700; opacity: 1; color: var(--ink); }
+[data-theme="gameshow"] .duel-p { background: var(--gs-wood); color: var(--chalk); border: 3px solid var(--ink); border-top: 7px solid var(--c); border-radius: 16px 16px 8px 8px; box-shadow: 3px 4px 0 var(--gs-shadow); }
+[data-theme="gameshow"] .duel-p .nm { font-family: var(--f-retro); font-weight: 400; text-shadow: 2px 2px 0 var(--ink); }
+[data-theme="gameshow"] .duel-p b { color: var(--gs-cream); text-shadow: 1px 1px 0 var(--ink); }
+[data-theme="gameshow"] .duel-p.locked { background: linear-gradient(180deg, var(--gs-stripes)), var(--c); color: var(--ink); border-color: var(--ink); border-top-color: var(--ink); padding-bottom: 18px; }
+[data-theme="gameshow"] .duel-p.locked .nm, [data-theme="gameshow"] .duel-p.locked b { color: var(--ink); text-shadow: none; }
+[data-theme="gameshow"] .duel-banner b { font-family: var(--f-show); font-weight: 400; }
+[data-theme="gameshow"] .opt.blank .blank-bar { background: repeating-linear-gradient(90deg, #8a5530 0 22px, transparent 22px 30px); opacity: .55; }
+[data-theme="gameshow"] .opt.blank.sel .blank-bar { background: repeating-linear-gradient(90deg, var(--ink) 0 22px, transparent 22px 30px); opacity: .6; }
+/* The replay: the picks land on a lit board of four panels, then a stage-floor strip measures the times. */
+[data-theme="gameshow"] .replay .rp-setup { font-family: var(--f-retro); font-weight: 400; color: #fffaf0; text-shadow: 2px 2px 0 var(--ink); }
+[data-theme="gameshow"] .zone { background: #250c03; border: 4px solid var(--ink); border-radius: 18px; box-shadow: 0 0 0 3px var(--hi), 5px 6px 0 3px var(--gs-shadow); }
+[data-theme="gameshow"] .zone-sq { font-family: var(--f-read); }
+[data-theme="gameshow"] .zone-sq:nth-child(odd) { border-right: 3px dashed var(--edge); }
+[data-theme="gameshow"] .zone-sq:nth-child(-n+2) { border-bottom: 3px dashed var(--edge); }
+[data-theme="gameshow"] .zone-sq .L { border-radius: 50%; background: radial-gradient(circle at 38% 32%, #ffd08a, var(--gs-orange) 55%, var(--gs-orange-lo)); color: var(--ink); border: 3px solid var(--ink); font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .zone-sq.hit { background: var(--right); color: var(--ink); }
+[data-theme="gameshow"] .zone-sq.hit .L { background: var(--ink); color: var(--right); }
+[data-theme="gameshow"] .zone-sq.out { background: color-mix(in srgb, var(--wrong) 34%, #250c03); }
+[data-theme="gameshow"] .zone-mark { border-color: var(--gs-cream); font-family: var(--f-read); }
+[data-theme="gameshow"] .ball { border-color: var(--gs-cream); box-shadow: 0 0 0 2px var(--ink), 2px 3px 0 2px var(--ink), 0 0 12px 2px color-mix(in srgb, var(--c) 60%, transparent); }
+[data-theme="gameshow"] .measure .field { border: 3px solid var(--ink); border-radius: 12px; box-shadow: 0 0 0 3px var(--edge), 4px 5px 0 3px var(--gs-shadow); }
+[data-theme="gameshow"] .measure .yd { background: rgba(255, 214, 140, .45); }
+[data-theme="gameshow"] .measure .scale small { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .marker .tag-l { font-family: var(--f-retro); font-weight: 400; }
+[data-theme="gameshow"] .marker .tag-l b { font-weight: 400; }
+[data-theme="gameshow"] .line-to-gain { box-shadow: 0 0 6px 2px #fff, 0 0 18px 4px var(--hi), 0 0 2px var(--ink); }
+[data-theme="gameshow"] .rp-verdict { row-gap: 22px; padding-top: 6px; }
+[data-theme="gameshow"] .rp-verdict .stamp { font-size: clamp(24px, 3.2vw, 40px); }
+
+/* ---------- look picker preview ---------- */
+.th-prev[data-theme="gameshow"] {
+  background:
+    radial-gradient(160px 70px at 50% -10px, rgba(255, 196, 80, .55), transparent 75%),
+    repeating-conic-gradient(from -6deg at 50% -40px, #8f360d 0deg 12deg, #5c1f07 12deg 24deg),
+    var(--night);
+}
+.th-prev[data-theme="gameshow"] .tp-logo { font-family: var(--f-show); font-weight: 400; font-size: 14px; color: var(--chalk); text-shadow: 1px 1px 0 var(--gs-orange-lo), 2px 2px 0 var(--ink); }
+.th-prev[data-theme="gameshow"] .tp-logo b { background: none; color: var(--hi); padding: 0 1px; }
+.th-prev[data-theme="gameshow"] .tp-seat { background: linear-gradient(180deg, transparent calc(100% - 7px), #ffc12b calc(100% - 7px) calc(100% - 5px), #ff8a1f calc(100% - 5px) calc(100% - 3px), #c2410c calc(100% - 3px)), var(--gum); border-radius: 12px 12px 6px 6px; font-family: var(--f-show); font-weight: 400; padding-bottom: 9px; }
+.th-prev[data-theme="gameshow"] .tp-card { background: var(--deep); border: 3px solid var(--ink); border-radius: 12px; box-shadow: 0 0 0 4px var(--gs-lacquer); outline: 3px dotted #fff3b0; outline-offset: 0; }
+.th-prev[data-theme="gameshow"] .tp-q { font-family: var(--f-retro); font-weight: 400; }
+.th-prev[data-theme="gameshow"] .tp-opt { background: var(--gs-cream); color: var(--ink); border: 1.5px solid var(--ink); border-radius: 8px; }
+.th-prev[data-theme="gameshow"] .tp-opt i { border-radius: 50%; background: var(--gs-orange); color: var(--ink); font-family: var(--f-retro); font-weight: 400; }
+.th-prev[data-theme="gameshow"] .tp-tile { background: linear-gradient(180deg, #ffb252, var(--gs-orange) 45%, var(--gs-orange-lo)); border: 2px solid var(--ink); border-radius: 9px; color: #fff6e0; font-family: var(--f-retro); font-weight: 400; font-size: 16px;
+  text-shadow: -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink), 1px 1px 0 var(--ink), 2px 3px 0 var(--ink); box-shadow: inset 0 3px 0 rgba(255, 255, 255, .35), 0 0 0 2px var(--hi); }
+
+/* ---------- phones: slimmer frames, same set ---------- */
+@media (max-width: 640px) {
+  [data-theme="gameshow"] { --gs-band: 11px; --gs-br: 3.2px;
+    --gs-stripes: transparent calc(100% - 9px), var(--ink) calc(100% - 9px) calc(100% - 8px), #ffc12b calc(100% - 8px) calc(100% - 6px), #ff8a1f calc(100% - 6px) calc(100% - 3px), #c2410c calc(100% - 3px); }
+  [data-theme="gameshow"] .stk { box-shadow: 0 0 0 2px var(--edge), 4px 5px 0 2px var(--gs-shadow); }
+  [data-theme="gameshow"] .board { padding: calc(var(--gs-band) + 5px); border-width: 3px; border-radius: 20px;
+    box-shadow: inset 0 0 0 var(--gs-band) var(--gs-frame), inset 0 0 0 calc(var(--gs-band) + 2px) var(--hi), inset 0 0 0 calc(var(--gs-band) + 4px) var(--ink), 4px 5px 0 var(--gs-shadow); }
+  /* The frame takes some height, so the tiles give a little back. */
+  [data-theme="gameshow"] .tile { height: clamp(44px, calc((var(--vh) - 340px) / 4), 90px); border-width: 2px; border-radius: 12px; box-shadow: inset 0 3px 0 rgba(255, 255, 255, .4), inset 0 -5px 0 rgba(110, 30, 0, .35), 3px 3px 0 var(--gs-shadow);
+    text-shadow: -1.5px -1.5px 0 var(--ink), 1.5px -1.5px 0 var(--ink), -1.5px 1.5px 0 var(--ink), 1.5px 1.5px 0 var(--ink), 0 -1.5px 0 var(--ink), 0 1.5px 0 var(--ink), -1.5px 0 0 var(--ink), 1.5px 0 0 var(--ink), 2px 3px 0 var(--ink); }
+  [data-theme="gameshow"] .room[data-host="1"] .tile { height: clamp(42px, calc((var(--vh) - 380px) / 4), 90px); }
+  [data-theme="gameshow"] .tile.can { outline-width: 2px; }
+  [data-theme="gameshow"] .col-head { border-width: 2px; border-radius: 10px; }
+  [data-theme="gameshow"] .q-card { padding: calc(var(--gs-band) + 7px); border-width: 3px; border-radius: 22px;
+    box-shadow: inset 0 0 0 var(--gs-band) var(--gs-frame), inset 0 0 0 calc(var(--gs-band) + 2px) var(--hi), inset 0 0 0 calc(var(--gs-band) + 4px) var(--ink), 4px 5px 0 var(--gs-shadow); }
+  [data-theme="gameshow"] .q-card.hack { padding: 12px; }
+  [data-theme="gameshow"] .q-text { text-shadow: 2px 2px 0 var(--ink); }
+  [data-theme="gameshow"] .q-head .val { padding: 0 10px; border-width: 2px; }
+  [data-theme="gameshow"] .timer .track { height: 12px; -webkit-mask-size: 15px 12px; mask-size: 15px 12px; }
+  [data-theme="gameshow"] .timer .fill { background-size: 15px 12px; }
+  [data-theme="gameshow"] .opt { border-width: 2px; border-radius: 14px; box-shadow: inset 0 -4px 0 rgba(120, 60, 0, .14), 3px 3px 0 var(--gs-shadow); }
+  [data-theme="gameshow"] .opt .L { border-width: 2px; }
+  [data-theme="gameshow"] .opt.sel { box-shadow: 0 0 0 3px var(--gs-lacquer), 0 0 16px 4px rgba(255, 193, 43, .5); }
+  [data-theme="gameshow"] .opt.right { box-shadow: 0 0 0 3px #c8ffd9, 0 0 16px 4px rgba(79, 226, 127, .5); }
+  [data-theme="gameshow"] .stamp { padding: 8px 14px 9px; border-width: 3px; outline-width: 4px; outline-offset: -9px; box-shadow: 0 0 0 3px var(--gs-orange), 0 0 0 6px var(--ink), 0 0 22px 6px rgba(255, 220, 130, .5); }
+  [data-theme="gameshow"] .stamp.bad { box-shadow: 0 0 0 3px var(--ink), 0 0 0 6px #521010, 0 0 20px 5px rgba(255, 70, 60, .4); }
+  [data-theme="gameshow"] .seat, [data-theme="gameshow"] .seat.compact { padding-bottom: 12px; border-width: 2px; border-radius: 14px 14px 10px 10px; box-shadow: inset 0 3px 0 rgba(255, 255, 255, .35), 3px 4px 0 var(--gs-shadow); }
+  [data-theme="gameshow"] .seat .act { display: none; }
+  [data-theme="gameshow"] .seat .av { border-width: 2px; box-shadow: 0 0 0 2px var(--hi); }
+  [data-theme="gameshow"] .seat .who b { font-size: 17px; line-height: 1.15; }
+  [data-theme="gameshow"] .crew-card, [data-theme="gameshow"] .score { border-width: 2px; border-top-width: 6px; box-shadow: 0 0 0 2px var(--edge); }
+  [data-theme="gameshow"] .crew-card.on, [data-theme="gameshow"] .score.on { box-shadow: 0 0 0 2px var(--c), 0 0 12px 1px color-mix(in srgb, var(--c) 55%, transparent); }
+  [data-theme="gameshow"] .crew-card .nm { font-family: var(--f-retro); font-weight: 400; }
+  [data-theme="gameshow"] .mode-btn { border-width: 3px; border-radius: 22px; box-shadow: inset 0 4px 0 rgba(255, 255, 255, .35), inset 0 -6px 0 rgba(80, 20, 0, .25), 4px 5px 0 var(--gs-shadow); }
+  [data-theme="gameshow"] .drop-card { padding-top: 26px; }
+  [data-theme="gameshow"] .drop-card::before { height: 13px; border-bottom-width: 2px; background-size: 18px 13px, auto; }
+  [data-theme="gameshow"] .drop-card h1 { text-shadow: 2px 2px 0 var(--gs-lacquer), 4px 4px 0 var(--ink); }
+  [data-theme="gameshow"] .winner { padding-top: 30px; box-shadow: inset 0 0 0 6px rgba(255, 255, 255, .25), 0 0 0 3px var(--hi), 4px 5px 0 3px var(--gs-shadow); }
+  [data-theme="gameshow"] .winner::before { height: 14px; border-bottom-width: 2px; background-size: 40px 14px, 40px 14px, auto; }
+  @keyframes gs-strip { 50% { background-position: 20px 0, 20px 0, 0 0; } }
+  [data-theme="gameshow"] .winner h1 { font-size: 30px; }
+  [data-theme="gameshow"] .cap { padding-bottom: 20px; }
+  [data-theme="gameshow"] .mem { border-width: 2px; border-top-width: 6px; }
+  [data-theme="gameshow"] .jam-frame { padding: 8px; border-width: 3px; box-shadow: 0 0 0 2px var(--hi), 4px 5px 0 2px var(--gs-shadow); }
+  [data-theme="gameshow"] .invite .code { text-shadow: 3px 3px 0 var(--gs-lacquer), 5px 5px 0 var(--ink); }
+  [data-theme="gameshow"] .takeover.double, [data-theme="gameshow"] .takeover.faceoff { box-shadow: inset 0 0 0 8px var(--gs-lacquer), inset 0 0 0 11px var(--ink), 4px 5px 0 var(--gs-shadow); border-width: 3px; border-radius: 22px; }
+  [data-theme="gameshow"] .takeover.faceoff .big { font-size: 50px; }
+  [data-theme="gameshow"] .fo-p { border-width: 3px; border-top-width: 8px; padding: 8px 10px 6px; }
+  [data-theme="gameshow"] .fo-p b { padding: 2px 10px 4px; border-width: 2px; font-size: 17px; }
+  [data-theme="gameshow"] .takeover.faceoff .fo-setup { padding: 10px 12px; border-width: 3px; }
+  [data-theme="gameshow"] .duel-p { border-width: 2px; border-top-width: 5px; }
+  [data-theme="gameshow"] .duel-p.locked { padding-bottom: 12px; }
+  [data-theme="gameshow"] .zone { border-width: 3px; box-shadow: 0 0 0 2px var(--hi), 3px 4px 0 2px var(--gs-shadow); }
+  [data-theme="gameshow"] .zone-sq .L { border-width: 2px; }
+  [data-theme="gameshow"] .zone-sq:nth-child(odd) { border-right-width: 2px; }
+  [data-theme="gameshow"] .zone-sq:nth-child(-n+2) { border-bottom-width: 2px; }
+  [data-theme="gameshow"] .measure .field { border-width: 2px; box-shadow: 0 0 0 2px var(--edge); }
+  [data-theme="gameshow"] .replay { gap: 6px; }
+  /* The blank round: the punchlines are gone, so the four letter plates sit two by two
+     and the banner slims down. That keeps the whole round on one phone screen. */
+  [data-theme="gameshow"] .opts:has(.opt.blank) { grid-template-columns: 1fr 1fr; }
+  [data-theme="gameshow"] .opt.blank .blank-bar { width: 88%; }
+  [data-theme="gameshow"] .duel-banner { padding: 5px 10px 6px; gap: 0 8px; border-width: 2px; border-radius: 12px; }
+  [data-theme="gameshow"] .duel-banner b { font-size: 19px; }
+  [data-theme="gameshow"] .duel-banner span { font-size: 13px; line-height: 1.25; }
+  [data-theme="gameshow"] .rp-verdict { row-gap: 12px; padding-top: 2px; }
+  [data-theme="gameshow"] .rp-verdict .stamp { font-size: 20px; }
+  [data-theme="gameshow"] .takeover.double .big, [data-theme="gameshow"] .takeover.faceoff .big { text-shadow: -2px -2px 0 var(--ink), 2px -2px 0 var(--ink), -2px 2px 0 var(--ink), 2px 2px 0 var(--ink), 4px 5px 0 var(--gs-orange-lo), 6px 7px 0 var(--ink); }
+}

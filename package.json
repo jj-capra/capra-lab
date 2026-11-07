@@ -5,12 +5,17 @@
   "description": "Capra Lab: the hub, lab-wide profiles, and the native games.",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node lab/test/profiles.test.mjs && node games/primal-survival/test/engine.test.mjs && node games/primal-survival/test/api.test.mjs && node games/swerve-planet/tests/scores.test.mjs && node games/dont-look/test/dont-look.test.mjs"
+    "test": "node lab/test/profiles.test.mjs && node games/primal-survival/test/engine.test.mjs && node games/primal-survival/test/api.test.mjs && node games/swerve-planet/tests/scores.test.mjs && node games/dont-look/test/dont-look.test.mjs && node --test games/mind-heist/tests/*.test.mjs",
+    "pretest": "node scripts/build.mjs"
   },
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
-    "@netlify/blobs": "^11.1.7"
+    "@netlify/blobs": "^11.1.7",
+    "esbuild": "^0.28.2",
+    "htm": "^3.1.1",
+    "preact": "^10.29.8",
+    "qrcode-generator": "^2.0.4"
   }
 }

@@ -1,0 +1,533 @@
+[
+  {
+    "id": "lakers-dynasties",
+    "blurb": "Lakers titles from the BAA days to the Shaq-Kobe three-peat and Pau",
+    "categories": [
+      {
+        "name": "Finals Foes",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In 2010, the Lakers won Game 7 of the NBA Finals against which longtime rival?",
+            "options": [
+              "Detroit Pistons",
+              "Boston Celtics",
+              "Orlando Magic",
+              "Philadelphia 76ers"
+            ],
+            "answer": 1,
+            "fact": "It was the 12th time the two franchises had met in the NBA Finals.",
+            "src": "en.wikipedia.org/wiki/Celtics-Lakers_rivalry (table of 12 Finals meetings, 1959-2010; 2010 Game 7 won by LA)"
+          },
+          {
+            "value": 200,
+            "q": "Larry Bird coached which team that lost to the Lakers in the 2000 NBA Finals?",
+            "options": [
+              "New York Knicks",
+              "Boston Celtics",
+              "Indiana Pacers",
+              "Miami Heat"
+            ],
+            "answer": 2,
+            "fact": "It was Indiana's first trip to the NBA Finals, and LA won the series in six games.",
+            "src": "en.wikipedia.org/wiki/2000_NBA_Finals (Larry Bird coached Indiana; Pacers' first NBA Finals; LA won 4-2)"
+          },
+          {
+            "value": 300,
+            "q": "The 1972 Lakers, a 69-win team, beat which team in the NBA Finals?",
+            "options": [
+              "Boston Celtics",
+              "Milwaukee Bucks",
+              "Baltimore Bullets",
+              "New York Knicks"
+            ],
+            "answer": 3,
+            "fact": "Wilt Chamberlain was named Finals MVP as LA won the series 4-1.",
+            "src": "en.wikipedia.org/wiki/1972_NBA_Finals (LA beat Knicks 4-1; Chamberlain Finals MVP; 69 regular-season wins, so 69-13)"
+          },
+          {
+            "value": 400,
+            "q": "The Lakers won the 1949 BAA Finals against which team, coached by a young Red Auerbach?",
+            "options": [
+              "Washington Capitols",
+              "Boston Celtics",
+              "Syracuse Nationals",
+              "Rochester Royals"
+            ],
+            "answer": 0,
+            "fact": "It took six games, and a year earlier the Lakers had won the title of the rival NBL.",
+            "src": "en.wikipedia.org/wiki/1949_BAA_Finals (beat Capitols 4-2; Auerbach coached Washington); en.wikipedia.org/wiki/John_Kundla (1948 NBL championship)"
+          }
+        ]
+      },
+      {
+        "name": "Finals MVPs",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Who was Finals MVP for all three Lakers titles from 2000 to 2002?",
+            "options": [
+              "Kobe Bryant",
+              "Shaquille O'Neal",
+              "Derek Fisher",
+              "Robert Horry"
+            ],
+            "answer": 1,
+            "fact": "He was the second player, after Michael Jordan, to win Finals MVP three years in a row.",
+            "src": "nba.com/history/top-moments/2002-lakers-complete-three-peat (O'Neal Finals MVP all three runs; only player besides Jordan to do it)"
+          },
+          {
+            "value": 200,
+            "q": "In 1980, which Lakers rookie won Finals MVP after starting Game 6 at center?",
+            "options": [
+              "Kareem Abdul-Jabbar",
+              "Norm Nixon",
+              "Magic Johnson",
+              "Jamaal Wilkes"
+            ],
+            "answer": 2,
+            "fact": "He had 42 points, 15 rebounds and 7 assists as LA clinched the title in Philadelphia.",
+            "src": "en.wikipedia.org/wiki/1980_NBA_Finals (Game 6 in Philadelphia: rookie Magic started at center, 42 pts, 15 reb, 7 ast; Finals MVP)"
+          },
+          {
+            "value": 300,
+            "q": "Kobe Bryant won his first Finals MVP in 2009 against which team?",
+            "options": [
+              "Orlando Magic",
+              "Boston Celtics",
+              "Denver Nuggets",
+              "Detroit Pistons"
+            ],
+            "answer": 0,
+            "fact": "LA won the series 4-1 for the franchise's 15th championship.",
+            "src": "en.wikipedia.org/wiki/2009_NBA_Finals (beat Orlando 4-1; Bryant Finals MVP; 15th franchise title); Shaq won 2000-02 Finals MVPs"
+          },
+          {
+            "value": 400,
+            "q": "Who was the 1988 Finals MVP after a 36-point triple-double in Game 7?",
+            "options": [
+              "Magic Johnson",
+              "Byron Scott",
+              "A.C. Green",
+              "James Worthy"
+            ],
+            "answer": 3,
+            "fact": "It was the first triple-double of his career, and LA beat Detroit 108-105 at the Forum.",
+            "src": "nba.com/history/legends/profiles/james-worthy (Game 7: 36 pts, 16 reb, 10 ast; first career triple-double; 108-105 at the Forum; Finals MVP)"
+          }
+        ]
+      },
+      {
+        "name": "Title Teams",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Before moving to Los Angeles in 1960, the Lakers played in which city?",
+            "options": [
+              "Milwaukee",
+              "St. Louis",
+              "Minneapolis",
+              "Rochester"
+            ],
+            "answer": 2,
+            "fact": "Coach John Kundla led Minneapolis to five NBA-recognized titles from 1949 to 1954.",
+            "src": "en.wikipedia.org/wiki/John_Kundla (1949 BAA + 1950/52/53/54 NBA titles = five BAA/NBA; Bob Short moved team to LA in 1960)"
+          },
+          {
+            "value": 200,
+            "q": "Besides Kobe Bryant, which player was on all five Lakers title teams from 2000 to 2010?",
+            "options": [
+              "Robert Horry",
+              "Derek Fisher",
+              "Rick Fox",
+              "Lamar Odom"
+            ],
+            "answer": 1,
+            "fact": "In 2004, he beat San Antonio with a shot launched with 0.4 seconds left.",
+            "src": "en.wikipedia.org/wiki/Derek_Fisher (titles 2000, 01, 02, 09, 10; 0.4 shot May 13, 2004, Game 5 vs Spurs). Brian Shaw dropped: Lakers assistant for 2009-10 titles (en.wikipedia.org/wiki/Brian_Shaw_(basketball))"
+          },
+          {
+            "value": 300,
+            "q": "The 2001 Lakers lost only one playoff game. What was their playoff record?",
+            "options": [
+              "16-1",
+              "14-1",
+              "12-1",
+              "15-1"
+            ],
+            "answer": 3,
+            "fact": "The lone loss came in overtime, in Game 1 of the Finals against Philadelphia.",
+            "src": "en.wikipedia.org/wiki/2001_NBA_playoffs (Lakers 15-1; best-of-five first round; only loss Game 1 of Finals, 107-101 OT vs 76ers)"
+          },
+          {
+            "value": 400,
+            "q": "How many games long was the Lakers' famous winning streak during the 1971-72 season?",
+            "options": [
+              "33",
+              "27",
+              "41",
+              "22"
+            ],
+            "answer": 0,
+            "fact": "Milwaukee ended the streak, 120-104, on January 9, 1972.",
+            "src": "nba.com/news/legendary-moments-bucks-end-lakers-33-game-win-streak (Nov 5, 1971 to Jan 9, 1972; Bucks won 120-104)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lakers-legends",
+    "blurb": "Retired numbers, superstars and coaches from Baylor and West to Kobe and Pau",
+    "categories": [
+      {
+        "name": "Retired Numbers",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which two jersey numbers did the Lakers retire for Kobe Bryant?",
+            "options": [
+              "8 and 23",
+              "8 and 24",
+              "24 and 33",
+              "23 and 24"
+            ],
+            "answer": 1,
+            "fact": "In 2017 he became the first NBA player to have two numbers retired by the same team.",
+            "src": "nba.com/article/2017/12/18/nba-players-two-numbers-retired ('the first in NBA history to have two numbers retired by the same team')"
+          },
+          {
+            "value": 200,
+            "q": "Which jersey number did the Lakers retire for Magic Johnson?",
+            "options": [
+              "33",
+              "34",
+              "23",
+              "32"
+            ],
+            "answer": 3,
+            "fact": "He won five titles, three MVPs and three Finals MVPs, all with the Lakers.",
+            "src": "nba.com/news/la-lakers-retired-numbers (Magic No. 32: five titles, three MVPs, three Finals MVPs; 33 Kareem, 34 Shaq)"
+          },
+          {
+            "value": 300,
+            "q": "In 2023, the Lakers retired No. 16 for which star of their 2009 and 2010 title teams?",
+            "options": [
+              "Pau Gasol",
+              "Lamar Odom",
+              "Andrew Bynum",
+              "Trevor Ariza"
+            ],
+            "answer": 0,
+            "fact": "LA got him from Memphis in 2008 in a trade that sent his brother Marc's draft rights there.",
+            "src": "en.wikipedia.org/wiki/Pau_Gasol (traded from Memphis Feb 1, 2008, Marc's draft rights to Memphis; No. 16 retired March 7, 2023)"
+          },
+          {
+            "value": 400,
+            "q": "Which number did the Lakers retire in 2012 for Showtime forward Jamaal 'Silk' Wilkes?",
+            "options": [
+              "42",
+              "25",
+              "52",
+              "44"
+            ],
+            "answer": 2,
+            "fact": "Before LA, he won the 1975 title and Rookie of the Year with Golden State.",
+            "src": "en.wikipedia.org/wiki/Jamaal_Wilkes (No. 52 retired Dec 28, 2012; 1975 ROY and title with Golden State); nba.com retired numbers (42 Worthy, 25 Goodrich, 44 West)"
+          }
+        ]
+      },
+      {
+        "name": "Star Power",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What was the name of Kareem Abdul-Jabbar's signature shot?",
+            "options": [
+              "Finger roll",
+              "Dream Shake",
+              "Fadeaway",
+              "Sky hook"
+            ],
+            "answer": 3,
+            "fact": "Kareem won six MVP awards: three with Milwaukee and three with the Lakers.",
+            "src": "nba.com/news/history-nba-legend-kareem-abdul-jabbar (trademark sky-hook; six-time MVP, three with Bucks); nba.com/news/la-lakers-retired-numbers (three more MVPs with LA)"
+          },
+          {
+            "value": 200,
+            "q": "Shaquille O'Neal signed with the Lakers in 1996, leaving which team?",
+            "options": [
+              "Miami Heat",
+              "Orlando Magic",
+              "Phoenix Suns",
+              "Houston Rockets"
+            ],
+            "answer": 1,
+            "fact": "He had led Orlando to the 1995 Finals, where Houston swept the Magic.",
+            "src": "cbssports.com inside story of Shaq leaving the Magic (July 1996 to the Lakers); en.wikipedia.org/wiki/1995_NBA_Finals (Rockets swept Magic 4-0)"
+          },
+          {
+            "value": 300,
+            "q": "In a 1962 Finals game at Boston Garden, Elgin Baylor set a Finals record by scoring how many points?",
+            "options": [
+              "71",
+              "55",
+              "61",
+              "48"
+            ],
+            "answer": 2,
+            "fact": "He also grabbed 22 rebounds as LA won that Game 5, 126-121.",
+            "src": "basketball-reference.com box score 196204140BOS (Game 5, 61 pts, 22 reb, LA 126-121); nba.com/news/history-top-moments-elgin-baylor-scores-61-in-finals; sports.yahoo.com 'Elgin Baylor sets NBA Finals scoring record'"
+          },
+          {
+            "value": 400,
+            "q": "The Lakers acquired 1996 draft pick Kobe Bryant in a trade with which team?",
+            "options": [
+              "Charlotte Hornets",
+              "New Jersey Nets",
+              "Philadelphia 76ers",
+              "Vancouver Grizzlies"
+            ],
+            "answer": 0,
+            "fact": "Charlotte took him 13th overall, and LA sent center Vlade Divac to get him.",
+            "src": "cbssports.com/nba/news/kobe-bryant-and-the-draft-day-trade-that-changed-nba-history (Charlotte took him 13th; LA sent Vlade Divac; finalized July 11)"
+          }
+        ]
+      },
+      {
+        "name": "Coaches & Awards",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which Lakers coach was nicknamed the 'Zen Master'?",
+            "options": [
+              "Pat Riley",
+              "Phil Jackson",
+              "Del Harris",
+              "Rudy Tomjanovich"
+            ],
+            "answer": 1,
+            "fact": "He won 11 titles as a coach: six with Chicago and five with the Lakers.",
+            "src": "en.wikipedia.org/wiki/Phil_Jackson ('Zen Master'; 11 titles: Bulls 1991-93, 96-98; Lakers 2000-02, 09, 10)"
+          },
+          {
+            "value": 200,
+            "q": "On the 1972 champion Lakers, what was Pat Riley's role?",
+            "options": [
+              "Assistant coach",
+              "Broadcaster",
+              "Player",
+              "Head scout"
+            ],
+            "answer": 2,
+            "fact": "He later called Lakers games on the air before joining the bench as an assistant in 1979.",
+            "src": "en.wikipedia.org/wiki/Pat_Riley (reserve on 1972 champions; Lakers broadcaster from 1977; assistant under Westhead from November 1979)"
+          },
+          {
+            "value": 300,
+            "q": "Shaquille O'Neal won his only regular-season MVP award in which season?",
+            "options": [
+              "2000-2001",
+              "1997-1998",
+              "2001-2002",
+              "1999-2000"
+            ],
+            "answer": 3,
+            "fact": "He got 120 of 121 first-place votes; the other one went to Allen Iverson.",
+            "src": "archive.seattletimes.com 2000-05-10 'Shaq comes one vote from unanimous MVP' (120 of 121 first-place votes; other to Iverson; first MVP)"
+          },
+          {
+            "value": 400,
+            "q": "Jerry West won the first Finals MVP award in 1969, even though LA lost the series to which team?",
+            "options": [
+              "Boston Celtics",
+              "New York Knicks",
+              "Philadelphia 76ers",
+              "Milwaukee Bucks"
+            ],
+            "answer": 0,
+            "fact": "West averaged 37.9 points per game in that seven-game series.",
+            "src": "en.wikipedia.org/wiki/1969_NBA_Finals (first Finals MVP, only one from a losing team; Celtics won 4-3); espn.com/classic/biography/s/West_Jerry.html ('averaged 37.9 points against Boston')"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "showtime-and-more",
+    "blurb": "The Forum, Chick Hearn, famous moments and the nicknames of Lakers lore",
+    "categories": [
+      {
+        "name": "Home Courts",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Staples Center, the Lakers' arena that opened in 1999, was later renamed for which company?",
+            "options": [
+              "Coinbase",
+              "Crypto.com",
+              "Intuit",
+              "Microsoft"
+            ],
+            "answer": 1,
+            "fact": "It opened in downtown Los Angeles with 18,997 seats for Lakers games.",
+            "src": "abc7.com and fox news reports (Staples Center became Crypto.com Arena Dec 25, 2021); en.wikipedia.org/wiki/Crypto.com_Arena (opened Oct 17, 1999); nba.com/lakers/history/season-capsule ('18,997-seat STAPLES Center in Downtown Los Angeles')"
+          },
+          {
+            "value": 200,
+            "q": "The Forum, the Lakers' home from 1967 to 1999, was built in which Los Angeles-area city?",
+            "options": [
+              "Pasadena",
+              "Anaheim",
+              "Inglewood",
+              "Long Beach"
+            ],
+            "answer": 2,
+            "fact": "The Forum was home to six Lakers title teams, from 1972 to 1988.",
+            "src": "en.wikipedia.org/wiki/Kia_Forum (Inglewood; Lakers 1967-1999); nba.com/lakers/history/season-capsule ('home to six championship teams'); titles 1972, 80, 82, 85, 87, 88"
+          },
+          {
+            "value": 300,
+            "q": "By the late 1990s, the Lakers' Forum carried which sponsored name?",
+            "options": [
+              "Pacific Bell Forum",
+              "Wells Fargo Forum",
+              "Union Bank Forum",
+              "Great Western Forum"
+            ],
+            "answer": 3,
+            "fact": "In 1979, Jerry Buss bought the Forum, the Lakers and the NHL's Kings as part of a $67.5 million deal.",
+            "src": "en.wikipedia.org/wiki/Kia_Forum (Great Western Forum 1988-2003; Cooke sold it to Buss in 1979 for $67.5M with the Lakers and Kings); nba.com/lakers/history/season-capsule"
+          },
+          {
+            "value": 400,
+            "q": "Before Game 7 of the 1969 Finals, owner Jack Kent Cooke planned to release what from the Forum rafters?",
+            "options": [
+              "Balloons",
+              "Beach balls",
+              "Free T-shirts",
+              "Rally towels"
+            ],
+            "answer": 0,
+            "fact": "Flyers on every seat promised the balloons, plus a USC marching band performance.",
+            "src": "nba.com/news/history-finals-moments-don-nelsons-shot-helps-secure-win-in-game-7 (balloons in the Forum rafters; 'Flyers were placed in every seat'; USC marching band); en.wikipedia.org/wiki/1969_NBA_Finals"
+          }
+        ]
+      },
+      {
+        "name": "Big Moments",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Kobe Bryant scored his career high against Toronto in January 2006. How many points was it?",
+            "options": [
+              "71",
+              "62",
+              "81",
+              "100"
+            ],
+            "answer": 2,
+            "fact": "He made 28 of 46 shots and scored 55 of his points in the second half.",
+            "src": "nba.com/history/top-moments/2006-kobe-bryant-81-points (Jan 22, 2006; 28-46 FG; 55 in second half; 122-104); en.wikipedia.org/wiki/Kobe_Bryant's_81-point_game (career high; 62 in three quarters vs Dallas)"
+          },
+          {
+            "value": 200,
+            "q": "Magic Johnson's 'junior sky hook' won a 1987 Finals game against which team?",
+            "options": [
+              "Detroit Pistons",
+              "Boston Celtics",
+              "Philadelphia 76ers",
+              "Houston Rockets"
+            ],
+            "answer": 1,
+            "fact": "He hit it with two seconds left to give LA a 107-106 win in Game 4.",
+            "src": "en.wikipedia.org/wiki/Celtics-Lakers_rivalry (1987 Finals Game 4: 'junior sky hook' with two seconds left for a 107-106 lead, the final score)"
+          },
+          {
+            "value": 300,
+            "q": "Kobe's alley-oop to Shaq capped a Game 7 comeback in the 2000 West finals against which team?",
+            "options": [
+              "Sacramento Kings",
+              "San Antonio Spurs",
+              "Utah Jazz",
+              "Portland Trail Blazers"
+            ],
+            "answer": 3,
+            "fact": "LA trailed 75-60 in the fourth quarter, then went on a 25-4 run.",
+            "src": "nba.com/news/history-top-moments-kobe-shaq-alley-oop-lakers-comeback (Portland up 75-60 with 10:28 left; Kobe lob to Shaq made it 85-79, i.e. a 25-4 run); en.wikipedia.org/wiki/2000_NBA_Finals (25-4 run)"
+          },
+          {
+            "value": 400,
+            "q": "Jerry West's 60-foot shot at the buzzer in Game 3 of the 1970 Finals did what?",
+            "options": [
+              "Tied the game",
+              "Won the game",
+              "Was waved off",
+              "Rimmed out"
+            ],
+            "answer": 0,
+            "fact": "There was no three-point line yet, so it counted for two, and the Knicks won in overtime.",
+            "src": "nba.com/news/history-top-moments-jerry-west-60-footer (Game 3; tied it 102-102; Knicks won in OT); en.wikipedia.org/wiki/1970_NBA_Finals (counted two points, no three-point line); espn.com classic West bio"
+          }
+        ]
+      },
+      {
+        "name": "Voices & Nicknames",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Who was the Lakers' legendary longtime play-by-play broadcaster?",
+            "options": [
+              "Vin Scully",
+              "Chick Hearn",
+              "Johnny Most",
+              "Marv Albert"
+            ],
+            "answer": 1,
+            "fact": "The Lakers honored him with a microphone in the rafters and a statue outside their arena.",
+            "src": "nba.com/news/la-lakers-retired-numbers ('a microphone for legendary announcer Chick Hearn'); en.wikipedia.org/wiki/Statue_of_Chick_Hearn (unveiled 2010 outside the arena)"
+          },
+          {
+            "value": 200,
+            "q": "Which Laker gave himself the nickname 'The Big Aristotle'?",
+            "options": [
+              "Kobe Bryant",
+              "Pau Gasol",
+              "Shaquille O'Neal",
+              "Kareem Abdul-Jabbar"
+            ],
+            "answer": 2,
+            "fact": "In 1993, as an Orlando Magic player, he released a rap album called Shaq Diesel that went platinum.",
+            "src": "nba.com/lakers/news/160908shaq-nicknames/ (unveiled 'The Big Aristotle' himself after his 2000 MVP; 1993 album Shaq Diesel went platinum)"
+          },
+          {
+            "value": 300,
+            "q": "Which forward on the 2010 Lakers title team later changed his name to Metta World Peace?",
+            "options": [
+              "Ron Artest",
+              "Lamar Odom",
+              "Luke Walton",
+              "Trevor Ariza"
+            ],
+            "answer": 0,
+            "fact": "The Lakers had signed him in 2009, a year before that championship.",
+            "src": "en.wikipedia.org/wiki/Celtics-Lakers_rivalry ('In 2009, the Lakers signed Ron Artest'); Wikipedia mirror doc.surf Metta Sandiford-Artest (signed July 2009, small forward, legal name change Sept 16, 2011)"
+          },
+          {
+            "value": 400,
+            "q": "Which Minneapolis Lakers center was known as 'Mr. Basketball'?",
+            "options": [
+              "Vern Mikkelsen",
+              "Clyde Lovellette",
+              "Jim Pollard",
+              "George Mikan"
+            ],
+            "answer": 3,
+            "fact": "For 1951-52, the NBA widened the lane from 6 to 12 feet, a change dubbed the Mikan Rule.",
+            "src": "en.wikipedia.org/wiki/George_Mikan ('Mr. Basketball'; lane widened from 6 to 12 feet for 1951-52, the 'Mikan Rule')"
+          }
+        ]
+      }
+    ]
+  }
+]

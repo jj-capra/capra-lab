@@ -1,0 +1,14 @@
+# mind-heist.netlify.app after the move: every address shows the forwarding page, which sends
+# the player to the same place in Capra Lab with their sign-in.
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "no-cache"

@@ -1,0 +1,1772 @@
+[
+ {
+  "id": "kitchen-table",
+  "blurb": "Everyday eats: where they started and how they got their names",
+  "categories": [
+   {
+    "name": "Name Game",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The hamburger takes its name from which German city?",
+      "options": [
+       "Hamburg",
+       "Munich",
+       "Frankfurt",
+       "Berlin"
+      ],
+      "answer": 0,
+      "fact": "Before 'hamburger' caught on, American menus called the dish a 'Hamburg steak.'",
+      "src": "etymonline hamburger: meat sense 'so called by 1880 (as hamburg steak)', sandwich 1909"
+     },
+     {
+      "value": 200,
+      "q": "A jalapeno that has been smoked and dried goes by what name?",
+      "options": [
+       "Guajillo",
+       "Poblano",
+       "Chipotle",
+       "Ancho"
+      ],
+      "answer": 2,
+      "fact": "The jalapeno itself is named after Xalapa, the capital of the Mexican state of Veracruz.",
+      "src": "Recipes wiki jalapeno page: named after Jalapa, capital of Veracruz; smoked dried = chipotle"
+     },
+     {
+      "value": 300,
+      "q": "Tangerines are named after Tangier, a port city in which country?",
+      "options": [
+       "Egypt",
+       "Spain",
+       "Morocco",
+       "Tunisia"
+      ],
+      "answer": 2,
+      "fact": "The name took hold in the 1800s, when the fruit was shipped to Britain from Tangier.",
+      "src": "etymonline tangerine: from Tangier, Morocco; noun 1842, originally imported to Britain from there"
+     },
+     {
+      "value": 400,
+      "q": "Salisbury steak is named after James Salisbury, a 19th-century American who worked as what?",
+      "options": [
+       "Chef",
+       "Butcher",
+       "Rancher",
+       "Physician"
+      ],
+      "answer": 3,
+      "fact": "Dr. J.H. Salisbury promoted the dish, and the name 'Salisbury steak' shows up in print by 1885.",
+      "src": "etymonline Salisbury: J.H. Salisbury (1823-1905), US physician, attested 1885"
+     }
+    ]
+   },
+   {
+    "name": "Where It Began",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The potato was first farmed thousands of years ago in which mountain range?",
+      "options": [
+       "Rockies",
+       "Himalayas",
+       "Alps",
+       "Andes"
+      ],
+      "answer": 3,
+      "fact": "Farmers near Lake Titicaca, on the modern Peru-Bolivia border, grew potatoes 7,000 to 10,000 years ago.",
+      "src": "Wikipedia Potato: domesticated southern Peru / NW Bolivia near Lake Titicaca"
+     },
+     {
+      "value": 200,
+      "q": "Sam Panopoulos, widely credited with inventing Hawaiian pizza, ran his restaurant in which country?",
+      "options": [
+       "United States",
+       "Italy",
+       "Australia",
+       "Canada"
+      ],
+      "answer": 3,
+      "fact": "He said he named it after the brand of canned pineapple he used.",
+      "src": "Canadian Encyclopedia 'Hawaiian pizza': Panopoulos, Satellite Restaurant, Chatham, Ontario (opened 1962); named after canned pineapple brand; competing claims noted, so 1962 invention date dropped"
+     },
+     {
+      "value": 300,
+      "q": "The kiwifruit is native to which country?",
+      "options": [
+       "Australia",
+       "New Zealand",
+       "Chile",
+       "China"
+      ],
+      "answer": 3,
+      "fact": "It was sold as the 'Chinese gooseberry' until a New Zealand exporter renamed it in 1959.",
+      "src": "Wikipedia Kiwifruit: native to central/eastern China; renamed 1959 by Turners & Growers"
+     },
+     {
+      "value": 400,
+      "q": "Archaeologists found signs of banana farming about 6,800 years old at Kuk Swamp, in which country?",
+      "options": [
+       "Ecuador",
+       "Costa Rica",
+       "Papua New Guinea",
+       "India"
+      ],
+      "answer": 2,
+      "fact": "UNESCO added Kuk to its World Heritage List in 2008 as an early farming site.",
+      "src": "Sapiens.org banana domestication (~6,800 yrs); UNESCO WHC list/887: inscribed 2008, agriculture 7,000-6,400 years ago based on bananas, taro, yam"
+     }
+    ]
+   },
+   {
+    "name": "Pantry Classics",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Swanson's first TV dinner, in 1953, centered on which holiday-style main course?",
+      "options": [
+       "Turkey",
+       "Ham",
+       "Roast beef",
+       "Meatloaf"
+      ],
+      "answer": 0,
+      "fact": "It sold for 98 cents in a three-compartment aluminum tray, in a box styled to look like a TV set.",
+      "src": "National Geographic + History.com: turkey, cornbread stuffing, peas, sweet potatoes; 98 cents"
+     },
+     {
+      "value": 200,
+      "q": "In 1789, a mold for making macaroni was bought in Naples for which future president?",
+      "options": [
+       "Thomas Jefferson",
+       "James Madison",
+       "James Monroe",
+       "John Adams"
+      ],
+      "answer": 0,
+      "fact": "Jefferson later ordered pasta from Europe, and a macaroni and cheese recipe in his handwriting survives.",
+      "src": "Monticello.org 'Macaroni': William Short procured a 'mould for making maccaroni' in Naples, Feb 1789; Jefferson regularly ordered pasta from Europe; mac-and-cheese recipe in his hand. Replaced '1802 state dinner' Q (Monticello: Cutler's 'pie called macaroni', not documented as mac and cheese or a state dinner; machine not brought home by TJ)"
+     },
+     {
+      "value": 300,
+      "q": "Goldfish crackers were invented in 1958 in which country, before Pepperidge Farm sold them in the US?",
+      "options": [
+       "Belgium",
+       "Switzerland",
+       "Germany",
+       "Netherlands"
+      ],
+      "answer": 1,
+      "fact": "Swiss biscuit maker Oscar Kambly created them; Pepperidge Farm launched them in America in 1962.",
+      "src": "Wikipedia Goldfish (cracker): Kambly, Switzerland, 1958; US 1962"
+     },
+     {
+      "value": 400,
+      "q": "Sriracha sauce is named after Si Racha, a seaside town in which country?",
+      "options": [
+       "Thailand",
+       "Malaysia",
+       "Cambodia",
+       "Vietnam"
+      ],
+      "answer": 0,
+      "fact": "Huy Fong Foods is named after the ship that carried founder David Tran's family to Hong Kong.",
+      "src": "Britannica sriracha: named for Si Racha; Huy Fong named for the Taiwanese ship that delivered Tran and family to Hong Kong"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "costume-closet",
+  "blurb": "Halloween dress-up, candy bags and pumpkin patch history",
+  "categories": [
+   {
+    "name": "Dress the Part",
+    "questions": [
+     {
+      "value": 100,
+      "q": "A red-and-white striped shirt, bobble hat and round glasses make a costume of which character?",
+      "options": [
+       "Dennis the Menace",
+       "Ned Flanders",
+       "Charlie Brown",
+       "Waldo"
+      ],
+      "answer": 3,
+      "fact": "He debuted in Britain in 1987 as Wally; his American publisher renamed him Waldo.",
+      "src": "Wikipedia Where's Wally?: Martin Handford, 1987, UK; renamed Waldo in North America"
+     },
+     {
+      "value": 200,
+      "q": "Jenna Ortega starred as which famously gloomy character in a 2022 Netflix series?",
+      "options": [
+       "Morticia Addams",
+       "Wednesday Addams",
+       "Lydia Deetz",
+       "Sabrina Spellman"
+      ],
+      "answer": 1,
+      "fact": "Lisa Loring played the role in the 1964 TV series, and Christina Ricci in the 1991 film.",
+      "src": "Wikipedia Wednesday Addams"
+     },
+     {
+      "value": 300,
+      "q": "In L. Frank Baum's 1900 book, what color were Dorothy's magic shoes?",
+      "options": [
+       "Silver",
+       "Ruby red",
+       "Gold",
+       "Emerald green"
+      ],
+      "answer": 0,
+      "fact": "The 1939 film made them ruby to show off its three-strip Technicolor process.",
+      "src": "Wikipedia Ruby slippers: Silver Shoes in novel; changed for Technicolor"
+     },
+     {
+      "value": 400,
+      "q": "The Addams Family began in 1938 as single-panel cartoons in which magazine?",
+      "options": [
+       "Collier's",
+       "Life",
+       "Mad",
+       "The New Yorker"
+      ],
+      "answer": 3,
+      "fact": "The live-action TV series premiered on ABC in September 1964 and ran for two seasons.",
+      "src": "Wikipedia The Addams Family: first cartoon 1938 in The New Yorker; ABC Sept 18, 1964"
+     }
+    ]
+   },
+   {
+    "name": "Candy Bag",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Classic candy corn has three stripes: white, orange and what color?",
+      "options": [
+       "Green",
+       "Yellow",
+       "Brown",
+       "Red"
+      ],
+      "answer": 1,
+      "fact": "Candy corn dates to the 1880s, and it was once sold under the name 'Chicken Feed.'",
+      "src": "Wikipedia Candy corn + Daily Meal: 1880s, Renninger/Wunderle; 'Chicken Feed'; yellow/orange/white"
+     },
+     {
+      "value": 200,
+      "q": "H.B. Reese, maker of Reese's Peanut Butter Cups, once worked for which chocolate maker?",
+      "options": [
+       "Henri Nestle",
+       "Frank Mars",
+       "John Cadbury",
+       "Milton Hershey"
+      ],
+      "answer": 3,
+      "fact": "His peanut butter cups date to 1928, and his sons merged the company with Hershey in 1963.",
+      "src": "Wikipedia Reese's Peanut Butter Cups: created Nov 15, 1928; Reese former dairy farmer and shipping foreman for Milton S. Hershey; merged with Hershey July 2, 1963. Candy Hall of Fame confirms. 'Creator of the peanut butter cup' dropped (truetreats: he did not invent the PB cup)"
+     },
+     {
+      "value": 300,
+      "q": "When 3 Musketeers debuted in 1932, it came in three pieces: chocolate, vanilla and what flavor?",
+      "options": [
+       "Caramel",
+       "Strawberry",
+       "Peanut",
+       "Mint"
+      ],
+      "answer": 1,
+      "fact": "Rising costs and wartime sugar limits led Mars to drop the vanilla and strawberry pieces.",
+      "src": "Wikipedia 3 Musketeers: 1932, three flavors chocolate/strawberry/vanilla; vanilla and strawberry phased out due to rising costs and wartime sugar restrictions"
+     },
+     {
+      "value": 400,
+      "q": "Kit Kat was launched in England in 1935 under what original name?",
+      "options": [
+       "Rowntree's Wafer Crunch",
+       "Rowntree's Chocolate Crisp",
+       "Rowntree's Choc Biscuit",
+       "Rowntree's Crispy Fingers"
+      ],
+      "answer": 1,
+      "fact": "Rowntree's had trademarked the names Kit Cat and Kit Kat back in 1911.",
+      "src": "Wikipedia KitKat: launched Sept 1935 as Rowntree's Chocolate Crisp; Rowntree's trademarked 'Kit Cat' and 'Kit Kat' in 1911. Old fact (name came from Kit-Cat Club) not stated as established, replaced"
+     }
+    ]
+   },
+   {
+    "name": "Pumpkin Patch",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In 'It's the Great Pumpkin, Charlie Brown,' who waits all night in the pumpkin patch?",
+      "options": [
+       "Linus",
+       "Snoopy",
+       "Schroeder",
+       "Lucy"
+      ],
+      "answer": 0,
+      "fact": "The special first aired in 1966, and Charlie Brown's trick-or-treat bag famously fills with rocks.",
+      "src": "Wikipedia It's the Great Pumpkin, Charlie Brown: CBS Oct 27, 1966 (CBC Oct 26); Linus holds vigil; Charlie Brown only gets rocks"
+     },
+     {
+      "value": 200,
+      "q": "Before pumpkins, people in Ireland and Scotland carved Halloween lanterns from which vegetable?",
+      "options": [
+       "Cabbages",
+       "Onions",
+       "Turnips",
+       "Carrots"
+      ],
+      "answer": 2,
+      "fact": "Before it meant a carved lantern, 'jack-o'-lantern' was a name for the will-o'-the-wisp, an eerie marsh light.",
+      "src": "Wikipedia Jack-o'-lantern: turnips and mangel wurzels hollowed out as lanterns in Ireland, Scotland, etc.; etymonline: name for the ignis fatuus by 1650s, carved pumpkin sense by 1828"
+     },
+     {
+      "value": 300,
+      "q": "Pumpkins belong to the same plant family as which of these?",
+      "options": [
+       "Cucumbers",
+       "Potatoes",
+       "Tomatoes",
+       "Carrots"
+      ],
+      "answer": 0,
+      "fact": "The gourd family also includes watermelons, zucchini and cantaloupes.",
+      "src": "Textbook botany: Cucurbitaceae"
+     },
+     {
+      "value": 400,
+      "q": "Which author's 1697 Cinderella, with a fairy godmother and a pumpkin coach, became the classic version?",
+      "options": [
+       "Aesop",
+       "Hans Christian Andersen",
+       "Charles Perrault",
+       "Brothers Grimm"
+      ],
+      "answer": 2,
+      "fact": "In the Brothers Grimm version, published in 1812, a magic hazel tree and birds help her instead.",
+      "src": "Textbook literature: Perrault's Cendrillon 1697; Grimm Aschenputtel 1812"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "halloween-heist",
+  "blurb": "Halloween customs worldwide, monster classics and trick-or-treat roots",
+  "categories": [
+   {
+    "name": "Monster Makers",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Who wrote the 1897 vampire novel Dracula?",
+      "options": [
+       "H.G. Wells",
+       "Edgar Allan Poe",
+       "Mary Shelley",
+       "Bram Stoker"
+      ],
+      "answer": 3,
+      "fact": "Stoker was Irish and spent years as business manager of London's Lyceum Theatre.",
+      "src": "Textbook literature"
+     },
+     {
+      "value": 200,
+      "q": "Which author wrote the Goosebumps book series for kids?",
+      "options": [
+       "Stephen King",
+       "R.L. Stine",
+       "Christopher Pike",
+       "Lemony Snicket"
+      ],
+      "answer": 1,
+      "fact": "The first Goosebumps book, Welcome to Dead House, came out in 1992.",
+      "src": "Textbook (Scholastic, 1992)"
+     },
+     {
+      "value": 300,
+      "q": "In Mary Shelley's novel, what is the first name of the scientist Frankenstein?",
+      "options": [
+       "Victor",
+       "Edward",
+       "William",
+       "Henry"
+      ],
+      "answer": 0,
+      "fact": "Shelley began the story at 18, during a ghost-story challenge near Lake Geneva in 1816.",
+      "src": "Textbook literature (Villa Diodati, summer 1816; novel 1818)"
+     },
+     {
+      "value": 400,
+      "q": "Who wrote the 1886 novella Strange Case of Dr Jekyll and Mr Hyde?",
+      "options": [
+       "Robert Louis Stevenson",
+       "Arthur Conan Doyle",
+       "H.G. Wells",
+       "Oscar Wilde"
+      ],
+      "answer": 0,
+      "fact": "Stevenson had already published Treasure Island as a book in 1883.",
+      "src": "Textbook literature"
+     }
+    ]
+   },
+   {
+    "name": "Trick or Treat",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The name Halloween comes from 'All Hallows' Eve,' the evening before which day?",
+      "options": [
+       "All Saints' Day",
+       "Candlemas",
+       "New Year's Day",
+       "Midsummer Day"
+      ],
+      "answer": 0,
+      "fact": "'Hallow' is an old word for saint, so All Hallows' Day is another name for All Saints' Day.",
+      "src": "Textbook etymology"
+     },
+     {
+      "value": 200,
+      "q": "Starting in 1950, trick-or-treaters began collecting coins for which children's aid group?",
+      "options": [
+       "Salvation Army",
+       "UNICEF",
+       "Red Cross",
+       "March of Dimes"
+      ],
+      "answer": 1,
+      "fact": "UNICEF itself was founded in 1946 to help children after World War II.",
+      "src": "SOFII case study: Trick-or-Treat for UNICEF began 1950 with a Philadelphia class collecting coins; UNICEF founded 1946 textbook"
+     },
+     {
+      "value": 300,
+      "q": "In Scotland and Ireland, going door to door in costume at Halloween is traditionally called what?",
+      "options": [
+       "Guising",
+       "Busking",
+       "Dooking",
+       "Carolling"
+      ],
+      "answer": 0,
+      "fact": "Guisers were traditionally expected to sing a song, tell a joke or share a story to earn their treat.",
+      "src": "National Records of Scotland blog 'Out guising': guisers tour houses in costume and must perform (jokes, songs) for a reward. 'First-footing' distractor swapped for 'Dooking' (it is the answer key in the Countdown deck)"
+     },
+     {
+      "value": 400,
+      "q": "Small spiced cakes given to door-to-door visitors around Hallowmas in medieval England were called what?",
+      "options": [
+       "Mince pies",
+       "Hot cross buns",
+       "Soul cakes",
+       "Eccles cakes"
+      ],
+      "answer": 2,
+      "fact": "This custom, called souling, is often cited as one root of trick-or-treating.",
+      "src": "Wikipedia Soul cake: small round cake with sweet spices, given to soulers door to door at Allhallowtide; practice dates to medieval period in England; souling seen as an origin of trick-or-treating"
+     }
+    ]
+   },
+   {
+    "name": "Global Customs",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which 2017 Pixar film is set during Mexico's Day of the Dead?",
+      "options": [
+       "The Book of Life",
+       "Onward",
+       "Coco",
+       "Encanto"
+      ],
+      "answer": 2,
+      "fact": "Day of the Dead is celebrated on November 1 and 2, right after Halloween.",
+      "src": "Textbook"
+     },
+     {
+      "value": 200,
+      "q": "Halloween traces its roots to which ancient Celtic festival?",
+      "options": [
+       "Beltane",
+       "Imbolc",
+       "Samhain",
+       "Lughnasadh"
+      ],
+      "answer": 2,
+      "fact": "Samhain marked the end of the harvest season and the start of winter.",
+      "src": "Textbook"
+     },
+     {
+      "value": 300,
+      "q": "In Ireland, which fruit-studded bread is a Halloween tradition, often with a ring baked inside?",
+      "options": [
+       "Barmbrack",
+       "Panettone",
+       "Soda bread",
+       "Stollen"
+      ],
+      "answer": 0,
+      "fact": "'Brack' comes from the Irish word breac, meaning speckled, a nod to the dried fruit.",
+      "src": "Textbook (bairin breac)"
+     },
+     {
+      "value": 400,
+      "q": "Day of the Dead altars are decked with orange flowers called cempasuchil. What flower is it?",
+      "options": [
+       "Carnation",
+       "Dahlia",
+       "Chrysanthemum",
+       "Marigold"
+      ],
+      "answer": 3,
+      "fact": "Its name comes from the Aztecs' Nahuatl language and is often translated as 'twenty flower.'",
+      "src": "Textbook (Tagetes erecta, Mexican marigold)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "world-kitchens",
+  "blurb": "A world tour of famous dishes and the places they call home",
+  "categories": [
+   {
+    "name": "Passport Plates",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Paella, the saffron rice dish cooked in a wide pan, comes from which country?",
+      "options": [
+       "Portugal",
+       "Spain",
+       "Mexico",
+       "Italy"
+      ],
+      "answer": 1,
+      "fact": "Paella is a Valencian word meaning frying pan, named for the shallow pan it's cooked in.",
+      "src": "Wikipedia Paella: from Valencian Community; 'Paella is a Valencian word that means frying pan'"
+     },
+     {
+      "value": 200,
+      "q": "Poutine, fries topped with cheese curds and gravy, comes from which Canadian province?",
+      "options": [
+       "Quebec",
+       "Manitoba",
+       "Ontario",
+       "Nova Scotia"
+      ],
+      "answer": 0,
+      "fact": "Poutine first appeared in rural Quebec snack bars in the late 1950s.",
+      "src": "Canadian Encyclopedia 'History of poutine': rural Quebec snack bars, late 1950s"
+     },
+     {
+      "value": 300,
+      "q": "Beef Stroganoff is named after a noble family from which country?",
+      "options": [
+       "Russia",
+       "Austria",
+       "Poland",
+       "Hungary"
+      ],
+      "answer": 0,
+      "fact": "The earliest known recipe appears in an 1871 Russian cookbook by Elena Molokhovets.",
+      "src": "Wikipedia Beef Stroganoff: Stroganov family, Russia; Molokhovets 1871 edition"
+     },
+     {
+      "value": 400,
+      "q": "Bobotie, spiced minced meat baked under an egg topping, is a classic dish of which country?",
+      "options": [
+       "Nigeria",
+       "South Africa",
+       "Kenya",
+       "Morocco"
+      ],
+      "answer": 1,
+      "fact": "The egg-based topping bakes into a golden, custard-like layer over the spiced meat.",
+      "src": "Wikipedia Bobotie: 'a South African dish consisting of spiced minced meat baked with an egg-based topping'"
+     }
+    ]
+   },
+   {
+    "name": "Street Eats",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Jerk chicken, seasoned with allspice and Scotch bonnet peppers, comes from which island?",
+      "options": [
+       "Cuba",
+       "Jamaica",
+       "Puerto Rico",
+       "Barbados"
+      ],
+      "answer": 1,
+      "fact": "In Jamaica, allspice is called pimento, not to be confused with the red pepper in olives.",
+      "src": "Tasting Table history of jerk: Scotch bonnet, pimento = local name for allspice"
+     },
+     {
+      "value": 200,
+      "q": "Vietnam's banh mi sandwich is served on a baguette, a legacy of which country?",
+      "options": [
+       "Britain",
+       "France",
+       "Spain",
+       "Portugal"
+      ],
+      "answer": 1,
+      "fact": "Banh mi simply means 'bread' in Vietnamese.",
+      "src": "Wikipedia Banh mi: means bread; French introduced the baguette during colonial rule"
+     },
+     {
+      "value": 300,
+      "q": "In Egypt, falafel is usually made from which bean instead of chickpeas?",
+      "options": [
+       "Kidney beans",
+       "Lima beans",
+       "Black beans",
+       "Fava beans"
+      ],
+      "answer": 3,
+      "fact": "Egyptians call their fava bean version ta'ameya.",
+      "src": "Wikipedia Falafel: 'In Egypt, it is typically prepared with fava beans'; called ta'miyya"
+     },
+     {
+      "value": 400,
+      "q": "Osaka's takoyaki are savory batter balls filled with pieces of what?",
+      "options": [
+       "Shrimp",
+       "Eel",
+       "Octopus",
+       "Squid"
+      ],
+      "answer": 2,
+      "fact": "A street vendor named Tomekichi Endo is credited with inventing takoyaki in 1935.",
+      "src": "Wikipedia Takoyaki: filled with octopus; Tomekichi Endo 1935; popularized in Osaka"
+     }
+    ]
+   },
+   {
+    "name": "Lost in Translation",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The French word croissant means what?",
+      "options": [
+       "Spiral",
+       "Pillow",
+       "Crown",
+       "Crescent"
+      ],
+      "answer": 3,
+      "fact": "Its shape came from the Austrian kipferl, sold in Paris by a Viennese bakery in the late 1830s.",
+      "src": "Wikipedia Croissant: 'crescent'; kipferl; August Zang's Boulangerie Viennoise 1838/1839"
+     },
+     {
+      "value": 200,
+      "q": "The cheese dish fondue gets its name from a French word meaning what?",
+      "options": [
+       "Dipped",
+       "Shared",
+       "Melted",
+       "Bubbling"
+      ],
+      "answer": 2,
+      "fact": "Fondue's popularity in the United States peaked in the 1960s and 1970s.",
+      "src": "Wikipedia Fondue: from fondre 'to melt', means 'melted'; US popularity peaked 1960s-70s"
+     },
+     {
+      "value": 300,
+      "q": "In Arabic, the word hummus means what?",
+      "options": [
+       "Garlic",
+       "Sesame",
+       "Chickpeas",
+       "Paste"
+      ],
+      "answer": 2,
+      "fact": "The dip's full Arabic name translates to 'chickpeas with tahini.'",
+      "src": "Wikipedia Hummus: hummus = chickpeas; full name hummus bi tahina 'chickpeas with tahini'"
+     },
+     {
+      "value": 400,
+      "q": "In Italian, the pasta name spaghetti means what?",
+      "options": [
+       "Little tongues",
+       "Little worms",
+       "Little ears",
+       "Little strings"
+      ],
+      "answer": 3,
+      "fact": "Linguine means 'little tongues,' and vermicelli means 'little worms.'",
+      "src": "etymologynerd.com 'little cords': spaghetti = little strings/cords from spago; linguine = little tongues; vermicelli/orecchiette textbook"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "harvest-table",
+  "blurb": "Apples, squash, cranberries and the rest of fall's harvest",
+  "categories": [
+   {
+    "name": "Apple Orchard",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The Fuji apple was developed in which country?",
+      "options": [
+       "South Korea",
+       "New Zealand",
+       "China",
+       "Japan"
+      ],
+      "answer": 3,
+      "fact": "Japanese researchers made the cross in 1939, but the Fuji wasn't named and released until 1962.",
+      "src": "Wikipedia Fuji (apple): developed 1939, Tohoku Research Station, Fujisaki; named and brought to market 1962. applesandpeople.org.uk confirms 1939 cross / 1962 registration. Old fact 'named for Fujisaki' dropped: sources disagree (Mt. Fuji also cited)"
+     },
+     {
+      "value": 200,
+      "q": "What was the real name of the American folk hero Johnny Appleseed?",
+      "options": [
+       "John Appleton",
+       "John Bartram",
+       "Jonathan Carver",
+       "John Chapman"
+      ],
+      "answer": 3,
+      "fact": "Born in Massachusetts in 1774, he planted tree nurseries rather than orchards.",
+      "src": "Wikipedia Johnny Appleseed: John Chapman, b. Sept 26, 1774, Leominster MA; 'planted nurseries rather than orchards'"
+     },
+     {
+      "value": 300,
+      "q": "The tart green Granny Smith apple originated in which country?",
+      "options": [
+       "New Zealand",
+       "England",
+       "South Africa",
+       "Australia"
+      ],
+      "answer": 3,
+      "fact": "It began in 1868 near Sydney, discovered by an orchardist named Maria Ann Smith.",
+      "src": "Wikipedia Granny Smith: Eastwood NSW (Sydney suburb), 1868, Maria Ann Smith"
+     },
+     {
+      "value": 400,
+      "q": "The Honeycrisp apple, released in 1991, was developed at which university?",
+      "options": [
+       "Michigan State Univ.",
+       "Washington State Univ.",
+       "Cornell University",
+       "Univ. of Minnesota"
+      ],
+      "answer": 3,
+      "fact": "Washington State University crossed Honeycrisp with Enterprise to create the Cosmic Crisp, launched in 2019.",
+      "src": "America's Test Kitchen: U of Minnesota released Honeycrisp 1991; WSU Cosmic Crisp = Honeycrisp x Enterprise, Oct 2019"
+     }
+    ]
+   },
+   {
+    "name": "Squash Court",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which winter squash's cooked flesh pulls apart into long, noodle-like strands?",
+      "options": [
+       "Delicata",
+       "Acorn",
+       "Spaghetti",
+       "Butternut"
+      ],
+      "answer": 2,
+      "fact": "Butternut, acorn and spaghetti squash are all winter squash, picked once their rinds turn hard.",
+      "src": "Univ. of Illinois Extension: butternut, acorn, spaghetti are winter squash; harvest when rind is hard and can't be punctured with a fingernail"
+     },
+     {
+      "value": 200,
+      "q": "Corn, beans and squash planted together are traditionally known as the Three what?",
+      "options": [
+       "Friends",
+       "Kings",
+       "Sisters",
+       "Brothers"
+      ],
+      "answer": 2,
+      "fact": "Squash's broad leaves shade the soil, keeping it moist and crowding out weeds.",
+      "src": "Wikipedia Three Sisters (agriculture): squash leaves shade ground, retain moisture, limit weeds"
+     },
+     {
+      "value": 300,
+      "q": "Squash was first domesticated on which continent?",
+      "options": [
+       "Europe",
+       "North America",
+       "Africa",
+       "Asia"
+      ],
+      "answer": 1,
+      "fact": "Squash was grown in Oaxaca, Mexico, about 10,000 years ago, one of the oldest crops of the Americas.",
+      "src": "FAO AGRIS record: C. pepo cultivation at Guila Naquitz, Oaxaca, 10,000-8,000 years ago"
+     },
+     {
+      "value": 400,
+      "q": "The English word squash was borrowed from the language of which Native American people?",
+      "options": [
+       "Nahuatl",
+       "Cherokee",
+       "Narragansett",
+       "Lakota"
+      ],
+      "answer": 2,
+      "fact": "The original word, askutasquash, meant roughly 'the things that may be eaten raw.'",
+      "src": "etymonline squash (n.2): 1640s, from Narragansett askutasquash 'the things that may be eaten raw'"
+     }
+    ]
+   },
+   {
+    "name": "Field Notes",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Cranberries grow on low vines in sandy wetlands known as what?",
+      "options": [
+       "Paddies",
+       "Bogs",
+       "Terraces",
+       "Groves"
+      ],
+      "answer": 1,
+      "fact": "Wild cranberries are native to North America.",
+      "src": "Popular Science 'Cranberries can bounce, float': grown in bogs; wild cranberries native to North America"
+     },
+     {
+      "value": 200,
+      "q": "Why do cranberries float when growers flood the fields at harvest?",
+      "options": [
+       "Air pockets inside",
+       "A waxy coating",
+       "Low sugar content",
+       "Hollow seeds"
+      ],
+      "answer": 0,
+      "fact": "Each berry holds four air pockets, which is also why fresh cranberries bounce.",
+      "src": "Popular Science: each cranberry contains four air pockets; bounce test for freshness"
+     },
+     {
+      "value": 300,
+      "q": "The orange 'yams' sold in most US grocery stores are actually what?",
+      "options": [
+       "Winter squash",
+       "Sweet potatoes",
+       "Cassava",
+       "Taro root"
+      ],
+      "answer": 1,
+      "fact": "True yams belong to a different plant family and are native to Africa and Asia.",
+      "src": "HuffPost 2013 sweet potatoes vs yams: orange 'yams' are sweet potatoes; true yams Dioscoreaceae, Africa/Asia"
+     },
+     {
+      "value": 400,
+      "q": "Apples, pears, cherries and strawberries all belong to which plant family?",
+      "options": [
+       "Citrus family",
+       "Rose family",
+       "Laurel family",
+       "Heath family"
+      ],
+      "answer": 1,
+      "fact": "Almonds, peaches and plums belong to the rose family too.",
+      "src": "treelib.ca Rosaceae: apples, pears, almonds, apricots, peaches, plums, cherries, strawberries; heath family (Ericaceae) = blueberries/cranberries, textbook"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "thanksgiving-table",
+  "blurb": "Parades, football and the calendar story of Thanksgiving",
+  "categories": [
+   {
+    "name": "Parade Day",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Who traditionally arrives at the very end of the Macy's Thanksgiving Day Parade?",
+      "options": [
+       "Uncle Sam",
+       "Frosty the Snowman",
+       "Tom Turkey",
+       "Santa Claus"
+      ],
+      "answer": 3,
+      "fact": "The first parade, in 1924, featured live animals borrowed from the Central Park Zoo.",
+      "src": "americacomesalive.com balloons history: 1924 live animals borrowed from Central Park Zoo; Santa finale textbook"
+     },
+     {
+      "value": 200,
+      "q": "Which cartoon cat was among the parade's first giant balloons, in 1927?",
+      "options": [
+       "Garfield",
+       "Top Cat",
+       "Felix the Cat",
+       "Sylvester"
+      ],
+      "answer": 2,
+      "fact": "The parade began in 1924 under the name Macy's Christmas Parade.",
+      "src": "americacomesalive.com: balloons debuted 1927, Felix the most famous; began 1924 as Macy's Christmas Parade (other cats created later)"
+     },
+     {
+      "value": 300,
+      "q": "In 1928, what did Macy's do with its giant balloons once the parade ended?",
+      "options": [
+       "Donated them to schools",
+       "Stored them in the store",
+       "Released them into the sky",
+       "Floated them down a river"
+      ],
+      "answer": 2,
+      "fact": "Macy's offered a $100 reward to anyone who returned a balloon after it came down.",
+      "src": "americacomesalive.com: 1928 helium balloons released, $100 reward for return"
+     },
+     {
+      "value": 400,
+      "q": "Which city's Thanksgiving parade, started by Gimbels department store in 1920, predates Macy's?",
+      "options": [
+       "Chicago",
+       "Detroit",
+       "Boston",
+       "Philadelphia"
+      ],
+      "answer": 3,
+      "fact": "It is considered the oldest Thanksgiving Day parade in the United States.",
+      "src": "Wikipedia 6abc Dunkin' Thanksgiving Day Parade: began 1920 by Gimbels; oldest in US"
+     }
+    ]
+   },
+   {
+    "name": "Turkey Day Customs",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which NFL team began its tradition of hosting a Thanksgiving game in 1934?",
+      "options": [
+       "Green Bay Packers",
+       "Chicago Bears",
+       "Detroit Lions",
+       "Dallas Cowboys"
+      ],
+      "answer": 2,
+      "fact": "The Dallas Cowboys started hosting their own Thanksgiving game in 1966.",
+      "src": "Wikipedia NFL on Thanksgiving Day: Lions began 1934 hosting Bears; Cowboys 1966"
+     },
+     {
+      "value": 200,
+      "q": "Green bean casserole was created in 1955 in the test kitchen of which company?",
+      "options": [
+       "Kraft",
+       "Heinz",
+       "Campbell's",
+       "Del Monte"
+      ],
+      "answer": 2,
+      "fact": "Creator Dorcas Reilly's handwritten recipe card is kept by the National Inventors Hall of Fame.",
+      "src": "Smithsonian Magazine: Dorcas Reilly, 1955, Campbell's test kitchen; card in National Inventors Hall of Fame archives"
+     },
+     {
+      "value": 300,
+      "q": "Butterball's Turkey Talk-Line, a hotline for holiday cooks, first opened in which decade?",
+      "options": [
+       "The 1970s",
+       "The 1960s",
+       "The 1990s",
+       "The 1980s"
+      ],
+      "answer": 3,
+      "fact": "In its first season, six home economists answered about 11,000 turkey questions.",
+      "src": "Butterball Turkey Talk-Line page: started 1981; six home economists, 11,000 questions"
+     },
+     {
+      "value": 400,
+      "q": "The Thanksgiving song 'Over the River and Through the Wood' began as an 1844 poem by whom?",
+      "options": [
+       "Louisa May Alcott",
+       "Sarah Josepha Hale",
+       "Emily Dickinson",
+       "Lydia Maria Child"
+      ],
+      "answer": 3,
+      "fact": "Its original title was 'The New-England Boy's Song about Thanksgiving Day.'",
+      "src": "Wikipedia Over the River and Through the Wood: Lydia Maria Child, 1844, Flowers for Children; original title"
+     }
+    ]
+   },
+   {
+    "name": "On the Calendar",
+    "questions": [
+     {
+      "value": 100,
+      "q": "By law, US Thanksgiving falls on which Thursday of November?",
+      "options": [
+       "The fourth",
+       "The second",
+       "The first",
+       "The third"
+      ],
+      "answer": 0,
+      "fact": "Until 1939 it was traditionally the last Thursday, which in some years meant the fifth.",
+      "src": "Wikipedia Franksgiving: last Thursday before 1939; fourth Thursday fixed by Congress from 1942"
+     },
+     {
+      "value": 200,
+      "q": "Canadian Thanksgiving falls on which day in October?",
+      "options": [
+       "The second Thursday",
+       "The last Monday",
+       "The first Monday",
+       "The second Monday"
+      ],
+      "answer": 3,
+      "fact": "Canada's Parliament fixed Thanksgiving on that date in 1957.",
+      "src": "Wikipedia Thanksgiving (Canada): second Monday of October; 'In 1957, Parliament fixed...'"
+     },
+     {
+      "value": 300,
+      "q": "Which president's 1863 proclamation set a nationwide day of Thanksgiving?",
+      "options": [
+       "George Washington",
+       "Ulysses S. Grant",
+       "Abraham Lincoln",
+       "Andrew Johnson"
+      ],
+      "answer": 2,
+      "fact": "Before then, Thanksgiving had mainly been a New England custom.",
+      "src": "Wikipedia Franksgiving (Lincoln 1863); todayifoundout: previously mainly a New England custom"
+     },
+     {
+      "value": 400,
+      "q": "Sarah Josepha Hale, who campaigned for a national Thanksgiving, first published which nursery rhyme in 1830?",
+      "options": [
+       "Hickory Dickory Dock",
+       "Twinkle, Twinkle, Little Star",
+       "Little Bo-Peep",
+       "Mary Had a Little Lamb"
+      ],
+      "answer": 3,
+      "fact": "Hale edited Godey's Lady's Book, one of the most popular magazines of its day, for 40 years.",
+      "src": "Wikipedia Mary Had a Little Lamb: first published May 24, 1830 in Hale's Poems for Our Children as 'Mary's Lamb'; Roulstone authorship claim exists, so reworded from 'wrote' to 'first published'. Godey's 40 years: todayifoundout"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "sweet-tooth",
+  "blurb": "Candy bars, bakery classics and the stories behind your sweets",
+  "categories": [
+   {
+    "name": "Candy Counter",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which candy bar, named after a Mars family horse, debuted in 1930?",
+      "options": [
+       "Milky Way",
+       "Snickers",
+       "Baby Ruth",
+       "Mars Bar"
+      ],
+      "answer": 1,
+      "fact": "In the UK and Ireland, Snickers was sold under the name Marathon until 1990.",
+      "src": "Wikipedia Snickers (re-checked): 1930, named after the Mars family's favorite horse; sold as Marathon in UK/Ireland until 1990"
+     },
+     {
+      "value": 200,
+      "q": "The two M's in M&M's stand for Forrest Mars and his partner with which last name?",
+      "options": [
+       "Miller",
+       "Murrie",
+       "Morgan",
+       "Mason"
+      ],
+      "answer": 1,
+      "fact": "M&M's were first sold in 1941.",
+      "src": "Wikipedia M&M's: 'The two Ms represent the last names of Forrest E. Mars Sr. and Bruce Murrie'; introduced Sept 10, 1941"
+     },
+     {
+      "value": 300,
+      "q": "Walter Diemer's 1928 bubble gum, sold as Dubble Bubble, was what color?",
+      "options": [
+       "Blue",
+       "Pink",
+       "Green",
+       "White"
+      ],
+      "answer": 1,
+      "fact": "Pink was reportedly the only food coloring in the factory, and it became the classic bubble gum color.",
+      "src": "Wikipedia Walter Diemer: 1928, sold as Dubble Bubble; 'pink because it was the only food coloring in the factory'"
+     },
+     {
+      "value": 400,
+      "q": "Before a 1985 rename, Sour Patch Kids were sold under what name?",
+      "options": [
+       "Star Gummies",
+       "Mars Men",
+       "Space Buddies",
+       "Moon Kids"
+      ],
+      "answer": 1,
+      "fact": "The new name played off the Cabbage Patch Kids craze of the mid-1980s.",
+      "src": "Mental Floss '9 sweet facts' + AdWeek 'Design Evolution: Sour Patch Kids': originally Mars Men; renamed 1985 for US launch, inspired by Cabbage Patch Kids. 'In Canada' dropped: sources disagree on where Jaret International was based"
+     }
+    ]
+   },
+   {
+    "name": "Dessert Cart",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Tiramisu, made with ladyfingers and mascarpone, comes from which country?",
+      "options": [
+       "Spain",
+       "France",
+       "Italy",
+       "Greece"
+      ],
+      "answer": 2,
+      "fact": "Its name means 'pick me up' in Italian.",
+      "src": "Wikipedia Tiramisu: originated in northeastern Italy; from tirami su, 'pick me up' or 'cheer me up'"
+     },
+     {
+      "value": 200,
+      "q": "The Cronut, a croissant-doughnut hybrid, drew long lines in 2013 in which city?",
+      "options": [
+       "Paris",
+       "London",
+       "Los Angeles",
+       "New York"
+      ],
+      "answer": 3,
+      "fact": "Pastry chef Dominique Ansel filed to trademark the name within nine days of its debut.",
+      "src": "Wikipedia Cronut: introduced May 10, 2013 at Dominique Ansel Bakery, SoHo, NYC; lines of 100+ by day three; trademark filed within nine days"
+     },
+     {
+      "value": 300,
+      "q": "Baked Alaska is ice cream and cake covered in what, then quickly browned?",
+      "options": [
+       "Whipped cream",
+       "Marshmallow",
+       "Fondant",
+       "Meringue"
+      ],
+      "answer": 3,
+      "fact": "Air trapped in the meringue insulates the ice cream during its quick trip into a hot oven.",
+      "src": "COMSOL blog 'Why doesn't the ice cream in a baked Alaska melt?': trapped air in the meringue foam insulates; brief bake in a very hot oven"
+     },
+     {
+      "value": 400,
+      "q": "The fruit-topped dessert pavlova is named after Anna Pavlova, a famous Russian what?",
+      "options": [
+       "Figure skater",
+       "Poet",
+       "Opera singer",
+       "Ballerina"
+      ],
+      "answer": 3,
+      "fact": "Australia and New Zealand have long debated which country created it.",
+      "src": "Wikipedia Pavlova: named after the Russian ballerina Anna Pavlova; long-standing AU/NZ dispute over origin"
+     }
+    ]
+   },
+   {
+    "name": "Bake Shop",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Chocolate is made from the seeds of which tree?",
+      "options": [
+       "Cacao",
+       "Coffee",
+       "Carob",
+       "Coconut"
+      ],
+      "answer": 0,
+      "fact": "Cacao pods grow straight out of the tree's trunk and thick branches.",
+      "src": "growables.org cocoa: 'flowers and fruits on the older branches and trunk (cauliflorous flowering)'; seeds processed to make chocolate"
+     },
+     {
+      "value": 200,
+      "q": "Vanilla comes from the seed pods of which type of plant?",
+      "options": [
+       "Palm",
+       "Orchid",
+       "Tulip",
+       "Lily"
+      ],
+      "answer": 1,
+      "fact": "The vanilla orchid is native to the tropical Americas, from Mexico to northern Brazil.",
+      "src": "Britannica vanilla: climbing orchids (Orchidaceae), pods; Wikipedia Vanilla planifolia: native to Mexico, Central America, Colombia and northern Brazil"
+     },
+     {
+      "value": 300,
+      "q": "Ruth Wakefield created the chocolate chip cookie in the 1930s at the Toll House Inn in which state?",
+      "options": [
+       "Massachusetts",
+       "Maine",
+       "Pennsylvania",
+       "Vermont"
+      ],
+      "answer": 0,
+      "fact": "Nestle later printed her recipe on its chocolate packaging.",
+      "src": "Lemelson-MIT 'Ruth Wakefield': Toll House on the outskirts of Whitman, Massachusetts, 1930s; Nestle allowed to print the recipe on its packaging"
+     },
+     {
+      "value": 400,
+      "q": "Cotton candy was a hit at the 1904 St. Louis World's Fair under what name?",
+      "options": [
+       "Fairy Floss",
+       "Candy Cloud",
+       "Sugar Silk",
+       "Angel Fluff"
+      ],
+      "answer": 0,
+      "fact": "Dentist William Morrison and candy maker John C. Wharton invented the machine-spun treat in 1897.",
+      "src": "Wikipedia Cotton candy: machine-spun cotton candy invented 1897 by dentist William Morrison and confectioner John C. Wharton; introduced at 1904 World's Fair as Fairy Floss. 'Spun Sugar' distractor removed (cotton candy literally is spun sugar)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "holidays-world",
+  "blurb": "Festivals of light, winter customs and celebrations around the globe",
+  "categories": [
+   {
+    "name": "Festivals of Light",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Diwali, celebrated by millions in India and around the world, is known as the festival of what?",
+      "options": [
+       "Lights",
+       "Colors",
+       "Kites",
+       "Harvest"
+      ],
+      "answer": 0,
+      "fact": "Families light rows of small clay oil lamps called diyas.",
+      "src": "Britannica 'diya': at Diwali, diyas lit and placed in rows along temples and houses; festival of lights textbook"
+     },
+     {
+      "value": 200,
+      "q": "Hanukkah is celebrated for how many nights?",
+      "options": [
+       "Twelve",
+       "Seven",
+       "Ten",
+       "Eight"
+      ],
+      "answer": 3,
+      "fact": "A Hanukkah menorah holds nine candles: one for each night plus a helper candle, the shamash.",
+      "src": "Wikipedia Hanukkah menorah: nine-branched, eight lights for the eight nights plus the shamash ('helper') used to light them"
+     },
+     {
+      "value": 300,
+      "q": "On St. Lucia's Day in Sweden, the girl chosen to play Lucia wears a crown of what?",
+      "options": [
+       "Pinecones",
+       "Candles",
+       "Gold stars",
+       "Holly"
+      ],
+      "answer": 1,
+      "fact": "St. Lucia's Day falls on December 13 and is often marked with saffron buns.",
+      "src": "Smithsonian 'Lussekatter and Cuccia for St. Lucy's Day': Dec 13; girls wear a crown of candles; saffron buns"
+     },
+     {
+      "value": 400,
+      "q": "Loy Krathong, when people float candlelit baskets on rivers, is a famous festival of which country?",
+      "options": [
+       "Thailand",
+       "Philippines",
+       "Indonesia",
+       "Vietnam"
+      ],
+      "answer": 0,
+      "fact": "A krathong is traditionally a slice of banana tree trunk, decorated with folded banana leaves.",
+      "src": "Wikipedia Loy Krathong: Thai festival; krathong traditionally a slice of banana tree trunk decorated with folded banana leaves, incense, candle (old fact said made from banana leaves - corrected)"
+     }
+    ]
+   },
+   {
+    "name": "Winter Customs",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Kwanzaa, first celebrated in 1966, begins on December 26 and lasts how many days?",
+      "options": [
+       "Five",
+       "Seven",
+       "Twelve",
+       "Eight"
+      ],
+      "answer": 1,
+      "fact": "Each day honors one of seven principles, such as unity and creativity.",
+      "src": "Mental Floss Kwanzaa facts: created 1966 by Maulana Karenga; Dec 26-Jan 1; seven principles incl. Umoja (unity), Kuumba (creativity)"
+     },
+     {
+      "value": 200,
+      "q": "Las Posadas processions in Mexico re-enact a search for what?",
+      "options": [
+       "Hidden gifts",
+       "A lost lamb",
+       "A place to stay",
+       "A guiding star"
+      ],
+      "answer": 2,
+      "fact": "Las Posadas is celebrated over nine nights, from December 16 to 24.",
+      "src": "Britannica Kids 'Las Posadas': re-enacts Joseph and Mary's search for lodging; nine nights, Dec 16-24; posada = inn"
+     },
+     {
+      "value": 300,
+      "q": "Thanks to a 1974 ad campaign, many families in Japan celebrate Christmas by eating what?",
+      "options": [
+       "Sushi",
+       "Fried chicken",
+       "Pizza",
+       "Ramen"
+      ],
+      "answer": 1,
+      "fact": "Many families in Japan order their Christmas chicken weeks in advance.",
+      "src": "Time Out Tokyo 'KFC and Christmas in Japan': national campaign 1974 ('Kentucky is Christmas!'); Christmas orders taken from early November"
+     },
+     {
+      "value": 400,
+      "q": "In Italy, which old woman traditionally brings children gifts on the night of January 5?",
+      "options": [
+       "Saint Lucia",
+       "La Befana",
+       "Ded Moroz",
+       "Babushka"
+      ],
+      "answer": 1,
+      "fact": "By tradition, she leaves sweets for good children and lumps of coal for naughty ones.",
+      "src": "Wikipedia Befana: old woman who delivers gifts on Epiphany Eve (night of Jan 5); sweets for good children, 'coal' for naughty. 'Kindly' dropped (usually depicted as witch-like)"
+     }
+    ]
+   },
+   {
+    "name": "Around the Calendar",
+    "questions": [
+     {
+      "value": 100,
+      "q": "During Lunar New Year, the red envelopes given to children traditionally hold what?",
+      "options": [
+       "Poems",
+       "Tea leaves",
+       "Money",
+       "Candy"
+      ],
+      "answer": 2,
+      "fact": "In Mandarin Chinese, the red envelopes are called hongbao.",
+      "src": "Wikipedia Red envelope: contain cash; given at Chinese New Year, mostly to children; Mandarin hongbao"
+     },
+     {
+      "value": 200,
+      "q": "During Japan's spring custom of hanami, people gather outdoors to admire what?",
+      "options": [
+       "Fireflies",
+       "Autumn leaves",
+       "The full moon",
+       "Cherry blossoms"
+      ],
+      "answer": 3,
+      "fact": "Hanami means 'flower viewing' in Japanese.",
+      "src": "Wikipedia Hanami: 'flower viewing'; almost always cherry blossoms (less often plum)"
+     },
+     {
+      "value": 300,
+      "q": "Which round pastry is the signature treat of the Mid-Autumn Festival?",
+      "options": [
+       "Sesame balls",
+       "Pineapple cakes",
+       "Mooncakes",
+       "Egg tarts"
+      ],
+      "answer": 2,
+      "fact": "The festival falls on the 15th day of the eighth lunar month, when the moon is full.",
+      "src": "Wikipedia Mid-Autumn Festival: 15th day of the 8th lunisolar month, night of a full moon; mooncakes eaten"
+     },
+     {
+      "value": 400,
+      "q": "Nowruz, the Persian New Year, begins on which day of the year?",
+      "options": [
+       "Winter solstice",
+       "Spring equinox",
+       "Autumn equinox",
+       "Summer solstice"
+      ],
+      "answer": 1,
+      "fact": "Nowruz means 'new day' in Persian.",
+      "src": "Wikipedia Nowruz: now 'new' + ruz 'day'; day set by the March (spring) equinox"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "leftovers",
+  "blurb": "A grab bag of food science, snack history and surprising origins",
+  "categories": [
+   {
+    "name": "Kitchen Science",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which of these 'nuts' is actually a legume, like peas and beans?",
+      "options": [
+       "Walnut",
+       "Cashew",
+       "Peanut",
+       "Almond"
+      ],
+      "answer": 2,
+      "fact": "Peanut flowers bloom above ground, but the pods grow and ripen underground.",
+      "src": "Wayne's Word peanut page: peanut is a legume (Fabaceae); flowers above ground, pegs grow into soil, pods complete growth underground"
+     },
+     {
+      "value": 200,
+      "q": "Which compound gives chili peppers their heat?",
+      "options": [
+       "Capsaicin",
+       "Menthol",
+       "Piperine",
+       "Allicin"
+      ],
+      "answer": 0,
+      "fact": "Pharmacist Wilbur Scoville created his scale for rating pepper heat in 1912.",
+      "src": "Wikipedia Wilbur Scoville: American pharmacist, devised test and scale in 1912 at Parke-Davis; piperine/allicin textbook"
+     },
+     {
+      "value": 300,
+      "q": "Quinoa is often called a grain, but botanically it's related to which leafy green?",
+      "options": [
+       "Spinach",
+       "Kale",
+       "Lettuce",
+       "Cabbage"
+      ],
+      "answer": 0,
+      "fact": "The United Nations named 2013 the International Year of Quinoa.",
+      "src": "Wikipedia Quinoa: pseudocereal, amaranth family, related to spinach and amaranth; UN 2013 year"
+     },
+     {
+      "value": 400,
+      "q": "In cooking, the Maillard reaction is responsible for what?",
+      "options": [
+       "Thickening",
+       "Browning",
+       "Rising",
+       "Curdling"
+      ],
+      "answer": 1,
+      "fact": "It's named for French chemist Louis-Camille Maillard, who described it in 1912.",
+      "src": "Wikipedia Maillard reaction: named after French chemist Louis Camille Maillard, who first described it in 1912"
+     }
+    ]
+   },
+   {
+    "name": "Snack Attack",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which chip brand is known for its curved saddle shape and stackable tube?",
+      "options": [
+       "Ruffles",
+       "Lay's",
+       "Fritos",
+       "Pringles"
+      ],
+      "answer": 3,
+      "fact": "That saddle shape is a geometric form called a hyperbolic paraboloid.",
+      "src": "abakcus.com 'Geometry behind Pringles': 'A Pringle is a hyperbolic paraboloid', a saddle surface; tube textbook"
+     },
+     {
+      "value": 200,
+      "q": "Momofuku Ando invented instant noodles in 1958 in which country?",
+      "options": [
+       "Thailand",
+       "China",
+       "South Korea",
+       "Japan"
+      ],
+      "answer": 3,
+      "fact": "His company, Nissin, followed up with Cup Noodles in 1971.",
+      "src": "NBC News obituary of Momofuku Ando: Chicken Ramen 1958, Cup Noodle 1971, founded Nissin"
+     },
+     {
+      "value": 300,
+      "q": "The Oreo cookie debuted in 1912 from which company?",
+      "options": [
+       "Keebler",
+       "Pepperidge Farm",
+       "Nabisco",
+       "Sunshine"
+      ],
+      "answer": 2,
+      "fact": "A similar cookie, Sunshine's Hydrox, actually came first, in 1908.",
+      "src": "The Hustle 'disappearing Hydrox cookies': Sunshine (Loose-Wiles) created Hydrox in 1908; Nabisco shipped first Oreos March 1912"
+     },
+     {
+      "value": 400,
+      "q": "Before World War II, Twinkies were filled with cream flavored like which fruit?",
+      "options": [
+       "Strawberry",
+       "Banana",
+       "Lemon",
+       "Pineapple"
+      ],
+      "answer": 1,
+      "fact": "Bananas were rationed during World War II, so the filling switched to vanilla cream.",
+      "src": "Wikipedia Twinkie: Jimmy Dewar, 1930, Continental Baking; banana cream filling; bananas rationed in WWII, switched to vanilla. Old fact's 'still uses' removed"
+     }
+    ]
+   },
+   {
+    "name": "Origin Stories",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The cheesesteak sandwich is a signature food of which US city?",
+      "options": [
+       "Philadelphia",
+       "Chicago",
+       "Baltimore",
+       "Pittsburgh"
+      ],
+      "answer": 0,
+      "fact": "In Philadelphia, the most common cheeses on it are American, provolone and Cheez Whiz.",
+      "src": "Wikipedia Cheesesteak: Philadelphia; 'American cheese, provolone, and Cheez Whiz are the most commonly used cheeses'. Old fact (Olivieri brothers) dropped: article says the origin story is debated"
+     },
+     {
+      "value": 200,
+      "q": "Nachos were invented in 1943 by Ignacio 'Nacho' Anaya in which country?",
+      "options": [
+       "Spain",
+       "United States",
+       "Mexico",
+       "Cuba"
+      ],
+      "answer": 2,
+      "fact": "He served them to American visitors in Piedras Negras, just across the border from Eagle Pass, Texas.",
+      "src": "Wikipedia Nachos (re-checked): Ignacio 'Nacho' Anaya, 1943, Victory Club, Piedras Negras, Coahuila; officers' wives from Fort Duncan (Eagle Pass, TX)"
+     },
+     {
+      "value": 300,
+      "q": "The Waldorf salad of apples, celery and mayonnaise was created in the 1890s in which city?",
+      "options": [
+       "Boston",
+       "San Francisco",
+       "New York",
+       "Chicago"
+      ],
+      "answer": 2,
+      "fact": "Oscar Tschirky's 1896 cookbook recipe had no nuts; walnuts were added in later versions.",
+      "src": "barrypopik.com 'Waldorf Salad': created at NYC's Waldorf Hotel 1893-1896, in print 1894; Tschirky's 1896 cookbook recipe = apples, celery, mayonnaise, no nuts; walnuts by 1897"
+     },
+     {
+      "value": 400,
+      "q": "Arabica coffee plants are native to the highlands of which country?",
+      "options": [
+       "Brazil",
+       "Colombia",
+       "Ethiopia",
+       "Indonesia"
+      ],
+      "answer": 2,
+      "fact": "Yemen and Ethiopia were likely among the first places to grow coffee as a crop.",
+      "src": "Wikipedia Coffea arabica: endemic to SW highlands of Ethiopia; Yemen and S. Ethiopia pioneering cultivation regions (Yemen kept out of options)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "countdown",
+  "blurb": "Ball drops, lucky foods and midnight traditions around the world",
+  "categories": [
+   {
+    "name": "Times Square",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Where does New York City's famous New Year's Eve ball drop take place?",
+      "options": [
+       "Times Square",
+       "Rockefeller Center",
+       "Grand Central",
+       "Central Park"
+      ],
+      "answer": 0,
+      "fact": "The idea came from time balls, which harbors once dropped at a set hour so ships could check their clocks.",
+      "src": "CNN Style ball design history: ball based on time balls, 19th-century nautical devices for setting ship chronometers; Wikipedia Times Square: first ball Dec 31, 1907"
+     },
+     {
+      "value": 200,
+      "q": "Times Square takes its name from which newspaper, which once had its headquarters there?",
+      "options": [
+       "The New York Times",
+       "New York Herald",
+       "New York Post",
+       "The Wall Street Journal"
+      ],
+      "answer": 0,
+      "fact": "Before 1904, the area was known as Longacre Square.",
+      "src": "Britannica Times Square: named for the New York Times in 1904; Wikipedia: formerly Longacre Square, renamed April 8, 1904; Herald Square named for the Herald"
+     },
+     {
+      "value": 300,
+      "q": "Which TV host became Dick Clark's co-host on 'New Year's Rockin' Eve' in 2005?",
+      "options": [
+       "Carson Daly",
+       "Ryan Seacrest",
+       "Jimmy Fallon",
+       "Anderson Cooper"
+      ],
+      "answer": 1,
+      "fact": "The show first aired on NBC in 1972, hosted by the band Three Dog Night.",
+      "src": "MediaVillage/HISTORY 'A New Tradition is Born': first aired Dec 31, 1972 on NBC, hosted by Three Dog Night; 'Starting in 2005, Ryan Seacrest joined as cohost'. Wikipedia NYRE confirms; Daly/Fallon/Cooper never hosted it. Reworded to a fixed historical event (no 'lead host')"
+     },
+     {
+      "value": 400,
+      "q": "To welcome the year 2000, Times Square debuted a new ball covered in panels of what?",
+      "options": [
+       "Waterford crystal",
+       "Murano glass",
+       "Stained glass",
+       "Polished steel"
+      ],
+      "answer": 0,
+      "fact": "The first ball, in 1907, was made of iron and wood and lit by 100 light bulbs.",
+      "src": "NPR 'An Abridged Design History of the Ball': 1907 ball of wood, iron and 100 light bulbs; millennium ball covered in Waterford Crystal triangles; CNN confirms Waterford for 2000"
+     }
+    ]
+   },
+   {
+    "name": "Midnight Abroad",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In Spain, people eat 12 of what at midnight, one for each chime of the clock?",
+      "options": [
+       "Cherries",
+       "Grapes",
+       "Olives",
+       "Almonds"
+      ],
+      "answer": 1,
+      "fact": "They're called las doce uvas de la suerte, the twelve grapes of luck.",
+      "src": "Wikipedia Twelve Grapes: las doce uvas (de la suerte), one grape per midnight bell strike"
+     },
+     {
+      "value": 200,
+      "q": "On New Year's Eve, the Dutch snack on oliebollen. What are they?",
+      "options": [
+       "Fried dough balls",
+       "Pickled herring",
+       "Cheese puffs",
+       "Spiced cookies"
+      ],
+      "answer": 0,
+      "fact": "The name oliebollen translates literally as 'oil balls.'",
+      "src": "Wikipedia Oliebol: Dutch doughnut-like fried dough traditionally eaten on New Year's Eve; oliebollen literally 'oil spheres'"
+     },
+     {
+      "value": 300,
+      "q": "In Scotland's Hogmanay tradition, being the first visitor through the door after midnight is called what?",
+      "options": [
+       "Mumming",
+       "Carolling",
+       "First-footing",
+       "Busking"
+      ],
+      "answer": 2,
+      "fact": "First-footers traditionally bring small gifts, such as coal or shortbread.",
+      "src": "Wikipedia First-foot: first visitor after midnight; gifts incl. coal, shortbread or black bun, salt. 'Guising' distractor swapped for 'Carolling' (Guising is the answer key in the Halloween Heist deck)"
+     },
+     {
+      "value": 400,
+      "q": "On New Year's Eve, Buddhist temples in Japan traditionally ring their bells how many times?",
+      "options": [
+       "365",
+       "108",
+       "100",
+       "12"
+      ],
+      "answer": 1,
+      "fact": "The bell-ringing ceremony is called joya no kane.",
+      "src": "Wikipedia Joya no Kane: Japanese Buddhist New Year's Eve event; most temples ring the bell 108 times"
+     }
+    ]
+   },
+   {
+    "name": "Fresh Start",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Eating black-eyed peas on New Year's Day is a tradition most associated with which US region?",
+      "options": [
+       "The South",
+       "The Midwest",
+       "The Pacific Northwest",
+       "New England"
+      ],
+      "answer": 0,
+      "fact": "They're often cooked with rice in a dish called Hoppin' John.",
+      "src": "Old Farmer's Almanac 'Hoppin' John': black-eyed peas and rice, eaten in the southern US on New Year's Day for luck"
+     },
+     {
+      "value": 200,
+      "q": "On New Year's Day, people taking part in a 'polar bear plunge' do what?",
+      "options": [
+       "Sled down a big hill",
+       "Run a midnight race",
+       "Build snow sculptures",
+       "Jump into icy water"
+      ],
+      "answer": 3,
+      "fact": "In the Netherlands, thousands start the year with a New Year's dip in the North Sea at Scheveningen.",
+      "src": "IamExpat 'New Year's Dive': Jan 1 North Sea dip, biggest at Scheveningen with some 10,000 people"
+     },
+     {
+      "value": 300,
+      "q": "Which Scottish poet wrote down 'Auld Lang Syne' in 1788?",
+      "options": [
+       "Robert Burns",
+       "Walter Scott",
+       "Robert Louis Stevenson",
+       "Lord Byron"
+      ],
+      "answer": 0,
+      "fact": "Burns built it on an older Scots folk song; the title means roughly 'old long since.'",
+      "src": "Wikipedia Auld Lang Syne: Burns wrote it and sent it to the Scots Musical Museum in 1788; based on an older Scottish folk song; title = 'old long since'"
+     },
+     {
+      "value": 400,
+      "q": "Greek families cut a New Year's cake called vasilopita. What is hidden inside?",
+      "options": [
+       "A pea",
+       "An almond",
+       "A coin",
+       "A bean"
+      ],
+      "answer": 2,
+      "fact": "The cake is linked to Saint Basil, whose feast day falls on January 1.",
+      "src": "Wikipedia Vasilopita: hidden coin or trinket; associated with Saint Basil's day, 1 January. 'A ring' distractor swapped for 'A pea' (a ring could count as a trinket)"
+     }
+    ]
+   }
+  ]
+ }
+]

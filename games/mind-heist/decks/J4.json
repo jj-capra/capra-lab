@@ -1,0 +1,1064 @@
+[
+  {
+    "id": "jokes-19",
+    "blurb": "Friendly ghosts, vampires, skeletons and mummies. All treats, no frights.",
+    "categories": [
+      {
+        "name": "Spooky Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why didn't the skeleton cross the road?",
+            "options": [
+              "The light was red",
+              "He had no guts",
+              "He was too tired",
+              "He lost his map"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why didn't the skeleton go to the dance? He had no body to go with.",
+            "src": "classic (reserved for this deck)"
+          },
+          {
+            "value": 200,
+            "q": "Why are ghosts such bad liars?",
+            "options": [
+              "You can tell they're nervous",
+              "You can hear them stammer",
+              "You can catch them fidgeting",
+              "You can see right through them"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Where do ghosts mail their letters? At the ghost office.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "What do you call a witch at the beach?",
+            "options": [
+              "A wave-witch",
+              "A surf-witch",
+              "A sand-witch",
+              "A sunburned witch"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What do you call a witch's garage? A broom closet.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "Why did the vampire read the newspaper every day?",
+            "options": [
+              "It had great circulation",
+              "It had great headlines",
+              "It had great comics",
+              "It had great puzzles"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the vampire need a breath mint? He had bat breath.",
+            "src": "classic; premise: a newspaper's circulation is how many copies it sells"
+          }
+        ]
+      },
+      {
+        "name": "Boo-tiful Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why are ghosts so bad at group chats?",
+            "options": [
+              "They keep losing their phones",
+              "They keep ghosting everyone",
+              "They keep forgetting names",
+              "They keep typing too slowly"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What is a ghost's favorite dessert? Boo-berry pie.",
+            "src": "original; premise: 'ghosting' is slang for ignoring someone's messages"
+          },
+          {
+            "value": 200,
+            "q": "Why did the ghost join the cheer squad?",
+            "options": [
+              "It had lots of energy",
+              "It had lots of friends there",
+              "It had lots of pom-poms",
+              "It had lots of spirit"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What do you call a skeleton who won't get off the couch? Lazy bones.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "What do you call a haunted chicken?",
+            "options": [
+              "A poultry-geist",
+              "A chicken-geist",
+              "A hen-geist",
+              "A rooster-geist"
+            ],
+            "answer": 0,
+            "fact": "The pun: a poltergeist is a noisy, mischievous ghost, and poultry means chickens and other farm birds.",
+            "src": "classic; premise: poltergeist is German for 'noisy ghost'"
+          },
+          {
+            "value": 400,
+            "q": "Why was the mummy so tense?",
+            "options": [
+              "He was all worked up",
+              "He was all fired up",
+              "He was all wound up",
+              "He was all keyed up"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What does a mummy say when the workday is over? That's a wrap!",
+            "src": "classic; premise: mummies were wrapped in long strips of linen"
+          }
+        ]
+      },
+      {
+        "name": "Haunted Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "The scariest thing in the whole haunted house was ___",
+            "options": [
+              "the ghost in the attic",
+              "the dark hallway",
+              "the creaky staircase",
+              "the price of a ticket"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the monster eat a lamp? He only wanted a light snack.",
+            "src": "original (bonus changed in check: the mummy 'unwind' bonus tipped the $400 'wound up')"
+          },
+          {
+            "value": 200,
+            "q": "Vampires can't see themselves in mirrors, which explains ___",
+            "options": [
+              "why they hate the sun",
+              "why their hair is a mess",
+              "why they sleep all day",
+              "why they wear capes"
+            ],
+            "answer": 1,
+            "fact": "Bonus: How do ghosts keep their hair in place? With scare spray.",
+            "src": "original; premise: in folklore, vampires cast no reflection"
+          },
+          {
+            "value": 300,
+            "q": "Our house is haunted, but it's fine. The ghost mostly just ___",
+            "options": [
+              "rattles chains at night",
+              "moves the furniture",
+              "complains we're too loud",
+              "hides up in the attic"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why are skeletons always so calm? Nothing gets under their skin.",
+            "src": "original"
+          },
+          {
+            "value": 400,
+            "q": "A skeleton walks into a diner and orders ___",
+            "options": [
+              "a soda and a mop",
+              "a soda and a straw",
+              "a soda with no ice",
+              "a soda to go"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What do you call a werewolf who's lost? A where-wolf.",
+            "src": "classic, adapted (a soda instead of the usual drink)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-20",
+    "blurb": "Plant, garden and farm jokes, freshly picked and full of corn",
+    "categories": [
+      {
+        "name": "Field Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why did the scarecrow win an award?",
+            "options": [
+              "He scared the most crows",
+              "He had the best costume",
+              "He's outstanding in his field",
+              "He worked the longest hours"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What is a scarecrow's favorite fruit? Straw-berries.",
+            "src": "classic (reserved for this deck); premise: scarecrows are often stuffed with straw"
+          },
+          {
+            "value": 200,
+            "q": "What kind of tree fits in your hand?",
+            "options": [
+              "A pine tree",
+              "A palm tree",
+              "An oak tree",
+              "A maple tree"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What did the big flower say to the little flower? Hi, bud!",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "How do you fix a broken pumpkin?",
+            "options": [
+              "With some strong tape",
+              "With a little glue",
+              "With a garden hose",
+              "With a pumpkin patch"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What did the tree say to autumn? Leaf me alone.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "Why did the gardener plant light bulbs?",
+            "options": [
+              "To grow a power plant",
+              "To grow a family tree",
+              "To brighten the yard",
+              "To keep the birds away"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the farmer bury his money in the field? He wanted rich soil.",
+            "src": "classic; premise: gardeners plant flower bulbs, and a power plant makes electricity"
+          }
+        ]
+      },
+      {
+        "name": "Puns in Bloom",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why are flowers so lazy?",
+            "options": [
+              "They never have to work",
+              "They spend all day outside",
+              "They spend all day in bed",
+              "They wait for the rain"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What did the seed say to the gardener? I'm rooting for you!",
+            "src": "classic; premise: flowers grow in flower beds"
+          },
+          {
+            "value": 200,
+            "q": "Why is it so hard to keep a secret on a farm?",
+            "options": [
+              "The barn has thin walls",
+              "The tractor is too loud",
+              "The rooster wakes everyone",
+              "The corn is all ears"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What did the dirt say to the rain? If this keeps up, my name will be mud.",
+            "src": "classic; premise: corn grows in ears"
+          },
+          {
+            "value": 300,
+            "q": "What kind of flower grows on your face?",
+            "options": [
+              "Tulips",
+              "Daisies",
+              "Lilies",
+              "Violets"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What's a gardener's favorite kind of music? Heavy petal.",
+            "src": "classic riddle; tulips = two lips; no rose (rosy cheeks) or iris (part of the eye) among the options (replaced the potato-detective joke in check: J1's Food for Thought draft has the same joke)"
+          },
+          {
+            "value": 400,
+            "q": "Why did the gardener quit his job?",
+            "options": [
+              "His peppers were too hot",
+              "His celery wasn't high enough",
+              "His hours were too long",
+              "His garden was too far"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Gardening is cheaper than therapy, and you get tomatoes.",
+            "src": "classic (celery / salary)"
+          }
+        ]
+      },
+      {
+        "name": "Garden Plot Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "My tomatoes are so shy, they ___",
+            "options": [
+              "hide under their leaves",
+              "only grow at night",
+              "grow behind the fence",
+              "turn red when I walk by"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why was the tree so confused? It was stumped.",
+            "src": "original; premise: tomatoes ripen from green to red"
+          },
+          {
+            "value": 200,
+            "q": "If money doesn't grow on trees, why do banks have ___?",
+            "options": [
+              "vaults",
+              "branches",
+              "tellers",
+              "lobbies"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What is a tree's least favorite month? Sep-timber!",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "A farmer has 6 haystacks in one field and 4 in another. He piles them all together. How many stacks now?",
+            "options": [
+              "Ten",
+              "Two",
+              "One",
+              "Twenty-four"
+            ],
+            "answer": 2,
+            "fact": "Bonus: How do farmers say hello? Hay there!",
+            "src": "classic riddle; premise: piled together they make one big stack"
+          },
+          {
+            "value": 400,
+            "q": "Work at the orange grove was hard. Some days I just couldn't ___",
+            "options": [
+              "concentrate",
+              "focus",
+              "keep going",
+              "stay awake"
+            ],
+            "answer": 0,
+            "fact": "The pun: concentrate means to focus, and it's also orange juice with most of the water taken out.",
+            "src": "classic, reworded; premise: frozen orange juice concentrate is juice with water removed"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-21",
+    "blurb": "Clock, calendar and time jokes. This will only take a minute.",
+    "categories": [
+      {
+        "name": "Clockwork Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why did the kid sit on the clock?",
+            "options": [
+              "To feel taller",
+              "It was comfy",
+              "To keep it safe",
+              "To be on time"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the man throw his clock out the window? He wanted to see time fly.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "What did the clock's big hand say to the little hand?",
+            "options": [
+              "You look great today!",
+              "Got a minute?",
+              "How was your day?",
+              "Have a good night!"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What game does a clock love to play? Tick-tac-toe.",
+            "src": "classic (distractor and bonus changed in check)"
+          },
+          {
+            "value": 300,
+            "q": "Why did the clock go to the doctor?",
+            "options": [
+              "It had a bad cough",
+              "It needed a checkup",
+              "It was run down",
+              "It had a sore throat"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the clock get sent to detention? It tocked too much.",
+            "src": "classic; premise: a wind-up clock runs down as its spring unwinds"
+          },
+          {
+            "value": 400,
+            "q": "How can you tell when a clock is hungry?",
+            "options": [
+              "It goes back four seconds",
+              "It goes back three seconds",
+              "It goes back ten seconds",
+              "It goes back an hour"
+            ],
+            "answer": 0,
+            "fact": "The pun: 'back four seconds' sounds like 'back for seconds,' a second helping at dinner.",
+            "src": "classic"
+          }
+        ]
+      },
+      {
+        "name": "Timely Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What is a calendar's favorite fruit?",
+            "options": [
+              "Plums",
+              "Figs",
+              "Grapes",
+              "Dates"
+            ],
+            "answer": 3,
+            "fact": "Bonus: When is the best time to go to the dentist? Tooth-hurty.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Did you hear about the guy who ate a clock?",
+            "options": [
+              "It was very crunchy",
+              "It was time-consuming",
+              "He did it on a dare",
+              "He was really hungry"
+            ],
+            "answer": 1,
+            "fact": "Bonus: I took a job at a clock factory. Now I make my own hours.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Why are clocks so shy?",
+            "options": [
+              "They never leave the wall",
+              "They don't like crowds",
+              "Their hands cover their faces",
+              "They stay up all night"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Seven days without a pun makes one weak.",
+            "src": "classic; premise: a clock's dial is called its face"
+          },
+          {
+            "value": 400,
+            "q": "I got my watch at a thrift store, so of course it came with a ___",
+            "options": [
+              "second hand",
+              "minute hand",
+              "hour hand",
+              "gold band"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Every fall, when the clocks go back, my car clock is finally right again.",
+            "src": "original; premise: thrift-store goods are secondhand, and watches have a second hand"
+          }
+        ]
+      },
+      {
+        "name": "Twists of Time",
+        "questions": [
+          {
+            "value": 100,
+            "q": "My watch stopped, but I'm keeping it. It's still right ___",
+            "options": [
+              "every Monday",
+              "most mornings",
+              "after lunch",
+              "twice a day"
+            ],
+            "answer": 3,
+            "fact": "Bonus: When does Friday come before Thursday? In the dictionary.",
+            "src": "classic, from the saying; premise: a stopped 12-hour dial shows the right time twice a day"
+          },
+          {
+            "value": 200,
+            "q": "I'm cutting my screen time in half. From now on, I'll only use ___",
+            "options": [
+              "it on weekends",
+              "it with one eye",
+              "it after dinner",
+              "it for homework"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What time is it when an elephant sits on your fence? Time to get a new fence.",
+            "src": "original"
+          },
+          {
+            "value": 300,
+            "q": "How can someone go eight days without sleep?",
+            "options": [
+              "They stay very busy",
+              "They keep the lights on",
+              "They sleep at night",
+              "They're having too much fun"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Can February March? No, but April May.",
+            "src": "classic riddle; days vs. nights (replaced the shortest-month riddle in check: February is also a correct answer to that setup)"
+          },
+          {
+            "value": 400,
+            "q": "I'd tell you my time-travel joke, but ___",
+            "options": [
+              "you didn't like it",
+              "it's a long story",
+              "I forgot how it ends",
+              "it's a little silly"
+            ],
+            "answer": 0,
+            "fact": "Bonus: I got fired from the calendar factory. All I did was take a day off.",
+            "src": "classic"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-22",
+    "blurb": "Grammar, spelling and wordplay for people who proofread their texts",
+    "categories": [
+      {
+        "name": "Grammar Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which word is always spelled wrong in the dictionary?",
+            "options": [
+              "Necessary",
+              "Wrong",
+              "Definitely",
+              "Separate"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why is 'dark' spelled with a K and not a C? Because you can't C in the dark.",
+            "src": "classic riddle"
+          },
+          {
+            "value": 200,
+            "q": "What comes at the end of everything?",
+            "options": [
+              "The last page",
+              "A long goodbye",
+              "The letter G",
+              "The final day"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What starts with E, ends with E, and has only one letter in it? An envelope.",
+            "src": "classic riddle; premise: 'everything' ends in G"
+          },
+          {
+            "value": 300,
+            "q": "Why is the letter T like an island?",
+            "options": [
+              "It stands all on its own",
+              "It gets lots of sunshine",
+              "It's very hard to get to",
+              "It's in the middle of water"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Which letter is the coolest? Iced T.",
+            "src": "classic riddle; premise: T is the middle letter of 'water' (bonus changed in check: post office repeated the envelope letter pun)"
+          },
+          {
+            "value": 400,
+            "q": "What's the longest word in the English language?",
+            "options": [
+              "Smiles",
+              "Forever",
+              "Endless",
+              "Lengthy"
+            ],
+            "answer": 0,
+            "fact": "The pun: 'smiles' has a whole 'mile' between its first and last letters.",
+            "src": "classic riddle"
+          }
+        ]
+      },
+      {
+        "name": "Puns of Speech",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What kind of bee never makes a typo?",
+            "options": [
+              "A honey bee",
+              "A bumblebee",
+              "A busy bee",
+              "A spelling bee"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Which word gets shorter when you add two letters to it? Short.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Why was the sentence so out of breath?",
+            "options": [
+              "It was a run-on",
+              "It was very old",
+              "It took the stairs",
+              "It skipped breakfast"
+            ],
+            "answer": 0,
+            "fact": "Bonus: The past, the present and the future walked into a room. It was tense.",
+            "src": "original; premise: a run-on sentence joins clauses without proper punctuation"
+          },
+          {
+            "value": 300,
+            "q": "Why did the comma stop hanging out with the apostrophe?",
+            "options": [
+              "It was too loud",
+              "It was too possessive",
+              "It was too bossy",
+              "It talked too much"
+            ],
+            "answer": 1,
+            "fact": "Bonus: How is a cat different from a comma? A cat has claws at the end of its paws. A comma is a pause at the end of a clause.",
+            "src": "classic; premise: an apostrophe marks possession"
+          },
+          {
+            "value": 400,
+            "q": "How do you comfort a grammar nerd?",
+            "options": [
+              "It's okay, it's okay",
+              "Your, you're, yore",
+              "There, their, they're",
+              "To, too, two"
+            ],
+            "answer": 2,
+            "fact": "The pun: people say 'there, there' to comfort someone, and grammar nerds never mix up there, their and they're.",
+            "src": "classic; premise: 'there, there' is said to comfort someone (bonus changed in check: the synonym line is credited to a named writer)"
+          }
+        ]
+      },
+      {
+        "name": "Twisted Syntax",
+        "questions": [
+          {
+            "value": 100,
+            "q": "I've told you a million times: ___",
+            "options": [
+              "close the door!",
+              "don't be late!",
+              "pick up your socks!",
+              "don't exaggerate!"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What occurs once in a minute, twice in a moment, and never in a thousand years? The letter M.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "My teacher asked me to name two pronouns. I said, ___",
+            "options": [
+              "Who, me?",
+              "He and she.",
+              "Pass, please.",
+              "Um, not sure."
+            ],
+            "answer": 0,
+            "fact": "Bonus: My new thesaurus is awful. Not only is it awful, it's awful.",
+            "src": "classic; premise: 'who' and 'me' are both pronouns"
+          },
+          {
+            "value": 300,
+            "q": "The rule says 'I before E, except after C.' Honestly, I find that rule ___",
+            "options": [
+              "useful",
+              "weird",
+              "simple",
+              "boring"
+            ],
+            "answer": 1,
+            "fact": "The pun: 'weird' breaks its own rule, with E before I and no C in sight.",
+            "src": "original; premise: 'weird' is a well-known exception to the rule"
+          },
+          {
+            "value": 400,
+            "q": "The word 'queue' is just a Q with four letters ___",
+            "options": [
+              "that are silent",
+              "nobody needs",
+              "waiting in line",
+              "tacked on the end"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Never trust autocorrect. It keeps putting words in your mouth.",
+            "src": "original; premise: 'queue' sounds like the letter Q and means a line"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-23",
+    "blurb": "Breakfast, bread and bakery jokes, served warm first thing in the morning",
+    "categories": [
+      {
+        "name": "Breakfast Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why did the cookie go to the doctor?",
+            "options": [
+              "It had a fever",
+              "It felt crummy",
+              "It needed a checkup",
+              "It was too sweet"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the jelly roll? It saw the apple turnover.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Why did the egg hide?",
+            "options": [
+              "It was late for school",
+              "It forgot its homework",
+              "It was playing a game",
+              "It was a little chicken"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What day of the week do eggs hate most? Fry-day.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Why did the baker stop making donuts?",
+            "options": [
+              "He got tired of the hole thing",
+              "He couldn't find sprinkles",
+              "He wanted to bake more pies",
+              "His oven was much too small"
+            ],
+            "answer": 0,
+            "fact": "Bonus: How do you make a cream puff? Chase it around the block.",
+            "src": "classic (bonus changed in check: egg roll repeated the jelly roll pun)"
+          },
+          {
+            "value": 400,
+            "q": "Why do bakers work so hard?",
+            "options": [
+              "They start before dawn",
+              "They have big orders",
+              "They knead the dough",
+              "They roll with it"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What do pancakes and baseball have in common? It's all about the batter.",
+            "src": "classic; premise: bread dough is kneaded, and 'dough' is slang for money"
+          }
+        ]
+      },
+      {
+        "name": "Puns on a Roll",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What did the bread say when it lost the game?",
+            "options": [
+              "Good game!",
+              "Rematch!",
+              "No fair!",
+              "I'm toast!"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the bacon laugh? The egg cracked a yolk.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "What does bread do on its day off?",
+            "options": [
+              "It sleeps in late",
+              "It loafs around",
+              "It goes to the beach",
+              "It watches TV"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What does a baker say to the dough every morning? Rise and shine!",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "What kind of bagel can fly?",
+            "options": [
+              "A sesame bagel",
+              "An onion bagel",
+              "A plain bagel",
+              "A blueberry bagel"
+            ],
+            "answer": 2,
+            "fact": "The pun: a plain bagel has no toppings, and 'plain' sounds just like 'plane.'",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "Why did the cookie cry?",
+            "options": [
+              "Its mom was a wafer so long",
+              "It lost its chocolate chips",
+              "It fell right off the plate",
+              "Its glass of milk was empty"
+            ],
+            "answer": 0,
+            "fact": "The pun: 'a wafer so long' sounds like 'away for so long,' and a wafer is a thin, crisp cookie.",
+            "src": "classic"
+          }
+        ]
+      },
+      {
+        "name": "Morning Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Waffles are just pancakes with ___",
+            "options": [
+              "squares",
+              "more syrup",
+              "abs",
+              "crispy edges"
+            ],
+            "answer": 2,
+            "fact": "Bonus: I made breakfast in bed this morning. Next time I'll use the kitchen.",
+            "src": "folk saying"
+          },
+          {
+            "value": 200,
+            "q": "Our old toaster has two settings: ___",
+            "options": [
+              "light and dark",
+              "not yet and too late",
+              "on and off",
+              "bread and bagels"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why was the pancake so upset? Somebody made it flip out.",
+            "src": "original"
+          },
+          {
+            "value": 300,
+            "q": "They say breakfast is the most important meal of the day. That's why I skip it: ___",
+            "options": [
+              "too little time",
+              "not hungry yet",
+              "I sleep in late",
+              "too much pressure"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Never tell a secret to a slice of toast. It'll spread it around.",
+            "src": "original"
+          },
+          {
+            "value": 400,
+            "q": "The cereal box says 'part of a balanced breakfast,' so I always eat it ___",
+            "options": [
+              "standing on one foot",
+              "with fruit and toast",
+              "with a glass of milk",
+              "every single morning"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the toast quit its job? It was totally burnt out.",
+            "src": "classic, reworded; premise: cereal boxes and ads call cereal 'part of a balanced breakfast' (replaced the yesterday's-bread joke in check)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-24",
+    "blurb": "Turkeys, pies, the parade and leftovers: Thanksgiving jokes for the table",
+    "categories": [
+      {
+        "name": "Gobble Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why did the turkey join the band?",
+            "options": [
+              "It liked loud music",
+              "It had the drumsticks",
+              "It could sing well",
+              "Its friends asked it"
+            ],
+            "answer": 1,
+            "fact": "Bonus: How do you make a turkey float? Put it in the parade.",
+            "src": "classic; premise: turkey legs are called drumsticks"
+          },
+          {
+            "value": 200,
+            "q": "Why didn't the turkey want any dessert?",
+            "options": [
+              "It wasn't hungry",
+              "It doesn't like pie",
+              "It was already stuffed",
+              "It had to leave early"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What does a sweet potato wear to bed? Its yammies.",
+            "src": "classic (bonus and a distractor changed in check: pie-and-fork tipped the $100 Leftover Twists answer)"
+          },
+          {
+            "value": 300,
+            "q": "Why do turkeys always say 'gobble gobble'?",
+            "options": [
+              "It's how they say hello",
+              "It's the only word they know",
+              "They like the way it sounds",
+              "They have no table manners"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What do you call a pie that tells jokes? A pun-kin pie.",
+            "src": "classic; premise: male turkeys gobble, and to gobble is to eat fast"
+          },
+          {
+            "value": 400,
+            "q": "Why did the pumpkin pie go to the dentist?",
+            "options": [
+              "It needed a filling",
+              "It needed a crown",
+              "It needed a cleaning",
+              "It needed a checkup"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What's the key to a great Thanksgiving dinner? The tur-key.",
+            "src": "classic"
+          }
+        ]
+      },
+      {
+        "name": "Fowl Play Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What sound does a turkey's phone make?",
+            "options": [
+              "Ring! Ring!",
+              "Buzz! Buzz!",
+              "Wing! Wing!",
+              "Beep! Beep!"
+            ],
+            "answer": 2,
+            "fact": "Bonus: How do turkeys keep up with the news? They check their feed.",
+            "src": "classic (bonus changed in check: J1's Food for Thought draft has the 24 carrots soup)"
+          },
+          {
+            "value": 200,
+            "q": "Why was the turkey sent to its room?",
+            "options": [
+              "It was too loud",
+              "It used fowl language",
+              "It didn't clean up",
+              "It stayed up late"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What did the corn say when it was invited to Thanksgiving? This is a-maize-ing!",
+            "src": "classic; premise: turkeys are fowl"
+          },
+          {
+            "value": 300,
+            "q": "Why are the parade balloons always so excited?",
+            "options": [
+              "They love the big crowds",
+              "They see the whole city",
+              "They only get out once a year",
+              "They're all pumped up"
+            ],
+            "answer": 3,
+            "fact": "Bonus: If April showers bring May flowers, what do Mayflowers bring? Pilgrims.",
+            "src": "original; premise: parade balloons are inflated with gas"
+          },
+          {
+            "value": 400,
+            "q": "What do football and Thanksgiving pie have in common?",
+            "options": [
+              "They both get passed around",
+              "They both show up in the fall",
+              "Families love them both",
+              "They both end too soon"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the leftovers win an award? They made a great comeback.",
+            "src": "original"
+          }
+        ]
+      },
+      {
+        "name": "Leftover Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What's the best thing to put into a pie?",
+            "options": [
+              "Cinnamon",
+              "Nutmeg",
+              "Your fork",
+              "Fresh apples"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What's a turkey's favorite dessert? Peach gobbler.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Our family's secret Thanksgiving pie recipe goes back generations. Step one: ___",
+            "options": [
+              "preheat the oven",
+              "drive to the bakery",
+              "peel the apples",
+              "roll out the crust"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why was the turkey kicked off the family Wi-Fi? It gobbled up all the data.",
+            "src": "original (replaced the turkey-crosses-the-road joke in check: J3's Dino-Mite deck tells the same missing-chicken road joke)"
+          },
+          {
+            "value": 300,
+            "q": "Which side of a turkey has the most feathers?",
+            "options": [
+              "The left side",
+              "The right side",
+              "The front side",
+              "The outside"
+            ],
+            "answer": 3,
+            "fact": "Bonus: How did the turkeys get to the parade? They rode the gravy train.",
+            "src": "classic riddle"
+          },
+          {
+            "value": 400,
+            "q": "I never go back for seconds at Thanksgiving. I just take ___",
+            "options": [
+              "really big firsts",
+              "a smaller plate",
+              "one of everything",
+              "a walk after dinner"
+            ],
+            "answer": 0,
+            "fact": "Bonus: We watch football every Thanksgiving. Well, the TV watches us nap.",
+            "src": "original"
+          }
+        ]
+      }
+    ]
+  }
+]

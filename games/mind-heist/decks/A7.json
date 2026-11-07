@@ -1,0 +1,1595 @@
+[
+ {
+  "id": "word-nerds",
+  "blurb": "Where everyday words and phrases really came from",
+  "categories": [
+   {
+    "name": "Borrowed Words",
+    "questions": [
+     {
+      "value": 100,
+      "q": "'Kindergarten' comes from German. What does it literally mean?",
+      "options": [
+       "Little school",
+       "Children's garden",
+       "Play yard",
+       "Child's house"
+      ],
+      "answer": 1,
+      "fact": "Educator Friedrich Froebel coined the name in 1840 for his school in Germany.",
+      "src": "etymonline.com kindergarten (lit. children-garden; Froebel coined it 1840)"
+     },
+     {
+      "value": 200,
+      "q": "The 'wiki' in Wikipedia comes from a Hawaiian word meaning what?",
+      "options": [
+       "Knowledge",
+       "Open",
+       "Quick",
+       "Together"
+      ],
+      "answer": 2,
+      "fact": "Ward Cunningham named his 1995 WikiWikiWeb after the Wiki Wiki Shuttle buses at Honolulu's airport.",
+      "src": "Wikipedia History of wikis (WikiWikiWeb 25 Mar 1995; wiki = quick; Wiki Wiki Shuttle, Honolulu airport)"
+     },
+     {
+      "value": 300,
+      "q": "In the Japanese word 'emoji,' what does the 'e' mean?",
+      "options": [
+       "Picture",
+       "Emotion",
+       "Electronic",
+       "Face"
+      ],
+      "answer": 0,
+      "fact": "Moji means character, so the resemblance to the English word emotion is pure coincidence.",
+      "src": "wordorigins.org emoji (e = picture, moji = character; unrelated to emotion)"
+     },
+     {
+      "value": 400,
+      "q": "'Shampoo' comes from a Hindi word that originally meant what?",
+      "options": [
+       "To wash",
+       "To pour water",
+       "To comb",
+       "To press or knead"
+      ],
+      "answer": 3,
+      "fact": "In English it first meant a massage (1762); the hair-washing sense arrived around 1860.",
+      "src": "etymonline.com shampoo (Hindi champo < champna 'to press, knead'; massage 1762; hair-washing 1860)"
+     }
+    ]
+   },
+   {
+    "name": "Say What?",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The phrase 'saved by the bell' comes from which sport?",
+      "options": [
+       "Fencing",
+       "Tennis",
+       "Rowing",
+       "Boxing"
+      ],
+      "answer": 3,
+      "fact": "It's 19th-century boxing slang. The popular tale about bells on coffins has no evidence behind it.",
+      "src": "phrases.org.uk saved-by-the-bell (late-19th-c. boxing slang, earliest found Feb 1893; no evidence for coffin story)"
+     },
+     {
+      "value": 200,
+      "q": "'Jump the shark' traces to a 1977 episode of which TV show?",
+      "options": [
+       "Laverne & Shirley",
+       "Happy Days",
+       "Mork & Mindy",
+       "Welcome Back, Kotter"
+      ],
+      "answer": 1,
+      "fact": "Fonzie jumped a shark on water skis; the phrase for a show past its peak caught on in the late 1990s.",
+      "src": "Wikipedia Jumping the shark (Happy Days S5E3 aired 20 Sep 1977; coined 1985; JumptheShark.com 1997)"
+     },
+     {
+      "value": 300,
+      "q": "'Cut to the chase' comes from which field?",
+      "options": [
+       "Filmmaking",
+       "Fox hunting",
+       "Newspapers",
+       "Auto racing"
+      ],
+      "answer": 0,
+      "fact": "Early silent films often ended in a chase, and the phrase shows up as a script direction by 1929.",
+      "src": "phrases.org.uk cut-to-the-chase (silent-era chase endings; 'Cut to chase' script direction in 1929 novel Hollywood Girl)"
+     },
+     {
+      "value": 400,
+      "q": "'Steal my thunder' traces to John Dennis, who heard his new stage thunder effect used in which play?",
+      "options": [
+       "Hamlet",
+       "King Lear",
+       "Macbeth",
+       "The Tempest"
+      ],
+      "answer": 2,
+      "fact": "Dennis had devised the effect for his own play, Appius and Virginia, which closed quickly.",
+      "src": "Wikipedia Stealing thunder; quoteinvestigator.com 2015/12/23/thunder; phrases.org.uk steal-ones-thunder (all name Macbeth; Appius and Virginia failed/closed quickly; play's year differs 1704 vs 1709, so year omitted)"
+     }
+    ]
+   },
+   {
+    "name": "Word Births",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The word 'nerd' is often traced to a 1950 children's book by which author?",
+      "options": [
+       "Roald Dahl",
+       "E.B. White",
+       "Dr. Seuss",
+       "Beverly Cleary"
+      ],
+      "answer": 2,
+      "fact": "In If I Ran the Zoo, a nerd is one of the odd creatures; the slang sense appears by 1951.",
+      "src": "merriam-webster.com nerd (perhaps from If I Ran the Zoo, 1950; first known use 1951)"
+     },
+     {
+      "value": 200,
+      "q": "The earliest known use of 'selfie' was a 2002 online post from which country?",
+      "options": [
+       "Australia",
+       "Canada",
+       "Ireland",
+       "New Zealand"
+      ],
+      "answer": 0,
+      "fact": "Oxford Dictionaries later named selfie its Word of the Year for 2013.",
+      "src": "SBS News 2013 (earliest known use: 2002 post on ABC online forum, Australia; Oxford WotY 2013)"
+     },
+     {
+      "value": 300,
+      "q": "The word 'robot' comes from a 1920 play written in which language?",
+      "options": [
+       "German",
+       "Russian",
+       "Polish",
+       "Czech"
+      ],
+      "answer": 3,
+      "fact": "Karel Čapek credited his brother Josef with the word, from the Czech robota, forced labor.",
+      "src": "etymonline.com robot (R.U.R. 1920, Czech; robota forced labor; Josef Capek credited); wording softened from 'debuted' because one etymology claims an earlier Josef short story"
+     },
+     {
+      "value": 400,
+      "q": "'Serendipity' comes from Serendip, an old name for which island nation?",
+      "options": [
+       "Madagascar",
+       "Sri Lanka",
+       "Maldives",
+       "Mauritius"
+      ],
+      "answer": 1,
+      "fact": "Horace Walpole coined it in a 1754 letter, inspired by the fairy tale The Three Princes of Serendip.",
+      "src": "Wikipedia Serendipity (Walpole to Mann 28 Jan 1754; Three Princes of Serendip; Serendip = Persian name for Sri Lanka)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "sports-legends",
+  "blurb": "Icons of the diamond, court, course, rink and ring",
+  "categories": [
+   {
+    "name": "Diamond Greats",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What jersey number did MLB retire for every team in honor of Jackie Robinson?",
+      "options": [
+       "44",
+       "24",
+       "42",
+       "32"
+      ],
+      "answer": 2,
+      "fact": "It was retired on April 15, 1997, exactly 50 years after Robinson's major league debut.",
+      "src": "history.com This Day April 15 (42 retired MLB-wide 15 Apr 1997, 50th anniversary of 15 Apr 1947 debut)"
+     },
+     {
+      "value": 200,
+      "q": "In 1995, Cal Ripken Jr. broke whose record for consecutive games played?",
+      "options": [
+       "Lou Gehrig",
+       "Babe Ruth",
+       "Joe DiMaggio",
+       "Ty Cobb"
+      ],
+      "answer": 0,
+      "fact": "Ripken's streak finally ended at 2,632 games when he chose to sit out in September 1998.",
+      "src": "cbssports.com Ripken anniversary (broke Gehrig record 6 Sep 1995, game 2,131; ended voluntarily at 2,632 on 20 Sep 1998)"
+     },
+     {
+      "value": 300,
+      "q": "In 2001, which Seattle Mariners rookie also won the American League MVP award?",
+      "options": [
+       "Alex Rodriguez",
+       "Ken Griffey Jr.",
+       "Edgar Martinez",
+       "Ichiro Suzuki"
+      ],
+      "answer": 3,
+      "fact": "The only player to win both awards in the same season before him was Boston's Fred Lynn in 1975.",
+      "src": "ESPN 20 Nov 2001 (Ichiro AL MVP; second ROY+MVP in same season after Fred Lynn, 1975 Red Sox)"
+     },
+     {
+      "value": 400,
+      "q": "In 1956, which Yankee pitched the first perfect game in World Series history?",
+      "options": [
+       "Whitey Ford",
+       "Don Larsen",
+       "Allie Reynolds",
+       "Vic Raschi"
+      ],
+      "answer": 1,
+      "fact": "It came in Game 5 against the Brooklyn Dodgers on October 8, 1956.",
+      "src": "Wikipedia Don Larsen's perfect game (8 Oct 1956, Game 5 vs Brooklyn; only WS perfect game); Guinness first WS perfect game"
+     }
+    ]
+   },
+   {
+    "name": "Court & Course",
+    "questions": [
+     {
+      "value": 100,
+      "q": "At age 21, Tiger Woods won his first major in 1997 at which tournament?",
+      "options": [
+       "The Masters",
+       "The U.S. Open",
+       "The British Open",
+       "The PGA Championship"
+      ],
+      "answer": 0,
+      "fact": "He won by 12 strokes and finished 18 under par at 270, a Masters scoring record at the time.",
+      "src": "Wikipedia 1997 Masters Tournament (age 21; 270, -18; 12-stroke margin; beat 271 record of Nicklaus/Floyd)"
+     },
+     {
+      "value": 200,
+      "q": "In 1973's 'Battle of the Sexes' match, Billie Jean King defeated which player?",
+      "options": [
+       "Jimmy Connors",
+       "Rod Laver",
+       "Arthur Ashe",
+       "Bobby Riggs"
+      ],
+      "answer": 3,
+      "fact": "King won 6-4, 6-3, 6-3 in front of 30,472 fans at the Houston Astrodome.",
+      "src": "Wikipedia Battle of the Sexes (tennis) (20 Sep 1973, Astrodome, 6-4 6-3 6-3, attendance 30,472). TV figure dropped: sources disagree (50M US vs 50M worldwide)"
+     },
+     {
+      "value": 300,
+      "q": "Serena Williams won her first Grand Slam singles title at which 1999 tournament?",
+      "options": [
+       "Wimbledon",
+       "US Open",
+       "Australian Open",
+       "French Open"
+      ],
+      "answer": 1,
+      "fact": "She was 17 and beat world No. 1 Martina Hingis in the final.",
+      "src": "tennismajors.com Sep 11 1999 (Serena age 17 beat world No. 1 Hingis in US Open final)"
+     },
+     {
+      "value": 400,
+      "q": "Roger Federer won his only French Open title in 2009. Whom did he beat in the final?",
+      "options": [
+       "Rafael Nadal",
+       "Novak Djokovic",
+       "Robin Söderling",
+       "Juan Martín del Potro"
+      ],
+      "answer": 2,
+      "fact": "The win completed Federer's career Grand Slam; Söderling had upset Rafael Nadal earlier in the event.",
+      "src": "Wikipedia 2009 French Open men's singles (Federer d. Soderling 6-1 7-6 6-4; Soderling beat Nadal R4; completed career Slam)"
+     }
+    ]
+   },
+   {
+    "name": "Rink, Ring & Pitch",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which nickname belongs to hockey legend Wayne Gretzky?",
+      "options": [
+       "Mr. Hockey",
+       "The Golden Jet",
+       "Super Mario",
+       "The Great One"
+      ],
+      "answer": 3,
+      "fact": "The NHL retired his No. 99 for every team at the 2000 All-Star Game in Toronto.",
+      "src": "Wikipedia 2000 NHL All-Star Game (99 retired for every team, 6 Feb 2000, Air Canada Centre, Toronto); nicknames textbook"
+     },
+     {
+      "value": 200,
+      "q": "In 1974's 'Rumble in the Jungle,' Muhammad Ali regained the title by beating whom?",
+      "options": [
+       "George Foreman",
+       "Joe Frazier",
+       "Sonny Liston",
+       "Ken Norton"
+      ],
+      "answer": 0,
+      "fact": "The 1974 fight was held in Kinshasa, Zaire, now the Democratic Republic of the Congo.",
+      "src": "history.com Rumble in the Jungle (30 Oct 1974, Kinshasa, Zaire, now DRC; Ali KO8 Foreman, regained title)"
+     },
+     {
+      "value": 300,
+      "q": "In 2007, David Beckham left Real Madrid to join which MLS club?",
+      "options": [
+       "New York Red Bulls",
+       "LA Galaxy",
+       "Chicago Fire",
+       "D.C. United"
+      ],
+      "answer": 1,
+      "fact": "His contract included an option to buy an MLS expansion team, which became Inter Miami.",
+      "src": "FourFourTwo Beckham/Miami feature (2007 Galaxy deal had $25M MLS franchise option; exercised 2014; became Inter Miami)"
+     },
+     {
+      "value": 400,
+      "q": "Pelé won his first World Cup with Brazil in 1958. How old was he?",
+      "options": [
+       "19",
+       "21",
+       "17",
+       "23"
+      ],
+      "answer": 2,
+      "fact": "He won two more, in 1962 and 1970, for three World Cups in all.",
+      "src": "Guinness youngest WC-final scorer (Pele 17y 249d, 28 Jun 1958 vs Sweden; also won 1962 and 1970)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "spell-check",
+  "blurb": "Tricky spellings, mix-ups and plurals that trip everyone up",
+  "categories": [
+   {
+    "name": "Spelling Bee",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which is the correct spelling of the word meaning 'without a doubt'?",
+      "options": [
+       "definately",
+       "definitly",
+       "definitely",
+       "defenitely"
+      ],
+      "answer": 2,
+      "fact": "Memory trick: definitely has the word finite hiding inside it.",
+      "src": "Standard Merriam-Webster spelling/usage; reviewer confirmed no accepted British or variant form among options (textbook; not web-checked, search budget exhausted)"
+     },
+     {
+      "value": 200,
+      "q": "Which is the correct spelling of the word meaning 'set apart'?",
+      "options": [
+       "separate",
+       "seperate",
+       "separete",
+       "seperete"
+      ],
+      "answer": 0,
+      "fact": "Memory trick: there's a rat in sep-a-rat-e.",
+      "src": "Standard Merriam-Webster spelling/usage; reviewer confirmed no accepted British or variant form among options (textbook; not web-checked, search budget exhausted)"
+     },
+     {
+      "value": 300,
+      "q": "Someone who starts and runs a new business is an ___. Which spelling is correct?",
+      "options": [
+       "entrepeneur",
+       "entreprenuer",
+       "enterpreneur",
+       "entrepreneur"
+      ],
+      "answer": 3,
+      "fact": "It comes from the French entreprendre, meaning to undertake.",
+      "src": "Standard Merriam-Webster spelling/usage; reviewer confirmed no accepted British or variant form among options (textbook; not web-checked, search budget exhausted)"
+     },
+     {
+      "value": 400,
+      "q": "Which is the correct spelling of the word for a period of 1,000 years?",
+      "options": [
+       "millenium",
+       "millennium",
+       "milennium",
+       "millenniam"
+      ],
+      "answer": 1,
+      "fact": "Latin mille (thousand) and annus (year) explain the double l and the double n.",
+      "src": "Standard Merriam-Webster spelling/usage; reviewer confirmed no accepted British or variant form among options (textbook; not web-checked, search budget exhausted)"
+     }
+    ]
+   },
+   {
+    "name": "Mix-Ups",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Fill in the blank: '___ going to love today's trivia.'",
+      "options": [
+       "Their",
+       "There",
+       "They're",
+       "Thier"
+      ],
+      "answer": 2,
+      "fact": "They're means they are; their shows ownership; there points to a place.",
+      "src": "Standard Merriam-Webster spelling/usage; reviewer confirmed no accepted British or variant form among options (textbook; not web-checked, search budget exhausted)"
+     },
+     {
+      "value": 200,
+      "q": "Fill in the blank: 'The new coffee machine had a big ___ on morale.'",
+      "options": [
+       "effect",
+       "affect",
+       "efect",
+       "affekt"
+      ],
+      "answer": 0,
+      "fact": "Usually affect is the verb and effect is the noun: what affects you has an effect.",
+      "src": "Standard Merriam-Webster spelling/usage; reviewer confirmed no accepted British or variant form among options (textbook; not web-checked, search budget exhausted)"
+     },
+     {
+      "value": 300,
+      "q": "Fill in the blank: 'Honesty is a guiding ___ for our team.'",
+      "options": [
+       "principal",
+       "principel",
+       "principall",
+       "principle"
+      ],
+      "answer": 3,
+      "fact": "A principle is a rule or belief; a principal is a school leader or the main thing.",
+      "src": "Standard Merriam-Webster spelling/usage; reviewer confirmed no accepted British or variant form among options (textbook; not web-checked, search budget exhausted)"
+     },
+     {
+      "value": 400,
+      "q": "Fill in the blank: 'Please order more office ___: paper, pens and envelopes.'",
+      "options": [
+       "stationary",
+       "stationery",
+       "stationairy",
+       "stationarey"
+      ],
+      "answer": 1,
+      "fact": "Memory trick: stationery with an e is for envelopes; stationary with an a means standing still.",
+      "src": "Standard Merriam-Webster spelling/usage; reviewer confirmed no accepted British or variant form among options (textbook; not web-checked, search budget exhausted)"
+     }
+    ]
+   },
+   {
+    "name": "Plural Problems",
+    "questions": [
+     {
+      "value": 100,
+      "q": "What is the correct plural of 'potato'?",
+      "options": [
+       "potatos",
+       "potatoes",
+       "potatoe's",
+       "potato's"
+      ],
+      "answer": 1,
+      "fact": "Tomato, echo and veto also add -es, but piano, photo and radio just add -s.",
+      "src": "Standard Merriam-Webster plural; no variant form among options (textbook; not web-checked, search budget exhausted)"
+     },
+     {
+      "value": 200,
+      "q": "What is the correct plural of 'thief'?",
+      "options": [
+       "thiefs",
+       "theives",
+       "thiefes",
+       "thieves"
+      ],
+      "answer": 3,
+      "fact": "Leaf, wolf, knife and half follow the same switch from f to -ves.",
+      "src": "Standard Merriam-Webster plural; no variant form among options (textbook; not web-checked, search budget exhausted)"
+     },
+     {
+      "value": 300,
+      "q": "What is the correct plural of the noun 'belief'?",
+      "options": [
+       "believes",
+       "beleifs",
+       "beliefs",
+       "beliefes"
+      ],
+      "answer": 2,
+      "fact": "Believes is a verb. The noun keeps its f in the plural, just like chiefs, proofs and cliffs.",
+      "src": "Standard Merriam-Webster plural; no variant form among options (textbook; not web-checked, search budget exhausted)"
+     },
+     {
+      "value": 400,
+      "q": "What is the correct plural of 'mother-in-law'?",
+      "options": [
+       "mothers-in-law",
+       "mother-in-laws",
+       "mothers-in-laws",
+       "mother's-in-law"
+      ],
+      "answer": 0,
+      "fact": "The main noun gets the s, the same rule that gives us runners-up.",
+      "src": "merriam-webster.com mother-in-law (lists plural mothers-in-law only; no 'mother-in-laws' variant)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "gridiron",
+  "blurb": "Super Bowls, NFL greats and college football lore",
+  "categories": [
+   {
+    "name": "Super Bowl Sunday",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The Super Bowl trophy is named after which legendary coach?",
+      "options": [
+       "Tom Landry",
+       "George Halas",
+       "Vince Lombardi",
+       "Paul Brown"
+      ],
+      "answer": 2,
+      "fact": "Lombardi's Green Bay Packers won the first two Super Bowls, in January 1967 and January 1968.",
+      "src": "12news.com Lombardi Trophy history (Packers won SB I 15 Jan 1967 and SB II 1968; trophy named for Lombardi 1970)"
+     },
+     {
+      "value": 200,
+      "q": "In February 2014, the Seattle Seahawks won their first Super Bowl by beating whom?",
+      "options": [
+       "Denver Broncos",
+       "New England Patriots",
+       "Pittsburgh Steelers",
+       "San Francisco 49ers"
+      ],
+      "answer": 0,
+      "fact": "Linebacker Malcolm Smith was named MVP of Seattle's 43-8 win.",
+      "src": "Wikipedia Super Bowl XLVIII (2 Feb 2014, SEA 43 DEN 8; MVP LB Malcolm Smith; first SEA title)"
+     },
+     {
+      "value": 300,
+      "q": "Which quarterback 'guaranteed' victory, then led the Jets to an upset in Super Bowl III?",
+      "options": [
+       "Johnny Unitas",
+       "Joe Namath",
+       "Bart Starr",
+       "Len Dawson"
+      ],
+      "answer": 1,
+      "fact": "The AFL's Jets beat the NFL's Baltimore Colts 16-7 in January 1969.",
+      "src": "history.com This Day Jan 12 (SB III 1969, NYJ 16 BAL 7; Namath guarantee)"
+     },
+     {
+      "value": 400,
+      "q": "Super Bowl 50 broke tradition with Arabic numerals. Which Roman numeral would it have used?",
+      "options": [
+       "C",
+       "X",
+       "D",
+       "L"
+      ],
+      "answer": 3,
+      "fact": "The NFL went back to Roman numerals the very next year for Super Bowl LI.",
+      "src": "NPR 4 Jun 2014 (Super Bowl 50 used Arabic numerals instead of L; Roman numerals returned for LI in 2017)"
+     }
+    ]
+   },
+   {
+    "name": "NFL Legends",
+    "questions": [
+     {
+      "value": 100,
+      "q": "How many Super Bowls did Tom Brady win in his playing career?",
+      "options": [
+       "6",
+       "5",
+       "8",
+       "7"
+      ],
+      "answer": 3,
+      "fact": "He won six with the New England Patriots and one with the Tampa Bay Buccaneers.",
+      "src": "theScore/amNY Feb 2023 (Brady retired 'for good' after 7 titles: 6 NE, 1 TB)"
+     },
+     {
+      "value": 200,
+      "q": "Chicago Bears great Walter Payton was known by what nickname?",
+      "options": [
+       "The Bus",
+       "Prime Time",
+       "Sweetness",
+       "Broadway Joe"
+      ],
+      "answer": 2,
+      "fact": "Payton won Super Bowl XX with the 1985 Chicago Bears.",
+      "src": "Wikipedia Walter Payton (nickname Sweetness; won SB XX with 1985 Bears)"
+     },
+     {
+      "value": 300,
+      "q": "Which team went 17-0 in 1972, capping a perfect season with a Super Bowl win?",
+      "options": [
+       "Pittsburgh Steelers",
+       "Miami Dolphins",
+       "Dallas Cowboys",
+       "Oakland Raiders"
+      ],
+      "answer": 1,
+      "fact": "Coach Don Shula's Dolphins beat Washington 14-7 in Super Bowl VII.",
+      "src": "profootballhof.com 1972 Dolphins (17-0-0; SB VII 14-7 over Washington; coach Don Shula)"
+     },
+     {
+      "value": 400,
+      "q": "In 'The Catch' of January 1982, Joe Montana hit which receiver to beat Dallas?",
+      "options": [
+       "Dwight Clark",
+       "Jerry Rice",
+       "Roger Craig",
+       "Freddie Solomon"
+      ],
+      "answer": 0,
+      "fact": "The win sent the 49ers to their first Super Bowl, where they beat Cincinnati.",
+      "src": "Wikipedia The Catch (10 Jan 1982, Montana to Dwight Clark; 49ers then won SB XVI 26-21 over Bengals)"
+     }
+    ]
+   },
+   {
+    "name": "College Saturdays",
+    "questions": [
+     {
+      "value": 100,
+      "q": "College football's oldest bowl game is played in Pasadena, California. What is it called?",
+      "options": [
+       "Orange Bowl",
+       "Sugar Bowl",
+       "Cotton Bowl",
+       "Rose Bowl"
+      ],
+      "answer": 3,
+      "fact": "The first one, played in 1902, ended Michigan 49, Stanford 0.",
+      "src": "Wikipedia 1902 Rose Bowl (1 Jan 1902, Tournament Park, Pasadena; Michigan 49 Stanford 0)"
+     },
+     {
+      "value": 200,
+      "q": "The Heisman Trophy statue shows a player making what move?",
+      "options": [
+       "A stiff-arm",
+       "A spike",
+       "A forward pass",
+       "A kickoff"
+      ],
+      "answer": 0,
+      "fact": "It was first awarded in 1935 and is named for coach John Heisman.",
+      "src": "heisman.com history (stiff-arm design; first awarded 9 Dec 1935 to Berwanger; renamed for John Heisman 1936)"
+     },
+     {
+      "value": 300,
+      "q": "Doug Flutie's famous 1984 Hail Mary pass beat Miami for which college?",
+      "options": [
+       "Notre Dame",
+       "Navy",
+       "Boston College",
+       "Syracuse"
+      ],
+      "answer": 2,
+      "fact": "Flutie won the Heisman Trophy that same 1984 season.",
+      "src": "Wikipedia Hail Flutie (23 Nov 1984, BC 47 Miami 45; Flutie won 1984 Heisman)"
+     },
+     {
+      "value": 400,
+      "q": "In what year did the forward pass become legal in American football?",
+      "options": [
+       "1889",
+       "1906",
+       "1920",
+       "1933"
+      ],
+      "answer": 1,
+      "fact": "The rule was adopted by the newly formed IAAUS, which was renamed the NCAA in 1910.",
+      "src": "EBSCO Research Starters (forward pass legal 1906, approved 12 Jan 1906 by IAAUS rules committee; IAAUS formed Dec 1905); ncaa.org history (renamed NCAA 29 Dec 1910)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "bookworms",
+  "blurb": "Classics to modern bestsellers: authors, pen names and characters",
+  "categories": [
+   {
+    "name": "Pen Names",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Samuel Clemens is better known by which pen name?",
+      "options": [
+       "O. Henry",
+       "Lewis Carroll",
+       "Mark Twain",
+       "Saki"
+      ],
+      "answer": 2,
+      "fact": "The name is a riverboat call meaning two fathoms, or 12 feet, of water.",
+      "src": "britannica.com What is Mark Twain's real name (mark twain = two fathoms, 12 feet)"
+     },
+     {
+      "value": 200,
+      "q": "Daniel Handler wrote A Series of Unfortunate Events under what pen name?",
+      "options": [
+       "Lemony Snicket",
+       "R.L. Stine",
+       "Count Olaf",
+       "Roald Dahl"
+      ],
+      "answer": 0,
+      "fact": "Lemony Snicket also appears in the books as their gloomy narrator.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Lemony Snicket = Daniel Handler, also series narrator)"
+     },
+     {
+      "q": "Eric Arthur Blair wrote Animal Farm and Nineteen Eighty-Four under which pen name?",
+      "options": [
+       "Aldous Huxley",
+       "H.G. Wells",
+       "Graham Greene",
+       "George Orwell"
+      ],
+      "answer": 3,
+      "fact": "He first used the name in 1933 for his first book, Down and Out in Paris and London.",
+      "src": "New World Encyclopedia, George Orwell (https://www.newworldencyclopedia.org/entry/George_Orwell): born Eric Arthur Blair; adopted pen name for Down and Out in Paris and London (1933)",
+      "value": 300
+     },
+     {
+      "value": 400,
+      "q": "Which Victorian novelist's real name was Mary Ann Evans?",
+      "options": [
+       "George Sand",
+       "Currer Bell",
+       "Acton Bell",
+       "George Eliot"
+      ],
+      "answer": 3,
+      "fact": "As George Eliot, she wrote Middlemarch and Silas Marner.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (George Eliot = Mary Ann Evans; Currer/Acton Bell = Charlotte/Anne Bronte)"
+     }
+    ]
+   },
+   {
+    "name": "Who Wrote It?",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Who wrote To Kill a Mockingbird?",
+      "options": [
+       "Truman Capote",
+       "Flannery O'Connor",
+       "Carson McCullers",
+       "Harper Lee"
+      ],
+      "answer": 3,
+      "fact": "It won the Pulitzer Prize for Fiction in 1961, a year after it was published.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Harper Lee 1960; Pulitzer 1961)"
+     },
+     {
+      "value": 200,
+      "q": "Who wrote The Hobbit?",
+      "options": [
+       "C.S. Lewis",
+       "J.R.R. Tolkien",
+       "Roald Dahl",
+       "T.H. White"
+      ],
+      "answer": 1,
+      "fact": "It came out in 1937, 17 years before The Fellowship of the Ring.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (The Hobbit 1937; Fellowship 1954)"
+     },
+     {
+      "value": 300,
+      "q": "Who wrote the 1953 novel Fahrenheit 451?",
+      "options": [
+       "Aldous Huxley",
+       "Isaac Asimov",
+       "Ray Bradbury",
+       "Kurt Vonnegut"
+      ],
+      "answer": 2,
+      "fact": "The title refers to the temperature at which book paper catches fire.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Bradbury 1953)"
+     },
+     {
+      "value": 400,
+      "q": "Who wrote The Martian, the novel about an astronaut stranded on Mars?",
+      "options": [
+       "Andy Weir",
+       "Ernest Cline",
+       "Blake Crouch",
+       "Hugh Howey"
+      ],
+      "answer": 0,
+      "fact": "Weir first posted it free, chapter by chapter, on his own website.",
+      "src": "deseret.com 15 Oct 2015 (Weir first posted chapters on his own website; later 99-cent Kindle self-publish)"
+     }
+    ]
+   },
+   {
+    "name": "Character Study",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In Charlotte's Web, what kind of animal is Wilbur?",
+      "options": [
+       "Goose",
+       "Sheep",
+       "Rat",
+       "Pig"
+      ],
+      "answer": 3,
+      "fact": "E.B. White published Charlotte's Web in 1952, with drawings by Garth Williams.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Charlotte's Web 1952, illus. Garth Williams)"
+     },
+     {
+      "value": 200,
+      "q": "What is the name of Harry Potter's snowy owl?",
+      "options": [
+       "Hedwig",
+       "Errol",
+       "Pigwidgeon",
+       "Fawkes"
+      ],
+      "answer": 0,
+      "fact": "In the UK, the first book came out in 1997 as Harry Potter and the Philosopher's Stone.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Hedwig; Philosopher's Stone, Bloomsbury 1997)"
+     },
+     {
+      "value": 300,
+      "q": "Which character narrates The Great Gatsby?",
+      "options": [
+       "Jay Gatsby",
+       "Nick Carraway",
+       "Tom Buchanan",
+       "Jordan Baker"
+      ],
+      "answer": 1,
+      "fact": "F. Scott Fitzgerald published The Great Gatsby in 1925.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Nick Carraway; 1925)"
+     },
+     {
+      "value": 400,
+      "q": "In Moby-Dick, what is the name of Captain Ahab's ship?",
+      "options": [
+       "Nautilus",
+       "Hispaniola",
+       "Pequod",
+       "Endeavour"
+      ],
+      "answer": 2,
+      "fact": "Herman Melville's 1851 novel sold poorly in his lifetime and is now a classic.",
+      "src": "historyhit.com Moby-Dick (1851; sold poorly, under 4,000 copies in Melville's lifetime); Pequod textbook"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "hoops",
+  "blurb": "Basketball from peach baskets to the WNBA",
+  "categories": [
+   {
+    "name": "Naismith's Game",
+    "questions": [
+     {
+      "value": 100,
+      "q": "James Naismith's very first basketball hoops were what?",
+      "options": [
+       "Apple crates",
+       "Peach baskets",
+       "Wooden barrels",
+       "Fishing nets"
+      ],
+      "answer": 1,
+      "fact": "Naismith invented the game in December 1891 at a YMCA school in Springfield, Massachusetts.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (peach baskets; Dec 1891, YMCA school, Springfield MA)"
+     },
+     {
+      "value": 200,
+      "q": "The NBA's shot clock, introduced in 1954, gave teams how many seconds to shoot?",
+      "options": [
+       "30",
+       "20",
+       "35",
+       "24"
+      ],
+      "answer": 3,
+      "fact": "Syracuse Nationals owner Danny Biasone championed the clock to end slow, stalling games.",
+      "src": "Wikipedia Shot clock (NBA adopted 24-second clock for 1954-55; championed by Syracuse owner Danny Biasone)"
+     },
+     {
+      "value": 300,
+      "q": "Basketball inventor James Naismith was born in which country?",
+      "options": [
+       "Scotland",
+       "United States",
+       "Canada",
+       "Ireland"
+      ],
+      "answer": 2,
+      "fact": "Naismith later started the basketball program at the University of Kansas.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (born Almonte, Ontario; first KU coach)"
+     },
+     {
+      "value": 400,
+      "q": "How many rules did Naismith's original 1891 version of basketball have?",
+      "options": [
+       "13",
+       "10",
+       "7",
+       "21"
+      ],
+      "answer": 0,
+      "fact": "His original typed rules sold at auction in 2010 for about $4.3 million.",
+      "src": "historynewsnetwork.org article 134500 (13 rules; Sotheby's NY Dec 2010, $4.3M, bought by David and Suzanne Booth)"
+     }
+    ]
+   },
+   {
+    "name": "NBA Greats",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Wilt Chamberlain scored how many points in a single 1962 NBA game?",
+      "options": [
+       "85",
+       "92",
+       "78",
+       "100"
+      ],
+      "answer": 3,
+      "fact": "The game in Hershey, Pennsylvania, wasn't televised, and no video of it is known to exist.",
+      "src": "Wikipedia Wilt Chamberlain's 100-point game (2 Mar 1962, Hershey PA; not televised; no video recovered, only 4th-quarter audio)"
+     },
+     {
+      "value": 200,
+      "q": "Dirk Nowitzki led which team to the 2011 NBA championship?",
+      "options": [
+       "Dallas Mavericks",
+       "San Antonio Spurs",
+       "Houston Rockets",
+       "Denver Nuggets"
+      ],
+      "answer": 0,
+      "fact": "Dallas beat the Miami Heat, and Nowitzki, from Germany, was named Finals MVP.",
+      "src": "Wikipedia 2011 NBA Finals (DAL d. MIA 4-2; Nowitzki Finals MVP)"
+     },
+     {
+      "value": 300,
+      "q": "When Michael Jordan returned to the Bulls in 1995, what jersey number did he first wear?",
+      "options": [
+       "23",
+       "45",
+       "12",
+       "33"
+      ],
+      "answer": 1,
+      "fact": "He had worn 45 while playing minor league baseball in 1994.",
+      "src": "cbssports.com Jordan 45 to 23 (wore 45 on 19 Mar 1995 return; wore 45 in baseball)"
+     },
+     {
+      "value": 400,
+      "q": "The Seattle SuperSonics won the 1979 NBA title by beating which team in the Finals?",
+      "options": [
+       "Boston Celtics",
+       "Philadelphia 76ers",
+       "Washington Bullets",
+       "Los Angeles Lakers"
+      ],
+      "answer": 2,
+      "fact": "Dennis Johnson was Finals MVP; Seattle had lost to the same Bullets in the 1978 Finals.",
+      "src": "Wikipedia 1979 NBA Finals (SEA d. WSB 4-1; Dennis Johnson MVP; rematch of 1978, won 4-3 by WSB)"
+     }
+    ]
+   },
+   {
+    "name": "College & WNBA",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Legendary coach John Wooden won 10 national titles at which school?",
+      "options": [
+       "Kentucky",
+       "Kansas",
+       "UCLA",
+       "Indiana"
+      ],
+      "answer": 2,
+      "fact": "His Bruins won 10 NCAA titles in 12 seasons, from 1964 to 1975.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (UCLA, 10 titles 1964-1975)"
+     },
+     {
+      "value": 200,
+      "q": "Which point guard, the No. 1 pick in 2002, played her whole WNBA career in Seattle?",
+      "options": [
+       "Diana Taurasi",
+       "Sue Bird",
+       "Candace Parker",
+       "Sheryl Swoopes"
+      ],
+      "answer": 1,
+      "fact": "She won WNBA titles with the Storm in 2004, 2010, 2018 and 2020.",
+      "src": "Wikipedia Sue Bird (No. 1 pick 2002; Storm entire career 2002-2022; titles 2004, 2010, 2018, 2020)"
+     },
+     {
+      "value": 300,
+      "q": "In the 1979 NCAA final, Magic Johnson's Michigan State beat which Larry Bird-led school?",
+      "options": [
+       "Indiana",
+       "Purdue",
+       "Illinois State",
+       "Indiana State"
+      ],
+      "answer": 3,
+      "fact": "Bird and Johnson both started their NBA careers that fall, with the Celtics and the Lakers.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (MSU d. Indiana State, 1979; both NBA rookies 1979-80)"
+     },
+     {
+      "value": 400,
+      "q": "In 2002, who threw down the first dunk in WNBA history?",
+      "options": [
+       "Lisa Leslie",
+       "Sheryl Swoopes",
+       "Cynthia Cooper",
+       "Tina Thompson"
+      ],
+      "answer": 0,
+      "fact": "Leslie played her entire WNBA career with the Los Angeles Sparks.",
+      "src": "Guinness first WNBA slam dunk (Leslie, 30 Jul 2002, Sparks vs Miami Sol); Wikipedia Lisa Leslie (Sparks 1997-2009 only)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "gallery-walk",
+  "blurb": "Famous paintings, sculptures and the museums that hold them",
+  "categories": [
+   {
+    "name": "Masterpieces",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Who painted The Starry Night?",
+      "options": [
+       "Claude Monet",
+       "Paul Gauguin",
+       "Vincent van Gogh",
+       "Paul Cézanne"
+      ],
+      "answer": 2,
+      "fact": "Van Gogh painted it in June 1889; New York's Museum of Modern Art acquired it in 1941.",
+      "src": "Wikipedia The Starry Night (painted June 1889 at Saint-Remy; MoMA acquired 1941)"
+     },
+     {
+      "value": 200,
+      "q": "Which artist painted the melting clocks of The Persistence of Memory?",
+      "options": [
+       "Salvador Dalí",
+       "René Magritte",
+       "Joan Miró",
+       "Pablo Picasso"
+      ],
+      "answer": 0,
+      "fact": "The 1931 painting is surprisingly small, only about 9.5 by 13 inches.",
+      "src": "Wikipedia The Persistence of Memory (1931; 24 x 33 cm = 9.5 x 13 in; MoMA)"
+     },
+     {
+      "value": 300,
+      "q": "Edvard Munch, who painted The Scream, came from which country?",
+      "options": [
+       "Sweden",
+       "Norway",
+       "Denmark",
+       "Finland"
+      ],
+      "answer": 1,
+      "fact": "Munch made several versions of The Scream, in paint, pastel and print.",
+      "src": "munch.no The Scream (two tempera paintings, two pastels, plus lithograph); Munch Norwegian textbook"
+     },
+     {
+      "value": 400,
+      "q": "Who painted Girl with a Pearl Earring?",
+      "options": [
+       "Rembrandt",
+       "Frans Hals",
+       "Jan van Eyck",
+       "Johannes Vermeer"
+      ],
+      "answer": 3,
+      "fact": "A 2003 film starring Scarlett Johansson imagined the story behind the painting.",
+      "src": "Wikipedia Girl with a Pearl Earring (film) (2003, Scarlett Johansson; fictional story behind the painting); Vermeer textbook"
+     }
+    ]
+   },
+   {
+    "name": "Museum Map",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Leonardo da Vinci's Mona Lisa hangs in which museum?",
+      "options": [
+       "The Louvre",
+       "The Uffizi",
+       "The Prado",
+       "The British Museum"
+      ],
+      "answer": 0,
+      "fact": "The Louvre's glass pyramid entrance, designed by I.M. Pei, opened in 1989.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Mona Lisa at Louvre; I.M. Pei pyramid opened 1989)"
+     },
+     {
+      "value": 200,
+      "q": "Michelangelo's statue of David is displayed in which Italian city?",
+      "options": [
+       "Rome",
+       "Venice",
+       "Milan",
+       "Florence"
+      ],
+      "answer": 3,
+      "fact": "Michelangelo carved it from a single block of marble between 1501 and 1504.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (David 1501-1504, Accademia, Florence)"
+     },
+     {
+      "value": 300,
+      "q": "Frank Gehry's titanium-clad Guggenheim museum, opened in 1997, is in which country?",
+      "options": [
+       "Portugal",
+       "Italy",
+       "Spain",
+       "France"
+      ],
+      "answer": 2,
+      "fact": "Its success in Bilbao gave rise to the phrase the Bilbao effect.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Guggenheim Bilbao, Gehry, opened Oct 1997)"
+     },
+     {
+      "value": 400,
+      "q": "Rembrandt's The Night Watch is the star of the Rijksmuseum in which city?",
+      "options": [
+       "The Hague",
+       "Amsterdam",
+       "Rotterdam",
+       "Utrecht"
+      ],
+      "answer": 1,
+      "fact": "Rembrandt completed the huge group portrait in 1642.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (The Night Watch 1642, Rijksmuseum, Amsterdam)"
+     }
+    ]
+   },
+   {
+    "name": "Modern & Pop",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which painter taught millions of viewers on the PBS show The Joy of Painting?",
+      "options": [
+       "Bill Alexander",
+       "Thomas Kinkade",
+       "Bob Ross",
+       "Norman Rockwell"
+      ],
+      "answer": 2,
+      "fact": "Ross learned his fast wet-on-wet technique from TV painter Bill Alexander.",
+      "src": "Wikipedia Bob Ross (learned wet-on-wet from Bill Alexander of The Magic of Oil Painting; Joy of Painting on PBS)"
+     },
+     {
+      "value": 200,
+      "q": "Andy Warhol's famous 1962 series of paintings shows cans of which brand of soup?",
+      "options": [
+       "Heinz",
+       "Campbell's",
+       "Progresso",
+       "Lipton"
+      ],
+      "answer": 1,
+      "fact": "The series has 32 canvases, one for each soup variety Campbell's sold at the time.",
+      "src": "moma.org collection 79809 (Campbell's Soup Cans 1962; 32 canvases = number of varieties Campbell's then sold)"
+     },
+     {
+      "value": 300,
+      "q": "In 2018, whose painting shredded itself moments after selling at auction?",
+      "options": [
+       "Shepard Fairey",
+       "KAWS",
+       "Damien Hirst",
+       "Banksy"
+      ],
+      "answer": 3,
+      "fact": "The half-shredded work was renamed Love Is in the Bin.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Girl with Balloon self-shredded at Sotheby's London, Oct 2018; renamed Love Is in the Bin)"
+     },
+     {
+      "value": 400,
+      "q": "Chicago's mirrored sculpture nicknamed 'The Bean' is officially titled what?",
+      "options": [
+       "Cloud Gate",
+       "Sky Mirror",
+       "Silver Cloud",
+       "Mirror Arch"
+      ],
+      "answer": 0,
+      "fact": "Anish Kapoor's sculpture in Millennium Park is made of 168 stainless steel plates welded together.",
+      "src": "Wikipedia Cloud Gate (Anish Kapoor, Millennium Park; 168 welded stainless steel plates; dedicated May 2006)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "olympic-moments",
+  "blurb": "Host cities and iconic moments from the summer and winter Games",
+  "categories": [
+   {
+    "name": "Host Cities",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The first modern Olympic Games were held in 1896 in which city?",
+      "options": [
+       "Paris",
+       "London",
+       "Athens",
+       "Rome"
+      ],
+      "answer": 2,
+      "fact": "Paris hosted the next Summer Games, in 1900.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Athens 1896; Paris 1900)"
+     },
+     {
+      "value": 200,
+      "q": "In 2016, which city hosted the first Olympics ever held in South America?",
+      "options": [
+       "Rio de Janeiro",
+       "Buenos Aires",
+       "São Paulo",
+       "Santiago"
+      ],
+      "answer": 0,
+      "fact": "They were also the first Olympics held in a Portuguese-speaking country.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Rio 2016 first South American Games; Brazil first Portuguese-speaking host)"
+     },
+     {
+      "value": 300,
+      "q": "The 1992 'Dream Team' of NBA stars won basketball gold in which host city?",
+      "options": [
+       "Atlanta",
+       "Seoul",
+       "Sydney",
+       "Barcelona"
+      ],
+      "answer": 3,
+      "fact": "It was the first Olympics where NBA players were allowed to compete.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Barcelona 1992; first Games open to NBA players)"
+     },
+     {
+      "value": 400,
+      "q": "The first Winter Olympics, in 1924, were held in which country?",
+      "options": [
+       "Switzerland",
+       "France",
+       "Norway",
+       "Austria"
+      ],
+      "answer": 1,
+      "fact": "The Chamonix event was named the first Winter Olympics only after it had been held.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Chamonix 1924, International Winter Sports Week, designated first Winter Olympics afterwards by IOC)"
+     }
+    ]
+   },
+   {
+    "name": "Summer Glory",
+    "questions": [
+     {
+      "value": 100,
+      "q": "How many gold medals did Michael Phelps win at the 2008 Beijing Games?",
+      "options": [
+       "6",
+       "7",
+       "9",
+       "8"
+      ],
+      "answer": 3,
+      "fact": "That topped Mark Spitz's seven gold medals from the 1972 Games in Munich.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Phelps 8 golds 2008; Spitz 7 in 1972)"
+     },
+     {
+      "value": 200,
+      "q": "Dick Fosbury's backward 'Flop' won Olympic gold in 1968 in which event?",
+      "options": [
+       "Pole vault",
+       "High jump",
+       "Long jump",
+       "Hurdles"
+      ],
+      "answer": 1,
+      "fact": "Oregon's Dick Fosbury won in Mexico City, and his back-first style soon became standard.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Fosbury, Oregon State, high jump gold, Mexico City 1968)"
+     },
+     {
+      "value": 300,
+      "q": "How many gold medals did Jesse Owens win at the 1936 Berlin Games?",
+      "options": [
+       "4",
+       "3",
+       "5",
+       "2"
+      ],
+      "answer": 0,
+      "fact": "Carl Lewis won the same four events at the 1984 Los Angeles Games.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Owens 100m, 200m, long jump, 4x100 in 1936; Lewis same four in 1984)"
+     },
+     {
+      "value": 400,
+      "q": "At the 1976 Montreal Games, 14-year-old Nadia Comaneci scored a perfect 10 for which country?",
+      "options": [
+       "Hungary",
+       "Soviet Union",
+       "Romania",
+       "Bulgaria"
+      ],
+      "answer": 2,
+      "fact": "The Montreal scoreboard couldn't display 10.00, so her score showed as 1.00.",
+      "src": "Wikipedia Perfect 10 (gymnastics) + gymnastics-history.com 1924 article: 1924 Olympics had earlier 10s (rope climb; Seguin on side horse), so 'first perfect 10' claim removed; scoreboard showed 1.00 confirmed. Comaneci b. 12 Nov 1961, so 14 in July 1976"
+     }
+    ]
+   },
+   {
+    "name": "Winter Wonders",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In 1980's 'Miracle on Ice,' the US hockey team stunned which nation?",
+      "options": [
+       "Canada",
+       "Sweden",
+       "Soviet Union",
+       "Czechoslovakia"
+      ],
+      "answer": 2,
+      "fact": "It happened at Lake Placid, New York; two days later the US beat Finland for gold.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (USA 4-3 USSR 22 Feb 1980; USA beat Finland 24 Feb for gold)"
+     },
+     {
+      "value": 200,
+      "q": "Who scored the overtime 'Golden Goal' that won 2010 Olympic hockey gold for Canada?",
+      "options": [
+       "Jarome Iginla",
+       "Sidney Crosby",
+       "Joe Thornton",
+       "Rick Nash"
+      ],
+      "answer": 1,
+      "fact": "His overtime goal beat the United States 3-2 in Vancouver.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Crosby OT goal, CAN 3-2 USA, Vancouver, 28 Feb 2010)"
+     },
+     {
+      "value": 300,
+      "q": "Jamaica's bobsled team, which inspired the film Cool Runnings, debuted at which Games?",
+      "options": [
+       "Sarajevo 1984",
+       "Albertville 1992",
+       "Lillehammer 1994",
+       "Calgary 1988"
+      ],
+      "answer": 3,
+      "fact": "Disney's Cool Runnings, released in 1993, loosely told the team's story.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Jamaica bobsled debut Calgary 1988; Cool Runnings 1993)"
+     },
+     {
+      "value": 400,
+      "q": "Shaun White won Olympic halfpipe gold in 2006, 2010 and which other year?",
+      "options": [
+       "2018",
+       "2014",
+       "2002",
+       "2022"
+      ],
+      "answer": 0,
+      "fact": "At the 2014 Sochi Games in between, he finished fourth.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (golds 2006, 2010, 2018; 4th at Sochi 2014)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "winter-tales",
+  "blurb": "Scrooge, the Nutcracker and other stories for snowy nights",
+  "categories": [
+   {
+    "name": "Scrooge & Co.",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In A Christmas Carol, what is Scrooge's first name?",
+      "options": [
+       "Jacob",
+       "Ebenezer",
+       "Ezekiel",
+       "Nathaniel"
+      ],
+      "answer": 1,
+      "fact": "Charles Dickens published A Christmas Carol in December 1843.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Ebenezer Scrooge; published Dec 1843)"
+     },
+     {
+      "value": 200,
+      "q": "In A Christmas Carol, who is Scrooge's hardworking, underpaid clerk?",
+      "options": [
+       "Jacob Marley",
+       "Uriah Heep",
+       "Bob Cratchit",
+       "Newman Noggs"
+      ],
+      "answer": 2,
+      "fact": "Tiny Tim is one of Bob Cratchit's children.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (clerk Bob Cratchit, father of Tiny Tim; Heep/Noggs are other Dickens clerks)"
+     },
+     {
+      "value": 300,
+      "q": "In A Christmas Carol, who was Scrooge's jolly boss when he was a young apprentice?",
+      "options": [
+       "Mr. Fezziwig",
+       "Jacob Marley",
+       "Mr. Bumble",
+       "Mr. Micawber"
+      ],
+      "answer": 0,
+      "fact": "The Ghost of Christmas Past shows Scrooge the Fezziwigs' lively Christmas Eve party.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Fezziwig's Christmas Eve ball shown by Ghost of Christmas Past)"
+     },
+     {
+      "value": 400,
+      "q": "Dickens divided A Christmas Carol into five sections. What did he call them?",
+      "options": [
+       "Verses",
+       "Carols",
+       "Movements",
+       "Staves"
+      ],
+      "answer": 3,
+      "fact": "A stave is a verse of a song, a fitting choice for a book called a carol.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (chapters titled Stave One to Stave Five)"
+     }
+    ]
+   },
+   {
+    "name": "Nutcracker Suite",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Who composed the music for The Nutcracker ballet?",
+      "options": [
+       "Sergei Rachmaninoff",
+       "Sergei Prokofiev",
+       "Igor Stravinsky",
+       "Pyotr Tchaikovsky"
+      ],
+      "answer": 3,
+      "fact": "The Nutcracker premiered in St. Petersburg, Russia, in December 1892.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Tchaikovsky; premiere Mariinsky, St. Petersburg, Dec 1892)"
+     },
+     {
+      "value": 200,
+      "q": "In The Nutcracker ballet, who gives the young heroine her nutcracker?",
+      "options": [
+       "Fritz",
+       "Drosselmeyer",
+       "The Mouse King",
+       "The Sugar Plum Fairy"
+      ],
+      "answer": 1,
+      "fact": "Her brother Fritz breaks the new toy during the Christmas party.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (godfather Drosselmeyer gives the nutcracker; Fritz breaks it)"
+     },
+     {
+      "value": 300,
+      "q": "The Nutcracker's 'Dance of the Sugar Plum Fairy' famously features which bell-like instrument?",
+      "options": [
+       "Celesta",
+       "Glockenspiel",
+       "Harpsichord",
+       "Xylophone"
+      ],
+      "answer": 0,
+      "fact": "Tchaikovsky discovered the newly invented celesta on a visit to Paris.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (celesta, invented by Mustel 1886; Tchaikovsky found it in Paris 1891)"
+     },
+     {
+      "value": 400,
+      "q": "The Nutcracker ballet is based on a story by which German author?",
+      "options": [
+       "The Brothers Grimm",
+       "Friedrich Schiller",
+       "E.T.A. Hoffmann",
+       "Johann W. von Goethe"
+      ],
+      "answer": 2,
+      "fact": "Hoffmann's tale, The Nutcracker and the Mouse King, was published in 1816.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Hoffmann, The Nutcracker and the Mouse King, 1816)"
+     }
+    ]
+   },
+   {
+    "name": "Snowy Stories",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In How the Grinch Stole Christmas!, what is the name of the Grinch's dog?",
+      "options": [
+       "Rex",
+       "Buddy",
+       "Max",
+       "Spot"
+      ],
+      "answer": 2,
+      "fact": "Dr. Seuss published How the Grinch Stole Christmas! in 1957.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Max; published 1957)"
+     },
+     {
+      "value": 200,
+      "q": "In The Polar Express, what does the boy receive as the first gift of Christmas?",
+      "options": [
+       "A snow globe",
+       "A sleigh bell",
+       "A candy cane",
+       "A silver whistle"
+      ],
+      "answer": 1,
+      "fact": "Chris Van Allsburg's 1985 book won the Caldecott Medal in 1986.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (bell from Santa's sleigh; 1985 book, Caldecott Medal 1986)"
+     },
+     {
+      "value": 300,
+      "q": "In The Lion, the Witch and the Wardrobe, what treat does the White Witch use to win over Edmund?",
+      "options": [
+       "Toffee",
+       "Marzipan",
+       "Peppermints",
+       "Turkish Delight"
+      ],
+      "answer": 3,
+      "fact": "C.S. Lewis published the book in 1950, the first Narnia story to reach print.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Turkish Delight; 1950, first Narnia book published)"
+     },
+     {
+      "value": 400,
+      "q": "Disney's Frozen was loosely inspired by which Hans Christian Andersen tale?",
+      "options": [
+       "The Snow Queen",
+       "The Ice Maiden",
+       "The Little Mermaid",
+       "The Steadfast Tin Soldier"
+      ],
+      "answer": 0,
+      "fact": "Andersen's The Snow Queen was first published in 1844.",
+      "src": "Textbook; not web-checked by reviewer (shared search budget exhausted) (Frozen inspired by The Snow Queen, published 1844)"
+     }
+    ]
+   }
+  ]
+ }
+]

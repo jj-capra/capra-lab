@@ -1,0 +1,710 @@
+[
+ {
+  "id": "animation-station",
+  "blurb": "Cartoons and animated films, from Steamboat Willie to Bluey",
+  "categories": [
+   {
+    "name": "New Classics",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which 1995 film was the first feature made entirely with computer animation?",
+      "options": [
+       "A Bug's Life",
+       "Antz",
+       "Toy Story",
+       "Shrek"
+      ],
+      "answer": 2,
+      "fact": "It was Pixar's first feature film, released by Disney in November 1995.",
+      "src": "https://en.wikipedia.org/wiki/Toy_Story (first entirely computer-animated feature; Pixar's first feature; US release Nov 22, 1995, Buena Vista/Disney)"
+     },
+     {
+      "value": 200,
+      "q": "In Disney's Encanto (2021), the Madrigal family lives in which country?",
+      "options": [
+       "Colombia",
+       "Mexico",
+       "Peru",
+       "Brazil"
+      ],
+      "answer": 0,
+      "fact": "Its song 'We Don't Talk About Bruno' reached No. 1 on the Billboard Hot 100 in 2022.",
+      "src": "d23.com/a-to-z/encanto-film (Madrigals live in the mountains of Colombia; Bruno No. 1 on Hot 100 for 5 weeks); 6abc.com / thegrio.com Feb 2022"
+     },
+     {
+      "value": 300,
+      "q": "Which film won the first Academy Award for Best Animated Feature?",
+      "options": [
+       "Monsters, Inc.",
+       "Spirited Away",
+       "Toy Story 2",
+       "Shrek"
+      ],
+      "answer": 3,
+      "fact": "The category was first awarded in 2002, when Shrek beat Monsters, Inc. and Jimmy Neutron.",
+      "src": "https://en.wikipedia.org/wiki/Academy_Award_for_Best_Animated_Feature (first given at 74th Academy Awards, March 24, 2002; Shrek over Jimmy Neutron and Monsters, Inc.)"
+     },
+     {
+      "value": 400,
+      "q": "Which Japanese director made Spirited Away and My Neighbor Totoro?",
+      "options": [
+       "Isao Takahata",
+       "Hayao Miyazaki",
+       "Makoto Shinkai",
+       "Satoshi Kon"
+      ],
+      "answer": 1,
+      "fact": "Miyazaki and fellow director Isao Takahata co-founded Studio Ghibli in 1985.",
+      "src": "https://en.wikipedia.org/wiki/Studio_Ghibli (June 15, 1985, Miyazaki and Takahata founded it; infobox also lists Suzuki and Tokuma); Spirited Away credited to Miyazaki on Best Animated Feature page; Totoro credit textbook"
+     }
+    ]
+   },
+   {
+    "name": "Disney Vault",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Who voiced the Genie in Disney's 1992 film Aladdin?",
+      "options": [
+       "Robin Williams",
+       "Eddie Murphy",
+       "Billy Crystal",
+       "Steve Martin"
+      ],
+      "answer": 0,
+      "fact": "The film's song 'A Whole New World' won the Oscar for Best Original Song.",
+      "src": "d23.com/a-to-z/aladdin-film (Robin Williams as Genie; Oscars for Best Song, A Whole New World, and Score)"
+     },
+     {
+      "value": 200,
+      "q": "What was Disney's first full-length animated feature, released in 1937?",
+      "options": [
+       "Pinocchio",
+       "Fantasia",
+       "Bambi",
+       "Snow White"
+      ],
+      "answer": 3,
+      "fact": "Walt Disney got an honorary Oscar for it: one full-size statuette and seven small ones.",
+      "src": "https://en.wikipedia.org/wiki/Snow_White_and_the_Seven_Dwarfs_(1937_film) (first feature; honorary award at 11th Academy Awards, 1939: one full-size + seven miniature statuettes)"
+     },
+     {
+      "value": 300,
+      "q": "Mickey Mouse made his famous 1928 debut in which cartoon?",
+      "options": [
+       "Flowers and Trees",
+       "The Skeleton Dance",
+       "Steamboat Willie",
+       "The Band Concert"
+      ],
+      "answer": 2,
+      "fact": "Walt Disney himself was Mickey's main voice until the late 1940s.",
+      "src": "https://en.wikipedia.org/wiki/Mickey_Mouse (Steamboat Willie released Nov 18, 1928, first to find a distributor; Walt voiced Mickey from 1928 until Jimmy MacDonald took over in 1946-47; Band Concert 1935 = first color film). Plane Crazy deliberately left out."
+     },
+     {
+      "value": 400,
+      "q": "Which was the first animated film nominated for the Oscar for Best Picture?",
+      "options": [
+       "The Little Mermaid",
+       "Beauty and the Beast",
+       "Aladdin",
+       "The Lion King"
+      ],
+      "answer": 1,
+      "fact": "It was the only animated Best Picture nominee before the Animated Feature Oscar began in 2002.",
+      "src": "https://en.wikipedia.org/wiki/Academy_Award_for_Best_Animated_Feature (prior to the award's creation, only one animated film was nominated for Best Picture: 1991's Beauty and the Beast)"
+     }
+    ]
+   },
+   {
+    "name": "TV Toons",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The Simpsons live in a town with what name?",
+      "options": [
+       "Shelbyville",
+       "Springfield",
+       "Quahog",
+       "Arlen"
+      ],
+      "answer": 1,
+      "fact": "The family first appeared in shorts on The Tracey Ullman Show in 1987, two years before its own series.",
+      "src": "https://en.wikipedia.org/wiki/The_Simpsons (fictional town of Springfield; shorts on The Tracey Ullman Show from April 19, 1987; series premiered Dec 17, 1989). Replaces Scooby-Doo breed Q, which duplicates paws-claws $100 word for word."
+     },
+     {
+      "value": 200,
+      "q": "The hit kids' cartoon Bluey, about a family of dogs, comes from which country?",
+      "options": [
+       "Australia",
+       "New Zealand",
+       "Canada",
+       "Ireland"
+      ],
+      "answer": 0,
+      "fact": "Bluey is a Blue Heeler puppy, and the show is made by Ludo Studio in Brisbane.",
+      "src": "screenqueensland.com.au Bluey release (six-year-old Blue Heeler puppy; Brisbane-based Ludo Studio; co-commissioned by ABC KIDS and BBC Worldwide); bluey.tv"
+     },
+     {
+      "value": 300,
+      "q": "The Flintstones lived in which prehistoric town?",
+      "options": [
+       "Rockville",
+       "Granite Falls",
+       "Stonybrook",
+       "Bedrock"
+      ],
+      "answer": 3,
+      "fact": "The Flintstones aired in prime time on ABC from 1960 to 1966.",
+      "src": "https://en.wikipedia.org/wiki/The_Flintstones (Stone Age town of Bedrock; ABC, Sept 30, 1960 to April 1, 1966, prime time)"
+     },
+     {
+      "value": 400,
+      "q": "Which voice actor was famous as the voice of Bugs Bunny and Daffy Duck?",
+      "options": [
+       "Daws Butler",
+       "Mel Blanc",
+       "Don Messick",
+       "June Foray"
+      ],
+      "answer": 1,
+      "fact": "Blanc also voiced Tweety, Sylvester and Porky Pig, earning the nickname Man of a Thousand Voices.",
+      "src": "obits.gazette.com 'Mel Blanc, Man of a Thousand Voices' (Bugs, Daffy, Sylvester, Tweety); Porky Pig textbook"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "showstoppers",
+  "blurb": "Broadway and the stage musicals that brought down the house",
+  "categories": [
+   {
+    "name": "Broadway Hits",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The musical Wicked tells the backstory of the witches from which story?",
+      "options": [
+       "The Wizard of Oz",
+       "Snow White",
+       "Sleeping Beauty",
+       "Hansel and Gretel"
+      ],
+      "answer": 0,
+      "fact": "Wicked opened on Broadway in 2003 and is based on Gregory Maguire's 1995 novel.",
+      "src": "newyorktheatreguide.com Wicked (opened Gershwin Theatre Oct 2003; based on Gregory Maguire's 1995 novel); britannica.com/topic/Wicked (prequel to The Wonderful Wizard of Oz)"
+     },
+     {
+      "value": 200,
+      "q": "The musical Grease is set at which high school?",
+      "options": [
+       "Ridgemont High",
+       "Shermer High",
+       "Rydell High",
+       "Bayside High"
+      ],
+      "answer": 2,
+      "fact": "Grease opened on Broadway in 1972, six years before the hit movie.",
+      "src": "https://en.wikipedia.org/wiki/Grease_(musical) (Rydell High; opened at Eden Theatre Feb 14, 1972 on Broadway contracts, moved to Broadhurst June 7, 1972; film 1978)"
+     },
+     {
+      "value": 300,
+      "q": "The musical Hairspray is set in which city?",
+      "options": [
+       "Philadelphia",
+       "Baltimore",
+       "Cleveland",
+       "Pittsburgh"
+      ],
+      "answer": 1,
+      "fact": "It's based on John Waters' 1988 film and won the 2003 Tony Award for Best Musical.",
+      "src": "https://en.wikipedia.org/wiki/Hairspray_(1988_film) (set in 1962 Baltimore; John Waters; musical won 8 Tonys incl. Best Musical in 2003)"
+     },
+     {
+      "value": 400,
+      "q": "Which 1943 show was Rodgers and Hammerstein's first musical together?",
+      "options": [
+       "Carousel",
+       "South Pacific",
+       "The King and I",
+       "Oklahoma!"
+      ],
+      "answer": 3,
+      "fact": "Their last show together was The Sound of Music, which opened in 1959.",
+      "src": "pbs.org Great Performances R&H timeline (Oklahoma! March 31, 1943, first collaboration; Sound of Music Nov 16, 1959, final collaboration)"
+     }
+    ]
+   },
+   {
+    "name": "Music Makers",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The musical Mamma Mia! is built around the songs of which group?",
+      "options": [
+       "Bee Gees",
+       "Queen",
+       "ABBA",
+       "Fleetwood Mac"
+      ],
+      "answer": 2,
+      "fact": "It opened in London in 1999 and on Broadway in 2001.",
+      "src": "https://en.wikipedia.org/wiki/Mamma_Mia!_(musical) (based on songs of ABBA; West End April 6, 1999; Broadway Oct 18, 2001)"
+     },
+     {
+      "value": 200,
+      "q": "The musical Jersey Boys tells the story of which 1960s group?",
+      "options": [
+       "The Four Seasons",
+       "The Beach Boys",
+       "The Temptations",
+       "The Drifters"
+      ],
+      "answer": 0,
+      "fact": "Jersey Boys won the 2006 Tony Award for Best Musical.",
+      "src": "https://en.wikipedia.org/wiki/Jersey_Boys (the Four Seasons; Broadway Nov 6, 2005; four 2006 Tonys incl. Best Musical)"
+     },
+     {
+      "value": 300,
+      "q": "Who composed the music for The Phantom of the Opera?",
+      "options": [
+       "Frank Wildhorn",
+       "Andrew Lloyd Webber",
+       "Claude-Michel Schonberg",
+       "Cameron Mackintosh"
+      ],
+      "answer": 1,
+      "fact": "Its original Broadway run lasted from January 1988 to April 2023.",
+      "src": "michiganpublic.org (NPR) April 15, 2023: Andrew Lloyd Webber's musical, opened on Broadway January 1988, final performance April 16, 2023"
+     },
+     {
+      "value": 400,
+      "q": "Which composer-lyricist wrote the musicals Into the Woods and Company?",
+      "options": [
+       "Jerry Herman",
+       "Frank Loesser",
+       "Jason Robert Brown",
+       "Stephen Sondheim"
+      ],
+      "answer": 3,
+      "fact": "Years earlier, Sondheim wrote the lyrics for West Side Story (1957).",
+      "src": "https://en.wikipedia.org/wiki/Works_of_Stephen_Sondheim (West Side Story 1957 lyrics only; Company 1970 and Into the Woods 1987 music and lyrics)"
+     }
+    ]
+   },
+   {
+    "name": "Curtain Calls",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Who wrote the music and lyrics for Hamilton and originated the title role?",
+      "options": [
+       "Leslie Odom Jr.",
+       "Jonathan Larson",
+       "Lin-Manuel Miranda",
+       "Daveed Diggs"
+      ],
+      "answer": 2,
+      "fact": "Hamilton won 11 Tony Awards in 2016, plus the Pulitzer Prize for Drama.",
+      "src": "dramatistsguild.com Lin-Manuel Miranda bio (book, music, lyrics; originated title role; 16 noms, 11 Tonys; 2016 Pulitzer Prize in Drama)"
+     },
+     {
+      "value": 200,
+      "q": "Which original Wicked star later voiced Elsa in Disney's Frozen?",
+      "options": [
+       "Idina Menzel",
+       "Kristin Chenoweth",
+       "Kristen Bell",
+       "Lea Michele"
+      ],
+      "answer": 0,
+      "fact": "Menzel won the 2004 Tony for Best Actress in a Musical for playing Elphaba.",
+      "src": "https://en.wikipedia.org/wiki/List_of_awards_and_nominations_received_by_Idina_Menzel (2004 Tony, Best Actress in a Musical, Elphaba); d23.com/a-to-z/frozen-film (Menzel voices Elsa, Kristen Bell voices Anna)"
+     },
+     {
+      "value": 300,
+      "q": "Broadway's Tony Awards are named after which person?",
+      "options": [
+       "Tony Bennett",
+       "Anthony Quinn",
+       "Tony Randall",
+       "Antoinette Perry"
+      ],
+      "answer": 3,
+      "fact": "Perry was a Broadway actress and director, and the awards were first handed out in 1947.",
+      "src": "https://en.wikipedia.org/wiki/Tony_Awards (Antoinette 'Tony' Perry, actress, director, producer, American Theatre Wing co-founder; first ceremony April 6, 1947)"
+     },
+     {
+      "value": 400,
+      "q": "Who became the first woman to win the Tony for directing a musical, for The Lion King?",
+      "options": [
+       "Susan Stroman",
+       "Julie Taymor",
+       "Diane Paulus",
+       "Tina Landau"
+      ],
+      "answer": 1,
+      "fact": "Taymor also designed the show's costumes and co-designed its famous animal masks and puppets.",
+      "src": "https://en.wikipedia.org/wiki/Julie_Taymor (first woman to win Tony for Best Direction of a Musical, 1998; Tony for costume design; co-designed masks and puppets)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "holiday-movie-night",
+  "blurb": "Holiday classics and snowy favorites for a cozy movie night",
+  "categories": [
+   {
+    "name": "Christmas Classics",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In Home Alone (1990), Kevin's family accidentally leaves him behind on a trip to which city?",
+      "options": [
+       "London",
+       "Rome",
+       "Paris",
+       "New York"
+      ],
+      "answer": 2,
+      "fact": "John Hughes wrote and produced Home Alone, and Chris Columbus directed it.",
+      "src": "https://en.wikipedia.org/wiki/Home_Alone (written and produced by John Hughes, directed by Chris Columbus; Christmas vacation to Paris)"
+     },
+     {
+      "value": 200,
+      "q": "In It's a Wonderful Life (1946), George Bailey lives in which town?",
+      "options": [
+       "Bedford Falls",
+       "Grover's Corners",
+       "Stars Hollow",
+       "Hill Valley"
+      ],
+      "answer": 0,
+      "fact": "The film was based on 'The Greatest Gift,' a short story by Philip Van Doren Stern.",
+      "src": "https://en.wikipedia.org/wiki/It%27s_a_Wonderful_Life (Bedford Falls; based on 'The Greatest Gift' by Philip Van Doren Stern, written 1939, printed 1943). Pottersville deliberately left out."
+     },
+     {
+      "value": 300,
+      "q": "Edmund Gwenn won an Oscar for playing Kris Kringle in which 1947 film?",
+      "options": [
+       "The Bishop's Wife",
+       "Holiday Inn",
+       "Christmas in Connecticut",
+       "Miracle on 34th Street"
+      ],
+      "answer": 3,
+      "fact": "A young Natalie Wood played Susan, the little girl who doubts Santa is real.",
+      "src": "https://en.wikipedia.org/wiki/Miracle_on_34th_Street (Gwenn, Best Actor in a Supporting Role; Natalie Wood as Susan Walker, raised not to believe; released June 1947)"
+     },
+     {
+      "value": 400,
+      "q": "White Christmas (1954) was the first movie released in which widescreen format?",
+      "options": [
+       "CinemaScope",
+       "VistaVision",
+       "Cinerama",
+       "Todd-AO"
+      ],
+      "answer": 1,
+      "fact": "Directed by Michael Curtiz, it was the highest-grossing film of 1954.",
+      "src": "https://en.wikipedia.org/wiki/White_Christmas_(film) (first to be released in VistaVision, Paramount's new process; dir. Michael Curtiz; highest-grossing film of 1954); https://en.wikipedia.org/wiki/VistaVision (Cinerama debuted 1952, CinemaScope announced 1953). Replaces Nightmare Before Christmas director Q (title says Tim Burton's)."
+     }
+    ]
+   },
+   {
+    "name": "Holiday Comedies",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which actor becomes Santa after putting on the suit in The Santa Clause (1994)?",
+      "options": [
+       "Steve Martin",
+       "Billy Crystal",
+       "Tim Allen",
+       "Rick Moranis"
+      ],
+      "answer": 2,
+      "fact": "The title is a pun on the contract clause that makes him the new Santa.",
+      "src": "d23.com/a-to-z/santa-clause-the-film (Nov 11, 1994; Tim Allen as Scott Calvin; contract: whoever puts on the suit takes the job). Martin Short swapped out: he played Jack Frost, who schemes to become Santa, in The Santa Clause 3."
+     },
+     {
+      "value": 200,
+      "q": "Who plays Clark Griswold in National Lampoon's Christmas Vacation (1989)?",
+      "options": [
+       "Chevy Chase",
+       "John Candy",
+       "Dan Aykroyd",
+       "Bill Murray"
+      ],
+      "answer": 0,
+      "fact": "It was the third film in the National Lampoon's Vacation series.",
+      "src": "https://en.wikipedia.org/wiki/National_Lampoon%27s_Christmas_Vacation (third installment in the Vacation series; Chevy Chase as Clark; Dec 1, 1989; Candy, Aykroyd, Murray not in cast)"
+     },
+     {
+      "value": 300,
+      "q": "Which actor plays Santa in Netflix's The Christmas Chronicles (2018)?",
+      "options": [
+       "Paul Giamatti",
+       "Vince Vaughn",
+       "J.K. Simmons",
+       "Kurt Russell"
+      ],
+      "answer": 3,
+      "fact": "A sequel, The Christmas Chronicles 2, followed on Netflix in 2020.",
+      "src": "https://en.wikipedia.org/wiki/The_Christmas_Chronicles (Kurt Russell as Santa; Netflix Nov 22, 2018; The Christmas Chronicles 2 on Nov 25, 2020)"
+     },
+     {
+      "value": 400,
+      "q": "In Elf (2003), how does baby Buddy end up at the North Pole?",
+      "options": [
+       "He hides in a toy crate",
+       "He crawls into Santa's sack",
+       "He follows a reindeer",
+       "He is left on a sleigh"
+      ],
+      "answer": 1,
+      "fact": "Will Ferrell starred as Buddy, and Bob Newhart played Papa Elf.",
+      "src": "https://en.wikipedia.org/wiki/Elf_(film) (a baby from an orphanage crawls into Santa Claus's sack; Will Ferrell as Buddy; Bob Newhart as Papa Elf)"
+     }
+    ]
+   },
+   {
+    "name": "Snowbound",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In Disney's Frozen (2013), what is the name of the talking snowman?",
+      "options": [
+       "Sven",
+       "Kristoff",
+       "Olaf",
+       "Frosty"
+      ],
+      "answer": 2,
+      "fact": "Josh Gad voiced Olaf, and Frozen won the Oscar for Best Animated Feature.",
+      "src": "d23.com/a-to-z/frozen-film (Nov 27, 2013; Josh Gad as Olaf; Sven is Kristoff's reindeer; Oscars for Animated Feature and Song). Replaces Ice Age Manny Q, which duplicates dino-dig $100 word for word."
+     },
+     {
+      "value": 200,
+      "q": "Disney's The Mighty Ducks (1992) inspired the name of an NHL team in which city?",
+      "options": [
+       "San Jose",
+       "Phoenix",
+       "Anaheim",
+       "Los Angeles"
+      ],
+      "answer": 2,
+      "fact": "Disney owned the team, which began play in 1993 and became the Anaheim Ducks in 2006.",
+      "src": "https://en.wikipedia.org/wiki/Anaheim_Ducks (founded by Disney for 1993-94 as Mighty Ducks of Anaheim, named for the 1992 film; Disney owned 1993-2005; renamed Anaheim Ducks before 2006-07)"
+     },
+     {
+      "value": 300,
+      "q": "Who narrated the US version of the documentary March of the Penguins (2005)?",
+      "options": [
+       "David Attenborough",
+       "Morgan Freeman",
+       "James Earl Jones",
+       "Tom Hanks"
+      ],
+      "answer": 1,
+      "fact": "It won the Oscar for Best Documentary Feature.",
+      "src": "https://en.wikipedia.org/wiki/March_of_the_Penguins (English release narrated by Morgan Freeman; Best Documentary Feature, 78th Academy Awards, 2006)"
+     },
+     {
+      "value": 400,
+      "q": "Groundhog Day (1993) is set in Pennsylvania, but it was mostly filmed in which state?",
+      "options": [
+       "Ohio",
+       "New York",
+       "Wisconsin",
+       "Illinois"
+      ],
+      "answer": 3,
+      "fact": "The town square of Woodstock, Illinois, stood in for Punxsutawney.",
+      "src": "avclub.com 'We visit the town that brought Groundhog Day to life' (Woodstock, Illinois, its square the main set, stands in for Punxsutawney); nprillinois.org"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "holiday-hits",
+  "blurb": "Holiday songs: who recorded them, when, and how they came to be",
+  "categories": [
+   {
+    "name": "Who Sang It?",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which crooner sang 'White Christmas' in the 1942 film Holiday Inn?",
+      "options": [
+       "Frank Sinatra",
+       "Perry Como",
+       "Bing Crosby",
+       "Dean Martin"
+      ],
+      "answer": 2,
+      "fact": "Irving Berlin wrote it, and Crosby first sang it on the radio on Christmas Day 1941.",
+      "src": "https://en.wikipedia.org/wiki/White_Christmas_(song) (written by Irving Berlin for Holiday Inn; Crosby first performed it on NBC's Kraft Music Hall, Christmas Day 1941; Oscar, 15th Academy Awards). Reworded from 'introduced' because the radio debut came first."
+     },
+     {
+      "value": 200,
+      "q": "Who wrote and recorded the bilingual 1970 holiday hit 'Feliz Navidad'?",
+      "options": [
+       "Jose Feliciano",
+       "Julio Iglesias",
+       "Trini Lopez",
+       "Ricky Martin"
+      ],
+      "answer": 0,
+      "fact": "Feliciano was born in Puerto Rico and grew up in New York City.",
+      "src": "npr.org Dec 14, 2020 '50 years later, Feliz Navidad' (Feliciano wrote it at RCA in LA in 1970; born in Lares, Puerto Rico; family moved to New York)"
+     },
+     {
+      "value": 300,
+      "q": "Which pop star released the holiday single 'Santa Tell Me' in 2014?",
+      "options": [
+       "Selena Gomez",
+       "Ariana Grande",
+       "Demi Lovato",
+       "Meghan Trainor"
+      ],
+      "answer": 1,
+      "fact": "It arrived a few months after her 2014 album My Everything.",
+      "src": "https://en.wikipedia.org/wiki/Santa_Tell_Me (single Nov 24, 2014, Republic); https://en.wikipedia.org/wiki/List_of_songs_recorded_by_Ariana_Grande (My Everything Aug 25, 2014; song not on that album)"
+     },
+     {
+      "value": 400,
+      "q": "Which singer first released 'Jingle Bell Rock' in 1957?",
+      "options": [
+       "Bobby Darin",
+       "Bobby Vinton",
+       "Bobby Rydell",
+       "Bobby Helms"
+      ],
+      "answer": 3,
+      "fact": "The song powers a famous talent-show dance scene in Mean Girls (2004).",
+      "src": "https://en.wikipedia.org/wiki/Jingle_Bell_Rock (Bobby Helms, recorded Oct 1957, released Nov 1957; Rydell/Checker cover charted 1961; Lindsay Lohan performs it in Mean Girls)"
+     }
+    ]
+   },
+   {
+    "name": "Origin Stories",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which singing group, later stars of a TV cartoon, hit No. 1 in 1958 with a Christmas song?",
+      "options": [
+       "The Archies",
+       "The Banana Splits",
+       "Alvin and the Chipmunks",
+       "The Smurfs"
+      ],
+      "answer": 2,
+      "fact": "Creator Ross Bagdasarian sped up recordings of his own voice to make the Chipmunks sing.",
+      "src": "https://en.wikipedia.org/wiki/Alvin_and_the_Chipmunks (created by Ross Bagdasarian for novelty records in 1958; sped-up recordings of his own voice; The Chipmunk Song No. 1 on Hot 100; first animated in The Alvin Show, 1961). Reworded: they were not yet a cartoon in 1958."
+     },
+     {
+      "value": 200,
+      "q": "Mel Torme co-wrote 'The Christmas Song,' made famous in 1946 by which singer?",
+      "options": [
+       "Nat King Cole",
+       "Bing Crosby",
+       "Perry Como",
+       "Frank Sinatra"
+      ],
+      "answer": 0,
+      "fact": "Torme and Bob Wells wrote it on a hot summer day, trying to stay cool by thinking cool.",
+      "src": "https://en.wikipedia.org/wiki/The_Christmas_Song (Wells and Torme, July heat-wave story; Nat King Cole Trio recorded June 1946, hit version Aug 1946). Year dropped from fact: page gives both 1944 and 1945."
+     },
+     {
+      "value": 300,
+      "q": "'Jingle Bells' was first published in 1857 under what title?",
+      "options": [
+       "Sleigh Ride",
+       "Winter Wonderland",
+       "Bells Upon the Snow",
+       "One Horse Open Sleigh"
+      ],
+      "answer": 3,
+      "fact": "Its songwriter, James Lord Pierpont, was an uncle of financier J. P. Morgan.",
+      "src": "https://en.wikipedia.org/wiki/James_Lord_Pierpont ('The One Horse Open Sleigh' published Aug 1857, copyrighted Sept 16, 1857; James was the uncle of J. P. Morgan)"
+     },
+     {
+      "value": 400,
+      "q": "Judy Garland introduced 'Have Yourself a Merry Little Christmas' in which 1944 film?",
+      "options": [
+       "Easter Parade",
+       "The Harvey Girls",
+       "Meet Me in St. Louis",
+       "Summer Stock"
+      ],
+      "answer": 2,
+      "fact": "Garland found the first draft too sad, so songwriter Hugh Martin revised it.",
+      "src": "biography.com 'Judy Garland, Have Yourself a Merry Little Christmas, Meet Me in St. Louis' (Martin and Blane; debuted in 1944 film; Garland refused the gloomier original, Martin revised it); https://en.wikipedia.org/wiki/List_of_popular_Christmas_singles_in_the_United_States (introduced in Meet Me in St. Louis, 1944). Distractors are later Garland films (1946, 1948, 1950). Replaces Rudolph/Montgomery Ward Q, which duplicates shop-talk $200."
+     }
+    ]
+   },
+   {
+    "name": "Holiday Hit Parade",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In December 2019, which singer's 1994 holiday song finally hit No. 1 on the Hot 100?",
+      "options": [
+       "Celine Dion",
+       "Whitney Houston",
+       "Mariah Carey",
+       "Gloria Estefan"
+      ],
+      "answer": 2,
+      "fact": "Carey co-wrote 'All I Want for Christmas Is You' with Walter Afanasieff.",
+      "src": "https://en.wikipedia.org/wiki/List_of_popular_Christmas_singles_in_the_United_States (No. 1 on Hot 100 Dec 2019); siliconcanals.com (co-written with Walter Afanasieff, released Oct 1994)"
+     },
+     {
+      "value": 200,
+      "q": "Which Canadian singer's 2011 album, simply titled Christmas, became a holiday staple?",
+      "options": [
+       "Michael Buble",
+       "Josh Groban",
+       "Harry Connick Jr.",
+       "Andrea Bocelli"
+      ],
+      "answer": 0,
+      "fact": "Buble was born in Burnaby, British Columbia, just outside Vancouver.",
+      "src": "https://en.wikipedia.org/wiki/Christmas_(Michael_Bubl%C3%A9_album) (released Oct 2011; one of the best-selling Christmas albums worldwide); https://en.wikipedia.org/wiki/Michael_Bubl%C3%A9 (born in Burnaby, BC; Canadian)"
+     },
+     {
+      "value": 300,
+      "q": "In 2023, which singer's 1958 recording 'Rockin' Around the Christmas Tree' finally hit No. 1?",
+      "options": [
+       "Connie Francis",
+       "Peggy Lee",
+       "Patsy Cline",
+       "Brenda Lee"
+      ],
+      "answer": 3,
+      "fact": "Lee was just 13 years old when she recorded it in 1958.",
+      "src": "https://en.wikipedia.org/wiki/Rockin%27_Around_the_Christmas_Tree (recorded Oct 19, 1958, when Lee was 13; released Nov 1958; first Hot 100 No. 1 in Dec 2023)"
+     },
+     {
+      "value": 400,
+      "q": "Which crooner first released 'It's the Most Wonderful Time of the Year,' on a 1963 album?",
+      "options": [
+       "Perry Como",
+       "Andy Williams",
+       "Bing Crosby",
+       "Dean Martin"
+      ],
+      "answer": 1,
+      "fact": "Eddie Pola and George Wyle wrote it; Wyle was a vocal director on The Andy Williams Show.",
+      "src": "https://en.wikipedia.org/wiki/It%27s_the_Most_Wonderful_Time_of_the_Year (written 1963 by Edward Pola and George Wyle; first recorded and released by Williams on The Andy Williams Christmas Album, 1963; Williams: Wyle, a vocal director, wrote it for the TV show). Old fact said 'written for the album': fixed."
+     }
+    ]
+   }
+  ]
+ }
+]

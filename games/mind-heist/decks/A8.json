@@ -1,0 +1,1241 @@
+[
+  {
+    "id": "office-warm-up",
+    "blurb": "An easy all-ages warm-up: office supplies, famous duos and riddles",
+    "categories": [
+      {
+        "name": "Office Supplies",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In the 1999 comedy Office Space, what color is Milton's treasured Swingline stapler?",
+            "options": [
+              "Black",
+              "Red",
+              "Blue",
+              "Silver"
+            ],
+            "answer": 1,
+            "fact": "Swingline sold no red stapler then; the prop was painted, and fan demand led Swingline to release a red one in 2002.",
+            "src": "en.wikipedia.org/wiki/Swingline (custom-painted red 646 in Office Space; official red 747 released 2002 after fan demand) - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "How many sheets are in a standard ream of copy paper?",
+            "options": [
+              "250",
+              "1,000",
+              "400",
+              "500"
+            ],
+            "answer": 3,
+            "fact": "Centuries ago a ream was commonly 480 sheets; the 500-sheet ream later became the standard.",
+            "src": "en.wikipedia.org/wiki/Units_of_paper_quantity (500-sheet ream is the standard; 480 common historically, now the 'short ream') - reviewer WebFetch"
+          },
+          {
+            "value": 300,
+            "q": "The Rolodex got its name by blending 'rolling' with which word?",
+            "options": [
+              "Index",
+              "Desk",
+              "Directory",
+              "Dexterity"
+            ],
+            "answer": 0,
+            "fact": "Danish engineer Hildaur Neilsen designed it, and it first went on sale in 1958.",
+            "src": "cooperhewitt.org/2014/04/15/the-power-of-the-rolodex ('a combination of the words rolling and index'; first made 1958); en.wikipedia.org/wiki/Rolodex (Neilsen designer; first marketed 1958; design year dropped because the article gives both 1956 and 1954) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "A standard U.S. No. 2 pencil equals which grade on the H-and-B pencil scale?",
+            "options": [
+              "2B",
+              "F",
+              "HB",
+              "2H"
+            ],
+            "answer": 2,
+            "fact": "On that scale, H stands for hardness and B stands for blackness.",
+            "src": "wellappointeddesk.com/2014/04/what-the-f-is-that ('HB and #2 are the same thing'; H hardness, B blackness, F fine) - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "Famous Duos",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which Sesame Street Muppet is Ernie's roommate?",
+            "options": [
+              "Grover",
+              "Elmo",
+              "Cookie Monster",
+              "Bert"
+            ],
+            "answer": 3,
+            "fact": "Bert collects bottle caps and paper clips, and he has a pet pigeon named Bernice.",
+            "src": "sesameworkshop.org Sesame Street characters: Bert (collects bottle caps and paper clips; pet pigeon Bernice; Ernie's best friend); Bert and Ernie as roommates is textbook - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "Film critics Gene Siskel and Roger Ebert became famous on TV for rating movies how?",
+            "options": [
+              "Letter grades",
+              "Thumbs up or down",
+              "Scores out of 10",
+              "Smiley faces"
+            ],
+            "answer": 1,
+            "fact": "They wrote for rival papers: Siskel for the Chicago Tribune and Ebert for the Chicago Sun-Times.",
+            "src": "en.wikipedia.org/wiki/Siskel_and_Ebert (Siskel at the Chicago Tribune, Ebert at the rival Chicago Sun-Times; Thumbs Up or Thumbs Down) - reviewer WebFetch"
+          },
+          {
+            "value": 300,
+            "q": "YouTube duo Rhett and Link created which long-running daily talk show?",
+            "options": [
+              "Good Mythical Morning",
+              "Hot Ones",
+              "Unbox Therapy",
+              "Dude Perfect"
+            ],
+            "answer": 0,
+            "fact": "It launched on January 9, 2012, six years after the pair began posting comedy videos on YouTube.",
+            "src": "blog.youtube 'Good Mythical Morning ... turns 10' (launched Monday Jan 9, 2012; duo began posting comedy videos on YouTube in 2006) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "Stan Laurel, of the comedy team Laurel and Hardy, was born in which country?",
+            "options": [
+              "Scotland",
+              "Ireland",
+              "England",
+              "Canada"
+            ],
+            "answer": 2,
+            "fact": "Before Hollywood, he toured with Fred Karno's comedy troupe as Charlie Chaplin's understudy.",
+            "src": "en.wikipedia.org/wiki/Stan_Laurel (born 16 June 1890, Ulverston, Lancashire, England; Chaplin's understudy in Fred Karno's troupe) - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "Riddle Me This",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Riddle: What has hands but can't clap?",
+            "options": [
+              "A shoe",
+              "A comb",
+              "A needle",
+              "A clock"
+            ],
+            "answer": 3,
+            "fact": "The other options answer sibling riddles: a shoe has a tongue, a comb has teeth and a needle has an eye.",
+            "src": "Classic riddle; self-contained (shoe tongue, comb teeth, needle eye)"
+          },
+          {
+            "value": 200,
+            "q": "Riddle: What has a head and a tail but no body?",
+            "options": [
+              "A kite",
+              "A match",
+              "A snake",
+              "A coin"
+            ],
+            "answer": 3,
+            "fact": "The heads side of a coin usually shows a portrait; tails is simply the reverse side.",
+            "src": "Classic riddle; self-contained (snake has a body; kite has no head; match has no tail). Tadpole distractor replaced: tadpoles are often described as just a head and a tail"
+          },
+          {
+            "value": 300,
+            "q": "Riddle: What can travel around the world while staying in a corner?",
+            "options": [
+              "A stamp",
+              "A globe",
+              "A compass",
+              "A shadow"
+            ],
+            "answer": 0,
+            "fact": "In the U.S., postage goes in the upper right corner of the envelope.",
+            "src": "Classic riddle; USPS stamp-in-upper-right convention is textbook"
+          },
+          {
+            "value": 400,
+            "q": "Riddle: The more of these you take, the more you leave behind. What are they?",
+            "options": [
+              "Photos",
+              "Bites",
+              "Footsteps",
+              "Naps"
+            ],
+            "answer": 2,
+            "fact": "A cousin riddle asks what gets bigger the more you take away. The answer: a hole.",
+            "src": "Classic riddle; self-contained"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "the-first-job",
+    "blurb": "Day one on the job: old trades, inbox shorthand and fictional firms",
+    "categories": [
+      {
+        "name": "Old Job Titles",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What did a cobbler traditionally repair?",
+            "options": [
+              "Barrels",
+              "Shoes",
+              "Saddles",
+              "Clocks"
+            ],
+            "answer": 1,
+            "fact": "In old England, cordwainers made new shoes, while cobblers mostly did the repairs.",
+            "src": "en.wikipedia.org/wiki/Cordwainer (British tradition restricts cobblers to repairs; cordwainers make new shoes; 1395 London rule) - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "What did a cooper make?",
+            "options": [
+              "Candles",
+              "Arrows",
+              "Barrels",
+              "Wagon wheels"
+            ],
+            "answer": 2,
+            "fact": "Like Smith and Baker, the common surname Cooper comes from this trade.",
+            "src": "Textbook dictionary definition (cooper = barrel maker); occupational surname is textbook"
+          },
+          {
+            "value": 300,
+            "q": "A chandler originally made and sold what?",
+            "options": [
+              "Candles",
+              "Hats",
+              "Pottery",
+              "Bread"
+            ],
+            "answer": 0,
+            "fact": "The word is related to chandelier, which first meant a holder for candles.",
+            "src": "etymonline.com/word/chandler ('maker or seller of candles', from Old French chandelier, Latin candela) and /word/chandelier ('originally a candlestick') - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "What did a fletcher make?",
+            "options": [
+              "Bows",
+              "Arrows",
+              "Spears",
+              "Shields"
+            ],
+            "answer": 1,
+            "fact": "Bows were made by a bowyer, and the feathers on an arrow are still called fletching.",
+            "src": "Textbook dictionary definitions (fletcher = arrow maker; bowyer = bow maker; fletching = arrow feathers)"
+          }
+        ]
+      },
+      {
+        "name": "Inbox Shorthand",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In an email, what does FYI stand for?",
+            "options": [
+              "For your inspection",
+              "Find your inbox",
+              "File your invoice",
+              "For your information"
+            ],
+            "answer": 3,
+            "fact": "Its cousin FWIW means 'for what it's worth.'",
+            "src": "Textbook abbreviations (FYI, FWIW)"
+          },
+          {
+            "value": 200,
+            "q": "The 'cc' line in an email comes from which old office term?",
+            "options": [
+              "Copy clerk",
+              "Central courier",
+              "Carbon copy",
+              "Copy and circulate"
+            ],
+            "answer": 2,
+            "fact": "Typists once made duplicates by sliding carbon paper between sheets in a typewriter.",
+            "src": "Textbook (cc = carbon copy; carbon paper in typewriters)"
+          },
+          {
+            "value": 300,
+            "q": "In online posts and emails, what does TL;DR mean?",
+            "options": [
+              "Too long; didn't read",
+              "Talk later; don't reply",
+              "Top line; details ready",
+              "Too late; deadline reached"
+            ],
+            "answer": 0,
+            "fact": "Writers often add a TL;DR line with a one-sentence summary for skimmers.",
+            "src": "Textbook (TL;DR = too long; didn't read)"
+          },
+          {
+            "value": 400,
+            "q": "In a SWOT analysis, what does the O stand for?",
+            "options": [
+              "Objectives",
+              "Opportunities",
+              "Outcomes",
+              "Operations"
+            ],
+            "answer": 1,
+            "fact": "Strengths and weaknesses look inside an organization; opportunities and threats look outside it.",
+            "src": "Textbook business framework (Strengths, Weaknesses = internal; Opportunities, Threats = external)"
+          }
+        ]
+      },
+      {
+        "name": "Fictional Firms",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Wile E. Coyote buys his failure-prone gadgets from which company?",
+            "options": [
+              "Initech",
+              "Acme",
+              "Globex",
+              "Wonka"
+            ],
+            "answer": 1,
+            "fact": "The name comes from the Greek word akme, meaning peak. It is not an acronym.",
+            "src": "en.wikipedia.org/wiki/Acme_Corporation (from Greek akme 'peak'; acronym claims are unsourced) - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "In The Jetsons, George works for Mr. Spacely at a company that makes what?",
+            "options": [
+              "Rockets",
+              "Robots",
+              "Sprockets",
+              "Cogs"
+            ],
+            "answer": 2,
+            "fact": "Mr. Spacely's business rival is Mr. Cogswell, whose company makes cogs.",
+            "src": "en.wikipedia.org/wiki/The_Jetsons (Spacely Space Sprockets; rival Cogswell Cogs); smithsonianmag.com Jetsons episode 07 recap (rivalry 'manufacturing cogs and sprockets') - reviewer WebFetch"
+          },
+          {
+            "value": 300,
+            "q": "In HBO's Silicon Valley, Richard Hendricks founds which startup?",
+            "options": [
+              "Hooli",
+              "Lumon",
+              "Dunder Mifflin",
+              "Pied Piper"
+            ],
+            "answer": 3,
+            "fact": "Its big idea was a data compression algorithm, and the show ran on HBO from 2014 to 2019.",
+            "src": "en.wikipedia.org/wiki/Silicon_Valley_(TV_series) (Pied Piper, compression algorithm; HBO Apr 6, 2014 - Dec 8, 2019) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "In Mad Men, Don Draper is creative director at which advertising agency?",
+            "options": [
+              "Sterling Cooper",
+              "Wernham Hogg",
+              "Vandelay Industries",
+              "Bluth Company"
+            ],
+            "answer": 0,
+            "fact": "The story opens in March 1960 and wraps up in November 1970.",
+            "src": "en.wikipedia.org/wiki/Mad_Men (Draper is creative director at Sterling Cooper; set between March 1960 and November 1970) - reviewer WebFetch. Old fact said 'set in the 1960s' but the show runs into 1970"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "monday-mixer",
+    "blurb": "Start the week with symbols, city nicknames and a trip to the mailbox",
+    "categories": [
+      {
+        "name": "Name That Thing",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What is the & symbol called?",
+            "options": [
+              "Asterisk",
+              "Ampersand",
+              "Tilde",
+              "Caret"
+            ],
+            "answer": 1,
+            "fact": "It began as a joined-up 'et,' the Latin word for 'and.'",
+            "src": "en.wikipedia.org/wiki/Ampersand (originated as a ligature of Latin et, 'and') - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "What is the plastic tip on the end of a shoelace called?",
+            "options": [
+              "Grommet",
+              "Eyelet",
+              "Aglet",
+              "Toggle"
+            ],
+            "answer": 2,
+            "fact": "The word comes from an Old French term meaning 'little needle.'",
+            "src": "etymonline.com/word/aglet (Old French aiguillette, diminutive of aiguille 'needle') - reviewer WebFetch"
+          },
+          {
+            "value": 300,
+            "q": "What is the metal foot-measuring tool used in shoe stores called?",
+            "options": [
+              "Brannock device",
+              "Vernier caliper",
+              "Snellen gauge",
+              "Shoe horn"
+            ],
+            "answer": 0,
+            "fact": "It's named for Charles Brannock, who invented it in the 1920s.",
+            "src": "en.wikipedia.org/wiki/Brannock_Device (Charles F. Brannock; prototype patented 1925, improved version 1927) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "Called the pound sign or hashtag, the # symbol also has what lesser-known name?",
+            "options": [
+              "Pilcrow",
+              "Obelus",
+              "Interrobang",
+              "Octothorpe"
+            ],
+            "answer": 3,
+            "fact": "Bell Labs staff are usually credited with coining the name for the # key on touch-tone phones.",
+            "src": "99percentinvisible.org/episode/octothorpe (Bell Labs employees named it during the touch-tone era; exact story uncertain, so no date given) - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "City Nicknames",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which city is known as The Windy City?",
+            "options": [
+              "Boston",
+              "Cleveland",
+              "Chicago",
+              "Milwaukee"
+            ],
+            "answer": 2,
+            "fact": "Despite the nickname, Chicago's average wind speed is lower than Boston's.",
+            "src": "en.wikipedia.org/wiki/Windy_City_(nickname) (Chicago; avg wind 10.3 mph vs Boston 12.4 mph; origin debated) - reviewer WebFetch. REPLACED: Big Apple question duplicated A9 monday-mixer-5 Also Known As $100"
+          },
+          {
+            "value": 200,
+            "q": "Which city is nicknamed The Motor City?",
+            "options": [
+              "Detroit",
+              "Cleveland",
+              "Toledo",
+              "Indianapolis"
+            ],
+            "answer": 0,
+            "fact": "Motown Records took its name from 'Motor Town,' another Detroit nickname.",
+            "src": "npr/kpbs.org 2026-06-18 'To Detroiters, Motown is more than just music' (Motown = portmanteau of Motor Town) - reviewer WebFetch"
+          },
+          {
+            "value": 300,
+            "q": "Which city is called The Crescent City for a bend in the Mississippi River?",
+            "options": [
+              "Memphis",
+              "New Orleans",
+              "St. Louis",
+              "Baton Rouge"
+            ],
+            "answer": 1,
+            "fact": "The same city is also widely known as The Big Easy.",
+            "src": "Textbook (New Orleans = Crescent City, for its Mississippi bend; also The Big Easy); not web-checked, textbook-certain"
+          },
+          {
+            "value": 400,
+            "q": "Which city goes by the nickname Charm City?",
+            "options": [
+              "Savannah",
+              "Baltimore",
+              "Richmond",
+              "Charleston"
+            ],
+            "answer": 1,
+            "fact": "Baltimore is in Maryland, but the state capital is Annapolis, home of the U.S. Naval Academy.",
+            "src": "Textbook US geography (Baltimore = Charm City; Annapolis capital; Naval Academy at Annapolis); not web-checked, textbook-certain. Old fact's 'largest city' ranking removed"
+          }
+        ]
+      },
+      {
+        "name": "Mail Call",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Who was named the first Postmaster General by the Continental Congress in 1775?",
+            "options": [
+              "George Washington",
+              "Thomas Jefferson",
+              "Benjamin Franklin",
+              "Alexander Hamilton"
+            ],
+            "answer": 2,
+            "fact": "Before the Revolution, he was a joint postmaster general for Britain's American colonies.",
+            "src": "about.usps.com/who/profile/history/pdf/pmg-franklin.pdf (appointed first PMG July 26, 1775; joint Postmasters General for the Crown from Aug 10, 1753) - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "Launched in 1860, the Pony Express carried mail on horseback from Missouri to which state?",
+            "options": [
+              "Oregon",
+              "California",
+              "Texas",
+              "Montana"
+            ],
+            "answer": 1,
+            "fact": "Riders swapped to fresh horses at relay stations set about 10 to 15 miles apart.",
+            "src": "postalmuseum.si.edu/moving-the-mail-the-pony-express (Apr 3, 1860 - Oct 26, 1861; St. Joseph, MO to Sacramento, CA; stations 10 to 15 miles apart) - reviewer WebFetch. REPLACED: ZIP Code question duplicated A2 the-60s New & Improved $400"
+          },
+          {
+            "value": 300,
+            "q": "The Penny Black, the world's first adhesive postage stamp, came from which country?",
+            "options": [
+              "United States",
+              "Great Britain",
+              "France",
+              "Switzerland"
+            ],
+            "answer": 1,
+            "fact": "Issued in 1840, it pictured a young Queen Victoria.",
+            "src": "en.wikipedia.org/wiki/Penny_Black (issued UK 1 May 1840; world's first adhesive postage stamp; profile of Queen Victoria) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "What is the hobby of collecting postcards called?",
+            "options": [
+              "Philately",
+              "Deltiology",
+              "Numismatics",
+              "Vexillology"
+            ],
+            "answer": 1,
+            "fact": "Stamp collecting is philately, coin collecting is numismatics, and vexillology is the study of flags.",
+            "src": "Textbook dictionary definitions (deltiology, philately, numismatics, vexillology)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "monday-mixer-2",
+    "blurb": "Colors, brain teasers and life on the road to kick off the week",
+    "categories": [
+      {
+        "name": "Color Wheel",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Mixing blue and yellow paint makes which color?",
+            "options": [
+              "Orange",
+              "Purple",
+              "Green",
+              "Brown"
+            ],
+            "answer": 2,
+            "fact": "Green, orange and purple are the secondary colors on a traditional color wheel.",
+            "src": "Textbook color theory (RYB wheel: green, orange, purple are secondary)"
+          },
+          {
+            "value": 200,
+            "q": "Office color printers work in CMYK: cyan, magenta, yellow and which other color?",
+            "options": [
+              "White",
+              "Gray",
+              "Blue",
+              "Black"
+            ],
+            "answer": 3,
+            "fact": "The K stands for key: in printing, the black 'key' plate carries an image's fine detail and contrast.",
+            "src": "techterms.com/definition/cmyk (Cyan Magenta Yellow Key/Black; black is the 'key plate' giving contrast and detail) - reviewer WebFetch. REPLACED: The Dress question duplicated A3 lab-coats $200 and A2 the-2010s $100"
+          },
+          {
+            "value": 300,
+            "q": "Pantone's first Color of the Year, for 2000, was which shade of blue?",
+            "options": [
+              "Turquoise",
+              "Navy",
+              "Cobalt",
+              "Cerulean"
+            ],
+            "answer": 3,
+            "fact": "In The Devil Wears Prada (2006), Miranda Priestly lectures her assistant about a cerulean sweater.",
+            "src": "fashionunited.com 'Explore every Pantone Colour of the Year since 2000' (Cerulean Blue 2000 was the first; Turquoise 2010); en.wikipedia.org/wiki/Cerulean (Devil Wears Prada scene) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "The Tour de France's yellow jersey got its color from the pages of which newspaper?",
+            "options": [
+              "L'Auto",
+              "Le Monde",
+              "Le Figaro",
+              "Le Petit Journal"
+            ],
+            "answer": 0,
+            "fact": "Officially, French rider Eugene Christophe was the first to wear it, in 1919.",
+            "src": "rouleur.cc 'The yellow jersey at the Tour de France: a brief history' (L'Auto printed on yellow paper; 'Officially, Eugene Christophe' first in 1919; Philippe Thys claimed 1913, so 'officially' added) - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "Brain Teasers",
+        "questions": [
+          {
+            "value": 100,
+            "q": "In a race, you pass the runner in second place. What place are you in now?",
+            "options": [
+              "First",
+              "Second",
+              "Third",
+              "Last"
+            ],
+            "answer": 1,
+            "fact": "You took the second-place runner's spot, and the leader is still ahead of you.",
+            "src": "Logic; self-contained (passing 2nd place puts you 2nd)"
+          },
+          {
+            "value": 200,
+            "q": "If today is Monday, what day of the week will it be 100 days from now?",
+            "options": [
+              "Tuesday",
+              "Thursday",
+              "Wednesday",
+              "Monday"
+            ],
+            "answer": 2,
+            "fact": "100 days is 14 full weeks plus 2 extra days.",
+            "src": "Arithmetic: 100 mod 7 = 2, Monday + 2 = Wednesday; checked in python by reviewer"
+          },
+          {
+            "value": 300,
+            "q": "If 5 machines make 5 widgets in 5 minutes, how long do 100 machines take to make 100 widgets?",
+            "options": [
+              "5 minutes",
+              "100 minutes",
+              "20 minutes",
+              "1 minute"
+            ],
+            "answer": 0,
+            "fact": "Each machine makes one widget every 5 minutes, so 100 machines make 100 widgets in the same time.",
+            "src": "Arithmetic; self-contained (1 widget per machine per 5 minutes)"
+          },
+          {
+            "value": 400,
+            "q": "A lily pad patch doubles in size daily and covers the whole pond on day 48. On what day was it half covered?",
+            "options": [
+              "Day 24",
+              "Day 36",
+              "Day 47",
+              "Day 46"
+            ],
+            "answer": 2,
+            "fact": "Working backward, the pond was only a quarter covered on day 46 and about 3 percent covered on day 43.",
+            "src": "Arithmetic, self-verifying: half of full is one doubling earlier (day 47); day 46 = 1/4; day 43 = 1/32 = 3.1%; checked in python. REPLACED: bat-and-ball puzzle duplicated A9 monday-mixer-5 Think It Through $300"
+          }
+        ]
+      },
+      {
+        "name": "On the Road",
+        "questions": [
+          {
+            "value": 100,
+            "q": "How many sides does a standard stop sign have?",
+            "options": [
+              "6",
+              "7",
+              "8",
+              "10"
+            ],
+            "answer": 2,
+            "fact": "Its unique octagon shape lets drivers recognize it even from the back.",
+            "src": "beemaps.com 'Who chose the shape and color of the stop sign' ('easily recognizable, even from the back') - reviewer WebFetch. Unverified snow claim removed"
+          },
+          {
+            "value": 200,
+            "q": "Which dashboard gauge tracks a car's total miles driven?",
+            "options": [
+              "Odometer",
+              "Speedometer",
+              "Tachometer",
+              "Fuel gauge"
+            ],
+            "answer": 0,
+            "fact": "Odometer comes from the Greek hodos, meaning road or way.",
+            "src": "merriam-webster.com/dictionary/odometer (French odometre, from Greek hodometron: hodos way, road + metron measure) - reviewer WebFetch"
+          },
+          {
+            "value": 300,
+            "q": "For more than a decade, every new Ford Model T came in only which color?",
+            "options": [
+              "Dark green",
+              "Black",
+              "Navy blue",
+              "Gray"
+            ],
+            "answer": 1,
+            "fact": "Ford's own history says the car was offered only in black from 1914 to 1925.",
+            "src": "fromtheroad.ford.com 'The Model T' ('only offered in black from 1914-1925'). Britannica says 1913-1925, so the start year was taken out of the question; old assembly-line fact not confirmed, replaced - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "NPR's Car Talk was hosted by two brothers known on air by what nickname?",
+            "options": [
+              "Nuts and Bolts",
+              "Tick and Tock",
+              "Spit and Polish",
+              "Click and Clack"
+            ],
+            "answer": 3,
+            "fact": "Tom and Ray Magliozzi also called themselves the Tappet Brothers.",
+            "src": "en.wikipedia.org/wiki/Tom_and_Ray_Magliozzi (brothers; 'Click and Clack, the Tappet Brothers') - reviewer WebFetch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "monday-mixer-3",
+    "blurb": "Acronyms spelled out, famous Misters and a little office math",
+    "categories": [
+      {
+        "name": "Spell It Out",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What does PIN stand for, as in the PIN for your bank card?",
+            "options": [
+              "Private ID number",
+              "Protected input number",
+              "Personal index number",
+              "Personal identification number"
+            ],
+            "answer": 3,
+            "fact": "So saying 'PIN number' technically says 'number' twice.",
+            "src": "Textbook abbreviation (personal identification number)"
+          },
+          {
+            "value": 200,
+            "q": "BMW is short for Bayerische Motoren Werke. What does that mean in English?",
+            "options": [
+              "Berlin Motor Works",
+              "Bavarian Machine Works",
+              "Bavarian Motor Works",
+              "Berlin Metal Works"
+            ],
+            "answer": 2,
+            "fact": "Bavaria is the German state whose capital, Munich, is BMW's home city.",
+            "src": "Textbook (Bayerische Motoren Werke = Bavarian Motor Works; HQ Munich, Bavaria's capital); not web-checked, textbook-certain"
+          },
+          {
+            "value": 300,
+            "q": "SCUBA is an acronym for diving gear. What does its B stand for?",
+            "options": [
+              "Buoyancy",
+              "Breathing",
+              "Ballast",
+              "Bubble"
+            ],
+            "answer": 1,
+            "fact": "The full name is self-contained underwater breathing apparatus, a term coined in 1952.",
+            "src": "en.wikipedia.org/wiki/Scuba_diving (Self-Contained Underwater Breathing Apparatus; coined by Christian J. Lambertsen in a 1952 patent submission) - reviewer WebFetch. REPLACED: QR question was given away by A5 eureka $300 fact ('QR stands for Quick Response')"
+          },
+          {
+            "value": 400,
+            "q": "What does the WD in WD-40 stand for?",
+            "options": [
+              "Wet Duster",
+              "Weather Defense",
+              "Water Displacement",
+              "Wheel Degreaser"
+            ],
+            "answer": 2,
+            "fact": "The 40 refers to the 40th try at the formula, the one that finally worked.",
+            "src": "wd40.com/history ('Water Displacement perfected on the 40th try') - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "Mister Mister",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Which TV host changed into a cardigan and sneakers at the start of every episode?",
+            "options": [
+              "Mr. Wizard",
+              "Mr. Rogers",
+              "Mr. Dressup",
+              "Mr. Green Jeans"
+            ],
+            "answer": 1,
+            "fact": "Fred Rogers made his show in Pittsburgh, and it ran nationally from 1968 to 2001.",
+            "src": "smithsonianmag.com 'The Cardiganed Fred Rogers' (changed into a cardigan and blue canvas sneakers at the start of each episode; WQED Pittsburgh; 1968-2001); britannica.com Fred Rogers (1968-2001) - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "Rowan Atkinson plays which bumbling, nearly silent British character?",
+            "options": [
+              "Mr. Magoo",
+              "Mr. Belvedere",
+              "Mr. Bean",
+              "Mr. Chips"
+            ],
+            "answer": 2,
+            "fact": "The Mr. Bean TV series premiered on Britain's ITV on New Year's Day 1990.",
+            "src": "en.wikipedia.org/wiki/Mr._Bean (first aired ITV, 1 January 1990; rarely speaks) - reviewer WebFetch"
+          },
+          {
+            "value": 300,
+            "q": "In the 1984 film The Karate Kid, Daniel's karate teacher is Mr. who?",
+            "options": [
+              "Miyagi",
+              "Han",
+              "Kreese",
+              "LaRusso"
+            ],
+            "answer": 0,
+            "fact": "Pat Morita earned an Oscar nomination for Best Supporting Actor for the role.",
+            "src": "en.wikipedia.org/wiki/Pat_Morita (nominated for Academy Award for Best Supporting Actor for The Karate Kid); Mr. Han is the 2010 remake's teacher - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "The Killers' breakout hit from their 2004 debut album, Hot Fuss, is 'Mr.' plus which word?",
+            "options": [
+              "Blue Sky",
+              "Jones",
+              "Roboto",
+              "Brightside"
+            ],
+            "answer": 3,
+            "fact": "The other options are real hits too: ELO's Mr. Blue Sky, Counting Crows' Mr. Jones and Styx's Mr. Roboto.",
+            "src": "en.wikipedia.org/wiki/Mr._Brightside (debut single Sept 2003, re-released and a hit in 2004; on Hot Fuss, 2004). Question reworded because '2004 hit song' clashed with the 2003 first release. Other titles textbook - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "Office Math",
+        "questions": [
+          {
+            "value": 100,
+            "q": "A meeting starts at 9:45 a.m. and runs 90 minutes. What time does it end?",
+            "options": [
+              "10:45 a.m.",
+              "11:15 a.m.",
+              "11:45 a.m.",
+              "11:00 a.m."
+            ],
+            "answer": 1,
+            "fact": "Fifteen minutes gets you to 10:00, and the other 75 minutes lands at 11:15.",
+            "src": "Arithmetic: 9:45 + 90 min = 11:15; checked in python by reviewer"
+          },
+          {
+            "value": 200,
+            "q": "Five coworkers each shake hands once with every other person. How many handshakes is that?",
+            "options": [
+              "20",
+              "25",
+              "10",
+              "15"
+            ],
+            "answer": 2,
+            "fact": "The rule is n(n-1)/2, so a 20-person meeting would need 190 handshakes.",
+            "src": "Arithmetic: 5*4/2 = 10; 20*19/2 = 190; checked by reviewer"
+          },
+          {
+            "value": 300,
+            "q": "You print 40 copies of a 15-page report, single-sided. How many 500-sheet reams do you need?",
+            "options": [
+              "2",
+              "1",
+              "3",
+              "4"
+            ],
+            "answer": 0,
+            "fact": "A standard U.S. letter-size sheet measures 8.5 by 11 inches.",
+            "src": "Arithmetic: 40*15 = 600 sheets = 1.2 reams, so 2 reams; letter size is textbook; checked by reviewer"
+          },
+          {
+            "value": 400,
+            "q": "The coffee fund has $60 and lattes cost $4.50 each. How many lattes can you buy?",
+            "options": [
+              "12",
+              "14",
+              "15",
+              "13"
+            ],
+            "answer": 3,
+            "fact": "Thirteen lattes cost $58.50, leaving $1.50, not enough for a 14th.",
+            "src": "Arithmetic: 13*4.50 = 58.50, 14*4.50 = 63.00 > 60; checked by reviewer"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "monday-mixer-4",
+    "blurb": "Retro office lore, rhyme time and how everyday things work",
+    "categories": [
+      {
+        "name": "Retro Office",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Microsoft Office's animated paper clip helper was better known by what nickname?",
+            "options": [
+              "Clipper",
+              "Clippy",
+              "Paperclip Pete",
+              "Mr. Clips"
+            ],
+            "answer": 1,
+            "fact": "Its official name was Clippit, and it debuted in Office 97.",
+            "src": "en.wikipedia.org/wiki/Office_Assistant ('named Clippit'; 'commonly referred to by the public as Clippy'; 'First introduced in Microsoft Office 97') - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "Which keyboard layout, standard in the U.S., is named for its first six letter keys?",
+            "options": [
+              "AZERTY",
+              "Dvorak",
+              "QWERTY",
+              "Colemak"
+            ],
+            "answer": 2,
+            "fact": "It traces back to Christopher Latham Sholes' typewriters of the 1870s.",
+            "src": "historyofinformation.com Sholes & Glidden Type Writer (Sholes's QWERTY arrangement, 1873; Remington production 1873, sold 1874) - reviewer WebFetch"
+          },
+          {
+            "value": 300,
+            "q": "Newspaper reporters traditionally typed what at the end of a story to mark it finished?",
+            "options": [
+              "-30-",
+              "-99-",
+              "-00-",
+              "-10-"
+            ],
+            "answer": 0,
+            "fact": "Its origin is unknown; one theory ties it to old telegraph shorthand codes.",
+            "src": "en.wikipedia.org/wiki/-30- (end mark in North American journalism; 'The origin of the term is unknown'; telegraph theory) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "Which Office 97 program hid a secret flight simulator as an Easter egg?",
+            "options": [
+              "Word",
+              "PowerPoint",
+              "Excel",
+              "Access"
+            ],
+            "answer": 2,
+            "fact": "Word 97 had its own hidden game: a pinball machine.",
+            "src": "en.wikipedia.org/wiki/Microsoft_Office_97 (hidden flight simulator in Excel; hidden pinball game in Word) - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "Rhyme Time",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Rhyme time: which rhyming pair means an insect's rug?",
+            "options": [
+              "Ant mat",
+              "Bug rug",
+              "Flea tea",
+              "Bee tree"
+            ],
+            "answer": 1,
+            "fact": "One-syllable rhyming riddles like this one are called hink pinks.",
+            "src": "Self-contained word puzzle; canadianteachermagazine.com (hink pink = answer of two one-syllable rhyming words) - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "Rhyme time: which rhyming pair means a happy father?",
+            "options": [
+              "Sad dad",
+              "Proud pop",
+              "Glad dad",
+              "Rad lad"
+            ],
+            "answer": 2,
+            "fact": "Swap one letter and an angry father becomes a mad dad.",
+            "src": "Self-contained word puzzle (only Glad dad both rhymes and means happy father)"
+          },
+          {
+            "value": 300,
+            "q": "Rhyme time: which rhyming pair means a comical rabbit?",
+            "options": [
+              "Funny bunny",
+              "Silly filly",
+              "Comic hare",
+              "Jolly trolley"
+            ],
+            "answer": 0,
+            "fact": "Two-syllable rhymes like this one are called hinky pinkies.",
+            "src": "Self-contained word puzzle; canadianteachermagazine.com (hinky pinky = two two-syllable rhyming words) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "In Cockney rhyming slang, telling someone to 'use your loaf' means use your what?",
+            "options": [
+              "Hands",
+              "Eyes",
+              "Feet",
+              "Head"
+            ],
+            "answer": 3,
+            "fact": "In the same slang, 'apples and pears' means stairs and 'dog and bone' means phone.",
+            "src": "en.wikipedia.org/wiki/Rhyming_slang (loaf of bread = head, 'use your loaf'; apples and pears = stairs; dog and bone = telephone) - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "How It Works",
+        "questions": [
+          {
+            "value": 100,
+            "q": "A smoke detector that chirps once every minute or so is usually signaling what?",
+            "options": [
+              "Smoke detected",
+              "Low battery",
+              "Test passed",
+              "Door left open"
+            ],
+            "answer": 1,
+            "fact": "Many detectors also chirp when the unit itself reaches the end of its roughly 10-year life.",
+            "src": "NFPA 'Learn the sounds' sheet (chirp every 30 or 60 seconds = low battery; chirping after a new battery = end of life; replace alarms after 10 years) - reviewer WebFetch"
+          },
+          {
+            "value": 200,
+            "q": "Which two letter keys on a keyboard usually have small raised bumps?",
+            "options": [
+              "D and K",
+              "A and L",
+              "F and J",
+              "G and H"
+            ],
+            "answer": 2,
+            "fact": "The bumps let touch typists find home row by feel, without looking.",
+            "src": "Textbook (F and J home-row bumps)"
+          },
+          {
+            "value": 300,
+            "q": "The tiny pocket inside the front pocket of jeans was originally made to hold what?",
+            "options": [
+              "A pocket watch",
+              "A matchbook",
+              "A train ticket",
+              "A tape measure"
+            ],
+            "answer": 0,
+            "fact": "Levi Strauss and tailor Jacob Davis won an 1873 patent for riveting the pockets of work pants.",
+            "src": "britannica.com/story/why-do-jeans-have-that-tiny-pocket ('intended to hold a watch'; 1873 patent No. 139,121 for rivets); levistrauss.com 'Pockets full of history' (watch pocket) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "Many zippers are stamped YKK. What do those letters identify?",
+            "options": [
+              "The zipper's size",
+              "Its quality grade",
+              "Its country of origin",
+              "The company that made it"
+            ],
+            "answer": 3,
+            "fact": "YKK is short for Yoshida Kogyo Kabushikikaisha, a company founded in Tokyo in 1934.",
+            "src": "straightdope.com 'What do the letters YKK mean' ('YKK means Yoshida Kogyo Kabushikikaisha'); mentalfloss.com/article/68451 (Tadao Yoshida, Tokyo, 1934) - reviewer WebFetch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "knock-on-wood",
+    "blurb": "Superstitions, lucky charms and Friday the 13th lore from around the world",
+    "categories": [
+      {
+        "name": "Friday the 13th",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Many tall buildings skip labeling which floor number in their elevators?",
+            "options": [
+              "7th",
+              "13th",
+              "10th",
+              "12th"
+            ],
+            "answer": 1,
+            "fact": "Buildings often relabel that floor as 14 or 12A, even though it's still the 13th story.",
+            "src": "Textbook building custom (13th floor relabeled 14 or 12A)"
+          },
+          {
+            "value": 200,
+            "q": "What is triskaidekaphobia?",
+            "options": [
+              "Fear of Fridays",
+              "Fear of black cats",
+              "Fear of the number 13",
+              "Fear of broken mirrors"
+            ],
+            "answer": 2,
+            "fact": "The word comes from the Greek for 'three and ten.'",
+            "src": "merriam-webster.com/dictionary/triskaidekaphobia (Greek treiskaideka: treis three + kai and + deka ten) - reviewer WebFetch"
+          },
+          {
+            "value": 300,
+            "q": "A month has a Friday the 13th whenever its 1st falls on which day?",
+            "options": [
+              "Sunday",
+              "Monday",
+              "Friday",
+              "Saturday"
+            ],
+            "answer": 0,
+            "fact": "Every calendar year has at least one Friday the 13th and never more than three.",
+            "src": "Computed by reviewer in python for 1800-2400: a month has Friday the 13th exactly when it starts on Sunday; every year has 1 to 3"
+          },
+          {
+            "value": 400,
+            "q": "In Spain, Greece and much of Latin America, which day is traditionally the unlucky one?",
+            "options": [
+              "Monday the 13th",
+              "Friday the 17th",
+              "Tuesday the 13th",
+              "Wednesday the 13th"
+            ],
+            "answer": 2,
+            "fact": "Tuesday is 'martes' in Spanish, named for Mars, the Roman god of war.",
+            "src": "babbel.com 'Martes trece' ('in Spain, Latin America and Greece Tuesday is the day to look out for'; martes linked with Mars, god of war) - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "Good Luck Charms",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Finding which plant with four leaves instead of three is said to bring good luck?",
+            "options": [
+              "Fern",
+              "Ivy",
+              "Basil",
+              "Clover"
+            ],
+            "answer": 3,
+            "fact": "A four-leaf clover is rare because nearly all clover leaves have just three leaflets.",
+            "src": "Textbook folklore/botany"
+          },
+          {
+            "value": 200,
+            "q": "Which lucky object is traditionally hung over a doorway?",
+            "options": [
+              "A rabbit's foot",
+              "A ladybug charm",
+              "A horseshoe",
+              "A lucky penny"
+            ],
+            "answer": 2,
+            "fact": "Many hang it with the ends pointing up so the luck doesn't spill out.",
+            "src": "examiner.co.uk 'Should a horseshoe be placed pointing up or down?' (ends up holds the luck in) - reviewer WebFetch. Wishbone distractor replaced: some folk customs hang wishbones over doors"
+          },
+          {
+            "value": 300,
+            "q": "The raised-paw 'beckoning cat' figurine, maneki-neko, comes from which country?",
+            "options": [
+              "Japan",
+              "China",
+              "Thailand",
+              "Korea"
+            ],
+            "answer": 0,
+            "fact": "The paw isn't waving hello; it makes a Japanese gesture that means 'come here.'",
+            "src": "mymodernmet.com maneki-neko (Edo-period Japan; often mistaken as Chinese; Japanese beckoning gesture is palm down, unlike Western waving) - reviewer WebFetch"
+          },
+          {
+            "value": 400,
+            "q": "Daruma dolls come with blank eyes. When do you traditionally paint in the first eye?",
+            "options": [
+              "When the goal is met",
+              "When you set a goal",
+              "On your birthday",
+              "At the end of the year"
+            ],
+            "answer": 1,
+            "fact": "The second eye gets filled in once the goal has been achieved.",
+            "src": "mymodernmet.com/japanese-daruma-doll ('Once you have decided on your goal, you paint one eye'; second eye when achieved) - reviewer WebFetch"
+          }
+        ]
+      },
+      {
+        "name": "Bad Luck Lore",
+        "questions": [
+          {
+            "value": 100,
+            "q": "According to superstition, breaking a mirror brings how many years of bad luck?",
+            "options": [
+              "3",
+              "7",
+              "10",
+              "13"
+            ],
+            "answer": 1,
+            "fact": "Opening an umbrella indoors and walking under a ladder are two other classic bad-luck no-nos.",
+            "src": "Textbook folklore"
+          },
+          {
+            "value": 200,
+            "q": "Superstitious actors avoid saying the name of which Shakespeare play inside a theater?",
+            "options": [
+              "Hamlet",
+              "Othello",
+              "Macbeth",
+              "King Lear"
+            ],
+            "answer": 2,
+            "fact": "They call it 'the Scottish play' instead.",
+            "src": "Textbook theater superstition ('the Scottish play')"
+          },
+          {
+            "value": 300,
+            "q": "The 'Curse of the Bambino' was blamed for which team's long World Series drought?",
+            "options": [
+              "Boston Red Sox",
+              "Chicago Cubs",
+              "New York Yankees",
+              "Chicago White Sox"
+            ],
+            "answer": 0,
+            "fact": "Fans blamed the supposed curse on selling Babe Ruth to the Yankees. Boston won in 1918, then not again until 2004.",
+            "src": "mlb.com/news/curse-of-the-bambino (sale of Ruth to Yankees, Dec 26, 1919; 2004 title first in 86 years; 'supposed supernatural effects') - reviewer WebFetch. Fact reworded to frame the curse as legend"
+          },
+          {
+            "value": 400,
+            "q": "The so-called Madden Curse supposedly strikes athletes who appear where?",
+            "options": [
+              "On a cereal box",
+              "On a magazine cover",
+              "On a video game cover",
+              "On a trading card"
+            ],
+            "answer": 2,
+            "fact": "The Madden NFL video game series is named for coach and broadcaster John Madden.",
+            "src": "Textbook (Madden NFL cover 'curse' is a fan legend, framed as 'so-called' and 'supposedly'; series named for John Madden); not web-checked, textbook-certain"
+          }
+        ]
+      }
+    ]
+  }
+]

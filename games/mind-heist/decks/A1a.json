@@ -1,0 +1,887 @@
+[
+ {
+  "id": "prime-time",
+  "blurb": "TV dramas, game shows and must-see moments from the 1950s on",
+  "categories": [
+   {
+    "name": "Drama Club",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The medical drama Grey's Anatomy is set at a hospital in which US city?",
+      "options": [
+       "Boston",
+       "Seattle",
+       "Chicago",
+       "Denver"
+      ],
+      "answer": 1,
+      "fact": "The title puns on Gray's Anatomy, a classic medical textbook first published in 1858.",
+      "src": "Answer textbook (Seattle Grace Hospital, Seattle). Fact: https://sgul.ac.uk/for-alumni/our-alumni/henry-gray (first edition of Gray's Anatomy published 1858); title pun textbook."
+     },
+     {
+      "value": 200,
+      "q": "Netflix's Stranger Things is set in a fictional town in which state?",
+      "options": [
+       "Indiana",
+       "Ohio",
+       "Illinois",
+       "Iowa"
+      ],
+      "answer": 0,
+      "fact": "The town is Hawkins, and the first season, released in 2016, opens in November 1983.",
+      "src": "https://en.wikipedia.org/wiki/Stranger_Things_season_1 (Hawkins, Indiana; story opens Nov 1983; premiered July 15, 2016). Re-fetched by reviewer."
+     },
+     {
+      "value": 300,
+      "q": "The Western Gunsmoke followed Marshal Matt Dillon in which frontier town?",
+      "options": [
+       "Tombstone",
+       "Deadwood",
+       "Abilene",
+       "Dodge City"
+      ],
+      "answer": 3,
+      "fact": "Gunsmoke aired 20 seasons on CBS, 1955 to 1975, the longest US prime-time run until The Simpsons.",
+      "src": "https://en.wikipedia.org/wiki/Gunsmoke_(TV_series) (Dodge City, Kansas; CBS Sept 10, 1955-Mar 31, 1975; 20 seasons; 'longest running primetime series in the US until it was surpassed by The Simpsons'). Re-fetched by reviewer."
+     },
+     {
+      "value": 400,
+      "q": "The medical drama ER, set in Chicago, was created by which best-selling novelist?",
+      "options": [
+       "John Grisham",
+       "Tom Clancy",
+       "Michael Crichton",
+       "Stephen King"
+      ],
+      "answer": 2,
+      "fact": "Crichton earned an M.D. from Harvard Medical School in 1969 but never practiced medicine.",
+      "src": "https://en.wikipedia.org/wiki/ER_(TV_series) (created by Crichton; Cook County General, Chicago); https://en.wikipedia.org/wiki/Michael_Crichton (Harvard MD 1969, did not practice). Old '1994 No. 1 TV show, movie and book' claim dropped: not supported by either Wikipedia page."
+     }
+    ]
+   },
+   {
+    "name": "Game On",
+    "questions": [
+     {
+      "value": 100,
+      "q": "On The Price Is Right, which game sends a flat disc bouncing down a pegboard?",
+      "options": [
+       "Plinko",
+       "Cliff Hangers",
+       "Hole in One",
+       "Punch a Bunch"
+      ],
+      "answer": 0,
+      "fact": "Plinko debuted on January 3, 1983, and was created by executive producer Frank Wayne.",
+      "src": "https://priceisright.fandom.com/wiki/Plinko (debut Jan 3, 1983; created by Frank Wayne; 'one round flat disc'). Re-fetched by reviewer."
+     },
+     {
+      "value": 200,
+      "q": "Ken Jennings' famous 2004 Jeopardy! winning streak lasted how many games?",
+      "options": [
+       "38",
+       "52",
+       "74",
+       "101"
+      ],
+      "answer": 2,
+      "fact": "Jennings was born in Edmonds, Washington, and worked as a software engineer before his run.",
+      "src": "https://en.wikipedia.org/wiki/Ken_Jennings (74 consecutive wins in 2004; born Edmonds, WA; software engineer at CHG Healthcare). Re-fetched by reviewer."
+     },
+     {
+      "value": 300,
+      "q": "Which TV host and entertainer created both Jeopardy! and Wheel of Fortune?",
+      "options": [
+       "Mark Goodson",
+       "Chuck Barris",
+       "Bob Barker",
+       "Merv Griffin"
+      ],
+      "answer": 3,
+      "fact": "Griffin also composed the 30-second piece of music used in the Final Jeopardy! round.",
+      "src": "https://en.wikipedia.org/wiki/Merv_Griffin (created Jeopardy! and Wheel of Fortune; 'composed the 30-second music piece for the Final Jeopardy! round'). Re-fetched by reviewer."
+     },
+     {
+      "value": 400,
+      "q": "Who was the original host of Family Feud when it premiered in 1976?",
+      "options": [
+       "Ray Combs",
+       "Richard Dawson",
+       "Gene Rayburn",
+       "Louie Anderson"
+      ],
+      "answer": 1,
+      "fact": "Dawson hosted until 1985, came back for one more season in 1994, and earlier played Newkirk on Hogan's Heroes.",
+      "src": "https://en.wikipedia.org/wiki/Richard_Dawson (original host from July 12, 1976 on ABC; 1976-1985 and 1994-1995; Cpl. Peter Newkirk on Hogan's Heroes). Re-fetched by reviewer."
+     }
+    ]
+   },
+   {
+    "name": "Water Cooler TV",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Who won the very first season of American Idol in 2002?",
+      "options": [
+       "Carrie Underwood",
+       "Fantasia Barrino",
+       "Kelly Clarkson",
+       "Jennifer Hudson"
+      ],
+      "answer": 2,
+      "fact": "She beat runner-up Justin Guarini, and Ryan Seacrest co-hosted that season with Brian Dunkleman.",
+      "src": "https://en.wikipedia.org/wiki/American_Idol_season_1 (Clarkson beat Guarini; co-hosts Seacrest and Dunkleman; 2002). Re-fetched by reviewer."
+     },
+     {
+      "value": 200,
+      "q": "The first US season of Survivor, in 2000, was filmed off the coast of which island?",
+      "options": [
+       "Borneo",
+       "Fiji",
+       "Tahiti",
+       "Guam"
+      ],
+      "answer": 0,
+      "fact": "The castaways lived on tiny Pulau Tiga in Malaysia, and Richard Hatch won the first $1 million.",
+      "src": "https://en.wikipedia.org/wiki/Survivor:_Borneo (Pulau Tiga, Sabah, Malaysia, about 6 mi off north coast of Borneo; aired 2000; Hatch won $1,000,000). Re-fetched by reviewer."
+     },
+     {
+      "value": 300,
+      "q": "Who was the first host of NBC's The Tonight Show when it went national in 1954?",
+      "options": [
+       "Jack Paar",
+       "Johnny Carson",
+       "Ed McMahon",
+       "Steve Allen"
+      ],
+      "answer": 3,
+      "fact": "Jack Paar took over in 1957, and Johnny Carson then hosted for nearly 30 years, from 1962 to 1992.",
+      "src": "https://en.wikipedia.org/wiki/Steve_Allen (co-creator and first host; national on NBC Sept 27, 1954); https://en.wikipedia.org/wiki/The_Tonight_Show (hosting table: Paar July 29, 1957-Mar 30, 1962; Carson Oct 1, 1962-May 22, 1992)."
+     },
+     {
+      "value": 400,
+      "q": "The X-Files filmed its first five seasons in which city?",
+      "options": [
+       "Toronto",
+       "Vancouver",
+       "Seattle",
+       "Portland"
+      ],
+      "answer": 1,
+      "fact": "Production moved to Los Angeles beginning with season six in 1998.",
+      "src": "https://en.wikipedia.org/wiki/The_X-Files (first five seasons in Vancouver; production moved to Los Angeles from season six; 2016 revival returned to Vancouver, so 'first five seasons' wording is the safe one). Re-fetched by reviewer."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "box-office",
+  "blurb": "Big-screen blockbusters, franchises and filmmakers across the decades",
+  "categories": [
+   {
+    "name": "Blockbusters",
+    "questions": [
+     {
+      "value": 100,
+      "q": "In Back to the Future (1985), Marty McFly travels back in time to which year?",
+      "options": [
+       "1945",
+       "1955",
+       "1965",
+       "1975"
+      ],
+      "answer": 1,
+      "fact": "The DeLorean time machine needs 1.21 gigawatts of power and has to hit 88 miles per hour.",
+      "src": "https://www.tvtropes.org/pmwiki/pmwiki.php/Film/BackToTheFuture1 (sent to 1955; needs 1.21 gigawatts; time travel at 88 mph). Answer also textbook."
+     },
+     {
+      "value": 200,
+      "q": "Which film was the first to pass $2 billion at the worldwide box office?",
+      "options": [
+       "Titanic",
+       "Avengers: Endgame",
+       "The Force Awakens",
+       "Avatar"
+      ],
+      "answer": 3,
+      "fact": "James Cameron's Avatar crossed $2 billion in early 2010, just weeks after its December 2009 release.",
+      "src": "https://www.bloomberg.com/news/articles/2010-01-31/-avatar-tops-box-office-passes-2-billion-worldwide ('the first movie to surpass $2 billion'; $2.04B; Dec 18 release). Re-fetched by reviewer."
+     },
+     {
+      "value": 300,
+      "q": "In Rocky (1976), the famous training run ends atop the steps of which Philadelphia landmark?",
+      "options": [
+       "Philadelphia Museum of Art",
+       "Independence Hall",
+       "Philadelphia City Hall",
+       "The Franklin Institute"
+      ],
+      "answer": 0,
+      "fact": "Sylvester Stallone wrote the screenplay himself, and Rocky won the Oscar for Best Picture.",
+      "src": "https://ebsco.com/research-starters/film/rocky-film (Stallone wrote the screenplay; Best Picture; training run up the Philadelphia Museum of Art steps)."
+     },
+     {
+      "value": 400,
+      "q": "Jurassic Park (1993) places its dinosaur island off the coast of which country?",
+      "options": [
+       "Panama",
+       "Belize",
+       "Costa Rica",
+       "Honduras"
+      ],
+      "answer": 2,
+      "fact": "Its Hawaiian location shooting was done mainly on the island of Kauai.",
+      "src": "https://looper.com/392039/this-is-where-jurassic-park-was-filmed (Isla Nublar 'some 120 miles west of Costa Rica'; Spielberg chose Kauai, where the location shooting was done). Old fact 'most of the island scenes were filmed on Kauai' was broader than the source supports, so it now says the location shooting."
+     }
+    ]
+   },
+   {
+    "name": "Franchise Fever",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which actor played Tony Stark in Iron Man (2008)?",
+      "options": [
+       "Chris Evans",
+       "Chris Hemsworth",
+       "Mark Ruffalo",
+       "Robert Downey Jr."
+      ],
+      "answer": 3,
+      "fact": "Iron Man launched the Marvel Cinematic Universe, and director Jon Favreau also played Happy Hogan.",
+      "src": "https://en.wikipedia.org/wiki/Iron_Man_(2008_film) (Downey as Stark; first film in the MCU; 'Director Jon Favreau plays Harold \"Happy\" Hogan')."
+     },
+     {
+      "value": 200,
+      "q": "Who played James Bond in the first official 007 film, Dr. No (1962)?",
+      "options": [
+       "Sean Connery",
+       "Roger Moore",
+       "George Lazenby",
+       "Timothy Dalton"
+      ],
+      "answer": 0,
+      "fact": "George Lazenby played Bond only once, in On Her Majesty's Secret Service (1969).",
+      "src": "Answer textbook (Connery in Dr. No, 1962). Fact: https://en.wikipedia.org/wiki/George_Lazenby ('Lazenby's single portrayal of the Bond character'; OHMSS 1969)."
+     },
+     {
+      "value": 300,
+      "q": "How many films make up the main Harry Potter film series?",
+      "options": [
+       "Seven",
+       "Eight",
+       "Nine",
+       "Ten"
+      ],
+      "answer": 1,
+      "fact": "The final book, Deathly Hallows, was split into two films released in 2010 and 2011.",
+      "src": "https://en.wikipedia.org/wiki/Production_of_Harry_Potter_and_the_Deathly_Hallows (final book split into two films: Part 1 Nov 19, 2010; Part 2 July 15, 2011). Eight films = seven books with the last split; textbook."
+     },
+     {
+      "value": 400,
+      "q": "The Lord of the Rings: The Return of the King (2003) won how many Academy Awards?",
+      "options": [
+       "7",
+       "9",
+       "11",
+       "13"
+      ],
+      "answer": 2,
+      "fact": "It won every category it was nominated in, including Best Picture.",
+      "src": "https://en.wikipedia.org/wiki/List_of_Academy_Award%E2%80%93winning_films (Return of the King: 11 awards from 11 nominations, a clean sweep)."
+     }
+    ]
+   },
+   {
+    "name": "Behind the Camera",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Who directed E.T., Raiders of the Lost Ark and Close Encounters of the Third Kind?",
+      "options": [
+       "Steven Spielberg",
+       "George Lucas",
+       "James Cameron",
+       "Ron Howard"
+      ],
+      "answer": 0,
+      "fact": "The image of Elliott and E.T. biking across the moon became the logo of Spielberg's company, Amblin.",
+      "src": "Answer textbook (Spielberg directed all three). Fact: https://en.wikipedia.org/wiki/Amblin_Entertainment (logo is 'Elliott flying in his bicycle with E.T. in the basket in front of the moon'; old fact said E.T. was riding the bike)."
+     },
+     {
+      "value": 200,
+      "q": "Which composer scored Star Wars, Superman and the Indiana Jones films?",
+      "options": [
+       "Hans Zimmer",
+       "James Horner",
+       "Danny Elfman",
+       "John Williams"
+      ],
+      "answer": 3,
+      "fact": "Williams also wrote the Olympic Fanfare and Theme for the 1984 Los Angeles Games.",
+      "src": "Answer textbook (Williams scored Star Wars, Superman, Indiana Jones). Fact: https://johnwilliams.org/compositions/concert/olympic-fanfare-and-theme (commissioned for the 1984 LA Games; he conducted it at the July 28, 1984 opening ceremony)."
+     },
+     {
+      "value": 300,
+      "q": "Which director made The Dark Knight, Inception and Interstellar?",
+      "options": [
+       "Denis Villeneuve",
+       "Christopher Nolan",
+       "Ridley Scott",
+       "David Fincher"
+      ],
+      "answer": 1,
+      "fact": "Nolan won the Best Director Oscar for Oppenheimer (2023), after an earlier nomination for Dunkirk.",
+      "src": "Answer textbook (Nolan directed all three). Fact: https://en.wikipedia.org/wiki/Academy_Award_for_Best_Director (Nolan won for Oppenheimer at the 96th; earlier nominated for Dunkirk, no prior win)."
+     },
+     {
+      "value": 400,
+      "q": "Who won the Oscar for Best Director for Dances With Wolves (1990), which he also starred in?",
+      "options": [
+       "Clint Eastwood",
+       "Mel Gibson",
+       "Kevin Costner",
+       "Robert Redford"
+      ],
+      "answer": 2,
+      "fact": "Dances With Wolves won seven Oscars in all, including Best Picture.",
+      "src": "https://en.wikipedia.org/wiki/Academy_Award_for_Best_Director (Costner won for Dances With Wolves at the 63rd; distractors won for other films: Redford Ordinary People, Eastwood Unforgiven, Gibson Braveheart); https://en.wikipedia.org/wiki/List_of_Academy_Award%E2%80%93winning_films (Dances With Wolves 7 awards from 12 nominations)."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "chart-toppers",
+  "blurb": "Hit songs and the artists behind them, from Elvis to K-pop",
+  "categories": [
+   {
+    "name": "Breakout Hits",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which group's 1996 debut single, 'Wannabe,' topped the charts in 37 countries?",
+      "options": [
+       "Spice Girls",
+       "Destiny's Child",
+       "TLC",
+       "All Saints"
+      ],
+      "answer": 0,
+      "fact": "It spent four weeks at No. 1 on the US Billboard Hot 100 in early 1997.",
+      "src": "https://en.wikipedia.org/wiki/Wannabe (debut single; No. 1 in 37 countries by end of 1997; four weeks at No. 1 on Hot 100 from Feb 1997). Re-fetched by reviewer."
+     },
+     {
+      "value": 200,
+      "q": "Taylor Swift's 2006 debut single was named after which country star?",
+      "options": [
+       "Garth Brooks",
+       "Kenny Chesney",
+       "Tim McGraw",
+       "Keith Urban"
+      ],
+      "answer": 2,
+      "fact": "Her self-titled debut album followed in October 2006 on Big Machine Records.",
+      "src": "https://en.wikipedia.org/wiki/Taylor_Swift_(album) ('Tim McGraw' sent to radio June 19, 2006 as her debut single; album released Oct 24, 2006 on Big Machine Records)."
+     },
+     {
+      "value": 300,
+      "q": "Which 1956 song was Elvis Presley's first No. 1 pop hit in the US?",
+      "options": [
+       "Hound Dog",
+       "Love Me Tender",
+       "Don't Be Cruel",
+       "Heartbreak Hotel"
+      ],
+      "answer": 3,
+      "fact": "It was also his first single for RCA Victor, released in January 1956.",
+      "src": "https://en.wikipedia.org/wiki/Elvis_Presley (Heartbreak Hotel: first RCA Victor single, Jan 1956; his first number-one pop hit). Re-fetched by reviewer."
+     },
+     {
+      "value": 400,
+      "q": "Lorde was 16 when her debut single 'Royals' hit No. 1 in the US. Which country is she from?",
+      "options": [
+       "Australia",
+       "New Zealand",
+       "Ireland",
+       "Canada"
+      ],
+      "answer": 1,
+      "fact": "'Royals' won the Grammy for Song of the Year in 2014.",
+      "src": "https://www.songfacts.com/facts/lorde/royals/1000 (her first single; 16 years 11 months at Hot 100 No. 1; New Zealand; Song of the Year at the 2014 Grammys)."
+     }
+    ]
+   },
+   {
+    "name": "Groups & Bands",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which Washington band's 1991 hit 'Smells Like Teen Spirit' helped take grunge mainstream?",
+      "options": [
+       "Pearl Jam",
+       "Nirvana",
+       "Soundgarden",
+       "Alice in Chains"
+      ],
+      "answer": 1,
+      "fact": "The title came from a phrase a friend wrote on his wall; Cobain didn't know Teen Spirit was a deodorant.",
+      "src": "https://en.wikipedia.org/wiki/Smells_Like_Teen_Spirit (Kathleen Hanna wrote the phrase on Cobain's wall, referencing Teen Spirit deodorant; he was unaware of the deodorant until months after the single's 1991 release). 'Seattle-area' changed to 'Washington' because Nirvana formed in Aberdeen; all four options are Washington bands."
+     },
+     {
+      "value": 200,
+      "q": "Which group had 1960s No. 1 hits with 'Baby Love' and 'Stop! In the Name of Love'?",
+      "options": [
+       "The Supremes",
+       "The Ronettes",
+       "The Shirelles",
+       "Martha and the Vandellas"
+      ],
+      "answer": 0,
+      "fact": "The Supremes scored 12 No. 1 hits on the Billboard Hot 100, all on Motown.",
+      "src": "https://en.wikipedia.org/wiki/The_Supremes (twelve Hot 100 number-one singles; Baby Love among the run after Where Did Our Love Go; premier act of Motown Records). Re-fetched by reviewer."
+     },
+     {
+      "value": 300,
+      "q": "Which BTS song made them the first K-pop act to top the Billboard Hot 100, in 2020?",
+      "options": [
+       "Butter",
+       "Boy With Luv",
+       "Permission to Dance",
+       "Dynamite"
+      ],
+      "answer": 3,
+      "fact": "Dynamite was the group's first song recorded entirely in English.",
+      "src": "https://www.malaymail.com/news/showbiz/2020/09/03/bts-south-koreas-history-making-k-pop-septet/1899668 (AFP: Dynamite, 'their first all-English song', debuted at No. 1 on the Hot 100, first South Korean act to top it); https://www.abs-cbn.com/entertainment/09/01/20/k-pops-bts-first-all-south-korean-act-to-top-us-singles-charts. Butter and Permission to Dance were 2021."
+     },
+     {
+      "value": 400,
+      "q": "What was the Beatles' first No. 1 hit in the United States?",
+      "options": [
+       "She Loves You",
+       "Love Me Do",
+       "I Want to Hold Your Hand",
+       "Please Please Me"
+      ],
+      "answer": 2,
+      "fact": "In April 1964, the Beatles held all top five spots on the Billboard Hot 100 at once.",
+      "src": "https://en.wikipedia.org/wiki/I_Want_to_Hold_Your_Hand (first Billboard No. 1 on Feb 1, 1964); https://www.beatlesbible.com/1964/04/04/beatles-billboard-hot-100-top-five/ (top five positions, week of April 4, 1964)."
+     }
+    ]
+   },
+   {
+    "name": "Solo Stars",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which singer won eight Grammy Awards in a single night in 1984?",
+      "options": [
+       "Prince",
+       "Lionel Richie",
+       "Michael Jackson",
+       "Bruce Springsteen"
+      ],
+      "answer": 2,
+      "fact": "His album Thriller produced seven Top 10 singles on the Billboard Hot 100.",
+      "src": "https://en.wikipedia.org/wiki/Michael_Jackson (eight wins at the 26th Grammys, a single-night record; Thriller 'the first album to generate seven top-ten singles on the Billboard Hot 100')."
+     },
+     {
+      "value": 200,
+      "q": "Adele's second album, home to 'Rolling in the Deep,' is titled what?",
+      "options": [
+       "19",
+       "21",
+       "25",
+       "30"
+      ],
+      "answer": 1,
+      "fact": "Adele named her albums after her age around the time she made them.",
+      "src": "https://en.wikipedia.org/wiki/21_(Adele_album) (her second studio album; lead single Rolling in the Deep; named for her age when she wrote it, after debut 19)."
+     },
+     {
+      "value": 300,
+      "q": "Which artist scored a No. 1 hit in 1963, at age 13, with 'Fingertips'?",
+      "options": [
+       "Stevie Wonder",
+       "Marvin Gaye",
+       "Frankie Lymon",
+       "Smokey Robinson"
+      ],
+      "answer": 0,
+      "fact": "He had signed with Motown's Tamla label when he was just 11 years old.",
+      "src": "https://en.wikipedia.org/wiki/Stevie_Wonder (signed with Tamla at 11; Fingertips a Hot 100 No. 1 at 13, single released May 1963). Re-fetched by reviewer."
+     },
+     {
+      "value": 400,
+      "q": "Whitney Houston's 1992 smash 'I Will Always Love You' was written by which star?",
+      "options": [
+       "Linda Ronstadt",
+       "Patsy Cline",
+       "Tammy Wynette",
+       "Dolly Parton"
+      ],
+      "answer": 3,
+      "fact": "Parton's own 1974 single of the song reached No. 1 on the Billboard country chart.",
+      "src": "https://en.wikipedia.org/wiki/I_Will_Always_Love_You (written by Parton; recorded 1973, released March 1974, No. 1 on Hot Country Songs; Houston's 1992 Bodyguard version). Fact said '1974 recording'; it was recorded in 1973."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "sitcom-central",
+  "blurb": "Laughs from I Love Lucy to the streaming era",
+  "categories": [
+   {
+    "name": "Home Base",
+    "questions": [
+     {
+      "value": 100,
+      "q": "On Friends, the gang often hangs out at which coffeehouse?",
+      "options": [
+       "The Grind",
+       "Central Perk",
+       "Monk's Cafe",
+       "Java Joe's"
+      ],
+      "answer": 1,
+      "fact": "Friends ran for 10 seasons on NBC, from 1994 to 2004.",
+      "src": "https://en.wikipedia.org/wiki/Friends (Central Perk a principal setting; NBC Sept 22, 1994-May 6, 2004; ten seasons). Monk's Cafe is the Seinfeld diner."
+     },
+     {
+      "value": 200,
+      "q": "The US version of The Office is set at a paper company branch in which city?",
+      "options": [
+       "Scranton",
+       "Allentown",
+       "Pittsburgh",
+       "Harrisburg"
+      ],
+      "answer": 0,
+      "fact": "It was adapted from the British series created by Ricky Gervais and Stephen Merchant.",
+      "src": "https://en.wikipedia.org/wiki/The_Office_(American_TV_series) (Scranton, Pennsylvania branch of Dunder Mifflin; based on the BBC series created by Ricky Gervais and Stephen Merchant)."
+     },
+     {
+      "value": 300,
+      "q": "The original Frasier sitcom (1993-2004) was set in which city?",
+      "options": [
+       "Chicago",
+       "Portland",
+       "San Francisco",
+       "Seattle"
+      ],
+      "answer": 3,
+      "fact": "Frasier Crane first appeared on Cheers, which was set in Boston.",
+      "src": "https://consequence.net/2023/02/frasier-boston-revival (original synonymous with Seattle over 11 seasons; the 2023 revival returns him to Boston; Cheers was Boston-set). Old q gave Boston as an option, which the 2023 revival makes defensible: q now names the original and Boston is replaced by Chicago."
+     },
+     {
+      "value": 400,
+      "q": "The Andy Griffith Show is set in which fictional North Carolina town?",
+      "options": [
+       "Mayfield",
+       "Walnut Grove",
+       "Mayberry",
+       "Pine Valley"
+      ],
+      "answer": 2,
+      "fact": "Mount Airy, North Carolina, Andy Griffith's hometown, is often called the real-life Mayberry.",
+      "src": "https://edition.cnn.com/2012/07/03/us/north-carolina-andy-griffith-mayberry (Mount Airy, Griffith's birthplace, 'is thought to have inspired Mayberry'). Distractors: Mayfield = Leave It to Beaver; Walnut Grove = Little House; Pine Valley = All My Children."
+     }
+    ]
+   },
+   {
+    "name": "Cast Call",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Who starred as Lucy Ricardo on I Love Lucy?",
+      "options": [
+       "Vivian Vance",
+       "Gracie Allen",
+       "Lucille Ball",
+       "Donna Reed"
+      ],
+      "answer": 2,
+      "fact": "Ball and Desi Arnaz's company, Desilu, later produced the original Star Trek.",
+      "src": "Answer textbook (Lucille Ball as Lucy Ricardo). Fact: https://en.wikipedia.org/wiki/Desilu (founded and co-owned by Arnaz and Ball; produced Star Trek 1966-68 until the Gulf+Western sale)."
+     },
+     {
+      "value": 200,
+      "q": "Who played Sheldon Cooper on The Big Bang Theory?",
+      "options": [
+       "Jim Parsons",
+       "Johnny Galecki",
+       "Simon Helberg",
+       "Kunal Nayyar"
+      ],
+      "answer": 0,
+      "fact": "Parsons won four Emmys for Outstanding Lead Actor in a Comedy Series for the role.",
+      "src": "https://en.wikipedia.org/wiki/Primetime_Emmy_Award_for_Outstanding_Lead_Actor_in_a_Comedy_Series (Parsons won for The Big Bang Theory in 2010, 2011, 2013, 2014 = four)."
+     },
+     {
+      "value": 300,
+      "q": "Which future movie star played Alex P. Keaton on Family Ties?",
+      "options": [
+       "Tom Hanks",
+       "Michael J. Fox",
+       "Matthew Broderick",
+       "Kirk Cameron"
+      ],
+      "answer": 1,
+      "fact": "Fox won three Emmys in a row for the role, from 1986 to 1988.",
+      "src": "https://en.wikipedia.org/wiki/Family_Ties (Fox as Alex; 'three consecutive Emmy Awards' for Lead Actor in a Comedy Series, 1986-1988); confirmed in the Lead Actor Comedy winners table."
+     },
+     {
+      "value": 400,
+      "q": "Which actress played Dorothy Zbornak on The Golden Girls?",
+      "options": [
+       "Betty White",
+       "Rue McClanahan",
+       "Estelle Getty",
+       "Bea Arthur"
+      ],
+      "answer": 3,
+      "fact": "All four lead actresses won Emmys for the show, a rare feat for a sitcom cast.",
+      "src": "https://en.wikipedia.org/wiki/List_of_awards_and_nominations_received_by_The_Golden_Girls (all four principal stars won Emmys, a milestone only three other series share; Bea Arthur played Dorothy). Re-fetched by reviewer."
+     }
+    ]
+   },
+   {
+    "name": "Laugh Track",
+    "questions": [
+     {
+      "value": 100,
+      "q": "On The Fresh Prince of Bel-Air, Will Smith's character moves to LA from which city?",
+      "options": [
+       "Baltimore",
+       "Philadelphia",
+       "Detroit",
+       "Chicago"
+      ],
+      "answer": 1,
+      "fact": "The show ran for six seasons on NBC, from 1990 to 1996.",
+      "src": "https://en.wikipedia.org/wiki/List_of_The_Fresh_Prince_of_Bel-Air_episodes (NBC; six seasons; Sept 10, 1990-May 20, 1996; Will from West Philadelphia)."
+     },
+     {
+      "value": 200,
+      "q": "Which sitcom did Tina Fey create, inspired by her years writing for Saturday Night Live?",
+      "options": [
+       "Parks and Recreation",
+       "The Mindy Project",
+       "30 Rock",
+       "Brooklyn Nine-Nine"
+      ],
+      "answer": 2,
+      "fact": "The title refers to 30 Rockefeller Plaza, the New York home of NBC Studios.",
+      "src": "https://en.wikipedia.org/wiki/30_Rock (created by Fey, based on her years as SNL head writer; title 'refers to New York City's 30 Rockefeller Plaza, home to NBC Studios')."
+     },
+     {
+      "value": 300,
+      "q": "The Jeffersons was a spinoff of which sitcom?",
+      "options": [
+       "All in the Family",
+       "Good Times",
+       "Sanford and Son",
+       "Maude"
+      ],
+      "answer": 0,
+      "fact": "Good Times spun off from Maude, which was itself a spinoff of All in the Family.",
+      "src": "https://en.wikipedia.org/wiki/The_Jeffersons (spin-off of All in the Family; CBS 1975-1985); https://en.wikipedia.org/wiki/Good_Times ('a spin-off of Maude, which itself spun off from All in the Family')."
+     },
+     {
+      "value": 400,
+      "q": "Which sitcom won the Emmy for Outstanding Comedy Series five years in a row, 2010 to 2014?",
+      "options": [
+       "The Big Bang Theory",
+       "The Office",
+       "Parks and Recreation",
+       "Modern Family"
+      ],
+      "answer": 3,
+      "fact": "That matched Frasier, which also won the award five straight times, from 1994 to 1998.",
+      "src": "https://en.wikipedia.org/wiki/Primetime_Emmy_Award_for_Outstanding_Comedy_Series (winners table: Frasier 1994-1998 and Modern Family 2010-2014, five straight each); https://en.wikipedia.org/wiki/Modern_Family (five Outstanding Comedy Series wins)."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "toy-box",
+  "blurb": "Toys, fads and must-have crazes from every generation",
+  "categories": [
+   {
+    "name": "Classic Toys",
+    "questions": [
+     {
+      "value": 100,
+      "q": "The toy name LEGO comes from a Danish phrase meaning what?",
+      "options": [
+       "Build big",
+       "Little bricks",
+       "Play well",
+       "Click together"
+      ],
+      "answer": 2,
+      "fact": "LEGO was founded in Billund, Denmark, by carpenter Ole Kirk Christiansen.",
+      "src": "https://en.wikipedia.org/wiki/Lego (name from Danish 'leg godt', 'play well'; Ole Kirk Christiansen, a carpenter from Billund, Denmark)."
+     },
+     {
+      "value": 200,
+      "q": "Before it became a children's toy, Play-Doh was sold as what?",
+      "options": [
+       "Wallpaper cleaner",
+       "Bread dough",
+       "Window putty",
+       "Artist's clay"
+      ],
+      "answer": 0,
+      "fact": "It was reworked into a children's modeling compound in the mid-1950s.",
+      "src": "https://www.museumofplay.org/blog/the-history-of-play-doh-good-clean-fun/ (sold by Kutol Products as wallpaper cleaner; reworked as a toy in 1955, sold as Play-Doh from 1956)."
+     },
+     {
+      "value": 300,
+      "q": "Which toy is often called the first ever advertised on television, back in 1952?",
+      "options": [
+       "Slinky",
+       "Mr. Potato Head",
+       "Silly Putty",
+       "Raggedy Ann"
+      ],
+      "answer": 1,
+      "fact": "The first kits were just plastic parts to push into a real potato; a plastic body came in 1964.",
+      "src": "https://en.wikipedia.org/wiki/Mr._Potato_Head ('On April 30, 1952, Mr. Potato Head became the first toy advertised on television'; first sold as plastic parts to stick in a real potato; 'Hasbro began including a plastic potato body with the toy set in 1964'). Old fact said 'only face parts'; some Hasbro kits had a styrofoam head."
+     },
+     {
+      "value": 400,
+      "q": "The Etch A Sketch was invented in which country?",
+      "options": [
+       "Germany",
+       "Japan",
+       "United States",
+       "France"
+      ],
+      "answer": 3,
+      "fact": "The Ohio Art Company brought it to US stores in 1960.",
+      "src": "https://en.wikipedia.org/wiki/Etch_A_Sketch (invented by Andre Cassagnes of France; Ohio Art launched it in the US for the 1960 Christmas season)."
+     }
+    ]
+   },
+   {
+    "name": "Fads & Crazes",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which pocket-sized toy with a ball-bearing center became a huge craze in 2017?",
+      "options": [
+       "Pop It",
+       "Beyblade",
+       "Fidget spinner",
+       "Hatchimal"
+      ],
+      "answer": 2,
+      "fact": "During the 2017 boom, some schools banned them from classrooms as a distraction.",
+      "src": "https://www.romper.com/p/do-schools-allow-fidget-spinners-are-they-too-distracting-53594 (2017 coverage; spinners on a bearing; schools banned them as distracting). Answer textbook."
+     },
+     {
+      "value": 200,
+      "q": "Which 1975 fad came in a cardboard carrying box with its own training manual?",
+      "options": [
+       "Pet Rock",
+       "Mood Ring",
+       "Lava Lamp",
+       "Sea-Monkeys"
+      ],
+      "answer": 0,
+      "fact": "Advertising executive Gary Dahl dreamed it up and sold nearly 1.5 million of them.",
+      "src": "https://en.wikipedia.org/wiki/Pet_Rock (advertising executive Gary Dahl, 1975; cardboard pet-carrier box; manual 'The Care and Training of Your Pet Rock'; 'sold nearly 1.5 million')."
+     },
+     {
+      "value": 300,
+      "q": "Which company launched the hula hoop craze in 1958?",
+      "options": [
+       "Mattel",
+       "Wham-O",
+       "Hasbro",
+       "Kenner"
+      ],
+      "answer": 1,
+      "fact": "Wham-O sold 25 million Hula Hoops in four months, and it also made the Frisbee.",
+      "src": "https://en.wikipedia.org/wiki/Wham-O (Hula Hoop fad 1958, '25 million were sold in four months'; bought the Pluto Platter design Jan 23, 1957 and named it Frisbee). Old fact 'introduced the Frisbee in 1957' was arguable: the Frisbee name came in 1958."
+     },
+     {
+      "value": 400,
+      "q": "The toy name Tamagotchi combines the Japanese words for 'watch' and what?",
+      "options": [
+       "Toy",
+       "Pet",
+       "Little",
+       "Egg"
+      ],
+      "answer": 3,
+      "fact": "Bandai released the digital pet in Japan in 1996, and it reached the US in 1997.",
+      "src": "https://en.wikipedia.org/wiki/Tamagotchi (Bandai: portmanteau of two Japanese words, tamago 'egg' and uotchi 'watch'; Japan Nov 23, 1996; US May 1, 1997). q reworded: Bandai calls uotchi a Japanese word, not English."
+     }
+    ]
+   },
+   {
+    "name": "Dolls & Plush",
+    "questions": [
+     {
+      "value": 100,
+      "q": "Which Mattel doll debuted in 1959, named after the daughter of co-founder Ruth Handler?",
+      "options": [
+       "Chatty Cathy",
+       "Skipper",
+       "Barbie",
+       "Tressy"
+      ],
+      "answer": 2,
+      "fact": "Her full name is Barbara Millicent Roberts, and Ken was named after Ruth Handler's son.",
+      "src": "https://www.snopes.com/fact-check/barbie-real-name-is-barbara/ (named after Ruth Handler's daughter Barbara; full name Barbara Millicent Roberts; Ken named after son Kenneth; debuted March 1959)."
+     },
+     {
+      "value": 200,
+      "q": "Which doll was the must-have toy of 1983, sold with its own adoption papers?",
+      "options": [
+       "Cabbage Patch Kids",
+       "Strawberry Shortcake",
+       "Care Bears",
+       "My Little Pony"
+      ],
+      "answer": 0,
+      "fact": "Xavier Roberts first sold handmade versions called Little People, a name Fisher-Price already owned.",
+      "src": "https://en.wikipedia.org/wiki/Cabbage_Patch_Kids (Roberts hand-stitched 'The Little People'; renamed because Fisher-Price owned the name; adoption papers; 1983 Christmas craze). Old fact called Roberts the 'creator', which is disputed: folk artist Martha Nelson Thomas sued and settled in 1985."
+     },
+     {
+      "value": 300,
+      "q": "Which plush craze of the early 2020s features round, marshmallow-soft characters?",
+      "options": [
+       "Beanie Boos",
+       "Pillow Pets",
+       "Shopkins",
+       "Squishmallows"
+      ],
+      "answer": 3,
+      "fact": "Kellytoy launched Squishmallows in 2017 with just eight characters, sold at Walgreens.",
+      "src": "https://toybook.com/squishmallows-specialty-toys-feature/ ('Created by Kellytoy in 2017', launched with eight characters at Walgreens). Old fact said each character has a name; the source says 'most' do."
+     },
+     {
+      "value": 400,
+      "q": "Which 2005 plush toys came with a secret code to adopt a virtual pet online?",
+      "options": [
+       "Beanie Babies",
+       "Webkinz",
+       "Furby",
+       "Tickle Me Elmo"
+      ],
+      "answer": 1,
+      "fact": "Canadian toy company Ganz launched Webkinz in April 2005, along with its online Webkinz World.",
+      "src": "https://en.wikipedia.org/wiki/Webkinz (created by Canadian company Ganz; launched April 15, 2005; each plush includes a code that unlocks a virtual version online; Webkinz World)."
+     }
+    ]
+   }
+  ]
+ }
+]

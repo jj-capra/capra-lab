@@ -1,0 +1,1064 @@
+[
+  {
+    "id": "jokes-25",
+    "blurb": "Cheese and dairy jokes, aged to perfection. Wisconsin fans welcome.",
+    "categories": [
+      {
+        "name": "Cheesy Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What do you call cheese that isn't yours?",
+            "options": [
+              "Stolen cheddar",
+              "Nacho cheese",
+              "Borrowed brie",
+              "Someone's snack"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What do you call a cheese that's feeling sad? Blue cheese.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "What did the cheese say when it looked in the mirror?",
+            "options": [
+              "Mozzarella!",
+              "Parmesan!",
+              "Halloumi!",
+              "Provolone!"
+            ],
+            "answer": 2,
+            "fact": "Bonus: How do you make a milkshake? Give it a good scare.",
+            "src": "classic; halloumi sounds like 'hello, me'"
+          },
+          {
+            "value": 300,
+            "q": "What kind of cheese would you use to disguise a small horse?",
+            "options": [
+              "Ricotta",
+              "Gorgonzola",
+              "Gruyere",
+              "Mascarpone"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What cheese do you use to coax a bear out of its cave? Camembert. (Come on, bear!)",
+            "src": "classic; mascarpone sounds like 'mask a pony'"
+          },
+          {
+            "value": 400,
+            "q": "What cheese is made backward?",
+            "options": [
+              "Edam",
+              "Brie",
+              "Colby",
+              "Swiss"
+            ],
+            "answer": 0,
+            "fact": "The pun: Edam spelled backward is 'made.' The cheese is named after the town of Edam in the Netherlands.",
+            "src": "classic; premise: Edam cheese is named for the town of Edam, North Holland"
+          }
+        ]
+      },
+      {
+        "name": "Grate Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Who's the boss of the refrigerator?",
+            "options": [
+              "The milk carton",
+              "The butter dish",
+              "The veggie drawer",
+              "The big cheese"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What kind of cheese guards a castle? Moatzarella.",
+            "src": "classic; 'the big cheese' is an old idiom for the person in charge"
+          },
+          {
+            "value": 200,
+            "q": "I quit my job at the cheese shop. The work was just too ___",
+            "options": [
+              "early",
+              "grating",
+              "cold",
+              "far away"
+            ],
+            "answer": 1,
+            "fact": "Bonus: How should you handle a dangerous cheese? Caerphilly. (Caerphilly is a real cheese from Wales.)",
+            "src": "original; grating = annoying and shredding cheese. Bonus classic; premise: Caerphilly is a Welsh cheese"
+          },
+          {
+            "value": 300,
+            "q": "The cheese shelf at the deli collapsed. All that was left was ___",
+            "options": [
+              "a big mess",
+              "some crumbs",
+              "de-brie",
+              "the cheddar"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the yogurt go to the art museum? It was cultured.",
+            "src": "classic (adapted from the cheese-factory version, no explosion); de-brie = debris"
+          },
+          {
+            "value": 400,
+            "q": "What did the cheese say when it showed up late to the party?",
+            "options": [
+              "Brie right back",
+              "Feta late than never",
+              "Gouda luck out there",
+              "Havarti nice day"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What did the cheese say to the photographer? Say people!",
+            "src": "classic; feta late = better late. Distractors are cheese puns on leaving phrases, not on being late"
+          }
+        ]
+      },
+      {
+        "name": "Aged to Perfection",
+        "questions": [
+          {
+            "value": 100,
+            "q": "I'm very strict about cheese. I only eat it on days that end in ___",
+            "options": [
+              "a big party",
+              "a celebration",
+              "the letter Y",
+              "a family dinner"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the cheese turn down the deal? It had grater plans.",
+            "src": "classic one-liner pattern (every day of the week ends in Y)"
+          },
+          {
+            "value": 200,
+            "q": "The waiter began grating parmesan and said, 'Just say when.' I'm very shy, so ___",
+            "options": [
+              "he's still grating",
+              "I waved my hand",
+              "I said thank you",
+              "I ate it plain"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the cheddar win the argument? All of its points were sharp.",
+            "src": "original"
+          },
+          {
+            "value": 300,
+            "q": "I have a great cheese joke, but it isn't ready yet. It still needs to ___",
+            "options": [
+              "be written down",
+              "get rehearsed",
+              "be translated",
+              "age a few years"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Did you hear about the Wisconsin cheese that saved the day? It was legen-dairy.",
+            "src": "classic idea (cheese joke that needs to age), wording original"
+          },
+          {
+            "value": 400,
+            "q": "The deli sells Swiss cheese by the pound. So, technically, the holes are ___",
+            "options": [
+              "made by bacteria",
+              "totally free",
+              "all different sizes",
+              "hard to count"
+            ],
+            "answer": 1,
+            "fact": "The pun: you pay by weight and air weighs next to nothing, so the holes cost you nothing. Bacteria make the gas that forms them.",
+            "src": "original; premise: Swiss cheese eyes form from carbon dioxide made by propionic bacteria (Propionibacterium freudenreichii)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-26",
+    "blurb": "Cats, dogs and other pets, plus the punchlines that make owners groan",
+    "categories": [
+      {
+        "name": "Ruff Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What is a cat's favorite color?",
+            "options": [
+              "Orange",
+              "Gray",
+              "Purr-ple",
+              "Yellow"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What's a cat's favorite dessert? Chocolate mouse.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Where do dogs park their cars?",
+            "options": [
+              "In the barking lot",
+              "In the driveway",
+              "In the garage",
+              "On the street"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the dog nap in the shade? It didn't want to be a hot dog.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Why are cats bad storytellers?",
+            "options": [
+              "They get too distracted",
+              "They can't hold a pen",
+              "They sleep all day",
+              "They only have one tail"
+            ],
+            "answer": 3,
+            "fact": "Bonus: How does a cat stop a movie? It hits paws.",
+            "src": "classic; tail = tale"
+          },
+          {
+            "value": 400,
+            "q": "What do dogs and phones have in common?",
+            "options": [
+              "They both like long walks",
+              "They both have collar ID",
+              "They both love the park",
+              "They both cost a lot"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What did the dog say when it sat on sandpaper? Ruff!",
+            "src": "classic; collar ID = caller ID"
+          }
+        ]
+      },
+      {
+        "name": "Purr-fect Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "What do you call a cat that loves to go bowling?",
+            "options": [
+              "A sporty kitty",
+              "An alley cat",
+              "A team player",
+              "A lucky cat"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What do you call a dog that loves bubble baths? A shampoodle.",
+            "src": "classic; alley cat / bowling alley"
+          },
+          {
+            "value": 200,
+            "q": "How do cats end a fight?",
+            "options": [
+              "They hiss and make up",
+              "They take a long nap",
+              "They share a treat",
+              "They go to their rooms"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What's a dog's favorite pizza topping? Pupperoni.",
+            "src": "classic; hiss and make up = kiss and make up (replaced the sleepy-bulldog joke in check)"
+          },
+          {
+            "value": 300,
+            "q": "Why did the kitten volunteer in the school nurse's office?",
+            "options": [
+              "To help sick kids",
+              "To be a first-aid kit",
+              "To get free treats",
+              "To learn about bandages"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What do you call a pile of kittens? A meowntain.",
+            "src": "classic (usually told with the Red Cross); kit = first-aid kit and a young cat"
+          },
+          {
+            "value": 400,
+            "q": "Why are dogs such bad dancers?",
+            "options": [
+              "They have no rhythm",
+              "They hate slow songs",
+              "They have two left feet",
+              "They'd rather play fetch"
+            ],
+            "answer": 2,
+            "fact": "Bonus: I named my dog Five Miles, so now I can say I walk Five Miles every day.",
+            "src": "classic; premise: a dog has four feet, two of them on the left (replaced the blacksmith-puppy joke in check)"
+          }
+        ]
+      },
+      {
+        "name": "Shaggy Dog Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "My dog kept chasing people on a bike. It got so bad, I finally had to ___",
+            "options": [
+              "buy a longer leash",
+              "take his bike away",
+              "hire a dog trainer",
+              "keep him inside"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the puppy get an A? It was the teacher's pet.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "I bought my cat a fancy new bed. Now she sleeps in ___",
+            "options": [
+              "the box it came in",
+              "it every night",
+              "it by the window",
+              "it all day long"
+            ],
+            "answer": 0,
+            "fact": "Bonus: My cat can say its own name. Its name is Meow.",
+            "src": "classic observational joke (cats prefer the box)"
+          },
+          {
+            "value": 300,
+            "q": "My dog is so smart. I asked him what two minus two is, and he said ___",
+            "options": [
+              "four",
+              "two",
+              "nothing",
+              "one"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What do you call a dog magician? A labracadabrador.",
+            "src": "classic; dogs say nothing, and the answer is nothing (zero)"
+          },
+          {
+            "value": 400,
+            "q": "Dogs have owners. ___",
+            "options": [
+              "Cats have whiskers.",
+              "Cats have long tails.",
+              "Cats have sharp claws.",
+              "Cats have staff."
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why does the cat always win the argument? It's very purr-suasive.",
+            "src": "classic anonymous saying"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-27",
+    "blurb": "Clean, silly jokes straight from the playground and the back row of class",
+    "categories": [
+      {
+        "name": "Playground Groans",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why did the kid bring a ladder to school?",
+            "options": [
+              "To reach the top shelf",
+              "To go to high school",
+              "To fix the lights",
+              "To paint the ceiling"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the teacher write on the window? To make the lesson very clear.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "What did one wall say to the other wall?",
+            "options": [
+              "You look a little plain",
+              "We should talk more",
+              "I'll meet you at the corner",
+              "Nice new paint"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Never trust stairs. They're always up to something.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Why was the broom late?",
+            "options": [
+              "It got lost",
+              "It was too tired",
+              "It missed the bus",
+              "It over-swept"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What do you call a guy lying across your front doorway? Matt.",
+            "src": "classic; over-swept = overslept"
+          },
+          {
+            "value": 400,
+            "q": "Why was the student's report card all wet?",
+            "options": [
+              "It fell in a puddle",
+              "It went through the wash",
+              "It got rained on",
+              "It was below C level"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the kid bring scissors to school? To cut class.",
+            "src": "classic; below C level = below sea level (replaced the custodian/supplies joke in check)"
+          }
+        ]
+      },
+      {
+        "name": "Recess Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why did the teacher wear sunglasses to class?",
+            "options": [
+              "The room lights were harsh",
+              "It was a sunny morning",
+              "Their students were so bright",
+              "They lost their glasses"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the picture get blamed for everything? It was framed.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "I have a joke about paper, but it's ___",
+            "options": [
+              "tearable",
+              "too long",
+              "really old",
+              "a secret"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why is writing with a broken pencil a waste? It's pointless.",
+            "src": "classic; tearable = terrible"
+          },
+          {
+            "value": 300,
+            "q": "Did you hear about the shy pebble?",
+            "options": [
+              "It hid behind the others",
+              "It wanted to be a bit boulder",
+              "It never said hello",
+              "It stayed in the yard"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What did the paper say to the pencil? Write on!",
+            "src": "classic; boulder = bolder"
+          },
+          {
+            "value": 400,
+            "q": "What did the hat say to the tie?",
+            "options": [
+              "You look sharp, let's go out",
+              "We match, let's take a photo",
+              "Wait here, I'll find a coat",
+              "Hang around, I'll go on ahead"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the kid cross the playground? To get to the other slide.",
+            "src": "classic (usually told with a scarf); the tie hangs, the hat goes on a head"
+          }
+        ]
+      },
+      {
+        "name": "Class Clown Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "If your nose runs and your feet smell, ___",
+            "options": [
+              "you need a tissue",
+              "you're built upside down",
+              "you need new socks",
+              "it's time for a bath"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What did the left eye say to the right eye? Between you and me, something smells.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "Why do you go to bed at night?",
+            "options": [
+              "It's late and you're tired",
+              "The bed won't come to you",
+              "You need rest for school",
+              "Your eyes start to close"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the kid run around the bed? To catch up on sleep.",
+            "src": "classic (replaced the black-white-and-read newspaper joke in check)"
+          },
+          {
+            "value": 300,
+            "q": "Did you hear the joke about the roof? Never mind, ___",
+            "options": [
+              "it's over your head",
+              "I forgot the ending",
+              "it's a long story",
+              "you've heard it before"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why did the kid bring lipstick and blush to class? It was a make-up test.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "What's the number one cause of dry skin?",
+            "options": [
+              "Cold, dry air",
+              "Long hot showers",
+              "Bath towels",
+              "Harsh soaps"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What gets wetter the more it dries? A towel.",
+            "src": "classic"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-28",
+    "blurb": "Tools, building and handyman jokes, measured twice and told once",
+    "categories": [
+      {
+        "name": "Toolbox Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why did the hammer ace its big test?",
+            "options": [
+              "It studied hard",
+              "It nailed it",
+              "It got lucky",
+              "It sat up front"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Which tool is best at math? Multi-pliers.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "What did the paint say to the wall?",
+            "options": [
+              "I like your color",
+              "Hold still, please",
+              "I've got you covered",
+              "Nice to meet you"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why are electricians always up to date? They follow current events.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "What did the drill ask the hammer?",
+            "options": [
+              "Is this the right spot?",
+              "Can you hold still?",
+              "Is this too loud?",
+              "Am I boring you?"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What did the doorknob say to the door? Let's get a handle on this.",
+            "src": "classic; drills bore holes"
+          },
+          {
+            "value": 400,
+            "q": "What's the best way to carve wood?",
+            "options": [
+              "Whittle by whittle",
+              "Inch by inch",
+              "Very carefully",
+              "With lots of patience"
+            ],
+            "answer": 0,
+            "fact": "The pun: 'whittle by whittle' sounds like 'little by little,' and to whittle is to carve wood a shaving at a time.",
+            "src": "classic; premise: whittling is carving wood by shaving off small pieces"
+          }
+        ]
+      },
+      {
+        "name": "Nuts and Bolts",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Want to hear a joke about construction?",
+            "options": [
+              "It's a little long",
+              "I'm still working on it",
+              "It's not that funny",
+              "Maybe after lunch"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why did the ladder get promoted? It kept stepping up.",
+            "src": "classic (bonus swapped: the Velcro line is credited to a comedian)"
+          },
+          {
+            "value": 200,
+            "q": "Why did the saw go to the party?",
+            "options": [
+              "To try the snacks",
+              "It got invited",
+              "To cut loose",
+              "To hear the band"
+            ],
+            "answer": 2,
+            "fact": "Bonus: I'm afraid of elevators, so I'm taking steps to avoid them.",
+            "src": "classic; cut loose = have fun, and saws cut (replaced the glue-book joke in check)"
+          },
+          {
+            "value": 300,
+            "q": "The woodworker's son is just like his dad. He's ___",
+            "options": [
+              "the apple of his eye",
+              "a real go-getter",
+              "his spitting image",
+              "a chip off the old block"
+            ],
+            "answer": 3,
+            "fact": "The pun: 'a chip off the old block' means a kid just like a parent, and woodworkers chip pieces off blocks of wood.",
+            "src": "original on the old idiom (replaced the carpenter's-level joke in check)"
+          },
+          {
+            "value": 400,
+            "q": "My carpenter friend can never make up his mind. He's always ___",
+            "options": [
+              "on the fence",
+              "cutting corners",
+              "hammering away",
+              "raising the roof"
+            ],
+            "answer": 0,
+            "fact": "Bonus: Why is the new fence so popular online? It has great posts.",
+            "src": "original; distractors are carpentry idioms that don't mean undecided"
+          }
+        ]
+      },
+      {
+        "name": "Some Assembly",
+        "questions": [
+          {
+            "value": 100,
+            "q": "My 'self-assembly' bookshelf arrived three weeks ago, and it still hasn't ___",
+            "options": [
+              "been unpacked",
+              "been painted",
+              "assembled itself",
+              "held any books"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What did the wall say to the shelf? Hang in there.",
+            "src": "original"
+          },
+          {
+            "value": 200,
+            "q": "At the hardware store I asked for nails. The clerk said, 'How long do you want them?' I said ___",
+            "options": [
+              "two inches, please",
+              "about a dozen",
+              "I want to keep them",
+              "whatever's on sale"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why did the tape measure get the job? It really measured up.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "I bought a do-it-yourself guide to fixing pipes. Page one says ___",
+            "options": [
+              "call a plumber",
+              "turn off the water",
+              "buy a wrench",
+              "gather your tools"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What kind of shoes do plumbers wear? Clogs.",
+            "src": "original"
+          },
+          {
+            "value": 400,
+            "q": "I've cut this board three times, and it's still ___",
+            "options": [
+              "too long",
+              "too short",
+              "not straight",
+              "a bit rough"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why does the handyman always carry a pencil? He has to draw the line somewhere.",
+            "src": "classic carpenter's joke (cutting only makes a board shorter); replaced the building/built line in check"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-29",
+    "blurb": "The cleverest one-liners and sneakiest twists. Think twice, then pick.",
+    "categories": [
+      {
+        "name": "Big Brain Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why did the shoe salesman lose his job?",
+            "options": [
+              "Sales were too slow",
+              "They gave him the boot",
+              "The store moved away",
+              "He wanted a change"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What kind of shoes does a lazy person wear? Loafers.",
+            "src": "classic; the boot = fired (replaced the banker joke and the three-lefts bonus in check)"
+          },
+          {
+            "value": 200,
+            "q": "Why did the person keep their money in the freezer?",
+            "options": [
+              "To keep it safe",
+              "They wanted cold, hard cash",
+              "They ran out of room",
+              "To hide it from friends"
+            ],
+            "answer": 1,
+            "fact": "Bonus: I'm great at keeping secrets. It's the people I tell them to who aren't.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "What's the difference between ignorance and apathy?",
+            "options": [
+              "Not knowing vs. not caring",
+              "One is worse than the other",
+              "Ignorance is easier to fix",
+              "I don't know and I don't care"
+            ],
+            "answer": 3,
+            "fact": "Bonus: My friend said apathy is a big problem. I told him, 'Whatever.'",
+            "src": "classic; the answer shows both: not knowing (ignorance) and not caring (apathy)"
+          },
+          {
+            "value": 400,
+            "q": "What do you call a magician who has lost their magic?",
+            "options": [
+              "Ian",
+              "Gary",
+              "Sean",
+              "Ivan"
+            ],
+            "answer": 0,
+            "fact": "The pun: take the word 'magic' out of 'magician' and all that's left is 'ian.'",
+            "src": "classic"
+          }
+        ]
+      },
+      {
+        "name": "Double Meanings",
+        "questions": [
+          {
+            "value": 100,
+            "q": "I tried to start a hide-and-seek contest, but ___",
+            "options": [
+              "nobody wanted to sign up",
+              "we lost the rule book",
+              "good players are hard to find",
+              "the prizes were too small"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Have you met my friend, the hide-and-seek champion? Me neither.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "I spent all afternoon staring into the mirror. I guess I needed some ___",
+            "options": [
+              "time to myself",
+              "time to relax",
+              "time to get ready",
+              "time for reflection"
+            ],
+            "answer": 3,
+            "fact": "Bonus: I couldn't remember how to throw a boomerang. Then it came back to me.",
+            "src": "original; reflection = deep thought and a mirror image (replaced the mood-ring line in check)"
+          },
+          {
+            "value": 300,
+            "q": "I have a photographic memory, but it never ___",
+            "options": [
+              "worked very well",
+              "lasted very long",
+              "fully developed",
+              "helped me much"
+            ],
+            "answer": 2,
+            "fact": "The pun: camera film had to be developed before anyone could see the pictures, so this memory never came out.",
+            "src": "classic; premise: photographic film must be chemically developed to show an image"
+          },
+          {
+            "value": 400,
+            "q": "I held the door open for a clown. I thought it was a nice ___",
+            "options": [
+              "gesture",
+              "favor",
+              "idea",
+              "jester"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the clown go to the doctor? He was feeling a little funny.",
+            "src": "classic; jester (a clown) = gesture"
+          }
+        ]
+      },
+      {
+        "name": "Plot Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "I'm so good at sleeping, I can do it ___",
+            "options": [
+              "anywhere at all",
+              "with my eyes closed",
+              "in under a minute",
+              "through any alarm"
+            ],
+            "answer": 1,
+            "fact": "Bonus: I'm not one to brag, but I'm the most humble person I know.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "I used to be indecisive. Now ___",
+            "options": [
+              "I decide fast",
+              "I make lists",
+              "I'm not so sure",
+              "I ask my friends"
+            ],
+            "answer": 2,
+            "fact": "Bonus: I started a club for people who can't make decisions. We're still picking a name.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "People keep telling me I'm condescending. ___",
+            "options": [
+              "It means I talk down to people",
+              "I honestly think they're wrong",
+              "I'm working hard to fix that",
+              "I really don't see it myself"
+            ],
+            "answer": 0,
+            "fact": "Bonus: My friend says I never listen. At least, I think that's what he said.",
+            "src": "classic"
+          },
+          {
+            "value": 400,
+            "q": "The psychic convention was canceled this year due to ___",
+            "options": [
+              "low ticket sales",
+              "a power outage",
+              "unforeseen circumstances",
+              "a scheduling error"
+            ],
+            "answer": 2,
+            "fact": "Bonus: I'd explain how mind reading works, but you already know.",
+            "src": "classic folk joke (psychics should have foreseen it); replaced the mind-reading line in check"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "jokes-30",
+    "blurb": "Snowmen, reindeer, gifts and cocoa: cozy jokes for the cold months",
+    "categories": [
+      {
+        "name": "Chilly Groaners",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Where do snowmen keep their money?",
+            "options": [
+              "Under their hats",
+              "In a snow bank",
+              "In a piggy bank",
+              "In a coat pocket"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What did the snowman say to the customer? Have an ice day!",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "What do snowmen call their kids?",
+            "options": [
+              "Little snowmen",
+              "Snow kids",
+              "The juniors",
+              "Chill-dren"
+            ],
+            "answer": 3,
+            "fact": "Bonus: How do snowmen get around town? They ride an icicle.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "What did one snowman say to the other snowman?",
+            "options": [
+              "Do you smell carrots?",
+              "Nice scarf you have",
+              "Is it snowing again?",
+              "Let's go sledding"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What do you call a snowman in July? A puddle.",
+            "src": "classic; snowmen have carrot noses"
+          },
+          {
+            "value": 400,
+            "q": "What do you call an elf who sings?",
+            "options": [
+              "A choir elf",
+              "A tinsel singer",
+              "A wrapper",
+              "A jolly helper"
+            ],
+            "answer": 2,
+            "fact": "Bonus: Why was the elf feeling down? Low elf-esteem.",
+            "src": "classic; wrapper = rapper, and elves wrap gifts"
+          }
+        ]
+      },
+      {
+        "name": "Gift-Wrapped Puns",
+        "questions": [
+          {
+            "value": 100,
+            "q": "Why is the last month of the year so chilly?",
+            "options": [
+              "The days are short",
+              "It's Decembrrr",
+              "The sun is low",
+              "It snows a lot"
+            ],
+            "answer": 1,
+            "fact": "Bonus: What do snowmen do on the weekend? They just chill.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "What do elves learn in school?",
+            "options": [
+              "How to wrap gifts",
+              "Toy building",
+              "The elf-abet",
+              "Snow safety"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What do reindeer hang on their holiday trees? Horn-aments.",
+            "src": "classic"
+          },
+          {
+            "value": 300,
+            "q": "Why are holiday trees so bad at knitting?",
+            "options": [
+              "They have no hands",
+              "They keep dropping needles",
+              "They hate sitting down",
+              "They stand too still"
+            ],
+            "answer": 1,
+            "fact": "Bonus: Why are snowmen great at parties? They know how to break the ice.",
+            "src": "classic; premise: cut evergreen trees shed their needles as they dry"
+          },
+          {
+            "value": 400,
+            "q": "Why don't gifts ever worry about tomorrow?",
+            "options": [
+              "They sit under the tree",
+              "They have a nice bow",
+              "They get opened soon",
+              "They live in the present"
+            ],
+            "answer": 3,
+            "fact": "Bonus: What does a snowman call a blizzard? A family reunion.",
+            "src": "classic (present = gift and now)"
+          }
+        ]
+      },
+      {
+        "name": "Snow Way Twists",
+        "questions": [
+          {
+            "value": 100,
+            "q": "My New Year's resolution is to stop putting things off. I'll start ___",
+            "options": [
+              "right this minute",
+              "next year",
+              "first thing today",
+              "with a to-do list"
+            ],
+            "answer": 1,
+            "fact": "Bonus: I'm giving my friend a fridge this year. I can't wait to see his face light up when he opens it.",
+            "src": "classic"
+          },
+          {
+            "value": 200,
+            "q": "What do you call a reindeer wearing earmuffs?",
+            "options": [
+              "A reindeer ready for winter",
+              "A very stylish reindeer",
+              "A reindeer with warm ears",
+              "Anything, he can't hear you"
+            ],
+            "answer": 3,
+            "fact": "Bonus: Why did the marshmallow skip the cocoa party? It didn't want to end up in hot water.",
+            "src": "classic (usually told with a deer)"
+          },
+          {
+            "value": 300,
+            "q": "My snowman is worried about the warm weather coming. I told him ___",
+            "options": [
+              "not to sweat it",
+              "to stand in the shade",
+              "winter isn't over yet",
+              "it's a long way off"
+            ],
+            "answer": 0,
+            "fact": "Bonus: What did the snowflake say to the sidewalk? Let's stick together.",
+            "src": "original"
+          },
+          {
+            "value": 400,
+            "q": "I got a pair of gloves as a gift, but they're both lefts. On one hand it's great, but on the other ___",
+            "options": [
+              "they're very warm",
+              "I lost the receipt",
+              "it's just not right",
+              "they were on sale"
+            ],
+            "answer": 2,
+            "fact": "Bonus: What do you give a friend who has everything? A shelf to keep it all on.",
+            "src": "classic"
+          }
+        ]
+      }
+    ]
+  }
+]
