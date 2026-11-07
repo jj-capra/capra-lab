@@ -3,8 +3,7 @@ import { calendar, deck as getDeck, dropNo, summary, isOpen, pacificDate, sudden
 import * as E from './engine.mjs';
 import * as P from './profiles.mjs';
 import { randomCode, randomHex, randomSeed } from './rng.mjs';
-import * as J from './jam.mjs';
-import { replay } from '../shared/jam.mjs';
+import * as C from './cards.mjs';
 import { emoRow } from '../shared/emoji.mjs';
 
 E.setSuddenPool(suddenPool);
@@ -115,15 +114,15 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
 
   const roomKey = (code) => 'r/' + String(code).toUpperCase().replace(/[^A-Z0-9]/g, '');
 
-  // Vault Jam trophies: each day you solved is checked once the day is over. The day's
-  // fastest solve anywhere wins it. Returns the profile and the days just won.
+  // Vault Jam trophies (from before it became Goat Getaway): each day you solved is checked once
+  // the day is over. The day's fastest solve anywhere wins it. Returns the profile and the days won.
   async function settleTrophies(me, today) {
     const due = (me.profile.jamPend || []).filter(d => d < today);
     if (!due.length) return { profile: me.profile, won: [] };
     const won = [];
     for (const d of due) {
       const b = await getJSON('j/' + d);
-      if (b && J.leader(b) === me.pid) won.push(d);
+      if (b && C.leader(b) === me.pid) won.push(d);
     }
     const { data } = await mutate('p/' + me.pid, (p) => {
       p.jamPend = (p.jamPend || []).filter(d => d >= today);
@@ -131,6 +130,20 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
       for (const d of won) if (!p.trophies.includes(d)) p.trophies.push(d);
     });
     return { profile: data, won };
+  }
+
+  // Diamonds a lab player earned in Goat Getaway before they had a Mind Heist profile wait in
+  // gg/<handle>. Take them (compare-and-swap, so they're counted once) and return how many.
+  async function claimGoatGems(handle) {
+    if (!handle) return 0;
+    for (let i = 0; i < 5; i++) {
+      const g = await store.get('gg/' + handle);
+      const n = g && g.data ? Math.max(0, Math.floor(Number(g.data.gems) || 0)) : 0;
+      if (!n) return 0;
+      const w = await store.set('gg/' + handle, { gems: 0 }, g.etag ? { onlyIfMatch: g.etag } : {});
+      if (w && w.modified) return n;
+    }
+    return 0;
   }
 
   async function mutateRoom(code, fn, now) {
@@ -203,15 +216,19 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
       const cal = calendar(now);
       const me = await auth(req, false);
       const tr = me ? await settleTrophies(me, cal.today) : null;
-      const jam = J.daily(cal.today);
+      let goatGems = 0;
+      if (me && tr.profile.lab) {
+        goatGems = await claimGoatGems(tr.profile.lab);
+        if (goatGems) tr.profile = (await mutate('p/' + me.pid, (p) => { p.gems = (p.gems || 0) + goatGems; })).data;
+      }
       return json(200, {
         now, date: cal.today, encore: cal.encore, nextExists: cal.nextExists,
         today: summary(cal.featured, { encore: cal.encore }),
         joke: summary(jokeOfDay(now)),
         vault: cal.vault.map(d => summary(d)),
-        jam: { no: jam.no, day: jam.day, par: jam.par },
         me: me ? P.privateProfile(tr.profile, cal.today) : null,
         trophyNews: tr ? tr.won : [],
+        goatGems,
       });
     }
 
@@ -268,65 +285,15 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
       }
       const token = randomHex(24);
       const hash = await sha256(token);
-      const { data } = await mutate('p/' + pid, (p) => { p.tokens = [...p.tokens.slice(-5), hash]; p.lab = who.handle; p.name = labName(who.name); });
-      return json(200, { pid, token, me: P.privateProfile(data, pacificDate(now)) });
+      const goatGems = await claimGoatGems(who.handle);
+      const { data } = await mutate('p/' + pid, (p) => {
+        p.tokens = [...p.tokens.slice(-5), hash]; p.lab = who.handle; p.name = labName(who.name);
+        if (goatGems) p.gems = (p.gems || 0) + goatGems;
+      });
+      return json(200, { pid, token, goatGems, me: P.privateProfile(data, pacificDate(now)) });
     }
 
-    /* ---- Vault Jam, diamonds and the daily draw ---- */
-    if (path === '/jam' && method === 'GET') {
-      const today = pacificDate(now);
-      const me0 = await auth(req);
-      const { profile, won } = await settleTrophies(me0, today);
-      const t = J.daily(today);
-      const opened = profile.jam && profile.jam.day === today;
-      const race = J.raceView(await getJSON('j/' + today), profile.pid, profile.friends);
-      return json(200, { now, jam: { no: t.no, date: today, day: t.day, tier: t.tier, par: t.par, board: opened ? t.board : null },
-        race, vault: P.vaultOf(profile, today), trophyNews: won });
-    }
-    if (path === '/jam/open' && method === 'POST') {
-      const today = pacificDate(now);
-      const me = await auth(req);
-      const t = J.daily(today);
-      const { data } = await mutate('p/' + me.pid, (p) => {
-        if (p.jam && p.jam.day === today) return SKIP;
-        p.jam = { day: today, open: now, ms: null, moves: null, best: null, parGem: false };
-      });
-      return json(200, { now, jam: { no: t.no, date: today, day: t.day, tier: t.tier, par: t.par, board: t.board }, vault: P.vaultOf(data, today) });
-    }
-    if (path === '/jam/solve' && method === 'POST') {
-      const today = pacificDate(now);
-      const me = await auth(req);
-      const t = J.daily(today);
-      if (String(body.date || today) !== today) bad('That vault closed at midnight. Today’s is waiting.', 409);
-      const r = replay(t.board, body.moves);
-      if (!r.ok || !r.out) bad('That doesn’t get the jewel out. Try again.');
-      let first = false, gained = 0, ms = null;
-      const { data } = await mutate('p/' + me.pid, (p) => {
-        if (!p.jam || p.jam.day !== today) bad('Open today’s vault first.', 409);
-        first = p.jam.ms == null;
-        if (first) {
-          p.jam.ms = Math.max(0, now - p.jam.open);
-          p.jam.moves = r.n;
-          gained += 1;
-          p.jamPend = [...(p.jamPend || []).filter(d => d !== today), today].slice(-10);
-        }
-        p.jam.best = p.jam.best == null ? r.n : Math.min(p.jam.best, r.n);
-        if (r.n <= t.par && !p.jam.parGem) { p.jam.parGem = true; gained += 1; }
-        ms = p.jam.ms;
-        if (!gained && !first) return SKIP;
-        p.gems = (p.gems || 0) + gained;
-      });
-      let board;
-      if (first) {
-        board = (await mutate('j/' + today, (b) => {
-          b.e ||= {};
-          if (b.e[me.pid]) return SKIP;
-          if (Object.keys(b.e).length >= 5000) return SKIP;
-          b.e[me.pid] = [ms, r.n, now, data.name, data.avatar];
-        }, { create: () => ({ d: today, e: {} }) })).data;
-      } else board = await getJSON('j/' + today);
-      return json(200, { now, first, gained, ms, moves: r.n, par: t.par, race: J.raceView(board, me.pid, data.friends), vault: P.vaultOf(data, today) });
-    }
+    /* ---- diamonds (earned in Goat Getaway) and the daily draw ---- */
     if (path === '/draw' && method === 'POST') {
       const today = pacificDate(now);
       const me = await auth(req);
@@ -334,15 +301,15 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
       const { data } = await mutate('p/' + me.pid, (p) => {
         if (p.draw && p.draw.day === today) bad('You already drew today. A new card waits after midnight.', 409);
         p.hand ||= [];
-        if (p.hand.length >= J.HAND_MAX) bad(`Your hand is full (${J.HAND_MAX}). Play a card in a game first.`, 409);
+        if (p.hand.length >= C.HAND_MAX) bad(`Your hand is full (${C.HAND_MAX}). Play a card in a game first.`, 409);
         const gem = !!body.gem;
-        if (gem && !(p.gems > 0)) bad('You need a diamond for that. Crack today’s Vault Jam to earn one.', 409);
+        if (gem && !(p.gems > 0)) bad('You need a diamond for that. Get the goat out in today’s Goat Getaway to earn one.', 409);
         if (gem) p.gems -= 1;
         const roll = randomSeed() / 4294967296;
-        if (roll < J.PRIZE_ODDS * (gem ? 2 : 1)) {
+        if (roll < C.PRIZE_ODDS * (gem ? 2 : 1)) {
           card = { k: randomSeed() % 2 ? 'mole' : 'hfifty', id: randomHex(4), at: now };
           p.hand.push(card);
-        } else card = { k: 'dud', n: randomSeed() % J.DUDS };
+        } else card = { k: 'dud', n: randomSeed() % C.DUDS };
         p.draw = { day: today, gem, card: { k: card.k, n: card.n ?? null } };
       });
       return json(200, { now, card: { k: card.k, n: card.n ?? null }, vault: P.vaultOf(data, today) });

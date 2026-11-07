@@ -104,30 +104,27 @@ on purpose; do not bring any of them back unless JC asks.
     `content.mjs` cycles the joke decks from Groan Up on 2026-11-04 (launch day); Turkey Talk is pinned to
     Thanksgiving, Monster Mash to Oct 31, Sweater Weather to Dec 1, 21 and 24.
 
-## Vault Jam, diamonds and the daily draw (JC's decisions)
+## Diamonds and the daily draw (JC's decisions)
 
-- **Vault Jam** (`/jam`): a 6×6 sliding-block puzzle (the jewel slides out the door on the
-  right; every piece moves only along its length; one slide of any distance is one move;
-  consecutive slides of the same piece merge). Don't call it Rush Hour (a trademark).
-  One **daily** puzzle, the same for everyone, easy Monday → hardest Sunday, plus unlimited
-  **practice** vaults (`/jam/practice`, static `public/jam-practice.json`, no rewards).
-- The daily board is withheld until the player taps **Open the vault**; the server starts the
-  clock then (`POST /jam/open`). The **first solve's** time counts. The server replays the
-  moves (`POST /jam/solve`) before believing a solve.
-- Diamonds: solve today's vault +1 💎; solve it at par (the fewest possible moves, from the
-  solver) +1 more (also later the same day). Diamonds are spent in the draw.
-- **Top five** on the Vault Jam screen: you and your friends only (names never leak to
-  strangers), plus your rank among everyone and the fastest time anywhere (no name).
-- **Trophy**: the day's fastest solve anywhere (ties: fewer moves, then earlier) wins it. It
-  is granted the first time the winner loads the app after Pacific midnight (`jamPend` on the
-  profile, checked in `GET /home` and `GET /jam`) and shows on the profile (🏆 count, shelf).
-- **Daily draw** (`POST /draw`): one card a day. 1 in 4 is a prize (Mole or Hidden 50/50,
-  even split); spend a diamond and it's 1 in 2. The rest are duds named per look. The hand
-  holds 3; a full hand can't draw.
-- Puzzles: `src/shared/jam.mjs` (rules and solver, shared by server, client and generator),
-  `dev/make-jam.mjs` writes `src/shared/jam-puzzles.json` (7 weekday tiers, each puzzle
-  re-solved so par is exact). The daily pick is `src/server/jam.mjs` (`daily(date)`), epoch
-  2026-11-02 = No. 1. Race boards are blobs `j/<date>`.
+- **Vault Jam moved out** (JC, Nov 7 2026: the puzzle becomes its own native Capra Lab game, with
+  a more fun theme and the same logic; the daily card draw stays in Mind Heist). It is now **Goat
+  Getaway**, at capra-lab.netlify.app/goat-getaway/ (`games/goat-getaway/` in the lab repo, with
+  its own CLAUDE.md). Don't bring a puzzle back into Mind Heist. Old `/jam` and `/jam/practice`
+  links forward there (`main.js`).
+- **Diamonds come from Goat Getaway**: +1 💎 for getting the goat out of the day's pen, +1 more at
+  par. Its server adds them straight to the Mind Heist profile linked to that lab player
+  (`l/<handle>` → `p/<pid>.gems`), or leaves them in `gg/<handle>` (`{ gems }`) until the player
+  links a profile here. `/me/lab` and `/home` claim `gg/<handle>` with a compare-and-swap
+  (`claimGoatGems` in `api.mjs`) and say how many arrived (`goatGems`; home shows a toast).
+- **Daily draw** (`POST /draw`): one card a day. 1 in 4 is a prize (Mole or Hidden 50/50, even
+  split); spend a diamond and it's 1 in 2. The rest are duds named per look. The hand holds 3; a
+  full hand can't draw. Constants in `src/server/cards.mjs`. The home card ("Today's card") has
+  the draw and a link to Goat Getaway (inside the lab only: it's the one root path the client
+  writes besides `/#profile`).
+- **Trophies**: Vault Jam's (the day's fastest solve, Nov 2–7 2026) stay on profiles as history
+  (🏆 count and shelf, shown only when there are any). Days still pending at the move
+  (`jamPend`) are settled from the old race boards (`j/<date>`) the first time the player loads
+  home after that day closes. Goat Getaway gives Blue Ribbons on its own page instead.
 
 ## Social layer
 
@@ -173,7 +170,7 @@ everyone in the room and on the `/tv/` view sees it. Looks never change the rule
 `setTheme()` sets `<html data-theme>`; `th()` returns the current look's copy. Fonts:
 Special Elite and Permanent Marker (office), Tilt Neon and Cabin Sketch (bar), Graduate and
 DotGothic16 (sports), Bungee and Baloo 2 (popup), Shrikhand and Righteous (gameshow), Press
-Start 2P and VT323 (arcade), all self-hosted. `tests/look_shots.py BASE OUT LOOK` takes 22
+Start 2P and VT323 (arcade), all self-hosted. `tests/look_shots.py BASE OUT LOOK` takes 21
 screenshots of one look and prints the iPhone fit; `tests/faceoff.py BASE OUT LOOK` covers the
 face-off screens in a look.
 `tests/looks.py` screenshots every look and checks who sees which.
@@ -196,7 +193,7 @@ untouched as a backup.
 
 - **Every path is written from the site root and goes through `src/client/base.js`**: `at('/r/ABCD')`
   for the address bar and `nav`, `local(location.pathname)` to read it, `link('/ABCD')` for any link
-  someone is sent (invites, challenges, the Vault Jam share), `asset('icon-192.png')` for files,
+  someone is sent (invites, challenges), `asset('icon-192.png')` for files,
   and `at('/api/...')` for the server (`api.js` does this). `index.html` writes a `<base>` (`/` or
   `/mind-heist/`) and lists its files relative to it; `app.css` fonts are `url(./fonts/...)`; the
   manifest uses `./`. **Never write a bare `'/...'` path, `location.origin + '/...'` or
@@ -220,8 +217,7 @@ untouched as a backup.
 
 ## Privacy (this was a real bug in Version 1)
 
-A stranger who loads the site sees nothing about anyone else's game (the Vault Jam top five
-names only you and your friends). Rooms are only reachable
+A stranger who loads the site sees nothing about anyone else's game. Rooms are only reachable
 by their code. Answer keys and unrevealed Double/Hacker tiles never leave the server before
 the reveal. A rival crew never sees the other crew's suggestions. Many parties can play at
 once; each room is its own blob.
@@ -230,15 +226,15 @@ once; each room is its own blob.
 
 - `src/server/` — the game server: `engine.mjs` (all rules, deterministic, time passed in),
   `api.mjs` (routes), `profiles.mjs` (ranks, badges, streaks, friends), `content.mjs` (daily
-  calendar), `jam.mjs` (Vault Jam daily pick and race board), `store.mjs` (Netlify Blobs or
-  in-memory), `rng.mjs`. `src/shared/jam.mjs` is the puzzle logic used on both sides.
+  calendar), `cards.mjs` (the daily draw's odds, and settling old Vault Jam trophies), `store.mjs`
+  (Netlify Blobs or in-memory), `rng.mjs`.
 - `src/netlify-entry.mjs` — the Netlify Function entry, built into Capra Lab's
   `netlify/functions/mind-heist.mjs`. It serves `/mind-heist/api/*` through its own `config.path`
   (path-configured functions run before the app fallback in Capra Lab's `netlify.toml`, so there
   is no API redirect rule; don't add one). It also checks Capra Lab keys in-process.
 - `src/client/` — Preact + htm app: `main.js` (router), `home.js` (onboarding, home, menus,
   leaderboards, profile, challenge landing), `room.js` (lobby → captains → toss → draft →
-  board → question → final), `vault.js` (Vault Jam, the draw, card faces), `ui.js`,
+  board → question → final), `vault.js` (the home card, the draw, card faces), `ui.js`,
   `sound.js` (music and effects), `arcade.js` (the synthesized band and stings),
   `emoji-data.js`, `api.js`, `app.css`, `index.html`.
 - `decks/*.json` + `deck_plan.json` — content and the drop calendar (Oct 24 – Dec 31, 2026,
@@ -252,7 +248,8 @@ once; each room is its own blob.
   **Never edit the built files by hand.**
 - Storage: Netlify Blobs store `mind-heist-daily` in Capra Lab's site, strong consistency, compare-and-swap
   writes with retry. Keys: `p/<pid>` profiles, `k/<key>` recovery keys, `r/<CODE>` rooms,
-  `c/<id>` challenges, `j/<date>` Vault Jam race boards.
+  `c/<id>` challenges, `l/<handle>` lab links, `gg/<handle>` Goat Getaway diamonds waiting for a
+  profile, `j/<date>` Vault Jam's old race boards (read only, for trophies).
 - Clients poll (`GET /api/rooms/:code?v=`): about every 1.2 s in a live invite game, 2 s in a
   lobby, 8 s when the tab is hidden; solo and party only wake at timer deadlines. An unchanged
   room returns `{same:true}`.
@@ -368,10 +365,10 @@ once; each room is its own blob.
   Run it back offers the next joke deck first.
 - **No page zoom while playing** (JC: "stop page zooming while I play this in my iPhone
   browser"): every element is `touch-action: manipulation` (fast taps on tiles, Lock or the emoji
-  rail never become a double-tap zoom; the Vault Jam floor keeps `none` for dragging), the
+  rail never become a double-tap zoom), the
   viewport has `maximum-scale=1` (no zoom when a text box is tapped; text boxes are 17 px or
   more anyway), text keeps its size when the phone turns, and `main.js` blocks two-finger
-  pinches (Safari's gesture events and two-finger moves) while a game or the Vault Jam is on
+  pinches (Safari's gesture events and two-finger moves) while a game is on
   screen. Home and the other pages can still be pinched.
 
 ## Develop and test
@@ -393,19 +390,18 @@ python tests/e2e.py http://localhost:8787 shots        # 4 browsers play a full 
 python tests/e2e_modes.py http://localhost:8787 shots2 # solo, challenge, leaderboards, party
 python tests/looks.py http://localhost:8787 shots3     # every look, and who sees which
 python tests/p2p.py http://localhost:8787 shots4       # direct links, fallback, Open mic privacy
-python tests/vault.py http://localhost:8787 shots5     # Vault Jam, the draw, Mole and Hidden 50/50 on real screens
+python tests/vault.py http://localhost:8787 shots5     # the home card, the draw, Mole and Hidden 50/50 on real screens
 python tests/fun.py http://localhost:8787 shots6       # the emoji row, spam and fallback, Profile picker, music, mic rebuild
 python tests/faceoff.py http://localhost:8787 shots7   # joke of the day, face-off intro, secret picks, replay, blank round
 python tests/iphone_fit.py http://localhost:8787 shots8  # the host's iPhone in every look: no scrolling, text share
 python tests/iphone_fit.py http://localhost:8787 shots9 --home  # the same as a Home Screen app: nothing under the clock
-node dev/make-jam.mjs                           # remake the puzzles (takes ~10 minutes; commit the JSON)
 node dev/server.mjs 8788 --bundle               # the built function over a local Blobs server
 npx netlify-cli dev --offline --dir public --functions netlify/functions --port 8899
                                                 # Netlify's own emulator: routing, Blobs, function runtime
 ```
 **At /mind-heist/:** the E2E scripts take `http://127.0.0.1:8790/mind-heist` as BASE (Capra Lab's
-dev server) once their own `fetch('/api/...')` helpers get the `/mind-heist` prefix (and vault.py's
-practice file fetch). `tests/lab.test.mjs` covers the lab linking. On Nov 7 2026 e2e, e2e_modes,
+dev server) once their own `fetch('/api/...')` helpers get the `/mind-heist` prefix (vault.py takes it
+as is). `tests/lab.test.mjs` covers the lab linking. On Nov 7 2026 e2e, e2e_modes,
 vault and `iphone_fit --home` all passed there.
 `GET /__clock?add=ms` on the dev server moves the server clock forward (the tests use it).
 In-memory mode only: `/__give?pid=&cards=mole,hfifty&gems=` sets a hand, and `/__peek?code=`

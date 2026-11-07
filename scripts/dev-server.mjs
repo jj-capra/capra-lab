@@ -12,6 +12,8 @@ import { memoryStore } from '../lab/stores.js';
 import { createApi, route } from '../games/primal-survival/server/api.js';
 import { makeHandler as mindHeist } from '../games/mind-heist/src/server/api.mjs';
 import { memoryStore as mhMemory } from '../games/mind-heist/src/server/store.mjs';
+import { createApi as goatApi } from '../games/goat-getaway/server/api.js';
+import { memoryStore as goatMemory } from '../games/goat-getaway/server/store.js';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'public');
 const PORT = Number(process.env.PORT) || 8790;
@@ -25,6 +27,12 @@ const mh = mindHeist(mhStore, { clock: () => Date.now() + mhOffset, labCheck: as
   return p ? { name: p.name, handle: p.handle } : null;
 } });
 
+// Goat Getaway pays its diamonds into the same Mind Heist store; /goat-getaway/__clock?add=ms
+// moves its clock (local only) so a test can reach tomorrow's ribbon
+let goatOffset = 0;
+const goat = goatApi({ store: goatMemory(), mh: mhStore, clock: () => Date.now() + goatOffset,
+  verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
+
 // Mind Heist's handler speaks Request/Response (Netlify Functions v2)
 async function toFunction(req, res, handler) {
   const chunks = [];
@@ -36,7 +44,7 @@ async function toFunction(req, res, handler) {
   res.end(Buffer.from(await r.arrayBuffer()));
 }
 
-const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
+const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
   '.png': 'image/png', '.svg': 'image/svg+xml', '.webmanifest': 'application/manifest+json', '.woff2': 'font/woff2', '.mp3': 'audio/mpeg' };
 
 function readBody(req) {
@@ -80,6 +88,11 @@ http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://localhost');
   if (url.pathname.startsWith('/mind-heist/api/')) return toFunction(req, res, mh);
   if (url.pathname.startsWith('/mind-heist/__')) return mhHook(url, res);
+  if (url.pathname.startsWith('/goat-getaway/api/')) return toFunction(req, res, (r) => goat.handle(r));
+  if (url.pathname === '/goat-getaway/__clock') {
+    goatOffset += Number(url.searchParams.get('add') || 0);
+    res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: goatOffset }));
+  }
   const body = req.method === 'POST' ? await readBody(req) : null;
   if (url.pathname.startsWith('/api/profile')) {
     return json(res, await routeProfiles(profiles, req.method, url.pathname, url.searchParams, body));
@@ -88,7 +101,7 @@ http.createServer(async (req, res) => {
     return json(res, await route(primal, req.method, url.pathname, url.searchParams, body));
   }
   let rel = decodeURIComponent(url.pathname);
-  if (rel === '/primal-survival' || rel === '/mind-heist') { res.writeHead(301, { location: rel + '/' }); return res.end(); }
+  if (rel === '/primal-survival' || rel === '/mind-heist' || rel === '/goat-getaway') { res.writeHead(301, { location: rel + '/' }); return res.end(); }
   if (rel.endsWith('/')) rel += 'index.html';
   const file = path.normalize(path.join(ROOT, rel));
   if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end(); }

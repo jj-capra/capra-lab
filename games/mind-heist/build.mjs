@@ -77,8 +77,6 @@ for (const f of ['menu-theme.mp3', 'theme.mp3', 'icon.svg', 'icon-192.png', 'ico
   const src = r('assets', f);
   if (fs.existsSync(src)) fs.copyFileSync(src, pub(f));
 }
-// Vault Jam practice puzzles are static (no server needed); the daily ones stay in the function.
-fs.writeFileSync(pub('jam-practice.json'), JSON.stringify(JSON.parse(fs.readFileSync(r('src/shared/jam-puzzles.json'), 'utf8')).practice));
 fs.mkdirSync(pub('fonts'), { recursive: true });
 for (const f of fs.readdirSync(r('assets/fonts'))) fs.copyFileSync(r('assets/fonts', f), pub('fonts', f));
 const size = (f) => (fs.statSync(f).size / 1024).toFixed(0) + ' KB';

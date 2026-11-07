@@ -1,4 +1,5 @@
-"""Vault Jam, diamonds, the daily draw and power cards in real browsers.
+"""Diamonds, the daily draw and power cards in real browsers.
+(Vault Jam left on Nov 7 2026 to become Capra Lab's Goat Getaway, which pays the diamonds.)
 
     python tests/vault.py http://localhost:8787 OUTDIR
 
@@ -38,29 +39,6 @@ def profile(name, avatar):
     return {'pid': r['pid'], 'token': r['token'], 'name': name}
 
 
-def solve(board):
-    js = "import(process.argv[1]).then(J => console.log(JSON.stringify(J.solve(process.argv[2]))))"
-    return json.loads(subprocess.check_output(['node', '-e', js, os.path.join(ROOT, 'src/shared/jam.mjs'), board]))
-
-
-def drag(page, pid, d):
-    el = page.locator(f'.pc[data-id="{pid}"]')
-    box = el.bounding_box()
-    cell = page.locator('.jam-floor').bounding_box()['width'] / 6
-    horiz = box['width'] > box['height'] + 2
-    x, y = box['x'] + box['width'] / 2, box['y'] + box['height'] / 2
-    page.mouse.move(x, y)
-    page.mouse.down()
-    dx, dy = (d * cell, 0) if horiz else (0, d * cell)
-    page.mouse.move(x + dx * 0.5, y + dy * 0.5, steps=4)
-    page.mouse.move(x + dx, y + dy, steps=4)
-    page.mouse.up()
-
-
-def moves_shown(page):
-    return int(page.locator('.jb', has_text='Moves').locator('b').inner_text())
-
-
 with sync_playwright() as p:
     b = p.chromium.launch()
 
@@ -73,56 +51,19 @@ with sync_playwright() as p:
         pg.on('console', lambda m: errors.append(f'console.{m.type}: {m.text}') if m.type == 'error' else None)
         return pg
 
-    # ---------- the daily vault on a phone ----------
+    # ---------- the home card and the daily draw on a phone ----------
     priya = profile('Priya', '🦊')
+    urllib.request.urlopen(f"{BASE}/__give?pid={priya['pid']}&cards=&gems=2")
     ph = ctx(priya)
     ph.goto(BASE + '/')
     ph.wait_for_selector('.vault-card')
     time.sleep(0.6)
     ph.locator('.vault-card').scroll_into_view_if_needed()
     ph.screenshot(path=f'{OUT}/01-home-vault-card.png')
-    ph.get_by_role('button', name='Crack today’s vault').click()
-    ph.wait_for_selector('.jam-head')
-    ok(ph.locator('.jam-floor').count() == 0, 'the board stays hidden until the vault is opened')
-    time.sleep(0.4)
-    ph.screenshot(path=f'{OUT}/02-jam-intro.png')
-    ph.get_by_role('button', name='Open the vault').click()
-    ph.wait_for_selector('.jam-floor')
-    time.sleep(0.5)
-    ph.screenshot(path=f'{OUT}/03-jam-board.png')
-    jam = http('GET', '/api/jam', who=priya)['jam']
-    sol = solve(jam['board'])
-    ok(sol['par'] == jam['par'], 'par matches the solver')
-    # Undo works, and a wiggle that ends where it started isn't a move.
-    first = sol['path'][0]
-    drag(ph, first[0], first[1])
-    ok(moves_shown(ph) == 1, 'a drag is one move')
-    ph.get_by_role('button', name='Undo').click()
-    ok(moves_shown(ph) == 0, 'undo takes it back')
-    for i, (pid, d) in enumerate(sol['path'][:-1]):
-        drag(ph, pid, d)
-        if i == 1:
-            ph.screenshot(path=f'{OUT}/04-jam-midway.png')
-    ok(moves_shown(ph) == len(sol['path']) - 1, 'every slide counted')
-    # Last move by keyboard: focus the jewel and press right.
-    last = sol['path'][-1]
-    if last[0] == 'A':
-        ph.locator('.pc[data-id="A"]').focus()
-        for _ in range(last[1]):
-            ph.keyboard.press('ArrowRight')
-    else:
-        drag(ph, last[0], last[1])
-    ph.wait_for_selector('.jam-result', timeout=8000)
-    time.sleep(1.0)
-    res = ph.locator('.jam-result').inner_text()
-    ok('Out in' in res and '+2 💎' in res, f'solved at par: time and two diamonds ({res[:80]!r})')
-    ok('#1' in res, 'first solver is #1')
-    ok(ph.locator('.race li.me').count() == 1, 'you show in the top five')
-    ok('💎 2' in ph.locator('.chip.gems').inner_text(), 'diamond count updates')
-    ph.screenshot(path=f'{OUT}/05-jam-result.png', full_page=True)
-
-    # ---------- the daily draw ----------
-    ph.get_by_role('button', name='Draw today’s card').click()
+    card = ph.locator('.vault-card').inner_text()
+    ok('💎 2' in card, 'the home card shows your diamonds')
+    ok('Vault Jam' not in card and ph.get_by_role('button', name='Crack today’s vault').count() == 0, 'no Vault Jam on the home card')
+    ph.get_by_role('button', name='Draw a card').click()
     ph.wait_for_selector('.draw-stage')
     time.sleep(0.4)
     ph.screenshot(path=f'{OUT}/06-draw-before.png')
@@ -136,38 +77,15 @@ with sync_playwright() as p:
     ok(me['drew'] is not None, 'today’s draw is recorded')
     ph.keyboard.press('Escape')
 
-    # ---------- practice ----------
-    ph.goto(BASE + '/jam/practice')
-    ph.wait_for_selector('.jam-floor')
-    pl = ph.evaluate("fetch('/jam-practice.json').then(r => r.json())")
-    easy = [s for s in pl if int(s[36:]) <= 10][0]
-    psol = solve(easy[:36])
-    for pid, d in psol['path']:
-        drag(ph, pid, d)
-    ph.wait_for_selector('.jam-result')
-    ok('Perfect' in ph.locator('.jam-result').inner_text(), 'practice solve at par')
-    time.sleep(0.6)
-    ph.screenshot(path=f'{OUT}/08-practice-done.png')
-    ph.get_by_role('button', name='Next vault').click()
-    ok('Vault 2 of' in ph.locator('.jam-head').inner_text(), 'next practice vault')
-
     # ---------- every look ----------
     for theme in ['heist', 'office', 'bar']:
         http('POST', '/api/me/update', {'theme': theme}, who=priya)
-        ph.goto(BASE + '/jam')
-        ph.wait_for_selector('.jam-floor')
-        time.sleep(0.8)
-        ph.screenshot(path=f'{OUT}/look-{theme}-jam.png', full_page=True)
         ph.goto(BASE + '/')
         ph.wait_for_selector('.vault-card')
         ph.locator('.vault-card').scroll_into_view_if_needed()
         time.sleep(0.5)
         ph.screenshot(path=f'{OUT}/look-{theme}-home.png')
     desk = ctx(priya, 1440, 900, False)
-    desk.goto(BASE + '/jam')
-    desk.wait_for_selector('.jam-floor')
-    time.sleep(0.8)
-    desk.screenshot(path=f'{OUT}/09-desktop-jam.png')
     desk.goto(BASE + '/')
     desk.wait_for_selector('.vault-card')
     time.sleep(0.6)

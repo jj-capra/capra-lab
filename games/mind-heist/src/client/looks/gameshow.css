@@ -36,7 +36,6 @@
   --r-lg: 24px;
   --r-md: 18px;
   --jewel: #7ff6e6;
-  --pc-ink: #1d0901;
   /* face-off replay strip: a stage floor and a white-hot bulb line */
   --turf: #5a1f07;
   --turf-2: #6e2a0c;
@@ -380,32 +379,10 @@ html[data-theme="gameshow"] body {
 [data-theme="gameshow"] .emo-grid button.on { background: var(--gs-orange); }
 [data-theme="gameshow"] .room::after { background: linear-gradient(to bottom, transparent, #1c0802 42%); }
 
-/* ---------- Vault Jam: behind the curtain, on the stage boards ---------- */
+/* ---------- diamonds and the draw ---------- */
 [data-theme="gameshow"] .vault-card .vc-title b { font-family: var(--f-show); font-weight: 400; color: var(--hi); text-shadow: 2px 2px 0 var(--gs-lacquer), 3px 3px 0 var(--ink); }
 [data-theme="gameshow"] .gems, [data-theme="gameshow"] .chip.gems { font-family: var(--f-retro); font-weight: 400; background: var(--ink); }
-[data-theme="gameshow"] .jb b { font-family: var(--f-retro); font-weight: 400; color: var(--hi); }
-[data-theme="gameshow"] .jam-head h1 { color: var(--hi); text-shadow: 3px 3px 0 var(--gs-lacquer), 5px 5px 0 var(--ink); }
-[data-theme="gameshow"] .jam-result h2 { color: var(--hi); text-shadow: 2px 2px 0 var(--gs-lacquer), 3px 3px 0 var(--ink); }
-[data-theme="gameshow"] .jam-frame {
-  padding: 14px; border-radius: 22px; border: 4px solid var(--ink); box-shadow: 0 0 0 3px var(--hi), 7px 8px 0 3px var(--gs-shadow);
-  /* red velvet curtain pleats around the stage floor: wide folds, not fine lines */
-  background: repeating-linear-gradient(90deg, #6e0f12 0 8px, #a3181c 8px 16px, #c8322a 16px 20px, #a3181c 20px 26px);
-}
-[data-theme="gameshow"] .jam-floor {
-  border-radius: 10px; background-color: #6a3416;
-  background-image: linear-gradient(to right, rgba(29, 9, 1, .55) 3px, transparent 3px), linear-gradient(to bottom, rgba(29, 9, 1, .55) 3px, transparent 3px),
-    repeating-linear-gradient(180deg, #7b3f1c 0 calc(100% / 12), #6a3416 calc(100% / 12) calc(100% / 6));
-  background-size: calc(100% / 6) calc(100% / 6), calc(100% / 6) calc(100% / 6), auto;
-  box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 40px rgba(20, 5, 0, .5);
-}
-[data-theme="gameshow"] .jam-door { background: #2a0f04; border-color: var(--hi); box-shadow: 0 0 14px rgba(255, 193, 43, .6); }
-[data-theme="gameshow"] .jam-door span { background: var(--hi); font-family: var(--f-retro); font-weight: 400; }
-[data-theme="gameshow"] .jam-wall::before { background: var(--deep-3); }
-[data-theme="gameshow"] .pc::before { border-radius: 10px; box-shadow: inset 0 3px 0 rgba(255, 255, 255, .35), 3px 3px 0 var(--pc-ink); }
-[data-theme="gameshow"] .pc.k0 { --fill: var(--gs-orange); } [data-theme="gameshow"] .pc.k1 { --fill: var(--gum); } [data-theme="gameshow"] .pc.k2 { --fill: var(--aqua); }
-[data-theme="gameshow"] .pc.k3 { --fill: #c9a0ff; } [data-theme="gameshow"] .pc.k4 { --fill: var(--gs-cream); }
-[data-theme="gameshow"] .pc.jewel { --fill: var(--hi); }
-[data-theme="gameshow"] .pc.jewel::before { box-shadow: inset 0 3px 0 rgba(255, 255, 255, .5), 3px 3px 0 var(--pc-ink), 0 0 16px 3px rgba(255, 193, 43, .6); }
+
 /* The card draw: a sunburst on the back of every card. */
 [data-theme="gameshow"] .fl-back { border-radius: 22px; box-shadow: 0 0 0 4px var(--hi), 7px 8px 0 4px var(--gs-shadow);
   background: repeating-conic-gradient(from 0deg at 50% 50%, var(--gs-orange) 0deg 12deg, #c2410c 12deg 24deg); }
@@ -523,7 +500,6 @@ html[data-theme="gameshow"] body {
   [data-theme="gameshow"] .winner h1 { font-size: 30px; }
   [data-theme="gameshow"] .cap { padding-bottom: 20px; }
   [data-theme="gameshow"] .mem { border-width: 2px; border-top-width: 6px; }
-  [data-theme="gameshow"] .jam-frame { padding: 8px; border-width: 3px; box-shadow: 0 0 0 2px var(--hi), 4px 5px 0 2px var(--gs-shadow); }
   [data-theme="gameshow"] .invite .code { text-shadow: 3px 3px 0 var(--gs-lacquer), 5px 5px 0 var(--ink); }
   [data-theme="gameshow"] .takeover.double, [data-theme="gameshow"] .takeover.faceoff { box-shadow: inset 0 0 0 8px var(--gs-lacquer), inset 0 0 0 11px var(--ink), 4px 5px 0 var(--gs-shadow); border-width: 3px; border-radius: 22px; }
   [data-theme="gameshow"] .takeover.faceoff .big { font-size: 50px; }

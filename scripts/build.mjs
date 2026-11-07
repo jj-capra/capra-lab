@@ -69,6 +69,19 @@ async function buildDontLook() {
   console.log('built public/dont-look/');
 }
 
+/* Goat Getaway: a page, its art and the puzzle rules (the same file the server checks solves
+   with), plus the practice pens as JSON; its server is netlify/functions/goat-getaway.mjs */
+async function buildGoatGetaway() {
+  const game = path.join(ROOT, 'games', 'goat-getaway'), out = path.join(ROOT, 'public', 'goat-getaway');
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(path.join(out, 'shared'), { recursive: true });
+  for (const f of ['index.html', 'game.js', 'art.js']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  await fs.copyFile(path.join(game, 'shared', 'puzzle.mjs'), path.join(out, 'shared', 'puzzle.mjs'));
+  const { practicePens } = await import(path.join(game, 'server', 'daily.js'));
+  await fs.writeFile(path.join(out, 'practice.json'), JSON.stringify(practicePens()));
+  console.log('built public/goat-getaway/');
+}
+
 /* Mind Heist: its own build validates the decks and bundles the app and the function;
    here it writes them into public/mind-heist/ and netlify/functions/mind-heist.mjs */
 async function buildMindHeist() {
@@ -87,3 +100,4 @@ await buildMindHeist();
 await buildParTeeTime();
 await buildSwervePlanet();
 await buildDontLook();
+await buildGoatGetaway();

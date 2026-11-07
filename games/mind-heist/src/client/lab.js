@@ -49,6 +49,7 @@ export async function labSync() {
     const r = await api('POST', '/me/lab', { name: lab.name, code: lab.code });
     if (r.choose) return { ...lab, mhName: r.name };
     setAuth(r); setLinked(lab.handle);
+    keepGoatGems(r);
   } catch (e) {
     // A stale lab key or Capra Lab not answering: play on as a plain Mind Heist player for now.
   }
@@ -59,7 +60,14 @@ export async function labSync() {
 export async function labLink(lab, { avatar, key } = {}) {
   const r = await api('POST', '/me/lab', key ? { name: lab.name, code: lab.code, key } : { name: lab.name, code: lab.code, create: true, avatar });
   setAuth(r); setLinked(lab.handle);
+  keepGoatGems(r);
   return r;
+}
+
+// Diamonds from Goat Getaway that arrived with the link: home says so once it loads.
+function keepGoatGems(r) {
+  if (!(r && r.goatGems > 0)) return;
+  try { sessionStorage.setItem('mh.goatGems', String(r.goatGems)); } catch (e) { /* no toast then */ }
 }
 
 // Signing out of Mind Heist inside the lab means signing out of the lab.

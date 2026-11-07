@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Goat Getaway · Capra Lab</title>
+<meta name="description" content="Slide the hay, dodge the tractors, get the goat out the gate. A daily puzzle from Capra Lab.">
+<meta name="theme-color" content="#16141F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Capra Lab">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #120E18;
+    --night: #16141F;
+    --panel: #221B2E;
+    --panel2: #2C2339;
+    --paper: #FFF8EC;
+    --yellow: #FFD23F;
+    --magenta: #FF3D8B;
+    --cyan: #29D3F0;
+    --green: #5BE38A;
+    --barn: #E4572E;
+    --ribbon: #2F6BFF;
+    --shadow: #05030A;
+    --dim: rgba(255, 248, 236, 0.72);
+    --display: Bangers, Impact, "Arial Narrow Bold", system-ui, sans-serif;
+    --sl: env(safe-area-inset-left);
+    --sr: env(safe-area-inset-right);
+    --st: env(safe-area-inset-top);
+    --sb: env(safe-area-inset-bottom);
+    --gut: 16px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; min-height: 100vh; min-height: 100dvh;
+    background-color: var(--night);
+    background-image: radial-gradient(rgba(255, 248, 236, 0.07) 1px, transparent 1.6px);
+    background-size: 9px 9px;
+    color: var(--paper);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulation; }
+  button:disabled { cursor: default; opacity: 0.45; }
+  button:focus-visible, a:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  a { color: var(--yellow); font-weight: 800; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ---------- top bar: starts below the iPhone clock ---------- */
+  .bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: calc(var(--st) + 10px) calc(var(--sr) + var(--gut)) 6px calc(var(--sl) + var(--gut));
+  }
+  .back {
+    flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px 0 8px;
+    border-radius: 999px; background: var(--panel); border: 2px solid var(--shadow);
+    color: var(--paper); text-decoration: none; font-size: 12px; font-weight: 800; letter-spacing: 0.1em;
+  }
+  .back svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .bar-right { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .who { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 700; color: var(--dim); }
+  .who b { color: var(--yellow); font-weight: 800; }
+  .round-btn {
+    flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--panel); border: 2px solid var(--shadow); padding: 0;
+    font-family: var(--display); font-size: 22px; line-height: 1;
+  }
+  .round-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .wrap {
+    max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px;
+    padding: 2px calc(var(--sr) + var(--gut)) calc(var(--sb) + 28px) calc(var(--sl) + var(--gut));
+  }
+
+  /* ---------- title ---------- */
+  .hero { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .logo {
+    display: flex; align-items: center; gap: 10px; margin: 0;
+    font-family: var(--display); font-weight: 400; font-size: clamp(38px, 11vw, 56px); line-height: 0.9;
+    letter-spacing: 0.04em; text-shadow: 3px 0 var(--magenta), -3px 0 var(--cyan);
+  }
+  .logo em { font-style: normal; color: var(--yellow); }
+  .logo .head {
+    flex: none; width: 1.05em; height: 1.05em; border-radius: 50%; display: grid; place-items: center;
+    background: var(--yellow); border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--shadow);
+  }
+  .logo .head svg { width: 84%; height: 84%; }
+  .tagline { margin: 6px 0 0; font-size: 14px; font-weight: 700; line-height: 1.35; color: var(--dim); }
+  body.playing .tagline { display: none; }
+  body.playing .logo { font-size: 30px; }
+  body.playing .logo .head { border-width: 2px; box-shadow: 2px 2px 0 var(--shadow); }
+
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 4px; border-radius: 16px; background: var(--panel); border: 2px solid var(--shadow); }
+  .tabs button {
+    min-height: 40px; border-radius: 11px; border: 2px solid transparent; background: none; padding: 0 8px;
+    font-family: var(--display); font-size: 19px; letter-spacing: 0.05em; color: var(--dim);
+  }
+  .tabs button[aria-selected="true"] { background: var(--yellow); color: var(--ink); border-color: var(--ink); }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 50px; padding: 8px 18px; border-radius: 15px;
+    background: var(--yellow); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 5px 0 var(--shadow);
+    font-size: 16px; font-weight: 800; letter-spacing: 0.02em; text-decoration: none;
+  }
+  .btn:active:not(:disabled) { transform: translate(3px, 4px); box-shadow: 1px 1px 0 var(--shadow); }
+  .btn.alt { background: var(--panel2); color: var(--paper); border-color: var(--shadow); }
+  .btn.big { min-height: 62px; font-family: var(--display); font-weight: 400; font-size: 30px; letter-spacing: 0.05em; padding: 6px 26px; }
+  .btn.sm { min-height: 40px; padding: 4px 12px; border-radius: 12px; font-size: 14px; box-shadow: 2px 3px 0 var(--shadow); border-width: 2px; }
+  .link { background: none; border: 0; padding: 10px 6px; min-height: 44px; color: var(--dim); font-size: 14px; font-weight: 700; text-decoration: underline; }
+  .stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+  /* ---------- the day's pen ---------- */
+  .kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; font-weight: 800; }
+  .kicker .muted { color: var(--dim); font-weight: 700; }
+  .tier {
+    display: inline-flex; align-items: center; min-height: 26px; padding: 2px 10px 0; border-radius: 999px;
+    background: var(--tier, var(--yellow)); color: var(--ink); border: 2px solid var(--ink);
+    font-family: var(--display); font-weight: 400; font-size: 17px; letter-spacing: 0.06em; line-height: 1;
+  }
+  .penhead { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .ribbons { flex: none; display: inline-flex; align-items: center; gap: 4px; font-weight: 800; font-size: 14px; }
+  .ribbons svg { width: 22px; height: 28px; }
+
+  .card {
+    background: var(--panel); border: 3px solid var(--shadow); border-radius: 20px; padding: 16px;
+    box-shadow: 4px 5px 0 var(--shadow);
+  }
+  .card p { margin: 0 0 10px; font-size: 15px; line-height: 1.45; }
+  .card h2 { margin: 0 0 8px; font-family: var(--display); font-weight: 400; font-size: 28px; letter-spacing: 0.05em; line-height: 1; }
+  .opener { display: grid; gap: 14px; justify-items: start; }
+  .opener p { margin: 0; }
+  .note { font-size: 13px !important; color: var(--dim); }
+  .note.warn { color: var(--paper); background: rgba(228, 87, 46, 0.25); border: 2px solid var(--barn); border-radius: 12px; padding: 8px 10px; }
+
+  /* ---------- the bar over the board ---------- */
+  .hud { display: flex; align-items: center; gap: 7px; }
+  .hud .btn.sm { padding: 4px 10px; }
+  .stat {
+    display: grid; justify-items: center; min-width: 52px; padding: 4px 7px; border-radius: 12px;
+    background: var(--panel); border: 2px solid var(--shadow);
+  }
+  .stat small { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; color: var(--dim); }
+  .stat b { font-family: var(--display); font-weight: 400; font-size: 22px; letter-spacing: 0.04em; line-height: 1.05; }
+  .stat.time { min-width: 74px; }
+  .stat.under b { color: var(--green); }
+  .hud .grow { flex: 1; }
+
+  /* ---------- the pen: a fence around a straw floor, the gate on the right of row 3 ---------- */
+  .pen {
+    --rail: 14px;
+    width: max(260px, min(100%, 470px, calc(100dvh - var(--st) - var(--sb) - 286px)));
+    margin: 4px auto 0; padding: var(--rail);
+    border-radius: 18px; border: 3px solid var(--ink); box-shadow: 5px 6px 0 var(--shadow);
+    background-color: #A8693E;
+    background-image:
+      repeating-linear-gradient(90deg, transparent 0 22px, rgba(18, 14, 24, 0.35) 22px 24px),
+      repeating-linear-gradient(0deg, transparent 0 22px, rgba(18, 14, 24, 0.35) 22px 24px);
+    touch-action: none;
+  }
+  .floor {
+    position: relative; aspect-ratio: 1; border-radius: 6px; border: 3px solid var(--ink);
+    background-color: #EBC66E;
+    background-image:
+      linear-gradient(rgba(122, 78, 30, 0.22) 2px, transparent 2px),
+      linear-gradient(90deg, rgba(122, 78, 30, 0.22) 2px, transparent 2px),
+      radial-gradient(rgba(150, 100, 30, 0.35) 1.2px, transparent 1.8px);
+    background-size: calc(100% / 6) calc(100% / 6), calc(100% / 6) calc(100% / 6), 7px 7px;
+    background-position: -1px -1px, -1px -1px, 0 0;
+    -webkit-user-select: none; user-select: none; touch-action: none;
+  }
+  .lane {
+    position: absolute; left: 0; right: 0; top: calc(200% / 6); height: calc(100% / 6);
+    background: rgba(255, 248, 236, 0.28);
+    display: flex; align-items: center; justify-content: space-around; padding: 0 4%;
+    color: rgba(122, 60, 20, 0.45); font-family: var(--display); font-size: clamp(22px, 6vw, 34px); pointer-events: none;
+  }
+  .gate {
+    position: absolute; left: 100%; top: calc(200% / 6); height: calc(100% / 6);
+    width: calc(var(--rail) + 6px); margin-left: 0; pointer-events: none;
+    background: #5A3A22;
+  }
+  .gate i {
+    position: absolute; inset: 0 3px; border: 2px solid var(--ink); border-radius: 3px;
+    background:
+      linear-gradient(to bottom right, transparent 44%, var(--paper) 44% 56%, transparent 56%),
+      linear-gradient(to top right, transparent 44%, var(--paper) 44% 56%, transparent 56%),
+      var(--barn);
+    transform-origin: 50% 0; transition: transform 0.45s cubic-bezier(.3, 1.6, .5, 1);
+  }
+  .pen.won .gate i { transform: rotate(-80deg); }
+
+  .pc {
+    position: absolute; padding: 0; margin: 0; border: 0; background: none;
+    touch-action: none; transition: left 0.14s ease-out, top 0.14s ease-out, transform 0.14s ease-out;
+    -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+  }
+  .pc svg { position: absolute; inset: 2.5%; width: 95%; height: 95%; filter: drop-shadow(3px 4px 0 rgba(5, 3, 10, 0.45)); pointer-events: none; }
+  .pc.h svg { inset: 5% 1.6%; width: 96.8%; height: 90%; }
+  .pc.v svg { inset: 1.6% 5%; width: 90%; height: 96.8%; }
+  .pc.drag { z-index: 5; transition: none; }
+  .pc.drag svg { filter: drop-shadow(6px 9px 0 rgba(5, 3, 10, 0.4)); transform: scale(1.03); }
+  .pc.goat { z-index: 2; }
+  .pc.goat.drag { z-index: 6; }
+  .pc.goat.out { transition: transform 0.65s cubic-bezier(.5, 0, .9, .6), opacity 0.25s 0.5s; transform: translateX(170%); opacity: 0; }
+  .pc.bump { animation: bump 0.22s; }
+  @keyframes bump { 25% { translate: 3px 0; } 75% { translate: -3px 0; } }
+  .pc.v.bump { animation-name: bumpv; }
+  @keyframes bumpv { 25% { translate: 0 3px; } 75% { translate: 0 -3px; } }
+  .post { position: absolute; pointer-events: none; }
+  .post svg { width: 100%; height: 100%; filter: drop-shadow(2px 3px 0 rgba(5, 3, 10, 0.4)); }
+
+  .after { margin: 4px 0 0; text-align: center; font-size: 14px; color: var(--dim); }
+
+  /* ---------- result ---------- */
+  .result h2 { font-size: 40px; color: var(--yellow); text-shadow: 2px 0 var(--magenta), -2px 0 var(--cyan); }
+  .gems { display: flex; align-items: center; gap: 8px; font-weight: 800; }
+  .gems b { font-family: var(--display); font-weight: 400; font-size: 26px; letter-spacing: 0.04em; color: var(--cyan); }
+
+  /* ---------- the race board ---------- */
+  .rhead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 8px; margin-bottom: 8px; }
+  .rhead h2 { margin: 0; white-space: nowrap; }
+  .rhead span { font-size: 13px; font-weight: 700; color: var(--dim); }
+  .lb { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .lb li {
+    display: grid; grid-template-columns: 30px 1fr auto; align-items: center; gap: 10px;
+    padding: 8px 12px 8px 8px; border-radius: 14px; background: var(--panel2); border: 2px solid var(--shadow);
+  }
+  .lb li.me { background: var(--yellow); color: var(--ink); border-color: var(--ink); }
+  .lb .pos { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--night); color: var(--paper); font-family: var(--display); font-size: 18px; border: 2px solid var(--shadow); }
+  .lb .nm { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; font-size: 16px; }
+  .lb .nm small { display: block; font-size: 12px; font-weight: 700; opacity: 0.75; }
+  .lb .t { display: flex; align-items: center; gap: 6px; font-family: var(--display); font-size: 22px; letter-spacing: 0.04em; }
+  .lb .t svg { width: 18px; height: 24px; }
+  .race .foot { margin: 10px 0 0; font-size: 13px; color: var(--dim); }
+  .empty { font-size: 14px; color: var(--dim); margin: 0; }
+
+  .shelf { display: flex; flex-wrap: wrap; gap: 10px; }
+  .rosette { display: grid; justify-items: center; gap: 2px; width: 62px; font-size: 11px; font-weight: 800; color: var(--dim); }
+  .rosette svg { width: 40px; height: 52px; }
+
+  /* ---------- practice ---------- */
+  .seg { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; }
+  .seg button {
+    min-height: 42px; border-radius: 12px; background: var(--panel); border: 2px solid var(--shadow);
+    font-family: var(--display); font-size: 20px; letter-spacing: 0.05em;
+  }
+  .seg button[aria-checked="true"] { background: var(--yellow); color: var(--ink); border-color: var(--ink); box-shadow: 2px 3px 0 var(--shadow); }
+  .center { text-align: center; }
+
+  /* ---------- toast, help sheet, confetti ---------- */
+  .toast {
+    position: fixed; z-index: 30; left: 50%; top: calc(var(--st) + 12px); transform: translate(-50%, -24px); opacity: 0; visibility: hidden;
+    width: min(92vw, 440px); padding: 12px 16px; border-radius: 16px;
+    background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 5px 0 var(--shadow);
+    font-weight: 800; font-size: 15px; line-height: 1.35; pointer-events: none;
+    transition: transform 0.3s, opacity 0.3s, visibility 0s 0.3s;
+  }
+  .toast.show { transform: translate(-50%, 0); opacity: 1; visibility: visible; transition: transform 0.3s, opacity 0.3s; }
+  .toast.err { background: #FFD9CC; }
+  .veil {
+    position: fixed; inset: 0; z-index: 20; display: grid; align-items: end; justify-items: center;
+    background: rgba(5, 3, 10, 0.6);
+    padding: calc(var(--st) + 16px) calc(var(--sr) + 12px) calc(var(--sb) + 12px) calc(var(--sl) + 12px);
+  }
+  .sheet {
+    width: min(100%, 520px); max-height: 100%; overflow: auto; position: relative;
+    background: var(--panel); border: 3px solid var(--ink); border-radius: 22px; box-shadow: 5px 6px 0 var(--shadow); padding: 18px;
+  }
+  .sheet h2 { margin: 0 46px 10px 0; font-family: var(--display); font-weight: 400; font-size: 32px; letter-spacing: 0.05em; color: var(--yellow); }
+  .sheet ul { margin: 0 0 12px; padding-left: 20px; display: grid; gap: 8px; font-size: 15px; line-height: 1.4; }
+  .sheet .round-btn { position: absolute; top: 12px; right: 12px; }
+  .legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 14px; }
+  .legend div { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+  .legend svg { width: 54px; height: 27px; flex: none; }
+  .legend .post-ico svg { width: 27px; }
+  .legend div:last-child { grid-column: 1 / -1; }
+  .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 25; overflow: hidden; }
+  .confetti i { position: absolute; top: -20px; width: 10px; height: 14px; border: 2px solid var(--ink); animation: fall linear forwards; }
+  @keyframes fall { to { transform: translate3d(var(--dx), 110vh, 0) rotate(var(--r)); } }
+  @media (prefers-reduced-motion: reduce) {
+    .pc, .gate i { transition: none; }
+    .confetti { display: none; }
+  }
+  @media (min-width: 700px) { .wrap { gap: 16px; } }
+</style>
+</head>
+<body>
+<header class="bar">
+  <a class="back" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>CAPRA LAB</a>
+  <div class="bar-right">
+    <span class="who" id="who" hidden>Playing as <b></b></span>
+    <button class="round-btn" id="soundBtn" type="button" aria-label="Sound on" aria-pressed="true"></button>
+    <button class="round-btn" id="helpBtn" type="button" aria-label="How to play">?</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section>
+    <div class="hero">
+      <h1 class="logo"><span class="head" id="logoHead"></span><span>GOAT <em>GETAWAY</em></span></h1>
+    </div>
+    <p class="tagline">Slide the hay. Shove the crates. Dodge the tractors. Get the goat out the gate.</p>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="Pens">
+    <button type="button" role="tab" id="tabToday" aria-controls="today" aria-selected="true">Today’s pen</button>
+    <button type="button" role="tab" id="tabPractice" aria-controls="practice" aria-selected="false">Practice</button>
+  </div>
+
+  <!-- ============ TODAY ============ -->
+  <section id="today" role="tabpanel" aria-labelledby="tabToday">
+    <div class="stack">
+      <div class="penhead">
+        <div class="kicker" id="kicker"><span class="muted">Opening the barn…</span></div>
+        <span class="ribbons" id="ribbonCount" hidden title="Blue Ribbons"></span>
+      </div>
+
+      <p class="note warn" id="keyWarn" hidden>Your Capra Lab name and key don’t match, so this is a guest game. <a href="/#profile">Sign in to Capra Lab again</a>.</p>
+
+      <div class="card opener" id="opener" hidden>
+        <p id="openWhat"></p>
+        <button class="btn big" id="openBtn" type="button">Open the pen</button>
+        <p class="note" id="openNote"></p>
+      </div>
+
+      <div id="play" hidden>
+        <div class="hud">
+          <span class="stat time"><small>TIME</small><b class="num" id="tTime">0:00.0</b></span>
+          <span class="stat" id="tMovesBox"><small>MOVES</small><b class="num" id="tMoves">0</b></span>
+          <span class="stat"><small>PAR</small><b class="num" id="tPar">0</b></span>
+          <span class="grow"></span>
+          <button class="btn sm alt" id="undoBtn" type="button">Undo</button>
+          <button class="btn sm alt" id="resetBtn" type="button">Reset</button>
+        </div>
+        <div class="pen" id="board"></div>
+        <p class="after" id="after" hidden></p>
+      </div>
+
+      <section class="card result" id="result" role="status" hidden></section>
+
+      <section class="card race" id="race" hidden></section>
+
+      <section class="card" id="shelfCard" hidden>
+        <div class="rhead"><h2>BLUE RIBBONS</h2><span id="shelfCount"></span></div>
+        <div class="shelf" id="shelf"></div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ============ PRACTICE ============ -->
+  <section id="practice" role="tabpanel" aria-labelledby="tabPractice" hidden>
+    <div class="stack">
+      <div class="kicker" id="pKicker"><span class="tier">Practice</span><span class="muted">Loading pens…</span></div>
+      <div class="seg" id="levels" role="radiogroup" aria-label="How hard"></div>
+      <div class="hud">
+        <span class="stat time"><small>TIME</small><b class="num" id="pTime">0:00.0</b></span>
+        <span class="stat" id="pMovesBox"><small>MOVES</small><b class="num" id="pMoves">0</b></span>
+        <span class="stat"><small>PAR</small><b class="num" id="pPar">0</b></span>
+        <span class="grow"></span>
+        <button class="btn sm alt" id="pUndo" type="button">Undo</button>
+        <button class="btn sm alt" id="pReset" type="button">Reset</button>
+      </div>
+      <div class="pen" id="pBoard"></div>
+      <section class="card result" id="pResult" role="status" hidden></section>
+      <div class="center"><button class="link" id="pSkip" type="button">Skip this pen</button></div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="veil" id="help" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <button class="round-btn" id="helpClose" type="button" aria-label="Close">✕</button>
+    <h2 id="helpTitle">HOW TO PLAY</h2>
+    <div class="legend" id="legend"></div>
+    <ul>
+      <li>Drag anything along its length to clear a path, then get the goat out the red gate. Nothing turns or jumps.</li>
+      <li>One slide, any distance, is one move. <b>Par</b> is the fewest moves it can be done in.</li>
+      <li><b>Today’s pen</b> is the same for everyone: a Kid’s pen on Monday, up to the G.O.A.T. on Sunday.</li>
+      <li>The clock starts when you open the pen. Your first getaway is your time.</li>
+      <li>Get out: <b>+1 💎</b>. Do it in par: <b>+1 more</b>, even on another try. Diamonds go to Mind Heist, for its daily card draw.</li>
+      <li>The fastest getaway of the day wins a <b>Blue Ribbon</b> at midnight (Pacific time).</li>
+      <li><b>Practice</b> pens never run out, and nothing is timed against anyone.</li>
+    </ul>
+    <button class="btn" id="helpOk" type="button">Got it</button>
+  </div>
+</div>
+
+<script type="module" src="./game.js"></script>
+</body>
+</html>

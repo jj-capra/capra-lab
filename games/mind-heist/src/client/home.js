@@ -120,11 +120,18 @@ export function Home({ me, setMe, nav, home, reloadHome }) {
   const [code, setCode] = useState('');
   const now = useNow(true, 30000);
   useEffect(() => { Sound.music('menu-theme'); }, []);
-  // A Vault Jam trophy is announced once, the first time you open the app after the day closes.
+  // A Vault Jam trophy (from its last days here) is announced once, the first time you open the
+  // app after the day closes.
   useEffect(() => {
     const won = (home && home.trophyNews) || [];
     if (won.length) { confetti(['#ffd34a', '#ffffff', '#7df9ff']); toast(`🏆 You had the fastest Vault Jam ${won.length > 1 ? `on ${won.length} days` : 'yesterday'}. The trophy is on your profile.`); }
   }, [home && (home.trophyNews || []).join()]);
+  // Diamonds earned in Goat Getaway before this lab player had a Mind Heist profile land on it.
+  useEffect(() => {
+    let n = (home && home.goatGems) || 0;
+    try { n += Number(sessionStorage.getItem('mh.goatGems') || 0); sessionStorage.removeItem('mh.goatGems'); } catch (e) {}
+    if (n > 0) toast(`💎 +${n} from Goat Getaway. Spend them in today’s card draw.`);
+  }, [home]);
   useEffect(() => {
     api('GET', '/friends').then(setFriends).catch(() => setFriends({ me: null, friends: [] }));
   }, []);
@@ -411,10 +418,9 @@ export function Profile({ me, setMe, friends, onClose }) {
       <div class="stat"><b>${me.acc == null ? '–' : me.acc + '%'}</b><span>Right answers</span></div>
       <div class="stat"><b>${me.bestStreak}</b><span>Longest streak</span></div>
       <div class="stat"><b>💎 ${me.gems || 0}</b><span>Diamonds</span></div>
-      <div class="stat"><b>🏆 ${(me.trophyList || []).length}</b><span>Vault Jam trophies</span></div>
+      ${(me.trophyList || []).length ? html`<div class="stat"><b>🏆 ${me.trophyList.length}</b><span>Vault Jam trophies</span></div>` : ''}
     </div>
-    <h3>Trophies</h3>
-    <${TrophyShelf} list=${me.trophyList} />
+    ${(me.trophyList || []).length ? html`<h3>Trophies</h3><${TrophyShelf} list=${me.trophyList} />` : ''}
     <h3>Your look</h3>
     <p class="muted" style="margin-top:-8px">Your screens use this look. In someone else's room you'll see the host's.</p>
     <${ThemePicker} value=${me.theme || 'heist'} onPick=${pickLook} label="Your look" />

@@ -1,16 +1,16 @@
-// Makes the Vault Jam puzzles: src/shared/jam-puzzles.json.
-//   node dev/make-jam.mjs [seed]
+// Makes the Goat Getaway pens: shared/puzzles.mjs (moved here from Mind Heist's Vault Jam, Nov 2026).
+//   node dev/make-puzzles.mjs [seed]
 // Lays out random floors, explores every position reachable from each one, and keeps
 // the position farthest from a solve (the hardest puzzle hiding in that layout).
 // Each kept puzzle is re-solved with the shared solver, so par is exact.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { mulberry32 } from '../src/server/rng.mjs';
-import { solve, isValid } from '../src/shared/jam.mjs';
+import { mulberry32 } from '../../mind-heist/src/server/rng.mjs';
+import { solve, isValid } from '../shared/puzzle.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const OUT = path.join(HERE, '../src/shared/jam-puzzles.json');
+const OUT = path.join(HERE, '../shared/puzzles.mjs');
 const rand = mulberry32(Number(process.argv[2] || 20261103));
 
 // Daily tiers, Monday (0) to Sunday (6): fewest moves allowed [lo, hi].
@@ -195,8 +195,10 @@ for (const list of [...tiers, ...Object.values(practice)]) {
   }
 }
 const enc = (l) => l.map(([b, d]) => `${b}${d}`);
-fs.writeFileSync(OUT, JSON.stringify({
-  made: new Date().toISOString().slice(0, 10), tiers: tiers.map(enc),
-  practice: [...practice.easy, ...practice.medium, ...practice.hard].map(([b, d]) => `${b}${d}`),
-}));
+fs.writeFileSync(OUT, '// Goat Getaway\'s pens, made by dev/make-puzzles.mjs (each re-solved so its par is exact).\n'
+  + '// A plain module rather than JSON so Node, esbuild and Netlify\'s bundler all read it the same way.\n'
+  + 'export default ' + JSON.stringify({
+    made: new Date().toISOString().slice(0, 10), tiers: tiers.map(enc),
+    practice: [...practice.easy, ...practice.medium, ...practice.hard].map(([b, d]) => `${b}${d}`),
+  }) + ';\n');
 console.log(`checked ${checked} puzzles; tiers ${tiers.map(t => t.length).join('/')}; practice ${Object.values(practice).map(p => p.length).join('/')}; ${tries} layouts tried in ${((Date.now() - t0) / 1000).toFixed(0)}s`);

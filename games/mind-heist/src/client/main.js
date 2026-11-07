@@ -4,11 +4,16 @@ import { html, Toasts, SoundButton, toast } from './ui.js';
 import { api, getAuth, setAuth } from './api.js';
 import { Onboarding, LabOnboarding, Home, ChallengeLanding } from './home.js';
 import { Room } from './room.js';
-import { JamScreen } from './vault.js';
+import { GOAT_GETAWAY } from './vault.js';
 import { Sound } from './sound.js';
 import { setTheme, rememberTheme, rememberedTheme } from './themes.js';
-import { at, local, asset } from './base.js';
+import { at, local, asset, IN_LAB } from './base.js';
 import { labSync } from './lab.js';
+
+// Vault Jam became its own Capra Lab game, Goat Getaway (Nov 7 2026): old /jam links go there.
+if (IN_LAB && /^\/jam(\/practice)?\/?$/.test(local(location.pathname))) {
+  location.replace(GOAT_GETAWAY + (location.pathname.includes('practice') ? '#practice' : ''));
+}
 
 // Inside Capra Lab, sort out the lab profile before the first load (see lab.js).
 const labReady = labSync();
@@ -21,7 +26,6 @@ function parse(path) {
   if ((m = path.match(/^\/tv\/([A-Za-z0-9]{4})\/?$/))) return { name: 'tv', code: m[1].toUpperCase() };
   if ((m = path.match(/^\/r\/([A-Za-z0-9]{4,8})\/?$/))) return { name: 'room', code: m[1].toUpperCase() };
   if ((m = path.match(/^\/c\/([A-Za-z0-9]{7})\/?$/))) return { name: 'challenge', id: m[1].toUpperCase() };
-  if ((m = path.match(/^\/jam(\/practice)?\/?$/))) return { name: 'jam', practice: !!m[1] };
   if ((m = path.match(/^\/([A-Za-z0-9]{4})\/?$/))) return { name: 'room', code: m[1].toUpperCase(), invite: true };
   return { name: 'home' };
 }
@@ -70,17 +74,16 @@ function App() {
   else if (!me) body = html`<${Onboarding} reason=${route.name === 'room' ? 'join' : ''} onDone=${(m) => { setMe(m); loadHome(); }} />`;
   else if (route.name === 'room') body = html`<${Room} key=${route.code} code=${route.code} me=${me} nav=${nav} initial=${initial && initial.code === route.code ? initial : null} />`;
   else if (route.name === 'challenge') body = html`<${ChallengeLanding} id=${route.id} me=${me} nav=${nav} />`;
-  else if (route.name === 'jam') body = html`<${JamScreen} key=${route.practice ? 'p' : 'd'} me=${me} setMe=${setMe} nav=${nav} practice=${route.practice} />`;
   else body = home ? html`<${Home} me=${me} setMe=${setMe} nav=${nav} home=${home} reloadHome=${loadHome} />` : null;
 
   return html`${body}<${SoundButton} /><${Toasts} />`;
 }
 
 // Two fingers on the glass pinch-zoom the page mid-game, and iPhone Safari ignores the viewport's zoom limits,
-// so while a game or the Vault Jam is on screen, pinches are blocked (Safari's gesture events, and any
+// so while a game is on screen, pinches are blocked (Safari's gesture events, and any
 // two-finger move). Home and the other pages can still be zoomed.
 {
-  const stop = e => { if (document.querySelector('.room, .jam')) e.preventDefault(); };
+  const stop = e => { if (document.querySelector('.room')) e.preventDefault(); };
   for (const ev of ['gesturestart', 'gesturechange', 'gestureend']) document.addEventListener(ev, stop, { passive: false });
   document.addEventListener('touchmove', e => { if (e.touches.length > 1) stop(e); }, { passive: false });
 }

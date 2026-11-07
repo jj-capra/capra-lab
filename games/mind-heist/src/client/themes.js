@@ -18,9 +18,6 @@ export const THEMES = {
     answering: (n) => `${n} is answering`,
     youAnswer: 'Your call. Lock it in.',
     late: null,
-    jamTitle: 'Get the jewel out',
-    jamHow: 'Slide the carts and crates out of the way until the jewel can reach the vault door. Everything only moves forward and back the way it’s facing.',
-    jamLine: 'Slide the carts, free the jewel. Fastest time today wins a trophy.',
     duds: ['Empty safe', 'Fake mustache', 'Decoy diamond', 'Expired keycard', 'Rubber duck', 'Wrong blueprints'],
   },
   office: {
@@ -38,9 +35,6 @@ export const THEMES = {
     answering: (n) => `${n} is on the record`,
     youAnswer: 'On the record. Lock it in.',
     late: 'Wrap it up',
-    jamTitle: 'Out of the supply closet',
-    jamHow: 'Shove the desks and filing cabinets until the jewel can get out the closet door. Everything only rolls forward and back the way it’s facing.',
-    jamLine: 'Someone locked the jewel in the supply closet. Fastest time today wins a trophy.',
     duds: ['Expired coupon', 'Out-of-office reply', 'Broken stapler', 'Reply-all chain', 'Lukewarm coffee', 'Mandatory fun flyer'],
   },
   bar: {
@@ -58,9 +52,6 @@ export const THEMES = {
     answering: (n) => `${n} is answering`,
     youAnswer: 'Your call. Lock it in.',
     late: 'Last call',
-    jamTitle: 'Out the back door',
-    jamHow: 'Roll the kegs and crates aside until the jewel can reach the back door. Everything only rolls forward and back the way it’s facing.',
-    jamLine: 'The jewel’s stuck in the back room. Fastest time today wins a trophy.',
     duds: ['Flat soda', 'Lost coaster', 'Closed tab', 'Soggy napkin', 'Jukebox IOU', 'Stale pretzel'],
   },
   sports: {
@@ -79,9 +70,6 @@ export const THEMES = {
     answering: (n) => `${n} is at the line`,
     youAnswer: 'You’re at the line. Lock it in.',
     late: 'Buzzer beater',
-    jamTitle: 'Clear the tunnel',
-    jamHow: 'Roll the equipment carts and ball bins aside until the jewel can reach the tunnel. Everything only rolls forward and back the way it’s facing.',
-    jamLine: 'The jewel is stuck in the equipment room. Fastest time today wins a trophy.',
     duds: ['Broken whistle', 'Flat basketball', 'Lost mouthguard', 'Rain delay', 'Left-hand foam finger', 'Benchwarmer pass'],
   },
   popup: {
@@ -99,9 +87,6 @@ export const THEMES = {
     answering: (n) => `${n} has the mic`,
     youAnswer: 'Your solo. Lock it in.',
     late: 'Final chorus',
-    jamTitle: 'Backstage pass',
-    jamHow: 'Slide the road cases and amps until the jewel can get out the stage door. Everything only rolls forward and back the way it’s facing.',
-    jamLine: 'The jewel is stuck backstage. Fastest time today wins a trophy.',
     duds: ['Tangled headphones', 'Blank cassette', 'Lost backstage pass', 'Scratched CD', 'Late rewind fee', 'Static'],
   },
   gameshow: {
@@ -119,9 +104,6 @@ export const THEMES = {
     answering: (n) => `${n} is on the buzzer`,
     youAnswer: 'Your answer? Lock it in.',
     late: 'Hurry!',
-    jamTitle: 'Behind the curtain',
-    jamHow: 'Slide the prize crates and stage props until the jewel can reach the curtain. Everything only moves forward and back the way it’s facing.',
-    jamLine: 'The grand prize is stuck backstage. Fastest time today wins a trophy.',
     duds: ['Lovely parting gift', 'Home game edition', 'Consolation prize', 'Rubber chicken', 'Can of studio air', 'Cardboard sports car'],
   },
   arcade: {
@@ -139,9 +121,6 @@ export const THEMES = {
     answering: (n) => `${n} is up`,
     youAnswer: 'Press start. Lock it in.',
     late: 'Hurry up!',
-    jamTitle: 'Bonus stage',
-    jamHow: 'Push the blocks until the jewel can reach the exit. Every block only slides forward and back the way it’s facing.',
-    jamLine: 'Clear the bonus stage. Fastest time today wins a trophy.',
     duds: ['Insert coin', 'Out of order', 'Sticky button', 'Token jam', 'Blown fuse', 'Continue? 9... 8...'],
   },
 };

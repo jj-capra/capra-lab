@@ -52,7 +52,6 @@
   --turf-2: #361a80;
   --gain: #ffe14d;
   --jewel: #7df9ff;
-  --pc-ink: #0f0429;
 }
 html[data-theme="popup"] body {
   background-color: var(--night);
@@ -345,18 +344,6 @@ html[data-theme="popup"] body {
 [data-theme="popup"] .emo-tabs button[aria-selected="true"] { border-color: var(--ink); }
 [data-theme="popup"] .toast { border: 3px solid var(--ink); border-radius: 20px; box-shadow: 4px 4px 0 var(--ink); }
 
-/* ---------- Vault Jam: backstage, road cases and amps ---------- */
-[data-theme="popup"] .jam-frame { border: 4px solid var(--ink); border-radius: 24px; box-shadow: 7px 7px 0 var(--ink); background: repeating-linear-gradient(-45deg, var(--hi) 0 14px, var(--ink) 14px 28px); }
-[data-theme="popup"] .jam-floor { background-color: #241052; border: 3px solid var(--ink);
-  background-image: linear-gradient(to right, rgba(255, 255, 255, .08) 2px, transparent 2px), linear-gradient(to bottom, rgba(255, 255, 255, .08) 2px, transparent 2px); }
-[data-theme="popup"] .jam-door { background: #241052; border-color: var(--aqua); }
-[data-theme="popup"] .jam-door span { background: var(--aqua); font-family: var(--f-chunk); font-weight: 400; }
-[data-theme="popup"] .jam-wall::before { background: var(--deep-3); }
-[data-theme="popup"] .pc::before { border-radius: 10px; }
-[data-theme="popup"] .pc.k0 { --fill: var(--l-a); } [data-theme="popup"] .pc.k1 { --fill: var(--l-b); } [data-theme="popup"] .pc.k2 { --fill: var(--l-d); }
-[data-theme="popup"] .pc.k3 { --fill: #ff9a3d; } [data-theme="popup"] .pc.k4 { --fill: var(--bezel); }
-[data-theme="popup"] .pc.jewel { --fill: var(--hi); }
-[data-theme="popup"] .jam-result { border-color: var(--jewel); }
 [data-theme="popup"] .gems { border-color: var(--jewel); }
 /* Card backs: a sleeve of Memphis confetti with a bubble on it. */
 [data-theme="popup"] .fl-back { border: 4px solid var(--ink); box-shadow: 6px 6px 0 var(--ink);
@@ -440,8 +427,6 @@ html[data-theme="popup"] body {
   [data-theme="popup"] .zone-sq .L { border-width: 2px; }
   [data-theme="popup"] .invite .code { text-shadow: -3px 0 var(--split-a), 3px 0 var(--split-b); }
   [data-theme="popup"] .winner { box-shadow: 5px 5px 0 var(--ink); }
-  [data-theme="popup"] .jam-frame { border-radius: 18px; box-shadow: 5px 5px 0 var(--ink); }
-  [data-theme="popup"] .jam-floor { border-width: 2px; }
   [data-theme="popup"] .hostbar .btn.sm { box-shadow: 2px 2px 0 var(--ink); border-width: 2px; }
 }
 @media (prefers-reduced-motion: reduce) {

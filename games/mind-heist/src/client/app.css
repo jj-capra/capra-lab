@@ -1060,12 +1060,11 @@ html[data-theme="bar"] body::before {
 }
 
 /* =====================================================================
-   VAULT JAM, DIAMONDS AND POWER CARDS
-   The jam board is the one loud thing on its screen: a chunky frame, a
-   floor you can count cells on, and sticker pieces with hard shadows.
-   Every look restyles the floor and pieces; the rules never change.
+   DIAMONDS, THE DAILY DRAW AND POWER CARDS
+   (Diamonds are earned in Goat Getaway, Capra Lab's daily sliding puzzle,
+   which was Vault Jam here until Nov 7 2026.)
    ===================================================================== */
-:root, [data-theme] { --jewel: #7df9ff; --pc-ink: var(--ink); --pc-gap: 5px; }
+:root, [data-theme] { --jewel: #7df9ff; }
 
 /* Home card */
 .vault-card { padding: 18px 20px; display: grid; gap: 12px; }
@@ -1114,48 +1113,8 @@ html[data-theme="bar"] body::before {
 .trophy b { font-family: var(--f-display); font-weight: 800; font-size: var(--t-sm); }
 .trophy small { font-size: var(--t-xs); }
 
-/* The jam screen */
-.jam { display: grid; gap: 18px; max-width: 560px; margin: 0 auto; padding-bottom: 96px; }
-.jam-head { padding: 20px 22px; display: grid; gap: 10px; }
-.jam-head h1 { font-size: var(--t-xl); }
-.jam-head .kicker { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-weight: 700; font-size: var(--t-sm); }
-.jam-play { display: grid; gap: 12px; justify-items: center; overflow-x: clip; padding: 4px 0 8px; }
-.jam-bar { width: min(100%, 460px); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-.jb { display: grid; line-height: 1.05; }
-.jb small { font-size: var(--t-xs); color: var(--chalk-dim); font-weight: 700; }
-.jb b { font-family: var(--f-display); font-weight: 800; font-size: 24px; }
 .num { font-variant-numeric: tabular-nums; }
-.jam-result { padding: 18px 20px; display: grid; gap: 10px; border-color: var(--jewel); }
-.jam-result h2 { font-size: var(--t-xl); }
-.race { display: grid; gap: 10px; }
-.race-note { font-size: var(--t-xs); }
-
-/* The board */
-.jam-frame { --cell: calc(100% / 6); position: relative; width: min(100%, 460px); padding: 12px; border-radius: 20px;
-  background: var(--deep-3); border: 4px solid var(--ink); box-shadow: 7px 7px 0 var(--cobalt); }
-.jam-floor { position: relative; aspect-ratio: 1; border-radius: 10px; touch-action: none; user-select: none; -webkit-user-select: none;
-  background-color: var(--deep);
-  background-image: linear-gradient(to right, rgba(255, 255, 255, .07) 2px, transparent 2px), linear-gradient(to bottom, rgba(255, 255, 255, .07) 2px, transparent 2px);
-  background-size: calc(100% / 6) calc(100% / 6); }
-.jam-door { position: absolute; right: -18px; width: 22px; background: var(--deep); border-block: 4px solid var(--hi); z-index: 0; }
-.jam-door span { position: absolute; right: -8px; top: 50%; transform: translate(100%, -50%); padding: 2px 8px; border-radius: 8px; background: var(--hi); color: var(--ink); border: 2px solid var(--ink); font-weight: 800; font-size: 12px; font-family: var(--f-display); }
-.jam-wall { position: absolute; padding: 10%; }
-.jam-wall::before { content: ""; position: absolute; inset: 14%; border-radius: 50%; background: var(--edge); border: 3px solid var(--ink); }
-.pc { position: absolute; padding: 0; margin: 0; border: 0; background: none; touch-action: none; cursor: grab; z-index: 1; }
-.pc::before { content: ""; position: absolute; inset: var(--pc-gap); border-radius: 12px; background: var(--fill, var(--chalk)); border: 3px solid var(--pc-ink); box-shadow: 3px 3px 0 var(--pc-ink); }
-.pc > i { position: absolute; inset: calc(var(--pc-gap) + 9px); border-radius: 6px; pointer-events: none; }
-.pc.h > i { background: repeating-linear-gradient(90deg, transparent 0 calc(33% - 3px), rgba(0, 0, 0, .28) calc(33% - 3px) 33%); }
-.pc.v > i { background: repeating-linear-gradient(180deg, transparent 0 calc(33% - 3px), rgba(0, 0, 0, .28) calc(33% - 3px) 33%); }
-.pc.drag { cursor: grabbing; z-index: 3; }
-.pc.drag::before { box-shadow: 6px 6px 0 var(--pc-ink); transform: translate(-2px, -2px); }
-.pc:focus-visible { outline: none; }
-.pc:focus-visible::before { outline: 3px solid var(--focus); outline-offset: 2px; }
-.pc.k0 { --fill: var(--cobalt); } .pc.k1 { --fill: var(--gum); } .pc.k2 { --fill: var(--aqua); } .pc.k3 { --fill: #9b8cff; } .pc.k4 { --fill: var(--chalk); }
-.pc.jewel { --fill: var(--hi); z-index: 2; }
-.pc.jewel svg { position: absolute; inset: 22% 30%; width: 40%; height: 56%; margin: auto; filter: drop-shadow(2px 2px 0 var(--pc-ink)); pointer-events: none; }
-.pc.jewel.out { transform: translateX(170%); opacity: 0; transition: transform .55s cubic-bezier(.5, 0, .9, .4), opacity .3s .3s; }
-.jam-frame.won { animation: slam .4s cubic-bezier(.2, 1.6, .4, 1); }
-@media (prefers-reduced-motion: reduce) { .pc.jewel.out { transition: opacity .2s; transform: none; } .flipper { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .flipper { transition: none; } }
 
 /* In a game */
 .mole-banner { display: flex; gap: 12px; align-items: center; padding: 10px 14px; border-radius: 14px; background: var(--deep-3); color: var(--chalk); border: var(--line) solid var(--ink); }
@@ -1169,33 +1128,8 @@ html[data-theme="bar"] body::before {
 .btn.card-btn.hfifty { background: var(--aqua); }
 .mole-hint { color: var(--gum); }
 
-@media (max-width: 600px) {
-  .jam-frame { padding: 8px; border-radius: 16px; box-shadow: 5px 5px 0 var(--cobalt); }
-  :root, [data-theme] { --pc-gap: 3px; }
-  .pc::before { border-width: 2.5px; border-radius: 9px; box-shadow: 2px 2px 0 var(--pc-ink); }
-  .pc > i { inset: calc(var(--pc-gap) + 6px); }
-  .jam-door span { display: none; }
-  .jam-head { padding: 16px; }
-}
-
-/* ---------- Branch Office: furniture in the supply closet ---------- */
+/* ---------- Branch Office ---------- */
 [data-theme="office"] { --jewel: #1aa7c9; }
-[data-theme="office"] .jam-frame { background: #8b5a32; border-color: var(--ink); box-shadow: 5px 5px 0 var(--ink); border-radius: 6px;
-  background-image: linear-gradient(90deg, rgba(0, 0, 0, .12) 0 2px, transparent 2px 100%); background-size: 26px 100%; }
-[data-theme="office"] .jam-floor { border-radius: 2px; background-color: #8d98a6;
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, .09) 25%, transparent 25% 75%, rgba(255, 255, 255, .09) 75%), linear-gradient(45deg, rgba(255, 255, 255, .09) 25%, transparent 25% 75%, rgba(255, 255, 255, .09) 75%),
-    linear-gradient(to right, rgba(28, 37, 65, .22) 2px, transparent 2px), linear-gradient(to bottom, rgba(28, 37, 65, .22) 2px, transparent 2px);
-  background-size: 12px 12px, 12px 12px, calc(100% / 6) calc(100% / 6), calc(100% / 6) calc(100% / 6); background-position: 0 0, 6px 6px, 0 0, 0 0; }
-[data-theme="office"] .jam-door { background: #8d98a6; border-color: #d62839; }
-[data-theme="office"] .jam-door span { background: #fff; color: #d62839; border-color: #d62839; font-family: var(--f-type); }
-[data-theme="office"] .pc::before { border-radius: 4px; }
-[data-theme="office"] .pc.k0 { --fill: #b9c0c9; } [data-theme="office"] .pc.k1 { --fill: #c89a62; } [data-theme="office"] .pc.k2 { --fill: #7f9cc0; }
-[data-theme="office"] .pc.k3 { --fill: #ece6d6; } [data-theme="office"] .pc.k4 { --fill: #a9d6ef; }
-[data-theme="office"] .pc.h > i { background: repeating-linear-gradient(90deg, transparent 0 calc(50% - 10px), var(--ink) calc(50% - 10px) calc(50% + 10px), transparent calc(50% + 10px) 50%) center / 100% 4px no-repeat, repeating-linear-gradient(90deg, transparent 0 calc(50% - 2px), rgba(28, 37, 65, .35) calc(50% - 2px) 50%); }
-[data-theme="office"] .pc.v > i { background: repeating-linear-gradient(180deg, transparent 0 calc(33% - 2px), rgba(28, 37, 65, .4) calc(33% - 2px) 33%), linear-gradient(var(--ink), var(--ink)) center 16% / 26% 4px no-repeat; }
-[data-theme="office"] .pc.jewel { --fill: var(--manila); }
-[data-theme="office"] .pc.jewel::after { content: "CONFIDENTIAL"; position: absolute; left: 50%; bottom: 14%; transform: translateX(-50%) rotate(-4deg); font-family: var(--f-type); font-size: 10px; color: #d62839; border: 1.5px solid #d62839; padding: 0 4px; pointer-events: none; }
-[data-theme="office"] .pc.jewel svg { inset: 10% 30% 34%; height: 50%; }
 [data-theme="office"] .fl-back { background: var(--manila); box-shadow: 5px 5px 0 var(--ink); }
 [data-theme="office"] .fl-back span { font-family: var(--f-type); font-weight: 400; transform: rotate(-3deg); }
 [data-theme="office"] .pcard, [data-theme="office"] .trophy { box-shadow: 5px 5px 0 var(--ink); border-radius: 6px; }
@@ -1203,24 +1137,8 @@ html[data-theme="bar"] body::before {
 [data-theme="office"] .gems, [data-theme="office"] .chip.gems { background: #fff; color: var(--ink); border-color: var(--ink); }
 [data-theme="office"] .mole-banner { background: #fff; }
 
-/* ---------- Trivia Night: kegs and crates in the back room ---------- */
-[data-theme="bar"] { --jewel: #3ee8ff; --pc-ink: #000; }
-[data-theme="bar"] .jam-frame { background: var(--wood); border-color: #000; box-shadow: 6px 6px 0 #000;
-  background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, .18) 0 3px, transparent 3px 22px); }
-[data-theme="bar"] .jam-floor { background-color: #3a2216;
-  background-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, .35) 0 3px, transparent 3px calc(100% / 6)), linear-gradient(to bottom, rgba(0, 0, 0, .25) 2px, transparent 2px);
-  background-size: auto, calc(100% / 6) calc(100% / 6); }
-[data-theme="bar"] .jam-door { background: #3a2216; border-color: var(--right); box-shadow: 0 0 14px rgba(93, 255, 143, .6); }
-[data-theme="bar"] .jam-door span { background: #0f0807; color: #fff; border-color: var(--right); font-family: var(--f-neon); font-weight: 400; text-shadow: 0 0 6px var(--right); }
-[data-theme="bar"] .pc.k0 { --fill: #9aa3a8; } [data-theme="bar"] .pc.k1 { --fill: var(--wood-hi); } [data-theme="bar"] .pc.k2 { --fill: #b5763f; }
-[data-theme="bar"] .pc.k3 { --fill: #c9ced1; } [data-theme="bar"] .pc.k4 { --fill: #7a4a2a; }
-/* kegs: steel with dark hoops; crates: wood slats */
-[data-theme="bar"] .pc.k0 > i, [data-theme="bar"] .pc.k3 > i { inset: calc(var(--pc-gap) + 3px); border-radius: 10px; }
-[data-theme="bar"] .pc.h.k0 > i, [data-theme="bar"] .pc.h.k3 > i { background: linear-gradient(90deg, transparent 18%, #2a2a2a 18% 23%, transparent 23% 77%, #2a2a2a 77% 82%, transparent 82%); }
-[data-theme="bar"] .pc.v.k0 > i, [data-theme="bar"] .pc.v.k3 > i { background: linear-gradient(180deg, transparent 18%, #2a2a2a 18% 23%, transparent 23% 77%, #2a2a2a 77% 82%, transparent 82%); }
-[data-theme="bar"] .pc.jewel { --fill: #140a07; }
-[data-theme="bar"] .pc.jewel::before { border-color: var(--gum); box-shadow: 0 0 12px rgba(255, 79, 163, .7), 3px 3px 0 #000; }
-[data-theme="bar"] .pc.jewel svg { filter: drop-shadow(0 0 6px var(--jewel)); }
+/* ---------- Trivia Night ---------- */
+[data-theme="bar"] { --jewel: #3ee8ff; }
 [data-theme="bar"] .fl-back { background: repeating-linear-gradient(45deg, #2b1a12 0 14px, #3a2419 14px 28px); box-shadow: 6px 6px 0 #000; }
 [data-theme="bar"] .fl-back span { background: #0f0807; color: #fff; border-color: var(--gum); font-family: var(--f-neon); font-weight: 400; text-shadow: 0 0 8px var(--gum); }
 [data-theme="bar"] .pcard, [data-theme="bar"] .trophy { box-shadow: 6px 6px 0 #000; }
@@ -1414,15 +1332,6 @@ html[data-theme="bar"] body::before {
   .badge-strip::-webkit-scrollbar { display: none; }
   .badge-strip .badge { flex: none; }
 
-  /* Vault Jam: once the vault is open the how-to steps aside for the board. */
-  .jam { gap: 10px; padding-bottom: calc(74px + env(safe-area-inset-bottom, 0px)); }
-  .jam-head { padding: 12px 14px; gap: 6px; }
-  .jam-head h1 { font-size: 24px; }
-  .jam-head .blurb { font-size: 14px; }
-  .jam:has(.jam-floor) .jam-head .blurb, .jam:has(.jam-floor) .jam-head h1 { display: none; }
-  .jam-bar { gap: 10px; }
-  .jb b { font-size: 20px; }
-  .jam-bar .btn.sm { min-height: 36px; padding: 4px 10px; font-size: 14px; }
 }
 @media (max-width: 640px) {
   /* Next lives in the dock on the reveal, like Lock does on the question. */

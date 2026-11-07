@@ -676,84 +676,31 @@ test('Open mic: host switch for invite games, off by default', async () => {
   assert.equal((await act(R, host, party.code, { type: 'mic', on: true })).status, 400);
 });
 
-/* ---------- Vault Jam, diamonds, the daily draw and power cards ---------- */
-import { solve, replay } from '../src/shared/jam.mjs';
-import * as J from '../src/server/jam.mjs';
-
+/* ---------- diamonds, the daily draw and power cards ---------- */
 const setProfile = async (R, who, fn) => { const e = await R.store.get('p/' + who.pid); fn(e.data); await R.store.set('p/' + who.pid, e.data); };
 
-test('Vault Jam: hidden until opened, server-timed, diamonds, top five, trophy', async () => {
-  const R = rig(Date.parse('2026-11-03T18:00:00Z'));
-  const a = await R.make('Ann'), b = await R.make('Bo'), c = await R.make('Cy'), d = await R.make('Di');
-  // Ann and Bo are friends; Cy and Di are strangers to Ann.
-  await setProfile(R, a, p => { p.friends = [b.pid]; });
-  await setProfile(R, b, p => { p.friends = [a.pid]; });
-  let j = await R.call('GET', '/jam', null, a);
-  assert.equal(j.status, 200, j.error);
-  assert.equal(j.jam.board, null, 'the board stays hidden until you open the vault');
-  assert.equal(j.jam.day, 'Tuesday');
-  const t = J.daily('2026-11-03');
-  assert.equal(j.jam.par, t.par);
-  assert.ok(t.par >= 8 && t.par <= 10, 'Tuesday is a Tuesday-sized puzzle');
-  const o = await R.call('POST', '/jam/open', null, a);
-  assert.equal(o.jam.board, t.board);
-  const best = solve(t.board);
-  assert.equal(best.par, t.par);
-  assert.equal((await R.call('POST', '/jam/solve', { moves: best.path.slice(0, -1) }, a)).status, 400, 'not out yet');
-  assert.equal((await R.call('POST', '/jam/solve', { moves: [['A', 9]] }, a)).status, 400, 'illegal slide');
-  assert.equal((await R.call('POST', '/jam/solve', { moves: best.path }, c)).status, 409, 'open first');
-  R.tick(41000);
-  let s = await R.call('POST', '/jam/solve', { moves: best.path }, a);
-  assert.equal(s.status, 200, s.error);
-  assert.equal(s.ms, 41000, 'the clock runs from opening the vault');
-  assert.equal(s.gained, 2, 'a solve at par earns two diamonds');
-  assert.equal(s.vault.gems, 2);
-  assert.equal(s.race.rank, 1);
-  // Solving again earns nothing and doesn't change the time.
-  R.tick(5000);
-  s = await R.call('POST', '/jam/solve', { moves: best.path }, a);
-  assert.equal(s.gained, 0);
-  assert.equal(s.ms, 41000);
-  // A longer solve: one diamond, then par later the same day adds the second.
-  await R.call('POST', '/jam/open', null, b);
-  R.tick(20000);
-  const detour = [[best.path[0][0], best.path[0][1]], [best.path[0][0], -best.path[0][1]], ...best.path];
-  assert.ok(replay(t.board, detour).out);
-  s = await R.call('POST', '/jam/solve', { moves: detour }, b);
-  assert.equal(s.gained, 1);
-  assert.equal(s.ms, 20000);
-  assert.equal(s.race.rank, 1, 'faster than Ann');
-  s = await R.call('POST', '/jam/solve', { moves: best.path }, b);
-  assert.equal(s.gained, 1, 'par later still earns the par diamond');
-  assert.equal(s.ms, 20000, 'but the race time is the first solve');
-  // Strangers race too, but only friends show by name.
-  for (const [who, ms] of [[c, 15000], [d, 60000]]) {
-    await R.call('POST', '/jam/open', null, who);
-    R.tick(ms);
-    await R.call('POST', '/jam/solve', { moves: best.path }, who);
-  }
-  j = await R.call('GET', '/jam', null, a);
-  assert.deepEqual(j.race.top.map(x => x.name), ['Bo', 'Ann'], 'friends only, fastest first');
-  assert.equal(j.race.solvers, 4);
-  assert.equal(j.race.fastest, 15000, 'the fastest time anywhere, without a name');
-  assert.equal(j.race.rank, 3);
-  assert.equal(JSON.stringify(j).includes('Cy'), false, 'a stranger’s name never shows');
-  // Next day: Cy (fastest anywhere) gets the trophy; Bo doesn't.
+// Vault Jam became Capra Lab's Goat Getaway on Nov 7 2026 (games/goat-getaway/, its own tests).
+test('Vault Jam moved out: /jam is gone, but trophies for its last days still land once', async () => {
+  const R = rig(Date.parse('2026-11-07T18:00:00Z'));
+  const a = await R.make('Ann'), b = await R.make('Bo');
+  assert.notEqual((await R.call('GET', '/jam', null, a)).status, 200);
+  assert.notEqual((await R.call('POST', '/jam/open', null, a)).status, 200);
+  // Both solved the Nov 7 vault before the move; Bo was fastest.
+  await R.store.set('j/2026-11-07', { d: '2026-11-07', e: { [a.pid]: [41000, 9, 1, 'Ann', '🦊'], [b.pid]: [20000, 12, 2, 'Bo', '🦊'] } });
+  await setProfile(R, a, p => { p.jamPend = ['2026-11-07']; });
+  await setProfile(R, b, p => { p.jamPend = ['2026-11-07']; });
+  assert.deepEqual((await R.call('GET', '/home', null, b)).trophyNews, [], 'not until the day is over');
   R.tick(24 * 3600e3);
-  const hc = await R.call('GET', '/home', null, c);
-  assert.deepEqual(hc.trophyNews, ['2026-11-03']);
-  assert.deepEqual(hc.me.trophyList, ['2026-11-03']);
   const hb = await R.call('GET', '/home', null, b);
-  assert.deepEqual(hb.trophyNews, []);
-  const again = await R.call('GET', '/home', null, c);
-  assert.deepEqual(again.trophyNews, [], 'a trophy is announced once');
-  const fr = await R.call('GET', '/friends', null, a);
-  assert.equal(fr.friends[0].trophies, 0);
-  // New day, new puzzle, hidden again.
-  j = await R.call('GET', '/jam', null, a);
-  assert.equal(j.jam.board, null);
-  assert.equal(j.jam.day, 'Wednesday');
-  assert.equal(j.vault.jam, null);
+  assert.deepEqual(hb.trophyNews, ['2026-11-07']);
+  assert.deepEqual(hb.me.trophyList, ['2026-11-07']);
+  assert.equal(hb.me.jam, undefined, 'no Vault Jam day on the profile any more');
+  assert.equal(hb.jam, undefined);
+  assert.deepEqual((await R.call('GET', '/home', null, b)).trophyNews, [], 'announced once');
+  assert.deepEqual((await R.call('GET', '/home', null, a)).trophyNews, []);
+  const draw = await R.call('POST', '/draw', { gem: true }, a);
+  assert.equal(draw.status, 409);
+  assert.match(draw.error, /Goat Getaway/, 'the draw says where diamonds come from now');
 });
 
 test('daily draw: once a day, a diamond doubles the odds, hand holds three', async () => {

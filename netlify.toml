@@ -72,6 +72,13 @@
     Content-Type = "text/javascript; charset=utf-8"
     Cache-Control = "public, max-age=300"
 
+# Goat Getaway's page imports its puzzle rules as shared/puzzle.mjs (the file its server uses too)
+[[headers]]
+  for = "/*.mjs"
+  [headers.values]
+    Content-Type = "text/javascript; charset=utf-8"
+    Cache-Control = "public, max-age=300"
+
 [[headers]]
   for = "/*.html"
   [headers.values]

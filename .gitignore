@@ -6,6 +6,7 @@ public/primal-survival/
 public/par-tee-time/
 public/swerve-planet/
 public/dont-look/
+public/goat-getaway/
 public/mind-heist/
 netlify/functions/mind-heist.mjs
 games/mind-heist/src/server/decks.gen.json

@@ -134,3 +134,24 @@ test('long lab names fit Mind Heist names', async () => {
   assert.equal(res.status, 200, d.error);
   assert.ok(d.me.name.length <= 16 && d.me.name.length >= 2, d.me.name);
 });
+
+// Goat Getaway (Capra Lab's daily puzzle) pays diamonds into Mind Heist: onto the linked profile,
+// or into gg/<handle> until the lab player has one. Linking claims them, once.
+test('Goat Getaway diamonds waiting for a lab player arrive when they link, and only once', async () => {
+  const R = rig();
+  await R.store.set('gg/jj-capra', { gems: 3 });
+  const made = await R.call('POST', '/me/lab', { ...jj, create: true, avatar: '🦊' });
+  assert.equal(made.status, 200, made.error);
+  assert.equal(made.goatGems, 3);
+  assert.equal(made.me.gems, 3);
+  assert.deepEqual((await R.store.get('gg/jj-capra')).data, { gems: 0 });
+  const again = await R.call('POST', '/me/lab', jj);
+  assert.equal(again.goatGems, 0);
+  assert.equal(again.me.gems, 3, 'claimed once');
+  // More landed in gg/ in a race with the link: home picks them up.
+  await R.store.set('gg/jj-capra', { gems: 2 });
+  const home = await R.call('GET', '/home', null, again);
+  assert.equal(home.goatGems, 2);
+  assert.equal(home.me.gems, 5);
+  assert.equal((await R.call('GET', '/home', null, again)).goatGems, 0);
+});

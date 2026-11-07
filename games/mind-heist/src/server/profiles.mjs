@@ -38,7 +38,7 @@ export function newProfile({ pid, name, avatar, tokenHash, key, now }) {
     haul: 0, games: 0, wins: 0, losses: 0, runs: 0, right: 0, answered: 0, best: 0,
     streak: { cur: 0, best: 0, last: null, frz: 0 }, week: { id: null, haul: 0 }, daily: null,
     badges: {}, friends: [], h2h: {}, recent: [],
-    gems: 0, hand: [], draw: null, jam: null, jamPend: [], trophies: [],
+    gems: 0, hand: [], draw: null, trophies: [],
   };
 }
 
@@ -88,14 +88,12 @@ export function privateProfile(p, today) {
     ...vaultOf(p, today) };
 }
 
-// Diamonds, cards and today's Vault Jam: the parts of a profile only its owner sees.
+// Diamonds, cards and Vault Jam trophies: the parts of a profile only its owner sees.
 export function vaultOf(p, today) {
-  const jam = p.jam && p.jam.day === today ? p.jam : null;
   const draw = p.draw && p.draw.day === today ? p.draw : null;
   return {
     gems: p.gems || 0, hand: (p.hand || []).map(c => ({ id: c.id, k: c.k })),
     drew: draw ? draw.card : null,
-    jam: jam ? { open: jam.open, ms: jam.ms ?? null, moves: jam.moves ?? null, best: jam.best ?? null, parGem: !!jam.parGem } : null,
     trophyList: (p.trophies || []).slice(-30),
   };
 }

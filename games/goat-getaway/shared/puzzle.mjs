@@ -1,11 +1,12 @@
-// Vault Jam: the daily sliding-block puzzle. Shared by the server (checks a
-// solve by replaying it), the client (plays it) and dev/make-jam.mjs (makes them).
+// Goat Getaway: the daily sliding-block puzzle (it was Mind Heist's Vault Jam until Nov 2026).
+// Shared by the server (checks a solve by replaying it), the client (plays it) and
+// dev/make-puzzles.mjs (makes them).
 //
-// A board is a 36-character string, row by row on a 6×6 floor:
-//   '.' empty, 'A' the jewel (always flat, on row 2, leaves through the door on the
-//   right), 'B'…'Z' carts and crates, 'x' a pillar that never moves.
+// A board is a 36-character string, row by row on a 6×6 pen:
+//   '.' empty, 'A' the goat (always flat, on row 2, leaves through the gate on the
+//   right), 'B'…'Z' hay bales, crates and tractors, 'x' a post that never moves.
 // Every piece slides only along its own length. One slide, any distance, is one move.
-// The jewel is out when it reaches the door (columns 4–5 of row 2).
+// The goat is out when it reaches the gate (columns 4–5 of row 2).
 
 export const N = 6;
 export const EXIT_ROW = 2;

@@ -35,7 +35,6 @@
   --r-lg: 12px;
   --r-md: 10px;
   --jewel: #8ff3ff;
-  --pc-ink: #0a0d0b;
   --gain: #ffc62e;
   /* the scoreboard */
   --sb-panel: #070a08;
@@ -306,18 +305,6 @@ html[data-theme="sports"] body::before {
 [data-theme="sports"] .emo-pick { border-color: #000; border-radius: 14px; }
 [data-theme="sports"] .toast { border-color: #000; }
 
-/* ---------- Vault Jam: the equipment room, on the hardwood ---------- */
-[data-theme="sports"] .jam-frame { background: var(--sb-steel-lo); border-color: #000; border-radius: 12px; box-shadow: 0 0 0 3px var(--sb-steel), 7px 7px 0 3px #000; }
-[data-theme="sports"] .jam-floor { border-radius: 4px; background-color: var(--wood);
-  background-image: linear-gradient(to right, rgba(91, 58, 27, .4) 3px, transparent 3px), linear-gradient(to bottom, rgba(91, 58, 27, .4) 3px, transparent 3px);
-  background-size: calc(100% / 6) calc(100% / 6); }
-[data-theme="sports"] .jam-door { background: var(--wood); border-color: var(--hi); }
-[data-theme="sports"] .jam-door span { font-family: var(--f-varsity); font-weight: 400; }
-[data-theme="sports"] .jam-wall::before { background: var(--sb-steel); border-color: #000; }
-[data-theme="sports"] .pc.k0 { --fill: #9aa49d; } [data-theme="sports"] .pc.k1 { --fill: var(--gum); } [data-theme="sports"] .pc.k2 { --fill: var(--aqua); }
-[data-theme="sports"] .pc.k3 { --fill: #f2e9d2; } [data-theme="sports"] .pc.k4 { --fill: #2f7a4c; }
-[data-theme="sports"] .pc::before { border-radius: 8px; }
-[data-theme="sports"] .pc.jewel { --fill: var(--hi); }
 [data-theme="sports"] .gems, [data-theme="sports"] .chip.gems { background: var(--sb-panel); }
 
 /* ---------- the daily draw: trading cards ---------- */
