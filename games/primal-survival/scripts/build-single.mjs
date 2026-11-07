@@ -37,6 +37,35 @@ let js = inline(path.join(ROOT, 'client', 'app.js'));
 js = js.replace(/^connect\(\)\.then\(loadBoard\);$/m,
   "NET.online = false;\n$('netLine').textContent = 'Offline build \\u00b7 wild packs only';\n$('submitBtn').closest('.submitbox').style.display = 'none';");
 
+/* Flattening every module into one scope means two modules that each declare a
+   private `const INK` now collide, and a duplicate declaration is a parse error
+   that kills the entire bundle — the page renders its static HTML and does
+   nothing. This is invisible in the module build, where those scopes are real,
+   so it has to be caught here. */
+const declared = new Map();
+const dupes = [];
+const declRe = /^\s*(?:const|let|class|function|async function)\s+([A-Za-z_$][\w$]*)/;
+let currentFile = '(entry)';
+js.split('\n').forEach(line => {
+  const marker = line.match(/^\/\* ---- (.+) ---- \*\/$/);
+  if (marker) { currentFile = marker[1]; return; }
+  /* only top-level declarations collide, and those start at column zero */
+  if (/^\s/.test(line)) return;
+  const m = line.match(declRe);
+  if (!m) return;
+  const name = m[1];
+  if (declared.has(name)) dupes.push({ name, first: declared.get(name), second: currentFile });
+  else declared.set(name, currentFile);
+});
+if (dupes.length) {
+  console.error('\n  Two modules declare the same name. Flattened into one scope that is a');
+  console.error('  parse error, and the whole bundle dies:\n');
+  dupes.slice(0, 10).forEach(d =>
+    console.error('      ' + d.name + '  —  ' + d.first + '  and  ' + d.second));
+  console.error('\n  Move the shared value into a module both import.\n');
+  process.exit(1);
+}
+
 /* Nothing may survive into a plain <script>. Catching it here beats shipping a
    file that looks fine and is inert. */
 const leftovers = js.split('\n')

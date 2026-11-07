@@ -34,8 +34,15 @@ function boundNames(src) {
   add(/import\s*\{([^}]+)\}\s*from/g);
   add(/import\s+(\w+)\s+from/g);
   add(/(?:const|let|var)\s+([A-Za-z_$][\w$]*)/g);
-  /* `const A = 1, B = 2` binds B as well */
-  add(/(?:const|let|var)\s+[^;=]*=[^;]*?,\s*([A-Za-z_$][\w$]*)\s*=/g);
+  /* `const A = 1, B = 2, C = 3` binds every name, not just the first two.
+     Pull the whole declaration and take each `name =` inside it. */
+  let d;
+  const decl = /(?:^|[^\w.])(?:const|let|var)\s+([^;\n]+)/g;
+  while ((d = decl.exec(src))) {
+    let n;
+    const names = /(?:^|,)\s*([A-Za-z_$][\w$]*)\s*=/g;
+    while ((n = names.exec(d[1]))) out.add(n[1]);
+  }
   add(/(?:export\s+)?(?:async\s+)?function\s+([A-Za-z_$][\w$]*)/g);
   add(/(?:const|let|var)\s*\{([^}]+)\}/g);
   add(/(?:const|let|var)\s*\[([^\]]+)\]/g);

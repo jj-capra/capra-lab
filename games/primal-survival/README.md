@@ -122,6 +122,14 @@ That shipped once. `SHIELD` lived in `shapes.js` and `badge()` in `render.js`
 used it; the draft screen came up with no animals on it and no obvious cause.
 Two more were sitting behind it.
 
+The same flattening causes the opposite failure too. Two modules may each
+declare a private `const INK` quite legally; flattened into one scope that is
+`Identifier 'INK' has already been declared`, a parse error that kills the
+whole bundle and leaves an inert page. That also shipped once.
+`npm run build:single` now refuses to emit a bundle containing duplicate
+top-level declarations, and caught a second collision (`creature`, in two
+drawing modules) the moment it was added.
+
 So `scripts/check-modules.mjs` now runs as part of `npm run build`, which is
 also Netlify's build command — a broken module graph fails the build instead of
 deploying. `npm run test:site` then plays the whole game in a real browser,
@@ -236,6 +244,30 @@ board, not a security boundary.
 `npm run build:single` inlines the module tree into one HTML file with the
 network layer stripped. It is how the game travels: email it, drop it on static
 hosting, open it off a stick. It plays the procedural season offline.
+
+## The look
+
+Four process inks on newsprint, printed. `--ink` is black pulled toward
+red-violet, the way print black sits over red; `--paper` is newsprint; and
+`--blood`, `--sky`, `--flare` and `--violet` are the process colours. Halftone
+screens, hard keylines, hard offset shadows, deliberate misregistration on the
+display type. No gradients, no blurs, no soft shadows — a press cannot make
+those, so nothing here does either. Panels sit a fraction off square, because
+comic pages are not square.
+
+The five slots each own an ink, so colour carries the role instead of
+decorating it. Bulwark's cream and Sprinter's yellow are light grounds, so
+those cards invert: an ink silhouette instead of a bone one, the same way a
+printer would handle it.
+
+`client/palette.js` is the single source for those values. Two modules once
+declared their own `INK` and the single-file bundler, which flattens every
+module into one scope, died on the duplicate — see below.
+
+The display face (Anton) is embedded as base64 in the stylesheet rather than
+fetched. The offline build has no network at all, and a webfont that silently
+falls back to Arial takes the whole design with it. `npm run build` does not
+regenerate it; `node scripts/embed-font.mjs` does, if the face ever changes.
 
 ## The roster
 

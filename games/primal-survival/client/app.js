@@ -121,8 +121,10 @@ async function submitRun() {
       me.rank = out.career.rank;
       saveMe(me);
     }
-    /* the server's number is the real one — if it disagrees, say so plainly */
-    const mine = Number($('gCount').textContent);
+    /* the server's number is the real one — if it disagrees, say so plainly.
+       Compare with the run's own count, not the number on screen: that one is
+       still counting up for a moment after the result appears. */
+    const mine = runDays;
     $('verifyLine').textContent = out.days === mine
       ? 'Verified \u00b7 ' + out.days + ' days \u00b7 ' + out.grade + ' \u00b7 place ' +
         out.place + ' of ' + out.of + (out.duplicate ? ' (already on the board)' : '')
@@ -138,7 +140,7 @@ async function loadBoard() {
     const b = await api('/api/leaderboard?seed=' + encodeURIComponent(NET.seed) + '&limit=10');
     $('leaderBoard').innerHTML = b.entries.length
       ? b.entries.map(e => row(e, 'today')).join('')
-      : '<div class="lrow"><span>Nobody has finished a run today.</span></div>';
+      : '<div class="lrow empty">Nobody has finished a run today.</div>';
   } catch { /* leave it empty */ }
 }
 
@@ -177,9 +179,9 @@ async function openBoard(scope) {
       : "Best single run of " + b.seed;
     $('bigBoard').innerHTML = b.entries.length
       ? b.entries.map(e => row(e, boardScope)).join('')
-      : '<div class="lrow"><span>' + (boardScope === 'lifetime'
+      : '<div class="lrow empty">' + (boardScope === 'lifetime'
           ? 'Nobody has banked a run yet.'
-          : 'Nobody has finished a run today.') + '</span></div>';
+          : 'Nobody has finished a run today.') + '</div>';
   } catch (e) {
     $('boardNote').textContent = 'Could not load the board: ' + e.message;
   }
@@ -198,7 +200,7 @@ function renderDiscs() {
   $('discs').innerHTML = ROLES.map(r => {
     const a = squad[r];
     return '<div class="disc' + (a ? ' filled' : '') + '">' + discSVG(a, r) +
-      '<span class="dn">' + (a ? a.name : ROLE_LABEL[r]) + '</span></div>';
+      '<span class="dn">' + (a ? a.name : '') + '</span></div>';
   }).join('');
 }
 
@@ -432,10 +434,12 @@ function countUp(el, to, ms, done) {
     if (k < 1) requestAnimationFrame(step); else if (done) done();
   })(start);
 }
+let runDays = 0;
 function finish(loss) {
   clearTimeout(timer); timer = null;
   show('viewResult');
   const days = loss ? season.day - 1 : 365;
+  runDays = days;
   const perfect = !loss;
   const res = loss || lastRes;
   best = Math.max(best, days);

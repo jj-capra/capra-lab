@@ -12,6 +12,7 @@
  * just a picture. The printed code covers that case, which is why both exist.
  */
 import { SHAPES, SHAPE_OF } from './shapes.js';
+import { INK, PAPER, BONE, BLOOD, SKY, FLARE } from './palette.js';
 
 const W = 1080, H = 1350;
 const KEYWORD = 'primal-survival-key';
@@ -83,142 +84,179 @@ export function readFromPng(pngBytes, keyword = KEYWORD) {
   return null;
 }
 
-/* ---------- the card itself ---------- */
-const BARK = '#0F1512', MOSS = '#22302A';
-const BRASS = '#C6A664', BRASS_D = '#8A7038', BONE = '#E8E3D3', ASH = '#8A978C';
+/* ---------- the card itself ----------
+ * Drawn as a printed card: flat inks, a halftone screen, a heavy keyline, and
+ * the title's plates a hair out of register. Same vocabulary as the rest of
+ * the game, so a card screenshotted into a group chat still reads as this.
+ */
 
-function roundRect(c, x, y, w, h, r) {
-  c.beginPath();
-  c.moveTo(x + r, y);
-  c.arcTo(x + w, y, x + w, y + h, r);
-  c.arcTo(x + w, y + h, x, y + h, r);
-  c.arcTo(x, y + h, x, y, r);
-  c.arcTo(x, y, x + w, y, r);
-  c.closePath();
-}
-/* an animal silhouette, drawn from the same path data the badges use */
-function creature(c, name, cx, cy, scale, color) {
-  const d = SHAPES[SHAPE_OF[name] || 'cat'];
-  if (!d || typeof Path2D === 'undefined') return;
+
+/* a dot screen, drawn by hand because canvas has no pattern primitive for it */
+function halftone(c, x, y, w, h, color, step) {
   c.save();
-  c.translate(cx, cy);
-  c.scale(scale, scale);
-  c.translate(-60, -72);
-  c.fillStyle = color; c.strokeStyle = color; c.lineWidth = 2.2;
-  c.lineJoin = 'round'; c.lineCap = 'round';
-  const p = new Path2D(d);
-  c.fill(p); c.stroke(p);
+  c.beginPath(); c.rect(x, y, w, h); c.clip();
+  c.fillStyle = color;
+  for (let j = y; j < y + h; j += step) {
+    for (let i = x; i < x + w; i += step) {
+      c.beginPath(); c.arc(i, j, step * 0.26, 0, Math.PI * 2); c.fill();
+    }
+  }
   c.restore();
 }
+/* a box with a hard offset shadow — the same device every panel in the UI uses */
+function plate(c, x, y, w, h, fill, drop = 9) {
+  c.fillStyle = INK; c.fillRect(x + drop, y + drop, w, h);
+  c.fillStyle = fill; c.fillRect(x, y, w, h);
+  c.lineWidth = 6; c.strokeStyle = INK; c.strokeRect(x, y, w, h);
+}
+/* an animal, inked: fat keyline under a flat fill.
+ * `fill` of null draws the keyline only — an empty slot waiting to be filled. */
+function paintShape(c, d, cx, cy, scale, fill) {
+  if (!d || typeof Path2D === 'undefined') return;
+  c.save();
+  c.translate(cx, cy); c.scale(scale, scale); c.translate(-60, -72);
+  const p = new Path2D(d);
+  c.lineJoin = 'round'; c.lineCap = 'round';
+  if (fill) {
+    c.strokeStyle = INK; c.lineWidth = 9; c.stroke(p);
+    c.fillStyle = fill; c.fill(p);
+  } else {
+    c.strokeStyle = 'rgba(17,6,11,.42)'; c.lineWidth = 5; c.stroke(p);
+  }
+  c.restore();
+}
+function paintCreature(c, name, cx, cy, scale, fill) {
+  paintShape(c, SHAPES[SHAPE_OF[name] || 'cat'], cx, cy, scale, fill);
+}
+const anton = size => size + 'px Anton, Impact, "Arial Narrow", sans-serif';
+const sans  = (size, w) => (w || 700) + ' ' + size + 'px ui-sans-serif, system-ui, sans-serif';
 
 /* `squad` is optional — the five animals from their best run, if there is one */
 export function drawKeyCard(canvas, { name, code, rank, stats, squad = [], site = '' }) {
   canvas.width = W; canvas.height = H;
   const c = canvas.getContext('2d');
-
-  c.fillStyle = BARK; c.fillRect(0, 0, W, H);
-
-  /* card plate */
-  const M = 56;
-  const grad = c.createLinearGradient(0, M, 0, H - M);
-  grad.addColorStop(0, MOSS); grad.addColorStop(1, '#16201B');
-  c.fillStyle = grad;
-  roundRect(c, M, M, W - M * 2, H - M * 2, 18); c.fill();
-  c.strokeStyle = BRASS; c.lineWidth = 7;
-  roundRect(c, M, M, W - M * 2, H - M * 2, 18); c.stroke();
-  c.strokeStyle = BRASS_D; c.lineWidth = 2;
-  roundRect(c, M + 18, M + 18, W - (M + 18) * 2, H - (M + 18) * 2, 10); c.stroke();
-
-  /* rivets */
-  c.fillStyle = BRASS_D;
-  [[M + 40, M + 40], [W - M - 40, M + 40], [M + 40, H - M - 40], [W - M - 40, H - M - 40]]
-    .forEach(([x, y]) => { c.beginPath(); c.arc(x, y, 7, 0, Math.PI * 2); c.fill(); });
-
   const mid = W / 2;
+
+  c.fillStyle = BLOOD; c.fillRect(0, 0, W, H);
+  halftone(c, 0, 0, W, H, 'rgba(17,6,11,.26)', 11);
+
+  /* Burst behind the title, faded out before it reaches the edges — rays that
+   * run the full card flatten everything else on it. */
+  const burstY = 250;
+  c.save();
+  c.translate(mid, burstY);
+  for (let i = 0; i < 44; i++) {
+    c.rotate((Math.PI * 2) / 44);
+    c.fillStyle = i % 2 ? 'rgba(255,208,46,.17)' : 'transparent';
+    c.beginPath(); c.moveTo(0, 0); c.lineTo(1000, -78); c.lineTo(1000, 78); c.closePath(); c.fill();
+  }
+  c.restore();
+  const fade = c.createRadialGradient(mid, burstY, 90, mid, burstY, 620);
+  fade.addColorStop(0, 'rgba(224,42,42,0)');
+  fade.addColorStop(1, BLOOD);
+  c.fillStyle = fade; c.fillRect(0, 0, W, H);
+  halftone(c, 0, 0, W, H, 'rgba(17,6,11,.14)', 11);
+
+  c.lineWidth = 14; c.strokeStyle = INK;
+  c.strokeRect(7, 7, W - 14, H - 14);
+
   c.textAlign = 'center';
 
-  c.fillStyle = BRASS;
-  c.font = '700 60px Georgia, "Times New Roman", serif';
-  c.fillText('PRIMAL SURVIVAL', mid, 196);
+  /* title, plates offset the way a cheap press would leave them */
+  const titleY = 190;
+  c.font = anton(96);
+  c.fillStyle = SKY;   c.fillText('PRIMAL SURVIVAL', mid + 6, titleY);
+  c.fillStyle = FLARE; c.fillText('PRIMAL SURVIVAL', mid - 6, titleY);
+  c.fillStyle = INK;   c.fillText('PRIMAL SURVIVAL', mid, titleY + 7);
+  c.fillStyle = BONE;  c.fillText('PRIMAL SURVIVAL', mid, titleY);
 
-  c.fillStyle = ASH;
-  c.font = '400 23px system-ui, sans-serif';
-  c.fillText('F I E L D   K E Y', mid, 238);
+  /* caption box */
+  const cw = 300, ch = 58;
+  plate(c, mid - cw / 2, titleY + 28, cw, ch, FLARE, 7);
+  c.fillStyle = INK; c.font = sans(23, 800);
+  c.fillText('F I E L D   K E Y', mid, titleY + 28 + 38);
 
-  c.strokeStyle = BRASS_D; c.lineWidth = 2;
-  c.beginPath(); c.moveTo(M + 70, 268); c.lineTo(W - M - 70, 268); c.stroke();
-
-  /* the five from their best run, standing on a line */
-  if (squad.length) {
-    const scales = squad.map(a => 0.62 + 0.55 * Math.min(1, Math.log10(a.kg + 1) / 4.9));
-    const gap = 16;
-    let span = scales.reduce((n, s) => n + 118 * s, 0) + gap * (squad.length - 1);
-    const k = Math.min(1, (W - 260) / span);
+  /* The block is measured first and then centred, so a profile with no runs
+   * yet gets a composed card rather than a title and a hole. */
+  const hasSquad = squad.length > 0;
+  const hasStats = !!(stats && stats.runs);
+  let y = 486;
+  if (hasSquad) {
+    const scales = squad.map(a => 0.70 + 0.55 * Math.min(1, Math.log10(a.kg + 1) / 4.9));
+    const gap = 18;
+    const span = scales.reduce((n, s) => n + 118 * s, 0) + gap * (squad.length - 1);
+    const k = Math.min(1, (W - 200) / span);
     let x = mid - (span * k) / 2;
     squad.forEach((a, i) => {
       const s = scales[i] * k, wide = 118 * s;
-      creature(c, a.name, x + wide / 2, 420, s, BONE);
+      paintCreature(c, a.name, x + wide / 2, y, s, BONE);
       x += wide + gap * k;
     });
-    c.strokeStyle = BRASS_D; c.lineWidth = 2;
-    c.beginPath(); c.moveTo(M + 90, 424); c.lineTo(W - M - 90, 424); c.stroke();
+    c.strokeStyle = INK; c.lineWidth = 7;
+    c.beginPath(); c.moveTo(110, y + 4); c.lineTo(W - 110, y + 4); c.stroke();
+    y += 96;
+  } else {
+    /* No runs yet. Rather than leave a red void, show the row as empty slots
+     * so a new player can see what the card is going to become. */
+    const ghosts = ['theropod', 'elephant', 'cat', 'raptorbird', 'shark'];
+    const gap = 26, sc = 0.9;
+    const span = ghosts.length * 118 * sc + gap * (ghosts.length - 1);
+    let x = mid - span / 2;
+    ghosts.forEach(k => {
+      paintShape(c, SHAPES[k], x + (118 * sc) / 2, y, sc, null);
+      x += 118 * sc + gap;
+    });
+    c.strokeStyle = 'rgba(17,6,11,.42)'; c.lineWidth = 5;
+    c.beginPath(); c.moveTo(110, y + 4); c.lineTo(W - 110, y + 4); c.stroke();
+    c.fillStyle = 'rgba(17,6,11,.62)'; c.font = sans(24, 800);
+    c.fillText('YOUR BEST FIVE WILL STAND HERE', mid, y + 48);
+    y += 128;   /* the caption needs room under it before the name */
   }
 
-  c.fillStyle = BONE;
-  c.font = '600 72px Georgia, serif';
-  c.fillText(name, mid, 540);
+  /* name */
+  c.fillStyle = BONE; c.font = anton(104);
+  c.fillText(String(name).toUpperCase(), mid, y + 54);
+  c.fillStyle = INK; c.font = anton(40);
+  c.fillText(String(rank || 'Drifter').toUpperCase(), mid, y + 108);
 
-  c.fillStyle = BRASS;
-  c.font = 'italic 34px Georgia, serif';
-  c.fillText(rank || 'Drifter', mid, 592);
+  /* the key, which is the point of the card */
+  const bw = 700, bh = 196, bx = mid - bw / 2, by = y + 150;
+  plate(c, bx, by, bw, bh, PAPER, 10);
+  halftone(c, bx, by, bw, bh, 'rgba(17,6,11,.10)', 9);
+  c.fillStyle = INK;
+  c.font = sans(22, 800);
+  c.fillText('Y O U R   K E Y', mid, by + 46);
+  c.font = anton(112);
+  c.fillText(String(code).split('').join(' '), mid, by + 155);
 
-  /* the code, which is the point of the card */
-  const bw = 620, bh = 190, bx = mid - bw / 2, by = 648;
-  c.fillStyle = '#121A16';
-  roundRect(c, bx, by, bw, bh, 12); c.fill();
-  c.strokeStyle = BRASS; c.lineWidth = 3;
-  roundRect(c, bx, by, bw, bh, 12); c.stroke();
-
-  c.fillStyle = ASH;
-  c.font = '400 20px system-ui, sans-serif';
-  c.fillText('Y O U R   K E Y', mid, by + 44);
-  c.fillStyle = BONE;
-  c.font = '700 96px "SF Mono", ui-monospace, Consolas, monospace';
-  c.fillText(String(code).split('').join(' '), mid, by + 142);
-
-  /* career, if there is one */
-  if (stats && stats.runs) {
+  /* career */
+  if (hasStats) {
     const cells = [
       [stats.runs.toLocaleString(), 'RUNS'],
       [stats.bestDays.toLocaleString(), 'BEST RUN'],
       [stats.totalDays.toLocaleString(), 'DAYS SURVIVED']
     ];
-    const cw = 268, cy2 = 900;
+    const tw = 288, th = 132, ty = by + bh + 44;
     cells.forEach(([v, l], i) => {
-      const cx = mid + (i - 1) * (cw + 16);
-      c.fillStyle = '#121A16';
-      roundRect(c, cx - cw / 2, cy2, cw, 132, 10); c.fill();
-      c.strokeStyle = BRASS_D; c.lineWidth = 1.5;
-      roundRect(c, cx - cw / 2, cy2, cw, 132, 10); c.stroke();
-      c.fillStyle = BONE;
-      c.font = '700 54px Georgia, serif';
-      c.fillText(v, cx, cy2 + 72);
-      c.fillStyle = ASH;
-      c.font = '400 17px system-ui, sans-serif';
-      c.fillText(l, cx, cy2 + 104);
+      const cx = mid + (i - 1) * (tw + 14);
+      plate(c, cx - tw / 2, ty, tw, th, BONE, 7);
+      c.fillStyle = INK; c.font = anton(62);
+      c.fillText(v, cx, ty + 78);
+      c.font = sans(18, 800);
+      c.fillText(l, cx, ty + 110);
     });
   }
 
-  c.fillStyle = ASH;
-  c.font = '400 25px system-ui, sans-serif';
-  c.fillText('Drop this card on the sign-in screen to get back in.', mid, 1136);
-  c.font = '400 21px system-ui, sans-serif';
-  c.fillText('Keep it. It is the only way back to this name.', mid, 1172);
+  c.fillStyle = INK;
+  c.font = sans(25, 700);
+  c.fillText('Drop this card on the sign-in screen to get back in.', mid, H - 118);
+  c.font = sans(21, 600);
+  c.fillText('Keep it. It is the only way back to this name.', mid, H - 86);
 
   if (site) {
-    c.fillStyle = BRASS;
-    c.font = '400 24px system-ui, sans-serif';
-    c.fillText(site, mid, 1238);
+    plate(c, mid - 230, H - 62, 460, 42, INK, 0);
+    c.fillStyle = FLARE; c.font = sans(21, 800);
+    c.fillText(site, mid, H - 32);
   }
   return canvas;
 }
