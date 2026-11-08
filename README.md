@@ -20,6 +20,7 @@ public/                      the site Netlify serves
   dont-look/                 built from games/dont-look/ (not committed)
   goat-getaway/              built from games/goat-getaway/ (not committed)
   punchline/                 built from games/punchline/ (not committed)
+  classified/                built from games/classified/ (not committed)
   mind-heist/                built from games/mind-heist/ (not committed)
 lab/                         lab-wide server code (profiles.js, crew.js for Capra's Lab, stores.js)
   profiles.js                one name + six-digit key per player, for every game
@@ -31,6 +32,7 @@ games/swerve-planet/         Swerve Planet: the page, its icon and its leaderboa
 games/dont-look/             Don't Look!: page, game.js, logic.js (tilt, dealing), words.js (the decks), tests
 games/goat-getaway/          Goat Getaway: page, game.js, art.js, shared/ (puzzle rules and pens), server/, tests, CLAUDE.md
 games/punchline/             Punchline: page, game.js, art.js, shared/ (clock and scoring), server/, decks/, docs/, tests, CLAUDE.md
+games/classified/            Classified: page, game.js, shared/ (rules, avatars), server/, content/, docs/, tests, CLAUDE.md
 games/mind-heist/            Mind Heist: Preact client, game server, decks, its own build.mjs, tests and CLAUDE.md
 netlify/functions/
   profile.mjs                /api/profile/*                lab profiles
@@ -39,6 +41,7 @@ netlify/functions/
   mind-heist.mjs             /mind-heist/api/*             Mind Heist's server (built from games/mind-heist/src/, not committed)
   goat-getaway.mjs           /goat-getaway/api/*           Goat Getaway's daily pen, race board and diamonds (path set in the file)
   punchline.mjs              /punchline/api/*              Punchline's daily drop and party rooms (path set in the file)
+  classified.mjs             /classified/api/*             Classified's operations and share files (path set in the file)
 scripts/build.mjs            Netlify's build: runs each game's checks, lays it out in public/
 scripts/dev-server.mjs       the whole lab locally, with in-memory storage
 netlify.toml                 build settings and the API routes
@@ -73,6 +76,7 @@ Par-Tee Time was first built to run inside Claude. On Capra Lab its NPCs use the
 | Don't Look! | Lab original: `/dont-look/` (only in Capra Lab). Heads Up-style: phone on the forehead, flip up for got it, down to pass (swappable in settings). Four levels (K–2, 3–5, 6–8, 9–12), 14 decks plus Mix It Up, words in `games/dont-look/words.js`. No server and no leaderboard on purpose; the lab name shows in the corner |
 | Goat Getaway | Lab original: `/goat-getaway/`. The daily 6×6 sliding puzzle (Mind Heist's Vault Jam until Nov 7 2026): get the goat out the gate past hay bales, apple crates and tractors. One pen a day for everyone (easy Monday, G.O.A.T. Sunday), timed by the server from opening it; the lab's top five by name, a Blue Ribbon for the day's fastest, and diamonds paid into Mind Heist for its daily card draw. Endless practice pens. Rules in `games/goat-getaway/CLAUDE.md` |
 | Punchline | Lab original, a JJ Brew (in testing in Capra's Lab): `/punchline/`. Wrong Signs (comic signs with misprints, burnt-out lights and terrible design), Ugly Ts (cursed T-shirts) and jokes (moved out of Mind Heist). Look at the panel, flip through four cards, then the writing fizzles out and you call the letter from memory. A daily drop for everyone, and party rooms of up to 12 phones on any deck, with a Late Night shelf for high school. Rules in `games/punchline/CLAUDE.md` |
+| Classified | Lab original, a JJ Brew (in testing in Capra's Lab): `/classified/`. The sleepover game: secret missions all night (with counter-intel to burn them), anonymous Who Said It answers and Yearbook votes, then the host declassifies the file and every phone follows the reveal. Comic avatars, codenames, and a highlights-only share page. Rules in `games/classified/CLAUDE.md` |
 | Primal Survival | Native: `/primal-survival/`, uses Capra Lab profiles |
 | Mind Heist | Native: `/mind-heist/`, server at `/mind-heist/api/*` (the `mind-heist` function, path set in its entry). Source in `games/mind-heist/` with its own CLAUDE.md. Lab keys are checked in-process and each lab player is linked to one Mind Heist profile. The old mind-heist.netlify.app forwards here, carrying each player's sign-in (`games/mind-heist/dev/move-to-capra-lab/`, which also copied every player across) |
 | Glacial Maw | `/glacial-maw/`, served from its own site (glacialmaw.netlify.app, repo jj-capra/glacial-maw) so its hunters, friends and saves stay put; see netlify.toml |
@@ -96,4 +100,4 @@ npm test                                  lab profiles + Primal Survival engine 
 npm run build && node scripts/dev-server.mjs    the lab at http://localhost:8790
 ```
 
-Netlify deploys automatically from `main`. Storage is Netlify Blobs: `capra-lab-profiles` for identities, `primal-survival` for that game's seasons, runs and careers, `swerve-scores` for Swerve Planet's boards, `mind-heist-daily` for Mind Heist (profiles, friends, rooms, challenges, and the diamonds Goat Getaway pays in), `goat-getaway` for Goat Getaway's days, ribbons and race boards, `punchline` for Punchline's party rooms.
+Netlify deploys automatically from `main`. Storage is Netlify Blobs: `capra-lab-profiles` for identities, `primal-survival` for that game's seasons, runs and careers, `swerve-scores` for Swerve Planet's boards, `mind-heist-daily` for Mind Heist (profiles, friends, rooms, challenges, and the diamonds Goat Getaway pays in), `goat-getaway` for Goat Getaway's days, ribbons and race boards, `punchline` for Punchline's party rooms, `classified` for Classified's operations and share files.

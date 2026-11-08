@@ -1,0 +1,462 @@
+[
+  {
+    "id": "m001",
+    "text": "Get {target} to say \"No way!\" out loud.",
+    "target": true
+  },
+  {
+    "id": "m002",
+    "text": "Start a slow clap to celebrate something tiny and get at least two people to join in.",
+    "target": false
+  },
+  {
+    "id": "m003",
+    "text": "Get {target} to say the word \"spaghetti\" without you saying it first.",
+    "target": true
+  },
+  {
+    "id": "m004",
+    "text": "Use the word \"magnificent\" three times in one conversation.",
+    "target": false
+  },
+  {
+    "id": "m005",
+    "text": "Fake a sneeze and get {target} to say \"Bless you.\"",
+    "target": true
+  },
+  {
+    "id": "m006",
+    "text": "Move a pillow to the other side of the room without anyone seeing you do it.",
+    "target": false
+  },
+  {
+    "id": "m007",
+    "text": "Get {target} to ask you \"Why are you smiling?\"",
+    "target": true
+  },
+  {
+    "id": "m008",
+    "text": "Speak only in questions for one full minute of conversation.",
+    "target": false
+  },
+  {
+    "id": "m009",
+    "text": "Get {target} to tell you \"You're right\" about anything at all.",
+    "target": true
+  },
+  {
+    "id": "m010",
+    "text": "Get everyone to vote on which snack gets opened next.",
+    "target": false
+  },
+  {
+    "id": "m011",
+    "text": "Get {target} to whisper something to you.",
+    "target": true
+  },
+  {
+    "id": "m012",
+    "text": "Get a \"One more game!\" chant going with at least three people chanting.",
+    "target": false
+  },
+  {
+    "id": "m013",
+    "text": "Ask {target} weird questions until they say \"I've never thought about that.\"",
+    "target": true
+  },
+  {
+    "id": "m014",
+    "text": "Hum the same tune on and off until someone asks what song it is.",
+    "target": false
+  },
+  {
+    "id": "m015",
+    "text": "Make a deal with {target} about anything and get them to say \"Deal.\"",
+    "target": true
+  },
+  {
+    "id": "m016",
+    "text": "Tell a story that includes a llama, a toaster and a trampoline, start to finish.",
+    "target": false
+  },
+  {
+    "id": "m017",
+    "text": "Steer a conversation until {target} says the word \"volcano.\"",
+    "target": true
+  },
+  {
+    "id": "m018",
+    "text": "End three sentences in a row with \"...allegedly.\"",
+    "target": false
+  },
+  {
+    "id": "m019",
+    "text": "Get {target} to high-five you three separate times within ten minutes.",
+    "target": true
+  },
+  {
+    "id": "m020",
+    "text": "Invent a holiday and get two people to tell you how they'd celebrate it.",
+    "target": false
+  },
+  {
+    "id": "m021",
+    "text": "Invent a secret handshake with {target} and do it together twice.",
+    "target": true
+  },
+  {
+    "id": "m022",
+    "text": "Line up all the snacks in a perfectly straight row without anyone noticing.",
+    "target": false
+  },
+  {
+    "id": "m023",
+    "text": "Get {target} to play best two out of three at rock-paper-scissors with you.",
+    "target": true
+  },
+  {
+    "id": "m024",
+    "text": "Give a random household object a name and a backstory, and get someone to ask about it.",
+    "target": false
+  },
+  {
+    "id": "m025",
+    "text": "Get {target} to bring you a glass of water without asking them for it directly.",
+    "target": true
+  },
+  {
+    "id": "m026",
+    "text": "Narrate yourself picking a spot to sit like a nature documentary host.",
+    "target": false
+  },
+  {
+    "id": "m027",
+    "text": "Get {target} to switch spots with you without telling them why.",
+    "target": true
+  },
+  {
+    "id": "m028",
+    "text": "React to three ordinary things in a row by saying \"Plot twist!\"",
+    "target": false
+  },
+  {
+    "id": "m029",
+    "text": "Trade one of your snacks for one of {target}'s.",
+    "target": true
+  },
+  {
+    "id": "m030",
+    "text": "Get the group to agree on a team name for the night.",
+    "target": false
+  },
+  {
+    "id": "m031",
+    "text": "Get {target} to agree that cereal counts as soup.",
+    "target": true
+  },
+  {
+    "id": "m032",
+    "text": "Answer the next three yes-or-no questions you get with \"Affirmative\" or \"Negative.\"",
+    "target": false
+  },
+  {
+    "id": "m033",
+    "text": "Get {target} to rank three snacks from best to worst out loud.",
+    "target": true
+  },
+  {
+    "id": "m034",
+    "text": "Talk only in a whisper for five minutes without explaining why.",
+    "target": false
+  },
+  {
+    "id": "m035",
+    "text": "Get {target} to give you a nickname, then get them to use it again later.",
+    "target": true
+  },
+  {
+    "id": "m036",
+    "text": "Start a stadium wave and get everyone who's awake to do it.",
+    "target": false
+  },
+  {
+    "id": "m037",
+    "text": "Make up a catchphrase and get {target} to say it without you prompting them.",
+    "target": true
+  },
+  {
+    "id": "m038",
+    "text": "Leave a spoon somewhere strange and wait for someone to ask why it's there.",
+    "target": false
+  },
+  {
+    "id": "m039",
+    "text": "Find out which superpower {target} would pick without asking about superpowers.",
+    "target": true
+  },
+  {
+    "id": "m040",
+    "text": "Stare at the ceiling until someone else looks up too.",
+    "target": false
+  },
+  {
+    "id": "m041",
+    "text": "Get {target} to describe their perfect sandwich in detail.",
+    "target": true
+  },
+  {
+    "id": "m042",
+    "text": "Start a debate about whether a straw has one hole or two.",
+    "target": false
+  },
+  {
+    "id": "m043",
+    "text": "Get {target} to draw you a quick doodle of a cat.",
+    "target": true
+  },
+  {
+    "id": "m044",
+    "text": "Get at least two people to sing Happy Birthday to the snack bowl.",
+    "target": false
+  },
+  {
+    "id": "m045",
+    "text": "Tell {target} the cheesiest joke you know and get them to laugh anyway.",
+    "target": true
+  },
+  {
+    "id": "m046",
+    "text": "Challenge someone to a staring contest and win.",
+    "target": false
+  },
+  {
+    "id": "m047",
+    "text": "Get {target} to teach you something they're good at.",
+    "target": true
+  },
+  {
+    "id": "m048",
+    "text": "Win a thumb war against anyone.",
+    "target": false
+  },
+  {
+    "id": "m049",
+    "text": "Get {target} to give you a thumbs-up from across the room.",
+    "target": true
+  },
+  {
+    "id": "m050",
+    "text": "Ask the room a riddle and give no hints until someone solves it.",
+    "target": false
+  },
+  {
+    "id": "m051",
+    "text": "Get {target} to make a wish with you when the clock shows matching numbers, like 11:11.",
+    "target": true
+  },
+  {
+    "id": "m052",
+    "text": "Start a one-word-at-a-time story and get it all the way around the room.",
+    "target": false
+  },
+  {
+    "id": "m053",
+    "text": "Get {target} to read the back of a snack bag out loud to you.",
+    "target": true
+  },
+  {
+    "id": "m054",
+    "text": "Wear a blanket like a superhero cape for five minutes like it's totally normal.",
+    "target": false
+  },
+  {
+    "id": "m055",
+    "text": "Without {target} noticing, copy the way they're sitting three different times.",
+    "target": true
+  },
+  {
+    "id": "m056",
+    "text": "Share a made-up fun fact so confidently that someone believes it, then come clean.",
+    "target": false
+  },
+  {
+    "id": "m057",
+    "text": "Plan a pretend snack heist with {target}, step by step.",
+    "target": true
+  },
+  {
+    "id": "m058",
+    "text": "Get two people to do their best animal sound.",
+    "target": false
+  },
+  {
+    "id": "m059",
+    "text": "Get {target} to help you come up with a name for a made-up band.",
+    "target": true
+  },
+  {
+    "id": "m060",
+    "text": "Sit in four different spots within ten minutes without anyone commenting on it.",
+    "target": false
+  },
+  {
+    "id": "m061",
+    "text": "Tell {target} about your imaginary pet and get them to suggest its name.",
+    "target": true
+  },
+  {
+    "id": "m062",
+    "text": "Make your next three sentences rhyme without anyone noticing.",
+    "target": false
+  },
+  {
+    "id": "m063",
+    "text": "Get {target} to do a dramatic countdown from ten with you for no reason.",
+    "target": true
+  },
+  {
+    "id": "m064",
+    "text": "Write \"TOP SECRET\" on a scrap of paper, fold it, and get someone to open it.",
+    "target": false
+  },
+  {
+    "id": "m065",
+    "text": "Get {target} to agree to be on your team for the next game.",
+    "target": true
+  },
+  {
+    "id": "m066",
+    "text": "Make up a password and get someone to say it before you hand them anything.",
+    "target": false
+  },
+  {
+    "id": "m067",
+    "text": "Get {target} to play a round of I Spy with you.",
+    "target": true
+  },
+  {
+    "id": "m068",
+    "text": "Give everyone in the room a superhero name and get one person to use theirs.",
+    "target": false
+  },
+  {
+    "id": "m069",
+    "text": "Get {target} to ask to borrow something of yours.",
+    "target": true
+  },
+  {
+    "id": "m070",
+    "text": "Get the whole room silent at the same time for ten seconds.",
+    "target": false
+  },
+  {
+    "id": "m071",
+    "text": "Get {target} to tell you which animal they'd be and why.",
+    "target": true
+  },
+  {
+    "id": "m072",
+    "text": "Gasp like you just remembered something, then say \"Never mind.\" Do it three times.",
+    "target": false
+  },
+  {
+    "id": "m073",
+    "text": "Get {target} to pinky-promise you something silly.",
+    "target": true
+  },
+  {
+    "id": "m074",
+    "text": "Refer to yourself in the third person for five minutes.",
+    "target": false
+  },
+  {
+    "id": "m075",
+    "text": "Get {target} to try a tongue twister three times fast.",
+    "target": true
+  },
+  {
+    "id": "m076",
+    "text": "Start a \"this or that\" lightning round and get three people answering.",
+    "target": false
+  },
+  {
+    "id": "m077",
+    "text": "Start tapping a beat and get {target} to join in.",
+    "target": true
+  },
+  {
+    "id": "m078",
+    "text": "Call the room \"Headquarters\" until someone else calls it that too.",
+    "target": false
+  },
+  {
+    "id": "m079",
+    "text": "Teach {target} a silly victory pose and get them to do it.",
+    "target": true
+  },
+  {
+    "id": "m080",
+    "text": "Stretch dramatically before doing something tiny, like picking up the TV remote.",
+    "target": false
+  },
+  {
+    "id": "m081",
+    "text": "Yawn near {target} until they yawn too.",
+    "target": true
+  },
+  {
+    "id": "m082",
+    "text": "Describe a snack's flavor like a fancy food critic until someone laughs.",
+    "target": false
+  },
+  {
+    "id": "m083",
+    "text": "Get {target} to guess how many pillows are in the whole house.",
+    "target": true
+  },
+  {
+    "id": "m084",
+    "text": "Give three different people a real compliment about something they said or did.",
+    "target": false
+  },
+  {
+    "id": "m085",
+    "text": "Get {target} to fold a paper airplane with you.",
+    "target": true
+  },
+  {
+    "id": "m086",
+    "text": "Bring up penguins in three different conversations without anyone asking why.",
+    "target": false
+  },
+  {
+    "id": "m087",
+    "text": "Get {target} to name three things they'd bring to a desert island.",
+    "target": true
+  },
+  {
+    "id": "m088",
+    "text": "Use a made-up word in conversation until someone asks what it means.",
+    "target": false
+  },
+  {
+    "id": "m089",
+    "text": "Get {target} to say your name in their best robot voice.",
+    "target": true
+  },
+  {
+    "id": "m090",
+    "text": "Get at least two people to help you build a blanket fort.",
+    "target": false
+  },
+  {
+    "id": "m091",
+    "text": "Agree on a secret signal with {target} and use it once without anyone noticing.",
+    "target": true
+  },
+  {
+    "id": "m092",
+    "text": "Get three different people to tell you what time it is.",
+    "target": false
+  }
+]

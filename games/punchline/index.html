@@ -375,7 +375,7 @@
   .deckrow.on { border-color: var(--yellow); background: var(--panel2); box-shadow: 0 0 0 2px var(--yellow); }
   .muted { color: var(--dim); }
   .toast {
-    position: fixed; left: 50%; top: calc(var(--st) + 12px); transform: translate(-50%, -140%); z-index: 60; max-width: min(92vw, 460px);
+    position: fixed; left: 50%; top: calc(var(--st) + 12px); transform: translate(-50%, calc(-100% - var(--st) - 24px)); z-index: 60; max-width: min(92vw, 460px);
     background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 4px 5px 0 var(--shadow);
     padding: 10px 14px; font-weight: 800; font-size: 14px; transition: transform 0.25s; text-align: center;
   }

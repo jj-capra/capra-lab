@@ -100,6 +100,24 @@ async function buildPunchline() {
   console.log(`built public/punchline/ (${decks.length} decks, ${decks.reduce((n, d) => n + d.cards.length, 0)} cards)`);
 }
 
+/* Classified: a page, its script and the shared rules and avatars (the share page uses the same
+   art). The missions, questions and awards are checked, then baked into
+   games/classified/server/content.gen.mjs for its function (netlify/functions/classified.mjs). */
+async function buildClassified() {
+  const game = path.join(ROOT, 'games', 'classified'), out = path.join(ROOT, 'public', 'classified');
+  const { loadContent, problems } = await import(path.join(game, 'server', 'content.mjs'));
+  const content = loadContent();
+  const bad = problems(content);
+  if (bad.length) throw new Error('classified content:\n  ' + bad.join('\n  '));
+  await fs.writeFile(path.join(game, 'server', 'content.gen.mjs'),
+    `// Built by scripts/build.mjs from games/classified/content/. Edit those files, not this one.\nexport const CONTENT = ${JSON.stringify(content)};\n`);
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(path.join(out, 'shared'), { recursive: true });
+  for (const f of ['index.html', 'game.js']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  for (const f of ['rules.mjs', 'avatar.mjs']) await fs.copyFile(path.join(game, 'shared', f), path.join(out, 'shared', f));
+  console.log(`built public/classified/ (${content.missions.length} missions, ${content.prompts.length} questions, ${content.awards.length} awards)`);
+}
+
 /* Mind Heist: its own build validates the decks and bundles the app and the function;
    here it writes them into public/mind-heist/ and netlify/functions/mind-heist.mjs */
 async function buildMindHeist() {
@@ -120,3 +138,4 @@ await buildSwervePlanet();
 await buildDontLook();
 await buildGoatGetaway();
 await buildPunchline();
+await buildClassified();

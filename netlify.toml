@@ -73,6 +73,14 @@
   to = "/punchline/index.html"
   status = 200
 
+# Classified: its server claims /classified/api/* through its own config.path
+# (netlify/functions/classified.mjs). Room links (/classified/ABCD) and share files
+# (/classified/file/<id>) load the page; real files are served as they are.
+[[redirects]]
+  from = "/classified/*"
+  to = "/classified/index.html"
+  status = 200
+
 # Modules must be served as JavaScript or the browser refuses them.
 [[headers]]
   for = "/*.js"

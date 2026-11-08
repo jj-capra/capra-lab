@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/lab/brew.js" data-invite="^/classified/([A-Z]{4}|file/[a-z0-9]{10})/?$"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Classified · Capra Lab</title>
+<meta name="description" content="Secret missions all night. Who said it? Yearbook awards. Everything comes out when the file is declassified. A sleepover game from Capra Lab.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#16141F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Capra Lab">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@600;700;800;900&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #120E18;
+    --night: #16141F;
+    --panel: #221B2E;
+    --panel2: #2C2339;
+    --paper: #FFF8EC;
+    --manila: #EBD6A6;
+    --manila2: #DCC28A;
+    --red: #D7263D;
+    --yellow: #FFD23F;
+    --green: #5BE38A;
+    --cyan: #29D3F0;
+    --pink: #FF3D8B;
+    --shadow: #05030A;
+    --dim: rgba(255, 248, 236, 0.72);
+    --display: Bangers, Impact, "Arial Narrow Bold", system-ui, sans-serif;
+    --type: "Special Elite", "Courier New", ui-monospace, monospace;
+    --sl: env(safe-area-inset-left);
+    --sr: env(safe-area-inset-right);
+    --st: env(safe-area-inset-top);
+    --sb: env(safe-area-inset-bottom);
+    --gut: 16px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; min-height: 100vh; min-height: 100dvh; overflow-x: hidden;
+    background-color: var(--night);
+    background-image: radial-gradient(rgba(255, 248, 236, 0.07) 1px, transparent 1.6px);
+    background-size: 9px 9px;
+    color: var(--paper);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  /* an opaque strip behind the iPhone clock, so nothing scrolls into it */
+  body::before { content: ""; position: fixed; left: 0; right: 0; top: 0; height: var(--st); background: var(--night); z-index: 35; pointer-events: none; }
+  button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulation; }
+  button:disabled { cursor: default; opacity: 0.45; }
+  button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  a { color: var(--yellow); font-weight: 800; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 400; letter-spacing: 0.04em; margin: 0; }
+  .muted { color: var(--dim); }
+  .agent-av { display: block; flex: none; border-radius: 22%; border: 2.5px solid var(--ink); box-sizing: content-box; }
+
+  /* ---------- bars: nothing under the iPhone clock ---------- */
+  .bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: calc(var(--st) + 10px) max(var(--gut), var(--sr)) 6px max(var(--gut), var(--sl));
+    max-width: 640px; margin: 0 auto;
+  }
+  .bar-right { display: flex; align-items: center; gap: 8px; flex: none; }
+  .bar-title { font-family: var(--display); font-size: 21px; letter-spacing: 0.06em; color: var(--yellow); text-align: center; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .round-btn {
+    flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--panel); border: 2px solid var(--shadow); padding: 0; font-family: var(--display); font-size: 22px; line-height: 1;
+  }
+  .round-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .wrap {
+    max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px;
+    padding: 4px calc(var(--sr) + var(--gut)) calc(var(--sb) + 28px) calc(var(--sl) + var(--gut));
+  }
+
+  /* ---------- the logo: a stamped file ---------- */
+  .hero { text-align: center; padding: 8px 0 0; display: grid; justify-items: center; gap: 10px; }
+  .logo {
+    display: inline-block; font-size: clamp(40px, 12.5vw, 84px); line-height: 0.95; letter-spacing: 0.06em; color: var(--red);
+    border: 6px solid var(--red); border-radius: 10px; padding: 4px 16px 0; transform: rotate(-4deg);
+    background: rgba(215, 38, 61, 0.08); text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35); white-space: nowrap;
+    -webkit-mask-image: radial-gradient(circle at 30% 40%, #000 60%, rgba(0, 0, 0, 0.8) 61%, #000 62%);
+  }
+  .tagline { margin: 6px 0 0; color: var(--dim); font-weight: 700; font-size: 15px; max-width: 340px; line-height: 1.4; }
+  .brewnote {
+    justify-self: center; margin: 0; display: inline-flex; gap: 6px; align-items: center;
+    background: var(--panel); border: 2px dashed rgba(255, 210, 63, 0.6); color: var(--yellow);
+    border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 800; letter-spacing: 0.04em;
+  }
+
+  /* ---------- cards, folders, buttons ---------- */
+  .card { background: var(--panel); border: 3px solid var(--ink); border-radius: 18px; box-shadow: 5px 6px 0 var(--shadow); padding: 16px; display: grid; gap: 12px; }
+  .card h2 { font-size: 28px; color: var(--yellow); }
+  .folder {
+    position: relative; background: var(--manila); color: var(--ink); border: 3px solid var(--ink); border-radius: 4px 14px 14px 14px;
+    box-shadow: 5px 6px 0 var(--shadow); padding: 18px 16px 16px; display: grid; gap: 12px; margin-top: 14px;
+  }
+  .folder::before { content: attr(data-tab); position: absolute; left: -3px; top: -27px; height: 24px; padding: 3px 14px 0; background: var(--manila2); border: 3px solid var(--ink); border-bottom: 0; border-radius: 10px 10px 0 0; font: 900 11px/1.6 Inter, sans-serif; letter-spacing: 0.1em; }
+  .folder h2 { color: var(--ink); font-size: 26px; }
+  .type { font-family: var(--type); }
+  .note { margin: 0; color: var(--dim); font-size: 14px; line-height: 1.4; }
+  .folder .note { color: rgba(18, 14, 24, 0.72); }
+  .note.warn { color: #FFB4A8; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 10px 18px;
+    border-radius: 14px; border: 3px solid var(--ink); background: var(--yellow); color: var(--ink);
+    box-shadow: 4px 5px 0 var(--shadow); font-weight: 900; font-size: 17px; text-decoration: none;
+  }
+  .btn:active { transform: translate(3px, 4px); box-shadow: 1px 1px 0 var(--shadow); }
+  .btn.big { min-height: 58px; font-size: 21px; font-family: var(--display); font-weight: 400; letter-spacing: 0.06em; }
+  .btn.red { background: var(--red); color: #fff; }
+  .btn.alt { background: var(--panel2); color: var(--paper); }
+  .btn.sm { min-height: 40px; padding: 6px 12px; font-size: 14px; border-radius: 11px; box-shadow: 3px 3px 0 var(--shadow); }
+  .btn.wide { width: 100%; }
+  .link { background: none; border: 0; color: var(--yellow); font-weight: 800; text-decoration: underline; padding: 8px; }
+  .field { display: grid; gap: 4px; }
+  .field span { font-size: 11px; font-weight: 900; color: var(--dim); letter-spacing: 0.08em; }
+  .field input, textarea {
+    width: 100%; min-height: 50px; border-radius: 12px; border: 3px solid var(--ink); background: var(--paper); color: var(--ink);
+    padding: 8px 12px; font: 800 18px Inter, system-ui, sans-serif;
+  }
+  .field input.code { font-family: var(--display); font-weight: 400; font-size: 32px; letter-spacing: 0.3em; text-transform: uppercase; text-align: center; }
+  .as { font-weight: 800; font-size: 16px; min-height: 44px; display: flex; align-items: center; gap: 8px; }
+  .invite-head { text-align: center; display: grid; gap: 4px; }
+  .invite-head b { font-family: var(--display); font-weight: 400; font-size: 54px; letter-spacing: 0.18em; color: var(--yellow); line-height: 1; }
+  .wrap.invite .hero { order: -2; }
+  .wrap.invite #joinCard { order: -1; }
+
+  /* stamps */
+  .stamp {
+    display: inline-block; font-family: var(--display); letter-spacing: 0.06em; color: var(--red); border: 3px solid currentColor;
+    border-radius: 6px; padding: 1px 8px 0; transform: rotate(-6deg); font-size: 18px; line-height: 1.2; background: rgba(255, 255, 255, 0.35); white-space: nowrap;
+  }
+  .stamp.green { color: #1E8A4C; }
+  .stamp.gray { color: #6B6476; }
+  .stamp.slam { animation: slam 0.4s cubic-bezier(.2, 1.6, .4, 1) both; }
+  @keyframes slam { from { transform: rotate(-6deg) scale(2.6); opacity: 0; } }
+  .redact { background: var(--ink); color: transparent; border-radius: 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 0 2px; }
+
+  /* ---------- the briefing ---------- */
+  .opname { text-align: center; display: grid; gap: 4px; justify-items: center; }
+  .opname small { font: 900 11px Inter, sans-serif; letter-spacing: 0.14em; color: var(--dim); }
+  .opname b { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 9vw, 42px); line-height: 1; letter-spacing: 0.04em; color: var(--paper); }
+  .codebox { text-align: center; display: grid; gap: 6px; justify-items: center; }
+  .codebox .code { font-family: var(--display); font-size: 64px; letter-spacing: 0.16em; color: var(--yellow); line-height: 0.95; text-shadow: 4px 5px 0 var(--shadow); padding-left: 0.16em; }
+  .codebox .url { font-size: 13px; color: var(--dim); font-weight: 700; word-break: break-all; }
+  .me-agent { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; }
+  .me-agent .who { display: grid; gap: 6px; min-width: 0; }
+  .me-agent .cn { font-family: var(--display); font-size: 24px; line-height: 1.05; letter-spacing: 0.04em; overflow-wrap: anywhere; }
+  .parts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .part { display: grid; grid-template-columns: 34px 1fr 34px; align-items: center; background: var(--paper); border: 2px solid var(--ink); border-radius: 10px; min-height: 40px; }
+  .part button { height: 38px; border: 0; background: none; font-family: var(--display); font-size: 20px; color: var(--ink); padding: 0; }
+  .part span { text-align: center; font-size: 12px; font-weight: 900; letter-spacing: 0.04em; color: var(--ink); }
+  .agents { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+  .agents li { display: grid; justify-items: center; gap: 4px; text-align: center; min-width: 0; position: relative; }
+  .agents li.new { animation: pop 0.35s; }
+  .agents .cn { font-family: var(--display); font-size: 14px; letter-spacing: 0.03em; line-height: 1.05; overflow-wrap: anywhere; }
+  .agents .nm { font-size: 11.5px; font-weight: 800; color: var(--dim); overflow-wrap: anywhere; }
+  .folder .agents .nm { color: rgba(18, 14, 24, 0.65); }
+  .agents .tag { position: absolute; top: -6px; right: 6px; font-size: 16px; }
+  @keyframes pop { from { transform: scale(0.6); opacity: 0; } }
+
+  /* ---------- the night ---------- */
+  .tabs { position: sticky; top: var(--st); z-index: 5; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 8px 0; background: var(--night); }
+  .tabs button { min-height: 44px; border-radius: 12px; border: 2.5px solid var(--ink); background: var(--panel); font-weight: 900; font-size: 11.5px; letter-spacing: 0.05em; position: relative; padding: 0 2px; }
+  .tabs button[aria-selected="true"] { background: var(--manila); color: var(--ink); }
+  .tabs button i { position: absolute; top: -6px; right: -4px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--red); color: #fff; font-style: normal; font-size: 11px; line-height: 18px; border: 2px solid var(--ink); }
+  .mission { position: relative; background: var(--paper); border: 2.5px solid var(--ink); border-radius: 6px; padding: 12px 12px 10px; display: grid; gap: 10px; box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.25); }
+  .mission .num { font: 900 11px Inter, sans-serif; letter-spacing: 0.12em; color: var(--red); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .mission .txt { font-family: var(--type); font-size: 18px; line-height: 1.35; color: var(--ink); user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+  .mission .txt .rd { background: var(--ink); border-radius: 3px; color: transparent; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+  .mission.peek .txt .rd { background: transparent; color: var(--ink); }
+  .mission .hold { font-size: 12px; font-weight: 800; color: #6B6476; }
+  .mission .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+  .mission.done .txt, .mission.burned .txt { opacity: 0.6; }
+  .mission .stamp { position: absolute; right: 10px; top: 24px; }
+  .countdown { font: 800 13px Inter, sans-serif; color: var(--dim); text-align: center; }
+  .folder .countdown { color: rgba(18, 14, 24, 0.7); }
+  .news { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .news li { font-family: var(--type); font-size: 14px; color: var(--ink); background: rgba(255, 255, 255, 0.45); border-left: 4px solid var(--red); padding: 5px 8px; }
+  .news time { font-family: Inter, sans-serif; font-size: 11px; font-weight: 800; color: #6B6476; margin-right: 6px; }
+  .prompt { display: grid; gap: 8px; background: var(--paper); border: 2.5px solid var(--ink); border-radius: 6px; padding: 12px; }
+  .prompt b { font-family: var(--type); font-weight: 400; font-size: 18px; line-height: 1.3; color: var(--ink); }
+  .prompt textarea { min-height: 70px; font: 700 16px Inter, sans-serif; resize: none; }
+  .prompt .meta { display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; color: #6B6476; }
+  .prompt .meta .ok { color: #1E8A4C; }
+  .award { display: grid; gap: 8px; background: var(--paper); border: 2.5px solid var(--ink); border-radius: 6px; padding: 12px; }
+  .award b { font-family: var(--display); font-weight: 400; font-size: 21px; letter-spacing: 0.03em; color: var(--ink); }
+  .pick-row { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 8px; scroll-snap-type: x proximity; }
+  .pick-row button { flex: none; display: grid; justify-items: center; gap: 3px; width: 72px; padding: 6px 2px; border-radius: 12px; border: 2.5px solid transparent; background: none; color: var(--ink); scroll-snap-align: start; }
+  .pick-row button span { font-size: 11px; font-weight: 800; line-height: 1.15; overflow-wrap: anywhere; max-width: 66px; }
+  .pick-row button[aria-pressed="true"] { border-color: var(--red); background: rgba(215, 38, 61, 0.12); }
+  .hostbar {
+    position: sticky; bottom: 0; z-index: 6; display: flex; gap: 8px; padding: 10px calc(var(--sr) + var(--gut)) calc(var(--sb) + 10px) calc(var(--sl) + var(--gut));
+    background: linear-gradient(transparent, var(--night) 28%); max-width: 560px; margin: 0 auto;
+  }
+  .hostbar .btn { flex: 1; }
+
+  /* ---------- Declassified ---------- */
+  #reveal .wrap { min-height: calc(100dvh - var(--st) - 70px); align-content: start; }
+  .rv-title { text-align: center; display: grid; gap: 14px; justify-items: center; padding-top: 18px; }
+  .rv-title .stamp { font-size: clamp(28px, 9vw, 56px); border-width: 5px; padding: 4px 14px 0; max-width: 92%; }
+  .rv-title h2 { font-size: clamp(30px, 8vw, 40px); color: var(--paper); }
+  .counts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; }
+  .counts div { background: var(--panel); border: 2.5px solid var(--ink); border-radius: 12px; padding: 10px 6px; text-align: center; }
+  .counts b { display: block; font-family: var(--display); font-weight: 400; font-size: 34px; color: var(--yellow); line-height: 1; }
+  .counts span { font-size: 11px; font-weight: 900; letter-spacing: 0.06em; color: var(--dim); }
+  .slip { background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-radius: 4px; padding: 16px; box-shadow: 5px 6px 0 var(--shadow); transform: rotate(-1deg); display: grid; gap: 10px; }
+  .slip small { font: 900 11px Inter, sans-serif; letter-spacing: 0.12em; color: var(--red); }
+  .slip .q { font-family: var(--display); font-size: 22px; letter-spacing: 0.03em; line-height: 1.1; }
+  .slip .a { font-family: var(--type); font-size: clamp(20px, 6vw, 26px); line-height: 1.3; overflow-wrap: anywhere; }
+  .slip.in { animation: slipIn 0.45s cubic-bezier(.2, 1.3, .4, 1) both; }
+  @keyframes slipIn { from { transform: translateY(24px) rotate(4deg); opacity: 0; } }
+  .fuse { height: 10px; border-radius: 999px; background: var(--panel); border: 2px solid var(--ink); overflow: hidden; }
+  .fuse i { display: block; height: 100%; width: 100%; background: var(--red); transform-origin: left; }
+  .guess-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 8px; }
+  .guess-grid button { display: grid; justify-items: center; gap: 4px; padding: 8px 4px; border-radius: 14px; border: 3px solid var(--ink); background: var(--panel); min-width: 0; }
+  .guess-grid button span { font-size: 12px; font-weight: 800; overflow-wrap: anywhere; line-height: 1.15; }
+  .guess-grid button[aria-pressed="true"] { background: var(--yellow); color: var(--ink); }
+  .guess-grid button.right { background: var(--green); color: var(--ink); }
+  .guess-grid button b { font-family: var(--display); font-weight: 400; font-size: 16px; }
+  .fire { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 6px 14px; border-radius: 999px; border: 3px solid var(--ink); background: var(--panel); font-weight: 900; }
+  .fire[aria-pressed="true"] { background: #FF8A3D; color: var(--ink); }
+  .rv-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .author { display: grid; justify-items: center; gap: 8px; text-align: center; }
+  .author .cn { font-family: var(--display); font-size: 28px; letter-spacing: 0.04em; line-height: 1; }
+  .author .stamp { font-size: 22px; }
+  .agent-file { display: grid; gap: 10px; }
+  .agent-file .head { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; }
+  .agent-file .cn { font-family: var(--display); font-size: 26px; letter-spacing: 0.04em; line-height: 1.05; color: var(--ink); overflow-wrap: anywhere; }
+  .agent-file .nm { font-size: 14px; font-weight: 800; color: rgba(18, 14, 24, 0.65); }
+  .agent-file .mission .stamp { position: static; justify-self: start; transform: rotate(-3deg); font-size: 16px; }
+  .agent-file .confirm { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px; font-weight: 800; color: var(--ink); }
+  .award-big { display: grid; justify-items: center; gap: 12px; text-align: center; padding-top: 10px; }
+  .award-big h2 { font-size: clamp(28px, 8vw, 38px); color: var(--yellow); line-height: 1.05; }
+  .winners { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .winners div { display: grid; justify-items: center; gap: 6px; animation: pop 0.5s cubic-bezier(.2, 1.4, .4, 1) both; }
+  .winners .cn { font-family: var(--display); font-size: 20px; letter-spacing: 0.03em; max-width: 160px; overflow-wrap: anywhere; }
+  .podium { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; gap: 8px; }
+  .podium div { display: grid; justify-items: center; gap: 6px; text-align: center; min-width: 0; }
+  .podium .cn { font-family: var(--display); font-size: 14px; letter-spacing: 0.03em; line-height: 1.05; overflow-wrap: anywhere; }
+  .podium .pts { font-family: var(--display); font-size: 22px; color: var(--yellow); }
+  .podium .step { width: 100%; border: 3px solid var(--ink); border-radius: 10px 10px 0 0; display: grid; place-items: center; font-family: var(--display); font-size: 36px; color: var(--ink); animation: rise 0.6s cubic-bezier(.2, 1.3, .4, 1) both; transform-origin: bottom; }
+  .podium .p1 .step { height: 96px; background: var(--yellow); animation-delay: 0.5s; }
+  .podium .p2 .step { height: 70px; background: var(--cyan); animation-delay: 0.25s; }
+  .podium .p3 .step { height: 50px; background: var(--pink); }
+  @keyframes rise { from { transform: scaleY(0); } }
+  .scores { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .scores li { display: grid; grid-template-columns: 26px 40px 1fr auto; gap: 8px; align-items: center; background: var(--panel2); border: 2px solid var(--ink); border-radius: 12px; padding: 6px 10px; }
+  .scores li.me { border-color: var(--yellow); }
+  .scores li > span:first-child { font-family: var(--display); font-size: 18px; color: var(--dim); }
+  .scores .cn { font-weight: 800; font-size: 13.5px; overflow-wrap: anywhere; line-height: 1.2; }
+  .scores .cn small { display: block; color: var(--dim); font-weight: 700; font-size: 11px; }
+  .scores b { font-family: var(--display); font-weight: 400; font-size: 20px; color: var(--yellow); }
+
+  /* ---------- the share page ---------- */
+  .file-head { text-align: center; display: grid; gap: 10px; justify-items: center; }
+  .file-head .stamp { font-size: 26px; }
+  .file-head h1 { font-size: clamp(32px, 9vw, 46px); line-height: 1; }
+  .hl { background: var(--paper); border: 2.5px solid var(--ink); border-radius: 6px; padding: 12px; display: grid; gap: 6px; color: var(--ink); }
+  .hl small { font-size: 12px; font-weight: 800; color: #6B6476; }
+  .hl b { font-family: var(--type); font-weight: 400; font-size: 18px; line-height: 1.35; }
+  .mlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .mlist li { font-family: var(--type); font-size: 15px; line-height: 1.35; color: var(--ink); background: var(--paper); border: 2px solid var(--ink); border-radius: 6px; padding: 8px 10px; }
+  .mlist li b { font-family: Inter, sans-serif; font-size: 12px; font-weight: 900; letter-spacing: 0.04em; display: block; color: var(--red); }
+
+  /* ---------- sheets, toast ---------- */
+  .veil { position: fixed; inset: 0; z-index: 40; background: rgba(5, 3, 10, 0.72); display: grid; align-items: end; justify-items: center; }
+  .sheet {
+    position: relative; width: 100%; max-width: 560px; max-height: calc(100dvh - var(--st) - 24px); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+    background: var(--night); border: 3px solid var(--ink); border-bottom: 0; border-radius: 22px 22px 0 0; grid-template-columns: minmax(0, 1fr);
+    padding: 18px calc(var(--sr) + 18px) calc(var(--sb) + 22px) calc(var(--sl) + 18px); display: grid; gap: 14px; animation: up 0.3s cubic-bezier(.2, 1.2, .4, 1);
+  }
+  @media (min-width: 700px) { .veil { align-items: center; } .sheet { border-radius: 22px; border-bottom: 3px solid var(--ink); max-height: 86vh; } }
+  @keyframes up { from { transform: translateY(40px); opacity: 0; } }
+  .sheet h2 { font-size: 28px; color: var(--yellow); padding-right: 48px; }
+  .sheet .round-btn.x { position: absolute; right: 14px; top: 14px; }
+  .sheet ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; line-height: 1.45; color: var(--dim); }
+  .sheet ul b { color: var(--paper); }
+  .choices { display: grid; gap: 8px; }
+  .choices button { text-align: left; font-family: var(--type); font-size: 16px; line-height: 1.35; padding: 12px; border-radius: 8px; border: 2.5px solid var(--ink); background: var(--paper); color: var(--ink); }
+  .toast {
+    position: fixed; left: 50%; top: calc(var(--st) + 12px); transform: translate(-50%, calc(-100% - var(--st) - 24px)); z-index: 60; max-width: min(92vw, 460px);
+    background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-radius: 14px; box-shadow: 4px 5px 0 var(--shadow);
+    padding: 10px 14px; font-weight: 800; font-size: 14px; transition: transform 0.25s; text-align: center;
+  }
+  .toast.show { transform: translate(-50%, 0); }
+  .toast.err { background: #FFD9D3; }
+  .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 25; overflow: hidden; }
+  .confetti i { position: absolute; top: -20px; width: 12px; height: 9px; border: 2px solid var(--ink); animation: fall linear forwards; }
+  @keyframes fall { to { transform: translate3d(var(--dx), 110vh, 0) rotate(var(--r)); } }
+  @media (prefers-reduced-motion: reduce) {
+    .stamp.slam, .slip.in, .winners div, .podium .step, .agents li.new { animation: none; }
+    .confetti { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HOME ============ -->
+<section class="screen" id="home">
+  <header class="bar">
+    <capra-lab-chip></capra-lab-chip>
+    <div class="bar-right">
+      <button class="round-btn snd" type="button" aria-label="Sound on" aria-pressed="true"></button>
+      <button class="round-btn help" type="button" aria-label="How to play">?</button>
+    </div>
+  </header>
+  <main class="wrap" id="wrap-home">
+    <div class="hero">
+      <h1 class="logo">CLASSIFIED</h1>
+      <p class="tagline">Secret missions all night. Who said it? Yearbook awards. Everything comes out when the file is declassified.</p>
+    </div>
+    <p class="brewnote" id="brewNote" hidden>🔒 JJ BREW · ONLY CAPRA’S LAB CAN SEE THIS</p>
+    <p class="note warn" id="keyWarn" hidden>Your Capra Lab name and key don’t match, so you’re joining as a guest. <a href="/#profile">Sign in to Capra Lab again</a>.</p>
+
+    <section class="card" id="rejoinCard" hidden>
+      <p class="note">You’re still on operation <b id="rejoinCode"></b>.</p>
+      <button class="btn red" id="rejoinBtn" type="button">Back to the file</button>
+    </section>
+
+    <section class="folder" id="hostCard" data-tab="NEW FILE" hidden>
+      <h2>OPEN A FILE</h2>
+      <p class="note">For a sleepover: everyone plays on their own phone, 3 to 12 agents. Start it in the evening, declassify it whenever the room is ready, late night or the next morning.</p>
+      <button class="btn big red" id="hostBtn" type="button">Open a file</button>
+    </section>
+
+    <section class="card" id="joinCard">
+      <div class="invite-head" id="inviteHead" hidden><small class="muted">YOU’VE BEEN RECRUITED FOR OPERATION</small><b id="inviteCode"></b></div>
+      <h2 id="joinTitle">JOIN AN OPERATION</h2>
+      <form class="joinform" id="joinForm" autocomplete="off" style="display:grid;gap:10px">
+        <label class="field" id="codeField"><span>FILE CODE</span><input class="code" id="codeIn" maxlength="4" autocapitalize="characters" spellcheck="false" placeholder="ABCD"></label>
+        <label class="field" id="nameField"><span>YOUR NAME</span><input id="nameIn" maxlength="17" autocapitalize="words" spellcheck="false" placeholder="Up to 17 letters"></label>
+        <div class="field" id="asField" hidden><span>JOINING AS</span><div class="as" id="asName"></div></div>
+        <button class="btn big red" type="submit">Join</button>
+      </form>
+      <p class="note" id="joinNote" hidden>No Capra Lab name yet? <a href="/#profile">Make your key card</a> and your name follows you to every lab game.</p>
+    </section>
+  </main>
+</section>
+
+<!-- ============ BRIEFING ============ -->
+<section class="screen" id="lobby" hidden>
+  <header class="bar">
+    <button class="round-btn leave" type="button" aria-label="Leave the operation">✕</button>
+    <span class="bar-title">BRIEFING</span>
+    <div class="bar-right"><button class="round-btn help" type="button" aria-label="How to play">?</button></div>
+  </header>
+  <main class="wrap">
+    <section class="opname"><small>THIS IS</small><b id="opName"></b><button class="btn sm alt" id="opRoll" type="button" hidden>New name</button></section>
+    <section class="card codebox">
+      <small class="muted" style="font-weight:900;letter-spacing:.1em;font-size:12px">FILE CODE</small>
+      <div class="code" id="roomCode"></div>
+      <div class="url" id="roomUrl"></div>
+      <button class="btn" id="inviteBtn" type="button">Recruit agents</button>
+    </section>
+    <section class="folder" data-tab="YOUR AGENT">
+      <div class="me-agent">
+        <div id="meAvatar"></div>
+        <div class="who"><div class="cn" id="meCodename"></div><button class="btn sm alt" id="cnRoll" type="button">New codename</button></div>
+      </div>
+      <div class="parts" id="parts"></div>
+      <button class="btn sm alt" id="avShuffle" type="button">Shuffle my look</button>
+    </section>
+    <section class="folder" data-tab="AGENTS">
+      <div class="rv-row"><h2>THE TEAM</h2><span class="note" id="pCount"></span></div>
+      <ul class="agents" id="lobbyAgents"></ul>
+    </section>
+    <button class="btn big red" id="startBtn" type="button" hidden>Begin the operation</button>
+    <p class="note" id="waitNote" style="text-align:center">Waiting for the host to begin the operation…</p>
+  </main>
+</section>
+
+<!-- ============ THE NIGHT ============ -->
+<section class="screen" id="night" hidden>
+  <header class="bar">
+    <button class="round-btn leave" type="button" aria-label="Leave the operation">✕</button>
+    <span class="bar-title" id="nightOp"></span>
+    <div class="bar-right"><button class="round-btn help" type="button" aria-label="How to play">?</button></div>
+  </header>
+  <main class="wrap" style="padding-top:0">
+    <nav class="tabs" role="tablist" aria-label="Your file">
+      <button type="button" role="tab" data-tab="missions" aria-selected="true">MISSIONS<i id="badgeM" hidden></i></button>
+      <button type="button" role="tab" data-tab="said" aria-selected="false">WHO SAID IT<i id="badgeS" hidden></i></button>
+      <button type="button" role="tab" data-tab="yearbook" aria-selected="false">YEARBOOK<i id="badgeY" hidden></i></button>
+      <button type="button" role="tab" data-tab="agents" aria-selected="false">AGENTS</button>
+    </nav>
+
+    <section id="tab-missions" role="tabpanel">
+      <div class="folder" data-tab="TOP SECRET">
+        <div class="rv-row"><h2>YOUR MISSIONS</h2><span class="note" id="swapsLeft"></span></div>
+        <p class="note">Hold a mission to read it, so nobody peeks over your shoulder. Pull it off without getting caught, then mark it done.</p>
+        <div id="missionList" style="display:grid;gap:10px"></div>
+        <p class="countdown" id="nextMission"></p>
+      </div>
+      <div class="folder" data-tab="COUNTER-INTEL">
+        <div class="rv-row"><h2>CATCH A SPY</h2><span class="note" id="accLeft"></span></div>
+        <p class="note">Think someone’s working a mission on you? Accuse them and pick their mission out of four. Get it right and it’s burned.</p>
+        <button class="btn red" id="accuseBtn" type="button">Accuse an agent</button>
+        <ul class="news" id="newsList"></ul>
+      </div>
+    </section>
+
+    <section id="tab-said" role="tabpanel" hidden>
+      <div class="folder" data-tab="ANONYMOUS">
+        <h2>WHO SAID IT</h2>
+        <p class="note">Answer every question. Nobody sees your answers until the file is declassified, and then the room has to guess who wrote them.</p>
+        <div id="promptList" style="display:grid;gap:10px"></div>
+        <p class="countdown" id="nextPrompt"></p>
+      </div>
+    </section>
+
+    <section id="tab-yearbook" role="tabpanel" hidden>
+      <div class="folder" data-tab="SUPERLATIVES">
+        <h2>THE YEARBOOK</h2>
+        <p class="note">One vote per award, for anyone but yourself. Winners are announced when the file is declassified.</p>
+        <div id="awardList" style="display:grid;gap:10px"></div>
+      </div>
+    </section>
+
+    <section id="tab-agents" role="tabpanel" hidden>
+      <div class="folder" data-tab="PERSONNEL">
+        <div class="rv-row"><h2>THE TEAM</h2><button class="btn sm alt" id="inviteBtn2" type="button">Recruit</button></div>
+        <ul class="agents" id="nightAgents"></ul>
+        <p class="note" id="removeNote" hidden>Host: tap an agent to take them off the operation.</p>
+      </div>
+    </section>
+  </main>
+  <div class="hostbar" id="nightHost" hidden>
+    <button class="btn alt" id="dropBtn" type="button">Drop next question</button>
+    <button class="btn red" id="declassBtn" type="button">Declassify</button>
+  </div>
+</section>
+
+<!-- ============ DECLASSIFIED ============ -->
+<section class="screen" id="reveal" hidden>
+  <header class="bar">
+    <button class="round-btn leave" type="button" aria-label="Leave the operation">✕</button>
+    <span class="bar-title" id="revealOp"></span>
+    <div class="bar-right"><button class="round-btn snd" type="button" aria-label="Sound on" aria-pressed="true"></button></div>
+  </header>
+  <main class="wrap" id="revealBody" aria-live="polite"></main>
+  <div class="hostbar" id="revealHost" hidden>
+    <button class="btn alt" id="hideBtn" type="button" hidden>Hide this answer</button>
+    <button class="btn big red" id="nextBtn" type="button">Next ▶</button>
+  </div>
+</section>
+
+<!-- ============ THE SHARE PAGE ============ -->
+<section class="screen" id="file" hidden>
+  <header class="bar">
+    <capra-lab-chip></capra-lab-chip>
+    <div class="bar-right"><button class="round-btn" id="fileShare" type="button" aria-label="Share this file"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg></button></div>
+  </header>
+  <main class="wrap" id="fileBody"></main>
+</section>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="veil" id="accuseSheet" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="accTitle">
+    <button class="round-btn x" data-close type="button" aria-label="Close">✕</button>
+    <h2 id="accTitle">WHO’S THE SPY?</h2>
+    <p class="note" id="accNote">Pick the agent you think is working a mission on you.</p>
+    <div class="guess-grid" id="accAgents"></div>
+    <div class="choices" id="accChoices" hidden></div>
+  </div>
+</div>
+
+<div class="veil" id="confirmSheet" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+    <h2 id="cfTitle"></h2>
+    <p class="note" id="cfNote"></p>
+    <button class="btn red" id="cfYes" type="button"></button>
+    <button class="btn alt" data-close type="button">Not yet</button>
+  </div>
+</div>
+
+<div class="veil" id="help" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <button class="round-btn x" data-close type="button" aria-label="Close">✕</button>
+    <h2 id="helpTitle">HOW IT WORKS</h2>
+    <ul>
+      <li><b>Briefing.</b> The host opens a file and everyone joins with the code. Build your agent and get a codename.</li>
+      <li><b>Missions.</b> You get three secret missions when the night starts and a new one every 45 minutes. Pull them off without anyone noticing, then mark them done. You can swap two you hate.</li>
+      <li><b>Catch a spy.</b> Think someone’s working a mission on you? Accuse them and pick their mission out of four. Right: it’s burned and you score. Wrong: they score. Three tries a night.</li>
+      <li><b>Who Said It.</b> New questions drop through the night. Answer them all; nobody sees your answers until the reveal.</li>
+      <li><b>Yearbook.</b> Vote for an agent on every award. No voting for yourself.</li>
+      <li><b>Declassified.</b> When the host is ready, the file opens on every phone: guess who wrote each answer, see every mission (done, burned or never pulled off), hand out the awards and crown the top agent. Then share the highlights.</li>
+    </ul>
+    <button class="btn" data-close type="button">Got it</button>
+  </div>
+</div>
+
+<script src="/lab/chip.js" defer></script>
+<script type="module" src="/classified/game.js"></script>
+</body>
+</html>
