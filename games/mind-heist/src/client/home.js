@@ -166,14 +166,16 @@ export function Home({ me, setMe, nav, home, reloadHome }) {
 
   const board = friends ? [friends.me, ...friends.friends].filter(Boolean).sort((a, b) => b.week - a.week).slice(0, 6) : null;
 
-  return html`<div class="wrap">
-    <header class="top">
-      <button class="logo" onClick=${() => nav('/')}><img src=${asset('icon-192.png')} alt="" width="30" height="30" />Mind <b>Heist</b></button>
-      <span class="grow"></span>
-      <button class="chip" onClick=${() => setSheet('profile')} aria-label="Your profile">
-        <${Avatar} a=${me.avatar} /> <span>${me.name}</span>
+  // Inside Capra Lab the lab's button comes first (the same spot in every lab game), then your name.
+  const logo = html`<button class="logo" onClick=${() => nav('/')}><img src=${asset('icon-192.png')} alt="" width="30" height="30" /><span class="lw">Mind <b>Heist</b></span></button>`;
+  const profileChip = html`<button class="chip" onClick=${() => setSheet('profile')} aria-label="Your profile">
+        <${Avatar} a=${me.avatar} /> <span class="nm">${me.name}</span>
         <span class="flame" title="Daily streak">🔥${me.streak}</span>
-      </button>
+      </button>`;
+
+  return html`<div class="wrap">
+    <header class=${'top' + (IN_LAB ? ' lab-top' : '')}>
+      ${IN_LAB ? html`<capra-lab-chip noname></capra-lab-chip>${profileChip}<span class="grow"></span>${logo}` : html`${logo}<span class="grow"></span>${profileChip}`}
     </header>
     <main class="home">
       ${last && !(lastLive && lastLive.gone) && html`<div class=${'rejoin stk' + (runBack ? ' hot' : '')} role=${runBack ? 'alert' : null}>

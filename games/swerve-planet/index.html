@@ -269,6 +269,9 @@ body.touch .hud-bc .cap{display:none}
   padding-block:calc(env(safe-area-inset-top,0px) + 14px) calc(env(safe-area-inset-bottom,0px) + 14px);
   padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));
   background:radial-gradient(circle at 3px 3px, rgba(20,13,36,.55) 1.6px, transparent 1.9px) 0 0/7px 7px, rgba(20,13,36,.28)}
+/* The Capra Lab button: 10px below the clock, 16px in, the same spot as in every lab game */
+.labchip{position:absolute;z-index:3;top:calc(env(safe-area-inset-top,0px) + 10px);left:max(16px, env(safe-area-inset-left,0px))}
+#title{padding-top:calc(env(safe-area-inset-top,0px) + 66px)}
 .cover{position:relative;width:min(600px,100%);--accent:var(--hero);background:var(--paper);color:var(--ink);border:5px solid var(--ink);box-shadow:10px 10px 0 var(--ink);
   padding:18px 22px 20px;display:flex;flex-direction:column;gap:14px;transform:rotate(-1deg)}
 .masthead{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:3px solid var(--ink);padding-bottom:8px}
@@ -468,6 +471,7 @@ body:not(.touch) .lefty{display:none}
   </div>
 
   <section id="title" class="overlay">
+    <capra-lab-chip class="labchip"></capra-lab-chip>
     <div class="cover" id="cover" data-mode="car">
       <div class="masthead"><span class="cap" id="issueLine">Issue No. 2 &middot; Pick your planet</span><span class="price">25&cent;</span></div>
       <div class="colA">
@@ -487,7 +491,6 @@ body:not(.touch) .lefty{display:none}
         <p class="blurb" id="planetBlurb"></p>
         <div class="thumbs" id="thumbs"></div>
         <div class="row lbrow"><button class="ghost" id="btnBoards" type="button">LEADERBOARDS</button><span class="cap" id="bestLine">Shards found 0</span></div>
-        <div class="row lbrow"><a class="ghost" href="/" style="text-decoration:none;display:inline-block">&larr; CAPRA LAB</a></div>
       </div>
       <span class="stamp" id="stamp">Counter-steer in the rain!</span>
     </div>
@@ -540,6 +543,7 @@ body:not(.touch) .lefty{display:none}
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="/lab/chip.js" defer></script>
 <script>
 // Path generator for Swerve Planet — tested in Node, then inlined into the game.
 // Road = sequence of frames every DS units. Each frame: position p, orientation q.

@@ -59,17 +59,9 @@
   /* ---------- top bar: starts below the iPhone clock ---------- */
   .bar {
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    padding: calc(var(--st) + 10px) calc(var(--sr) + var(--gut)) 6px calc(var(--sl) + var(--gut));
+    padding: calc(var(--st) + 10px) max(var(--gut), var(--sr)) 6px max(var(--gut), var(--sl));
   }
-  .back {
-    flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px 0 8px;
-    border-radius: 999px; background: var(--panel); border: 2px solid var(--shadow);
-    color: var(--paper); text-decoration: none; font-size: 12px; font-weight: 800; letter-spacing: 0.1em;
-  }
-  .back svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
-  .bar-right { display: flex; align-items: center; gap: 8px; min-width: 0; }
-  .who { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 700; color: var(--dim); }
-  .who b { color: var(--yellow); font-weight: 800; }
+  .bar-right { display: flex; align-items: center; gap: 8px; flex: none; }
   .round-btn {
     flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
     background: var(--panel); border: 2px solid var(--shadow); padding: 0;
@@ -299,9 +291,8 @@
 </head>
 <body>
 <header class="bar">
-  <a class="back" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>CAPRA LAB</a>
+  <capra-lab-chip></capra-lab-chip>
   <div class="bar-right">
-    <span class="who" id="who" hidden>Playing as <b></b></span>
     <button class="round-btn" id="soundBtn" type="button" aria-label="Sound on" aria-pressed="true"></button>
     <button class="round-btn" id="helpBtn" type="button" aria-label="How to play">?</button>
   </div>
@@ -400,6 +391,7 @@
   </div>
 </div>
 
+<script src="/lab/chip.js" defer></script>
 <script type="module" src="./game.js"></script>
 </body>
 </html>

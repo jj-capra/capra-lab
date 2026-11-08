@@ -9,6 +9,8 @@ public/                      the site Netlify serves
   index.html                 the hub page
   lab/hub.js                 profile walkthrough, sign-in, "Playing as" chip
   lab/keycard.js             the key card picture (key printed on it and hidden inside it)
+  lab/chip.js                the Capra Lab button every game's main menu starts with (<capra-lab-chip>)
+  lab/capra-lab-mark.png     the lab logo, small, for that button
   assets/, icons, manifest   logo, home-screen icon, full-screen app support
   primal-survival/           built from games/primal-survival/ (not committed)
   par-tee-time/              built from games/par-tee-time/ (not committed)
@@ -54,7 +56,7 @@ The signed-in player is kept in the browser under `capra-lab.profile`, which eve
 
 **Games on their own sites** (Glacial Maw) are passed through by `netlify.toml`, so they share this address and its browser storage. Requests through the proxy count on both sites' Netlify credits.
 
-**Adding a game to the profile:** server side, call `profiles.verify(name, code)` from `lab/profiles.js` and keep the game's own stats under its own store, keyed by the profile's handle. Client side, read the player from `localStorage['capra-lab.profile']` (`{ name, handle, code }`).
+**Adding a game to the profile:** server side, call `profiles.verify(name, code)` from `lab/profiles.js` and keep the game's own stats under its own store, keyed by the profile's handle. Client side, read the player from `localStorage['capra-lab.profile']` (`{ name, handle, code }`). Every game's main menu starts its top row with the Capra Lab button: `<script src="/lab/chip.js" defer></script>` and `<capra-lab-chip></capra-lab-chip>` (the lab logo, back to the hub, then the player's lab name, or "Sign in" for a guest). Put it where the logo lands `max(16px, safe-left)` in and `safe-top + 10px` down, the same spot as every other game.
 
 Par-Tee Time was first built to run inside Claude. On Capra Lab its NPCs use their scripted trash talk (the Claude-powered replies only exist inside Claude) and the online-with-a-friend mode is hidden, since its rooms need Claude too. Hustler and pass-and-play work fully.
 

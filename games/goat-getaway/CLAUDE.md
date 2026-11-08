@@ -47,6 +47,8 @@ on from Vault Jam (2026-11-02 = No. 1), on the same puzzles.
 ## Page rules
 
 - Capra Lab's comic look: Bangers + Inter, ink outlines, hard shadows, halftone dots.
+- The top bar starts with the Capra Lab button (`<capra-lab-chip>`, the lab's logo and the player's
+  name), then sound and help on the right.
 - **Nothing under the iPhone clock**: the bar, toast and help sheet start at
   `env(safe-area-inset-top)` plus a margin. While a board is up the title shrinks so the whole
   pen fits on a 393 × 659 Safari screen.

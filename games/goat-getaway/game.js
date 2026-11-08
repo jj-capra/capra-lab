@@ -163,14 +163,8 @@ async function call(path, body) {
     if (e.status !== 401 || !lab || keyBad) throw e;
     keyBad = true;
     $('keyWarn').hidden = false;
-    drawWho();
     return api(path, body);
   }
-}
-function drawWho() {
-  const w = $('who');
-  w.hidden = !lab || keyBad;
-  if (lab) w.querySelector('b').textContent = lab.name;
 }
 
 /* ---------- the pen: pieces you drag along their length ---------- */
@@ -644,7 +638,6 @@ $('legend').innerHTML = [
   [`<span class="post-ico">${postArt()}</span>`, 'Fence post (never moves)'],
 ].map(([art, name]) => `<div>${art}<span>${name}</span></div>`).join('');
 drawSoundBtn();
-drawWho();
 $('soundBtn').addEventListener('click', () => { prefs.sound = !prefs.sound; savePrefs(); drawSoundBtn(); if (prefs.sound) sfx.pick(); });
 $('helpBtn').addEventListener('click', () => openHelp(true));
 $('helpClose').addEventListener('click', () => openHelp(false));

@@ -87,6 +87,9 @@
 
   /* ---- masthead ---------------------------------------------- */
   header{padding:14px 0 6px}
+  /* The Capra Lab button: 10px below the clock, 16px in, the same spot as in every lab game */
+  .labbar{display:flex;margin:-2px 0 0 calc(max(16px, env(safe-area-inset-left,0px)) - max(14px, env(safe-area-inset-left,0px)))}
+  .labbar + header{padding-top:10px}
   .crest{
     position:relative;
     background:var(--blood);
@@ -578,6 +581,7 @@
 
 <!-- ============ HOME ============ -->
 <section id="viewHome">
+  <div class="labbar"><capra-lab-chip></capra-lab-chip></div>
   <header>
     <div class="crest">
       <h1>Primal Survival</h1>
@@ -586,7 +590,6 @@
       <div class="netline" id="netLine">Connecting to today's season&hellip;</div>
     </div>
   </header>
-  <div class="homebar"><a href="/" style="color:inherit;font-weight:700;text-decoration:none;padding:10px 0">&larr; Capra Lab</a><span class="who" id="whoHome">Playing as<b>Guest</b></span></div>
   <div class="menu">
     <button class="primary" id="goPlay"><span class="mt">Play today's season</span>
       <span class="md">Draft five. Survive as long as you can.</span></button>
@@ -750,5 +753,6 @@
 </div>
 
 <script type="module" src="./app.js"></script>
+<script src="/lab/chip.js" defer></script>
 </body>
 </html>

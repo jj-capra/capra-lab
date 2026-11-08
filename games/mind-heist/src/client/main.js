@@ -10,6 +10,13 @@ import { setTheme, rememberTheme, rememberedTheme } from './themes.js';
 import { at, local, asset, IN_LAB } from './base.js';
 import { labSync } from './lab.js';
 
+// Inside Capra Lab, home's top row starts with the lab's button (the lab's own /lab/chip.js).
+if (IN_LAB) {
+  const s = document.createElement('script');
+  s.src = '/lab/chip.js'; s.defer = true;
+  document.head.appendChild(s);
+}
+
 // Vault Jam became its own Capra Lab game, Goat Getaway (Nov 7 2026): old /jam links go there.
 if (IN_LAB && /^\/jam(\/practice)?\/?$/.test(local(location.pathname))) {
   location.replace(GOAT_GETAWAY + (location.pathname.includes('practice') ? '#practice' : ''));

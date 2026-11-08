@@ -119,8 +119,7 @@ on purpose; do not bring any of them back unless JC asks.
 - **Daily draw** (`POST /draw`): one card a day. 1 in 4 is a prize (Mole or Hidden 50/50, even
   split); spend a diamond and it's 1 in 2. The rest are duds named per look. The hand holds 3; a
   full hand can't draw. Constants in `src/server/cards.mjs`. The home card ("Today's card") has
-  the draw and a link to Goat Getaway (inside the lab only: it's the one root path the client
-  writes besides `/#profile`).
+  the draw and a link to Goat Getaway (inside the lab only).
 - **Trophies**: Vault Jam's (the day's fastest solve, Nov 2–7 2026) stay on profiles as history
   (🏆 count and shelf, shown only when there are any). Days still pending at the move
   (`jamPend`) are settled from the old race boards (`j/<date>`) the first time the player loads
@@ -211,6 +210,10 @@ untouched as a backup.
   Heist profile belongs to one lab player (409 otherwise). A linked profile's name comes from the
   lab (`/me/update` ignores a new name; the avatar and look still change). Signing out of Capra
   Lab signs Mind Heist out on that device.
+- **The Capra Lab button.** Inside the lab, home's top row is the lab's button (`<capra-lab-chip noname>`,
+  from the lab's `/lab/chip.js`, which `main.js` loads), then the profile chip, then Mind Heist's logo on
+  the right (icon only on a phone). The button sits in the same spot in every lab game; keep it first.
+  `/lab/chip.js`, `/goat-getaway/` and `/#profile` are the only root paths the client writes.
 - **Moved sign-ins.** The forwarding page on the old site reads that browser's `mh.auth` and
   sends it in the link after the hash (`#mh-move=`); `lab.js` takes it (if this browser isn't
   signed in already), wipes it from the address bar, and the usual lab link follows.

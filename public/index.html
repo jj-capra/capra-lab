@@ -180,9 +180,6 @@
   .tile.next .badge svg { stroke: var(--yellow); stroke-width: 2.6; width: 24px; height: 24px; }
   .tile.next strong { font-size: 20px; letter-spacing: 0.04em; text-shadow: none; }
   .tile.next .name span { font-weight: 600; color: rgba(255, 248, 236, 0.72); }
-  /* With an odd number of games the placeholder takes a row of its own, as a slim bar */
-  .tile.next { grid-column: 1 / -1; flex-direction: row; min-height: 0; padding: 14px 16px; text-align: left; }
-  @media (min-width: 700px) { .tile.next { min-height: 0; } }
 
 
   /* ---------- who's playing ---------- */
@@ -321,14 +318,13 @@
 
   <nav class="games" aria-label="Games">
 
-    <!-- Lab original: lives only in Capra Lab -->
-    <a class="tile feature" href="/par-tee-time/" style="--tile: #4CC9A0">
-      <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 19V3"/><path d="M8 3.5l9 3.2-9 3.3"/><ellipse cx="12" cy="19.5" rx="8" ry="2"/><circle cx="17" cy="15" r="1.6"/></svg></div>
-      <div class="name">
-        <div class="chips"><span class="chip original">LAB ORIGINAL</span><span class="chip live">LIVE</span></div>
-        <strong>PAR-TEE TIME</strong>
-        <span>Pool-shot mini golf. Only in Capra Lab.</span>
+    <!-- Lab original: lives only in Capra Lab (a half tile like the rest since Nov 2026; .tile.feature is still there for a game to headline) -->
+    <a class="tile" href="/par-tee-time/" style="--tile: #4CC9A0">
+      <div class="top">
+        <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 19V3"/><path d="M8 3.5l9 3.2-9 3.3"/><ellipse cx="12" cy="19.5" rx="8" ry="2"/><circle cx="17" cy="15" r="1.6"/></svg></div>
+        <span class="chip original">LAB ORIGINAL</span>
       </div>
+      <div class="name"><strong>PAR-TEE TIME</strong><span>Pool-shot mini golf</span></div>
     </a>
 
     <!-- Lab original: Heads Up-style party game, levels from K-2 to high school -->

@@ -56,7 +56,7 @@
   /* ---------- shared pieces ---------- */
   .bar {
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    padding: calc(var(--st) + 10px) calc(var(--sr) + 14px) 6px calc(var(--sl) + 14px);
+    padding: calc(var(--st) + 10px) max(16px, var(--sr)) 6px max(16px, var(--sl));
   }
   .back {
     display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px 0 8px;
@@ -64,12 +64,7 @@
     color: var(--paper); text-decoration: none; font-size: 12px; font-weight: 800; letter-spacing: 0.1em;
   }
   .back svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
-  .bar-right { display: flex; align-items: center; gap: 8px; min-width: 0; }
-  .who {
-    min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    font-size: 12px; font-weight: 700; color: rgba(255, 248, 236, 0.75);
-  }
-  .who b { color: var(--yellow); font-weight: 800; }
+  .bar-right { display: flex; align-items: center; gap: 8px; flex: none; }
   .round-btn {
     flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
     background: var(--panel); border: 2px solid var(--shadow); padding: 0;
@@ -357,9 +352,8 @@
 <!-- ============ HOME: level, time, deck ============ -->
 <section class="screen home" data-screen="home">
   <header class="bar">
-    <a class="back" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>CAPRA LAB</a>
+    <capra-lab-chip></capra-lab-chip>
     <div class="bar-right">
-      <span class="who" id="who" hidden>Playing as <b></b></span>
       <button class="round-btn" id="helpBtn" type="button" aria-label="How to play">?</button>
       <button class="round-btn" id="setBtn" type="button" aria-label="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button>
     </div>
@@ -516,6 +510,7 @@
   <button class="link" id="rotateTaps" type="button">Play without tilt instead</button>
 </div>
 
+<script src="/lab/chip.js" defer></script>
 <script type="module" src="./game.js"></script>
 </body>
 </html>

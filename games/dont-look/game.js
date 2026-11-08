@@ -19,8 +19,6 @@ const prefs = Object.assign({ level: 1, time: 60, sound: true, upMeans: 'got' },
 if (!LEVELS.some((l) => l.id === prefs.level)) prefs.level = 1;
 if (!TIMES.includes(prefs.time)) prefs.time = 60;
 const savePrefs = () => store.set('dont-look.prefs', prefs);
-// The Capra Lab player on this phone, if any (the lab keeps it under capra-lab.profile).
-const lab = (() => { const p = store.get('capra-lab.profile', null); return p && p.name ? p : null; })();
 
 /* ---------- screens ---------- */
 let screen = 'home';
@@ -171,7 +169,6 @@ function paintHome() {
     b.onclick = () => openReady(d.id);
     grid.appendChild(b);
   }
-  if (lab) { $('who').hidden = false; $('who').querySelector('b').textContent = lab.name; }
 }
 
 /* ---------- ready ---------- */
