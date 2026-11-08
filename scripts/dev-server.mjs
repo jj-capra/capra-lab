@@ -15,6 +15,9 @@ import { makeHandler as mindHeist } from '../games/mind-heist/src/server/api.mjs
 import { memoryStore as mhMemory } from '../games/mind-heist/src/server/store.mjs';
 import { createApi as goatApi } from '../games/goat-getaway/server/api.js';
 import { memoryStore as goatMemory } from '../games/goat-getaway/server/store.js';
+import { createApi as punchApi } from '../games/punchline/server/api.js';
+import { memoryStore as punchMemory } from '../games/punchline/server/store.js';
+import { loadDecks as punchDecks } from '../games/punchline/server/load.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'public');
 const PORT = Number(process.env.PORT) || 8790;
@@ -34,6 +37,10 @@ const mh = mindHeist(mhStore, { clock: () => Date.now() + mhOffset, labCheck: as
 // moves its clock (local only) so a test can reach tomorrow's ribbon
 let goatOffset = 0;
 const goat = goatApi({ store: goatMemory(), mh: mhStore, clock: () => Date.now() + goatOffset,
+  verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
+
+// Punchline reads its decks straight from games/punchline/decks/ (Netlify uses the built copy)
+const punch = punchApi({ store: punchMemory(), decks: punchDecks(), role: (handle) => crew.role(handle),
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 
 // Mind Heist's handler speaks Request/Response (Netlify Functions v2)
@@ -92,6 +99,7 @@ http.createServer(async (req, res) => {
   if (url.pathname.startsWith('/mind-heist/api/')) return toFunction(req, res, mh);
   if (url.pathname.startsWith('/mind-heist/__')) return mhHook(url, res);
   if (url.pathname.startsWith('/goat-getaway/api/')) return toFunction(req, res, (r) => goat.handle(r));
+  if (url.pathname.startsWith('/punchline/api/')) return toFunction(req, res, (r) => punch.handle(r));
   if (url.pathname === '/goat-getaway/__clock') {
     goatOffset += Number(url.searchParams.get('add') || 0);
     res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: goatOffset }));
@@ -105,13 +113,15 @@ http.createServer(async (req, res) => {
     return json(res, await route(primal, req.method, url.pathname, url.searchParams, body));
   }
   let rel = decodeURIComponent(url.pathname);
-  if (rel === '/primal-survival' || rel === '/mind-heist' || rel === '/goat-getaway') { res.writeHead(301, { location: rel + '/' }); return res.end(); }
+  if (rel === '/primal-survival' || rel === '/mind-heist' || rel === '/goat-getaway' || rel === '/punchline') { res.writeHead(301, { location: rel + '/' }); return res.end(); }
   if (rel.endsWith('/')) rel += 'index.html';
   const file = path.normalize(path.join(ROOT, rel));
   if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end(); }
   fs.readFile(file, (err, buf) => {
     // Mind Heist's invite links (/mind-heist/ABCD, /r/, /c/, /tv/, /jam) load its app, as netlify.toml does
-    if (err && rel.startsWith('/mind-heist/')) return fs.readFile(path.join(ROOT, 'mind-heist', 'index.html'), (e2, page) => {
+    // Punchline's room links (/punchline/ABCD) load its page, as netlify.toml does
+    const app = err && (rel.startsWith('/mind-heist/') ? 'mind-heist' : rel.startsWith('/punchline/') ? 'punchline' : null);
+    if (app) return fs.readFile(path.join(ROOT, app, 'index.html'), (e2, page) => {
       if (e2) { res.writeHead(404); return res.end('not found'); }
       res.writeHead(200, { 'content-type': 'text/html' }); res.end(page);
     });

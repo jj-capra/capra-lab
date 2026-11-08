@@ -1,0 +1,130 @@
+{
+  "id": "menu-mishaps",
+  "title": "Menu Mishaps",
+  "shelf": "family",
+  "blurb": "Diner boards, food trucks and bakery signs with a side of oops",
+  "cards": [
+    {
+      "id": "d01",
+      "scene": "chalk",
+      "where": "THE YOLK & YAWN",
+      "kind": "misprint",
+      "sign": ["Freshly Sneezed", "Orange Juice"],
+      "options": ["Freshly Squeezed Orange Juice", "Freshly Sneezed Orange Juice", "Freshly Squeezed Grape Juice", "Freshly Seized Orange Juice"],
+      "answer": 0,
+      "caption": "Bless you. That'll be $3."
+    },
+    {
+      "id": "d02",
+      "scene": "storefront",
+      "where": "BUTTERBELL BAKERY",
+      "kind": "misprint",
+      "sign": ["WARM CINNAMON", "TROLLS"],
+      "options": ["WARM CINNAMON TROLLS", "WARM CINNAMON ROLLS", "WARM CINNAMON TOAST", "WORM CINNAMON ROLLS"],
+      "answer": 1,
+      "caption": "Each one guards a tiny frosting bridge."
+    },
+    {
+      "id": "d03",
+      "scene": "chalk",
+      "where": "THE SALTY DINGHY",
+      "kind": "misprint",
+      "sign": ["Fish & Chimps", "$9 a Basket"],
+      "options": ["Fish & Chimps $9 a Basket", "Fish & Chips $6 a Basket", "Fish & Chips $9 a Basket", "Fish & Chips $9 a Bucket"],
+      "answer": 2,
+      "caption": "Relax, the chimps aren't on the menu. They're the cooks."
+    },
+    {
+      "id": "d04",
+      "scene": "chalk",
+      "where": "PUDDLEJUMP COFFEE",
+      "kind": "misprint",
+      "sign": ["Pumpkin Spies", "Latte $5"],
+      "options": ["Pumpkin Spies Latte $5", "Pumpkin Spice Tea $5", "Pumpkin Spice Latte $6", "Pumpkin Spice Latte $5"],
+      "answer": 3,
+      "caption": "It already knows what you ordered last fall."
+    },
+    {
+      "id": "d05",
+      "scene": "neon",
+      "where": "THE CHROME COW",
+      "kind": "misprint",
+      "sign": ["BURGERS &", "MILKSNAKES"],
+      "options": ["BURGERS & MILKSNAKES", "BURGERS & MILKSHAKES", "BURGERS & MILK STEAKS", "BURGERS & MILK CAKES"],
+      "answer": 1,
+      "caption": "Extra thick. Extra wiggly. Straws not recommended."
+    },
+    {
+      "id": "d06",
+      "scene": "storefront",
+      "where": "THE SPRINKLE SHED",
+      "kind": "misprint",
+      "sign": ["HOT FUDGE SUNDAYS", "ALL WEEK LONG"],
+      "options": ["HOT FUDGE SUNDAES ALL WEEK LONG", "HOT FUDGE SUNDAYS ALL WEEK LONG", "HOT FUDGE SUNDAES ALL WEEKEND", "HOT FUDGE SUNDAES ALL DAY LONG"],
+      "answer": 0,
+      "caption": "We don't carry Mondays. Nobody ever wants those."
+    },
+    {
+      "id": "d07",
+      "scene": "neon",
+      "where": "CLUCKTOWN GRILL",
+      "kind": "lights",
+      "sign": ["CHICKEN WI~NGS", "HOT & SPICY"],
+      "options": ["CHICKEN WINGS HOT & SPICY", "CHICKEN WIGS HOT & SPICY", "CHICKEN WIGS HOT & SALTY", "CHICKEN RINGS HOT & SPICY"],
+      "answer": 1,
+      "caption": "Available in curly, straight and extra crispy."
+    },
+    {
+      "id": "d08",
+      "scene": "neon",
+      "where": "THE SIZZLE BARN",
+      "kind": "lights",
+      "sign": ["~STEA~K HOUSE", "OPEN NIGHTLY"],
+      "options": ["STEAK HOUSE OPEN NIGHTLY", "TEA HOUSE OPEN DAILY", "STEAM HOUSE OPEN NIGHTLY", "TEA HOUSE OPEN NIGHTLY"],
+      "answer": 3,
+      "caption": "Medium rare? Sir, this is chamomile."
+    },
+    {
+      "id": "d09",
+      "scene": "neon",
+      "where": "MIDNIGHT GRIDDLE",
+      "kind": "lights",
+      "sign": ["~B~R~E~A~KFAST", "ALL DAY"],
+      "options": ["BREAKFAST ALL DAY", "FEAST ALL DAY", "FAST ALL DAY", "BREAK ALL DAY"],
+      "answer": 2,
+      "caption": "Today's special: absolutely nothing."
+    },
+    {
+      "id": "d10",
+      "scene": "chalk",
+      "where": "THE CRUMB & LADLE",
+      "kind": "design",
+      "sign": ["Today's Soup:", "Chicken Noodle", "Tomorrow's Soup:", "Today's Soup"],
+      "ask": "What's tomorrow's soup?",
+      "options": ["Tomato Basil", "Clam Chowder", "No Soup at All", "The Same Soup"],
+      "answer": 3,
+      "caption": "Thursday's soup has been here since Monday."
+    },
+    {
+      "id": "d11",
+      "scene": "storefront",
+      "where": "PINWHISTLE PLAZA",
+      "kind": "design",
+      "sign": ["DONUTS", "& DENTISTRY"],
+      "options": ["DONUTS & DENTISTRY", "DONUTS & DANISH", "DONUTS & DESSERTS", "DONUTS & DINER"],
+      "answer": 0,
+      "caption": "Great for business. Both businesses."
+    },
+    {
+      "id": "d12",
+      "scene": "storefront",
+      "where": "COZY MITTEN COCOA",
+      "kind": "design",
+      "sign": ["HOT COCOA $1", "CUP $4"],
+      "ask": "What costs the most?",
+      "options": ["THE COCOA", "THE MARSHMALLOWS", "THE CUP", "THE WHIPPED CREAM"],
+      "answer": 2,
+      "caption": "Cupped hands are free. Mind the marshmallows."
+    }
+  ]
+}

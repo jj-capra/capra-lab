@@ -30,7 +30,7 @@ const CLASSICS = DECKS.filter(d => !d.date);
 /* Capra's Lab (JC, Nov 2026): decks hidden from the public. A deck marked "brew" in
    deck_plan.json (a "JJ Brew") starts hidden; the owner hides or shows any deck from Capra's Lab
    (cfg/decks in the store: { hide: [ids], show: [ids] }, loaded by api.mjs into setDeckCfg).
-   A hidden deck never drops, is never the joke of the day, never feeds sudden death and isn't
+   A hidden deck never drops, never feeds sudden death and isn't
    in the public vault; only Capra's Lab members can host it or play it solo, and it can't be
    sent as a challenge. */
 let HIDDEN = new Set(DECKS.filter(d => d.brew).map(d => d.id));
@@ -63,33 +63,11 @@ export function calendar(now) {
   return { today, featured, encore, vault, nextExists: dated.some(d => d.date > today) };
 }
 
-// Joke of the day: one joke deck a day, separate from the trivia drop. The run starts with
-// Groan Up on Nov 4, 2026 (launch day) and cycles; the seasonal decks get their own days instead:
-// Turkey Talk on Thanksgiving (4th Thursday of November), Monster Mash on Halloween,
-// Sweater Weather on December 1, 21 and 24.
-const JOKES = DECKS.filter(d => d.kind === 'jokes').sort((a, b) => (a.id < b.id ? -1 : 1));
-const JOKE_START = '2026-11-04';
-const JOKE_PINS = { turkey: 'jokes-24', monster: 'jokes-19', winter: 'jokes-30' };
-const JOKE_CYCLE = JOKES.filter(d => d.id !== JOKE_PINS.turkey && d.id !== JOKE_PINS.winter);
+// Jokes moved to Punchline, Capra Lab's own game of Wrong Signs and jokes (JC, Nov 7 2026), joke
+// of the day and all. The face-off rules for `kind: "jokes"` decks still sit in engine.mjs, unused.
 export function thanksgiving(y) {
   const dow = new Date(Date.UTC(y, 10, 1)).getUTCDay();
   return `${y}-11-${String(1 + ((4 - dow + 7) % 7) + 21).padStart(2, '0')}`;
-}
-export function jokeOfDay(now) {
-  if (!JOKES.length) return null;
-  const today = pacificDate(now);
-  const md = today.slice(5);
-  const pin = (id) => BY_ID[id] && BY_ID[id].kind === 'jokes' && !HIDDEN.has(id) ? BY_ID[id] : null;
-  let d = null;
-  if (today === thanksgiving(+today.slice(0, 4))) d = pin(JOKE_PINS.turkey);
-  else if (md === '10-31') d = pin(JOKE_PINS.monster);
-  else if (md === '12-01' || md === '12-21' || md === '12-24') d = pin(JOKE_PINS.winter);
-  if (d) return d;
-  const cycle = JOKE_CYCLE.filter(j => !HIDDEN.has(j.id)), jokes = JOKES.filter(j => !HIDDEN.has(j.id));
-  const list = cycle.length ? cycle : jokes;
-  if (!list.length) return null;
-  const n = dayDiff(JOKE_START, today);
-  return list[((n % list.length) + list.length) % list.length];
 }
 
 export function summary(d, extra = {}) {

@@ -82,6 +82,24 @@ async function buildGoatGetaway() {
   console.log('built public/goat-getaway/');
 }
 
+/* Punchline: a page, its art and the clock and scoring rules (the same file the server keeps time
+   with). The decks are checked, then baked into games/punchline/server/decks.gen.mjs for its
+   function (netlify/functions/punchline.mjs); answers never go into public/. */
+async function buildPunchline() {
+  const game = path.join(ROOT, 'games', 'punchline'), out = path.join(ROOT, 'public', 'punchline');
+  const { loadDecks, problems } = await import(path.join(game, 'server', 'load.mjs'));
+  const decks = loadDecks();
+  const bad = problems(decks);
+  if (bad.length) throw new Error('punchline decks:\n  ' + bad.join('\n  '));
+  await fs.writeFile(path.join(game, 'server', 'decks.gen.mjs'),
+    `// Built by scripts/build.mjs from games/punchline/decks/. Edit the decks, not this file.\nexport const DECKS = ${JSON.stringify(decks)};\n`);
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(path.join(out, 'shared'), { recursive: true });
+  for (const f of ['index.html', 'game.js', 'art.js']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  await fs.copyFile(path.join(game, 'shared', 'rules.mjs'), path.join(out, 'shared', 'rules.mjs'));
+  console.log(`built public/punchline/ (${decks.length} decks, ${decks.reduce((n, d) => n + d.cards.length, 0)} cards)`);
+}
+
 /* Mind Heist: its own build validates the decks and bundles the app and the function;
    here it writes them into public/mind-heist/ and netlify/functions/mind-heist.mjs */
 async function buildMindHeist() {
@@ -101,3 +119,4 @@ await buildParTeeTime();
 await buildSwervePlanet();
 await buildDontLook();
 await buildGoatGetaway();
+await buildPunchline();

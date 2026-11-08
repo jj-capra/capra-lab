@@ -1,5 +1,5 @@
 """iPhone fit for the HOST's phone in every look (JC, Nov 4 2026): an iPhone 15 profile
-(393 x 659 Safari area, 3x), a trivia deck and a joke deck, through the lobby, board, question,
+(393 x 659 Safari area, 3x), a trivia deck, through the lobby, board, question,
 reveal and fun fact (or face-off replay and bonus groan), then the final with the text share.
 Prints PASS/FAIL per screen (no vertical scrolling during play) and saves 3x screenshots.
 
@@ -79,7 +79,7 @@ with sync_playwright() as p:
     dev = dict(p.devices['iPhone 15'])
     dev.pop('default_browser_type', None)
     for look in LOOKS:
-        for deck in ('trivia', 'jokes-02'):
+        for deck in ('trivia',):   # joke decks moved to Punchline (Nov 7 2026)
             host, ann = profile('Dana', '🦝'), profile('Annabelle', '🦉')
             body = {'kind': 'invite', 'settings': {'theme': look, 'clock': 30}}
             if deck != 'trivia': body['deckId'] = deck

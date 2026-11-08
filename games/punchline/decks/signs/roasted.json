@@ -1,0 +1,131 @@
+{
+  "id": "roasted",
+  "title": "Roasted",
+  "shelf": "late",
+  "blurb": "Signs that roast whoever reads them. Yes, you.",
+  "cards": [
+    {
+      "id": "rs01",
+      "scene": "plaque",
+      "where": "COIN CAVERN",
+      "kind": "design",
+      "sign": ["VIP ROOM", "MUST BE THIS COOL", "TO ENTER", "(SORRY, BUD)"],
+      "ask": "Do you get in?",
+      "options": ["YEP, WALK RIGHT IN", "ONLY WITH A PARENT", "ONLY ON WEEKENDS", "NOPE"],
+      "answer": 3,
+      "caption": "Your mom says you're cool. Moms don't count."
+    },
+    {
+      "id": "rs02",
+      "scene": "neon",
+      "where": "GUTTER GALAXY",
+      "kind": "lights",
+      "sign": ["PARTY PACKAGES", "BRING YOUR FRIEND~S"],
+      "options": ["PARTY PACKAGES BRING YOUR FRIENDS", "PARTY PACKAGES BRING YOUR FRIES", "PARTY PACKAGES BRING YOUR FRIEND", "PARTY PACKAGES BRING YOUR FIEND"],
+      "answer": 2,
+      "caption": "Yes, the imaginary one counts."
+    },
+    {
+      "id": "rs03",
+      "scene": "plaque",
+      "where": "SNACK-O-MATIC",
+      "kind": "design",
+      "sign": ["TAKES $1 BILLS", "EXCEPT YOURS"],
+      "ask": "Whose dollar won't it take?",
+      "options": ["EVERYONE ELSE'S", "YOURS", "THE CASHIER'S", "YOUR TEACHER'S"],
+      "answer": 1,
+      "caption": "Smoothed it on your jeans? It knows. It always knows."
+    },
+    {
+      "id": "rs04",
+      "scene": "marquee",
+      "where": "GOPHER GULCH HIGH",
+      "kind": "misprint",
+      "sign": ["FINALS WEEK", "YOU CAN'T DO IT!"],
+      "options": ["FINALS WEEK YOU CAN DO IT!", "FINALS WEEK YOU CAN'T DO IT!", "FINALS WEEK YOU CAN DO BETTER!", "FINALS WEEK YOU CAN SKIP IT!"],
+      "answer": 0,
+      "caption": "The office says it's a typo. They paused before saying that."
+    },
+    {
+      "id": "rs05",
+      "scene": "restroom",
+      "where": "OCTANE OTTER",
+      "kind": "design",
+      "sign": ["OBJECTS IN MIRROR", "ARE DUMBER THAN", "THEY APPEAR"],
+      "ask": "What is the mirror telling you?",
+      "options": ["YOU'RE CLOSER THAN YOU SEEM", "YOU'RE DUMBER THAN YOU SEEM", "YOU'RE SMARTER THAN YOU SEEM", "THE MIRROR IS DIRTY"],
+      "answer": 1,
+      "caption": "It's a regular mirror. We just added the sticker."
+    },
+    {
+      "id": "rs06",
+      "scene": "billboard",
+      "kind": "design",
+      "sign": ["YOUR PARENTS ARE", "SO PROUD OF YOU*", "*RESULTS MAY VARY"],
+      "ask": "How proud are your parents?",
+      "options": ["SUPER PROUD", "NOT AT ALL", "IT DEPENDS", "THEY'RE BUSY"],
+      "answer": 2,
+      "caption": "Sibling comparison available upon request."
+    },
+    {
+      "id": "rs07",
+      "scene": "chalk",
+      "where": "MUDDY MUG",
+      "kind": "design",
+      "sign": ["Everyone here", "wants one thing,", "and it's for you", "to leave."],
+      "ask": "What does everyone want?",
+      "options": ["FREE REFILLS", "FOR YOU TO STAY", "THE WIFI CODE", "FOR YOU TO LEAVE"],
+      "answer": 3,
+      "caption": "We close at 9. You've been here since 7. In the morning."
+    },
+    {
+      "id": "rs08",
+      "scene": "road",
+      "kind": "design",
+      "sign": ["WRONG WAY", "STORY OF", "YOUR LIFE"],
+      "ask": "What else is going the wrong way?",
+      "options": ["THE TRAFFIC", "YOUR LIFE", "THE PARADE", "THE BUS"],
+      "answer": 1,
+      "caption": "Your GPS: \"Recalculating... recalculating... never mind.\""
+    },
+    {
+      "id": "rs09",
+      "scene": "yard",
+      "kind": "design",
+      "sign": ["Free Cookies!", "Please take ONE.", "Yes, you.", "Put two back."],
+      "ask": "How many did you take?",
+      "options": ["THREE", "ONE", "TWO", "FOUR"],
+      "answer": 0,
+      "caption": "Grandma counts. Grandma always counts."
+    },
+    {
+      "id": "rs10",
+      "scene": "neon",
+      "where": "FULL COURT KICKS",
+      "kind": "lights",
+      "sign": ["BE THE ~GOAT"],
+      "options": ["BE THE OAT", "BE THE GOAT", "BE THE BOAT", "BE THE COAT"],
+      "answer": 0,
+      "caption": "Bland, mushy, and only good with a lot of help."
+    },
+    {
+      "id": "rs11",
+      "scene": "marquee",
+      "where": "THISTLE COLLEGE",
+      "kind": "lights",
+      "sign": ["YOUR FUTURE", "IS ~B~RIGHT"],
+      "options": ["YOUR FUTURE IS BRIGHT", "YOUR FUTURE IS RIGHT", "YOUR FUTURE IS TIGHT", "YOUR FUTURE IS IGHT"],
+      "answer": 3,
+      "caption": "Career counselor: \"Honestly? That's generous.\""
+    },
+    {
+      "id": "rs12",
+      "scene": "banner",
+      "kind": "misprint",
+      "sign": ["HAPPY BIRTHDAY", "ANOTHER YEAR", "ODDER"],
+      "options": ["HAPPY BIRTHDAY ANOTHER YEAR ODDER", "HAPPY BIRTHDAY ANOTHER YEAR BOLDER", "HAPPY BIRTHDAY ANOTHER YEAR OLDER", "HAPPY BIRTHDAY ANOTHER YEAR COLDER"],
+      "answer": 2,
+      "caption": "Nobody fixed it. Everyone at the party agreed."
+    }
+  ]
+}

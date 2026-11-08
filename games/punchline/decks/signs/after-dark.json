@@ -1,0 +1,124 @@
+{
+  "id": "after-dark",
+  "title": "Lights Out After Dark",
+  "shelf": "late",
+  "blurb": "The lights went out. So did the filter.",
+  "cards": [
+    {
+      "id": "ad01",
+      "scene": "neon",
+      "where": "SKILLET SKIP'S",
+      "kind": "lights",
+      "sign": ["SHI~FT MANAGER", "WANTED"],
+      "options": ["SHIFT MANAGER WANTED", "SHIRT MANAGER WANTED", "SHIT MANAGER WANTED", "SHY MANAGER WANTED"],
+      "answer": 2,
+      "caption": "Good news: our current manager is already fully qualified."
+    },
+    {
+      "id": "ad02",
+      "scene": "marquee",
+      "kind": "lights",
+      "sign": ["PUBLIC LI~B~RAR~Y", "OPEN LATE"],
+      "options": ["PUBLIC LIAR OPEN LATE", "PUBLIC LAIR OPEN LATE", "PUBLIC LIBRARY OPEN LATE", "PUBLIC LIBRA OPEN LATE"],
+      "answer": 0,
+      "caption": "It also told you watching the movie counts as reading the book."
+    },
+    {
+      "id": "ad03",
+      "scene": "marquee",
+      "where": "PARKSIDE AQUATICS",
+      "kind": "lights",
+      "sign": ["COMMUNITY POO~L", "NOW OPEN"],
+      "options": ["COMMUNITY POOP NOW OPEN", "COMMUNITY POO NOW OPEN", "COMMUNITY POOL NOW OPEN", "COMMUNITY POLL NOW OPEN"],
+      "answer": 1,
+      "caption": "Explains why the whole shallow end just got out."
+    },
+    {
+      "id": "ad04",
+      "scene": "neon",
+      "where": "LUNGE LODGE",
+      "kind": "lights",
+      "sign": ["BURP~E~E CHALLENGE", "SAT 9 AM"],
+      "options": ["BURPEE CHALLENGE SAT 9 AM", "BURPE CHALLENGE SAT 9 AM", "BURPEES CHALLENGE SAT 9 AM", "BURP CHALLENGE SAT 9 AM"],
+      "answer": 3,
+      "caption": "Free soda at the starting line. Last year Doug went 14 seconds straight."
+    },
+    {
+      "id": "ad05",
+      "scene": "marquee",
+      "where": "WOBBLY SILO FARM",
+      "kind": "lights",
+      "sign": ["PU~M~PKIN PATCH", "HAYRIDES $5"],
+      "options": ["PUMPKIN PATCH HAYRIDES $5", "PUNKIN PATCH HAYRIDES $5", "PUKIN PATCH HAYRIDES $5", "PUMKIN PATCH HAYRIDES $5"],
+      "answer": 2,
+      "caption": "The sign got updated right after the first hayride."
+    },
+    {
+      "id": "ad06",
+      "scene": "neon",
+      "kind": "lights",
+      "sign": ["~S~E~A~SHELL", "MINI GOLF"],
+      "options": ["HELL MINI GOLF", "SHELL MINI GOLF", "SEASHELL MINI GOLF", "SEA MINI GOLF"],
+      "answer": 0,
+      "caption": "Hole 9 is the windmill. Nobody has ever made it past hole 9."
+    },
+    {
+      "id": "ad07",
+      "scene": "neon",
+      "where": "SALTY PETE'S",
+      "kind": "lights",
+      "sign": ["LO~BS~TER FEST", "TONIGHT ONLY"],
+      "options": ["LOBSTER FEST TONIGHT ONLY", "LOSER FEAST TONIGHT ONLY", "LOSTER FEST TONIGHT ONLY", "LOSER FEST TONIGHT ONLY"],
+      "answer": 3,
+      "caption": "Hostess: \"Oh hey, your usual table is ready.\""
+    },
+    {
+      "id": "ad08",
+      "scene": "neon",
+      "kind": "lights",
+      "sign": ["BAR~EF~O~O~T BEACH", "SNACK SHACK"],
+      "options": ["BAREFOOT BEACH SNACK SHACK", "BARF BEACH SNACK SHACK", "BARFOOT BEACH SNACK SHACK", "BART BEACH SNACK SHACK"],
+      "answer": 1,
+      "caption": "Wait 30 minutes after the chili fries to swim. They mean it."
+    },
+    {
+      "id": "ad09",
+      "scene": "marquee",
+      "where": "ELKHORN COMMUNITY",
+      "kind": "lights",
+      "sign": ["UGLY SWEAT~E~R", "CONTEST FRIDAY"],
+      "options": ["UGLY SWEAT CONTEST FRIDAY", "UGLY SWEATS CONTEST FRIDAY", "UGLY SWEATER CONTEST FRIDAY", "UGLY SEAT CONTEST FRIDAY"],
+      "answer": 0,
+      "caption": "Judging is by smell. The lost-and-found bin is favored to win."
+    },
+    {
+      "id": "ad10",
+      "scene": "neon",
+      "where": "CRUSTBEARD'S",
+      "kind": "lights",
+      "sign": ["~P~IRAT~E PIZZA", "WE DELIVER"],
+      "options": ["PIRATE PIZZA WE DELIVER", "IRATE PIZZA WE DELIVER", "RAT PIZZA WE DELIVER", "RATE PIZZA WE DELIVER"],
+      "answer": 2,
+      "caption": "Health inspector: \"Honestly? That tracks.\""
+    },
+    {
+      "id": "ad11",
+      "scene": "neon",
+      "kind": "lights",
+      "sign": ["M~A~R~I~GOLD LOAF CO", "FRESH BREAD DAILY"],
+      "options": ["MARIGOLD LOAF CO FRESH BREAD DAILY", "MOLDY LOAF CO FRESH BREAD DAILY", "GOLD LOAF CO FRESH BREAD DAILY", "MOLD LOAF CO FRESH BREAD DAILY"],
+      "answer": 3,
+      "caption": "Every loaf comes with a free science project."
+    },
+    {
+      "id": "ad12",
+      "scene": "marquee",
+      "where": "DUSTMOOR ACADEMY",
+      "kind": "lights",
+      "sign": ["BO~AR~DING SCHOOL", "OPEN HOUSE SAT"],
+      "options": ["BOARDING SCHOOL OPEN HOUSE SAT", "BORING SCHOOL OPEN HOUSE SAT", "BOARING SCHOOL OPEN HOUSE SAT", "BORDING SCHOOL OPEN HOUSE SAT"],
+      "answer": 1,
+      "caption": "Tour highlight: a 40-minute talk about the new carpet."
+    }
+  ]
+}

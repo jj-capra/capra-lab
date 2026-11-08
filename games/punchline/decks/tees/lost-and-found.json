@@ -1,0 +1,137 @@
+{
+  "id": "lost-and-found",
+  "title": "Lost and Found",
+  "shelf": "late",
+  "blurb": "Shirts nobody should have printed",
+  "cards": [
+    {
+      "id": "l01",
+      "scene": "tee",
+      "where": "DONATION BIN",
+      "kind": "peeled",
+      "sign": ["ALL I GOT WAS", "THIS LOUSY SHI~RT"],
+      "options": ["ALL I GOT WAS THIS LOUSY SHIRT", "ALL I GOT WAS THIS LOUSY SHIT", "ALL I GOT WAS THIS LOUS SHIRT", "ALL I GOT WAS THIS LOUSY HIRT"],
+      "answer": 1,
+      "caption": "One hot wash and it finally told the truth."
+    },
+    {
+      "id": "l02",
+      "scene": "tee",
+      "where": "THRIFT RACK",
+      "kind": "peeled",
+      "sign": ["HELL~O", "MIDDLE SCHOOL!"],
+      "options": ["HELLO MIDDLE SCHOOL!", "HELP MIDDLE SCHOOL!", "HELL MIDDLE SCHOOL!", "HEL MIDDLE SCHOOL!"],
+      "answer": 2,
+      "caption": "Every seventh grader agrees the dryer made it more accurate."
+    },
+    {
+      "id": "l03",
+      "scene": "tee",
+      "where": "CAMP LOST & FOUND",
+      "kind": "peeled",
+      "sign": ["D~IAM~ON~D KIDS", "CAMP STAFF"],
+      "options": ["DIAMOND KIDS CAMP STAFF", "DAMON KIDS CAMP STAFF", "DAMN KIDS CAMP STUFF", "DAMN KIDS CAMP STAFF"],
+      "answer": 3,
+      "caption": "Found in the counselors' cabin around week six of eight."
+    },
+    {
+      "id": "l04",
+      "scene": "tee",
+      "where": "YARD SALE",
+      "kind": "peeled",
+      "sign": ["AW S~HUCKS!", "CORN FEST 2019"],
+      "options": ["AW SUCKS! CORN FEST 2019", "AW SHUCKS! CORN FEST 2019", "AW SHUCK! CORN FEST 2019", "AW HUCKS! CORN FEST 2019"],
+      "answer": 0,
+      "caption": "Honestly the most accurate review the corn fest ever got."
+    },
+    {
+      "id": "l05",
+      "scene": "tee",
+      "where": "CLEARANCE BIN",
+      "kind": "peeled",
+      "sign": ["BRAMBLE GLEN", "~SCRAP~B~O~O~K CLUB"],
+      "options": ["BRAMBLE GLEN SCRAP CLUB", "BRAMBLE GLEN CRAPBOOK CLUB", "BRAMBLE GLEN CRAP CLUB", "BRAMBLE GLEN SCRAPBOOK CLUB"],
+      "answer": 2,
+      "caption": "Grandma still wears it to every meeting. She knows exactly what it says."
+    },
+    {
+      "id": "l06",
+      "scene": "tee",
+      "where": "GARAGE SALE",
+      "kind": "peeled",
+      "sign": ["BUTT~E~R~M~I~L~K", "PANCAKE BREAKFAST"],
+      "options": ["BUTTERMILK PANCAKE BREAKFAST", "BUTTER PANCAKE BREAKFAST", "BUT PANCAKE BREAKFAST", "BUTT PANCAKE BREAKFAST"],
+      "answer": 3,
+      "caption": "Unlimited syrup. Please do not ask about the shirt."
+    },
+    {
+      "id": "l07",
+      "scene": "tee",
+      "where": "LIBRARY DESK",
+      "kind": "design",
+      "sign": ["GRANDMA'S", "BOOK CLUB"],
+      "art": ["wolf", "moon"],
+      "ask": "What does it look like?",
+      "options": ["A WEREWOLF SUPPORT GROUP", "A ZOO GIFT SHOP SHIRT", "AN ASTRONAUT CAMP SHIRT", "A BEDTIME STORY CLUB"],
+      "answer": 0,
+      "caption": "Meets once a month. Grandma won't say which night."
+    },
+    {
+      "id": "l08",
+      "scene": "tee",
+      "where": "COUCH CUSHIONS",
+      "kind": "design",
+      "sign": ["CERTIFIED", "BABYSITTER"],
+      "art": ["eagle", "flame", "lightning"],
+      "ask": "What does it look like?",
+      "options": ["A FIRE SAFETY CLASS", "A WEATHER CAMP", "A MONSTER TRUCK DAYCARE", "A BIRD RESCUE TEAM"],
+      "answer": 2,
+      "caption": "Nap time is at 2. The engines start at 2:05."
+    },
+    {
+      "id": "l09",
+      "scene": "tee",
+      "where": "FINISH LINE",
+      "kind": "design",
+      "sign": ["CHILI COOK-OFF", "& 5K FUN RUN", "SAME DAY!"],
+      "art": ["flame"],
+      "ask": "What was the bad decision?",
+      "options": ["HOLDING IT IN THE RAIN", "CHILI RIGHT BEFORE A 5K", "A 5K INSTEAD OF A MILE", "SPELLING CHILI WRONG"],
+      "answer": 1,
+      "caption": "Mile two had a long line. It was not for water."
+    },
+    {
+      "id": "l10",
+      "scene": "tee",
+      "where": "GYM LOST AND FOUND",
+      "kind": "design",
+      "sign": ["MY OTHER SHIRT", "IS ALSO", "THIS SHIRT"],
+      "ask": "What's the shirt confessing?",
+      "options": ["THEY OWN TOO MANY SHIRTS", "THEY MADE IT THEMSELVES", "THEY LOST THE OTHER ONE", "THEY WEAR IT EVERY DAY"],
+      "answer": 3,
+      "caption": "Turned in on day 41 of the school year. It was still warm."
+    },
+    {
+      "id": "l11",
+      "scene": "tee",
+      "where": "REUNION 2026",
+      "kind": "back",
+      "sign": ["MY FAVORITE", "CHILD GAVE ME", "THIS SHIRT"],
+      "back": ["THE OTHER TWO", "GAVE ME", "A HEADACHE"],
+      "options": ["LOVE YOU, MOM", "THE OTHER TWO GAVE ME A HEADACHE", "BEST MOM EVER", "THANKS, SWEETIE"],
+      "answer": 1,
+      "caption": "Left at the reunion. All three kids think they're the favorite."
+    },
+    {
+      "id": "l12",
+      "scene": "tee",
+      "where": "LOST AND FOUND",
+      "kind": "back",
+      "sign": ["IF FOUND,", "PLEASE RETURN", "TO MOM"],
+      "back": ["STORE CREDIT", "ONLY"],
+      "options": ["STORE CREDIT ONLY", "THANK YOU!", "REWARD OFFERED", "SHE MISSES ME"],
+      "answer": 0,
+      "caption": "Unclaimed since September. Mom says she's still thinking about it."
+    }
+  ]
+}

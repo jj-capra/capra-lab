@@ -1,0 +1,137 @@
+{
+  "id": "mixed-messages",
+  "title": "Mixed Messages",
+  "shelf": "family",
+  "blurb": "Signs that argue with themselves",
+  "cards": [
+    {
+      "id": "x01",
+      "scene": "neon",
+      "where": "LATE BLOOMER DINER",
+      "kind": "misprint",
+      "sign": ["OPEN", "25 HOURS A DAY"],
+      "ask": "What should it say?",
+      "options": ["OPEN 25 HOURS A DAY", "OPEN 26 HOURS A DAY", "OPEN 24 DAYS AN HOUR", "OPEN 24 HOURS A DAY"],
+      "answer": 3,
+      "caption": "Ask about our bonus hour. It's very quiet."
+    },
+    {
+      "id": "x02",
+      "scene": "marquee",
+      "where": "COUNTY FAIRGROUNDS",
+      "kind": "design",
+      "sign": ["FREE PARKING", "ONLY $5"],
+      "ask": "What's the catch?",
+      "options": ["ONLY 5 SPOTS LEFT", "FREE COSTS $5", "5 MINUTE LIMIT", "OPENS AT 5"],
+      "answer": 1,
+      "caption": "Premium free parking is just $10."
+    },
+    {
+      "id": "x03",
+      "scene": "plaque",
+      "where": "FERNWOOD LIBRARY",
+      "kind": "design",
+      "sign": ["QUIET PLEASE", "NO PHONE CALLS", "DRUM CIRCLE 3 PM", "WHISPER ONLY"],
+      "ask": "Which line doesn't belong?",
+      "options": ["QUIET PLEASE", "NO PHONE CALLS", "DRUM CIRCLE 3 PM", "WHISPER ONLY"],
+      "answer": 2,
+      "caption": "The librarian shushes on the beat."
+    },
+    {
+      "id": "x04",
+      "scene": "banner",
+      "where": "SUNFISH CITY POOL",
+      "kind": "design",
+      "sign": ["NO RUNNING", "NO DIVING", "NO GETTING WET", "NO FOOD IN POOL"],
+      "ask": "Which rule is a problem?",
+      "options": ["NO GETTING WET", "NO RUNNING", "NO DIVING", "NO FOOD IN POOL"],
+      "answer": 0,
+      "caption": "Dry swimming lessons start Monday."
+    },
+    {
+      "id": "x05",
+      "scene": "yard",
+      "kind": "design",
+      "sign": ["No Signs", "On This Lawn!", "Thank You"],
+      "ask": "What's wrong with this sign?",
+      "options": ["IT'S A SIGN ON THE LAWN", "IT'S SPELLED WRONG", "IT'S UPSIDE DOWN", "IT FORGOT TO SAY THANKS"],
+      "answer": 0,
+      "caption": "The neighbors put up a sign about it."
+    },
+    {
+      "id": "x06",
+      "scene": "chalk",
+      "where": "THE HUNGRY HUBCAP",
+      "kind": "design",
+      "sign": ["Taco Tuesday", "Every Thursday!"],
+      "ask": "What day is Taco Tuesday here?",
+      "options": ["TUESDAY", "EVERY DAY", "THURSDAY", "WEDNESDAY"],
+      "answer": 2,
+      "caption": "Wednesday is Pancake Monday."
+    },
+    {
+      "id": "x07",
+      "scene": "storefront",
+      "where": "FLAPJACK FLATS",
+      "kind": "design",
+      "sign": ["ALL YOU CAN EAT", "PANCAKES $8", "LIMIT ONE PLATE", "SUNDAYS 8 TO NOON"],
+      "ask": "Which line breaks the promise?",
+      "options": ["PANCAKES $8", "LIMIT ONE PLATE", "ALL YOU CAN EAT", "SUNDAYS 8 TO NOON"],
+      "answer": 1,
+      "caption": "It's a very, very big plate."
+    },
+    {
+      "id": "x08",
+      "scene": "road",
+      "kind": "design",
+      "sign": ["← ONE WAY", "ONE WAY →"],
+      "ask": "Which way is one way?",
+      "options": ["LEFT", "RIGHT", "STRAIGHT AHEAD", "BOTH WAYS, SOMEHOW"],
+      "answer": 3,
+      "caption": "Locals just park and walk."
+    },
+    {
+      "id": "x09",
+      "scene": "storefront",
+      "where": "TOE TO TOE SHOES",
+      "kind": "design",
+      "sign": ["NO SHOES", "NO SERVICE"],
+      "ask": "Who can't shop here?",
+      "options": ["PEOPLE WEARING SHOES", "PEOPLE WITH COUPONS", "KIDS WITHOUT A GROWN-UP", "BAREFOOT SHOE SHOPPERS"],
+      "answer": 3,
+      "caption": "Sales are down. Nobody can figure out why."
+    },
+    {
+      "id": "x10",
+      "scene": "trail",
+      "where": "NIBBLEWOOD FARM",
+      "kind": "design",
+      "sign": ["PLEASE DON'T", "FEED THE GOATS", "GOAT FOOD $1"],
+      "ask": "What's the mix-up?",
+      "options": ["THE GOATS ARE ASLEEP", "THEY SELL THE FOOD ANYWAY", "GOATS COST $1", "THE GOATS BITE"],
+      "answer": 1,
+      "caption": "The goats would like a word with management."
+    },
+    {
+      "id": "x11",
+      "scene": "road",
+      "kind": "design",
+      "sign": ["WELCOME TO", "SUNSHINE FLATS", "RAINIEST TOWN", "IN THE STATE"],
+      "ask": "What's off about this town?",
+      "options": ["THE SUNNY TOWN IS RAINY", "IT'S THE DRIEST TOWN", "THE NAME IS MISSPELLED", "IT'S IN THE WRONG STATE"],
+      "answer": 0,
+      "caption": "Population: 4,000 umbrellas."
+    },
+    {
+      "id": "x12",
+      "scene": "billboard",
+      "where": "ROCKET OIL & TIRE",
+      "kind": "design",
+      "sign": ["10 MINUTE", "OIL CHANGE", "PLEASE ALLOW", "2 HOURS"],
+      "ask": "How long does it really take?",
+      "options": ["10 MINUTES", "12 MINUTES", "ABOUT 2 HOURS", "20 MINUTES"],
+      "answer": 2,
+      "caption": "The waiting room has bunk beds."
+    }
+  ]
+}

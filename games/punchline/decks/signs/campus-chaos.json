@@ -1,0 +1,128 @@
+{
+  "id": "campus-chaos",
+  "title": "Campus Chaos",
+  "shelf": "family",
+  "blurb": "School and college signs that should have studied harder",
+  "cards": [
+    {
+      "id": "c01",
+      "scene": "plaque",
+      "where": "OWLSBURY COLLEGE",
+      "kind": "misprint",
+      "sign": ["OFFICE OF", "THE BEAN"],
+      "options": ["OFFICE OF THE BEAN", "OFFICE OF THE DEER", "OFFICE OF THE DEAN", "OFFICE OF THE DEN"],
+      "answer": 2,
+      "caption": "Dr. Pinto will see you now."
+    },
+    {
+      "id": "c02",
+      "scene": "marquee",
+      "where": "PEBBLEPOT ACADEMY",
+      "kind": "misprint",
+      "sign": ["PARROT TEACHER", "CONFERENCES TUE"],
+      "options": ["PARENT TEACHER CONCERTS TUE", "PARROT TEACHER CONFERENCES TUE", "PARENT TEACHER CONFERENCES THU", "PARENT TEACHER CONFERENCES TUE"],
+      "answer": 3,
+      "caption": "Polly will repeat everything you say. Twice."
+    },
+    {
+      "id": "c03",
+      "scene": "banner",
+      "where": "BUMBLEWICK MIDDLE",
+      "kind": "misprint",
+      "sign": ["CHAIR CONCERT", "FRIDAY 7 PM"],
+      "options": ["CHOIR CONCERT FRIDAY 7 PM", "CHAIR CONCERT FRIDAY 7 PM", "CHOIR CONTEST FRIDAY 7 PM", "CHOIR CONCERT FRIDAY 6 PM"],
+      "answer": 0,
+      "caption": "Bring your own seat. The chairs are performing."
+    },
+    {
+      "id": "c04",
+      "scene": "banner",
+      "where": "QUILLMONT SCHOOL",
+      "kind": "misprint",
+      "sign": ["BACK TO SCHOOL", "KNIGHT", "THURS 6 PM"],
+      "options": ["BACK TO SCHOOL KNIGHT THURS 6 PM", "BACK TO SCHOOL FRIGHT THURS 6 PM", "BACK TO SCHOOL NIGHT THURS 6 PM", "BACK TO SCHOOL NIGHT THURS 7 PM"],
+      "answer": 2,
+      "caption": "Sir Gerald will be signing permission slips."
+    },
+    {
+      "id": "c05",
+      "scene": "restroom",
+      "where": "MOSSWOOD HALL",
+      "kind": "misprint",
+      "sign": ["RESTROOM", "OUT OF ODOR"],
+      "options": ["RESTROOM OUT OF ORDER", "RESTROOM OUT OF ODOR", "BATHROOM OUT OF ORDER", "RESTROOM OUT OF PAPER"],
+      "answer": 0,
+      "caption": "Janitor Phil: \"Honestly? It's an improvement.\""
+    },
+    {
+      "id": "c06",
+      "scene": "plaque",
+      "where": "DAPPLE ELEMENTARY",
+      "kind": "misprint",
+      "sign": ["SCHOOL HORSE", "PLEASE KNOCK"],
+      "options": ["SCHOOL HORSE PLEASE KNOCK", "SCHOOL NURSE PLEASE KNOCK", "SCHOOL NURSE PLEASE WAIT", "SCHOOL NURSE NO KNOCKING"],
+      "answer": 1,
+      "caption": "Feeling neigh-seous? Come right in."
+    },
+    {
+      "id": "c07",
+      "scene": "marquee",
+      "where": "GLIMMERDALE HIGH",
+      "kind": "lights",
+      "sign": ["SUMMER ~SC~HOOL", "STARTS JUNE 9"],
+      "options": ["SUMMER SCHOOL STARTS JUNE 9", "SUMMER COOL STARTS JUNE 9", "SUMMER POOL STARTS JUNE 9", "SUMMER COOL STARTS JUNE 6"],
+      "answer": 1,
+      "caption": "Sunglasses are now part of the dress code."
+    },
+    {
+      "id": "c08",
+      "scene": "marquee",
+      "where": "NUTHATCH MIDDLE",
+      "kind": "lights",
+      "sign": ["SPI~R~IT WEEK", "GO LLAMAS!"],
+      "options": ["SPIRIT WEEK GO LLAMAS!", "SPLIT WEEK GO LLAMAS!", "SPIT WEEK GO LLAMAS!", "SPIT WEEK NO LLAMAS!"],
+      "answer": 2,
+      "caption": "The mascot has trained all year for this. Stand back."
+    },
+    {
+      "id": "c09",
+      "scene": "plaque",
+      "where": "OAKMERE COMMONS",
+      "kind": "design",
+      "sign": ["SHOES REQUIRED", "TO EAT IN THE", "CAFETERIA"],
+      "options": ["SOCKS MUST EAT HERE", "SHOES MUST STAY OUTSIDE", "SHOES MUST BE TIED", "SHOES MUST EAT HERE"],
+      "answer": 3,
+      "caption": "Socks may eat wherever they like."
+    },
+    {
+      "id": "c10",
+      "scene": "banner",
+      "where": "WINDLESTRAW HIGH",
+      "kind": "design",
+      "sign": ["PROM IS OFF", "THE HOOK!"],
+      "options": ["PROM IS SOLD OUT", "PROM IS ON A BOAT", "PROM IS IN THE GYM", "PROM IS CANCELED"],
+      "answer": 3,
+      "caption": "Meanwhile, the front office phone is off the hook too."
+    },
+    {
+      "id": "c11",
+      "scene": "storefront",
+      "where": "PAGES & PENNANTS",
+      "kind": "design",
+      "sign": ["BOOKS TORE", "USED BOOKS", "HALF OFF"],
+      "options": ["THE BOOKS TORE", "THE BOOKS SNORE", "THE BOOKS TOUR", "THE BOOKS ARE FREE"],
+      "answer": 0,
+      "caption": "\"Used\" is putting it gently. Tape sold separately."
+    },
+    {
+      "id": "c12",
+      "scene": "marquee",
+      "where": "FIDDLEHEAD LIBRARY",
+      "kind": "lights",
+      "sign": ["BOO~K CLUB", "THURSDAY 4 PM"],
+      "options": ["BOOK CLUB THURSDAY 4 PM", "BOO CLUB THURSDAY 4 PM", "BOOK CUB THURSDAY 4 PM", "BOO CLUB TUESDAY 4 PM"],
+      "answer": 1,
+      "caption": "This month's pick: anything by a ghost writer."
+    }
+  ]
+}

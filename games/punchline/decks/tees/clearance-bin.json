@@ -1,0 +1,143 @@
+{
+  "id": "clearance-bin",
+  "title": "Clearance Bin",
+  "shelf": "family",
+  "blurb": "Marked down for a reason",
+  "cards": [
+    {
+      "id": "c01",
+      "scene": "tee",
+      "where": "CLEARANCE BIN",
+      "kind": "design",
+      "sign": ["SAVE THE", "WHALES"],
+      "art": ["dolphin"],
+      "ask": "What's wrong with this shirt?",
+      "options": ["WHALES IS MISSPELLED", "THAT'S A DOLPHIN", "THE WORDS ARE BACKWARDS", "IT'S MISSING A WORD"],
+      "answer": 1,
+      "caption": "The dolphin is just happy to be included."
+    },
+    {
+      "id": "c02",
+      "scene": "tee",
+      "where": "THRIFT RACK",
+      "kind": "design",
+      "sign": ["THE EARLY BIRD", "GETS THE WORM"],
+      "art": ["moon", "star"],
+      "ask": "What time do the pictures say it is?",
+      "options": ["SUNRISE", "LUNCHTIME", "RECESS", "THE MIDDLE OF THE NIGHT"],
+      "answer": 3,
+      "caption": "The bird is exhausted. The worm is sleeping in."
+    },
+    {
+      "id": "c03",
+      "scene": "tee",
+      "where": "TEAM PARTY",
+      "kind": "design",
+      "sign": ["MOST IMPROVED", "PLAYER"],
+      "art": ["arrow-down"],
+      "ask": "What does the arrow make it say?",
+      "options": ["THEY GOT WORSE", "THEY GOT BETTER", "THEY PLAY DEFENSE", "THEY WON IT TWICE"],
+      "answer": 0,
+      "caption": "Handed out after a 0-12 season. Everyone clapped anyway."
+    },
+    {
+      "id": "c04",
+      "scene": "tee",
+      "where": "GIFT SHOP",
+      "kind": "design",
+      "sign": ["PROUD", "BIRD WATCHER"],
+      "art": ["cat"],
+      "ask": "Who looks like the bird watcher?",
+      "options": ["AN OWL", "THE BIRDS", "THE CAT", "A DUCK"],
+      "answer": 2,
+      "caption": "Says it's \"just looking.\" The birds are not convinced."
+    },
+    {
+      "id": "c05",
+      "scene": "tee",
+      "where": "HOME DECOR AISLE",
+      "kind": "design",
+      "sign": ["DREAM • BELIEVE •", "MICROWAVE"],
+      "ask": "What's the last word?",
+      "options": ["MICROWAVE", "ACHIEVE", "INSPIRE", "LAUGH"],
+      "answer": 0,
+      "caption": "Pairs nicely with leftover pizza and big dreams."
+    },
+    {
+      "id": "c06",
+      "scene": "tee",
+      "where": "CLEARANCE BIN",
+      "kind": "design",
+      "sign": ["#1 UNCLE", "(ONLY UNCLE)"],
+      "ask": "How many uncles are there?",
+      "options": ["AT LEAST TEN", "TWO, BUT HE WON", "NOBODY KNOWS", "JUST ONE"],
+      "answer": 3,
+      "caption": "He still tells everyone it was a landslide."
+    },
+    {
+      "id": "c07",
+      "scene": "tee",
+      "where": "DOLLAR RACK",
+      "kind": "design",
+      "sign": ["MY FAVORITE", "COLOR IS", "SOUP"],
+      "ask": "What's their favorite color?",
+      "options": ["BLUE", "SOUP", "GREEN", "PURPLE"],
+      "answer": 1,
+      "caption": "Tomato, specifically."
+    },
+    {
+      "id": "c08",
+      "scene": "tee",
+      "where": "CLEARANCE BIN",
+      "kind": "design",
+      "sign": ["100% COTTON", "WASH COLD", "TUMBLE DRY LOW", "SIZE L"],
+      "ask": "What got printed on the front?",
+      "options": ["A COOKIE RECIPE", "LAUNDROMAT HOURS", "THE SHIRT'S OWN CARE TAG", "A SECRET CODE"],
+      "answer": 2,
+      "caption": "The tag inside just says: NICE SHIRT."
+    },
+    {
+      "id": "c09",
+      "scene": "tee",
+      "where": "TEAM BANQUET",
+      "kind": "design",
+      "sign": ["TRI-COUNTY REGIONAL", "CHAMPIONS", "(PARTICIPANT)"],
+      "arc": true,
+      "ask": "Did they win?",
+      "options": ["NO, THEY SHOWED UP", "YES, FIRST PLACE", "YES, IN THREE COUNTIES", "IT WAS A TIE"],
+      "answer": 0,
+      "caption": "The arc ran out of room. So did the trophy table."
+    },
+    {
+      "id": "c10",
+      "scene": "tee",
+      "where": "BOOK FAIR",
+      "kind": "misprint",
+      "sign": ["SPELING BEE CHAMPION", "4TH GRADE"],
+      "arc": true,
+      "options": ["SPELING BEE CHAMPION 4TH GRADE", "SPELLING B CHAMPION 4TH GRADE", "SPELLING BEE CHAMPEON 4TH GRADE", "SPELLING BEE CHAMPION 4TH GRADE"],
+      "answer": 3,
+      "caption": "Printed by the kid who came in second."
+    },
+    {
+      "id": "c11",
+      "scene": "tee",
+      "where": "MOTHER'S DAY SALE",
+      "kind": "misprint",
+      "sign": ["BEST WOW", "EVER"],
+      "options": ["BEST WOW EVER", "BEST COW EVER", "BEST MOM EVER", "BEST NOW EVER"],
+      "answer": 2,
+      "caption": "The middle word went on upside down. Mom says WOW is fair."
+    },
+    {
+      "id": "c12",
+      "scene": "tee",
+      "where": "GARAGE SALE",
+      "kind": "misprint",
+      "sign": ["I'D RATHER BE", "NAPKIN"],
+      "options": ["I'D RATHER BE NAPKIN", "I'D RATHER BE NAPPING", "I'D RATHER BE PICNICKING", "I'D RATHER BE CAMPING"],
+      "answer": 1,
+      "caption": "Honestly? Napkins do get to lie around all day."
+    }
+  ]
+}

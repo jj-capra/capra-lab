@@ -65,6 +65,14 @@
   to = "/mind-heist/index.html"
   status = 200
 
+# Punchline is native too: its server claims /punchline/api/* through its own config.path
+# (netlify/functions/punchline.mjs). Room links (/punchline/ABCD) load the page; real files are
+# served as they are.
+[[redirects]]
+  from = "/punchline/*"
+  to = "/punchline/index.html"
+  status = 200
+
 # Modules must be served as JavaScript or the browser refuses them.
 [[headers]]
   for = "/*.js"

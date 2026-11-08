@@ -1,0 +1,128 @@
+{
+  "id": "marquee-madness",
+  "title": "Marquee Madness",
+  "shelf": "family",
+  "blurb": "Letter boards that lost a letter, or the plot",
+  "cards": [
+    {
+      "id": "m01",
+      "scene": "marquee",
+      "where": "TWIGGLY ELEMENTARY",
+      "kind": "lights",
+      "sign": ["S~P~E~L~LING BEE", "FRIDAY 2 PM"],
+      "options": ["SPELLING BEE FRIDAY 2 PM", "SLING BEE FRIDAY 2 PM", "SING BEE FRIDAY 2 PM", "SPRING BEE FRIDAY 2 PM"],
+      "answer": 2,
+      "caption": "Turns out the bees couldn't spell anyway."
+    },
+    {
+      "id": "m02",
+      "scene": "marquee",
+      "where": "THUNDERPIN LANES",
+      "kind": "misprint",
+      "sign": ["SLOW BOWLING", "SAT 9 PM"],
+      "options": ["GLOW BOWLING SAT 9 PM", "SLOW BOWLING SAT 9 PM", "SNOW BOWLING SAT 9 PM", "GLOW ROLLING SAT 9 PM"],
+      "answer": 0,
+      "caption": "Your ball should reach the pins by Sunday."
+    },
+    {
+      "id": "m03",
+      "scene": "marquee",
+      "where": "FOXGLOVE SCHOOL",
+      "kind": "misprint",
+      "sign": ["PICTURE DAY FRI", "REMEMBER TO SMELL"],
+      "options": ["PICTURE DAY FRI REMEMBER TO SMELL", "PICTURE DAY FRI REMEMBER TO SPELL", "PICTURE DAY FRI REMEBER TO SMILE", "PICTURE DAY FRI REMEMBER TO SMILE"],
+      "answer": 3,
+      "caption": "The third grade took it very seriously."
+    },
+    {
+      "id": "m04",
+      "scene": "marquee",
+      "where": "BRICKYARD PLAYERS",
+      "kind": "misprint",
+      "sign": ["ADDITIONS TONIGHT", "SPRING MUSICAL"],
+      "options": ["ADDITIONS TONIGHT SPRING MUSICAL", "AUDITIONS TONIGHT SPRING MUSICAL", "EDITIONS TONIGHT SPRING MUSICAL", "AUDITIONS TONITE SPRING MUSICAL"],
+      "answer": 1,
+      "caption": "Bring jazz hands and a calculator."
+    },
+    {
+      "id": "m05",
+      "scene": "marquee",
+      "where": "MUDPUDDLE SCHOOL",
+      "kind": "design",
+      "sign": ["WELCOME BACK", "KINDERGARTNERS", "DRIVE CAREFULLY"],
+      "options": ["KINDERGARTEN IS CANCELED", "BUSES ARE RUNNING LATE", "WELCOME BACK, BUS DRIVERS", "THE KINDERGARTNERS ARE DRIVING"],
+      "answer": 3,
+      "caption": "Juice boxes go in the cup holders, please."
+    },
+    {
+      "id": "m06",
+      "scene": "marquee",
+      "where": "PINWHEEL LANES",
+      "kind": "lights",
+      "sign": ["~STRIKE NIGHT", "EVERY FRIDAY"],
+      "options": ["STRIKE NIGHT EVERY FRIDAY", "STRIPE NIGHT EVERY FRIDAY", "TRIKE NIGHT EVERY FRIDAY", "SPIKE NIGHT EVERY FRIDAY"],
+      "answer": 2,
+      "caption": "Lane 3 is reserved for training wheels."
+    },
+    {
+      "id": "m07",
+      "scene": "marquee",
+      "where": "MOONBEAM THEATER",
+      "kind": "lights",
+      "sign": ["NOW ~S~HOWING", "MOON MOOSE 2"],
+      "options": ["NOW OWING MOON MOOSE 2", "NOW SHOWING MOON MOOSE 2", "NOW HOWING MOON MOOSE 2", "NOW SOWING MOON MOOSE 2"],
+      "answer": 0,
+      "caption": "Large popcorn: $14. They meant it."
+    },
+    {
+      "id": "m08",
+      "scene": "marquee",
+      "where": "OAK STREET CENTER",
+      "kind": "misprint",
+      "sign": ["QUITTING CLUB", "TUESDAYS 6 PM"],
+      "options": ["QUITTING CLUB TUESDAYS 6 PM", "QUILTING CLUB TUESDAYS 6 PM", "QUILTING CLUB TUESDAYS 9 PM", "QUILTTING CLUB TUESDAYS 6 PM"],
+      "answer": 1,
+      "caption": "Attendance keeps dropping. Weird."
+    },
+    {
+      "id": "m09",
+      "scene": "marquee",
+      "where": "ELM PARK CENTER",
+      "kind": "lights",
+      "sign": ["PICKLE~B~A~L~L", "WED 6 PM"],
+      "options": ["PICKLEBALL WED 6 PM", "PICKLE WED 6 PM", "PICKLE BALL WED 6 PM", "PICKLES WED 6 PM"],
+      "answer": 1,
+      "caption": "Huge turnout. Everyone brought a jar."
+    },
+    {
+      "id": "m10",
+      "scene": "banner",
+      "where": "HARBOR VIEW HALL",
+      "kind": "design",
+      "sign": ["FREE KIDS", "MOVIE NIGHT", "FRIDAY 7 PM"],
+      "options": ["KIDS FREE TO A GOOD HOME", "MOVIE NIGHT IS CANCELED", "KIDS MUST BRING A MOVIE", "FRIDAY NIGHT IS FULL"],
+      "answer": 0,
+      "caption": "We got a lot of calls. Mostly from parents."
+    },
+    {
+      "id": "m11",
+      "scene": "marquee",
+      "where": "JELLYBEAN CINEMA",
+      "kind": "misprint",
+      "sign": ["MANATEE", "SATURDAY 2 PM"],
+      "options": ["MANATEE SATURDAY 2 PM", "MATINEE SATURDAY 2 AM", "MATINEE SATURDAY 2 PM", "MATINE SATURDAY 2 PM"],
+      "answer": 2,
+      "caption": "Front row is the splash zone."
+    },
+    {
+      "id": "m12",
+      "scene": "marquee",
+      "where": "GUTTERBALL GARDENS",
+      "kind": "misprint",
+      "sign": ["LEAGUE NIGHT", "BRING YOUR OWN BAWL"],
+      "options": ["LEAGUE NIGHT BRING YOUR OWN BAWL", "LEAGUE NIGHT BRING YOUR OWN BOWL", "LEAGUE NIGHT BRING YOUR OWN BELL", "LEAGUE NIGHT BRING YOUR OWN BALL"],
+      "answer": 3,
+      "caption": "Tissues available at the shoe counter."
+    }
+  ]
+}

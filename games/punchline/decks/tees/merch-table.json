@@ -1,0 +1,138 @@
+{
+  "id": "merch-table",
+  "title": "Merch Table",
+  "shelf": "late",
+  "blurb": "Shirts that roast whoever is wearing them",
+  "cards": [
+    {
+      "id": "m01",
+      "scene": "tee",
+      "where": "SCHOOL STORE",
+      "kind": "back",
+      "sign": ["GROUP PROJECT", "MVP"],
+      "back": ["MOST VALUABLE", "PASSENGER"],
+      "options": ["MOST VALUABLE PLAYER", "MOST VALUABLE PASSENGER", "MOST VALUABLE PRESENTER", "MOST VALUABLE PARTNER"],
+      "answer": 1,
+      "caption": "Made the title slide. Spelled their own name wrong."
+    },
+    {
+      "id": "m02",
+      "scene": "tee",
+      "where": "CLEARANCE BIN",
+      "kind": "back",
+      "sign": ["GROUP CHAT", "LEGEND"],
+      "back": ["IT'S JUST ME", "AND MY MOM"],
+      "options": ["SENDS THE BEST MEMES", "ALWAYS FIRST TO REPLY", "500 MESSAGES A DAY", "IT'S JUST ME AND MY MOM"],
+      "answer": 3,
+      "caption": "Mom has had it on mute since August."
+    },
+    {
+      "id": "m03",
+      "scene": "tee",
+      "where": "BOOK FAIR",
+      "kind": "back",
+      "sign": ["I FINISHED MY", "HOMEWORK EARLY"],
+      "back": ["AT 7:58 AM", "ON THE BUS"],
+      "options": ["AT 7:58 AM ON THE BUS", "AND I FEEL GREAT", "NOW ASK ME ANYTHING", "FOR ONCE IN MY LIFE"],
+      "answer": 0,
+      "caption": "Teacher's note: Please stop doing homework over speed bumps."
+    },
+    {
+      "id": "m04",
+      "scene": "tee",
+      "where": "MALL KIOSK",
+      "kind": "back",
+      "sign": ["I ONLY WANT", "ONE THING AND", "IT'S DISGUSTING"],
+      "back": ["THE FRY UNDER", "THE CAR SEAT"],
+      "options": ["PIZZA FOR BREAKFAST", "A NAP AFTER SCHOOL", "THE FRY UNDER THE CAR SEAT", "THE LAST CHICKEN NUGGET"],
+      "answer": 2,
+      "caption": "It's been under there since July. Crunchy in a way fries should never be."
+    },
+    {
+      "id": "m05",
+      "scene": "tee",
+      "where": "SPIRIT DAY",
+      "kind": "back",
+      "sign": ["HALL PASS", "RECORD HOLDER"],
+      "back": ["47 MINUTES.", "DO NOT GO IN."],
+      "options": ["NEVER BEEN CAUGHT", "47 MINUTES. DO NOT GO IN.", "FASTEST WALKER IN SCHOOL", "ASK ME FOR TIPS"],
+      "answer": 1,
+      "caption": "The janitor opened every window and filed a report."
+    },
+    {
+      "id": "m06",
+      "scene": "tee",
+      "where": "THRIFT RACK",
+      "kind": "back",
+      "sign": ["GYM CLASS", "HALL OF FAME"],
+      "back": ["MOST NOTES", "FROM MOM"],
+      "options": ["FASTEST MILE EVER", "MOST PUSH-UPS IN A ROW", "DODGEBALL CHAMPION", "MOST NOTES FROM MOM"],
+      "answer": 3,
+      "caption": "Allergic to running. Only during third period."
+    },
+    {
+      "id": "m07",
+      "scene": "tee",
+      "where": "GIFT SHOP",
+      "kind": "back",
+      "sign": ["I CAN PUT MY", "PHONE DOWN", "ANYTIME I WANT"],
+      "back": ["I'VE JUST", "NEVER WANTED TO"],
+      "options": ["I'VE JUST NEVER WANTED TO", "IT'S NOT A PROBLEM", "I JUST REALLY LIKE IT", "I PROMISE, FOR REAL"],
+      "answer": 0,
+      "caption": "Weekly screen time: 81 hours. Even the phone asked for a break."
+    },
+    {
+      "id": "m08",
+      "scene": "tee",
+      "where": "REUNION 2026",
+      "kind": "misprint",
+      "sign": ["PROUD", "BIG BOTHER"],
+      "options": ["PROUD BIG BOTHER", "PROUD BIG BATHER", "PROUD BIG BROTHER", "LOUD BIG BROTHER"],
+      "answer": 2,
+      "caption": "Made by his little sister. The typo was not an accident."
+    },
+    {
+      "id": "m09",
+      "scene": "tee",
+      "where": "DOLLAR BIN",
+      "kind": "misprint",
+      "sign": ["WORLD'S", "#2 DAD"],
+      "options": ["WORLD'S #1 DAD", "WORLD'S #2 DAD", "WORLD'S #1 DAB", "WORLD'S #1 GRANDDAD"],
+      "answer": 0,
+      "caption": "Kids swear it's a typo. Dad does bring his phone in there for an hour."
+    },
+    {
+      "id": "m10",
+      "scene": "tee",
+      "where": "LUNCH LINE",
+      "kind": "misprint",
+      "sign": ["I SURVIVED", "MEATLOAF MAYDAY"],
+      "options": ["I SURVIVED MEATLOAF MAYDAY", "I SURVIVED MEATLOAF MONDAY", "I SURVIVED MEATBALL MONDAY", "I SURVIVED MEATLOAF MIDDAY"],
+      "answer": 1,
+      "caption": "The cafeteria says it's a typo. The nurse says it's accurate."
+    },
+    {
+      "id": "m11",
+      "scene": "tee",
+      "where": "CAMP STORE",
+      "kind": "design",
+      "sign": ["PINE", "OAKS", "OUTDOOR", "PROGRAM"],
+      "ask": "What do the first letters spell?",
+      "options": ["POOL", "PROP", "POOP", "PLOP"],
+      "answer": 2,
+      "caption": "Founded in 1981. The board has never once read it top to bottom."
+    },
+    {
+      "id": "m12",
+      "scene": "tee",
+      "where": "GYM BLEACHERS",
+      "kind": "design",
+      "sign": ["I'M WITH THE ONE", "WHO FARTED", "IN GYM CLASS"],
+      "art": ["arrow-up"],
+      "ask": "So who farted?",
+      "options": ["THE KID NEXT TO THEM", "THE GYM TEACHER", "THE WHOLE BACK ROW", "THE KID WEARING IT"],
+      "answer": 3,
+      "caption": "Bought it to blame a friend. The arrow had other plans."
+    }
+  ]
+}

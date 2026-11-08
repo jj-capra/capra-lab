@@ -75,34 +75,13 @@ on purpose; do not bring any of them back unless JC asks.
     take, the player who took the shot) can skip it; the host steps in only for a guest's turn
     or a player who left, and runs it in party rooms. Invite games move on by themselves after
     `FACT_MS` (9 s), so nobody can stall the game.
-15. **Joke decks are face-offs** (JC, Nov 2026, "like the opening question of Family Feud").
-    Deck `kind: "jokes"` (set in `deck_plan.json`): the question is a joke's setup, the options
-    are punchlines. In a two-crew game every tile is a face-off between the picker and the
-    other crew's next player:
-    - the setup shows on its own for `DUEL_INTRO_MS` (**25 s**, JC: time to read it and think it
-      over) with a "Punchlines in" reading clock, then the punchlines and the answer clock; the
-      host can skip it (Host → Skip the intro);
-    - both pick **in secret**; each crew sees only its own player's pick, and teammates suggest;
-    - when both have locked (or the clock runs out) a **replay** plays: the picks land on an A-D
-      grid like a pitch-location graphic, a measuring strip slides each time out, and a line
-      drops on the winner like a first-down measurement (no league names or marks);
-    - the **fastest right punchline wins** the tile's money (heat bonus applies) and **picks the
-      next tile**; both players step down. No winner: the other crew picks next;
-    - nobody right in round one: the replay shows the misses (not the answer), then the picks
-      clear, the punchline text goes **blank** (the letters picked are out) and they go again
-      from memory on a shorter clock (`DUEL_BLANK_MS`, 15 s). Nobody right again: nobody scores;
-    - time paused by the host doesn't count; the host locks for guests (both players in party
-      rooms) and can undo back to the start of the round;
-    - joke boards have no Hacker, Doubles or Take tiles, and lifelines and power cards sit out;
-    - the fun fact screen becomes a **Bonus groan** (the `fact` line is a bonus joke starting
-      "Bonus: ", shown without that prefix); only the winner skips it.
-    **Joke decks are live only** (JC: solo, with more time and no pressure, kills the fun): the
-    server refuses solo runs and challenges on them (`JOKES_LIVE_ONLY`), the Play sheet doesn't
-    list them, and the joke of the day card only offers "Host a face-off". Party rooms count as
-    live. A joke game's sudden death draws from other joke decks.
-16. **Joke of the day** (home card, separate from the trivia drop, host only): `jokeOfDay()` in
-    `content.mjs` cycles the joke decks from Groan Up on 2026-11-04 (launch day); Turkey Talk is pinned to
-    Thanksgiving, Monster Mash to Oct 31, Sweater Weather to Dec 1, 21 and 24.
+15. **Jokes moved to Punchline** (JC, Nov 7 2026: "joke decks move out completely"). The 30 joke
+    decks and the joke of the day now live in **Punchline**, Capra Lab's own party game of Wrong
+    Signs and jokes (`games/punchline/`, with its own CLAUDE.md; the decks are
+    `games/punchline/decks/jokes/`). Don't bring jokes back into Mind Heist. The face-off rules for
+    `kind: "jokes"` decks (Nov 2026: setup intro, secret picks, the replay, the blank round) are
+    still in `engine.mjs` and its unit tests (`faceoff.test.mjs`, synthetic decks), unused: no
+    deck has that kind any more.
 
 ## Diamonds and the daily draw (JC's decisions)
 
@@ -134,7 +113,7 @@ membership (owner JJ-Capra, his crew) comes from the lab (`lab/crew.js`; the fun
   JC calls that starts hidden; give it no date) or the owner hides it from the hub's Capra's Lab
   panel. The owner's switches live in `cfg/decks` `{ hide, show }`, read at most every 30 s per
   warm instance (`loadDeckCfg` in `api.mjs`, `setDeckCfg` in `content.mjs`).
-- Hidden decks never drop, are never the joke of the day, never feed sudden death and aren't in
+- Hidden decks never drop, never feed sudden death and aren't in
   the public vault (`calendar()` skips them). `/home` sends members `lab` and `brews`; the Host
   and Solo pickers show them on a "Capra's Lab" shelf marked 🔒 Hidden (also Run it back).
 - Members can host them (anyone who joins the room plays) and play them solo. Nobody can turn
@@ -188,8 +167,7 @@ everyone in the room and on the `/tv/` view sees it. Looks never change the rule
 Special Elite and Permanent Marker (office), Tilt Neon and Cabin Sketch (bar), Graduate and
 DotGothic16 (sports), Bungee and Baloo 2 (popup), Shrikhand and Righteous (gameshow), Press
 Start 2P and VT323 (arcade), all self-hosted. `tests/look_shots.py BASE OUT LOOK` takes 21
-screenshots of one look and prints the iPhone fit; `tests/faceoff.py BASE OUT LOOK` covers the
-face-off screens in a look.
+screenshots of one look and prints the iPhone fit.
 `tests/looks.py` screenshots every look and checks who sees which.
 The Hacker always goes dark (green terminal on black) in every look, and the whole page goes
 dark with it. Its rules are prefixed `[data-theme]` so they beat each look's own card, option,
@@ -383,8 +361,7 @@ once; each room is its own blob.
 - **Nothing hangs** (JC: the other player stayed on the final screen after Run it back): every
   API call times out (10 s GET, 15 s POST) so a stalled request on a phone can't freeze a room's
   updates. Invite rooms stay remembered after the final; home checks that room every 5 s and
-  shows "They're running it back! Jump in" when the host starts a new game. After a joke game,
-  Run it back offers the next joke deck first.
+  shows "They're running it back! Jump in" when the host starts a new game.
 - **No page zoom while playing** (JC: "stop page zooming while I play this in my iPhone
   browser"): every element is `touch-action: manipulation` (fast taps on tiles, Lock or the emoji
   rail never become a double-tap zoom), the
@@ -414,7 +391,6 @@ python tests/looks.py http://localhost:8787 shots3     # every look, and who see
 python tests/p2p.py http://localhost:8787 shots4       # direct links, fallback, Open mic privacy
 python tests/vault.py http://localhost:8787 shots5     # the home card, the draw, Mole and Hidden 50/50 on real screens
 python tests/fun.py http://localhost:8787 shots6       # the emoji row, spam and fallback, Profile picker, music, mic rebuild
-python tests/faceoff.py http://localhost:8787 shots7   # joke of the day, face-off intro, secret picks, replay, blank round
 python tests/iphone_fit.py http://localhost:8787 shots8  # the host's iPhone in every look: no scrolling, text share
 python tests/iphone_fit.py http://localhost:8787 shots9 --home  # the same as a Home Screen app: nothing under the clock
 node dev/server.mjs 8788 --bundle               # the built function over a local Blobs server
@@ -433,9 +409,8 @@ The E2E tests need `pip install playwright` and `playwright install chromium`.
 ## Adding decks
 
 1. Add entries to `deck_plan.json` (id, title, shelf, scope, next free date).
-2. Write the content per `docs/DECK_SPEC.md` into a new file in `decks/` (joke decks: the
-   brief in `docs/JOKE_BRIEF.md`, checked per `docs/JOKE_CHECK.md`; `kind: "jokes"` in the plan
-   makes them face-offs; `"brew": true` keeps it hidden in Capra's Lab, for a JJ Brew).
+2. Write the content per `docs/DECK_SPEC.md` into a new file in `decks/` (`"brew": true` in the
+   plan keeps it hidden in Capra's Lab, for a JJ Brew). Joke decks belong to Punchline now.
 3. **Fact-check with a separate agent that did not write the questions** (brief:
    `docs/CHECK_SPEC.md`; past logs in `docs/checks/`). A wrong answer key in front of a room
    of coworkers is the worst failure this game has.

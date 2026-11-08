@@ -1,5 +1,5 @@
 // HTTP API for Mind Heist. One handler, mounted at /api/* by Netlify.
-import { calendar, deck as getDeck, dropNo, summary, isOpen, pacificDate, suddenPool, jokeOfDay, setDeckCfg, isHidden, hiddenDecks, ALL_DECKS } from './content.mjs';
+import { calendar, deck as getDeck, dropNo, summary, isOpen, pacificDate, suddenPool, setDeckCfg, isHidden, hiddenDecks, ALL_DECKS } from './content.mjs';
 import * as E from './engine.mjs';
 import * as P from './profiles.mjs';
 import { randomCode, randomHex, randomSeed } from './rng.mjs';
@@ -247,7 +247,6 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
       return json(200, {
         now, date: cal.today, encore: cal.encore, nextExists: cal.nextExists,
         today: summary(cal.featured, { encore: cal.encore }),
-        joke: summary(jokeOfDay(now)),
         vault: cal.vault.map(d => summary(d)),
         me: me ? P.privateProfile(tr.profile, cal.today) : null,
         trophyNews: tr ? tr.won : [],

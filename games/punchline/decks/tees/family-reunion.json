@@ -1,0 +1,131 @@
+{
+  "id": "family-reunion",
+  "title": "Family Reunion",
+  "shelf": "family",
+  "blurb": "Reunion, camp, spirit day and 5K shirts gone wrong",
+  "cards": [
+    {
+      "id": "f01",
+      "scene": "tee",
+      "where": "PELLWORTH REUNION",
+      "kind": "misprint",
+      "sign": ["LET'S EAT", "GRANDMA!"],
+      "options": ["LET'S EAT GRANDMA!", "LET'S EAT GRANOLA!", "LET'S EAT, GRANDMA!", "LET'S EAT GRANDPA!"],
+      "answer": 2,
+      "caption": "Grandma packed her own sandwich. Just in case."
+    },
+    {
+      "id": "f02",
+      "scene": "tee",
+      "where": "DAD'S CLOSET",
+      "kind": "misprint",
+      "sign": ["WORLD'S BEST", "FARTHER"],
+      "options": ["WORLD'S BEST FATHER", "WORLD'S BEST FARTHER", "WORLD'S BEST FATHERS", "WORLD'S BEST FARTHEST"],
+      "answer": 0,
+      "caption": "He's also the world's best at blaming the dog."
+    },
+    {
+      "id": "f03",
+      "scene": "tee",
+      "where": "CAMP STORE",
+      "kind": "misprint",
+      "sign": ["CAMP NOODLEWOOD", "SUMMER OF 2620"],
+      "options": ["CAMP NOODLEWOOD SUMMER OF 2620", "CAMP NOODLEWOOD SUMMER OF 2062", "CAMP NOODLEWOOD SUMMER OF 2602", "CAMP NOODLEWOOD SUMMER OF 2026"],
+      "answer": 3,
+      "caption": "Counselors promise the lake will be warm by then."
+    },
+    {
+      "id": "f04",
+      "scene": "tee",
+      "where": "BOARDWALK SHOP",
+      "kind": "misprint",
+      "sign": ["WISH YOU", "WHERE HERE"],
+      "options": ["WISH YOU WHERE HERE", "WISH YOU WERE HERE", "WISH YOU WERE HEAR", "WISH YOU WEAR HERE"],
+      "answer": 1,
+      "caption": "Spell-checked by a seagull. He was mostly after the fries."
+    },
+    {
+      "id": "f05",
+      "scene": "tee",
+      "where": "SPIRIT DAY",
+      "kind": "misprint",
+      "sign": ["SPIRIT WEAK", "GO OWLS!"],
+      "options": ["SPIRIT WEEK GO OWLS!", "SPIRIT WEAK GO OWLS!", "SPIRIT WEEK GO OWLES!", "SPIRT WEEK GO OWLS!"],
+      "answer": 0,
+      "caption": "Pep rally turnout: four kids and the mascot."
+    },
+    {
+      "id": "f06",
+      "scene": "tee",
+      "where": "FAMILY PICNIC",
+      "kind": "peeled",
+      "sign": ["A~UNT OF", "THE YEAR"],
+      "options": ["AUNT OF THE YEAR", "UNT OF THE YEAR", "ANT OF THE YEAR", "AUNTIE OF THE YEAR"],
+      "answer": 2,
+      "caption": "Fittingly, she's always the first one at the picnic."
+    },
+    {
+      "id": "f07",
+      "scene": "tee",
+      "where": "PEP RALLY",
+      "kind": "peeled",
+      "sign": ["GO", "~KNIGHTS!"],
+      "options": ["GO KNIGHTS!", "GO NIGHT!", "GO KIGHTS!", "GO NIGHTS!"],
+      "answer": 3,
+      "caption": "The pep rally got moved to bedtime. Pajamas required."
+    },
+    {
+      "id": "f08",
+      "scene": "tee",
+      "where": "RACE DAY",
+      "kind": "peeled",
+      "sign": ["BLUE OTTER 5K", "FI~N~ISHER"],
+      "options": ["BLUE OTTER 5K FINISHER", "BLUE OTTER 5K FISHER", "BLUE OTTER 5K FINISER", "BLUE OTTER 5K FINISH"],
+      "answer": 1,
+      "caption": "Didn't run a step. Caught four trout, though."
+    },
+    {
+      "id": "f09",
+      "scene": "tee",
+      "where": "CABIN 4",
+      "kind": "peeled",
+      "sign": ["CAMP WIGGLE", "~CREEK"],
+      "options": ["CAMP WIGGLE REEK", "CAMP WIGGLE CREEK", "CAMP WIGGLE CREAK", "CAMP WIGGLE REEF"],
+      "answer": 0,
+      "caption": "Nobody has found Cabin 4's laundry bag. Everybody has smelled it."
+    },
+    {
+      "id": "f10",
+      "scene": "tee",
+      "where": "REUNION 2026",
+      "kind": "back",
+      "sign": ["I TRACED MY", "FAMILY TREE"],
+      "back": ["TURNS OUT", "WE'RE ALL SAPS"],
+      "options": ["IT GOES BACK 200 YEARS", "WE'RE RELATED TO A KING", "GRANDMA DREW IT BY HAND", "TURNS OUT WE'RE ALL SAPS"],
+      "answer": 3,
+      "caption": "Forty matching shirts. Not one cousin argued."
+    },
+    {
+      "id": "f11",
+      "scene": "tee",
+      "where": "FAMILY CAMPOUT",
+      "kind": "back",
+      "sign": ["WE WENT CAMPING", "AS A FAMILY"],
+      "back": ["IT WAS", "IN-TENTS"],
+      "options": ["IT RAINED ALL WEEK", "WE SAW A BEAR", "IT WAS IN-TENTS", "WE ATE TOO MANY S'MORES"],
+      "answer": 2,
+      "caption": "Three tents went up. Two came down on their own."
+    },
+    {
+      "id": "f12",
+      "scene": "tee",
+      "where": "BEACH TRIP",
+      "kind": "back",
+      "sign": ["I TRIED TO", "MAKE FRIENDS", "AT THE BEACH"],
+      "back": ["BUT THE OCEAN", "JUST WAVED"],
+      "options": ["BUT IT WAS TOO SUNNY", "BUT THE OCEAN JUST WAVED", "BUT I FORGOT MY TOWEL", "BUT EVERYONE WAS NAPPING"],
+      "answer": 1,
+      "caption": "Bought on the boardwalk. Shrank two sizes before the car got home."
+    }
+  ]
+}

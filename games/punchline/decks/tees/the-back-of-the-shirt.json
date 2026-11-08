@@ -1,0 +1,140 @@
+{
+  "id": "the-back-of-the-shirt",
+  "title": "The Back of the Shirt",
+  "shelf": "family",
+  "blurb": "A setup on the front, a groan on the back",
+  "cards": [
+    {
+      "id": "b01",
+      "scene": "tee",
+      "where": "THRIFT RACK",
+      "kind": "back",
+      "sign": ["GOOD HIDE-AND-SEEK", "PLAYERS"],
+      "back": ["ARE HARD", "TO FIND"],
+      "options": ["ARE HARD TO FIND", "ALWAYS COUNT TO TEN", "NEVER PEEK", "ARE VERY QUIET"],
+      "answer": 0,
+      "caption": "Found on the thrift rack after a three-day search."
+    },
+    {
+      "id": "b02",
+      "scene": "tee",
+      "where": "CAMP STORE",
+      "kind": "back",
+      "sign": ["I STAYED UP ALL", "NIGHT WONDERING", "WHERE THE SUN WENT"],
+      "back": ["THEN IT", "DAWNED ON ME"],
+      "options": ["IT WAS BEHIND A CLOUD", "I NEVER FOUND OUT", "THEN IT DAWNED ON ME", "IT WENT TO BED EARLY"],
+      "answer": 2,
+      "caption": "The rooster bought one too. He gets it."
+    },
+    {
+      "id": "b03",
+      "scene": "tee",
+      "where": "COUNTY FAIR",
+      "kind": "back",
+      "sign": ["I HEARD A", "RUMOR ABOUT", "BUTTER"],
+      "back": ["BUT I'M NOT", "GOING TO", "SPREAD IT"],
+      "options": ["IT'S NOT TRUE", "BUT I'M NOT GOING TO SPREAD IT", "IT'S MELTING FAST", "IT'S ABOUT THE FRIDGE"],
+      "answer": 1,
+      "caption": "The margarine started it, honestly."
+    },
+    {
+      "id": "b04",
+      "scene": "tee",
+      "where": "SCIENCE FAIR",
+      "kind": "back",
+      "sign": ["THEY SAID I", "COULDN'T BUILD", "A CAR OUT OF", "SPAGHETTI"],
+      "back": ["THEN I", "DROVE PASTA THEM"],
+      "options": ["SO I MADE MEATBALLS", "IT DIDN'T HAVE WHEELS", "I USED LASAGNA INSTEAD", "THEN I DROVE PASTA THEM"],
+      "answer": 3,
+      "caption": "Top speed: al dente."
+    },
+    {
+      "id": "b05",
+      "scene": "tee",
+      "where": "GARAGE SALE",
+      "kind": "back",
+      "sign": ["I GOT FIRED FROM", "THE CALENDAR", "FACTORY"],
+      "back": ["ALL I DID WAS", "TAKE A DAY OFF"],
+      "options": ["THE PAY WAS TERRIBLE", "I MISS MY COWORKERS", "ALL I DID WAS TAKE A DAY OFF", "NOW I SELL SHOES"],
+      "answer": 2,
+      "caption": "His days were numbered anyway."
+    },
+    {
+      "id": "b06",
+      "scene": "tee",
+      "where": "TRAMPOLINE PARK",
+      "kind": "back",
+      "sign": ["I RETIRED FROM", "COMPETITIVE", "TRAMPOLINE"],
+      "back": ["TOO MANY", "UPS AND DOWNS"],
+      "options": ["TOO MANY UPS AND DOWNS", "THE PRIZES WERE SMALL", "MY SOCKS KEPT SLIPPING", "I WON EVERY MEDAL"],
+      "answer": 0,
+      "caption": "He's taking retirement one bounce at a time."
+    },
+    {
+      "id": "b07",
+      "scene": "tee",
+      "where": "GIFT SHOP",
+      "kind": "back",
+      "sign": ["I HAD A JOKE", "ABOUT TIME TRAVEL"],
+      "back": ["BUT YOU", "DIDN'T LIKE IT"],
+      "options": ["BUT I FORGOT IT", "IT'S A REAL CLASSIC", "ASK ME LATER", "BUT YOU DIDN'T LIKE IT"],
+      "answer": 3,
+      "caption": "Bought it next week. Wore it yesterday."
+    },
+    {
+      "id": "b08",
+      "scene": "tee",
+      "where": "CRAFT FAIR",
+      "kind": "back",
+      "sign": ["MY GRANDMA", "KNITS ALL DAY"],
+      "back": ["IT KEEPS HER", "IN STITCHES"],
+      "options": ["SHE MAKES ME SWEATERS", "IT KEEPS HER IN STITCHES", "IT HELPS HER RELAX", "HER CAT LOVES THE YARN"],
+      "answer": 1,
+      "caption": "Grandma made the shirt too. The sleeves are different lengths."
+    },
+    {
+      "id": "b09",
+      "scene": "tee",
+      "where": "FARM STAND",
+      "kind": "back",
+      "sign": ["WHY DID THE", "SCARECROW", "WIN AN AWARD?"],
+      "back": ["HE WAS OUTSTANDING", "IN HIS FIELD"],
+      "options": ["HE WAS OUTSTANDING IN HIS FIELD", "HE SCARED THE MOST CROWS", "HE WORKED VERY HARD", "HE HAD THE BEST HAT"],
+      "answer": 0,
+      "caption": "Spotted at the corn maze. The crows did not laugh."
+    },
+    {
+      "id": "b10",
+      "scene": "tee",
+      "where": "DAD'S DRAWER",
+      "kind": "back",
+      "sign": ["MY KID SAID,", "\"I'M HUNGRY\""],
+      "back": ["SO I SAID,", "\"HI HUNGRY,", "I'M DAD.\""],
+      "options": ["SO I MADE A SANDWICH", "DINNER IS AT SIX", "SO I SAID, \"HI HUNGRY, I'M DAD.\"", "GO ASK YOUR MOM"],
+      "answer": 2,
+      "caption": "The kid is still hungry. Dad is still very proud."
+    },
+    {
+      "id": "b11",
+      "scene": "tee",
+      "where": "LIGHTHOUSE SHOP",
+      "kind": "back",
+      "sign": ["I TRIED TO CATCH", "SOME FOG"],
+      "back": ["I MIST"],
+      "options": ["IT GOT AWAY", "IT WAS TOO COLD", "I NEED A BIGGER NET", "I MIST"],
+      "answer": 3,
+      "caption": "Forecast: cloudy, with a 100% chance of groaning."
+    },
+    {
+      "id": "b12",
+      "scene": "tee",
+      "where": "BIRTHDAY GIFT",
+      "kind": "back",
+      "sign": ["DON'T READ", "THE BACK OF", "THIS SHIRT"],
+      "back": ["YOU NEVER", "LISTEN"],
+      "options": ["THANK YOU FOR READING", "YOU NEVER LISTEN", "THIS IS THE BACK", "HAVE A NICE DAY"],
+      "answer": 1,
+      "caption": "A gift from Mom. She's been saying it for years."
+    }
+  ]
+}

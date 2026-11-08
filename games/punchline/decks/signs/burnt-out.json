@@ -1,0 +1,127 @@
+{
+  "id": "burnt-out",
+  "title": "Burnt Out",
+  "shelf": "family",
+  "blurb": "Neon and marquee letters on the fritz",
+  "cards": [
+    {
+      "id": "b01",
+      "scene": "neon",
+      "where": "OCEAN ROW MARKET",
+      "kind": "lights",
+      "sign": ["FRESH", "~FISH"],
+      "options": ["FRESH ISH", "FRESH FISH", "FRESH DISH", "FRES FISH"],
+      "answer": 0,
+      "caption": "Caught this morning. Or Tuesday. Ish."
+    },
+    {
+      "id": "b02",
+      "scene": "neon",
+      "where": "TUMBLEWEED WEAR",
+      "kind": "lights",
+      "sign": ["COWBOY", "B~OOTS"],
+      "options": ["COWBOY BOOTS", "COWBOY BOOS", "COWBOY BOTS", "COWBOY OATS"],
+      "answer": 2,
+      "caption": "Yee-haw. Beep boop."
+    },
+    {
+      "id": "b03",
+      "scene": "neon",
+      "where": "WHIZBANG RACEWAY",
+      "kind": "lights",
+      "sign": ["GO", "~KARTS"],
+      "options": ["GO KARTS", "GO ARTS", "GO KATS", "GO KART"],
+      "answer": 1,
+      "caption": "Finger painting at 40 miles an hour."
+    },
+    {
+      "id": "b04",
+      "scene": "neon",
+      "where": "BIRCHWOOD DELI",
+      "kind": "lights",
+      "sign": ["HOT", "SAND~W~I~C~H~E~S"],
+      "options": ["HOT SANDWICHES", "HOT SANDWICH", "HOT WICHES", "HOT SAND"],
+      "answer": 3,
+      "caption": "Extra crunchy. Pairs nicely with a sunburn."
+    },
+    {
+      "id": "b05",
+      "scene": "neon",
+      "where": "BUZZ & FADE",
+      "kind": "lights",
+      "sign": ["~HAIR", "CUTS"],
+      "options": ["HAIR CUTS", "FAIR CUTS", "AIR CUTS", "HAIR HUTS"],
+      "answer": 2,
+      "caption": "Walk out looking exactly like you walked in."
+    },
+    {
+      "id": "b06",
+      "scene": "neon",
+      "where": "ARCTIC SHACK",
+      "kind": "lights",
+      "sign": ["~SNO~W", "CONES"],
+      "options": ["NO CONES", "SNOW CONES", "SNOW ONES", "NO ONES"],
+      "answer": 0,
+      "caption": "Cups only. Please don't ask about the cones."
+    },
+    {
+      "id": "b07",
+      "scene": "neon",
+      "where": "BEEP BEEP CAB CO",
+      "kind": "lights",
+      "sign": ["CITY", "TAX~I"],
+      "options": ["CITY TAXI", "CITY TAXES", "CITY AXI", "CITY TAX"],
+      "answer": 3,
+      "caption": "Hop in! First stop: your wallet."
+    },
+    {
+      "id": "b08",
+      "scene": "neon",
+      "kind": "lights",
+      "sign": ["BURGER", "BA~RN"],
+      "options": ["BURGER BARN", "BURGER BAN", "BURGER BAR", "BURGER BUN"],
+      "answer": 1,
+      "caption": "Under new management. They really love salad."
+    },
+    {
+      "id": "b09",
+      "scene": "marquee",
+      "where": "CREAKY GATE FARM",
+      "kind": "lights",
+      "sign": ["HAUNTED", "HO~USE"],
+      "options": ["HAUNTED HOUSE", "HAUNTED HOSE", "HAUNTED MOUSE", "HAUNTED HOUR"],
+      "answer": 1,
+      "caption": "Guests leave screaming. And soaking wet."
+    },
+    {
+      "id": "b10",
+      "scene": "marquee",
+      "where": "LINDEN LIBRARY",
+      "kind": "lights",
+      "sign": ["PUP~P~E~T SHOW", "SAT 10 AM"],
+      "options": ["PUPPET SHOW SAT 10 AM", "PUPPY SHOW SAT 10 AM", "PET SHOW SAT 10 AM", "PUP SHOW SAT 10 AM"],
+      "answer": 3,
+      "caption": "Attendance tripled. The puppets are jealous."
+    },
+    {
+      "id": "b11",
+      "scene": "marquee",
+      "where": "LITTLE BOX THEATER",
+      "kind": "lights",
+      "sign": ["BALL~E~T", "RECITAL FRI"],
+      "options": ["BALL RECITAL FRI", "BALLET RECITAL FRI", "BELL RECITAL FRI", "BALE RECITAL FRI"],
+      "answer": 0,
+      "caption": "Two hours, one ball, standing ovation."
+    },
+    {
+      "id": "b12",
+      "scene": "marquee",
+      "where": "PINECONE MIDDLE",
+      "kind": "lights",
+      "sign": ["~HOOPS TONIGHT", "GO OTTERS"],
+      "options": ["HOOPS TONIGHT GO OTTERS", "HOPS TONIGHT GO OTTERS", "OOPS TONIGHT GO OTTERS", "OOPS TONIGHT NO OTTERS"],
+      "answer": 2,
+      "caption": "Coach calls it a rebuilding year."
+    }
+  ]
+}

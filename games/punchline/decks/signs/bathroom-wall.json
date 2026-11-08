@@ -1,0 +1,133 @@
+{
+  "id": "bathroom-wall",
+  "title": "Bathroom Wall",
+  "shelf": "late",
+  "blurb": "Restroom signs that should have been flushed",
+  "cards": [
+    {
+      "id": "bw01",
+      "scene": "restroom",
+      "where": "BIG DUKE'S DINER",
+      "kind": "misprint",
+      "sign": ["PLEASE WASH HANDS", "WITH SOUP"],
+      "options": ["PLEASE WASH HANDS WITH SOAP", "PLEASE WASH HANDS WITH SOUP", "PLEASE WASH HANDS WITH SALT", "PLEASE WASH PANS WITH SOAP"],
+      "answer": 0,
+      "caption": "Chicken noodle in the left pump. Tomato on the right."
+    },
+    {
+      "id": "bw02",
+      "scene": "restroom",
+      "where": "HUCKLEBERRY HIGH",
+      "kind": "design",
+      "sign": ["PLEASE FLUSH TWICE", "IT'S A LONG WAY", "TO THE CAFETERIA"],
+      "ask": "Where does the sign say it ends up?",
+      "options": ["THE SEWER PLANT", "THE CAFETERIA", "THE TEACHERS' LOUNGE", "THE SCHOOL POOL"],
+      "answer": 1,
+      "caption": "So THAT'S what's in the mystery stew."
+    },
+    {
+      "id": "bw03",
+      "scene": "restroom",
+      "where": "STALL-O-RAMA",
+      "kind": "misprint",
+      "sign": ["PORTABLE TOILET", "CLEANED WEAKLY"],
+      "options": ["PORTABLE TOILET CLEANED WEAKLY", "PORTABLE TOILET CLEANED DAILY", "PORTABLE TOILET CLEANED WEEKLY", "PORTABLE TOILET CLEANED WEEKDAYS"],
+      "answer": 2,
+      "caption": "The typo is the most honest thing in there."
+    },
+    {
+      "id": "bw04",
+      "scene": "restroom",
+      "kind": "misprint",
+      "sign": ["HERE I SIT", "BROKENHEARTED", "CAME TO POOP", "BUT ONLY FARDED"],
+      "ask": "What should the last line say?",
+      "options": ["BUT ONLY FARDED", "BUT ONLY PARTED", "BUT ONLY FARED", "BUT ONLY FARTED"],
+      "answer": 3,
+      "caption": "Graffiti review: great rhyme, terrible spelling. C-minus."
+    },
+    {
+      "id": "bw05",
+      "scene": "plaque",
+      "where": "GRIMSBY & SONS",
+      "kind": "design",
+      "sign": ["TO SAVE MONEY,", "PLEASE USE BOTH", "SIDES OF THE", "TOILET PAPER"],
+      "ask": "What is the boss asking for?",
+      "options": ["PRINT ON BOTH SIDES", "REUSE THE TOILET PAPER", "USE BOTH BATHROOMS", "BRING YOUR OWN PAPER"],
+      "answer": 1,
+      "caption": "Memo signed by the CEO, who has a private bathroom."
+    },
+    {
+      "id": "bw06",
+      "scene": "billboard",
+      "where": "FUEL 'N' FRANKS",
+      "kind": "design",
+      "sign": ["MEGA CHILI DOGS", "5 FOR $3", "NEXT REST STOP", "90 MILES"],
+      "ask": "What's wrong with this deal?",
+      "options": ["NO BATHROOM FOR 90 MILES", "THE DOGS ARE 90 MILES AWAY", "5 DOGS COST TOO MUCH", "THE REST STOP IS CLOSED"],
+      "answer": 0,
+      "caption": "Mile 40: windows down. Mile 70: nobody talks."
+    },
+    {
+      "id": "bw07",
+      "scene": "restroom",
+      "where": "GUS'S GAS & GO",
+      "kind": "design",
+      "sign": ["WHAT HAPPENS IN", "HERE, STAYS IN", "HERE.", "-THE PLUMBER"],
+      "ask": "Why does the plumber say it stays?",
+      "options": ["IT'S A SECRET", "THE DOOR IS JAMMED", "PHONES AREN'T ALLOWED", "THE TOILET IS CLOGGED"],
+      "answer": 3,
+      "caption": "Plumber's next opening is Thursday. Hold it."
+    },
+    {
+      "id": "bw08",
+      "scene": "restroom",
+      "where": "SAV-A-BUNCH",
+      "kind": "design",
+      "sign": ["CAUTION", "WET FLOOR", "WE HOPE IT'S", "WATER"],
+      "ask": "What is the sign unsure about?",
+      "options": ["HOW SLIPPERY IT IS", "WHEN IT WILL DRY", "WHAT THE PUDDLE IS", "WHERE THE MOP WENT"],
+      "answer": 2,
+      "caption": "Please do not lick to confirm."
+    },
+    {
+      "id": "bw09",
+      "scene": "yard",
+      "kind": "misprint",
+      "sign": ["Caution:", "Wet Pants", "Don't Sit"],
+      "options": ["Caution: Wet Pants Don't Sit", "Caution: Wet Paint Don't Sit", "Caution: Wet Plants Don't Sit", "Caution: Wet Paint Don't Spit"],
+      "answer": 1,
+      "caption": "Kyle swears it's from the drinking fountain."
+    },
+    {
+      "id": "bw10",
+      "scene": "plaque",
+      "where": "PEBBLE & PIKE LLC",
+      "kind": "misprint",
+      "sign": ["PLEASE USE THE", "CURTSY FLUSH"],
+      "options": ["PLEASE USE THE CURTSY FLUSH", "PLEASE USE THE COURTESY BRUSH", "PLEASE USE THE COURTESY PHONE", "PLEASE USE THE COURTESY FLUSH"],
+      "answer": 3,
+      "caption": "The Duchess of Stall 3 always does both."
+    },
+    {
+      "id": "bw11",
+      "scene": "storefront",
+      "where": "TAKE A SEAT CO.",
+      "kind": "design",
+      "sign": ["FREE STOOL", "SAMPLES", "ASK INSIDE"],
+      "ask": "What are they actually offering?",
+      "options": ["STOOLS TO TRY OUT", "SOUP SAMPLES", "TABLE SAMPLES", "DOCTOR VISITS"],
+      "answer": 0,
+      "caption": "Sir, for the last time, please stop bringing us jars."
+    },
+    {
+      "id": "bw12",
+      "scene": "banner",
+      "where": "GURGLE BROS",
+      "kind": "misprint",
+      "sign": ["BLOGGED TOILET?", "WE CAN HELP"],
+      "options": ["BLOGGED TOILET? WE CAN HELP", "CLOGGED DRAIN? WE CAN HELP", "CLOGGED TOILET? WE CAN HELP", "CLOGGED TOILET? WE CAN'T HELP"],
+      "answer": 2,
+      "caption": "Day 3: it still won't go down. Like and subscribe."
+    }
+  ]
+}

@@ -201,16 +201,6 @@ export function Home({ me, setMe, nav, home, reloadHome }) {
                     <button class="btn hi" onClick=${() => startSolo(nav, today.id)}>Play your daily</button>`}
             </div>
           </section>`}
-          ${home.joke && html`<section class="joke-card stk" aria-label="Joke of the day">
-            <div class="kicker"><span class="tag gum">Joke of the day</span><span class="muted">A new joke deck every day</span></div>
-            <div class="jk-body">
-              <div><h2>${home.joke.title}</h2><p class="blurb">${home.joke.blurb}</p></div>
-              <div class="row jk-btns">
-                <button class="btn hi" onClick=${() => { Sound.fx('tap'); setSheet('host-joke'); }}>Host a face-off</button>
-              </div>
-            </div>
-            <p class="muted jk-how">Live games only. One player from each crew reads the setup, and the fastest right punchline wins.</p>
-          </section>`}
           <div class="big-two">
             <button class="mode-btn play" onClick=${() => { Sound.fx('tap'); setSheet('play'); }}><span class="t">Play</span><span class="s">Solo or challenge a friend</span></button>
             <button class="mode-btn host" onClick=${() => { Sound.fx('tap'); setSheet('host'); }}><span class="t">Host</span><span class="s">Invite your crew or run a party</span></button>
@@ -240,7 +230,6 @@ export function Home({ me, setMe, nav, home, reloadHome }) {
     </main>
     ${sheet === 'play' && html`<${PlaySheet} home=${home} onClose=${() => setSheet(null)} nav=${nav} />`}
     ${sheet === 'host' && html`<${HostSheet} home=${home} me=${me} onClose=${() => setSheet(null)} nav=${nav} />`}
-    ${sheet === 'host-joke' && html`<${HostSheet} home=${home} me=${me} onClose=${() => setSheet(null)} nav=${nav} start=${home.joke && home.joke.id} />`}
     ${sheet === 'board' && html`<${Leaderboards} me=${me} friends=${friends} onClose=${() => setSheet(null)} today=${today} />`}
     ${sheet === 'profile' && html`<${Profile} me=${me} setMe=${setMe} friends=${friends} onClose=${() => setSheet(null)} />`}
   </div>`;
@@ -269,7 +258,7 @@ function DeckPicker({ home, value, onPick, dailyNote = true, solo = false, brews
     <div class="deck-list">
       ${list.map(d => html`<button type="button" class="deck-opt" aria-pressed=${value === d.id} onClick=${() => onPick(d.id)}>
         <b>${d.title}</b>
-        <span>${d.brew ? html`<span class="tag lab">🔒 Hidden</span>` : d.id === home.today.id ? html`<span class="tag hi">Today</span>` : home.joke && d.id === home.joke.id ? html`<span class="tag gum">Joke of the day</span>` : d.no ? html`<span class="muted">No. ${d.no}</span>` : d.kind === 'jokes' ? html`<span class="muted">Face-off</span>` : html`<span class="muted">Classic</span>`}</span>
+        <span>${d.brew ? html`<span class="tag lab">🔒 Hidden</span>` : d.id === home.today.id ? html`<span class="tag hi">Today</span>` : d.no ? html`<span class="muted">No. ${d.no}</span>` : html`<span class="muted">Classic</span>`}</span>
         <small>${d.cats.join(', ')}</small>
       </button>`)}
     </div>

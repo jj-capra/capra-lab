@@ -8,8 +8,10 @@ public/swerve-planet/
 public/dont-look/
 public/goat-getaway/
 public/mind-heist/
+public/punchline/
 netlify/functions/mind-heist.mjs
 games/mind-heist/src/server/decks.gen.json
+games/punchline/server/decks.gen.mjs
 games/mind-heist/netlify/
 # each game's own local-dev output
 games/*/public/

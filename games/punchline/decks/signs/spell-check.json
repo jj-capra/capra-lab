@@ -1,0 +1,128 @@
+{
+  "id": "spell-check",
+  "title": "Spell Check Please",
+  "shelf": "family",
+  "blurb": "Storefront, banner and billboard typos worth a photo",
+  "cards": [
+    {
+      "id": "s01",
+      "scene": "storefront",
+      "where": "CRUMBLEBEE BAKERY",
+      "kind": "misprint",
+      "sign": ["FRESH BEAGLES", "EVERY MORNING"],
+      "options": ["FRESH BAGLES EVERY MORNING", "FRESH BAGELS EVERY MORNING", "FRESH BEAGLES EVERY MORNING", "FRESH EAGLES EVERY MORNING"],
+      "answer": 1,
+      "caption": "Every dozen comes with a very good boy."
+    },
+    {
+      "id": "s02",
+      "scene": "storefront",
+      "where": "TURNIP TOWN GROCER",
+      "kind": "misprint",
+      "sign": ["NOW HIRING", "FIENDLY STAFF"],
+      "options": ["NOW HIRING FIENDLY STAFF", "NOW HIRING FRIENDLY STUFF", "NOW HIRING FINDLY STAFF", "NOW HIRING FRIENDLY STAFF"],
+      "answer": 3,
+      "caption": "Interviews at midnight. Capes optional."
+    },
+    {
+      "id": "s03",
+      "scene": "banner",
+      "where": "CEDAR HOLLOW HIGH",
+      "kind": "misprint",
+      "sign": ["CONGRATS", "CLASS OF 2072"],
+      "options": ["CONGRATS CLASS OF 2027", "CONGRATS CLASS OF 2072", "CONGRADS CLASS OF 2027", "CONGRATS CLASS OF 2207"],
+      "answer": 0,
+      "caption": "No rush, seniors. Take your time."
+    },
+    {
+      "id": "s04",
+      "scene": "storefront",
+      "where": "BUBBLE MUTT SPA",
+      "kind": "misprint",
+      "sign": ["DOG GROANING", "$25 A BATH"],
+      "options": ["DOG GROANING $25 A BATH", "DOG GROWLING $25 A BATH", "DOG GROOMING $25 A BATH", "DOG GROWING $25 A BATH"],
+      "answer": 2,
+      "caption": "He's fine. He just really hates bath day."
+    },
+    {
+      "id": "s05",
+      "scene": "banner",
+      "where": "GREASY GEARS AUTO",
+      "kind": "misprint",
+      "sign": ["BAKE SALE", "PADS 20% OFF"],
+      "options": ["BRAKE SALE PADS 20% OFF", "BAKE SALE PADS 20% OFF", "CAKE SALE PADS 20% OFF", "BIKE SALE PADS 20% OFF"],
+      "answer": 0,
+      "caption": "Brake pads now come in chocolate chip."
+    },
+    {
+      "id": "s06",
+      "scene": "plaque",
+      "where": "PICKY PEN EDITORS",
+      "kind": "misprint",
+      "sign": ["PROFREADING", "SERVICES"],
+      "options": ["PROFREADING SERVICES", "PROOFREADING SERVICES", "PROOFREEDING SERVICES", "PROOFREADING SERVISES"],
+      "answer": 1,
+      "caption": "We fix typos fast. Just not our own."
+    },
+    {
+      "id": "s07",
+      "scene": "billboard",
+      "where": "WOBBLY DOCK MARINA",
+      "kind": "misprint",
+      "sign": ["GOAT RENTALS", "$20 AN HOUR"],
+      "options": ["GOAT RENTALS $20 AN HOUR", "COAT RENTALS $20 AN HOUR", "BOOT RENTALS $20 AN HOUR", "BOAT RENTALS $20 AN HOUR"],
+      "answer": 3,
+      "caption": "They mostly just eat the life jackets."
+    },
+    {
+      "id": "s08",
+      "scene": "billboard",
+      "where": "MAPLE BEND",
+      "kind": "misprint",
+      "sign": ["VISIT HYSTERIC", "DOWNTOWN"],
+      "options": ["VISIT HISTORY DOWNTOWN", "VISIT HYSTERIC DOWNTOWN", "VISIT HISTORIC DOWNTOWN", "VISIT HISTORIC DOWNTON"],
+      "answer": 2,
+      "caption": "Even the statues are cracking up."
+    },
+    {
+      "id": "s09",
+      "scene": "storefront",
+      "where": "POLISHED PEBBLE",
+      "kind": "misprint",
+      "sign": ["SNAIL SALON", "WALK-INS WELCOME"],
+      "options": ["SNAIL SALON WALK-INS WELCOME", "MAIL SALON WALK-INS WELCOME", "NAIL SALON WALK-INS WELCOME", "NAIL SALOON WALK-INS WELCOME"],
+      "answer": 2,
+      "caption": "Crawl-ins especially welcome."
+    },
+    {
+      "id": "s10",
+      "scene": "chalk",
+      "where": "THE SLEEPY SPOON",
+      "kind": "misprint",
+      "sign": ["Soap of the Day:", "Tomato Basil"],
+      "options": ["Soup of the Day: Tomato Basil", "Soap of the Day: Tomato Basil", "Soup of the Dad: Tomato Basil", "Sop of the Day: Tomato Basil"],
+      "answer": 0,
+      "caption": "Squeaky clean. Slightly bubbly."
+    },
+    {
+      "id": "s11",
+      "scene": "billboard",
+      "where": "AUNT JUNE'S DINER",
+      "kind": "misprint",
+      "sign": ["HOME CROOKED MEALS", "EXIT 42"],
+      "options": ["HOME CROOKED MEALS EXIT 42", "HOME BOOKED MEALS EXIT 42", "HOME COOKED MEALS EXIT 24", "HOME COOKED MEALS EXIT 42"],
+      "answer": 3,
+      "caption": "The pie leans a little to the left."
+    },
+    {
+      "id": "s12",
+      "scene": "banner",
+      "where": "BIRCH HILL LIBRARY",
+      "kind": "misprint",
+      "sign": ["SUMMER BREADING", "PROGRAM"],
+      "options": ["SUMMER BREADING PROGRAM", "SUMMER READING PROGRAM", "SUMMER TREADING PROGRAM", "SUMMER READING PORGRAM"],
+      "answer": 1,
+      "caption": "Read ten books, win a baguette."
+    }
+  ]
+}

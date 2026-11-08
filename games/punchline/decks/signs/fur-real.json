@@ -1,0 +1,127 @@
+{
+  "id": "fur-real",
+  "title": "Fur Real",
+  "shelf": "family",
+  "blurb": "Pet shops, groomers, vets and yard signs gone barking mad",
+  "cards": [
+    {
+      "id": "f01",
+      "scene": "yard",
+      "kind": "misprint",
+      "sign": ["Puppies", "for Sail", "$50 Each"],
+      "options": ["Puppies for Sale $50 Each", "Puppies for Sail $50 Each", "Puppies for Sale $15 Each", "Guppies for Sale $50 Each"],
+      "answer": 0,
+      "caption": "Life jackets included. Captain's hat extra."
+    },
+    {
+      "id": "f02",
+      "scene": "yard",
+      "kind": "misprint",
+      "sign": ["Dog Talker", "$10 an Hour"],
+      "options": ["Dog Talker $10 an Hour", "Dog Walker $10 an Hour", "Dog Walker $10 a Week", "Hog Walker $10 an Hour"],
+      "answer": 1,
+      "caption": "Topics include squirrels, squirrels and the mailman."
+    },
+    {
+      "id": "f03",
+      "scene": "storefront",
+      "where": "SUDS & SNOUTS",
+      "kind": "misprint",
+      "sign": ["BATH & BRUNCH", "$30 ANY SIZE DOG"],
+      "options": ["BATH & BRUNCH $30 ANY SIZE DOG", "BATH & BRUSH $20 ANY SIZE DOG", "BATH & BRUSH $30 ANY SIZE DOG", "BATH & BLUSH $30 ANY SIZE DOG"],
+      "answer": 2,
+      "caption": "Every pup gets a tiny waffle and a nap."
+    },
+    {
+      "id": "f04",
+      "scene": "plaque",
+      "where": "HOLLYHOCK CLINIC",
+      "kind": "misprint",
+      "sign": ["DR. JUNE PEBBLE", "VEGETARIAN"],
+      "options": ["DR. JUNE PEBBLE VEGETARIAN", "DR. JUNE PEBBLE LIBRARIAN", "DR. JANE PEBBLE VETERINARIAN", "DR. JUNE PEBBLE VETERINARIAN"],
+      "answer": 3,
+      "caption": "Your dog will go home with a salad and a pep talk."
+    },
+    {
+      "id": "f05",
+      "scene": "trail",
+      "where": "CATTAIL TRAIL",
+      "kind": "misprint",
+      "sign": ["PLEASE KEEP PETS", "ON A LEASE"],
+      "options": ["PLEASE KEEP PETS ON A LEASE", "PLEASE KEEP PETS IN A CRATE", "PLEASE KEEP PETS ON A LEASH", "PLEASE KEEP PETS ON A LEAF"],
+      "answer": 2,
+      "caption": "Hamsters rent month to month. The cats own the building."
+    },
+    {
+      "id": "f06",
+      "scene": "yard",
+      "kind": "design",
+      "sign": ["LOST TORTOISE", "Answers to Zippy", "Last Seen Here", "3 Weeks Ago"],
+      "ask": "Where should you look?",
+      "options": ["The Next Town", "Right Around Here", "The Duck Pond", "Up a Tree"],
+      "answer": 1,
+      "caption": "UPDATE: Zippy found. He was behind the sign."
+    },
+    {
+      "id": "f07",
+      "scene": "storefront",
+      "where": "SHAGGY & SHINY",
+      "kind": "design",
+      "sign": ["WE GROOM YOUR DOG", "AND YOU", "CAN WAIT HERE"],
+      "options": ["THEY GROOM DOGS AND CATS", "THEY GROOM DOGS AND OWNERS", "THEY WASH DOGS AND CARS", "THEY GROOM DOGS AND HORSES"],
+      "answer": 1,
+      "caption": "Mr. Peters left with a bow in his hair. He loved it."
+    },
+    {
+      "id": "f08",
+      "scene": "trail",
+      "where": "WAGGLETON DOG PARK",
+      "kind": "design",
+      "sign": ["1. CLEAN UP", "2. SHUT THE GATE", "3. NO BARKING", "4. HAVE FUN"],
+      "ask": "Which rule won't work?",
+      "options": ["CLEAN UP", "SHUT THE GATE", "NO BARKING", "HAVE FUN"],
+      "answer": 2,
+      "caption": "Enforcement has been... ruff."
+    },
+    {
+      "id": "f09",
+      "scene": "neon",
+      "where": "TINY CRITTERS",
+      "kind": "lights",
+      "sign": ["HAMSTER ~WHEELS", "IN STOCK"],
+      "options": ["HAMSTER HEELS IN STOCK", "HAMSTER WHEELS IN STOCK", "HAMSTER HEELS ON SALE", "HAMSTER WHEEL IN STOCK"],
+      "answer": 0,
+      "caption": "Now in sizes teeny and teenier."
+    },
+    {
+      "id": "f10",
+      "scene": "neon",
+      "where": "GUPPY GALAXY",
+      "kind": "lights",
+      "sign": ["~GOLD FISH", "3 FOR $1"],
+      "options": ["GOLD FISH 3 FOR $1", "COLD FISH 3 FOR $1", "OLD FISH 2 FOR $1", "OLD FISH 3 FOR $1"],
+      "answer": 3,
+      "caption": "Each one comes with a tiny cardigan."
+    },
+    {
+      "id": "f11",
+      "scene": "neon",
+      "where": "GOOD BOY ACADEMY",
+      "kind": "lights",
+      "sign": ["PUPPY ~TRAINING", "SAT 9 AM"],
+      "options": ["PUPPY TRAINING SAT 9 AM", "PUPPY RAINING SUN 9 AM", "PUPPY TRAINING SUN 9 AM", "PUPPY RAINING SAT 9 AM"],
+      "answer": 3,
+      "caption": "Saturday forecast: 100% chance of cats and dogs."
+    },
+    {
+      "id": "f12",
+      "scene": "banner",
+      "where": "WHISKERWOOD RESCUE",
+      "kind": "misprint",
+      "sign": ["ADOPT A PEST", "TODAY!"],
+      "options": ["ADOPT A PET TODAY!", "ADOPT A PEST TODAY!", "ADOPT A PET TUESDAY!", "ADOPT A POST TODAY!"],
+      "answer": 0,
+      "caption": "Now accepting little brothers. No refunds."
+    }
+  ]
+}

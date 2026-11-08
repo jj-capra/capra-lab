@@ -1,0 +1,132 @@
+{
+  "id": "detention",
+  "title": "Detention",
+  "shelf": "late",
+  "blurb": "School signs with zero filter and no hall pass",
+  "cards": [
+    {
+      "id": "dt01",
+      "scene": "chalk",
+      "where": "THE CHOW HALL",
+      "kind": "misprint",
+      "sign": ["Lunch Today:", "Tater Toots", "& Chili"],
+      "options": ["Lunch Today: Tater Tots & Chili", "Lunch Today: Tater Toots & Chili", "Lunch Today: Tater Tots & Chips", "Lunch Today: Tater Tarts & Chili"],
+      "answer": 0,
+      "caption": "Sixth period is going to be rough."
+    },
+    {
+      "id": "dt02",
+      "scene": "marquee",
+      "where": "OXBOW RIDGE HIGH",
+      "kind": "misprint",
+      "sign": ["SENIOR SUNRISE", "FRIDAY AT DAMN"],
+      "options": ["SENIOR SUNRISE FRIDAY AT DAMN", "SENIOR SUNSET FRIDAY AT DAWN", "SENIOR SUNRISE FRIDAY AT DUSK", "SENIOR SUNRISE FRIDAY AT DAWN"],
+      "answer": 3,
+      "caption": "It's also what every senior said when the 5 a.m. alarm went off."
+    },
+    {
+      "id": "dt03",
+      "scene": "chalk",
+      "where": "TEACHERS' LOUNGE",
+      "kind": "design",
+      "sign": ["To whoever keeps", "taking my yogurt:", "I licked it.", "-Ms. Kemp"],
+      "ask": "Why skip the yogurt?",
+      "options": ["IT'S EXPIRED", "IT'S THE LAST ONE", "SOMEONE LICKED IT", "IT'S DAIRY-FREE"],
+      "answer": 2,
+      "caption": "Written underneath: \"So did I. Still delicious.\""
+    },
+    {
+      "id": "dt04",
+      "scene": "plaque",
+      "where": "NORTH GYM",
+      "kind": "misprint",
+      "sign": ["COUCH'S OFFICE", "KNOCK FIRST"],
+      "options": ["COUCH'S OFFICE KNOCK FIRST", "COACH'S OFFICE DON'T KNOCK", "COACH'S OFFICE KNOCK FIRST", "COACH'S OFFICE KNOCK TWICE"],
+      "answer": 2,
+      "caption": "He's been in there since third period. You can hear the snoring."
+    },
+    {
+      "id": "dt05",
+      "scene": "plaque",
+      "where": "ATTENDANCE OFFICE",
+      "kind": "misprint",
+      "sign": ["TURDY?", "SIGN IN HERE"],
+      "options": ["TARDY? SIGN UP HERE", "TURDY? SIGN IN HERE", "TARDY? SIGN OUT HERE", "TARDY? SIGN IN HERE"],
+      "answer": 3,
+      "caption": "Front desk: \"We don't need the details.\""
+    },
+    {
+      "id": "dt06",
+      "scene": "plaque",
+      "where": "ROOM 108",
+      "kind": "misprint",
+      "sign": ["DETENTION HELL", "SIT. NO TALKING."],
+      "options": ["DETENTION HALL SIT. NO TALKING.", "DETENTION HELL SIT. NO TALKING.", "DETENTION HALL SIT. NO TEXTING.", "DETENTION HALL SIT. NO WALKING."],
+      "answer": 0,
+      "caption": "Mr. Gorski asked the office not to fix it."
+    },
+    {
+      "id": "dt07",
+      "scene": "plaque",
+      "where": "NURSE'S OFFICE",
+      "kind": "design",
+      "sign": ["FEVER? ICE PACK", "COUGH? ICE PACK", "BROKEN? ICE PACK", "BORED? ICE PACK"],
+      "ask": "What do you get for a headache?",
+      "options": ["A CALL HOME", "A COUGH DROP", "A NAP ON THE COT", "AN ICE PACK"],
+      "answer": 3,
+      "caption": "Side effects include being sent back to class."
+    },
+    {
+      "id": "dt08",
+      "scene": "marquee",
+      "where": "MUDPUPPY HIGH",
+      "kind": "design",
+      "sign": ["HAVE A GREAT", "SUMMER!", "SEE SOME OF YOU", "IN JULY"],
+      "ask": "Who's back in July?",
+      "options": ["THE GRADUATES", "SUMMER SCHOOL KIDS", "THE NEW FRESHMEN", "EVERYONE"],
+      "answer": 1,
+      "caption": "Mr. Pruitt is teaching it. He's not happy about it either."
+    },
+    {
+      "id": "dt09",
+      "scene": "plaque",
+      "where": "SCIENCE LAB B",
+      "kind": "design",
+      "sign": ["EYE WASH STATION", "NOT A DRINKING", "FOUNTAIN", "(AGAIN)"],
+      "ask": "What happened here?",
+      "options": ["THE SINK FLOODED", "SOMEONE DRANK FROM IT", "IT RAN OUT OF WATER", "SOMEONE LOST A CONTACT"],
+      "answer": 1,
+      "caption": "It was Tyler. It was Tyler both times."
+    },
+    {
+      "id": "dt10",
+      "scene": "road",
+      "kind": "misprint",
+      "sign": ["STUDENT DROPOUT", "ZONE"],
+      "options": ["STUDENT DROP-OFF ZONE", "STUDENT DROPOUT ZONE", "STUDENT PICK-UP ZONE", "STUDENT DROP-OFF ONLY"],
+      "answer": 0,
+      "caption": "Pull all the way forward. Then just keep going."
+    },
+    {
+      "id": "dt11",
+      "scene": "chalk",
+      "where": "STAFF ROOM",
+      "kind": "design",
+      "sign": ["Please clean the", "microwave.", "It has become", "self-aware."],
+      "ask": "What's wrong with the microwave?",
+      "options": ["IT'S BROKEN", "IT'S UNPLUGGED", "IT'S ALIVE NOW", "IT'S TOO HOT"],
+      "answer": 2,
+      "caption": "It has applied for tenure."
+    },
+    {
+      "id": "dt12",
+      "scene": "banner",
+      "where": "MUDPUPPY HIGH",
+      "kind": "misprint",
+      "sign": ["STATE CHUMPS", "BASKETBALL 1987"],
+      "options": ["STATE CHUMPS BASKETBALL 1987", "STATE CHAMPS BASKETBALL 1987", "STATE CHAMPS BASEBALL 1987", "STATE CHAMPS BASKETBALL 1997"],
+      "answer": 1,
+      "caption": "Still the newest banner in the gym. By 39 years."
+    }
+  ]
+}

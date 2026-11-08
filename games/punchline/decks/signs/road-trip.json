@@ -1,0 +1,120 @@
+{
+  "id": "road-trip",
+  "title": "Road Trip",
+  "shelf": "family",
+  "blurb": "Highway and small-town signs that took a wrong turn",
+  "cards": [
+    {
+      "id": "r01",
+      "scene": "road",
+      "kind": "misprint",
+      "sign": ["DEAR", "CROSSING"],
+      "options": ["DEAR CROSSING", "DEER CROSSING", "DEER CROWDING", "DEAN CROSSING"],
+      "answer": 1,
+      "caption": "Sincerely, the deer. P.S. Please brake."
+    },
+    {
+      "id": "r02",
+      "scene": "road",
+      "kind": "misprint",
+      "sign": ["REST AREA", "2 SMILES"],
+      "options": ["REST AREA 2 SMILES", "REST AREA 12 MILES", "REST AREA 2 MILES", "PET AREA 2 MILES"],
+      "answer": 2,
+      "caption": "Vending machines now take grins. Exact change only."
+    },
+    {
+      "id": "r03",
+      "scene": "road",
+      "kind": "misprint",
+      "sign": ["LEAVING PINEWICK", "COMB BACK SOON!"],
+      "options": ["LEAVING PINEWICK COME BACK SOON!", "LEAVING PINEWICK COMB BACK SOON!", "LEAVING PINECREEK COME BACK SOON!", "LEAVING PINEWICK COME BACK NOON!"],
+      "answer": 0,
+      "caption": "Pinewick: one stoplight, nine barber shops."
+    },
+    {
+      "id": "r04",
+      "scene": "road",
+      "kind": "misprint",
+      "sign": ["LOOSE GRAVY", "NEXT 5 MILES"],
+      "options": ["LOOSE GRAVY NEXT 5 MILES", "LOOSE GRAVEL NEXT 6 MILES", "LOW GRAVEL NEXT 5 MILES", "LOOSE GRAVEL NEXT 5 MILES"],
+      "answer": 3,
+      "caption": "Drivers report the biscuits are holding up fine."
+    },
+    {
+      "id": "r05",
+      "scene": "road",
+      "kind": "design",
+      "sign": ["FINE FOR", "LITTERING"],
+      "options": ["LITTERING IS FUN", "LOITERING IS FINE", "GLITTERING IS FINE", "LITTERING IS FINE"],
+      "answer": 3,
+      "caption": "Officer Pam: \"The $500 part is on the back.\""
+    },
+    {
+      "id": "r06",
+      "scene": "road",
+      "kind": "design",
+      "sign": ["STOP", "WHINING LN"],
+      "options": ["STOP WINDING", "STOP WHINING", "STOP SHINING", "STOP DINING"],
+      "answer": 1,
+      "caption": "Every backseat in the county just went quiet."
+    },
+    {
+      "id": "r07",
+      "scene": "road",
+      "kind": "design",
+      "sign": ["SLOW", "COWS", "CROSSING"],
+      "options": ["THE COWS HERE ARE SLOW", "THE COWS HERE ARE LOST", "THE COWS HERE ARE CROSS", "THE COWS HERE ARE SLEEPY"],
+      "answer": 0,
+      "caption": "The fast ones crossed last Tuesday."
+    },
+    {
+      "id": "r08",
+      "scene": "road",
+      "kind": "misprint",
+      "sign": ["GRUMPY ROAD", "AHEAD"],
+      "options": ["GRUMPY ROAD AHEAD", "BUMPY ROAD BEHIND", "BUMPY ROAD AHEAD", "LUMPY ROAD AHEAD"],
+      "answer": 2,
+      "caption": "Don't take it personally. It's always like this before coffee."
+    },
+    {
+      "id": "r09",
+      "scene": "billboard",
+      "where": "GRANNY MAE'S",
+      "kind": "lights",
+      "sign": ["ANT~I~Q~U~ES", "NEXT EXIT"],
+      "options": ["PANTS NEXT EXIT", "ANTIQUES NEXT EXIT", "AUNTS NEXT EXIT", "ANTS NEXT EXIT"],
+      "answer": 3,
+      "caption": "Everything must go. Some of it is already leaving."
+    },
+    {
+      "id": "r10",
+      "scene": "billboard",
+      "where": "PIT STOP PANTRY",
+      "kind": "lights",
+      "sign": ["ICE COLD SOD~A", "1 MILE"],
+      "options": ["ICE COLD SOD 1 MILE", "ICE COLD SODA 1 MILE", "ICE COLD SOD 4 MILES", "ICE COLD SOUP 1 MILE"],
+      "answer": 0,
+      "caption": "Tastes like a fresh-mowed Saturday."
+    },
+    {
+      "id": "r11",
+      "scene": "billboard",
+      "where": "MUDCAT MIKE'S",
+      "kind": "lights",
+      "sign": ["LIVE BA~IT", "OPEN 5 AM"],
+      "options": ["LIVE BAIT OPEN 5 AM", "LIE BAIT OPEN 5 AM", "LIVE BAT OPEN 5 AM", "LIVE BAT OPEN 5 PM"],
+      "answer": 2,
+      "caption": "Ask for Gary. He hangs out by the register."
+    },
+    {
+      "id": "r12",
+      "scene": "billboard",
+      "where": "SLEEPY PINE MOTEL",
+      "kind": "lights",
+      "sign": ["VACA~N~CY", "TONIGHT"],
+      "options": ["VACANCY TONIGHT", "VACAY TONIGHT", "VACANT TONIGHT", "VACAY TOMORROW"],
+      "answer": 1,
+      "caption": "The pool is a puddle, but the vibes are tropical."
+    }
+  ]
+}
