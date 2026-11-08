@@ -16,9 +16,10 @@ import { dailyDeck, deal, pacificDate, mulberry32, seedOf } from './daily.js';
 import { variantOf } from './variants.mjs';
 import { mutate, SKIP } from './store.js';
 
-// A JJ Brew (JC, Nov 2026): while true, only Capra's Lab members can open today's drop or host;
-// anyone a member invites can join with the room code. Set false when JC says Punchline goes live.
-export const BREW = true;
+// Punchline was a JJ Brew (JC, Nov 7 2026) and went live on Nov 8 2026: everyone gets today's drop
+// and can host. Set true to put it back behind Capra's Lab (only members see the drop and host;
+// anyone with a room link can still join).
+export const BREW = false;
 const MAX_PLAYERS = 12;
 const ROOM_HOURS = 8;
 // A card's sign (never its answer) goes out this long before it shows, so every phone has it

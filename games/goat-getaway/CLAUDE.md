@@ -26,6 +26,13 @@ on from Vault Jam (2026-11-02 = No. 1), on the same puzzles.
   the first time the winner loads the page after midnight Pacific (`pend` on the record).
 - **Guests** can open and play the pen, but nothing is timed against anyone, saved or paid. The
   page sends them to `/#profile` for a key card.
+- **Hints** (Nov 8 2026: JC couldn't crack Sunday's G.O.A.T. pen; every pen is solvable, the week
+  runs from 6 moves on Monday to about 30 on Sunday): **💡 Hint** shows the best next move from
+  wherever the pen is (the solver from `shared/puzzle.mjs`, about 25 ms): the piece pulses with an
+  arrow and a dashed outline shows where it goes. On today's pen a signed-in player's hints go
+  through `POST /hint`, which counts them: each hint before your first getaway adds `HINT_MS`
+  (15 s) to your time, and a day with hints earns no par diamond. Guests' hints and practice hints
+  are worked out on the phone and cost nothing.
 - **Practice**: endless pens (`practice.json`, written by the build), Easy / Medium / Hard, no
   rewards, a clock that starts on the first move.
 
@@ -37,7 +44,7 @@ on from Vault Jam (2026-11-02 = No. 1), on the same puzzles.
   `node dev/make-puzzles.mjs [seed]` (about 10 minutes; every pen is re-solved so par is exact;
   commit the result). A plain module, not JSON, so every bundler reads it the same way.
 - `server/daily.js` (today's pen, the race board), `server/api.js` (`POST /today`, `/open`,
-  `/solve`, every call with the lab sign-in in the body), `server/store.js` (Blobs or memory,
+  `/solve`, `/hint`, every call with the lab sign-in in the body), `server/store.js` (Blobs or memory,
   compare-and-swap). The function is `netlify/functions/goat-getaway.mjs` (`config.path`
   `/goat-getaway/api/*`). Store `goat-getaway`: `p/<handle>` (today, pending ribbon days,
   ribbons), `j/<date>` (the day's race board).

@@ -225,6 +225,8 @@ function renderHost() {
   $('deckName').textContent = d ? d.title : 'Pick a deck';
   $('deckMeta').innerHTML = d ? `${deckTags(d)}<span>${d.count} cards</span>` : '';
   $('lateSw').checked = $('lateSw2').checked = !!prefs.late;
+  $('hostNameField').hidden = signedIn();
+  if (!$('hostNameIn').value) $('hostNameIn').value = prefs.name || '';
   $('hostBtn').disabled = !d;
 }
 function setLate(on) {
@@ -313,7 +315,10 @@ async function hostGame() {
   if (!S.deckId) return;
   $('hostBtn').disabled = true;
   try {
-    const r = await api('/rooms', { ...labBody(), name: prefs.name, deckId: S.deckId, late: !!prefs.late });
+    const name = signedIn() ? '' : $('hostNameIn').value.trim();
+    if (!signedIn() && !name) { toast('Type your name first.', 'err'); $('hostNameIn').focus(); return; }
+    if (name) { prefs.name = name; savePrefs(); }
+    const r = await api('/rooms', { ...labBody(), name, deckId: S.deckId, late: !!prefs.late });
     S.invite = null;
     takeSeat(r.code, r.pid, r.tok);
     onRoom(r.room);

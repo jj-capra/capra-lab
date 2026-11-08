@@ -1,7 +1,7 @@
 // Goat Getaway: the daily pen, the clock, the race board, Blue Ribbons and the diamonds it pays
 // into Mind Heist.  node games/goat-getaway/test/goat.test.mjs
 import assert from 'node:assert/strict';
-import { createApi } from '../server/api.js';
+import { createApi, HINT_MS } from '../server/api.js';
 import { memoryStore } from '../server/store.js';
 import { daily, raceView, practicePens, TIER_NAMES } from '../server/daily.js';
 import { solve, replay, isValid } from '../shared/puzzle.mjs';
@@ -150,6 +150,39 @@ test('guests can open and solve the pen, but nothing is recorded or paid', async
   assert.equal(s.moves, t.par);
   assert.equal((await R.call('/today')).race.solvers, 0);
   assert.equal(R.mh.map.size, 0);
+});
+
+test('a hint is the best next move from where you are; on today’s pen it costs time and the par diamond', async () => {
+  const R = rig(Date.parse('2026-11-08T18:00:00Z'));
+  const t = daily('2026-11-08');
+  const best = solve(t.board);
+  // a guest gets hints too, nothing counted
+  let h = await R.call('/hint', { moves: [] });
+  assert.equal(h.status, 200, h.error);
+  assert.deepEqual(h.move, best.path[0]);
+  assert.equal(h.left, best.par);
+  assert.equal(h.hints, 0);
+  // from partway in: the hint continues from there
+  h = await R.call('/hint', { moves: best.path.slice(0, 5) });
+  assert.equal(h.left, best.par - 5);
+  assert.equal((await R.call('/hint', { moves: [['A', 9]] })).status, 400, 'moves that don’t fit');
+  assert.equal((await R.call('/hint', as('ann', { moves: [] }))).status, 409, 'open first');
+  await R.call('/open', as('ann'));
+  h = await R.call('/hint', as('ann', { moves: [] }));
+  assert.equal(h.hints, 1);
+  assert.equal(h.penalty, HINT_MS);
+  await R.call('/hint', as('ann', { moves: best.path.slice(0, 1) }));
+  R.tick(60000);
+  const s = await R.call('/solve', as('ann', { moves: best.path }));
+  assert.equal(s.status, 200, s.error);
+  assert.equal(s.ms, 60000 + 2 * HINT_MS, 'two hints add 30 seconds');
+  assert.equal(s.gained, 1, 'out earns a diamond; hints skip the par one');
+  assert.equal(s.me.hints, 2);
+  // a hint after you're out doesn't change your time
+  R.tick(1000);
+  const later = await R.call('/hint', as('ann', { moves: [] }));
+  assert.equal(later.penalty, 0);
+  assert.equal((await R.call('/today', as('ann'))).me.ms, 60000 + 2 * HINT_MS);
 });
 
 test('the race view never ranks you when you have no time', () => {

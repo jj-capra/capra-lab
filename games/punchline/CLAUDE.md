@@ -6,12 +6,10 @@ storefronts, colleges, schools, offices, parks) that came out wrong, and the jok
 Mind Heist into their own game. Ugly Ts joined on Nov 8 ("unhinged screen printed words and bad
 design decisions and other randomness and punch lines of jokes that take a second").
 
-**It's a JJ Brew** (hidden from the public): `<script src="/lab/brew.js" data-invite=...>` is first
-in the page's head and its hub tile is in Capra's Lab (`#clGames`), and `BREW = true` in
-`server/api.js`. While it brews, only Capra's Lab members (JJ-Capra and his crew) see today's drop
-and can host; anyone they send a room link (`/punchline/ABCD`) can join that game, and nothing else.
-When JC says it goes live: take out the script tag, move the tile to the public grid and set
-`BREW = false`.
+**Live since Nov 8 2026** (JC: "Okay let's go live with punchline"). It started as a JJ Brew (Nov 7);
+going live took out `brew.js`, moved the hub tile from Capra's Lab to the public grid and set
+`BREW = false` in `server/api.js`. Everyone gets today's drop and can host (a guest types a name);
+decks marked `brew` still show only for Capra's Lab.
 
 ## How a card plays (JC's decisions)
 

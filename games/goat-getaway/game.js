@@ -1,7 +1,7 @@
 // Goat Getaway: the page. Today's pen (one a day, the same for everyone, timed by the server,
 // diamonds to Mind Heist, a Blue Ribbon for the fastest) and endless practice pens.
 // The rules live in shared/puzzle.mjs, the same file the server checks solves with.
-import { pieces, slide, solved, reach } from './shared/puzzle.mjs';
+import { pieces, slide, solved, reach, solve } from './shared/puzzle.mjs';
 import { pieceArt, postArt, pieceName, GOAT_HEAD, RIBBON } from './art.js';
 
 const $ = (id) => document.getElementById(id);
@@ -206,7 +206,25 @@ class Pen {
   }
   undo() { if (this.moves.length && !this.locked) { this.boards.pop(); this.moves.pop(); this.draw(); } }
   reset() { this.boards = [this.start]; this.moves = []; this.locked = false; this.draw(true); }
+  // Point at the best next move: the piece pulses with an arrow, a dashed outline shows where it goes.
+  showHint(id, d) {
+    this.clearHint();
+    const p = pieces(this.board)[id], el = this.els.get(id);
+    if (!p || !el) return;
+    el.classList.add('hinted');
+    el.dataset.arrow = p.h ? (d > 0 ? '→' : '←') : (d > 0 ? '↓' : '↑');
+    const g = document.createElement('div');
+    g.className = 'ghost';
+    g.style.cssText = `left:${pct(p.c + (p.h ? d : 0))};top:${pct(p.r + (p.h ? 0 : d))};width:${pct(p.h ? p.len : 1)};height:${pct(p.h ? 1 : p.len)}`;
+    this.floor.appendChild(g);
+    this.ghost = g;
+  }
+  clearHint() {
+    if (this.ghost) { this.ghost.remove(); this.ghost = null; }
+    for (const el of this.els.values()) { el.classList.remove('hinted'); delete el.dataset.arrow; }
+  }
   draw(fresh = false) {
+    this.clearHint();
     const b = this.board;
     if (fresh) {
       for (const el of this.floor.querySelectorAll('.pc,.post')) el.remove();
@@ -327,6 +345,7 @@ const Today = {
     $('openBtn').addEventListener('click', () => this.open());
     $('undoBtn').addEventListener('click', () => { this.pen.undo(); this.hud(); });
     $('resetBtn').addEventListener('click', () => { this.pen.reset(); this.hud(); });
+    $('hintBtn').addEventListener('click', () => this.hint());
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && this.data && this.pacificToday() !== this.data.pen.date && !this.pen.locked) this.load();
     });
@@ -399,7 +418,8 @@ const Today = {
   done() { const me = this.data.me; return me ? me.ms != null : this.guestDone != null; },
   elapsed() {
     const me = this.data.me;
-    if (me) return me.ms != null ? me.ms : me.open != null ? serverNow() - me.open : null;
+    // hints before your first getaway count on the clock (HINT_MS each, on the server)
+    if (me) return me.ms != null ? me.ms : me.open != null ? serverNow() - me.open + (me.hints || 0) * 15000 : null;
     if (this.guestStart == null) return null;
     return (this.guestDone || Date.now()) - this.guestStart;
   },
@@ -418,6 +438,31 @@ const Today = {
     $('tMovesBox').classList.toggle('under', n > 0 && n <= par);
     $('undoBtn').disabled = !n || this.pen.locked || solved(this.pen.board);
     $('resetBtn').disabled = !n || this.pen.locked;
+    $('hintBtn').disabled = this.pen.locked || solved(this.pen.board);
+  },
+  // The best next move from where the pen is now. On today's pen a signed-in player's hints are
+  // counted by the server (time and the par diamond); a guest's are worked out right here.
+  async hint() {
+    if (this.pen.locked || solved(this.pen.board) || this.hinting) return;
+    const me = this.data.me;
+    this.hinting = true; $('hintBtn').disabled = true;
+    try {
+      let move;
+      if (me) {
+        const r = await call('/hint', { moves: this.pen.moves, date: this.data.pen.date });
+        move = r.move;
+        const firstHint = !me.hints;
+        me.hints = r.hints;
+        if (r.penalty && firstHint) toast('Hint! Each one adds 15 seconds to your time, and today won’t earn the par diamond.');
+        this.after();
+      } else {
+        const s = solve(this.pen.board);
+        move = s && s.path[0];
+      }
+      if (move) { this.pen.showHint(move[0], move[1]); sfx.pick(); }
+    } catch (e) { toast(e.message, 'err'); }
+    this.hinting = false;
+    this.hud();
   },
   after() {
     const me = this.data.me, el = $('after');
@@ -426,7 +471,8 @@ const Today = {
     if (!show) return;
     el.textContent = !me ? 'Play it again for fun.'
       : me.parGem ? 'You already made par today. Play it again for fun.'
-        : `Your time is in. Get out in ${this.data.pen.par} moves for one more 💎.`;
+        : me.hints ? 'Your time is in. With hints today, there’s no par diamond, but play it again for fun.'
+          : `Your time is in. Get out in ${this.data.pen.par} moves for one more 💎.`;
   },
   moved(id, d) {
     const r = this.pen.play(id, d);
@@ -476,7 +522,7 @@ const Today = {
       gems = `<p class="note"><a href="/#profile">Sign in to Capra Lab</a> and your time races everyone’s, with diamonds for Mind Heist.</p>`;
     } else {
       head = r && !r.first ? `Out in ${plural(r.moves, 'move')}!` : `Out in ${fmtTime(me.ms)}!`;
-      line = r && !r.first ? `Par is ${t.par}. Your time today stays ${fmtTime(me.ms)}.` : `${plural(me.moves, 'move')} · par ${t.par}${me.moves <= t.par ? '. Perfect!' : ''}`;
+      line = r && !r.first ? `Par is ${t.par}. Your time today stays ${fmtTime(me.ms)}.` : `${plural(me.moves, 'move')} · par ${t.par}${me.moves <= t.par && !me.hints ? '. Perfect!' : ''}${me.hints ? ` · ${plural(me.hints, 'hint')} (+${me.hints * 15}s)` : ''}`;
       if (r && r.gained) {
         const where = r.paid === 'mind-heist' ? 'sent to your Mind Heist vault'
           : r.paid === 'waiting' ? 'waiting for you in Mind Heist'
@@ -541,6 +587,11 @@ const Practice = {
     });
     $('pUndo').addEventListener('click', () => { this.pen.undo(); this.hud(); });
     $('pReset').addEventListener('click', () => this.restart());
+    $('pHint').addEventListener('click', () => {
+      if (this.doneAt || solved(this.pen.board)) return;
+      const s = solve(this.pen.board);
+      if (s && s.path[0]) { this.pen.showHint(s.path[0][0], s.path[0][1]); sfx.pick(); }
+    });
     $('pSkip').addEventListener('click', () => this.next());
   },
   async enter() {
@@ -597,6 +648,7 @@ const Practice = {
     $('pMovesBox').classList.toggle('under', !!p && n > 0 && n <= p[1]);
     $('pUndo').disabled = !n || !!this.doneAt;
     $('pReset').disabled = !n;
+    $('pHint').disabled = !!this.doneAt || solved(this.pen.board);
   },
   moved(id, d) {
     // The practice clock starts on the first move.

@@ -153,23 +153,23 @@ test('the clock: find then reveal, jokes get reading time, points reward speed a
   assert.equal(askOf(joke), 'Which punchline lands?');
 });
 
-test('while it is a JJ Brew, only Capra’s Lab sees the drop and hosts', async () => {
-  assert.equal(BREW, true);
+test('live: everyone gets today’s drop and can host; brew decks stay in Capra’s Lab', async () => {
+  assert.equal(BREW, false);
   const { call } = rig();
   const guest = await call('/today');
-  assert.equal(guest.brew, true);
-  assert.equal(guest.daily, null);
-  assert.deepEqual(guest.decks, []);
-  const ann = await call('/today', as('ann'));
-  assert.equal(ann.canHost, false);
-  assert.equal((await call('/rooms', { name: 'Zed', deckId: 'burnt' })).status, 403);
-  assert.equal((await call('/rooms', as('ann', { deckId: 'burnt' }))).status, 403);
+  assert.equal(guest.brew, false);
+  assert.equal(guest.canHost, true);
+  assert.equal(guest.daily.cards.length, CARDS_PER_GAME);
+  assert.ok(guest.daily.cards.every((c) => c.answer >= 0 && c.caption));
+  assert.ok(!guest.decks.some((d) => d.brew), 'the public never sees brew decks');
+  assert.equal((await call('/rooms', { deckId: 'burnt' })).status, 400, 'a guest host needs a name');
+  const zed = await call('/rooms', { name: 'Zed', deckId: 'burnt' });
+  assert.equal(zed.status, 200);
+  assert.equal(zed.room.players[0].name, 'Zed');
+  assert.equal((await call('/rooms', { name: 'Zed', deckId: 'secret' })).status, 404, 'a brew deck is lab-only');
   assert.equal((await call('/today', { lab: { name: 'JJ-Capra', code: '999999' } })).status, 401);
   const jj = await call('/today', as('jj-capra'));
   assert.equal(jj.role, 'owner');
-  assert.equal(jj.canHost, true);
-  assert.equal(jj.daily.cards.length, CARDS_PER_GAME);
-  assert.ok(jj.daily.cards.every((c) => c.answer >= 0 && c.caption));
   assert.ok(jj.decks.some((d) => d.id === 'secret' && d.brew), 'the lab sees brew decks');
   assert.ok(jj.decks.some((d) => d.id === 'roasted' && d.shelf === 'late'));
 });

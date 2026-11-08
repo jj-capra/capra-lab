@@ -138,15 +138,17 @@
   .note.warn { color: var(--paper); background: rgba(228, 87, 46, 0.25); border: 2px solid var(--barn); border-radius: 12px; padding: 8px 10px; }
 
   /* ---------- the bar over the board ---------- */
-  .hud { display: flex; align-items: center; gap: 7px; }
+  .hud { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
   .hud .btn.sm { padding: 4px 10px; }
+  .hud .btn.ico { width: 40px; padding: 0; font-size: 22px; line-height: 1; }
+  .hud .hintbtn { font-size: 19px; }
   .stat {
-    display: grid; justify-items: center; min-width: 52px; padding: 4px 7px; border-radius: 12px;
+    display: grid; justify-items: center; min-width: 48px; padding: 4px 6px; border-radius: 12px;
     background: var(--panel); border: 2px solid var(--shadow);
   }
   .stat small { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; color: var(--dim); }
   .stat b { font-family: var(--display); font-weight: 400; font-size: 22px; letter-spacing: 0.04em; line-height: 1.05; }
-  .stat.time { min-width: 74px; }
+  .stat.time { min-width: 68px; }
   .stat.under b { color: var(--green); }
   .hud .grow { flex: 1; }
 
@@ -208,6 +210,16 @@
   .pc.goat.drag { z-index: 6; }
   .pc.goat.out { transition: transform 0.65s cubic-bezier(.5, 0, .9, .6), opacity 0.25s 0.5s; transform: translateX(170%); opacity: 0; }
   .pc.bump { animation: bump 0.22s; }
+  /* a hint: the piece to move pulses with an arrow, and a dashed outline shows where it goes */
+  .pc.hinted { z-index: 4; animation: hintPulse 0.9s ease-in-out infinite; }
+  .pc.hinted::after {
+    content: attr(data-arrow); position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; z-index: 2;
+    background: var(--yellow); color: var(--ink); border: 3px solid var(--ink); font: 900 20px/1 Inter, system-ui, sans-serif;
+  }
+  .ghost { position: absolute; z-index: 3; pointer-events: none; border: 4px dashed var(--ink); border-radius: 12px; background: rgba(255, 255, 255, 0.45); box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.7) inset; animation: ghostIn 0.3s ease-out both; }
+  @keyframes hintPulse { 50% { filter: drop-shadow(0 0 10px rgba(255, 210, 63, 0.95)); } }
+  @keyframes ghostIn { from { opacity: 0; transform: scale(0.85); } }
   @keyframes bump { 25% { translate: 3px 0; } 75% { translate: -3px 0; } }
   .pc.v.bump { animation-name: bumpv; }
   @keyframes bumpv { 25% { translate: 0 3px; } 75% { translate: 0 -3px; } }
@@ -333,8 +345,9 @@
           <span class="stat" id="tMovesBox"><small>MOVES</small><b class="num" id="tMoves">0</b></span>
           <span class="stat"><small>PAR</small><b class="num" id="tPar">0</b></span>
           <span class="grow"></span>
-          <button class="btn sm alt" id="undoBtn" type="button">Undo</button>
-          <button class="btn sm alt" id="resetBtn" type="button">Reset</button>
+          <button class="btn sm alt ico" id="undoBtn" type="button" aria-label="Undo" title="Undo">↶</button>
+          <button class="btn sm alt ico" id="resetBtn" type="button" aria-label="Reset" title="Reset">⟲</button>
+          <button class="btn sm ico hintbtn" id="hintBtn" type="button" aria-label="Hint: show the best next move" title="Hint: show the best next move">💡</button>
         </div>
         <div class="pen" id="board"></div>
         <p class="after" id="after" hidden></p>
@@ -361,8 +374,9 @@
         <span class="stat" id="pMovesBox"><small>MOVES</small><b class="num" id="pMoves">0</b></span>
         <span class="stat"><small>PAR</small><b class="num" id="pPar">0</b></span>
         <span class="grow"></span>
-        <button class="btn sm alt" id="pUndo" type="button">Undo</button>
-        <button class="btn sm alt" id="pReset" type="button">Reset</button>
+        <button class="btn sm alt ico" id="pUndo" type="button" aria-label="Undo" title="Undo">↶</button>
+        <button class="btn sm alt ico" id="pReset" type="button" aria-label="Reset" title="Reset">⟲</button>
+        <button class="btn sm ico hintbtn" id="pHint" type="button" aria-label="Hint: show the best next move" title="Hint: show the best next move">💡</button>
       </div>
       <div class="pen" id="pBoard"></div>
       <section class="card result" id="pResult" role="status" hidden></section>
@@ -385,6 +399,7 @@
       <li>The clock starts when you open the pen. Your first getaway is your time.</li>
       <li>Get out: <b>+1 💎</b>. Do it in par: <b>+1 more</b>, even on another try. Diamonds go to Mind Heist, for its daily card draw.</li>
       <li>The fastest getaway of the day wins a <b>Blue Ribbon</b> at midnight (Pacific time).</li>
+      <li><b>Stuck?</b> 💡 shows the best next move from wherever you are. On today’s pen each hint adds 15 seconds to your time, and a day with hints doesn’t earn the par diamond. Hints are free in practice.</li>
       <li><b>Practice</b> pens never run out, and nothing is timed against anyone.</li>
     </ul>
     <button class="btn" id="helpOk" type="button">Got it</button>

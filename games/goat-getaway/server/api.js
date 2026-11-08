@@ -8,14 +8,20 @@
 //   POST /open   { lab? }                -> the board; with a sign-in, the clock starts now
 //   POST /solve  { lab?, date, moves }   -> replays the moves; first getaway is your time,
 //                                           +1 diamond, +1 more at par
+//   POST /hint   { lab?, date, moves }   -> the best next move from where you are (Nov 8 2026: JC
+//                                           couldn't crack a Sunday pen). With a sign-in it's
+//                                           counted: each hint adds HINT_MS to your first
+//                                           getaway's time, and a day with hints earns no par
+//                                           diamond, so the race board stays fair.
 //
 // Store `goat-getaway`: p/<handle> { day, pend, ribbons }, j/<date> the day's race board.
 // Diamonds are written to Mind Heist's store: straight onto the linked profile (l/<handle> ->
 // p/<pid>), or into gg/<handle> until that player links one in Mind Heist, which claims them.
-import { replay } from '../shared/puzzle.mjs';
+import { replay, solve } from '../shared/puzzle.mjs';
 import { daily, raceView, leader, pacificDate } from './daily.js';
 import { mutate, SKIP } from './store.js';
 
+export const HINT_MS = 15000;
 const fail = (status, error) => { const e = new Error(error); e.status = status; throw e; };
 const getJSON = async (s, k) => { const g = await s.get(k); return g ? g.data : null; };
 
@@ -63,7 +69,7 @@ export function createApi({ store, mh = null, verify, clock = () => Date.now() }
   const mine = (rec, today) => {
     const d = rec && rec.day && rec.day.date === today ? rec.day : null;
     const ribbons = (rec && rec.ribbons) || [];
-    return { open: d ? d.open : null, ms: d ? d.ms ?? null : null, moves: d ? d.moves ?? null : null, best: d ? d.best ?? null : null, parGem: !!(d && d.parGem), ribbons: ribbons.length, ribbonList: ribbons.slice(-30) };
+    return { open: d ? d.open : null, ms: d ? d.ms ?? null : null, moves: d ? d.moves ?? null : null, best: d ? d.best ?? null : null, parGem: !!(d && d.parGem), hints: d ? d.hints || 0 : 0, ribbons: ribbons.length, ribbonList: ribbons.slice(-30) };
   };
 
   async function route(method, path, body) {
@@ -98,13 +104,13 @@ export function createApi({ store, mh = null, verify, clock = () => Date.now() }
         first = rec.day.ms == null;
         let changed = first;
         if (first) {
-          rec.day.ms = Math.max(0, now - rec.day.open);
+          rec.day.ms = Math.max(0, now - rec.day.open) + (rec.day.hints || 0) * HINT_MS;
           rec.day.moves = r.n;
           gained += 1;
           rec.pend = [...(rec.pend || []).filter((d) => d !== today), today].slice(-10);
         }
         if (rec.day.best == null || r.n < rec.day.best) { rec.day.best = r.n; changed = true; }
-        if (r.n <= t.par && !rec.day.parGem) { rec.day.parGem = true; gained += 1; changed = true; }
+        if (r.n <= t.par && !rec.day.parGem && !rec.day.hints) { rec.day.parGem = true; gained += 1; changed = true; }
         ms = rec.day.ms;
         if (!changed) return SKIP;
       });
@@ -119,6 +125,26 @@ export function createApi({ store, mh = null, verify, clock = () => Date.now() }
       } else board = await getJSON(store, 'j/' + today);
       const paid = gained ? await payMindHeist(me.handle, gained) : null;
       return { now, first, gained, paid, ms, moves: r.n, par: t.par, me: { name: me.name, ...mine(res.data, today) }, race: raceView(board, me.handle) };
+    }
+    if (path === '/hint') {
+      if (String((body && body.date) || today) !== today) fail(409, 'That pen closed at midnight. Today’s is waiting.');
+      const r = replay(t.board, body && body.moves);
+      if (!r.ok) fail(400, 'Those moves don’t fit today’s pen. Reset it and try again.');
+      if (r.out || r.n < ((body && body.moves) || []).length) fail(409, 'The goat’s already out!');
+      const s = solve(r.board);
+      if (!s || !s.path.length) fail(409, 'No hint from here. Reset the pen and try again.');
+      const me = await who(body);
+      let hints = 0, counted = false;
+      if (me) {
+        const res = await mutate(store, 'p/' + me.handle, (rec) => {
+          if (!rec.day || rec.day.date !== today) fail(409, 'Open today’s pen first.');
+          rec.day.hints = (rec.day.hints || 0) + 1;
+          counted = rec.day.ms == null;   // only hints before your first getaway cost time
+        });
+        if (!res) fail(409, 'Open today’s pen first.');
+        hints = res.data.day.hints;
+      }
+      return { now, move: s.path[0], left: s.par, hints, penalty: counted ? HINT_MS : 0 };
     }
     fail(404, 'Not found.');
   }
