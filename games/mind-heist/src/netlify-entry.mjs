@@ -4,17 +4,20 @@ import { getStore } from '@netlify/blobs';
 import { makeHandler } from './server/api.mjs';
 import { netlifyStore } from './server/store.mjs';
 import { createProfiles } from '../../../lab/profiles.js';
+import { createCrew } from '../../../lab/crew.js';
 import { blobStore, PROFILE_STORE } from '../../../lab/stores.js';
 
 export default async function (req) {
   // getStore reads the Blobs context injected for this invocation, so bind it per request.
   // Capra Lab profiles live in the same site, so a lab name and key are checked right here.
-  const profiles = createProfiles(await blobStore(PROFILE_STORE));
+  const labStore = await blobStore(PROFILE_STORE);
+  const profiles = createProfiles(labStore);
+  const crew = createCrew(labStore);   // Capra's Lab: who may see and host the hidden decks
   const labCheck = async (name, code) => {
     const p = await profiles.verify(name, code);
     return p ? { name: p.name, handle: p.handle } : null;
   };
-  return makeHandler(netlifyStore(getStore), { labCheck })(req);
+  return makeHandler(netlifyStore(getStore), { labCheck, labRole: (handle) => crew.role(handle) })(req);
 }
 
 // Route the function straight to /mind-heist/api/*. A path-configured function runs before

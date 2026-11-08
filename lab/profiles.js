@@ -24,6 +24,9 @@
  *              fails/<handle>     { n, since }
  */
 
+/* Names are up to 17 characters (JC, Nov 2026), so every game can show the whole name. */
+export const NAME_MAX = 17;
+
 export const handleOf = name =>
   String(name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 24);
 
@@ -91,7 +94,7 @@ export function createProfiles(store, { now = () => Date.now() } = {}) {
 
     /* The only time a key is ever returned in the clear, apart from rotateKey. */
     async create(body) {
-      const name = String(body.name || '').trim().slice(0, 24);
+      const name = String(body.name || '').trim().slice(0, NAME_MAX);
       const handle = handleOf(name);
       if (handle.length < 2) return { status: 400, error: 'Pick a name with at least two letters or numbers.' };
       if (await store.get(profileKey(handle))) return { status: 409, error: 'That name is taken. Try another.' };

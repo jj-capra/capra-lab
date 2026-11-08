@@ -1,6 +1,8 @@
-/* Capra Lab profiles API: /api/profile/* (netlify.toml routes it here).
- * The logic is in lab/profiles.js; this file only turns Requests into calls. */
+/* Capra Lab profiles API: /api/profile/* (netlify.toml routes it here), and Capra's Lab
+ * (POST /api/profile/capras-lab, lab/crew.js). The logic is in lab/; this file only turns
+ * Requests into calls. */
 import { createProfiles, routeProfiles } from '../../lab/profiles.js';
+import { createCrew, routeCrew } from '../../lab/crew.js';
 import { blobStore, PROFILE_STORE } from '../../lab/stores.js';
 import { cacheOnSuccess } from '../../games/primal-survival/server/once.js';
 
@@ -13,7 +15,7 @@ const JSON_HEADERS = {
 };
 
 /* build the store once per warm instance, but never cache a failed build */
-const getProfiles = cacheOnSuccess(() => blobStore(PROFILE_STORE).then(createProfiles));
+const getLab = cacheOnSuccess(() => blobStore(PROFILE_STORE).then(store => ({ profiles: createProfiles(store), crew: createCrew(store) })));
 
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return new Response('', { status: 204, headers: JSON_HEADERS });
@@ -24,7 +26,10 @@ export default async function handler(req) {
     catch { return new Response(JSON.stringify({ error: 'bad json' }), { status: 400, headers: JSON_HEADERS }); }
   }
   try {
-    const out = await routeProfiles(await getProfiles(), req.method, url.pathname, url.searchParams, body);
+    const { profiles, crew } = await getLab();
+    const out = req.method === 'POST' && /\/capras-lab\/?$/.test(url.pathname)
+      ? await routeCrew(profiles, crew, body)
+      : await routeProfiles(profiles, req.method, url.pathname, url.searchParams, body);
     const status = out && out.status ? out.status : 200;
     return new Response(JSON.stringify(out && out.status ? { error: out.error } : out), { status, headers: JSON_HEADERS });
   } catch (e) {

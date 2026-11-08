@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createProfiles, routeProfiles } from '../lab/profiles.js';
+import { createCrew, routeCrew } from '../lab/crew.js';
 import { memoryStore } from '../lab/stores.js';
 import { createApi, route } from '../games/primal-survival/server/api.js';
 import { makeHandler as mindHeist } from '../games/mind-heist/src/server/api.mjs';
@@ -17,7 +18,9 @@ import { memoryStore as goatMemory } from '../games/goat-getaway/server/store.js
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'public');
 const PORT = Number(process.env.PORT) || 8790;
-const profiles = createProfiles(memoryStore());
+const labStore = memoryStore();
+const profiles = createProfiles(labStore);
+const crew = createCrew(labStore);   // Capra's Lab: make JJ-Capra / DA_ROMAN_EMPIRE locally to try it
 const primal = createApi(memoryStore(), profiles);
 // Mind Heist checks lab keys against the same profiles, as its function does on Netlify
 const mhStore = mhMemory();
@@ -25,7 +28,7 @@ let mhOffset = 0; // moved by /mind-heist/__clock, so Mind Heist's browser tests
 const mh = mindHeist(mhStore, { clock: () => Date.now() + mhOffset, labCheck: async (name, code) => {
   const p = await profiles.verify(name, code);
   return p ? { name: p.name, handle: p.handle } : null;
-} });
+}, labRole: (handle) => crew.role(handle) });
 
 // Goat Getaway pays its diamonds into the same Mind Heist store; /goat-getaway/__clock?add=ms
 // moves its clock (local only) so a test can reach tomorrow's ribbon
@@ -94,6 +97,7 @@ http.createServer(async (req, res) => {
     res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: goatOffset }));
   }
   const body = req.method === 'POST' ? await readBody(req) : null;
+  if (url.pathname.startsWith('/api/profile/capras-lab') && req.method === 'POST') return json(res, await routeCrew(profiles, crew, body));
   if (url.pathname.startsWith('/api/profile')) {
     return json(res, await routeProfiles(profiles, req.method, url.pathname, url.searchParams, body));
   }

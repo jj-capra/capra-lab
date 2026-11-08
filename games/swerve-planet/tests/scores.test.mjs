@@ -20,8 +20,8 @@ let r, j;
 r = await post({ mode: 'hoops', score: 5000, name: 'jc', pid: pid(1), dur: 60 }, T('2026-11-04T20:00:00Z')); j = await r.json();
 assert.equal(r.status, 200); assert.deepEqual(j.ranks, { day: 1, week: 1, all: 1 }); assert.equal(j.name, 'JC');
 // a better player goes to #1, JC drops to #2
-j = await (await post({ mode: 'hoops', score: 9000, name: 'Swish Queen!!', pid: pid(2), dur: 90 }, T('2026-11-04T21:00:00Z'))).json();
-assert.deepEqual(j.ranks, { day: 1, week: 1, all: 1 }); assert.equal(j.name, 'SWISH QUEEN!');
+j = await (await post({ mode: 'hoops', score: 9000, name: 'Swish Queen Supreme!!', pid: pid(2), dur: 90 }, T('2026-11-04T21:00:00Z'))).json();
+assert.deepEqual(j.ranks, { day: 1, week: 1, all: 1 }); assert.equal(j.name, 'SWISH QUEEN SUPRE', 'names stop at 17 characters');
 // JC's worse run doesn't replace his best; a better one does
 j = await (await post({ mode: 'hoops', score: 3000, name: 'jc', pid: pid(1), dur: 60 }, T('2026-11-04T22:00:00Z'))).json();
 assert.equal(j.ranks.day, 2);

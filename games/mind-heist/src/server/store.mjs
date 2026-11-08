@@ -25,6 +25,7 @@ export function memoryStore() {
 export function netlifyStore(getStore) {
   const s = getStore({ name: 'mind-heist-daily', consistency: 'strong' });
   return {
+    cacheKey: 'blobs:mind-heist-daily',   // the same store on every request (api.mjs caches small settings by it)
     async get(key) {
       const r = await s.getWithMetadata(key, { type: 'json' });
       return r ? { data: r.data, etag: r.etag } : null;

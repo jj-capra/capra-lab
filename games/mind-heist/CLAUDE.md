@@ -125,6 +125,24 @@ on purpose; do not bring any of them back unless JC asks.
   (`jamPend`) are settled from the old race boards (`j/<date>`) the first time the player loads
   home after that day closes. Goat Getaway gives Blue Ribbons on its own page instead.
 
+## Capra's Lab: hidden decks (JC, Nov 2026)
+
+JC hosts trivia nights with his own proprietary decks, hidden from the public. Capra's Lab
+membership (owner JJ-Capra, his crew) comes from the lab (`lab/crew.js`; the function gets
+`labRole(handle)`), through the profile's lab link (`p.lab`).
+- A deck is hidden when it's marked `"brew": true` in `deck_plan.json` (a **JJ Brew**: anything
+  JC calls that starts hidden; give it no date) or the owner hides it from the hub's Capra's Lab
+  panel. The owner's switches live in `cfg/decks` `{ hide, show }`, read at most every 30 s per
+  warm instance (`loadDeckCfg` in `api.mjs`, `setDeckCfg` in `content.mjs`).
+- Hidden decks never drop, are never the joke of the day, never feed sudden death and aren't in
+  the public vault (`calendar()` skips them). `/home` sends members `lab` and `brews`; the Host
+  and Solo pickers show them on a "Capra's Lab" shelf marked 🔒 Hidden (also Run it back).
+- Members can host them (anyone who joins the room plays) and play them solo. Nobody can turn
+  one into a challenge link (anyone with a link could open it), and an old challenge on a deck
+  that's now hidden won't open.
+- `POST /lab/decks` and `/lab/decks/set` (with `{ lab: { name, code } }`) feed the hub panel; only
+  the owner can set.
+
 ## Social layer
 
 - Profiles have **no password**. A profile is a name + avatar, kept in the browser, with a
@@ -252,7 +270,8 @@ once; each room is its own blob.
 - Storage: Netlify Blobs store `mind-heist-daily` in Capra Lab's site, strong consistency, compare-and-swap
   writes with retry. Keys: `p/<pid>` profiles, `k/<key>` recovery keys, `r/<CODE>` rooms,
   `c/<id>` challenges, `l/<handle>` lab links, `gg/<handle>` Goat Getaway diamonds waiting for a
-  profile, `j/<date>` Vault Jam's old race boards (read only, for trophies).
+  profile, `cfg/decks` the owner's hidden/shown decks, `j/<date>` Vault Jam's old race boards
+  (read only, for trophies).
 - Clients poll (`GET /api/rooms/:code?v=`): about every 1.2 s in a live invite game, 2 s in a
   lobby, 8 s when the tab is hidden; solo and party only wake at timer deadlines. An unchanged
   room returns `{same:true}`.
@@ -416,7 +435,7 @@ The E2E tests need `pip install playwright` and `playwright install chromium`.
 1. Add entries to `deck_plan.json` (id, title, shelf, scope, next free date).
 2. Write the content per `docs/DECK_SPEC.md` into a new file in `decks/` (joke decks: the
    brief in `docs/JOKE_BRIEF.md`, checked per `docs/JOKE_CHECK.md`; `kind: "jokes"` in the plan
-   makes them face-offs).
+   makes them face-offs; `"brew": true` keeps it hidden in Capra's Lab, for a JJ Brew).
 3. **Fact-check with a separate agent that did not write the questions** (brief:
    `docs/CHECK_SPEC.md`; past logs in `docs/checks/`). A wrong answer key in front of a room
    of coworkers is the worst failure this game has.

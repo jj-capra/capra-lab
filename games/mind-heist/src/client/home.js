@@ -59,7 +59,7 @@ export function Onboarding({ onDone, reason }) {
     <img class="onb-mark" src=${asset('icon-192.png')} alt="" width="92" height="92" />
     <h1>${reason === 'join' ? 'Pick a name to join the heist' : 'Who’s on the crew?'}</h1>
     <label for="nm" class="sr">Your name</label>
-    <input class="field" id="nm" value=${name} onInput=${e => setName(e.target.value)} placeholder="Your name or alias" maxlength="16" autocomplete="nickname" required minlength="2" />
+    <input class="field" id="nm" value=${name} onInput=${e => setName(e.target.value)} placeholder="Your name or alias" maxlength="17" autocomplete="nickname" required minlength="2" />
     <div>
       <p style="font-weight:700;margin-bottom:8px">Your look</p>
       <div class="av-grid" role="radiogroup" aria-label="Avatar">
@@ -254,9 +254,14 @@ export async function startSolo(nav, deckId) {
 }
 
 // `solo`: the Play sheet (solo runs and challenges) leaves out joke decks, which are live only.
-function DeckPicker({ home, value, onPick, dailyNote = true, solo = false }) {
+// `brews`: Capra's Lab members also get the decks hidden from the public, on their own shelf
+// (never for a challenge: anyone with the link could open it).
+const LAB_SHELF = 'Capra’s Lab';
+export const withBrews = (home) => [...(home.brews || []).map(d => ({ ...d, shelf: LAB_SHELF, brew: true })), ...home.vault];
+function DeckPicker({ home, value, onPick, dailyNote = true, solo = false, brews = true }) {
   const [shelf, setShelf] = useState('All');
-  const vault = solo ? home.vault.filter(d => d.kind !== 'jokes') : home.vault;
+  const all = brews ? withBrews(home) : home.vault;
+  const vault = solo ? all.filter(d => d.kind !== 'jokes') : all;
   const shelves = ['All', ...new Set(vault.map(d => d.shelf))];
   const list = vault.filter(d => shelf === 'All' || d.shelf === shelf);
   return html`<div class="stack" style="gap:10px">
@@ -264,7 +269,7 @@ function DeckPicker({ home, value, onPick, dailyNote = true, solo = false }) {
     <div class="deck-list">
       ${list.map(d => html`<button type="button" class="deck-opt" aria-pressed=${value === d.id} onClick=${() => onPick(d.id)}>
         <b>${d.title}</b>
-        <span>${d.id === home.today.id ? html`<span class="tag hi">Today</span>` : home.joke && d.id === home.joke.id ? html`<span class="tag gum">Joke of the day</span>` : d.no ? html`<span class="muted">No. ${d.no}</span>` : d.kind === 'jokes' ? html`<span class="muted">Face-off</span>` : html`<span class="muted">Classic</span>`}</span>
+        <span>${d.brew ? html`<span class="tag lab">🔒 Hidden</span>` : d.id === home.today.id ? html`<span class="tag hi">Today</span>` : home.joke && d.id === home.joke.id ? html`<span class="tag gum">Joke of the day</span>` : d.no ? html`<span class="muted">No. ${d.no}</span>` : d.kind === 'jokes' ? html`<span class="muted">Face-off</span>` : html`<span class="muted">Classic</span>`}</span>
         <small>${d.cats.join(', ')}</small>
       </button>`)}
     </div>
@@ -282,7 +287,7 @@ function PlaySheet({ home, onClose, nav }) {
   </${Sheet}>`;
   return html`<${Sheet} title=${step === 'solo' ? 'Solo run' : 'Set a challenge'} onClose=${onClose}>
     ${step === 'challenge' && html`<p>Play the board first. When you finish, you'll get a link to send.</p>`}
-    <${DeckPicker} home=${home} value=${deck} onPick=${setDeck} solo=${true} />
+    <${DeckPicker} home=${home} value=${deck} onPick=${setDeck} solo=${true} brews=${step !== 'challenge'} />
     <div class="row" style="justify-content:space-between">
       <button class="link" onClick=${() => setStep('pick')}>Back</button>
       <button class="btn hi big" onClick=${() => { onClose(); startSolo(nav, deck); }}>Start the run</button>
@@ -404,7 +409,7 @@ export function Profile({ me, setMe, friends, onClose }) {
       </div>
     </div>
     ${edit && html`<div class="stack">
-      ${me.lab ? html`<p class="muted">Your name comes from your Capra Lab profile.</p>` : html`<input class="field" value=${name} maxlength="16" onInput=${e => setName(e.target.value)} />`}
+      ${me.lab ? html`<p class="muted">Your name comes from your Capra Lab profile.</p>` : html`<input class="field" value=${name} maxlength="17" onInput=${e => setName(e.target.value)} />`}
       <div class="av-grid">${AVATARS.map(a => html`<button type="button" class="av-pick" aria-pressed=${avatar === a} onClick=${() => setAvatar(a)}>${a}</button>`)}</div>
       <button class="btn hi" onClick=${save}>Save</button>
     </div>`}

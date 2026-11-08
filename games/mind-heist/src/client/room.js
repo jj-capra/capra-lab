@@ -1251,7 +1251,11 @@ function RematchSheet({ room, send, onClose }) {
   const [deck, setDeck] = useState(null);
   // After a joke game the next joke deck is ready to go (and joke decks list first).
   const jokes = room.deck.kind === 'jokes';
-  useEffect(() => { api('GET', '/home').then(h => {
+  useEffect(() => { api('GET', '/home').then(h0 => {
+    // Capra's Lab hosts also get the hidden decks, first when this game was on one of them.
+    const brews = (h0.brews || []).map(d => ({ ...d, brew: true }));
+    const onBrew = brews.some(d => d.id === room.deck.id);
+    const h = { ...h0, vault: onBrew ? [...brews, ...h0.vault] : [...h0.vault, ...brews] };
     const same = h.vault.filter(d => (d.kind === 'jokes') === jokes);
     const i = same.findIndex(d => d.id === room.deck.id);
     const next = jokes && i >= 0 ? same[(i + 1) % same.length] : null;
@@ -1260,7 +1264,7 @@ function RematchSheet({ room, send, onClose }) {
   }).catch(e => toast(e.message, 'err')); }, []);
   return html`<${Sheet} title="Run it back" onClose=${onClose}>
     <p>Same crews, new deck, new coin toss.</p>
-    ${!home ? html`<div class="empty">Loading decks…</div>` : html`<div class="deck-list">${home.vault.map(d => html`<button class="deck-opt" aria-pressed=${deck === d.id} onClick=${() => setDeck(d.id)}><b>${d.title}</b><span>${d.id === room.deck.id ? html`<span class="tag">Just played</span>` : d.id === home.today.id ? html`<span class="tag hi">Today</span>` : ''}</span><small>${d.cats.join(', ')}</small></button>`)}</div>`}
+    ${!home ? html`<div class="empty">Loading decks…</div>` : html`<div class="deck-list">${home.vault.map(d => html`<button class="deck-opt" aria-pressed=${deck === d.id} onClick=${() => setDeck(d.id)}><b>${d.title}</b><span>${d.id === room.deck.id ? html`<span class="tag">Just played</span>` : d.brew ? html`<span class="tag lab">🔒 Hidden</span>` : d.id === home.today.id ? html`<span class="tag hi">Today</span>` : ''}</span><small>${d.cats.join(', ')}</small></button>`)}</div>`}
     <button class="btn hi big" disabled=${!deck} onClick=${async () => { if (await send('rematch', { deckId: deck })) onClose(); }}>Flip the coin</button>
   </${Sheet}>`;
 }

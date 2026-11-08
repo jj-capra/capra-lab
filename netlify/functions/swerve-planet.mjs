@@ -59,7 +59,7 @@ function resetsIn(period, now) {
   return left + (6 - dow) * 86400;
 }
 function cleanName(raw) {
-  let n = String(raw || '').toUpperCase().replace(/[^A-Z0-9 ._!-]/g, '').replace(/\s+/g, ' ').trim().slice(0, 12);
+  let n = String(raw || '').toUpperCase().replace(/[^A-Z0-9 ._!-]/g, '').replace(/\s+/g, ' ').trim().slice(0, 17);
   const squash = n.replace(/0/g, 'O').replace(/[1!]/g, 'I').replace(/3/g, 'E').replace(/4/g, 'A').replace(/5/g, 'S').replace(/[^A-Z]/g, '');
   if (!n || BLOCK.some((w) => squash.includes(w))) n = 'PLAYER';
   return n;

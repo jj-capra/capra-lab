@@ -1,6 +1,7 @@
 /* Capra Lab profiles: the guarantees every game relies on. */
 import assert from 'node:assert/strict';
-import { createProfiles, routeProfiles, handleOf } from '../profiles.js';
+import { createProfiles, routeProfiles, handleOf, NAME_MAX } from '../profiles.js';
+import { createCrew, routeCrew } from '../crew.js';
 import { memoryStore } from '../stores.js';
 
 let passed = 0;
@@ -100,6 +101,36 @@ await test('guessing a key is slowed per name: 8 misses lock it for 10 minutes, 
 
 await test('handles are stable', () => {
   assert.equal(handleOf('  Billy  Goat! '), 'billy-goat');
+});
+
+await test('names go up to 17 characters, so every game shows them whole', async () => {
+  assert.equal(NAME_MAX, 17);
+  const p = createProfiles(memoryStore());
+  const r = await p.create({ name: 'DA_ROMAN_EMPIRE_XYZ' });
+  assert.equal(r.identity.name, 'DA_ROMAN_EMPIRE_X');
+});
+
+await test("Capra's Lab: the owner has master controls, the crew gets in, everyone else sees nothing", async () => {
+  const store = memoryStore();
+  const p = createProfiles(store), crew = createCrew(store);
+  const jj = await p.create({ name: 'JJ-Capra' }), rome = await p.create({ name: 'DA_ROMAN_EMPIRE' });
+  const kid = await p.create({ name: 'Kid Goat' }), rando = await p.create({ name: 'Rando' });
+  const ask = (who, extra = {}) => routeCrew(p, crew, { name: who.identity.name, code: who.code, ...extra });
+  const me = await ask(jj);
+  assert.equal(me.role, 'owner');
+  assert.deepEqual(me.crew.map(c => c.name), ['DA_ROMAN_EMPIRE'], 'his son is on the crew from the start');
+  assert.equal((await ask(rome)).role, 'crew');
+  assert.equal((await ask(rome)).crew, undefined, 'only the owner sees the crew list');
+  assert.equal((await ask(rando)).role, null);
+  assert.equal((await routeCrew(p, crew, { name: 'JJ-Capra', code: '000000' })).status, 401, 'never without the key');
+  assert.equal((await ask(rome, { op: 'crew-add', crewName: 'Rando' })).status, 403, 'the crew cannot change the crew');
+  assert.equal((await ask(jj, { op: 'crew-add', crewName: 'Nobody Yet' })).status, 404, 'only names that exist');
+  const added = await ask(jj, { op: 'crew-add', crewName: 'kid goat' });
+  assert.deepEqual(added.crew.map(c => c.name), ['DA_ROMAN_EMPIRE', 'Kid Goat']);
+  assert.equal((await ask(kid)).role, 'crew');
+  await ask(jj, { op: 'crew-remove', handle: 'kid-goat' });
+  assert.equal((await ask(kid)).role, null);
+  assert.equal(await crew.role('jj-capra'), 'owner');
 });
 
 console.log('\n' + passed + ' passed');

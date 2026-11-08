@@ -10,6 +10,8 @@ public/                      the site Netlify serves
   lab/hub.js                 profile walkthrough, sign-in, "Playing as" chip
   lab/keycard.js             the key card picture (key printed on it and hidden inside it)
   lab/chip.js                the Capra Lab button every game's main menu starts with (<capra-lab-chip>)
+  lab/capras-lab.js          Capra's Lab: the owner's and crew's private panel on the hub
+  lab/brew.js                the "still brewing" gate for a game in testing (members only)
   lab/capra-lab-mark.png     the lab logo, small, for that button
   assets/, icons, manifest   logo, home-screen icon, full-screen app support
   primal-survival/           built from games/primal-survival/ (not committed)
@@ -18,7 +20,7 @@ public/                      the site Netlify serves
   dont-look/                 built from games/dont-look/ (not committed)
   goat-getaway/              built from games/goat-getaway/ (not committed)
   mind-heist/                built from games/mind-heist/ (not committed)
-lab/                         lab-wide server code
+lab/                         lab-wide server code (profiles.js, crew.js for Capra's Lab, stores.js)
   profiles.js                one name + six-digit key per player, for every game
   stores.js                  Netlify Blobs / memory / file storage
   test/profiles.test.mjs

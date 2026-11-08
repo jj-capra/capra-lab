@@ -1,5 +1,5 @@
 // HTTP API for Mind Heist. One handler, mounted at /api/* by Netlify.
-import { calendar, deck as getDeck, dropNo, summary, isOpen, pacificDate, suddenPool, jokeOfDay } from './content.mjs';
+import { calendar, deck as getDeck, dropNo, summary, isOpen, pacificDate, suddenPool, jokeOfDay, setDeckCfg, isHidden, hiddenDecks, ALL_DECKS } from './content.mjs';
 import * as E from './engine.mjs';
 import * as P from './profiles.mjs';
 import { randomCode, randomHex, randomSeed } from './rng.mjs';
@@ -27,13 +27,13 @@ async function sha256(text) {
 
 function cleanName(name) {
   const n = String(name || '').trim().replace(/\s+/g, ' ');
-  if (n.length < 2 || n.length > 16) bad('Pick a name between 2 and 16 characters.');
+  if (n.length < 2 || n.length > 17) bad('Pick a name between 2 and 17 characters.');
   if (/[<>]/.test(n)) bad('Names can’t use < or >.');
   return n;
 }
 // Capra Lab names run to 24 characters; Mind Heist's to 16.
 function labName(n) {
-  const s = String(n || '').replace(/[<>]/g, '').trim().replace(/\s+/g, ' ').slice(0, 16).trim();
+  const s = String(n || '').replace(/[<>]/g, '').trim().replace(/\s+/g, ' ').slice(0, 17).trim();
   return s.length >= 2 ? s : 'Lab player';
 }
 
@@ -61,7 +61,11 @@ async function askCapraLab(name, code) {
 function cleanAvatar(a) { return AVATARS.includes(a) ? a : AVATARS[0]; }
 function cleanTheme(t) { return E.THEMES.includes(t) ? t : E.DEFAULTS.theme; }
 
-export function makeHandler(store, { clock = () => Date.now(), labCheck = askCapraLab } = {}) {
+const DECK_CFG = new Map();   // store -> { at, v }: the owner's deck switches, cached briefly
+
+// `labRole(handle)`: Capra's Lab membership ('owner', 'crew' or null) for a verified lab handle
+// (lab/crew.js); without it nobody is a member.
+export function makeHandler(store, { clock = () => Date.now(), labCheck = askCapraLab, labRole = null } = {}) {
   /* ---------- storage helpers ---------- */
   async function mutate(key, fn, { create = null } = {}) {
     for (let attempt = 0; attempt < 8; attempt++) {
@@ -146,6 +150,23 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
     return 0;
   }
 
+  /* Capra's Lab: which decks are hidden from the public (cfg/decks, set by the owner), read at
+     most every 30 seconds per warm instance (the function builds a handler per request, so the
+     cache lives at module level, keyed by store), and who is a member. */
+  const cfgKey = store.cacheKey || store;
+  async function loadDeckCfg(now) {
+    const c = DECK_CFG.get(cfgKey);
+    if (c && now - c.at < 30000 && now >= c.at) { setDeckCfg(c.v); return; }
+    const v = (await getJSON('cfg/decks')) || {};
+    DECK_CFG.set(cfgKey, { at: now, v });
+    setDeckCfg(v);
+  }
+  async function roleOf(profile) {
+    if (!labRole || !profile || !profile.lab) return null;
+    try { return (await labRole(profile.lab)) || null; } catch (e) { return null; }
+  }
+  const deckRow = (d) => ({ ...summary(d), brew: !!d.brew, hidden: isHidden(d.id) });
+
   async function mutateRoom(code, fn, now) {
     return mutate(roomKey(code), async (room) => {
       const r = await fn(room);
@@ -211,11 +232,13 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
     const method = req.method;
     const body = method === 'POST' ? await req.json().catch(() => ({})) : {};
     let m;
+    await loadDeckCfg(now);
 
     if (path === '/home' && method === 'GET') {
       const cal = calendar(now);
       const me = await auth(req, false);
       const tr = me ? await settleTrophies(me, cal.today) : null;
+      const lab = me ? await roleOf(tr.profile) : null;   // Capra's Lab: 'owner' | 'crew' | null
       let goatGems = 0;
       if (me && tr.profile.lab) {
         goatGems = await claimGoatGems(tr.profile.lab);
@@ -229,6 +252,7 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
         me: me ? P.privateProfile(tr.profile, cal.today) : null,
         trophyNews: tr ? tr.won : [],
         goatGems,
+        ...(lab ? { lab, brews: hiddenDecks().map(d => summary(d)) } : {}),
       });
     }
 
@@ -334,7 +358,7 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
       const me = await auth(req);
       const kind = ['invite', 'party', 'solo'].includes(body.kind) ? body.kind : 'invite';
       const d = getDeck(body.deckId) || calendar(now).featured;
-      if (!d || !isOpen(d.id, now)) bad('That deck hasn’t dropped yet.');
+      if (!d || !isOpen(d.id, now, isHidden(d.id) && !!(await roleOf(me.profile)))) bad('That deck hasn’t dropped yet.');
       const host = { pid: me.pid, name: me.profile.name, avatar: me.profile.avatar };
       for (let i = 0; i < 6; i++) {
         const code = randomCode(kind === 'invite' ? 4 : 6);
@@ -443,7 +467,8 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
     if ((m = path.match(/^\/rooms\/([A-Za-z0-9]{4,8})\/act$/)) && method === 'POST') {
       const me = await auth(req);
       const code = m[1].toUpperCase();
-      const lookup = (id) => (isOpen(id, now) ? getDeck(id) : null);
+      const crew = !!(await roleOf(me.profile));   // a Capra's Lab host can switch to a hidden deck
+      const lookup = (id) => (isOpen(id, now, crew) ? getDeck(id) : null);
       // Power cards live on the profile: take one from the hand, play it, and hand it
       // back if the game refuses the play.
       let card = null, hand;
@@ -483,6 +508,7 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
       if (room.phase !== 'final') bad('Finish the run first.');
       if (room.challengeId) bad('This run was already a challenge. Start a new run to send one.');
       if (room.challengeOut) return json(200, { id: room.challengeOut });
+      if (isHidden(room.deckId)) bad('That deck is hidden in Capra’s Lab, so it can’t go out as a challenge link.');
       const id = randomCode(7);
       const ch = {
         id, deckId: room.deckId, deckTitle: room.deckTitle, seed: room.seed, settings: room.settings, created: now,
@@ -508,6 +534,7 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
       if (ch.takers[me.pid]) bad('You already took this challenge.');
       if (ch.runs && ch.runs[me.pid]) return json(200, { code: ch.runs[me.pid] });
       const d = getDeck(ch.deckId);
+      if (!d || isHidden(d.id)) bad('That deck isn’t open right now.', 404);
       const host = { pid: me.pid, name: me.profile.name, avatar: me.profile.avatar };
       for (let i = 0; i < 6; i++) {
         const code = randomCode(6);
@@ -521,6 +548,32 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
         }
       }
       bad('Could not start the run. Try again.', 503);
+    }
+
+    /* ---- Capra's Lab: the hub's panel lists every deck; the owner hides or shows them ----
+       POST /lab/decks      { lab: { name, code } }                   -> { role, decks }
+       POST /lab/decks/set  { lab: { name, code }, id, hidden: bool } -> { role, decks } (owner) */
+    if ((path === '/lab/decks' || path === '/lab/decks/set') && method === 'POST') {
+      const lab = body.lab || {};
+      const who = lab.name && lab.code ? await labCheck(String(lab.name).slice(0, 40), String(lab.code).slice(0, 12)) : null;
+      if (!who) bad('Sign in to Capra Lab first.', 401);
+      const role = labRole ? await labRole(who.handle) : null;
+      if (!role) bad('That’s for Capra’s Lab members.', 403);
+      if (path === '/lab/decks/set') {
+        if (role !== 'owner') bad('Only the owner can hide or show decks.', 403);
+        const d = getDeck(String(body.id || ''));
+        if (!d) bad('No deck by that name.', 404);
+        const hide = !!body.hidden;
+        const { data } = await mutate('cfg/decks', (c) => {
+          c.hide = (c.hide || []).filter(x => x !== d.id);
+          c.show = (c.show || []).filter(x => x !== d.id);
+          if (hide && !d.brew) c.hide.push(d.id);
+          if (!hide && d.brew) c.show.push(d.id);
+        }, { create: () => ({ hide: [], show: [] }) });
+        DECK_CFG.set(cfgKey, { at: now, v: data });
+        setDeckCfg(data);
+      }
+      return json(200, { role, decks: ALL_DECKS.map(deckRow) });
     }
 
     bad('Not found.', 404);

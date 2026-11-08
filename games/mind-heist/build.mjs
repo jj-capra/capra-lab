@@ -45,7 +45,7 @@ for (const d of raw) {
       seenQ.set(k, d.id);
     }
   }
-  merged.push({ id: d.id, date: p.date, title: p.title, shelf: p.shelf, kind: p.kind || null, blurb: d.blurb || '',
+  merged.push({ id: d.id, date: p.date, title: p.title, shelf: p.shelf, kind: p.kind || null, blurb: d.blurb || '', ...(p.brew ? { brew: true } : {}),
     categories: d.categories.map(c => ({ name: c.name, questions: c.questions.map(({ value, q, options, answer, fact }) => ({ value, q, options, answer, fact })) })) });
 }
 for (const p of plan) if (!merged.some(d => d.id === p.id)) errors.push(`missing deck ${p.id}`);

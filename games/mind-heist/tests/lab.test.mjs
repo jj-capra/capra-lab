@@ -132,7 +132,70 @@ test('long lab names fit Mind Heist names', async () => {
   const res = await h(new Request('https://x.test/api/me/lab', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: 'x', code: '111111', create: true }) }));
   const d = await res.json();
   assert.equal(res.status, 200, d.error);
-  assert.ok(d.me.name.length <= 16 && d.me.name.length >= 2, d.me.name);
+  assert.ok(d.me.name.length <= 17 && d.me.name.length >= 2, d.me.name);
+});
+
+test('a 15-letter lab name like DA_ROMAN_EMPIRE comes through whole (names go to 17)', async () => {
+  const h = makeHandler(memoryStore(), { labCheck: async () => ({ name: 'DA_ROMAN_EMPIRE', handle: 'da-roman-empire' }) });
+  const res = await h(new Request('https://x.test/api/me/lab', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: 'x', code: '111111', create: true }) }));
+  assert.equal((await res.json()).me.name, 'DA_ROMAN_EMPIRE');
+});
+
+// Capra's Lab (JC, Nov 2026): the owner hides decks from the public; he and his crew still host
+// them (trivia nights) and play them solo; the public never sees them anywhere, and a hidden deck
+// can't go out as a challenge link.
+test("Capra's Lab: hidden decks are for the owner and his crew only", async () => {
+  const store = memoryStore();
+  const PEOPLE = { 'jj-capra': ['JJ-Capra', '111111'], 'da-roman-empire': ['DA_ROMAN_EMPIRE', '222222'], 'kit': ['Kit', '333333'] };
+  const labCheck = async (name, code) => {
+    const e = Object.entries(PEOPLE).find(([, [n, c]]) => n.toLowerCase() === String(name).toLowerCase() && c === code);
+    return e ? { name: e[1][0], handle: e[0] } : null;
+  };
+  const labRole = async (handle) => ({ 'jj-capra': 'owner', 'da-roman-empire': 'crew' }[handle] || null);
+  const h = makeHandler(store, { clock: () => Date.parse('2026-11-08T05:00:00Z'), labCheck, labRole });
+  const call = async (method, path, body, who) => {
+    const headers = { 'content-type': 'application/json' };
+    if (who) headers.authorization = `Bearer ${who.pid}.${who.token}`;
+    const res = await h(new Request('https://x.test/api' + path, { method, headers, body: body ? JSON.stringify(body) : undefined }));
+    return { status: res.status, ...(await res.json()) };
+  };
+  const lab = (handle) => ({ name: PEOPLE[handle][0], code: PEOPLE[handle][1] });
+  const join = async (handle) => { const r = await call('POST', '/me/lab', { ...lab(handle), create: true, avatar: '🦊' }); assert.equal(r.status, 200, r.error); return r; };
+  const jj = await join('jj-capra'), rome = await join('da-roman-empire'), kit = await join('kit');
+  const pub = await call('GET', '/home', null, kit);
+  const deckId = pub.vault.find(d => !d.date && d.kind !== 'jokes').id;   // a classic, open to everyone so far
+
+  assert.equal((await call('POST', '/lab/decks', { lab: lab('kit') })).status, 403, 'the public has no panel');
+  assert.equal((await call('POST', '/lab/decks', { lab: { name: 'JJ-Capra', code: '000000' } })).status, 401, 'never without the key');
+  assert.equal((await call('POST', '/lab/decks/set', { lab: lab('da-roman-empire'), id: deckId, hidden: true })).status, 403, 'only the owner hides decks');
+  const set = await call('POST', '/lab/decks/set', { lab: lab('jj-capra'), id: deckId, hidden: true });
+  assert.equal(set.status, 200, set.error);
+  assert.equal(set.decks.find(d => d.id === deckId).hidden, true);
+  assert.equal((await call('POST', '/lab/decks', { lab: lab('da-roman-empire') })).role, 'crew', 'the crew sees the list');
+
+  const after = await call('GET', '/home', null, kit);
+  assert.ok(!after.vault.some(d => d.id === deckId), 'gone from the public vault');
+  assert.equal(after.brews, undefined);
+  assert.equal(after.lab, undefined);
+  const mine = await call('GET', '/home', null, jj);
+  assert.equal(mine.lab, 'owner');
+  assert.ok(mine.brews.some(d => d.id === deckId), 'the owner still has it');
+  assert.equal((await call('GET', '/home', null, rome)).lab, 'crew');
+
+  assert.equal((await call('POST', '/rooms', { kind: 'invite', deckId }, kit)).status, 400, 'the public cannot host it');
+  assert.equal((await call('POST', '/rooms', { kind: 'solo', deckId }, kit)).status, 400, 'or play it solo');
+  const night = await call('POST', '/rooms', { kind: 'invite', deckId }, jj);
+  assert.equal(night.status, 200, night.error);
+  assert.equal((await call('POST', '/rooms', { kind: 'solo', deckId }, rome)).status, 200, 'the crew can play it');
+  // A finished solo run on a hidden deck can't become a challenge link.
+  const run = await call('POST', '/rooms', { kind: 'solo', deckId }, jj);
+  const r = (await store.get('r/' + run.code)).data; r.phase = 'final'; r.recorded = true; await store.set('r/' + run.code, r);
+  const ch = await call('POST', '/challenges', { code: run.code }, jj);
+  assert.equal(ch.status, 400);
+  assert.match(ch.error, /challenge/);
+
+  assert.equal((await call('POST', '/lab/decks/set', { lab: lab('jj-capra'), id: deckId, hidden: false })).status, 200);
+  assert.ok((await call('GET', '/home', null, kit)).vault.some(d => d.id === deckId), 'shown again');
 });
 
 // Goat Getaway (Capra Lab's daily puzzle) pays diamonds into Mind Heist: onto the linked profile,

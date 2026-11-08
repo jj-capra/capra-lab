@@ -520,7 +520,7 @@ body:not(.touch) .lefty{display:none}
       <div class="row" id="newBestRow" hidden><span class="newbest">NEW BEST SCORE!</span></div>
       <div class="stats" id="overStats"></div>
       <div class="lbpost" id="lbPost" hidden>
-        <div class="lbname"><label class="cap" for="lbName">Your name</label><input id="lbName" maxlength="12" autocomplete="nickname" autocapitalize="characters" spellcheck="false" enterkeyhint="send"><button class="go small" id="lbSend" type="button">POST</button></div>
+        <div class="lbname"><label class="cap" for="lbName">Your name</label><input id="lbName" maxlength="17" autocomplete="nickname" autocapitalize="characters" spellcheck="false" enterkeyhint="send"><button class="go small" id="lbSend" type="button">POST</button></div>
         <p class="lbmsg" id="lbMsg" aria-live="polite"></p>
       </div>
       <div class="row"><button class="go" id="btnAgain" type="button">DRIVE AGAIN</button><button class="ghost" id="btnPlanets" type="button">PLANETS</button><button class="ghost" id="btnOverBoards" type="button">BOARDS</button><span class="cap" id="overBest">Best 0</span></div>
@@ -2829,7 +2829,7 @@ const LB = {
 };
 /* Capra Lab: a signed-in player posts under their lab profile, and the server checks the key */
 LB.lab = (() => { try { const p = JSON.parse(localStorage.getItem('capra-lab.profile') || 'null'); return p && p.name && p.handle && p.code ? p : null; } catch (_) { return null; } })();
-if (LB.lab) LB.name = LB.lab.name.toUpperCase().replace(/[^A-Z0-9 ._!-]/g, '').trim().slice(0, 12) || 'PLAYER';
+if (LB.lab) LB.name = LB.lab.name.toUpperCase().replace(/[^A-Z0-9 ._!-]/g, '').trim().slice(0, 17) || 'PLAYER';
 if (!/^[a-z0-9]{16,40}$/.test(LB.pid)) { const b = new Uint8Array(12); crypto.getRandomValues(b); LB.pid = [...b].map((x) => x.toString(16).padStart(2, '0')).join(''); store.set('pid', LB.pid); }
 (async () => { try { const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('swerve:' + (LB.lab ? 'lab:' + LB.lab.handle : LB.pid))); LB.me = [...new Uint8Array(d)].slice(0, 6).map((x) => x.toString(16).padStart(2, '0')).join(''); } catch (_) {} })();
 const PERIOD_NAME = { day: 'today', week: 'this week', all: 'all time' };
@@ -2894,7 +2894,7 @@ function lbAfterRun(score) {
 }
 async function lbSubmit() {
   const run = LB.run; if (!run || run.posted || run.busy) return;
-  const nm = (LB.name || lbNameEl.value || '').toUpperCase().replace(/[^A-Z0-9 ._!-]/g, '').trim().slice(0, 12);
+  const nm = (LB.name || lbNameEl.value || '').toUpperCase().replace(/[^A-Z0-9 ._!-]/g, '').trim().slice(0, 17);
   if (!nm) { lbMsg.textContent = 'Type a name first (up to 12 letters).'; lbNameEl.focus(); return; }
   run.busy = true; lbMsg.textContent = 'Posting as ' + nm + '…'; $('#lbSend').disabled = true;
   try {

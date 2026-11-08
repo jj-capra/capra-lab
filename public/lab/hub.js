@@ -10,6 +10,7 @@
  * every game in the lab reads, so signing in here signs you in everywhere.
  */
 import { keyCardBlob, readKeyCardFile } from './keycard.js';
+import './capras-lab.js';   /* Capra's Lab: the owner's and crew's private panel */
 
 const ME_KEY = 'capra-lab.profile';      /* { name, handle, created, code } */
 const SAVED_KEY = 'capra-lab.key-saved'; /* handle whose card was saved */
@@ -30,6 +31,7 @@ function saveMe(p) {
   if (p) store.set(ME_KEY, JSON.stringify({ name: p.name, handle: p.handle, created: p.created, code: String(p.code) }));
   else store.del(ME_KEY);
   paintWho();
+  window.dispatchEvent(new Event('capra-lab:profile'));
 }
 const keySaved = me => !!me && store.get(SAVED_KEY) === me.handle;
 

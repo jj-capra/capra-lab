@@ -118,6 +118,8 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
 .logo img { width: 30px; height: 30px; border-radius: 9px; }
 .logo b { background: var(--hi); color: var(--ink); padding: 0 7px 2px; border-radius: 8px; transform: rotate(-3deg); display: inline-block; }
 .top .grow { flex: 1; min-width: 0; }
+/* Capra's Lab: decks hidden from the public, seen only by the owner and his crew */
+[data-theme] .tag.lab, .tag.lab { background: #1d1530; color: #ffd23f; box-shadow: inset 0 0 0 1.5px #ffd23f; }
 /* Inside Capra Lab: the lab's button first (10px below the clock, 16px in, as in every lab game),
    then your profile chip, and Mind Heist's logo on the right (just the icon on a phone). */
 .top.lab-top { gap: 8px; padding-top: 10px; }

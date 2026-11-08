@@ -316,11 +316,11 @@ table.card td.tot { font-weight: 700; }
     <div class="panel" id="whoPanel">
       <p class="kicker">WHO&rsquo;S PLAYING</p>
       <div class="prow">
-        <div class="field"><label for="p1Name" id="p1Lbl">Your name</label><input class="txt" id="p1Name" maxlength="14"></div>
+        <div class="field"><label for="p1Name" id="p1Lbl">Your name</label><input class="txt" id="p1Name" maxlength="17"></div>
         <div class="swatches" id="p1Sw" style="margin-top:10px" role="group" aria-label="Your ball color"></div>
       </div>
       <div class="prow" id="p2Row">
-        <div class="field"><label for="p2Name">Player two</label><input class="txt" id="p2Name" maxlength="14"></div>
+        <div class="field"><label for="p2Name">Player two</label><input class="txt" id="p2Name" maxlength="17"></div>
         <div class="swatches" id="p2Sw" style="margin-top:10px" role="group" aria-label="Player two ball color"></div>
       </div>
     </div>
@@ -352,7 +352,7 @@ table.card td.tot { font-weight: 700; }
     <h2 class="scr">Online with a friend</h2>
     <div class="panel" id="onAvail">
       <p class="kicker">YOUR BALL</p>
-      <div class="field"><label for="onName">Your name</label><input class="txt" id="onName" maxlength="14"></div>
+      <div class="field"><label for="onName">Your name</label><input class="txt" id="onName" maxlength="17"></div>
       <div class="swatches" id="onSw" style="margin-top:10px" role="group" aria-label="Your ball color"></div>
     </div>
     <div class="panel" id="onLobby">
@@ -2311,7 +2311,7 @@ function savePrefs() { try { localStorage.setItem(STORE_KEY, JSON.stringify(PREF
 /* Capra Lab: until a name is chosen here, play under the lab profile's name */
 try {
   const lab = JSON.parse(localStorage.getItem('capra-lab.profile') || 'null');
-  if (lab && lab.name && (!PREF.p1 || !PREF.p1.name || PREF.p1.name === 'You')) PREF.p1 = Object.assign({ color: '#f7f1e1' }, PREF.p1, { name: String(lab.name).slice(0, 14) });
+  if (lab && lab.name && (!PREF.p1 || !PREF.p1.name || PREF.p1.name === 'You')) PREF.p1 = Object.assign({ color: '#f7f1e1' }, PREF.p1, { name: String(lab.name).slice(0, 17) });
 } catch (e) { /* no lab profile */ }
 const BALL_COLORS = ['#f7f1e1', '#e8877a', '#7f9fc6', '#d4af37', '#8dbb93', '#b59ad6'];
 const BALL_NAMES = { '#f7f1e1': 'Chalk', '#e8877a': 'Coral', '#7f9fc6': 'Sky', '#d4af37': 'Gold', '#8dbb93': 'Mint', '#b59ad6': 'Lilac' };
@@ -2331,7 +2331,7 @@ function courseHoles(cid, len, one) {
 const parOf = (holes) => holes.reduce((a, h) => a + HOLE_DEFS[h].par, 0);
 if (!LENGTHS[PREF.course]) PREF.course = 'full';
 if (!LENGTHS[PREF.onCourse] || PREF.onCourse === 'one') PREF.onCourse = 'full';
-function cleanName(s) { return String(s || '').replace(/[\u0000-\u001f\u007f<>]/g, '').trim().slice(0, 14); }
+function cleanName(s) { return String(s || '').replace(/[\u0000-\u001f\u007f<>]/g, '').trim().slice(0, 17); }
 
 /* ---------------- NPCs ---------------- */
 const PORTRAITS = {
