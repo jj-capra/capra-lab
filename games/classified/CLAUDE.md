@@ -5,11 +5,10 @@ for one more game teens play with friends at a sleepover: memorable, talked abou
 link-shareable. He picked three ideas to live in one game (Nov 2026): **Sleeper Agent** (secret
 missions all night), **Who Said It** and **Yearbook**, and named it Classified.
 
-**It's a JJ Brew**: `<script src="/lab/brew.js" data-invite=...>` is first in the page's head, its
-hub tile is in Capra's Lab (`#clGames`), and `BREW = true` in `server/api.js`. While it brews,
-only Capra's Lab members can open a file; anyone they send a room link (`/classified/ABCD`) can
-join it, and anyone with a share link (`/classified/file/<id>`) can read its highlights. When JC
-says it goes live: take out the script tag, move the tile to the public grid, set `BREW = false`.
+**Live since Nov 8 2026** (JC: "Classified is good to roll to live"). It started as a JJ Brew the
+same morning; going live took out `brew.js`, moved the hub tile from Capra's Lab to the public grid
+and set `BREW = false` in `server/api.js`. Anyone can open a file (a guest types a name), join with
+a code or a link, and read a share page.
 
 ## How it plays (JC's decisions, Nov 8 2026)
 

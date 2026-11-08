@@ -32,9 +32,10 @@ import { codename as newCodename, operationName } from './names.mjs';
 import { tidy } from './filter.mjs';
 import { mutate, SKIP } from './store.js';
 
-// A JJ Brew (JC, Nov 2026): while true, only Capra's Lab members can open a file; anyone with a
-// room link can join it, and anyone with a share link can read its highlights.
-export const BREW = true;
+// Classified was a JJ Brew (JC, Nov 8 2026) and went live the same day ("Classified is good to roll
+// to live"): anyone can open a file. Set true to put it back behind Capra's Lab (only members open
+// files; room links still join and share links still read).
+export const BREW = false;
 
 const fail = (status, error) => { const e = new Error(error); e.status = status; throw e; };
 const ABC = 'abcdefghijkmnpqrstuvwxyz23456789';

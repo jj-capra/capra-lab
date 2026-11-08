@@ -159,6 +159,8 @@ async function loadHome() {
   }
   $('brewNote').hidden = !(S.hello.brew && S.hello.role);
   $('hostCard').hidden = !S.hello.canHost || !!S.invite;
+  $('hostNameField').hidden = signedIn();
+  if (!$('hostNameIn').value) $('hostNameIn').value = prefs.name || '';
 }
 function renderJoin() {
   $('inviteHead').hidden = !S.invite;
@@ -193,7 +195,10 @@ function dropSeat() {
 async function openFile() {
   $('hostBtn').disabled = true;
   try {
-    const r = await api('/rooms', { ...labBody(), name: prefs.name, avatar: randomAvatar() });
+    const name = signedIn() ? '' : $('hostNameIn').value.trim();
+    if (!signedIn() && !name) { toast('Type your name first.', 'err'); $('hostNameIn').focus(); $('hostBtn').disabled = false; return; }
+    if (name) { prefs.name = name; savePrefs(); }
+    const r = await api('/rooms', { ...labBody(), name, avatar: randomAvatar() });
     takeSeat(r.code, r.pid, r.tok); sfx('stamp'); onRoom(r.room);
   } catch (e) { toast(e.message, 'err'); } finally { $('hostBtn').disabled = false; }
 }

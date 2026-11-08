@@ -76,15 +76,16 @@ test('the checks catch broken content', () => {
   for (const want of ['m001: target missions use', 'm002: uses {target}', 'duplicate id p001', 'y004: over 60']) assert.match(out, new RegExp(want.replace(/[{}]/g, '\\$&')));
 });
 
-test('while it is a JJ Brew, only Capra’s Lab opens files; anyone with the code joins', async () => {
-  assert.equal(BREW, true);
+test('live: anyone opens a file (a guest types a name); anyone with the code joins', async () => {
+  assert.equal(BREW, false);
   const { call } = rig();
-  assert.equal((await call('/hello')).canHost, false);
-  assert.equal((await call('/hello', as('ann'))).canHost, false);
+  assert.equal((await call('/hello')).canHost, true);
   assert.equal((await call('/hello', as('jj-capra'))).role, 'owner');
-  assert.equal((await call('/rooms', { name: 'Zed' })).status, 403);
-  assert.equal((await call('/rooms', as('ann'))).status, 403);
+  assert.equal((await call('/rooms', {})).status, 400, 'a guest needs a name');
   assert.equal((await call('/rooms', { lab: { name: 'JJ-Capra', code: '000000' } })).status, 401);
+  const guest = await call('/rooms', { name: 'Pat' });
+  assert.equal(guest.status, 200);
+  assert.equal(guest.room.me.name, 'Pat');
   const host = await call('/rooms', as('jj-capra'));
   assert.equal(host.status, 200);
   assert.match(host.code, /^[A-Z]{4}$/);
