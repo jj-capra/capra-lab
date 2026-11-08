@@ -96,7 +96,7 @@ async function buildPunchline() {
   await fs.rm(out, { recursive: true, force: true });
   await fs.mkdir(path.join(out, 'shared'), { recursive: true });
   for (const f of ['index.html', 'game.js', 'art.js']) await fs.copyFile(path.join(game, f), path.join(out, f));
-  await fs.copyFile(path.join(game, 'shared', 'rules.mjs'), path.join(out, 'shared', 'rules.mjs'));
+  for (const f of ['rules.mjs', 'glyphs.mjs']) await fs.copyFile(path.join(game, 'shared', f), path.join(out, 'shared', f));
   console.log(`built public/punchline/ (${decks.length} decks, ${decks.reduce((n, d) => n + d.cards.length, 0)} cards)`);
 }
 

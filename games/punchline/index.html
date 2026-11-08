@@ -201,13 +201,17 @@
   @keyframes bump { 30% { transform: scale(1.35); color: var(--green); } }
 
   .stage {
-    flex: 1; width: 100%; max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; align-items: stretch; gap: 8px;
+    flex: 1; width: 100%; max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; align-items: stretch; justify-content: center; gap: 8px;
     padding: 2px calc(var(--sr) + var(--gut)) calc(var(--sb) + 14px) calc(var(--sl) + var(--gut));
+  }
+  .panel.big {
+    width: min(100%, calc((100vh - 220px - var(--st) - var(--sb)) * 1.4286));
+    width: min(100%, calc((100dvh - 220px - var(--st) - var(--sb)) * 1.4286));
   }
   .panel {
     position: relative; align-self: center; aspect-ratio: 400 / 280;
-    width: min(100%, calc((100vh - 400px - var(--st) - var(--sb)) * 1.4286));
-    width: min(100%, calc((100dvh - 400px - var(--st) - var(--sb)) * 1.4286));
+    width: min(100%, calc((100vh - 340px - var(--st) - var(--sb)) * 1.4286));
+    width: min(100%, calc((100dvh - 340px - var(--st) - var(--sb)) * 1.4286));
     min-width: 230px; border-radius: 6px; background: #000; box-shadow: 5px 6px 0 var(--shadow); transform-origin: 50% 0; overflow: hidden;
   }
   .panel-art { display: block; width: 100%; height: 100%; border-radius: 4px; }
@@ -247,77 +251,42 @@
 
   .ask { margin: 2px 0 0; text-align: center; font-family: var(--display); font-size: 22px; letter-spacing: 0.05em; color: var(--paper); min-height: 26px; }
 
-  /* the four cards: a stack of photos to flip through, then a 2 × 2 grid of letters */
-  .opts { position: relative; height: 176px; flex: none; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
-  .opt {
-    position: absolute; left: 9%; top: 6px; width: 82%; height: 152px; padding: 0; border: 0; background: none;
-    transition: left 0.42s cubic-bezier(.3, 1.2, .5, 1), top 0.42s cubic-bezier(.3, 1.2, .5, 1), width 0.42s, height 0.42s, transform 0.42s cubic-bezier(.3, 1.2, .5, 1), opacity 0.3s;
+  /* the four-square: four sign tiles (one is off), or four punchlines */
+  .grid4 {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; align-self: center; flex: none;
+    width: min(100%, calc((100vh - 170px - var(--st) - var(--sb)) * 1.4286));
+    width: min(100%, calc((100dvh - 170px - var(--st) - var(--sb)) * 1.4286));
   }
-  .opt .face {
-    position: absolute; inset: 0; border-radius: 14px; border: 3px solid var(--ink); background: var(--paper); color: var(--ink);
-    box-shadow: 4px 5px 0 var(--shadow); display: grid; place-items: center; padding: 30px 14px 14px; overflow: hidden;
+  .grid4.jokes { width: 100%; }
+  .grid4.gone { display: none; }
+  .grid4 .wait { grid-column: 1 / -1; aspect-ratio: 400 / 280; display: grid; place-items: center; background: var(--panel); border: 3px solid var(--ink); border-radius: 8px; font-family: var(--display); font-size: 30px; color: var(--dim); }
+  .tile { position: relative; padding: 0; border: 3px solid var(--ink); border-radius: 8px; box-shadow: 3px 4px 0 var(--shadow); background: #000; overflow: hidden; transition: transform 0.12s, opacity 0.25s, filter 0.25s; }
+  .tile:active { transform: translate(2px, 3px); box-shadow: 1px 1px 0 var(--shadow); }
+  .tile.art { aspect-ratio: 400 / 280; }
+  .tile.art svg { display: block; width: 100%; height: 100%; }
+  .tile .ltr {
+    position: absolute; left: 5px; top: 5px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--paper); color: var(--ink); border: 2px solid var(--ink); font-family: var(--display); font-size: 14px; line-height: 1;
   }
-  .opt .ltr {
-    position: absolute; left: 10px; top: 8px; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
-    background: var(--c); border: 3px solid var(--ink); font-family: var(--display); font-size: 22px; line-height: 1; color: var(--ink);
-  }
-  .opt .txt { font-family: var(--display); font-size: 30px; letter-spacing: 0.03em; line-height: 1.05; text-align: center; overflow-wrap: anywhere; }
-  .opt .txt.m { font-size: 25px; }
-  .opt .txt.s { font-size: 21px; }
-  .opt .big { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--display); font-size: 58px; line-height: 1; color: var(--ink); opacity: 0; transform: scale(0.4); transition: opacity 0.25s, transform 0.3s cubic-bezier(.2, 1.6, .4, 1); }
-  .opt .back { position: absolute; inset: 0; border-radius: 14px; border: 3px solid var(--ink); box-shadow: 4px 5px 0 var(--shadow); display: grid; place-items: center;
-    background: repeating-linear-gradient(45deg, var(--pink) 0 14px, #E7307B 14px 28px); font-family: var(--display); font-size: 30px; color: #fff; letter-spacing: 0.06em; -webkit-text-stroke: 1px var(--ink); transition: opacity 0.25s; }
-  .opts.down .face { visibility: hidden; }
-  .opts:not(.down) .back { opacity: 0; pointer-events: none; }
-  /* stack positions (set by game.js as --p: 0 is the top card) */
-  .opts.stack .opt { transform: translate(calc(var(--p) * 8px), calc(var(--p) * -4px)) rotate(var(--rot)) scale(calc(1 - var(--p) * 0.035)); z-index: calc(10 - var(--p)); }
-  .opts.stack .opt.toss { transition: transform 0.18s ease-in, opacity 0.18s; transform: translateX(var(--toss, -70%)) rotate(-14deg) !important; opacity: 0.2; }
-  .opts.stack .opt.drag { transition: none; }
-  /* the grid */
-  .opts.grid .opt { width: calc(50% - 5px); height: 80px; transform: none; z-index: 1; }
-  .opts.grid .opt:nth-child(1) { left: 0; top: 4px; }
-  .opts.grid .opt:nth-child(2) { left: calc(50% + 5px); top: 4px; }
-  .opts.grid .opt:nth-child(3) { left: 0; top: 92px; }
-  .opts.grid .opt:nth-child(4) { left: calc(50% + 5px); top: 92px; }
-  .opts.grid .face { padding: 8px 10px 8px 46px; background: var(--c); }
-  .opts.grid .ltr { top: 50%; margin-top: -17px; background: var(--paper); }
-  .opts.calling .big { opacity: 1; transform: none; }
-  .opts.calling .ltr { opacity: 0; }
-  .opts.calling .face { padding: 8px; }
-  .opts.calling .txt i { animation: fz 0.5s forwards; animation-delay: var(--d); }
-  .opts.called .txt { visibility: hidden; }
-  .txt i { font-style: normal; display: inline-block; }
-  .txt .w { white-space: nowrap; }
-  .opts.calling:not(.called) .big { transition-delay: 0.55s; }
-  @keyframes fz { 0% { opacity: 1; } 15% { opacity: 0.15; } 25% { opacity: 1; } 40% { opacity: 0.1; } 52% { opacity: 0.9; } 100% { opacity: 0; transform: translateY(8px) rotate(12deg); } }
-  .opts.calling .opt:active .face, .opts.calling .opt.picked .face { transform: translate(3px, 4px); box-shadow: 1px 1px 0 var(--shadow); }
-  .opts.calling .opt.picked .face { background: var(--ink); color: var(--paper); border-color: var(--paper); }
-  .opts.calling .opt.picked .big { color: var(--c); }
-  .opts.calling.locked .opt:not(.picked) { opacity: 0.4; }
-  .opt .lock { position: absolute; right: 8px; top: 6px; font-size: 10px; font-weight: 900; letter-spacing: 0.08em; color: var(--c); display: none; }
-  .opts.calling .opt.picked .lock { display: block; }
-  /* the reveal */
-  .opts.revealed .face { padding: 6px 8px 6px 46px; background: var(--panel2); color: var(--dim); }
-  .opts.revealed .ltr { opacity: 1; background: var(--panel2); color: var(--dim); }
-  .opts.revealed .opt .txt { visibility: visible; font-size: 17px; }
-  .opts.revealed .txt i { animation: none; opacity: 1; }
-  .opts.revealed .opt.right .face { background: var(--green); color: var(--ink); animation: flipIn 0.5s; }
-  .opts.revealed .opt.right .ltr { background: var(--paper); color: var(--ink); }
-  .opts.revealed .opt.wrong .face { background: var(--red); color: var(--ink); animation: shake 0.45s; }
-  .opts.revealed .opt.wrong .ltr { background: var(--paper); color: var(--ink); }
-  .opts.revealed .opt.mine::after { content: "YOU"; position: absolute; right: 6px; top: -9px; background: var(--ink); color: var(--paper); font-size: 10px; font-weight: 900; letter-spacing: 0.08em; padding: 2px 6px; border-radius: 6px; border: 2px solid var(--paper); z-index: 2; }
-  @keyframes flipIn { 0% { transform: rotateY(90deg); } 100% { transform: none; } }
+  .tile .lock { position: absolute; left: 0; right: 0; bottom: 0; display: none; background: var(--yellow); color: var(--ink); font-size: 10px; font-weight: 900; letter-spacing: 0.1em; padding: 3px 0; text-align: center; }
+  .tile.picked { outline: 4px solid var(--yellow); outline-offset: 1px; }
+  .tile.picked .lock { display: block; }
+  .grid4.locked .tile:not(.picked) { opacity: 0.45; filter: grayscale(0.4); }
+  .tile.txt { min-height: 78px; background: var(--c); color: var(--ink); display: grid; place-items: center; padding: 8px 10px 8px 34px; text-align: left; }
+  .tile.txt .ltr { top: 50%; margin-top: -11px; }
+  .tile.txt .say { font-family: var(--display); font-size: clamp(16px, 4.6vw, 21px); letter-spacing: 0.02em; line-height: 1.08; overflow-wrap: anywhere; }
+  .grid4.deal .tile { animation: tileIn 0.34s cubic-bezier(.2, 1.4, .4, 1) both; }
+  .grid4.deal .tile:nth-child(2) { animation-delay: 0.05s; }
+  .grid4.deal .tile:nth-child(3) { animation-delay: 0.1s; }
+  .grid4.deal .tile:nth-child(4) { animation-delay: 0.15s; }
+  @keyframes tileIn { from { transform: scale(0.7) rotate(-3deg); opacity: 0; } }
+  .grid4.revealed .tile { opacity: 0.4; }
+  .grid4.revealed .tile.right { opacity: 1; background: var(--green); outline: 4px solid var(--green); outline-offset: 1px; }
+  .grid4.revealed .tile.wrong { opacity: 1; background: var(--red); animation: shake 0.45s; }
+  .grid4.revealed .tile.mine::after { content: "YOU"; position: absolute; right: 4px; top: 4px; background: var(--ink); color: var(--paper); font-size: 10px; font-weight: 900; letter-spacing: 0.08em; padding: 2px 6px; border-radius: 6px; border: 2px solid var(--paper); }
   @keyframes shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
-
-  .tabs { display: flex; justify-content: center; gap: 10px; min-height: 40px; }
-  .tabs button {
-    width: 44px; height: 40px; border-radius: 12px; border: 3px solid var(--ink); background: var(--panel); position: relative;
-    font-family: var(--display); font-size: 20px; color: var(--paper); padding: 0;
-  }
-  .tabs button.on { background: var(--c); color: var(--ink); transform: translateY(-2px); box-shadow: 2px 3px 0 var(--shadow); }
-  .tabs button.seen::after { content: ""; position: absolute; right: 3px; top: 3px; width: 7px; height: 7px; border-radius: 50%; background: var(--c); border: 1.5px solid var(--ink); }
-  .tabs button.on.seen::after { display: none; }
-  .tabs.off { visibility: hidden; }
+  .panel-art .ring { fill: none; stroke: #E3242B; stroke-width: 6; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw 0.55s ease-out forwards; filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.9)); }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
   .status { margin: 0; text-align: center; color: var(--dim); font-weight: 800; font-size: 14px; min-height: 20px; }
   .status b { color: var(--paper); }
   .gain { position: fixed; z-index: 30; pointer-events: none; transform: translateX(-50%); font-family: var(--display); font-size: 46px; white-space: nowrap; color: var(--green); -webkit-text-stroke: 1px var(--ink); animation: gain 1.3s forwards; }
@@ -386,16 +355,12 @@
   @keyframes fall { to { transform: translate3d(var(--dx), 110vh, 0) rotate(var(--r)); } }
 
   @media (max-height: 640px) {
-    .opts { height: 160px; }
-    .opt { height: 138px; }
-    .opts.grid .opt { height: 72px; }
-    .opts.grid .opt:nth-child(3), .opts.grid .opt:nth-child(4) { top: 84px; }
     .ask { font-size: 19px; min-height: 22px; }
+    .tile.txt { min-height: 66px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .logo .flick, .panel.slam, .panel.spin, .caption, .stamp, .opts.revealed .opt.right .face, .opts.revealed .opt.wrong .face, .podium .step { animation: none; }
-    .opt { transition: opacity 0.2s; }
-    .opts.calling .txt i { animation-duration: 0.01s; }
+    .logo .flick, .panel.slam, .panel.spin, .caption, .stamp, .grid4.deal .tile, .grid4.revealed .tile.wrong, .podium .step, .panel-art .ring { animation: none; }
+    .panel-art .ring { stroke-dashoffset: 0; }
     .confetti { display: none; }
   }
 </style>
@@ -414,7 +379,7 @@
   <main class="wrap" id="wrap-home">
     <div class="hero">
       <h1 class="logo" aria-label="Punchline">PUNCH<span class="flick">L</span>INE</h1>
-      <p class="tagline">Wrong signs. Bad jokes. Call the letter.</p>
+      <p class="tagline">Spot the sign that’s off. Groan at the joke.</p>
     </div>
     <p class="brewnote" id="brewNote" hidden>🔒 JJ BREW · ONLY CAPRA’S LAB CAN SEE THIS</p>
     <p class="note warn" id="keyWarn" hidden>Your Capra Lab name and key don’t match, so you’re playing as a guest. <a href="/#profile">Sign in to Capra Lab again</a>.</p>
@@ -505,8 +470,7 @@
       <div class="stamp" id="stamp" hidden></div>
     </div>
     <p class="ask" id="ask"></p>
-    <div class="opts down stack" id="opts" role="group" aria-label="Answer cards"></div>
-    <div class="tabs off" id="tabs" role="tablist" aria-label="Cards"></div>
+    <div class="grid4" id="grid" role="group" aria-label="The four tiles"></div>
     <p class="status" id="status" aria-live="polite"></p>
   </main>
   <div class="count" id="count" hidden><small>GET READY</small><h2 id="countDeck"></h2><b id="countNum">3</b></div>
@@ -564,10 +528,9 @@
     <button class="round-btn" data-close type="button" aria-label="Close">✕</button>
     <h2 id="helpTitle">HOW TO PLAY</h2>
     <ul>
-      <li><b>Look.</b> A sign that came out wrong (a misprint, burnt-out lights or terrible design), or the setup of a joke.</li>
-      <li><b>Flip through.</b> Four cards, A to D. Swipe or tap to flip through them before the fuse runs out.</li>
-      <li><b>Call it.</b> The writing fizzles out. Tap the letter you remember.</li>
-      <li><b>Reveal.</b> 100 for a right answer, up to 100 more for speed, and 50 more if you were the first in the room.</li>
+      <li><b>Find it.</b> Four copies of the same sign (or shirt). One is off: a burnt-out letter, a typo, a peeled letter. Tap it before the fuse runs out. One tap per card.</li>
+      <li><b>Jokes.</b> The setup sits on top and four punchlines sit in the square. Tap the one that lands.</li>
+      <li><b>Reveal.</b> The odd one zooms in with the mistake circled, and the joke lands. 100 for a right tap, up to 100 more for speed, 50 more if you were first in the room.</li>
       <li><b>Today’s drop</b> is the same ten cards for everyone, every day: Wrong Signs one day, jokes the next.</li>
       <li><b>Host a party</b> to play any deck with up to 12 friends, each on their own phone. Late Night decks are for high school and up.</li>
     </ul>

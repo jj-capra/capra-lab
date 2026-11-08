@@ -7,12 +7,13 @@
 //   POST /rooms/:code/join  { name }     join with the code -> { pid, tok, room }
 //   POST /rooms/:code  { pid, tok }      the room as this player sees it (without them: as a guest)
 //   POST /rooms/:code/start              host: the ten cards start on the server's clock
-//   POST /rooms/:code/answer {i, pick}   your letter for card i (only while its letters are up)
+//   POST /rooms/:code/answer {i, pick}   your tile for card i (one tap, while it's up)
 //   POST /rooms/:code/again {deckId}     host: back to the lobby with a fresh deal
 //
 // Store `punchline`: r/<CODE> rooms. Answers stay on the server until a card's reveal.
-import { CARDS_PER_GAME, COUNTDOWN_MS, schedule, beatAt, points, askOf } from '../shared/rules.mjs';
-import { dailyDeck, deal, pacificDate } from './daily.js';
+import { CARDS_PER_GAME, COUNTDOWN_MS, schedule, beatAt, points, askOf, findMs } from '../shared/rules.mjs';
+import { dailyDeck, deal, pacificDate, mulberry32, seedOf } from './daily.js';
+import { variantOf } from './variants.mjs';
 import { mutate, SKIP } from './store.js';
 
 // A JJ Brew (JC, Nov 2026): while true, only Capra's Lab members can open today's drop or host;
@@ -30,20 +31,30 @@ const rid = (n, abc = 'abcdefghijkmnpqrstuvwxyz23456789') => Array.from({ length
 const ROOM_ABC = 'BCDFGHJKLMNPQRSTVWXZ';   // no vowels, so no codes spell words
 const cleanName = (s) => String(s || '').replace(/[^\p{L}\p{N} ._'!?-]/gu, '').replace(/\s+/g, ' ').trim().slice(0, 17);
 
-// What a card looks like before its reveal (no answer, no caption), dealt into this room's order.
-function publicCard({ card, order }, revealed) {
-  const base = card.type === 'joke'
-    ? { type: 'joke', setup: card.setup }
-    : { type: 'sign', scene: card.scene, where: card.where, kind: card.kind, sign: card.sign, ...(card.art ? { art: card.art } : {}), ...(card.arc ? { arc: true } : {}) };
-  const out = { ...base, ask: askOf(card), options: order.map((k) => card.options[k]) };
-  // the back of a shirt is the answer, so it waits for the reveal too
-  if (revealed) { out.answer = order.indexOf(card.answer); out.caption = card.caption; if (card.back) out.back = card.back; }
+// The right answer for a dealt card: the odd tile for a sign, the real punchline for a joke.
+const answerOf = ({ card, order, odd }) => (card.type === 'joke' ? order.indexOf(card.answer) : odd);
+
+// A card as the phones see it. A sign carries both versions (`base` for three tiles, `off` for the
+// odd one at `odd`); the caption, what it reads, the circled letters and a shirt's back wait for
+// the reveal. `seed` makes a made-up flaw the same on every phone and every poll.
+function publicCard(d, revealed, seed) {
+  const { card, order } = d;
+  let out;
+  if (card.type === 'joke') out = { type: 'joke', setup: card.setup, ask: askOf(card), options: order.map((k) => card.options[k]) };
+  else {
+    const v = variantOf(card, mulberry32(seedOf(`${seed}:${card.id}`)));
+    out = { type: 'sign', scene: card.scene, where: card.where, kind: card.kind, ask: askOf(card), base: v.base, off: v.off, odd: d.odd,
+      ...(card.art ? { art: card.art } : {}), ...(card.arc ? { arc: true } : {}) };
+    if (revealed) Object.assign(out, { stamp: v.stamp, reading: v.reading, marks: v.marks, ...(card.back ? { back: card.back } : {}) });
+  }
+  if (revealed) { out.answer = answerOf(d); out.caption = card.caption; }
   return out;
 }
 
 export function createApi({ store, decks, verify, role = async () => null, clock = () => Date.now() }) {
   const byId = Object.fromEntries(decks.map((d) => [d.id, d]));
-  const dealOf = (room) => room.deal.map(({ id, order }) => ({ card: byId[id.split('/')[0]].cards.find((c) => c.id === id), order }));
+  const dealOf = (room) => room.deal.map(({ id, order, odd }) => ({ card: byId[id.split('/')[0]].cards.find((c) => c.id === id), order, odd }));
+  const seedFor = (room) => `${room.code}:${room.game}`;
 
   async function who(body) {
     const lab = body && body.lab;
@@ -64,7 +75,7 @@ export function createApi({ store, decks, verify, role = async () => null, clock
     const d = byId[deckId];
     if (!d || (d.brew && !crew)) fail(404, 'No deck by that name.');
     if (d.shelf === 'late' && !late) fail(400, 'Turn on Late Night to play that deck.');
-    return deal(d, seed, Math.min(CARDS_PER_GAME, d.cards.length)).map(({ card, order }) => ({ id: card.id, order }));
+    return deal(d, seed, Math.min(CARDS_PER_GAME, d.cards.length)).map(({ card, order, odd }) => ({ id: card.id, order, odd }));
   }
 
   // The room as one player sees it: cards so far, results of revealed cards, scores.
@@ -78,11 +89,11 @@ export function createApi({ store, decks, verify, role = async () => null, clock
     const results = [];
     for (let i = 0; i < revealedN; i++) {
       const ans = Object.entries((room.answers || {})[i] || {});
-      const answer = dealt[i].order.indexOf(dealt[i].card.answer);
+      const answer = answerOf(dealt[i]), window = findMs(dealt[i].card);
       const right = ans.filter(([, [pick]]) => pick === answer).sort((a, b) => a[1][1] - b[1][1]);
       const first = right.length ? right[0][0] : null;
       const gained = {};
-      for (const [pid, [, ms]] of right) { gained[pid] = points(ms, pid === first); scores[pid] = (scores[pid] || 0) + gained[pid]; }
+      for (const [pid, [, ms]] of right) { gained[pid] = points(ms, window, pid === first); scores[pid] = (scores[pid] || 0) + gained[pid]; }
       const mine = me && (room.answers[i] || {})[me];
       results.push({
         i, answer, right: right.map(([pid]) => room.players[pid] ? room.players[pid].name : '?'),
@@ -97,7 +108,7 @@ export function createApi({ store, decks, verify, role = async () => null, clock
       beat: at.beat, i: at.i,
       players: Object.entries(room.players).map(([pid, p]) => ({ name: p.name, score: scores[pid] || 0, me: pid === me, host: pid === room.host, locked: !!cur[pid] }))
         .sort((a, b) => b.score - a.score || (a.name < b.name ? -1 : 1)),
-      cards: dealt.slice(0, shown).map((d, i) => publicCard(d, i < revealedN)),
+      cards: dealt.slice(0, shown).map((d, i) => publicCard(d, i < revealedN, seedFor(room))),
       results,
       me: me && room.players[me] ? { name: room.players[me].name, picks: Object.fromEntries(Object.entries(room.answers || {}).map(([i, a]) => [i, a[me] ? a[me][0] : null]).filter(([, v]) => v != null)) } : null,
     };
@@ -123,7 +134,7 @@ export function createApi({ store, decks, verify, role = async () => null, clock
       const { no, deck } = dailyDeck(decks, today);
       const daily = deck ? {
         no, date: today, deck: { id: deck.id, title: deck.title, type: deck.type, blurb: deck.blurb },
-        cards: deal(deck, 'daily:' + today).map((d) => publicCard(d, true)),
+        cards: deal(deck, 'daily:' + today).map((d) => publicCard(d, true, 'daily:' + today)),
       } : null;
       return { now, brew: BREW, role: me ? me.role : null, name: me ? me.name : null, canHost: canHost(me), daily, decks: deckList(!!(me && me.role)) };
     }
@@ -202,11 +213,11 @@ export function createApi({ store, decks, verify, role = async () => null, clock
       const res = await mutate(store, 'r/' + code, (room) => {
         const pid = player(room, body);
         const t = room.times[i];
-        if (!t || now < t.call) fail(409, 'Not yet: wait for the letters.');
+        if (!t || now < t.at) fail(409, 'Not yet: that card isn’t up.');
         if (now >= t.reveal) fail(409, 'Too late for that one.');
         room.answers[i] ||= {};
         if (room.answers[i][pid]) { first = room.answers[i][pid][0]; return SKIP; }   // one tap per card
-        room.answers[i][pid] = [pick, now - t.call];
+        room.answers[i][pid] = [pick, now - t.at];
         first = pick;
       });
       if (!res) fail(404, 'No game with that code. Check it and try again.');

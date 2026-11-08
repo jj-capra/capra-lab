@@ -15,21 +15,27 @@ When JC says it goes live: take out the script tag, move the tile to the public 
 
 ## How a card plays (JC's decisions)
 
-Every card runs four beats on the server's clock (`shared/rules.mjs`):
+**The four-square** (JC, Nov 8 2026: "a four square of images and you have to pick the one that is
+different... a mix of burnt out signs, misspellings, etc."; the first version, a photo stack you
+flipped through before the writing faded, wasn't fun). Every card is four tiles and two beats on
+the server's clock (`shared/rules.mjs`):
 
-1. **Look**: the panel alone (the sign, the shirt or the joke's setup), long enough to read.
-2. **Flip through**: the four answer cards A–D drop in as a stack of photos; swipe or tap to
-   flip through them before the fuse runs out ("a photo deck they can shuffle through before the
-   time expires").
-3. **Call it**: the writing fizzles out like burnt-out bulbs and the cards become four big letters;
-   tap the one you remember ("seeing all four and then fading them out in a fun way and they have
-   to say which letter"). Answers are only taken in this beat, one tap per card.
-4. **Reveal**: the right card flips back, a stamp lands on the panel (TYPO!, BULB OUT!, OOPS.,
-   FADED!, GROAN!, BA-DUM-TSS! with a rimshot for jokes), the caption is the last laugh,
-   and a shirt with a back spins around to show it.
+1. **Find it** (10 seconds): a sign or a shirt shows **four times; three read the way they should
+   and one is off**. Tap the odd one, one tap per card. `server/variants.mjs` works out both
+   versions: a burnt-out or peeled card's right version has every letter lit and its odd one is the
+   card itself; a misprint's right version is the fix (the right option laid out on the sign's
+   lines) and its odd one is the typo; a design card or a shirt with a back gets a flaw made for it
+   (a dead bulb on neon and marquee signs, otherwise a swapped, doubled, dropped or look-alike
+   letter), the same on every phone, never one that adds a rude word. All four tiles wear the same
+   shirt color. A **joke** puts its setup on top and four punchlines in the square (9 to 16 seconds
+   to read them); tap the one that lands.
+2. **Reveal** (5.5 seconds): the odd tile zooms up with the **difference circled in red** like a
+   spot-the-difference answer key, a stamp lands (BULB OUT!, TYPO!, FADED!, or BA-DUM-TSS! with a
+   rimshot for jokes), the line under it says what it reads (or should say, or looks like it says),
+   the caption is the last laugh, and a shirt with a back spins around to show it.
 
-Scoring: 100 for a right answer, up to 100 more for speed (counted from when the writing has
-faded), 50 more for the first right answer in the room.
+Scoring: 100 for a right tap, up to 100 more for speed (over the find beat), 50 more for the first
+right tap in the room. The last three seconds tick.
 
 - **Today's drop**: ten cards from one family deck, the same for everyone, Pacific time; Wrong
   Signs, jokes and Ugly Ts take turns, and the seasonal joke decks keep their days (Thanksgiving,
@@ -37,9 +43,8 @@ faded), 50 more for the first right answer in the room.
   it alone. Late Night decks never drop. No. 1 was 2026-11-08.
 - **Party games**: a host picks any deck; up to 12 phones join with the 4-letter code or the room
   link; the host starts and every phone runs the same timeline from the server's start time, so
-  the server is only asked for news at the moments something changes (a card's sign 2.5 s before
-  it shows, never its answer; the answers at each reveal; the locked-in count while the letters
-  are up). Rooms last 8 hours; the host can deal again (any deck) when a game ends.
+  the server is only asked for news at the moments something changes (a card's tiles 2.5 s before
+  it shows; the results, circles and caption at each reveal; the locked-in count while it's up). Rooms last 8 hours; the host can deal again (any deck) when a game ends.
 - **Shelves**: Family (clean for 8 to 80) and **Late Night** (high school: Cards-Against-Humanity
   energy without the sex). A host turns Late Night on to see and deal those decks. JC's edge line:
   "close enough to barely over the line of an offended employee or even HR but presented in a funny
@@ -64,7 +69,10 @@ answer really reads that way, clip art from the kit, and so on).
 ## Files
 
 - `shared/rules.mjs`: the beats, how long each lasts, the asks and the scoring, imported by the page
-  and the server (the page loads it from `public/punchline/shared/rules.mjs`).
+  and the server (the page loads it from `public/punchline/shared/`, with `glyphs.mjs`, the sign
+  letter parser the art and the server share).
+- `server/variants.mjs`: the four-square's two versions of a sign, the made-up flaws and the
+  letters to circle.
 - `server/load.mjs` (reads the decks, `problems()`), `server/daily.js` (today's drop, dealing),
   `server/api.js` (`POST /today`, `/rooms`, `/rooms/:code`, `/join`, `/start`, `/answer`, `/again`;
   the lab sign-in rides in the body), `server/store.js` (Blobs or memory, compare-and-swap).
@@ -83,7 +91,7 @@ answer really reads that way, clip art from the kit, and so on).
 - **Nothing under the iPhone clock**: every bar, the round's HUD, the countdown, toasts and sheets
   start at `env(safe-area-inset-top)` plus a margin. The panel shrinks with the screen height so a
   whole card (panel, the four cards, the letters) fits on a 393 × 659 Safari screen.
-- No `alert`/`confirm`/`prompt`. Keys work too: A–D or 1–4, arrows to flip.
+- No `alert`/`confirm`/`prompt`. Keys work too: A–D or 1–4 picks a tile.
 
 ## Develop and test
 

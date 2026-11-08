@@ -1,8 +1,8 @@
 // Punchline: the page. Today's drop (ten cards, solo, the same for everyone), party games hosted
 // from any deck (every phone runs the same clock from the server's start time), and the round:
-// look -> flip through the four cards -> the writing fizzles, call the letter -> the reveal.
-import { schedule, beatAt, points, LETTERS, COUNTDOWN_MS, FADE_MS, CALL_MS } from '/punchline/shared/rules.mjs';
-import { panel, fitText } from '/punchline/art.js';
+// the four-square (spot the sign that's off, or the punchline that lands), then the reveal.
+import { schedule, beatAt, points, findMs, LETTERS, COUNTDOWN_MS } from '/punchline/shared/rules.mjs';
+import { panel, fitText, ring } from '/punchline/art.js';
 
 const $ = (id) => document.getElementById(id);
 const $$ = (sel) => [...document.querySelectorAll(sel)];
@@ -404,7 +404,7 @@ function schedulePoll() {
       for (const t of v.times) marks.push(t.at - 2000, t.reveal + 150, t.end + 150);
       const next = Math.min(...marks.filter((m) => m > now + 40));
       wait = Number.isFinite(next) ? next - now : 2000;
-      if (at.beat === 'call') wait = Math.min(wait, 1500);
+      if (at.beat === 'find') wait = Math.min(wait, 1500);   // the locked-in count
       if ((at.beat !== 'countdown' && !v.cards[at.i]) || (at.beat === 'reveal' && !v.results[at.i])) wait = Math.min(wait, 500);
     }
   }
@@ -445,19 +445,20 @@ function playDrop() {
 }
 
 /* ================= THE ROUND ================= */
+// The four-square: four tiles. A sign shows the same panel four times, one of them off (a dead
+// bulb, a typo); tap it. A joke shows its setup over four punchlines; tap the one that lands.
+// Then the odd sign zooms in with the difference circled, or the punchline lights up.
 let raf = 0;
-const cur = { i: -1, beat: '', waiting: false, revealed: -1, panelFor: -1, optsFor: -1, front: 0, seen: new Set(), count: -1, beatName: '' };
-const BEAT_NAMES = { look: 'LOOK', review: 'FLIP THROUGH', call: 'CALL IT!', reveal: 'REVEAL' };
-const ROT = ['-1.5deg', '3deg', '-4deg', '5deg'];
+const cur = { i: -1, beat: '', waiting: false, revealed: -1, gridFor: -1, count: -1, beatName: '', secs: -1 };
 const clock = () => (S.game && S.game.mode === 'solo' ? Date.now() : srvNow());
 
 function startRound() {
   show('round');
-  Object.assign(cur, { i: -1, beat: '', waiting: false, revealed: -1, panelFor: -1, optsFor: -1, count: -1, beatName: '' });
+  Object.assign(cur, { i: -1, beat: '', waiting: false, revealed: -1, gridFor: -1, count: -1, beatName: '', secs: -1 });
   $('countDeck').textContent = S.game.title;
   $('myScore').textContent = fmt(myScore());
-  $('panelArt').innerHTML = '';
-  $('opts').innerHTML = '';
+  $('grid').innerHTML = '';
+  $('panel').hidden = true;
   $('ask').textContent = '';
   $('status').textContent = '';
   wakeLock();
@@ -474,140 +475,78 @@ function loop() {
 }
 // A poll brought news: fill in whatever the current beat was waiting for.
 function refreshRound() {
-  if (cur.beat === 'call') lockedLine();
+  if (cur.beat === 'find' && S.game.mode === 'room') lockedLine();
   if (cur.beat === 'reveal' && cur.revealed !== cur.i && revealReady(cur.i)) showReveal(cur.i);
 }
-
-function enter(i, beat, now) {
-  const g = S.game, prev = cur.beat, wasWaiting = cur.waiting;
+function enter(i, beat) {
+  const g = S.game, wasWaiting = cur.waiting;
   cur.i = i; cur.beat = beat; cur.waiting = false;
   if (beat === 'over') { finish(); return; }
   $('count').hidden = beat !== 'countdown';
   if (beat === 'countdown') { $('cardNo').textContent = `CARD 0/${g.times.length}`; return; }
   const card = g.cards[i];
   if (!card) { cur.waiting = true; if (!wasWaiting) showWait(); return; }
-  if (cur.panelFor !== i) drawPanel(i, card);
-  if (cur.optsFor !== i) drawOpts(i, card);
   $('cardNo').textContent = `CARD ${i + 1}/${g.times.length}`;
-  if (beat === 'look') {
-    $('opts').className = 'opts down stack';
-    layoutStack();
-    $('tabs').classList.add('off');
-    status('');
-  } else if (beat === 'review') {
-    $('opts').className = 'opts stack';
-    cur.front = 0; cur.seen = new Set([0]);
-    layoutStack(); drawTabs();
-    if (prev === 'look') sfx('deal');
-    status('Swipe or tap to flip through all four');
-  } else if (beat === 'call') {
-    startCall(i, now - g.times[i].call);
+  if (cur.gridFor !== i) drawCard(i, card);
+  if (beat === 'find') {
+    if (S.picks[i] != null) markPicked(S.picks[i]);
+    if (g.mode === 'room') lockedLine(); else if (S.picks[i] == null) status(card.type === 'joke' ? 'Tap the punchline that lands' : 'Tap the one that’s different');
   } else if (beat === 'reveal') {
-    if (!revealReady(i)) { cur.waiting = true; if (!wasWaiting) { $('opts').className = 'opts grid calling called' + (S.picks[i] != null ? ' locked' : ''); status('Drumroll…'); } return; }
+    if (!revealReady(i)) { cur.waiting = true; if (!wasWaiting) status('Drumroll…'); return; }
     if (cur.revealed !== i) showReveal(i);
   }
 }
 function showWait() {
-  $('panelArt').innerHTML = '<div class="wait">…</div>';
-  $('bubble').hidden = $('caption').hidden = $('stamp').hidden = true;
-  cur.panelFor = -1;
+  $('panel').hidden = true;
+  $('grid').className = 'grid4';
+  $('grid').innerHTML = '<div class="wait">…</div>';
+  cur.gridFor = -1;
 }
-function drawPanel(i, card) {
-  const art = $('panelArt');
-  art.innerHTML = panel(card);
-  fitSoon(art);
-  const p = $('panel');
-  p.classList.remove('slam', 'spin'); void p.offsetWidth; p.classList.add('slam');
-  const bubble = $('bubble');
-  bubble.hidden = card.type !== 'joke';
-  if (card.type === 'joke') { bubble.textContent = card.setup; bubble.classList.toggle('long', card.setup.length > 90); }
+function drawCard(i, card) {
+  const grid = $('grid'), p = $('panel');
   $('caption').hidden = true;
   $('stamp').hidden = true;
   $('ask').textContent = card.ask || '';
-  cur.panelFor = i;
-  sfx('slam');
-}
-function drawOpts(i, card) {
-  const box = $('opts');
-  box.innerHTML = card.options.map((o, k) => {
-    const size = o.length > 24 ? 's' : o.length > 14 ? 'm' : '';
-    const txt = o.split(' ').map((w) => `<span class="w">${[...w].map((ch) => `<i style="--d:${Math.round(Math.random() * FADE_MS * 0.65)}ms">${esc(ch)}</i>`).join('')}</span>`).join(' ');
-    return `<button class="opt" type="button" data-k="${k}" style="--c: var(--${LETTERS[k]})" aria-label="${LETTERS[k]}: ${esc(o)}">`
-      + `<span class="back" aria-hidden="true">PUNCHLINE</span>`
-      + `<span class="face"><span class="ltr">${LETTERS[k]}</span><span class="txt ${size}">${txt}</span><span class="big" aria-hidden="true">${LETTERS[k]}</span><span class="lock">LOCKED IN</span></span></button>`;
-  }).join('');
-  $('tabs').innerHTML = LETTERS.map((L, k) => `<button type="button" role="tab" data-k="${k}" style="--c: var(--${L})" aria-label="Card ${L}">${L}</button>`).join('');
-  cur.optsFor = i;
-}
-const topCard = () => $('opts').querySelector(`.opt[data-k="${cur.front}"]`);
-function layoutStack() {
-  for (const el of $('opts').children) {
-    const p = (+el.dataset.k - cur.front + 4) % 4;
-    el.style.setProperty('--p', p);
-    el.style.setProperty('--rot', ROT[p]);
-    el.setAttribute('aria-hidden', String(cur.beat === 'review' && p !== 0));
+  p.classList.remove('spin', 'zoom', 'big');
+  p.style.transform = '';
+  if (card.type === 'joke') {
+    p.hidden = false;
+    $('panelArt').innerHTML = panel(card);
+    const bubble = $('bubble');
+    bubble.hidden = false;
+    bubble.textContent = card.setup;
+    bubble.classList.toggle('long', card.setup.length > 90);
+    grid.className = 'grid4 jokes deal';
+    grid.innerHTML = card.options.map((o, k) => `<button class="tile txt" type="button" data-k="${k}" style="--c: var(--${LETTERS[k]})"><span class="ltr">${LETTERS[k]}</span><span class="say">${esc(o)}</span><span class="lock">LOCKED IN</span></button>`).join('');
+  } else {
+    p.hidden = true;
+    $('bubble').hidden = true;
+    grid.className = 'grid4 signs deal';
+    grid.innerHTML = [0, 1, 2, 3].map((k) => `<button class="tile art" type="button" data-k="${k}" aria-label="Tile ${LETTERS[k]}">${panel(card, { lines: k === card.odd ? card.off : card.base })}<span class="ltr" aria-hidden="true">${LETTERS[k]}</span><span class="lock">LOCKED IN</span></button>`).join('');
+    fitSoon(grid);
   }
-}
-function drawTabs() {
-  const tabs = $('tabs');
-  tabs.classList.toggle('off', cur.beat !== 'review');
-  for (const b of tabs.children) {
-    const k = +b.dataset.k;
-    b.classList.toggle('on', k === cur.front);
-    b.classList.toggle('seen', cur.seen.has(k));
-    b.setAttribute('aria-selected', String(k === cur.front));
-  }
-}
-function flip(dir) {
-  if (cur.beat !== 'review') return;
-  const top = topCard();
-  sfx('flip');
-  const next = () => { cur.front = (cur.front + (dir > 0 ? 1 : 3)) % 4; cur.seen.add(cur.front); layoutStack(); drawTabs(); };
-  if (dir < 0 || !top || reduced()) { next(); return; }
-  top.style.setProperty('--toss', '-75%');
-  top.classList.add('toss');
-  setTimeout(() => { top.classList.remove('toss'); next(); }, 170);
-}
-function jump(k) {
-  if (cur.beat !== 'review' || k === cur.front) return;
-  sfx('flip');
-  cur.front = k; cur.seen.add(k);
-  layoutStack(); drawTabs();
-}
-
-function startCall(i, since) {
-  const box = $('opts');
-  $('tabs').classList.add('off');
-  const late = since > FADE_MS;
-  box.className = 'opts grid' + (late ? ' calling called' : '');
-  for (const el of box.children) el.removeAttribute('aria-hidden');
-  if (!late) {
-    sfx('fizz');
-    requestAnimationFrame(() => box.classList.add('calling'));
-    setTimeout(() => { if (cur.i === i && cur.beat === 'call') box.classList.add('called'); }, FADE_MS);
-  }
-  if (S.picks[i] != null) markPicked(S.picks[i]);
-  if (S.game.mode === 'room') lockedLine(); else status('Tap the letter you remember');
+  cur.gridFor = i;
+  sfx('deal');
 }
 function markPicked(k) {
-  const box = $('opts');
-  box.classList.add('locked');
-  for (const el of box.children) el.classList.toggle('picked', +el.dataset.k === k);
+  const grid = $('grid');
+  grid.classList.add('locked');
+  for (const el of grid.querySelectorAll('.tile')) el.classList.toggle('picked', +el.dataset.k === k);
 }
 function lockedLine() {
   const ps = (S.room && S.room.players) || [];
   const n = ps.filter((p) => p.locked || (p.me && S.picks[cur.i] != null)).length;
-  status(S.picks[cur.i] != null ? `You’re locked in · <b>${n}</b> of ${ps.length} ready` : `<b>${n}</b> of ${ps.length} locked in`);
+  status(S.picks[cur.i] != null ? `You’re locked in · <b>${n}</b> of ${ps.length} in` : `<b>${n}</b> of ${ps.length} locked in`);
 }
 function pick(k) {
   const g = S.game, i = cur.i;
-  if (!g || cur.beat !== 'call' || S.picks[i] != null) return;
-  const ms = clock() - g.times[i].call;
+  if (!g || cur.beat !== 'find' || S.picks[i] != null || !g.cards[i]) return;
+  const ms = clock() - g.times[i].at;
   S.picks[i] = k; S.pickMs[i] = ms;
   markPicked(k);
   sfx('pick');
   try { navigator.vibrate && navigator.vibrate(18); } catch (e) { /* fine */ }
-  if (g.mode === 'solo') { status('Locked in'); return; }
+  if (g.mode === 'solo') { status(`Locked in at ${(ms / 1000).toFixed(1)}s`); return; }
   lockedLine();
   const send = (tries) => api(`/rooms/${S.seat.code}/answer`, { pid: S.seat.pid, tok: S.seat.tok, i, pick: k })
     .then((r) => { if (r.pick != null && r.pick !== k) { S.picks[i] = r.pick; if (cur.i === i) markPicked(r.pick); } })
@@ -619,7 +558,6 @@ function revealReady(i) {
   const g = S.game;
   return g.mode === 'solo' ? true : !!(g.results[i] && g.cards[i] && g.cards[i].answer != null);
 }
-const STAMPS = { misprint: 'TYPO!', lights: 'BULB OUT!', design: 'OOPS.', peeled: 'FADED!', back: 'GROAN!' };
 function myScore() {
   const g = S.game;
   if (!g) return 0;
@@ -629,41 +567,70 @@ function myScore() {
 }
 function showReveal(i) {
   cur.revealed = i;
-  const g = S.game, card = g.cards[i];
+  const g = S.game, card = g.cards[i], grid = $('grid'), p = $('panel');
   let answer, mine, ok, gained, line;
   if (g.mode === 'solo') {
     answer = card.answer; mine = S.picks[i]; ok = mine === answer;
-    gained = ok ? points(S.pickMs[i] == null ? CALL_MS : S.pickMs[i], false) : 0;
+    gained = ok ? points(S.pickMs[i], findMs(card), false) : 0;
     g.results[i] = { answer, mine: { pick: mine == null ? null : mine, ok, gained } };
-    line = ok ? `<b>+${gained}</b> · in ${(S.pickMs[i] / 1000).toFixed(1)}s` : mine == null ? 'Too slow!' : 'Not that one.';
+    line = ok ? `<b>+${gained}</b> · found it in ${(S.pickMs[i] / 1000).toFixed(1)}s` : mine == null ? 'Too slow!' : `Not ${LETTERS[mine]}. It was ${LETTERS[answer]}.`;
   } else {
     const r = g.results[i];
     answer = r.answer; mine = r.mine ? r.mine.pick : S.picks[i]; ok = !!(r.mine && r.mine.ok); gained = r.mine ? r.mine.gained : 0;
     line = r.first ? `⚡ <b>${esc(r.first)}</b> got it first · ${r.right.length} of ${g.players.length} right` : 'Nobody got it!';
   }
-  const box = $('opts');
-  box.className = 'opts grid revealed';
-  for (const el of box.children) {
+  for (const el of grid.querySelectorAll('.tile')) {
     const k = +el.dataset.k;
     el.classList.toggle('right', k === answer);
     el.classList.toggle('wrong', k === mine && !ok);
     el.classList.toggle('mine', k === mine);
     el.classList.remove('picked');
   }
+  grid.classList.remove('locked', 'deal');
+  grid.classList.add('revealed');
   const stamp = $('stamp');
-  stamp.textContent = card.type === 'joke' ? 'BA-DUM-TSS!' : STAMPS[card.kind] || 'OOPS.';
-  stamp.classList.toggle('joke', card.type === 'joke');
+  if (card.type === 'joke') {
+    stamp.textContent = 'BA-DUM-TSS!';
+    stamp.classList.add('joke');
+    sfx('rimshot');
+    setTimeout(() => sfx(ok ? 'right' : mine == null ? 'meh' : 'wrong'), 650);
+  } else {
+    // the odd tile zooms up to fill the screen, its difference circled
+    const tile = grid.querySelector(`.tile[data-k="${answer}"]`);
+    const from = tile ? tile.getBoundingClientRect() : null;
+    $('panelArt').innerHTML = panel(card, { lines: card.off, marks: card.marks });
+    p.hidden = false;
+    p.classList.add('big');
+    grid.classList.add('gone');
+    $('ask').textContent = card.reading || '';
+    const to = p.getBoundingClientRect();
+    if (from && to.width && !reduced()) {
+      p.style.transition = 'none';
+      p.style.transform = `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width})`;
+      p.style.transformOrigin = '0 0';
+      void p.offsetWidth;
+      p.style.transition = 'transform 0.42s cubic-bezier(.2, 1.1, .4, 1)';
+      p.style.transform = '';
+    }
+    const art = $('panelArt');
+    const circle = () => { if (cur.i === i && !art.querySelector('.ring')) { fitText(art); ring(art.querySelector('svg')); } };
+    setTimeout(() => (document.fonts ? document.fonts.ready.then(circle) : circle()), reduced() ? 0 : 450);
+    stamp.textContent = card.stamp || 'OOPS.';
+    stamp.classList.remove('joke');
+    sfx('slam');
+    setTimeout(() => sfx(ok ? 'right' : mine == null ? 'meh' : 'wrong'), 300);
+    // a shirt with a punchline on the back turns around
+    if (card.scene === 'tee' && card.back) {
+      setTimeout(() => {
+        if (cur.i !== i) return;
+        p.classList.remove('spin'); void p.offsetWidth; p.classList.add('spin');
+        setTimeout(() => { if (cur.i === i) { art.innerHTML = panel(card, { back: true, lines: card.off }); fitSoon(art); } }, reduced() ? 0 : 330);
+      }, 1700);
+    }
+  }
   stamp.hidden = false;
   stamp.style.animation = 'none'; void stamp.offsetWidth; stamp.style.animation = '';
   if (card.caption) { $('caption').textContent = card.caption; $('caption').hidden = false; }
-  // a shirt turns around to show its back
-  if (card.scene === 'tee' && card.back) {
-    const p = $('panel');
-    p.classList.remove('slam', 'spin'); void p.offsetWidth; p.classList.add('spin');
-    setTimeout(() => { if (cur.i === i) { $('panelArt').innerHTML = panel(card, { back: true }); fitSoon($('panelArt')); } }, reduced() ? 0 : 330);
-  }
-  if (card.type === 'joke') sfx('rimshot');
-  setTimeout(() => sfx(ok ? 'right' : mine == null ? 'meh' : 'wrong'), card.type === 'joke' ? 650 : 0);
   popGain(ok ? `+${gained}` : mine == null ? 'TOO SLOW' : 'NOPE', !ok);
   const sc = $('myScore');
   sc.textContent = fmt(myScore());
@@ -671,12 +638,12 @@ function showReveal(i) {
   status(line);
 }
 function popGain(text, miss) {
-  const box = $('opts').getBoundingClientRect();   // just above the letters, where everyone's looking
+  const box = $('status').getBoundingClientRect();   // just above the result line
   const el = document.createElement('div');
   el.className = 'gain' + (miss ? ' miss' : '');
   el.textContent = text;
   el.style.left = box.left + box.width / 2 + 'px';
-  el.style.top = box.top - 34 + 'px';
+  el.style.top = box.top - 52 + 'px';
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 1400);
 }
@@ -691,10 +658,15 @@ function tick(at, now) {
   }
   const t = g.times[at.i];
   if (!t) return;
-  const span = at.beat === 'look' ? [t.at, t.review] : at.beat === 'review' ? [t.review, t.call] : at.beat === 'call' ? [t.call, t.reveal] : [t.reveal, t.end];
-  $('fuse').style.transform = `scaleX(${clamp(1 - (now - span[0]) / (span[1] - span[0]), 0, 1)})`;
-  $('fuseBox').classList.toggle('hot', at.beat === 'call');
-  const name = BEAT_NAMES[at.beat] || '';
+  const span = at.beat === 'find' ? [t.at, t.reveal] : [t.reveal, t.end];
+  const left = span[1] - now;
+  $('fuse').style.transform = `scaleX(${clamp(left / (span[1] - span[0]), 0, 1)})`;
+  $('fuseBox').classList.toggle('hot', at.beat === 'find' && left < 3000);
+  // the last three seconds tick
+  const secs = at.beat === 'find' ? Math.ceil(left / 1000) : -1;
+  if (secs !== cur.secs) { cur.secs = secs; if (secs > 0 && secs <= 3 && S.picks[at.i] == null) sfx('tick'); }
+  const card = g.cards[at.i];
+  const name = at.beat === 'find' ? (card && card.type === 'joke' ? 'PICK IT!' : 'FIND IT!') : 'REVEAL';
   if (name !== cur.beatName) { cur.beatName = name; $('beatName').textContent = name; }
 }
 
@@ -766,11 +738,7 @@ function wire() {
     if (S.screen !== 'round' || e.target.closest('input')) return;
     const k = 'abcd'.indexOf(e.key.toLowerCase()), n = '1234'.indexOf(e.key);
     const idx = k >= 0 ? k : n;
-    if (cur.beat === 'call' && idx >= 0) pick(idx);
-    else if (cur.beat === 'review') {
-      if (idx >= 0) jump(idx);
-      else if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); flip(1); } else if (e.key === 'ArrowLeft') flip(-1);
-    }
+    if (cur.beat === 'find' && idx >= 0) pick(idx);
   });
 
   // home
@@ -797,35 +765,9 @@ function wire() {
   $('lobbyDeckBtn').addEventListener('click', () => openDecks('room'));
   $('inviteBtn').addEventListener('click', () => S.seat && share(`Get in here: Punchline, game ${S.seat.code}`, location.origin + BASE + S.seat.code));
 
-  // the round: flip the stack by swiping or tapping; call by tapping a letter
-  const box = $('opts');
-  let drag = null;
-  box.addEventListener('pointerdown', (e) => {
-    audio();
-    if (cur.beat !== 'review') return;
-    const top = topCard();
-    if (!top || !e.target.closest('.opt')) return;
-    drag = { x: e.clientX, dx: 0, el: top };
-    top.classList.add('drag');
-  });
-  box.addEventListener('pointermove', (e) => {
-    if (!drag) return;
-    drag.dx = e.clientX - drag.x;
-    drag.el.style.transform = `translateX(${drag.dx}px) rotate(${drag.dx / 14}deg)`;
-  });
-  const endDrag = () => {
-    if (!drag) return;
-    const { el, dx } = drag;
-    drag = null;
-    el.classList.remove('drag');
-    el.style.transform = '';
-    if (Math.abs(dx) > 40) flip(dx < 0 ? 1 : -1);
-    else if (Math.abs(dx) < 10) flip(1);
-  };
-  box.addEventListener('pointerup', endDrag);
-  box.addEventListener('pointercancel', () => { if (drag) { drag.el.classList.remove('drag'); drag.el.style.transform = ''; drag = null; } });
-  box.addEventListener('click', (e) => { const b = e.target.closest('.opt'); if (b && cur.beat === 'call') pick(+b.dataset.k); });
-  $('tabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) jump(+b.dataset.k); });
+  // the round: tap a tile
+  $('grid').addEventListener('click', (e) => { const b = e.target.closest('.tile'); if (b && cur.beat === 'find') pick(+b.dataset.k); });
+  $('grid').addEventListener('pointerdown', () => audio());
 
   // the end
   $('againBtn').addEventListener('click', () => openDecks('room'));

@@ -33,11 +33,11 @@ export function shuffle(list, rand) {
   return a;
 }
 
-// Ten cards from a deck, each with its options in a dealt order: { card, order } where order[k]
-// is the option index shown as letter k.
+// Ten cards from a deck: { card, order, odd }. A joke's punchlines go in a dealt order (order[k] is
+// the option shown on tile k); a sign's odd one out lands on tile `odd`.
 export function deal(deck, seed, n = CARDS_PER_GAME) {
   const rand = mulberry32(seedOf(seed));
-  return shuffle(deck.cards, rand).slice(0, n).map((card) => ({ card, order: shuffle([0, 1, 2, 3], rand) }));
+  return shuffle(deck.cards, rand).slice(0, n).map((card) => ({ card, order: shuffle([0, 1, 2, 3], rand), odd: Math.floor(rand() * 4) }));
 }
 
 export function dailyDeck(decks, today) {

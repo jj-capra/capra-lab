@@ -5,10 +5,12 @@ A Wrong Signs card is one comic panel with a sign in it (a storefront, billboard
 road sign, office plaque, park sign...) that came out wrong: a **misprint**, **burnt-out lights**,
 or **terrible design** that makes it read as something else.
 
-How a card plays: the panel shows alone for a few seconds, then four answer cards (A–D) drop in
-like a stack of photos and players flip through them while a clock runs; the writing fades out
-and players call the letter from memory. Then the right card flips back and the reveal shows the
-**caption**, the last laugh. So options must be short enough to read on a phone in a glance.
+How a card plays (the four-square, JC Nov 8 2026): the sign shows **four times**, three the way it
+should read and one with the mistake (the dark letters, the typo); players tap the odd one. Then
+it zooms in with the difference circled, and the reveal says what it reads and shows the
+**caption**, the last laugh. A design card's sign shows four times with a small made-up flaw on
+one, and the reveal explains the bad design. So `lights` and `misprint` cards are the best fit;
+the options still matter (the right one is what the reveal says it reads, or should say).
 
 ## File format
 

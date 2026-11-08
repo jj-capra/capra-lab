@@ -9,14 +9,8 @@ const INK = '#120E18';
 let uid = 0;
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-// "~BOWL" -> [{ c: 'B', off: true }, { c: 'O' }, ...]
-export function letters(line) {
-  const out = [];
-  for (let i = 0; i < line.length; i++) {
-    if (line[i] === '~' && i + 1 < line.length) { out.push({ c: line[i + 1], off: true }); i++; } else out.push({ c: line[i], off: false });
-  }
-  return out;
-}
+import { letters } from './shared/glyphs.mjs';
+export { letters };
 const visible = (line) => line.replace(/~/g, '');
 
 // Average glyph width per font size, used to pick a size that fits before the real measure.
@@ -25,6 +19,13 @@ const FONTS = {
   sans: { family: 'Inter, system-ui, sans-serif', k: 0.66, weight: 800, ls: 0 },
   hand: { family: '"Permanent Marker", "Comic Sans MS", cursive', k: 0.62, weight: 400, ls: 0 },
 };
+
+// The letters to circle at the reveal (set by panel() while it draws the odd tile).
+let MARKS = null;
+const glyphs = (l, k) => letters(l).map((g, i) => {
+  const cls = [g.off && 'off', MARKS && MARKS[k] && MARKS[k].includes(i) && 'diff'].filter(Boolean).join(' ');
+  return cls ? `<tspan class="${cls}">${esc(g.c)}</tspan>` : esc(g.c);
+}).join('');
 
 // The sign's lines centered in a box. o: { font, fills (one per line or one), size, lh, cls, shadow }
 function words(lines, box, o) {
@@ -37,7 +38,7 @@ function words(lines, box, o) {
   const fills = [].concat(o.fills || INK);
   const line = (l, k, extra = '') => {
     const y = first + k * size * lh;
-    const spans = letters(l).map((g) => (g.off ? `<tspan class="off">${esc(g.c)}</tspan>` : esc(g.c))).join('');
+    const spans = glyphs(l, k);
     return `<text x="${cx}" y="${y.toFixed(1)}" text-anchor="middle" font-family='${f.family}' font-weight="${f.weight}" font-size="${size.toFixed(1)}" letter-spacing="${f.ls}" fill="${fills[k % fills.length]}" data-fit="${box.w}" ${extra}>${spans}</text>`;
   };
   let out = '';
@@ -238,7 +239,8 @@ const hash = (s) => { let h = 7; for (const ch of String(s)) h = (h * 31 + ch.ch
 const TEE_PATH = 'M168 22Q200 46 232 22L316 44L394 104L356 152L306 126L308 292H92L94 126L44 152L6 104L84 44Z';
 
 function tee(c, id, back) {
-  const h = hash(c.id || c.sign.join('|'));
+  // the shirt's color comes from the right version, so all four tiles wear the same shirt
+  const h = hash(c.id || (c.base || c.sign || []).join('|'));
   const shirt = TEES[h % TEES.length], wall = WALLS[(h >>> 4) % WALLS.length];
   const print = DARK_TEES.has(shirt) ? '#FFF8EC' : INK;
   const accent = DARK_TEES.has(shirt) ? '#FFD23F' : (shirt === '#FF9A4D' || shirt === '#F06AA6' ? '#2F3E8F' : '#C8333A');
@@ -261,10 +263,11 @@ function tee(c, id, back) {
     if (c.arc && lines.length) {
       const l = lines.shift();
       const size = Math.min(34, 190 / (visible(l).length * FONTS.disp.k));
-      const spans = letters(l).map((g) => (g.off ? `<tspan class="off">${esc(g.c)}</tspan>` : esc(g.c))).join('');
-      print_ += `<text font-family='${FONTS.disp.family}' font-size="${size.toFixed(1)}" letter-spacing="1" fill="${accent}" text-anchor="middle"><textPath href="#arc${id}" startOffset="50%">${spans}</textPath></text>`;
+      const spans = glyphs(l, 0);
+      print_ += `<text class="arc" font-family='${FONTS.disp.family}' font-size="${size.toFixed(1)}" letter-spacing="1" fill="${accent}" text-anchor="middle"><textPath href="#arc${id}" startOffset="50%">${spans}</textPath></text>`;
       top = 112;
     }
+    if (c.arc && MARKS) MARKS = MARKS.slice(1);
     const artH = art.length ? 66 : 0;
     const box = { x: 112, y: top, w: 176, h: 258 - top - artH };
     if (lines.length) print_ += words(lines, box, { font: 'disp', fills: art.length || c.arc ? print : [print, accent], size: c.arc ? 40 : 50 });
@@ -293,11 +296,15 @@ function jokeStage(id) {
     + dots(id, 0.08) + frame;
 }
 
-// The panel for a card; { back: true } turns a shirt around to show the back (at the reveal).
-export function panel(card, { back = false } = {}) {
+// The panel for a card. { lines } draws the sign with those lines instead (the four-square's two
+// versions), { marks } tags the letters to circle, { back: true } turns a shirt around.
+export function panel(card, { back = false, lines = null, marks = null } = {}) {
   const id = 'p' + (++uid);
-  const body = card.type === 'joke' ? jokeStage(id) : back && card.scene === 'tee' ? tee(card, id, true) : (SCENES[card.scene] || SCENES.storefront)(card, id);
-  return `<svg class="panel-art" viewBox="0 0 400 280" role="img" aria-label="${esc(describe(card))}" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
+  const c = lines ? { ...card, sign: lines } : card;
+  MARKS = marks;
+  let body;
+  try { body = c.type === 'joke' ? jokeStage(id) : back && c.scene === 'tee' ? tee(c, id, true) : (SCENES[c.scene] || SCENES.storefront)(c, id); } finally { MARKS = null; }
+  return `<svg class="panel-art" viewBox="0 0 400 280" role="img" aria-label="${esc(describe(c))}" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
 }
 
 // What a screen reader hears: the sign as it reads, dark letters left out.
@@ -306,6 +313,25 @@ export function describe(card) {
   const read = card.sign.map((l) => letters(l).filter((g) => !g.off).map((g) => g.c).join('')).join(' / ');
   if (card.scene === 'tee') return `${card.where ? card.where + ': ' : ''}a T-shirt that says ${read}${card.art ? ', with clip art of ' + card.art.join(', ') : ''}`;
   return `${card.where ? card.where + ': ' : ''}a ${card.scene} sign that says ${read}`;
+}
+
+// The red ring a spot-the-difference answer key draws: around the letters that are off.
+export function ring(svg) {
+  if (!svg) return;
+  const parts = [...svg.querySelectorAll('.lit .off, .lit .diff, .arc .off, .arc .diff')];
+  if (!parts.length) return;
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const t of parts) {
+    let b;
+    try { b = t.getBBox(); } catch (e) { continue; }
+    if (!b || (!b.width && !b.height)) continue;
+    x0 = Math.min(x0, b.x); y0 = Math.min(y0, b.y); x1 = Math.max(x1, b.x + b.width); y1 = Math.max(y1, b.y + b.height);
+  }
+  if (!Number.isFinite(x0)) return;
+  const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, rx = (x1 - x0) / 2 + 12, ry = (y1 - y0) / 2 + 9;
+  const e = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+  for (const [k, v] of Object.entries({ cx, cy, rx, ry, class: 'ring', transform: `rotate(-4 ${cx} ${cy})`, pathLength: 100 })) e.setAttribute(k, v);
+  svg.appendChild(e);
 }
 
 // Squeeze any line that came out wider than its box once the real font has loaded.

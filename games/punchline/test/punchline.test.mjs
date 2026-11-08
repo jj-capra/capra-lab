@@ -5,7 +5,9 @@ import { createApi, BREW } from '../server/api.js';
 import { memoryStore } from '../server/store.js';
 import { loadDecks, problems, litText } from '../server/load.mjs';
 import { dailyDeck, deal, thanksgiving, pacificDate } from '../server/daily.js';
-import { schedule, beatAt, points, lookMs, reviewMs, askOf, CARDS_PER_GAME, COUNTDOWN_MS, CALL_MS, FADE_MS } from '../shared/rules.mjs';
+import { schedule, beatAt, points, findMs, askOf, CARDS_PER_GAME, COUNTDOWN_MS, FIND_MS, REVEAL_MS } from '../shared/rules.mjs';
+import { variantOf, fixedLines, flaw, marks } from '../server/variants.mjs';
+import { mulberry32, seedOf } from '../server/daily.js';
 
 const tests = [];
 const test = (name, fn) => tests.push([name, fn]);
@@ -89,35 +91,66 @@ test('the daily drop takes turns (signs, jokes, shirts), never shows Late Night 
   assert.equal(pacificDate(Date.UTC(2026, 10, 9, 7)), '2026-11-08');   // 11pm the night before in California
 });
 
-test('dealing is the same for the same seed and shuffles the letters', () => {
+test('dealing is the same for the same seed; the odd one and the right punchline land on every tile', () => {
   const a = deal(DECKS[0], 'x'), b = deal(DECKS[0], 'x'), c = deal(DECKS[0], 'y');
   assert.equal(a.length, CARDS_PER_GAME);
-  assert.deepEqual(a.map((d) => [d.card.id, d.order]), b.map((d) => [d.card.id, d.order]));
+  assert.deepEqual(a.map((d) => [d.card.id, d.order, d.odd]), b.map((d) => [d.card.id, d.order, d.odd]));
   assert.notDeepEqual(a.map((d) => d.card.id), c.map((d) => d.card.id));
-  const firstSlots = new Set(Array.from({ length: 40 }, (_, k) => deal(DECKS[0], 's' + k)[0].order.indexOf(0)));
-  assert.equal(firstSlots.size, 4, 'the right answer lands on every letter');
+  assert.equal(new Set(Array.from({ length: 40 }, (_, k) => deal(DECKS[0], 's' + k)[0].odd)).size, 4);
+  assert.equal(new Set(Array.from({ length: 40 }, (_, k) => deal(DECKS[4], 's' + k)[0].order.indexOf(2))).size, 4);
 });
 
-test('the clock: beats in order, long signs get longer, points reward speed and the first right answer', () => {
+test('the four-square: every sign has a right version and an odd one, and the odd letters get circled', () => {
+  const rnd = (s) => mulberry32(seedOf(s));
+  // burnt out: three lit, one with the bulb out
+  const lights = { id: 'x/1', type: 'sign', scene: 'neon', kind: 'lights', sign: ['~BOWLING', 'ALL NIGHT'], options: ['OWLING ALL NIGHT', 'b', 'c', 'd'], answer: 0 };
+  let v = variantOf(lights, rnd('a'));
+  assert.deepEqual(v.base, ['BOWLING', 'ALL NIGHT']);
+  assert.deepEqual(v.off, ['~BOWLING', 'ALL NIGHT']);
+  assert.deepEqual(v.marks, [[0], []]);
+  assert.equal(v.stamp, 'BULB OUT!');
+  assert.match(v.reading, /OWLING ALL NIGHT/);
+  // a misprint: three fixed, one with the typo
+  const typo = { id: 'x/2', type: 'sign', scene: 'storefront', kind: 'misprint', sign: ['GOAT RENTALS', 'BY THE HOUR'], options: ['BOAT RENTALS BY THE HOUR', 'b', 'c', 'd'], answer: 0 };
+  v = variantOf(typo, rnd('b'));
+  assert.deepEqual(v.base, ['BOAT RENTALS', 'BY THE HOUR']);
+  assert.deepEqual(v.off, typo.sign);
+  assert.deepEqual(v.marks, [[0], []]);
+  assert.deepEqual(fixedLines(['LET’S EAT', 'GRANDMA!'], 'LET’S EAT, GRANDMA!'), ['LET’S EAT,', 'GRANDMA!']);
+  // a design card gets a flaw made for it, the same one for the same seed, never a rude one
+  const design = { id: 'x/3', type: 'sign', scene: 'billboard', kind: 'design', sign: ['SHIFT MANAGER', 'WANTED'], options: ['a', 'b', 'c', 'd'], answer: 0 };
+  for (let k = 0; k < 60; k++) {
+    const w = variantOf(design, rnd('d' + k));
+    assert.notDeepEqual(w.off, w.base);
+    assert.ok(w.marks.some((m) => m.length), 'something to circle');
+    assert.ok(!/SHIT|SH IT/.test(w.off.join(' ').replace(/~./g, '')), 'no flaw spells a swear: ' + w.off);
+    assert.deepEqual(variantOf(design, rnd('d' + k)).off, w.off);
+  }
+  // neon signs mostly lose a bulb; a dropped letter is circled where it went missing
+  const neon = Array.from({ length: 40 }, (_, k) => flaw(['OPEN LATE'], 'neon', rnd('n' + k)).type);
+  assert.ok(neon.filter((t) => t === 'lights').length > 20);
+  assert.deepEqual(marks(['BREAD'], ['BRED']), [[3]], 'the circle goes where the letter went missing');
+});
+
+test('the clock: find then reveal, jokes get reading time, points reward speed and the first right tap', () => {
   const cards = DECKS[0].cards.slice(0, 3);
   const times = schedule(cards, 1000);
   assert.equal(times[0].at, 1000);
+  assert.equal(times[0].reveal, 1000 + FIND_MS);
+  assert.equal(times[0].end, times[0].reveal + REVEAL_MS);
   assert.equal(times[1].at, times[0].end);
   assert.deepEqual(beatAt(times, 999), { i: 0, beat: 'countdown' });
-  assert.equal(beatAt(times, times[0].review - 1).beat, 'look');
-  assert.equal(beatAt(times, times[0].review).beat, 'review');
-  assert.equal(beatAt(times, times[0].call).beat, 'call');
+  assert.equal(beatAt(times, times[0].reveal - 1).beat, 'find');
   assert.equal(beatAt(times, times[0].reveal).beat, 'reveal');
   assert.deepEqual(beatAt(times, times[2].end), { i: 2, beat: 'over' });
-  const short = { type: 'sign', sign: ['OPEN'], options: ['a', 'b', 'c', 'd'] };
-  const long = { type: 'sign', sign: ['A VERY LONG SIGN', 'WITH LOTS ON IT', 'AND MORE AND MORE', 'AND THEN SOME'], options: ['a'.repeat(30), 'b'.repeat(30), 'c'.repeat(30), 'd'.repeat(30)] };
-  assert.ok(lookMs(long) > lookMs(short) && reviewMs(long) > reviewMs(short));
-  assert.equal(points(0, false), 200);
-  assert.equal(points(FADE_MS, true), 250);
-  assert.equal(points(CALL_MS, false), 100);
-  assert.ok(points(3000, false) < points(2000, false));
-  assert.equal(askOf({ type: 'sign', kind: 'lights' }), 'What does it say right now?');
-  assert.equal(askOf({ type: 'sign', kind: 'design', ask: 'Custom?' }), 'Custom?');
+  const joke = { type: 'joke', setup: 'Why did the goat cross the road?', options: ['a'.repeat(30), 'b'.repeat(30), 'c'.repeat(30), 'd'.repeat(30)] };
+  assert.ok(findMs(joke) > 9000 && findMs(joke) <= 16000);
+  assert.equal(points(0, FIND_MS, false), 200);
+  assert.equal(points(0, FIND_MS, true), 250);
+  assert.equal(points(FIND_MS, FIND_MS, false), 100);
+  assert.ok(points(3000, FIND_MS, false) < points(2000, FIND_MS, false));
+  assert.equal(askOf({ type: 'sign', kind: 'lights' }), 'Which one is different?');
+  assert.equal(askOf(joke), 'Which punchline lands?');
 });
 
 test('while it is a JJ Brew, only Capra’s Lab sees the drop and hosts', async () => {
@@ -185,19 +218,23 @@ test('a whole party game: join, start, answers stay secret until the reveal, sco
   assert.equal((await call(`/rooms/${code}/start`, H)).status, 409);
   const times = started.room.times;
 
-  // during the look: the card, no answer
-  to(times[0].at + 10);
+  // just before the card is up: phones already have both versions, but no taps yet
+  to(times[0].at - 1000);
   let v = (await call(`/rooms/${code}`, Z)).room;
-  assert.equal(v.beat, 'look');
   assert.equal(v.cards.length, 1);
+  assert.equal((await call(`/rooms/${code}/answer`, { ...Z, i: 0, pick: 0 })).status, 409, 'no taps before the card is up');
+  to(times[0].at + 10);
+  v = (await call(`/rooms/${code}`, Z)).room;
+  assert.equal(v.beat, 'find');
   assert.equal(v.cards[0].answer, undefined);
   assert.equal(v.cards[0].caption, undefined);
-  assert.equal(v.cards[0].options.length, 4);
-  assert.equal((await call(`/rooms/${code}/answer`, { ...Z, i: 0, pick: 0 })).status, 409, 'no answers before the letters');
+  assert.equal(v.cards[0].marks, undefined, 'no circles before the reveal');
+  assert.notDeepEqual(v.cards[0].base, v.cards[0].off);
+  const answer = deal(DECKS[0], code + ':1')[0].odd;
+  assert.equal(v.cards[0].odd, answer);
 
-  // the call: answers land, one per player, and nobody sees anyone's letter yet
-  const answer = deal(DECKS[0], code + ':1')[0].order.indexOf(0);
-  to(times[0].call + 500);
+  // the find: taps land, one per player, and nobody sees anyone's pick yet
+  to(times[0].at + 500);
   assert.equal((await call(`/rooms/${code}/answer`, { ...A, i: 0, pick: answer })).status, 200);
   tick(1500);
   assert.equal((await call(`/rooms/${code}/answer`, { ...Z, i: 0, pick: (answer + 1) % 4 })).status, 200);
@@ -222,10 +259,11 @@ test('a whole party game: join, start, answers stay secret until the reveal, sco
   assert.equal(v.cards[0].caption, 'Card ' + DECKS[0].cards.find((c) => c.id === deal(DECKS[0], code + ':1')[0].card.id).id.split('/')[1] + '.');
   assert.equal(v.results[0].first, 'Ann');
   assert.deepEqual(v.results[0].right.sort(), ['Ann', 'JJ-Capra']);
-  assert.equal(v.results[0].mine.gained, points(500, true));
+  assert.equal(v.results[0].mine.gained, points(500, FIND_MS, true));
+  assert.ok(v.cards[0].marks.some((m) => m.length) && v.cards[0].stamp, 'the reveal circles the difference and stamps it');
   assert.equal(v.players[0].name, 'Ann');
-  assert.equal(v.players[0].score, 250);
-  assert.equal(v.players[1].score, points(2500, false));
+  assert.equal(v.players[0].score, points(500, FIND_MS, true));
+  assert.equal(v.players[1].score, points(2500, FIND_MS, false));
   assert.equal(v.players.find((p) => p.name === 'Zed').score, 0);
 
   // a guest (code only, no seat) can watch but has no picks
@@ -264,12 +302,12 @@ test('the back of a shirt stays secret until the reveal', async () => {
   const host = await call('/rooms', as('jj-capra', { deckId: 'ugly' }));
   const me = { pid: host.pid, tok: host.tok };
   const s = await call(`/rooms/${host.code}/start`, me);
-  to(s.room.times[0].call + 1);
+  to(s.room.times[0].at + 1);
   let v = (await call(`/rooms/${host.code}`, me)).room;
   assert.equal(v.cards[0].scene, 'tee');
   assert.deepEqual(v.cards[0].art, ['wolf']);
   assert.equal(v.cards[0].back, undefined);
-  assert.equal(v.cards[0].ask, 'What’s on the back?');
+  assert.equal(v.cards[0].ask, 'Which one is different?');
   to(s.room.times[0].reveal + 1);
   v = (await call(`/rooms/${host.code}`, me)).room;
   assert.deepEqual(v.cards[0].back, ['THE', 'PUNCHLINE']);
