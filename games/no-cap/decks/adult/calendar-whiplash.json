@@ -6,83 +6,83 @@
   "cards": [
     {
       "id": "cw01",
-      "say": "[Betty White was born before sliced bread was first sold], [the first lighter was invented before the friction match], [Queen Victoria was still reigning when the Wright brothers flew], and [Genghis Khan was still alive when the Magna Carta was sealed].",
+      "say": "[Betty White was born before sliced bread was first sold], [the first lighter was invented before the friction match], [Queen Victoria was still reigning when the Wright brothers flew], and [eyeglasses were invented before the printing press].",
       "cap": 2,
       "real": "Queen Victoria died in January 1901, almost three years before the Wright brothers' first flight in December 1903.",
       "src": [
         "https://en.wikipedia.org/wiki/Sliced_bread",
         "https://www.todayifoundout.com/index.php/2011/10/lighters-were-invented-before-the-match/",
         "https://en.wikipedia.org/wiki/Victorian_era",
-        "https://www.history.com/this-day-in-history/august-18/genghis-khan-dies"
+        "NOT WEB-CHECKED (textbook: Gutenberg's press dates to about 1440; spectacles from 13th-century Italy confirmed here) https://www.college-optometrists.org/the-british-optical-association-museum/the-history-of-spectacles"
       ]
     },
     {
       "id": "cw02",
-      "say": "[Charles Dickens lived long enough to see the telephone patented], [Harriet Tubman lived long enough to see the Wright brothers fly], [Orville Wright lived long enough to see a plane break the sound barrier], and [Ben Franklin lived long enough to see George Washington become president].",
+      "say": "[Charles Dickens lived long enough to see the telephone patented], [Alexander Hamilton's widow lived long enough to see the California Gold Rush], [Charlie Chaplin lived long enough to see the Beatles break up], and [Ben Franklin lived long enough to see George Washington become president].",
       "cap": 0,
       "real": "Dickens died in 1870, six years before Alexander Graham Bell patented the telephone in 1876.",
       "src": [
         "NOT WEB-CHECKED (Bell's March 1876 patent confirmed; Dickens's 1870 death is textbook) https://en.wikipedia.org/wiki/Alexander_Graham_Bell",
-        "https://en.wikipedia.org/wiki/Legacy_of_Harriet_Tubman",
-        "https://en.wikipedia.org/wiki/Wright_brothers",
+        "NOT WEB-CHECKED (textbook: the Gold Rush began in 1848; Eliza Hamilton's 1757-1854 life confirmed here) https://www.nps.gov/hagr/learn/education/elizabeth-hamilton-schuyler-timeline.htm",
+        "NOT WEB-CHECKED (textbook: the Beatles split in 1970; Chaplin died on December 25, 1977) https://en.wikipedia.org/wiki/Charlie_Chaplin",
         "NOT WEB-CHECKED (Washington's April 30, 1789 inauguration confirmed; Franklin's April 1790 death is textbook) https://en.wikipedia.org/wiki/George_Washington"
       ]
     },
     {
       "id": "cw03",
-      "say": "[Marilyn Monroe and Queen Elizabeth II were born in the same year], [Galileo was born the same week that Michelangelo died], [Bach and Handel were born in the same year and never once met], and [Shakespeare and Cervantes were born in the same year].",
+      "say": "[Muhammad Ali and Stephen Hawking were born in the same month], [Galileo was born the same week that Michelangelo died], [Mark Twain and Andrew Carnegie were born in the same year], and [Shakespeare and Cervantes were born in the same year].",
       "cap": 3,
       "real": "Cervantes was born in 1547, 17 years before Shakespeare. The pair did die in the same year, 1616.",
       "src": [
-        "https://en.wikipedia.org/wiki/1926_in_music",
+        "NOT WEB-CHECKED (textbook: Hawking born January 8, 1942; Ali born January 17, 1942) https://en.wikipedia.org/wiki/Stephen_Hawking",
         "https://en.wikipedia.org/wiki/1564",
-        "https://engines.egr.uh.edu/episode/1186",
+        "NOT WEB-CHECKED (textbook: Carnegie born November 25, 1835; Twain born November 30, 1835) https://en.wikipedia.org/wiki/Andrew_Carnegie",
         "https://en.wikipedia.org/wiki/1616"
       ]
     },
     {
       "id": "cw04",
-      "say": "[The Eastern Roman Empire still existed when the Aztecs founded Tenochtitlan], [the Eiffel Tower was completed three years before the Statue of Liberty], [Ireland's Newgrange tomb is older than the Great Pyramid of Giza], and [Vikings were in Newfoundland 471 years before Columbus crossed the Atlantic].",
+      "say": "[The Eastern Roman Empire still existed when the Aztecs founded Tenochtitlan], [Easter Island's moai statues were carved before Rome was founded], [Ireland's Newgrange tomb is older than the Great Pyramid of Giza], and [Vikings were in Newfoundland 471 years before Columbus crossed the Atlantic].",
       "cap": 1,
-      "real": "The Statue of Liberty was dedicated in 1886, three years before the Eiffel Tower opened in 1889. Gustave Eiffel even engineered the statue's iron frame.",
+      "real": "Rome's traditional founding date is 753 BC. People didn't settle Easter Island until around 800 to 1200 AD, and the moai were carved after that.",
       "src": [
         "https://en.wikipedia.org/wiki/Tenochtitlan",
-        "https://en.wikipedia.org/wiki/Statue_of_Liberty",
+        "https://www.livescience.com/archaeology/easter-island-rapa-nui-and-its-famous-moai-statues",
         "https://kids.britannica.com/students/article/Newgrange/601152",
         "https://www.cbsnews.com/news/vikings-north-america-470-years-before-christopher-columbus"
       ]
     },
     {
       "id": "cw05",
-      "say": "[A movie was streamed over the internet before Netflix was even founded], [Facebook was up and running before LinkedIn launched], [the Soviet Union still existed when the first website went online], and [the PlayStation 2 was still being made five years after the PS3 came out].",
+      "say": "[A movie was streamed over the internet before Netflix was even founded], [Facebook was up and running before LinkedIn launched], [Pizza Hut was taking pizza orders online back in 1994], and [the PlayStation 2 was still being made five years after the PS3 came out].",
       "cap": 1,
       "real": "LinkedIn launched in May 2003. Facebook didn't launch until February 2004.",
       "src": [
         "https://en.wikipedia.org/wiki/Timeline_of_online_video",
         "https://www.cbsnews.com/pictures/then-and-now-a-history-of-social-networking-sites",
-        "https://www.engadget.com/2015/12/20/first-website-is-25-years-old/",
+        "https://www.qsrmagazine.com/news/pizza-hut-celebrates-20th-anniversary-online-ordering",
         "https://www.engadget.com/2012/12/28/playstation-2-discontinued-in-japan/"
       ]
     },
     {
       "id": "cw06",
-      "say": "[China's last emperor was still alive for the first Super Bowl], [President John Tyler, born in 1790, had a grandson alive in 2024], [the US government was still paying a Civil War pension in 2020], and [Napoleon was still alive when Queen Victoria took the throne].",
+      "say": "[China's last emperor was still alive for the first Super Bowl], [the last crown prince of Austria-Hungary lived until 2011], [the first monthly Social Security check went to a woman who collected for 35 years], and [Napoleon was still alive when Queen Victoria took the throne].",
       "cap": 3,
       "real": "Napoleon died in 1821, 16 years before Victoria became queen in 1837.",
       "src": [
         "https://en.wikipedia.org/wiki/Puyi",
-        "https://www.kpbs.org/news/national/2025/05/29/harrison-ruffin-tyler-grandson-of-the-10th-u-s-president-dies-at-96",
-        "https://en.wikipedia.org/wiki/Irene_Triplett",
+        "https://en.wikipedia.org/wiki/Otto_von_Habsburg",
+        "https://en.wikipedia.org/wiki/Ida_May_Fuller",
         "https://en.wikipedia.org/wiki/Napoleon"
       ]
     },
     {
       "id": "cw07",
-      "say": "[The first Ferris wheel was built for the same fair as the Eiffel Tower], [Dr Pepper was being served in Texas before Coca-Cola existed], [the oldest recording of a human voice is older than the phonograph], and [the classic Nokia ringtone comes from a guitar piece written in 1902].",
+      "say": "[The first chocolate chip cookies were baked back in the 1890s], [Dr Pepper was being served in Texas before Coca-Cola existed], [the oldest recording of a human voice is older than the phonograph], and [the classic Nokia ringtone comes from a guitar piece written in 1902].",
       "cap": 0,
-      "real": "The Eiffel Tower was built for the 1889 Paris fair. The first Ferris wheel was Chicago's answer to it, at the 1893 World's Fair.",
+      "real": "Ruth Wakefield baked the first chocolate chip cookies at the Toll House Inn in Massachusetts in 1938.",
       "src": [
-        "https://www.smithsonianmag.com/history/history-ferris-wheel-180955300/",
+        "https://en.wikipedia.org/wiki/Ruth_Graves_Wakefield",
         "https://www.todayifoundout.com/index.php/2024/01/the-twisting-turning-tale-of-the-invention-of-dr-pepper/",
         "https://www.smithsonianmag.com/smithsonian-institution/from-the-collections-sound-recordings-heard-for-the-first-time-6989525/",
         "https://en.wikipedia.org/wiki/Nokia_tune"
@@ -90,24 +90,24 @@
     },
     {
       "id": "cw08",
-      "say": "[The last independent Maya kingdom fell after Newton published his laws of motion], [work on Neuschwanstein Castle began after the American Civil War ended], [Machu Picchu was already built when work began on Notre-Dame in Paris], and [Hawaii's royal palace had electric lights before the White House did].",
+      "say": "[The last independent Maya kingdom fell after Newton published his laws of motion], [work on Neuschwanstein Castle began after the American Civil War ended], [India's Taj Mahal is older than Saint Basil's Cathedral in Moscow], and [Hawaii's royal palace had electric lights before the White House did].",
       "cap": 2,
-      "real": "Work on Notre-Dame began in 1163. Machu Picchu was built by the Inca in the mid-1400s, almost three centuries later.",
+      "real": "Saint Basil's Cathedral in Moscow was built from 1555 to 1561. Work on the Taj Mahal didn't begin until 1632, about 70 years later.",
       "src": [
         "https://en.wikipedia.org/wiki/Spanish_conquest_of_Pet%C3%A9n",
         "https://www.neuschwanstein.de/englisch/palace/history.htm",
-        "https://kids.britannica.com/kids/article/Machu-Picchu/346167",
+        "NOT WEB-CHECKED (textbook: Saint Basil's built 1555 to 1561; Taj Mahal begun 1632, finished 1653) https://en.wikipedia.org/wiki/Saint_Basil%27s_Cathedral",
         "https://ethw.org/Milestones:Electric_Lighting_Of_The_Kingdom_of_Hawaii_1886-1888"
       ]
     },
     {
       "id": "cw09",
-      "say": "[Woodstock happened less than a month after the Moon landing], [the first email was sent two years after the first cellphone call], [Apple was founded before the first Star Wars movie came out], and [NBA games had no three-point line until 1979].",
+      "say": "[Woodstock happened less than a month after the Moon landing], [the Rubik's Cube was invented after the first Sony Walkman went on sale], [Apple was founded before the first Star Wars movie came out], and [NBA games had no three-point line until 1979].",
       "cap": 1,
-      "real": "Ray Tomlinson sent the first network email in 1971, two years before Martin Cooper made the first handheld cellphone call in 1973.",
+      "real": "Ernő Rubik invented his cube in 1974, five years before Sony's first Walkman went on sale in 1979.",
       "src": [
         "NOT WEB-CHECKED (textbook: Moon landing July 20, 1969; Woodstock August 15-18, 1969) https://en.wikipedia.org/wiki/Woodstock",
-        "https://en.wikipedia.org/wiki/Ray_Tomlinson",
+        "NOT WEB-CHECKED (textbook: Rubik made his cube in 1974; the Walkman went on sale in July 1979) https://en.wikipedia.org/wiki/Rubik%27s_Cube",
         "https://en.wikipedia.org/wiki/Apple_Inc.",
         "NOT WEB-CHECKED (textbook: the NBA adopted the three-point line for the 1979-80 season) https://en.wikipedia.org/wiki/Three-point_field_goal"
       ]
@@ -126,25 +126,25 @@
     },
     {
       "id": "cw11",
-      "say": "[The Battle of New Orleans came after the War of 1812 peace treaty was signed], [the Hundred Years' War between England and France lasted 116 years], [Concorde was still flying passengers when the first iPhone came out], and [the original VW Beetle was still being built in Mexico in 2003].",
+      "say": "[Germany paid off the last of its World War I debts in 2010], [the Republic of Venice lasted more than a thousand years], [Concorde was still flying passengers when the first iPhone came out], and [the original VW Beetle was still being built in Mexico in 2003].",
       "cap": 2,
       "real": "Concorde's last passenger flight was in October 2003, almost four years before the first iPhone went on sale in June 2007.",
       "src": [
-        "https://en.wikipedia.org/wiki/Treaty_of_Ghent",
-        "https://www.britannica.com/topic/list-of-wars-2031197",
+        "https://www.rnz.co.nz/news/world/58438/germany-finally-pays-off-its-world-war-i-debt",
+        "https://en.wikipedia.org/wiki/Republic_of_Venice",
         "https://www.history.com/this-day-in-history/october-24/the-concorde-makes-its-final-flight",
         "https://history.com/this-day-in-history/last-classic-vw-beetle-rolls-off-the-line"
       ]
     },
     {
       "id": "cw12",
-      "say": "[England's first flushing toilet was built for Queen Victoria], [the first known written OMG was in a 1917 letter to Winston Churchill], [the word meme was coined in 1976, long before the World Wide Web], and [Santa Fe, New Mexico was founded before the Pilgrims reached Plymouth].",
+      "say": "[The word OK started out as army slang during World War I], [the first known written OMG was in a 1917 letter to Winston Churchill], [the oldest known use of the word nerd is in a 1950 Dr. Seuss book], and [Santa Fe, New Mexico was founded before the Pilgrims reached Plymouth].",
       "cap": 0,
-      "real": "Sir John Harington built a flushing toilet for Queen Elizabeth I around 1596, more than 200 years before Victoria was born.",
+      "real": "OK first appeared in an 1839 Boston newspaper as a jokey short form of oll korrect, a misspelling of all correct.",
       "src": [
-        "https://blog.sciencemuseum.org.uk/a-flushing-story/",
+        "https://www.merriam-webster.com/wordplay/the-hilarious-history-of-ok-okay",
         "https://www.snopes.com/fact-check/omg-winston-churchill/",
-        "https://en.wikipedia.org/wiki/Meme",
+        "https://www.npr.org/2025/08/20/nx-s1-5507053/nerd-dr-seuss-word-of-week",
         "https://en.wikipedia.org/wiki/Santa_Fe,_New_Mexico"
       ]
     }
