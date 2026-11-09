@@ -18,14 +18,14 @@
     },
     {
       "id": "fy02",
-      "say": "[Google's search engine was first called BackRub], [Instagram started out as an app called Picaboo], [Amazon was first incorporated under the name Cadabra], and [Bluetooth is named after a Danish king from the 900s].",
+      "say": "[Google's search engine was first called BackRub], [Instagram started out as an app called Picaboo], [Amazon was first incorporated under the name Cadabra], and [Firefox was first released under the name Phoenix].",
       "cap": 1,
       "real": "Picaboo was Snapchat's first name. Instagram grew out of an earlier app called Burbn.",
       "src": [
         "https://en.wikipedia.org/wiki/History_of_Google",
         "https://en.wikipedia.org/wiki/Timeline_of_Snapchat",
         "https://en.wikipedia.org/wiki/History_of_Amazon",
-        "https://en.wikipedia.org/wiki/Bluetooth"
+        "https://blog.mozilla.org/community/2013/05/13/milestone-phoenix-0-1-released-first-version-of-firefox/"
       ]
     },
     {
@@ -54,11 +54,11 @@
     },
     {
       "id": "fy05",
-      "say": "[Shrek won the first ever Oscar for Best Animated Feature], [Up was the first animated movie nominated for Best Picture], [Parasite was the first non-English-language film to win Best Picture], and [Steve Jobs owned most of Pixar when Toy Story came out].",
+      "say": "[Walt Disney's honorary Oscar for Snow White came with seven tiny Oscars], [Up was the first animated movie nominated for Best Picture], [Parasite was the first non-English-language film to win Best Picture], and [Steve Jobs owned most of Pixar when Toy Story came out].",
       "cap": 1,
       "real": "Disney's Beauty and the Beast, from 1991, was the first animated film nominated for Best Picture, nearly two decades before Up.",
       "src": [
-        "https://en.wikipedia.org/wiki/Academy_Award_for_Best_Animated_Feature",
+        "https://www.waltdisney.org/blog/snow-white-and-seven-dwarfs-honorary-academy-awardr",
         "https://en.wikipedia.org/wiki/Academy_Award_for_Best_Animated_Feature",
         "https://en.wikipedia.org/wiki/92nd_Academy_Awards",
         "https://en.wikipedia.org/wiki/Pixar"
@@ -114,25 +114,25 @@
     },
     {
       "id": "fy10",
-      "say": "[NASA's Mars helicopter carried a scrap of fabric from the Wright brothers' plane], [the first photo of a black hole was released in 2019], [Voyager 1 reached interstellar space before YouTube was founded], and [the James Webb Space Telescope launched on Christmas Day 2021].",
+      "say": "[NASA's Mars helicopter carried a scrap of fabric from the Wright brothers' plane], [in 2024, SpaceX caught a returning rocket booster with giant metal arms], [Voyager 1 reached interstellar space before YouTube was founded], and [the James Webb Space Telescope launched on Christmas Day 2021].",
       "cap": 2,
       "real": "Voyager 1 crossed into interstellar space in August 2012, seven years after YouTube launched in 2005.",
       "src": [
         "https://en.wikipedia.org/wiki/Wright_Flyer",
-        "https://en.wikipedia.org/wiki/Event_Horizon_Telescope",
+        "https://www.opb.org/article/2024/10/13/spacex-rocket-booster-caught-on-first-attempt-during-flight-test/",
         "https://en.wikipedia.org/wiki/Voyager_1",
         "https://en.wikipedia.org/wiki/Launch_and_commissioning_of_the_James_Webb_Space_Telescope"
       ]
     },
     {
       "id": "fy11",
-      "say": "[Tetris was created by a computer scientist in the Soviet Union], [Mario was called Jumpman when he debuted in 1981's Donkey Kong], [Sony's PlayStation started out as a joint project with Nintendo], and [Apple banned Flappy Bird in 2014 for being too addictive].",
+      "say": "[Tetris was created by a computer scientist in the Soviet Union], [Mario was called Jumpman when he debuted in 1981's Donkey Kong], [Princess Zelda was named after the wife of The Great Gatsby's author], and [Apple banned Flappy Bird in 2014 for being too addictive].",
       "cap": 3,
       "real": "Flappy Bird's creator, Dong Nguyen, pulled the game himself in 2014, saying it had become too addictive.",
       "src": [
         "https://en.wikipedia.org/wiki/Tetris",
         "https://en.wikipedia.org/wiki/Donkey_Kong_(1981_video_game)",
-        "https://en.wikipedia.org/wiki/Super_NES_CD-ROM",
+        "https://en.wikipedia.org/wiki/Princess_Zelda",
         "https://en.wikipedia.org/wiki/Flappy_Bird"
       ]
     },

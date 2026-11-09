@@ -18,14 +18,14 @@
     },
     {
       "id": "hn02",
-      "say": "[Louis Braille invented his reading system for the blind as a teenager], [a 15-year-old in Maine came up with an improved design for earmuffs], [a dentist helped invent the machine that makes cotton candy], and [the Slinky was invented by a 12-year-old playing with springs].",
+      "say": "[Mark Twain patented a scrapbook with the glue already on its pages], [a 15-year-old in Maine came up with an improved design for earmuffs], [a woman fed up with her chipped china patented a dishwasher in 1886], and [a 12-year-old girl invented a machine to make flat-bottomed paper bags].",
       "cap": 3,
-      "real": "The Slinky was invented by Richard James, a naval engineer, after he watched a spring tumble off a shelf in 1943.",
+      "real": "Margaret Knight was about 30 when she invented her paper bag machine in 1868. At 12, she'd come up with a safety device for mill looms.",
       "src": [
-        "https://en.wikipedia.org/wiki/Louis_Braille",
+        "https://www.americanheritage.com/twain-patent-poet",
         "https://www.smithsonianmag.com/smart-news/chester-greenwood-invented-earmuffs-or-did-he-180962434/",
-        "https://en.wikipedia.org/wiki/Cotton_candy",
-        "https://en.wikipedia.org/wiki/Slinky"
+        "https://www.northernpublicradio.org/wnij-news/2021-12-27/this-week-in-illinois-history-josephine-cochrane-patents-the-dishwasher-december-28-1886",
+        "https://en.wikipedia.org/wiki/Margaret_E._Knight"
       ]
     },
     {
@@ -42,25 +42,25 @@
     },
     {
       "id": "hn04",
-      "say": "[Sweden once had a February 30, in the year 1712], [Russia's October Revolution happened in November on our calendar], [Britain skipped an entire month in 1752 to fix its calendar], and [the Hundred Years' War actually lasted 116 years].",
+      "say": "[Sweden once had a February 30, in the year 1712], [Russia's October Revolution happened in November on our calendar], [Britain skipped an entire month in 1752 to fix its calendar], and [Julius Caesar made the year 46 BC last 445 days].",
       "cap": 2,
       "real": "Britain skipped 11 days, not a month: in 1752, September 2 was followed straight by September 14.",
       "src": [
         "https://en.wikipedia.org/wiki/List_of_non-standard_dates",
         "https://en.wikipedia.org/wiki/October_Revolution",
         "https://en.wikipedia.org/wiki/Calendar_(New_Style)_Act_1750",
-        "https://en.wikipedia.org/wiki/Hundred_Years%27_War"
+        "NOT WEB-CHECKED (textbook) Caesar's calendar reform stretched 46 BC to 445 days so the new Julian calendar could start in step with the seasons https://en.wikipedia.org/wiki/46_BC"
       ]
     },
     {
       "id": "hn05",
-      "say": "[a European world map from 1375 shows Mali's king Mansa Musa], [Alexander the Great named a city after his horse], [Julius Caesar was the first emperor of ancient Rome], and [the Inca kept their empire's records on knotted strings].",
+      "say": "[a European world map from 1375 shows Mali's king Mansa Musa], [Alexander the Great named a city after his horse], [Rome built Hadrian's Wall to keep out Viking raiders], and [the Inca kept their empire's records on knotted strings].",
       "cap": 2,
-      "real": "Julius Caesar ruled Rome as dictator, never as emperor. His adopted heir, Augustus, became Rome's first emperor years after Caesar died.",
+      "real": "Hadrian's Wall went up around AD 122, more than 650 years before the first Viking raids on Britain. It guarded Rome's border against northern tribes.",
       "src": [
         "https://en.wikipedia.org/wiki/Catalan_Atlas",
         "https://en.wikipedia.org/wiki/Bucephalus",
-        "https://en.wikipedia.org/wiki/Julius_Caesar",
+        "NOT WEB-CHECKED (textbook) Hadrian's Wall was begun in AD 122; the first recorded Viking raids on Britain came in the 790s https://en.wikipedia.org/wiki/Hadrian%27s_Wall",
         "https://en.wikipedia.org/wiki/Quipu"
       ]
     },
@@ -102,25 +102,25 @@
     },
     {
       "id": "hn09",
-      "say": "[Super Glue was discovered in World War II and rejected for being too sticky], [the inventors of bubble wrap first tried to sell it as wallpaper], [Alexander Graham Bell wanted phone calls to start with the word ahoy], and [Velcro was invented by an engineer who studied how gecko feet stick].",
+      "say": "[Super Glue was discovered in World War II and rejected for being too sticky], [the Frisbee got its name from a pie company in Connecticut], [Alexander Graham Bell wanted phone calls to start with the word ahoy], and [Velcro was invented by an engineer who studied how gecko feet stick].",
       "cap": 3,
       "real": "Velcro came from burrs. George de Mestral got the idea in 1941 after pulling prickly burrs off his clothes and his dog.",
       "src": [
         "https://en.wikipedia.org/wiki/Harry_Coover",
-        "https://en.wikipedia.org/wiki/Bubble_Wrap_(brand)",
+        "https://newenglandhistoricalsociety.com/the-sweet-new-england-history-of-the-frisbee/",
         "https://en.wikipedia.org/wiki/Ahoy",
         "https://en.wikipedia.org/wiki/George_de_Mestral"
       ]
     },
     {
       "id": "hn10",
-      "say": "[Pablo Picasso was questioned by police after the Mona Lisa was stolen in 1911], [Michelangelo painted the Sistine Chapel ceiling in 10 months], [Leonardo da Vinci designed a robot knight around 1495], and [Shakespeare's Globe Theatre burned down after a stage cannon set its roof on fire in 1613].",
+      "say": "[Pablo Picasso was questioned by police after the Mona Lisa was stolen in 1911], [Michelangelo painted the Sistine Chapel ceiling in 10 months], [Salvador Dalí designed the logo for Chupa Chups lollipops], and [Shakespeare's Globe Theatre burned down after a stage cannon set its roof on fire in 1613].",
       "cap": 1,
       "real": "Michelangelo spent about four years on the Sistine Chapel ceiling, from 1508 to 1512.",
       "src": [
         "https://en.wikipedia.org/wiki/Vincenzo_Peruggia",
         "https://en.wikipedia.org/wiki/Sistine_Chapel_ceiling",
-        "https://en.wikipedia.org/wiki/Leonardo%27s_robot",
+        "https://news.artnet.com/art-world/art-bites-salvador-dali-chupa-chups-2446377",
         "https://en.wikipedia.org/wiki/Globe_Theatre"
       ]
     },

@@ -6,13 +6,13 @@
   "cards": [
     {
       "id": "tg01",
-      "say": "[Harvard University is older than calculus], [Galileo and Shakespeare were born in the same year], [the Eiffel Tower is older than the Statue of Liberty], and [Disneyland opened before Hawaii became a state].",
+      "say": "[Harvard University is older than calculus], [the steam train is older than the bicycle], [Big Ben is older than the United States], and [Disneyland opened before Hawaii became a state].",
       "cap": 2,
-      "real": "The Statue of Liberty was dedicated in 1886. The Eiffel Tower, whose engineer built Lady Liberty's iron frame, was finished in 1889.",
+      "real": "Big Ben's clock tower in London was finished in 1859, more than 80 years after the United States declared independence in 1776.",
       "src": [
         "https://en.wikipedia.org/wiki/History_of_calculus",
-        "https://en.wikipedia.org/wiki/1564",
-        "https://en.wikipedia.org/wiki/Statue_of_Liberty",
+        "NOT WEB-CHECKED (textbook) Trevithick's steam locomotive ran on rails in 1804; Karl Drais's running machine, the first bicycle, came in 1817 https://en.wikipedia.org/wiki/Richard_Trevithick",
+        "NOT WEB-CHECKED (textbook) Big Ben's tower and Great Clock were finished in 1859; the US declared independence in 1776 https://en.wikipedia.org/wiki/Big_Ben",
         "https://en.wikipedia.org/wiki/Disneyland"
       ]
     },
@@ -42,50 +42,50 @@
     },
     {
       "id": "tg04",
-      "say": "[Thomas Jefferson and John Adams died on the same day], [Abraham Lincoln and Charles Dickens were born on the same day], [the composers Bach and Handel were born in the same year], and [Marilyn Monroe and Queen Elizabeth II were born in the same year].",
+      "say": "[the authors C.S. Lewis and Aldous Huxley died on the same day], [the rivals Thomas Edison and Nikola Tesla died on the same day], [the composers Bach and Handel were born in the same year], and [Marilyn Monroe and Queen Elizabeth II were born in the same year].",
       "cap": 1,
-      "real": "Lincoln shares his birthday with Charles Darwin: both were born on February 12, 1809. Charles Dickens was born in 1812.",
+      "real": "Thomas Edison died in 1931. His rival Nikola Tesla outlived him by more than 11 years and died in January 1943.",
       "src": [
-        "https://en.wikipedia.org/wiki/John_Adams",
-        "https://clarklibrary.ucla.edu/blog/charles-darwin-abraham-lincoln-and-the-12th-of-february/",
+        "https://www.wgbh.org/news/local/2013-11-22/two-other-20th-century-titans-who-died-on-nov-22-1963",
+        "NOT WEB-CHECKED (textbook) Edison died October 18, 1931; Tesla died January 7, 1943 https://en.wikipedia.org/wiki/Nikola_Tesla",
         "https://en.wikipedia.org/wiki/1685_in_music",
         "https://en.wikipedia.org/wiki/1926_in_music"
       ]
     },
     {
       "id": "tg05",
-      "say": "[Notre-Dame in Paris is older than Machu Picchu], [a Japanese building company stayed in one family for over 1,400 years], [the Great Pyramid was the tallest human-made structure for over 3,700 years], and [the main pyramid at Chichen Itza is older than the Roman Colosseum].",
+      "say": "[Notre-Dame in Paris is older than Machu Picchu], [the concrete dome of Rome's Pantheon has stood for about 1,900 years], [the Great Pyramid was the tallest human-made structure for over 3,700 years], and [the main pyramid at Chichen Itza is older than the Roman Colosseum].",
       "cap": 3,
       "real": "Rome's Colosseum opened in AD 80. El Castillo, the great pyramid at Chichen Itza, was built centuries later, sometime between the 700s and 1100s AD.",
       "src": [
         "https://en.wikipedia.org/wiki/Notre-Dame_de_Paris",
-        "https://en.wikipedia.org/wiki/Kong%C5%8D_Gumi",
+        "https://en.wikipedia.org/wiki/Pantheon,_Rome",
         "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza",
         "https://en.wikipedia.org/wiki/El_Castillo,_Chichen_Itza"
       ]
     },
     {
       "id": "tg06",
-      "say": "[Pocahontas visited London while Shakespeare was still alive], [Isaac Newton was still alive when Benjamin Franklin was born], [the first traffic light was installed before Karl Benz built his first car], and [people were flying in balloons before the U.S. Constitution was written].",
+      "say": "[Pocahontas visited London while Shakespeare was still alive], [Moctezuma still ruled the Aztecs when Henry VIII became king], [the first traffic light was installed before Karl Benz built his first car], and [the Rosetta Stone was found after the U.S. Constitution was written].",
       "cap": 0,
       "real": "Shakespeare died in April 1616. Pocahontas didn't arrive in England until June 12 that year, about seven weeks later.",
       "src": [
         "https://en.wikipedia.org/wiki/1616",
-        "https://en.wikipedia.org/wiki/Isaac_Newton",
+        "NOT WEB-CHECKED (textbook) Moctezuma II ruled the Aztecs from 1502 to 1520; Henry VIII became king of England in April 1509 https://en.wikipedia.org/wiki/Moctezuma_II",
         "https://en.wikipedia.org/wiki/History_of_traffic_lights",
-        "https://en.wikipedia.org/wiki/List_of_firsts_in_aviation"
+        "NOT WEB-CHECKED (textbook) the Rosetta Stone was found in July 1799; the US Constitution was written and signed in 1787 https://en.wikipedia.org/wiki/Rosetta_Stone"
       ]
     },
     {
       "id": "tg07",
-      "say": "[President John Tyler was born in 1790 and had a grandson alive in 2024], [the U.S. was still paying a Civil War pension in 2020], [a Civil War veteran was still alive when Apollo 11 landed on the Moon], and [Orville Wright lived to see a plane break the sound barrier].",
+      "say": "[President John Tyler was born in 1790 and had a grandson alive in 2024], [a veteran of the American Revolution was photographed in 1864], [a Civil War veteran was still alive when Apollo 11 landed on the Moon], and [a signer of the Declaration of Independence broke ground for a railroad in 1828].",
       "cap": 2,
-      "real": "The last undisputed Civil War veteran, Albert Woolson, died in 1956, 13 years before Apollo 11. The 2020 pension went to a veteran's daughter.",
+      "real": "The last undisputed Civil War veteran, Albert Woolson, died in 1956, 13 years before Apollo 11.",
       "src": [
         "https://www.kpbs.org/news/national/2025/05/29/harrison-ruffin-tyler-grandson-of-the-10th-u-s-president-dies-at-96",
-        "https://en.wikipedia.org/wiki/Irene_Triplett",
+        "https://en.wikipedia.org/wiki/Lemuel_Cook",
         "https://en.wikipedia.org/wiki/Albert_Woolson",
-        "https://en.wikipedia.org/wiki/Wright_brothers"
+        "https://www.msa.maryland.gov/megafile/msa/speccol/sc2900/sc2908/000001/000602/html/am602--328.html"
       ]
     },
     {
@@ -102,24 +102,24 @@
     },
     {
       "id": "tg09",
-      "say": "[women first competed at the Olympics in 1928], [tug of war was an Olympic sport until 1920], [the Olympics handed out medals for painting until 1948], and [the first basketball game ever played ended 1 to 0].",
+      "say": "[women first competed at the Olympics in 1928], [golf came back to the Olympics in 2016 after 112 years away], [the Olympics handed out medals for painting until 1948], and [the first basketball game ever played ended 1 to 0].",
       "cap": 0,
       "real": "Women first competed at the 1900 Paris Olympics, in sports like tennis and golf. 1928 is when women's track and field was added.",
       "src": [
         "https://en.wikipedia.org/wiki/Participation_of_women_in_the_Olympics",
-        "https://en.wikipedia.org/wiki/Tug_of_war_at_the_Summer_Olympics",
+        "https://edition.cnn.com/2016/05/13/golf/golf-success-failure-olympic-games-rio-2016",
         "https://en.wikipedia.org/wiki/Art_competitions_at_the_Summer_Olympics",
         "https://en.wikipedia.org/wiki/The_First_Team"
       ]
     },
     {
       "id": "tg10",
-      "say": "[the Soviet Union still existed when the first website went online], [Germany was still split in two when the first Game Boy came out], [the first message sent over the early internet crashed it after two letters], and [the first email was sent after the first Apple computer went on sale].",
+      "say": "[the Soviet Union still existed when the first website went online], [Macau was still ruled by Portugal when Google was founded], [the first message sent over the early internet crashed it after two letters], and [the first email was sent after the first Apple computer went on sale].",
       "cap": 3,
       "real": "Ray Tomlinson sent the first network email in 1971. Apple's first computer, the Apple I, didn't go on sale until 1976.",
       "src": [
         "https://en.wikipedia.org/wiki/History_of_the_World_Wide_Web",
-        "https://en.wikipedia.org/wiki/Game_Boy",
+        "NOT WEB-CHECKED (textbook) Google was founded in September 1998; Portugal handed Macau over to China on December 20, 1999 https://en.wikipedia.org/wiki/Transfer_of_sovereignty_over_Macau",
         "https://en.wikipedia.org/wiki/ARPANET",
         "https://en.wikipedia.org/wiki/Ray_Tomlinson"
       ]
