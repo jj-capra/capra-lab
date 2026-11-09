@@ -78,14 +78,14 @@
     },
     {
       "id": "fgf07",
-      "say": "[Stonehenge was sold at a public auction in 1915 for 6,600 pounds], [the first stone of Notre-Dame in Paris was laid by a pope], [the Empire State Building's spire was built as a dock for airships], and [the Washington Monument was finished in time for the US centennial in 1876].",
+      "say": "[Stonehenge was sold at a public auction in 1915 for 6,600 pounds], [the first stone of Notre-Dame in Paris was laid by a pope], [the Empire State Building's spire was built as a dock for airships], and [the clock tower that holds Big Ben was renamed for the Queen's 1953 coronation].",
       "cap": 3,
-      "real": "Work stopped in 1854 when donations ran out and only restarted in 1877, so the stone tower wasn't finished until 1884.",
+      "real": "The tower was simply called the Clock Tower until 2012, when it was renamed Elizabeth Tower to mark the Queen's 60th year on the throne.",
       "src": [
         "https://www.english-heritage.org.uk/about-us/search-news/stonehenge-sold-100-years-ago/",
         "https://www.britannica.com/topic/Notre-Dame-de-Paris",
         "NOT WEB-CHECKED (textbook: the spire was designed as a mooring mast for dirigibles) https://en.wikipedia.org/wiki/Empire_State_Building",
-        "https://wikipedia.com/wiki/Washington_Monument"
+        "https://www.rnz.co.nz/news/world/109300/big-ben-to-be-renamed-elizabeth-tower"
       ]
     },
     {
