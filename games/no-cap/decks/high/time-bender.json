@@ -7,14 +7,14 @@
     {
       "id": "tb01",
       "about": "Harvard University",
-      "say": "Harvard University [was founded before anyone had invented calculus], [held its first graduation, for nine students, the year Galileo died], [was founded before William Shakespeare died], and [is named after a minister who left it his library].",
+      "say": "Harvard University [was founded before anyone had invented calculus], [held its first graduation, for nine students, the year Galileo died], [was founded before the playwright William Shakespeare died], and [is named after a minister who left it his library].",
       "cap": 2,
       "real": "Shakespeare died in 1616. Harvard was founded 20 years later, in 1636, by a vote of the Massachusetts Bay Colony's legislature.",
       "src": [
-        "https://en.wikipedia.org/wiki/History_of_Harvard_University (founded 1636) + https://en.wikipedia.org/wiki/History_of_calculus (Newton and Leibniz, 1660s to 1680s)",
+        "https://en.wikipedia.org/wiki/History_of_Harvard_University (founded 1636) + https://en.wikipedia.org/wiki/History_of_calculus (developed by Newton, 1664 to 1666, and Leibniz, from 1675)",
         "https://en.wikipedia.org/wiki/History_of_Harvard_University (first commencement 1642, nine students) + https://en.wikipedia.org/wiki/Galileo_Galilei (died 8 January 1642)",
-        "https://en.wikipedia.org/wiki/1616 (Shakespeare died April 1616) + https://en.wikipedia.org/wiki/History_of_Harvard_University (founded 1636)",
-        "https://en.wikipedia.org/wiki/History_of_Harvard_University (named Harvard College in 1639 for John Harvard, who willed it his library of some 400 books)"
+        "https://www.britannica.com/biography/William-Shakespeare (died April 23, 1616) + https://en.wikipedia.org/wiki/History_of_Harvard_University (founded 1636 by vote of the Great and General Court)",
+        "https://en.wikipedia.org/wiki/History_of_Harvard_University (the Puritan clergyman John Harvard willed it his library of some 400 books; named Harvard College in 1639)"
       ]
     },
     {
@@ -27,7 +27,7 @@
         "https://en.wikipedia.org/wiki/Ottoman_Empire (sultanate abolished 1 November 1922) + https://en.wikipedia.org/wiki/Steamboat_Willie (1928)",
         "https://en.wikipedia.org/wiki/Ottoman_Empire (founded c. 1299, sultanate abolished 1922) + https://en.wikipedia.org/wiki/History_of_the_Ottoman_Empire",
         "https://en.wikipedia.org/wiki/Ottoman_Empire (Constantinople conquered 29 May 1453) + https://www.britannica.com/biography/Christopher-Columbus/The-first-voyage (1492)",
-        "https://en.wikipedia.org/wiki/History_of_the_Ottoman_Empire (empire lasted to 1922; Wright brothers flew December 1903, https://en.wikipedia.org/wiki/Wright_brothers)"
+        "https://en.wikipedia.org/wiki/Ottoman_Empire (sultanate abolished 1 November 1922) + https://en.wikipedia.org/wiki/Wright_brothers (first flight December 17, 1903)"
       ]
     },
     {
@@ -35,10 +35,10 @@
       "about": "Wolfgang Amadeus Mozart",
       "say": "Wolfgang Amadeus Mozart [is younger than America's Liberty Bell], [wrote music for a glass instrument invented by Benjamin Franklin], [was still alive when George Washington became president], and [wrote the tune of Twinkle Twinkle Little Star at age five].",
       "cap": 3,
-      "real": "The tune is an older French song from around 1765. Mozart wrote 12 variations on it in 1781 or 1782, in his twenties, so he gets the credit.",
+      "real": "The tune came from an unknown French composer around 1765. Mozart wrote variations on it in Vienna in 1781 or 1782, when he was in his twenties.",
       "src": [
-        "https://en.wikipedia.org/wiki/Liberty_Bell (cast 1752, recast June 1753) + https://www.themorgan.org/exhibitions/online/mozart/418 (Mozart born 1756)",
-        "https://www.parlancechamberconcerts.org/individual-program-notes/wolfgang-amadeus-mozart-(1756-1791)/adagio-in-c-for-armonica,-k.-617 (Adagio K. 617 for Franklin's armonica, 1791)",
+        "https://en.wikipedia.org/wiki/Liberty_Bell (commissioned 1752, arrived August 1752, recast by June 1753) + https://www.themorgan.org/exhibitions/online/mozart/418 (Mozart 1756-1791)",
+        "https://www.parlancechamberconcerts.org/individual-program-notes/wolfgang-amadeus-mozart-(1756-1791)/adagio-in-c-for-armonica,-k.-617 (Adagio in C for solo armonica, 1791; Franklin designed the instrument)",
         "https://www.parlancechamberconcerts.org/individual-program-notes/wolfgang-amadeus-mozart-(1756-1791)/adagio-in-c-for-armonica,-k.-617 (Mozart 1756-1791) + https://en.wikipedia.org/wiki/George_Washington (inaugurated April 30, 1789)",
         "https://www.themorgan.org/exhibitions/online/mozart/418 (variations K. 265 written in Vienna 1781-1782 on a tune by an unknown composer from around 1765)"
       ]
@@ -50,9 +50,9 @@
       "cap": 1,
       "real": "Curie's second Nobel Prize, in chemistry, came in 1911, three years before World War I began. She was the first person ever to win two.",
       "src": [
-        "https://www.nobelprize.org/prizes/physics/1903/marie-curie/facts (born 7 November 1867) + https://en.wikipedia.org/wiki/Alaska_Purchase (1867)",
+        "https://www.nobelprize.org/prizes/physics/1903/marie-curie/facts (born 7 November 1867) + https://en.wikipedia.org/wiki/Alaska_Purchase (treaty signed March 30, 1867)",
         "https://www.nobelprize.org/prizes/physics/1903/marie-curie/facts (Chemistry prize 1911, first person to win two)",
-        "https://www.nobelprize.org/prizes/physics/1903/marie-curie/facts (Physics prize 1903) + https://en.wikipedia.org/wiki/Wright_brothers (first flight December 1903)",
+        "https://www.nobelprize.org/prizes/physics/1903/marie-curie/facts (Physics prize 1903) + https://en.wikipedia.org/wiki/Wright_brothers (first flight December 17, 1903)",
         "https://www.nobelprize.org/prizes/physics/1903/marie-curie/facts (organized mobile X-ray teams in World War I)"
       ]
     },
@@ -64,7 +64,7 @@
       "real": "Bell patented the telephone in 1876. Darwin lived six more years and died in April 1882.",
       "src": [
         "https://clarklibrary.ucla.edu/blog/charles-darwin-abraham-lincoln-and-the-12th-of-february/ (both born 12 February 1809)",
-        "https://darwin-online.org.uk/converted/Ancillary/1882_RGSobituary_A118.html (died 19 April 1882) + https://en.wikipedia.org/wiki/Alexander_Graham_Bell (patent March 1876)",
+        "https://darwin-online.org.uk/converted/Ancillary/1882_RGSobituary_A118.html (died 19 April 1882) + https://en.wikipedia.org/wiki/Alexander_Graham_Bell (patent 174,465 issued March 7, 1876)",
         "https://www.nhpr.org/npr-blogs/2015-08-12/dining-like-darwin-when-scientists-swallow-their-subjects (puma, armadillos and iguanas on the Beagle voyage)",
         "https://clarklibrary.ucla.edu/blog/charles-darwin-abraham-lincoln-and-the-12th-of-february/ (On the Origin of Species, 1859; the Civil War began April 1861)"
       ]
@@ -78,7 +78,7 @@
       "src": [
         "https://en.wikipedia.org/wiki/Apple_Inc. (founded April 1, 1976; Star Wars opened May 25, 1977)",
         "https://en.wikipedia.org/wiki/Apple_Inc. (founded 1976: 7 years after the July 1969 Moon landing, 31 years before the 2007 iPhone)",
-        "https://en.wikipedia.org/wiki/Ronald_Wayne",
+        "https://en.wikipedia.org/wiki/Ronald_Wayne (10 percent stake, sold back for 800 dollars about twelve days after the founding) + https://en.wikipedia.org/wiki/Apple_Inc.",
         "https://en.wikipedia.org/wiki/History_of_Microsoft (founded April 4, 1975, in Albuquerque)"
       ]
     },
@@ -87,25 +87,25 @@
       "about": "Nokia",
       "say": "Nokia [made the world's first mobile phone call, back in 1973], [started out as a pulp mill before the telephone was even invented], [was once the third-biggest TV maker in Europe], and [got its classic ringtone from a guitar piece written before the first airplane flight].",
       "cap": 0,
-      "real": "The first mobile phone call was made by Martin Cooper of Motorola in 1973. Nokia's first mobile phone, the Mobira Senator car phone, came in 1982.",
+      "real": "The first handheld cell phone call was made by Martin Cooper of Motorola in 1973. Nokia's first mobile phone, the Mobira Senator car phone, came in 1982.",
       "src": [
-        "https://www.aarp.org/politics-society/history/info-2018/first-cell-phone-call.html (Motorola's Martin Cooper, 1973) + https://en.wikipedia.org/wiki/Nokia (first mobile phone, Mobira Senator, 1982)",
+        "https://www.aarp.org/politics-society/history/info-2018/first-cell-phone-call.html (Motorola's Martin Cooper, April 3, 1973) + https://en.wikipedia.org/wiki/Nokia (Mobira Senator, Nokia's first mobile phone, 1982)",
         "https://en.wikipedia.org/wiki/Nokia (pulp mill founded 1865) + https://en.wikipedia.org/wiki/Alexander_Graham_Bell (telephone patent 1876)",
-        "https://en.wikipedia.org/wiki/Nokia (third-largest television manufacturer in Europe)",
+        "https://en.wikipedia.org/wiki/Nokia (late-1980s TV maker purchases made Nokia the third-largest television manufacturer of Europe)",
         "https://en.wikipedia.org/wiki/Nokia_tune (Tarrega's Gran Vals, 1902; the Wright brothers first flew December 1903)"
       ]
     },
     {
       "id": "tb08",
       "about": "The Mongol Empire",
-      "say": "The Mongol Empire [was founded nine years before England's Magna Carta], [is about a century older than the Ottoman Empire], [took over Japan after invading it in 1281], and [had more than 1,400 postal relay stations in China alone].",
+      "say": "The Mongol Empire [was founded nine years before England's Magna Carta], [is about a century older than the Ottoman Empire], [took control of Japan after invading it a second time in 1281], and [had relay riders who carried mail up to 190 miles in a day].",
       "cap": 2,
       "real": "The Mongols invaded Japan in 1274 and 1281 and failed both times. In 1281 a huge typhoon wrecked much of their fleet.",
       "src": [
-        "https://www.britannica.com/facts/Genghis-Khan (khan of the Mongol empire from 1206; Magna Carta was sealed in 1215)",
-        "https://www.britannica.com/facts/Genghis-Khan (1206) + https://en.wikipedia.org/wiki/Ottoman_Empire (founded c. 1299)",
-        "https://www.thecollector.com/why-mongol-invasions-of-japan-failed/",
-        "https://historyofinformation.com/detail.php?id=3043 (more than 1,400 postal stations in China under Kublai Khan)"
+        "https://en.wikipedia.org/wiki/Mongol_Empire (a kurultai proclaimed Temujin khan in 1206; Magna Carta was sealed in 1215)",
+        "https://en.wikipedia.org/wiki/Mongol_Empire (1206) + https://en.wikipedia.org/wiki/Ottoman_Empire (founded c. 1299)",
+        "https://en.wikipedia.org/wiki/Mongol_Empire (Kublai invaded in 1274 and 1281 and was not able to conquer Japan) + https://www.thecollector.com/why-mongol-invasions-of-japan-failed/ (August 1281 typhoon)",
+        "https://en.wikipedia.org/wiki/Yam_(route) (messengers covered 200 to 300 km, 120 to 190 miles, per day; Weatherford 2005)"
       ]
     },
     {
@@ -115,10 +115,10 @@
       "cap": 3,
       "real": "A Dutch eyeglass maker, Hans Lippershey, tried to patent a telescope in 1608. Galileo heard about it and built his own better one in 1609.",
       "src": [
-        "https://users.sussex.ac.uk/~desw/galileo/issues/isabelle.html",
+        "https://en.wikipedia.org/wiki/Galileo_Galilei (born 15 February 1564) + https://www.britannica.com/biography/William-Shakespeare (baptized April 26, 1564)",
         "https://en.wikipedia.org/wiki/Galileo_Galilei (died 8 January 1642; the Mayflower Pilgrims landed in 1620)",
-        "https://en.wikipedia.org/wiki/Galileo%27s_middle_finger (in the Museo Galileo, Florence)",
-        "https://en.wikipedia.org/wiki/Galileo_Galilei (Lippershey's 1608 patent attempt; Galileo's own telescope 1609)"
+        "https://en.wikipedia.org/wiki/Galileo%27s_middle_finger (in the Museo Galileo collection, Florence)",
+        "https://en.wikipedia.org/wiki/Galileo_Galilei (Lippershey tried to patent a telescope in the Netherlands in 1608; Galileo made his own in 1609)"
       ]
     },
     {
@@ -129,9 +129,9 @@
       "real": "Love Me Do, their first single, came out in October 1962 and peaked at number 17 on the UK chart.",
       "src": [
         "https://blog.oup.com/2012/10/beatles-friday-5-october-1962-love-me-do/ (Love Me Do issued and Dr. No premiered on 5 October 1962)",
-        "https://history.co.uk/this-day-in-history/05-october/first-james-bond-movie-and-beatles-single-released (Love Me Do peaked at number 17)",
+        "https://history.co.uk/this-day-in-history/05-october/first-james-bond-movie-and-beatles-single-released (Love Me Do peaked at number 17 in the UK)",
         "https://en.wikipedia.org/wiki/The_Beatles%27_rooftop_concert (30 January 1969, final public performance; Apollo 11 landed July 20, 1969)",
-        "https://en.wikipedia.org/wiki/The_Beatles%27_rooftop_concert (Metropolitan Police officers came to stop the performance)"
+        "https://en.wikipedia.org/wiki/The_Beatles%27_rooftop_concert (two police officers came up to the roof to stop the show)"
       ]
     },
     {
@@ -141,8 +141,8 @@
       "cap": 2,
       "real": "Bach was born in March 1685. Newton's Principia, with his laws of motion, came out two years later, in July 1687.",
       "src": [
-        "https://en.wikipedia.org/wiki/George_Frideric_Handel (born 1685, the same year as Bach)",
-        "https://en.wikipedia.org/wiki/Johann_Sebastian_Bach (died 28 July 1750) + https://www.themorgan.org/exhibitions/online/mozart/418 (Mozart born 1756)",
+        "https://en.wikipedia.org/wiki/George_Frideric_Handel (born in 1685, the same year as Johann Sebastian Bach)",
+        "https://en.wikipedia.org/wiki/Johann_Sebastian_Bach (died 28 July 1750; Mozart was born 27 January 1756, five and a half years later) + https://www.themorgan.org/exhibitions/online/mozart/418 (Mozart 1756-1791)",
         "https://en.wikipedia.org/wiki/Isaac_Newton (Principia published 5 July 1687) + https://en.wikipedia.org/wiki/Johann_Sebastian_Bach (born 31 March 1685)",
         "https://en.wikipedia.org/wiki/Johann_Sebastian_Bach (seven children with Maria Barbara, 13 with Anna Magdalena)"
       ]
@@ -155,7 +155,7 @@
       "real": "World War II ended in 1945. Robinson, who served in the Army during the war, played his first game for the Brooklyn Dodgers on April 15, 1947.",
       "src": [
         "https://www.britannica.com/biography/Jackie-Robinson (Army 1942 to 1944; broke the color barrier with the Brooklyn Dodgers on April 15, 1947; World War II ended in 1945)",
-        "https://wiki.riteme.site/wiki/1947_in_the_United_States (Robinson's debut April 15; the Air Force became a separate branch in September 1947)",
+        "https://www.britannica.com/biography/Jackie-Robinson (debut April 15, 1947) + https://en.wikipedia.org/wiki/History_of_the_United_States_Air_Force (separate service from 18 September 1947)",
         "https://www.britannica.com/biography/Jackie-Robinson (MLB's inaugural Rookie of the Year award, 1947)",
         "https://www.britannica.com/biography/Jackie-Robinson (number 42 retired for all of MLB in April 1997)"
       ]

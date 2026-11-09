@@ -7,14 +7,14 @@
     {
       "id": "fgf01",
       "about": "Martin Van Buren",
-      "say": "Martin Van Buren [was the first president born a citizen of the United States], [gave us the word OK, which started out as his nickname], [grew up speaking Dutch as his first language], and [was the last sitting vice president elected president until 1988].",
+      "say": "Martin Van Buren [was the first president born after the Declaration of Independence], [gave us the word OK, which started out as his nickname], [grew up speaking Dutch as his first language], and [was the last sitting vice president elected president until 1988].",
       "cap": 1,
       "real": "OK first appeared in an 1839 Boston newspaper as a joke for oll korrect. His 1840 campaign's OK Clubs, for Old Kinderhook, made it popular.",
       "src": [
-        "https://www.history.com/news/who-was-the-first-president-born-an-american-citizen",
-        "https://www.merriam-webster.com/wordplay/the-hilarious-history-of-ok-okay",
-        "https://www.history.com/news/who-was-the-first-president-born-an-american-citizen",
-        "https://www.history.com/news/who-was-the-first-president-born-an-american-citizen"
+        "https://www.history.com/news/who-was-the-first-president-born-an-american-citizen (born 1782; the seven presidents before him were all born before 1776)",
+        "https://www.merriam-webster.com/wordplay/the-hilarious-history-of-ok-okay (1839 Boston Morning Post, oll korrect; the 1840 OK Clubs only popularized it)",
+        "https://www.history.com/news/who-was-the-first-president-born-an-american-citizen (spoke Dutch as his first language)",
+        "https://www.history.com/news/who-was-the-first-president-born-an-american-citizen (the last sitting VP to win until George H.W. Bush in 1988)"
       ]
     },
     {
@@ -24,36 +24,36 @@
       "cap": 3,
       "real": "His trapezoid proof was published in 1876, while he was a congressman from Ohio, five years before he became president.",
       "src": [
-        "https://www.nps.gov/articles/000/1880-front-porch-campaign-speeches.htm",
-        "https://wikiwand.com/en/James_A._Garfield",
-        "https://wikiwand.com/en/James_A._Garfield",
-        "https://en.wikipedia.org/wiki/Garfield%27s_proof_of_the_Pythagorean_theorem"
+        "https://www.nps.gov/articles/000/1880-front-porch-campaign-speeches.htm (October 16, 1880: addressed German immigrants in part in their native language)",
+        "https://wikiwand.com/en/James_A._Garfield (at 16, a canal boat job managing the mules that pulled it)",
+        "https://wikiwand.com/en/James_A._Garfield (compromise nominee on the 36th ballot)",
+        "https://en.wikipedia.org/wiki/Garfield%27s_proof_of_the_Pythagorean_theorem; https://wikiwand.com/en/James_A._Garfield (published 1876, as a congressman)"
       ]
     },
     {
       "id": "fgf03",
       "about": "Chester A. Arthur",
-      "say": "Chester A. Arthur [was born in Canada and moved to Vermont as a baby], [helped throw his college's bell into the Erie Canal], [helped win a case that desegregated a New York streetcar line], and [sold 24 wagonloads of White House furniture at auction].",
+      "say": "Chester A. Arthur [was born in Canada and moved to Vermont as a baby], [had Louis Comfort Tiffany's design firm redo rooms in the White House], [helped win a case that desegregated a New York streetcar line], and [sold 24 wagonloads of White House furniture at auction].",
       "cap": 0,
-      "real": "Arthur was born in Vermont in 1829. Claims that he was really born in Canada were just a rumor.",
+      "real": "Arthur was born in Vermont. The story that he was secretly born in Canada was a rumor that never held up.",
       "src": [
-        "https://www.mentalfloss.com/article/28917/21-things-you-didnt-know-about-21st-president",
-        "https://www.mentalfloss.com/article/28917/21-things-you-didnt-know-about-21st-president",
-        "https://www.mentalfloss.com/article/28917/21-things-you-didnt-know-about-21st-president (the Lizzie Jennings case, 1854)",
-        "https://www.whitehousehistory.org/white-house-decorative-arts-in-the-1880s"
+        "https://www.mentalfloss.com/article/28917/21-things-you-didnt-know-about-21st-president (born in Vermont despite rumors he was born in Canada)",
+        "https://www.whitehousehistory.org/white-house-decorative-arts-in-the-1880s (Arthur commissioned Associated Artists, of which Louis Comfort Tiffany was a partner, to make over several rooms)",
+        "https://history.nycourts.gov/elizabeth-jennings-streetcar-desegregation-in-nyc/ (the case was assigned to junior partner Arthur; the jury found for Jennings and the Third Avenue Railroad agreed to desegregate its streetcars at once); https://millercenter.org/node/38820",
+        "https://www.whitehousehistory.org/white-house-decorative-arts-in-the-1880s (twenty-four wagonloads of furniture sent to auction)"
       ]
     },
     {
       "id": "fgf04",
       "about": "Grover Cleveland",
-      "say": "Grover Cleveland [got married inside the White House], [had secret surgery on a yacht while the public thought he was fishing], [was mayor of New York City before becoming president], and [vetoed more bills in his first term than all earlier presidents combined].",
+      "say": "Grover Cleveland [got married inside the White House], [had secret surgery in a chair tied to the mast of a friend's yacht], [was mayor of New York City before becoming president], and [vetoed more bills in his first term than all earlier presidents combined].",
       "cap": 2,
       "real": "Cleveland was mayor of Buffalo in 1882 and then governor of New York, before winning the presidency in 1884.",
       "src": [
-        "https://millercenter.org/node/237",
-        "https://potus.com/grover-cleveland",
-        "https://potus.com/grover-cleveland",
-        "https://potus.com/grover-cleveland (414 vetoes in his first term, against 204 by all earlier presidents)"
+        "https://millercenter.org/node/237 (married Frances Folsom in 1886, the first president married in the White House)",
+        "https://millercenter.org/node/237 (June 1893, aboard a friend's yacht, seated in a chair tied to the mast)",
+        "https://potus.com/grover-cleveland (mayor of Buffalo 1882, governor of New York 1883 to 1885)",
+        "https://potus.com/grover-cleveland (414 vetoes in his first term, more than double the 204 by all earlier presidents)"
       ]
     },
     {
@@ -63,62 +63,62 @@
       "cap": 0,
       "real": "Siam the cat came in 1878 from David Sickels, an American diplomat at the consulate in Bangkok, not from the king.",
       "src": [
-        "https://carlanthonyonline.com/2013/10/09/the-foreign-feline-of-president-hayes-first-siamese-cat-in-the-u-s/",
-        "https://loki.editorial.aetnd.com/this-day-in-history/hayes-has-first-phone-installed-in-white-house",
-        "https://artsandculture.google.com/exhibit/rutherford-b-hayes/gQL40xJL",
-        "https://thereconstructionera.com/?p=22536"
+        "https://carlanthonyonline.com/2013/10/09/the-foreign-feline-of-president-hayes-first-siamese-cat-in-the-u-s/ (sent in 1878 by David Sickels, a US diplomat at the consulate in Bangkok)",
+        "https://mentalfloss.com/article/77785/first-oval-office-phone-wasnt-installed-until-1929 (installed 1877, phone number 1); https://historynet.com/?p=13689414",
+        "https://artsandculture.google.com/exhibit/rutherford-b-hayes/gQL40xJL (oath taken privately in the Red Room because March 4 fell on a Sunday)",
+        "https://thereconstructionera.com/?p=22536 (Congress outlawed the egg roll at the Capitol by 1876; Hayes opened the White House grounds in 1878)"
       ]
     },
     {
       "id": "fgf06",
       "about": "Dwight D. Eisenhower",
-      "say": "Dwight D. Eisenhower [was named David Dwight at birth], [was born in a small town in Kansas], [never saw combat in 35 years as a soldier], and [got squirrels banished for digging up his White House putting green].",
+      "say": "Dwight D. Eisenhower [was named David Dwight at birth], [was born in a small town in Kansas], [was kept home training troops in World War I despite asking to go overseas], and [got squirrels banished for digging up his White House putting green].",
       "cap": 1,
       "real": "Eisenhower was born in Denison, Texas, in 1890. His family moved back to Kansas before he was two, and that's where he grew up.",
       "src": [
-        "https://www.history.com/articles/10-things-you-may-not-know-about-dwight-d-eisenhower",
-        "https://thc.texas.gov/state-historic-sites/eisenhower-birthplace/eisenhower-birthplace-history",
-        "https://www.history.com/articles/10-things-you-may-not-know-about-dwight-d-eisenhower",
-        "https://www.history.com/articles/10-things-you-may-not-know-about-dwight-d-eisenhower (trapped and released in Rock Creek Park)"
+        "https://www.history.com/articles/10-things-you-may-not-know-about-dwight-d-eisenhower (birth name David Dwight Eisenhower)",
+        "https://thc.texas.gov/state-historic-sites/eisenhower-birthplace/eisenhower-birthplace-history (born in Denison, Texas, October 14, 1890; back to Kansas at about 18 months)",
+        "https://www.history.com/articles/10-things-you-may-not-know-about-dwight-d-eisenhower (asked for an overseas assignment in World War I but stayed in training roles at home)",
+        "https://www.history.com/articles/10-things-you-may-not-know-about-dwight-d-eisenhower (1954 putting green; squirrels trapped and released in Rock Creek Park)"
       ]
     },
     {
       "id": "fgf07",
       "about": "Emperor Norton",
-      "say": "Emperor Norton [demanded a bridge across San Francisco Bay decades before one was built], [paid for meals with money he printed himself], [pardoned the police officer who arrested him], and [later added Protector of Canada to his royal title].",
+      "say": "Emperor Norton [demanded a bridge across San Francisco Bay decades before one was built], [paid for meals with money he issued himself], [pardoned the officer who arrested him], and [later added Protector of Canada to his royal title].",
       "cap": 3,
       "real": "His add-on title was Protector of Mexico, taken up in the 1860s. He had declared himself Emperor of the United States in 1859.",
       "src": [
-        "https://en.wikipedia.org/wiki/Emperor_Norton",
-        "https://en.wikipedia.org/wiki/Emperor_Norton",
-        "https://en.wikipedia.org/wiki/Emperor_Norton",
-        "https://en.wikipedia.org/wiki/Emperor_Norton"
+        "https://en.wikipedia.org/wiki/Emperor_Norton (bridge decrees of 1872; the Bay Bridge opened in 1936)",
+        "https://en.wikipedia.org/wiki/Emperor_Norton (his own scrip, 50 cents to 10 dollars, accepted by some restaurants)",
+        "https://en.wikipedia.org/wiki/Emperor_Norton (1867: granted an Imperial Pardon to Armand Barbier, the officer who arrested him)",
+        "https://en.wikipedia.org/wiki/Emperor_Norton (Emperor from September 17, 1859; Protector of Mexico by early 1866)"
       ]
     },
     {
       "id": "fgf08",
       "about": "Arthur Conan Doyle",
-      "say": "Arthur Conan Doyle [believed two girls' fake fairy photos were real], [worked as a ship's surgeon on an Arctic whaling voyage], [was knighted for creating Sherlock Holmes], and [helped make skiing popular in England].",
+      "say": "Arthur Conan Doyle [believed two girls' fake fairy photos were real], [worked as a ship's surgeon on an Arctic whaling voyage], [was knighted for creating Sherlock Holmes], and [helped make skiing popular in Switzerland].",
       "cap": 2,
       "real": "Doyle was knighted in 1902 for his writing defending Britain's side in the Boer War, not for Sherlock Holmes.",
       "src": [
         "https://en.wikipedia.org/wiki/Cottingley_Fairies",
-        "https://allthatsinteresting.com/arthur-conan-doyle-facts",
-        "https://arthurconandoyle.co.uk/knight",
-        "https://allthatsinteresting.com/arthur-conan-doyle-facts"
+        "https://www.smithsonianmag.com/smart-news/sir-arthur-conan-doyle-went-on-his-own-adventuresto-the-arctic-52100539/ (ship's surgeon on the whaler Hope at 20, in 1880)",
+        "https://arthurconandoyle.co.uk/knight (knighted October 24, 1902, for his defense of Britain's cause in the Boer War)",
+        "https://swissinfo.ch/eng/culture/sherlock-holmes-creator-s-swiss-skiing-legacy-fact-or-fiction/49100300 (learned to ski in Davos in 1894 and helped popularise it, though he did not introduce it)"
       ]
     },
     {
       "id": "fgf09",
       "about": "Julia Child",
-      "say": "Julia Child [was turned away by the Army for being too tall], [published her first cookbook at 29], [helped cook up a shark repellent for a US spy agency], and [voiced a character in a 1993 animated dinosaur movie].",
+      "say": "Julia Child [was turned away by the Army for being too tall], [published her first cookbook at 39], [helped cook up a shark repellent for a US spy agency], and [voiced a character in a 1993 animated dinosaur movie].",
       "cap": 1,
-      "real": "Mastering the Art of French Cooking, her first book, came out in 1961, when she was in her late forties.",
+      "real": "Mastering the Art of French Cooking, her first book, came out in 1961, when she was 49.",
       "src": [
-        "https://en.wikipedia.org/wiki/Julia_Child",
-        "https://en.wikipedia.org/wiki/Julia_Child",
-        "https://en.wikipedia.org/wiki/Julia_Child",
-        "https://en.wikipedia.org/wiki/Julia_Child"
+        "https://en.wikipedia.org/wiki/Julia_Child (too tall at 6 feet 2 for the Women's Army Corps or the WAVES)",
+        "https://en.wikipedia.org/wiki/Julia_Child (born August 15, 1912; Mastering the Art of French Cooking, 1961)",
+        "https://en.wikipedia.org/wiki/Julia_Child (OSS shark repellent)",
+        "https://en.wikipedia.org/wiki/Julia_Child (Dr. Juliet Bleeb in We're Back! A Dinosaur's Story, 1993)"
       ]
     },
     {
@@ -139,12 +139,12 @@
       "about": "The Hope Diamond",
       "say": "The Hope Diamond [was stolen with the French crown jewels in 1792], [keeps glowing red after an ultraviolet light is switched off], [was dug out of a South African mine in the 1800s], and [was sent to the Smithsonian by registered mail in a brown paper box].",
       "cap": 2,
-      "real": "It came from India, likely the Kollur Mine, and reached Europe in the 1600s, when Louis XIV bought it as the French Blue.",
+      "real": "It came from the Kollur Mine in India. The gem trader Tavernier bought it there in 1666 and sold it to Louis XIV of France.",
       "src": [
-        "https://en.wikipedia.org/wiki/Hope_Diamond",
-        "https://en.wikipedia.org/wiki/Hope_Diamond",
-        "https://en.wikipedia.org/wiki/Hope_Diamond",
-        "https://postalmuseum.si.edu/collections/object-spotlight/hope-diamond-package"
+        "https://en.wikipedia.org/wiki/Hope_Diamond (stolen in 1792 with most of the crown jewels)",
+        "https://en.wikipedia.org/wiki/Hope_Diamond (intense red phosphorescence after short-wave ultraviolet light)",
+        "https://en.wikipedia.org/wiki/Hope_Diamond (Kollur Mine, India; Tavernier bought it in 1666 and sold it to Louis XIV)",
+        "https://postalmuseum.si.edu/collections/object-spotlight/hope-diamond-package; https://en.wikipedia.org/wiki/Hope_Diamond (1958, registered mail, brown paper)"
       ]
     },
     {
@@ -154,10 +154,10 @@
       "cap": 3,
       "real": "The Clock Tower was renamed Elizabeth Tower in 2012 for Queen Elizabeth II's Diamond Jubilee, her 60th year on the throne.",
       "src": [
-        "https://webtest.parliament.uk/globalassets/documents/commons-information-office/big-ben.pdf",
-        "https://webtest.parliament.uk/globalassets/documents/commons-information-office/big-ben.pdf",
-        "https://webtest.parliament.uk/globalassets/documents/commons-information-office/big-ben.pdf",
-        "https://www.rnz.co.nz/news/world/109300/big-ben-to-be-renamed-elizabeth-tower"
+        "https://www.parliament.uk/about/living-heritage/building/palace/big-ben/facts-figures/ (Big Ben, the Great Bell); https://www.history.com/articles/how-did-big-ben-get-its-name",
+        "https://www.parliament.uk/about/living-heritage/building/palace/big-ben/facts-figures/great-clock-facts/ (pre-decimal pennies regulate the clock)",
+        "https://www.history.com/articles/how-did-big-ben-get-its-name (first rang July 11, 1859, cracked two months later and fell silent for upwards of four years)",
+        "https://www.history.com/articles/how-did-big-ben-get-its-name (renamed Elizabeth Tower for the Diamond Jubilee in 2012); https://www.rnz.co.nz/news/world/109300/big-ben-to-be-renamed-elizabeth-tower"
       ]
     }
   ]

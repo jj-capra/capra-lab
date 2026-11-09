@@ -9,12 +9,12 @@
       "about": "John Adams",
       "say": "John Adams [was the first president to live in the White House], [lived in the White House for all four years of his presidency], [left town before the man who beat him was sworn in], and [died on the very same day as Thomas Jefferson].",
       "cap": 1,
-      "real": "Adams moved into the unfinished White House on November 1, 1800, with only about four months left in his term.",
+      "real": "Adams moved into the newly built White House on November 1, 1800, with only about four months left in his term.",
       "src": [
-        "https://en.wikipedia.org/wiki/White_House + https://www.history.com/this-day-in-history/november-1/john-adams-moves-into-white-house (moved in November 1, 1800)",
+        "https://en.wikipedia.org/wiki/White_House (on November 1, 1800, Adams became the first president to take residence in the building)",
         "https://www.history.com/this-day-in-history/november-1/john-adams-moves-into-white-house (moved in November 1, 1800; Jefferson sworn in March 4, 1801)",
-        "https://www.history.com/this-day-in-history/november-1/john-adams-moves-into-white-house (as Jefferson was sworn in, Adams was already on his way back to Massachusetts)",
-        "https://www.history.com/this-day-in-history/thomas-jefferson-and-john-adams-die"
+        "https://www.history.com/this-day-in-history/november-1/john-adams-moves-into-white-house (as Jefferson was sworn in on March 4, 1801, Adams was already on his way back to Massachusetts)",
+        "https://www.history.com/this-day-in-history/thomas-jefferson-and-john-adams-die (both died July 4, 1826)"
       ]
     },
     {
@@ -24,9 +24,9 @@
       "cap": 3,
       "real": "Madison beat James Monroe for a seat in the first House of Representatives in 1789. Monroe later followed him as president.",
       "src": [
-        "https://www.mentalfloss.com/history/presidents/16-fun-facts-james-madisons-birthday",
-        "https://www.mentalfloss.com/history/presidents/16-fun-facts-james-madisons-birthday",
-        "https://www.mentalfloss.com/history/presidents/16-fun-facts-james-madisons-birthday",
+        "https://www.mentalfloss.com/history/presidents/16-fun-facts-james-madisons-birthday (at 5 feet 4 inches, the shortest president)",
+        "https://founders.archives.gov/documents/Madison/01-15-02-0144 (House debate, February 1794: he would hire the Portuguese ships of war against the Algerine corsairs instead of building a fleet)",
+        "https://www.mentalfloss.com/history/presidents/16-fun-facts-james-madisons-birthday (Madison's face appeared on the 5,000 dollar bill)",
         "https://www.mentalfloss.com/history/presidents/16-fun-facts-james-madisons-birthday (he defeated Monroe for a House seat in 1789)"
       ]
     },
@@ -35,25 +35,25 @@
       "about": "Ulysses S. Grant",
       "say": "Ulysses S. Grant [graduated first in his class at West Point], [was born with the first name Hiram], [was arrested for speeding in his horse carriage while president], and [signed the law that made Yellowstone the first national park].",
       "cap": 0,
-      "real": "Grant finished 21st out of 39 cadets in West Point's class of 1843, strong in math and science but weak in military subjects.",
+      "real": "Grant finished 21st out of 39 cadets in West Point's class of 1843, right in the middle of the pack.",
       "src": [
         "https://www.nps.gov/articles/000/grant-s-early-years.htm (graduated 21st of 39 in 1843)",
         "https://www.nps.gov/people/ulysses-s-grant.htm (born Hiram Ulysses Grant)",
-        "https://www.smithsonianmag.com/smart-news/when-president-ulysses-s-grant-was-arrested-for-speeding-in-a-horse-drawn-carriage-180981916/",
+        "https://www.smithsonianmag.com/smart-news/when-president-ulysses-s-grant-was-arrested-for-speeding-in-a-horse-drawn-carriage-180981916/ (arrested by officer William West in 1872; the arrest is not in dispute)",
         "https://www.nps.gov/people/ulysses-s-grant.htm (signed the Yellowstone act on March 1, 1872)"
       ]
     },
     {
       "id": "hn04",
       "about": "Franklin D. Roosevelt",
-      "say": "Franklin D. Roosevelt [moved Thanksgiving up a week in 1939 to help stores], [was the first president to appear on television], [was the first president ever heard on the radio], and [had a dog who got his own statue at the FDR Memorial].",
+      "say": "Franklin D. Roosevelt [moved Thanksgiving up a week in 1939 to help stores], [was the first sitting president to appear on TV], [was the first sitting president to speak on the radio], and [had a dog who got his own statue at the FDR Memorial].",
       "cap": 2,
-      "real": "Presidents were on the radio before FDR: Calvin Coolidge's December 1923 speech to Congress went out over the air. FDR made it famous with fireside chats.",
+      "real": "Presidents were on the radio years before FDR: Warren Harding in 1922 and Calvin Coolidge in 1923. FDR made radio famous with his fireside chats.",
       "src": [
-        "https://www.stripes.com/history/2021-11-24/franklin-roosevelt-moved-thanksgiving-week-1939-3742553.html",
-        "https://www.worldatlas.com/articles/who-was-the-first-us-president-to-appear-on-television.html (April 30, 1939, World's Fair)",
-        "https://en.wikipedia.org/wiki/Calvin_Coolidge (December 6, 1923 address broadcast over the radio, ten years before FDR took office)",
-        "https://www.nps.gov/articles/fala.htm (Fala is the only presidential pet so honored)"
+        "https://www.stripes.com/history/2021-11-24/franklin-roosevelt-moved-thanksgiving-week-1939-3742553.html (moved from Nov. 30 to Nov. 23, 1939, at merchants' request, for more Christmas shopping days)",
+        "https://its.ntia.gov/this-month-in-its-history/april-1939/ (April 30, 1939: the first appearance on television by a sitting president)",
+        "https://hardingpresidentialsites.org/2022/05/29/first-presidential-radio-broadcast-marks-100-year-anniversary/ (Harding spoke over radio in 1922) + https://en.wikipedia.org/wiki/Calvin_Coolidge (December 6, 1923 address broadcast)",
+        "https://www.nps.gov/articles/fala.htm (Fala's statue sits beside FDR's at the memorial; the only presidential pet so honored)"
       ]
     },
     {
@@ -64,8 +64,8 @@
       "real": "Coolidge was born in Vermont but made his career in Massachusetts, where he was governor from 1919 to 1921.",
       "src": [
         "https://en.wikipedia.org/wiki/Calvin_Coolidge (born July 4, 1872)",
-        "https://www.whitehousehistory.org/questions/what-are-some-unusual-animals-that-have-lived-in-and-around-the-white-house",
-        "https://en.wikipedia.org/wiki/Calvin_Coolidge (his father, a notary public, gave the oath by kerosene lamp on August 3, 1923)",
+        "https://www.whitehousehistory.org/questions/what-are-some-unusual-animals-that-have-lived-in-and-around-the-white-house (Rebecca, sent from Mississippi in 1926 to be served for Thanksgiving dinner, adopted as a pet)",
+        "https://en.wikipedia.org/wiki/Calvin_Coolidge (his father, a notary public, gave the oath by the light of a kerosene lamp on August 3, 1923)",
         "https://en.wikipedia.org/wiki/Calvin_Coolidge (48th governor of Massachusetts, 1919 to 1921)"
       ]
     },
@@ -90,22 +90,22 @@
       "real": "Einstein's 1921 Nobel Prize in Physics was for explaining the photoelectric effect, work very different from relativity.",
       "src": [
         "https://www.livescience.com/physics-mathematics/32-fun-and-random-facts-about-albert-einstein (offered in 1952, declined)",
-        "https://www.livescience.com/physics-mathematics/32-fun-and-random-facts-about-albert-einstein",
-        "https://www.livescience.com/physics-mathematics/32-fun-and-random-facts-about-albert-einstein (prize was for the photoelectric effect) + https://en.wikipedia.org/wiki/Albert_Einstein",
+        "https://www.livescience.com/physics-mathematics/32-fun-and-random-facts-about-albert-einstein (disliked socks so much he refused to wear them, since they develop holes)",
+        "https://en.wikipedia.org/wiki/Albert_Einstein (1921 prize for services to theoretical physics, especially the law of the photoelectric effect)",
         "https://www.livescience.com/physics-mathematics/32-fun-and-random-facts-about-albert-einstein (neighbors often had to rescue him when his boat capsized)"
       ]
     },
     {
       "id": "hn08",
       "about": "Napoleon",
-      "say": "Napoleon [wrote a romance novella years before he became emperor], [had his soldiers shoot the nose off Egypt's Great Sphinx], [stood about 5 foot 6, taller than the average Frenchman then], and [died before anyone took a photo that still survives today].",
+      "say": "Napoleon [wrote a romance novella years before he became emperor], [had his soldiers shoot the nose off Egypt's Great Sphinx], [was born a year after Genoa handed his home island, Corsica, to France], and [died before anyone took a photo that still survives today].",
       "cap": 1,
       "real": "Drawings from 1737 already show the Sphinx without its nose, decades before Napoleon was born. His army reached Egypt in 1798.",
       "src": [
-        "https://en.wikipedia.org/wiki/Napoleon",
-        "https://www.smithsonianjourneys.org/blogs/blog/2022/09/15/photo-what-happened-to-the-sphinxs-nose",
-        "https://www.howitworksdaily.com/7-history-myths-busted/",
-        "https://en.wikipedia.org/wiki/View_from_the_Window_at_Le_Gras (oldest surviving camera photo, 1826 or 1827; Napoleon died 1821, https://en.wikipedia.org/wiki/Napoleon)"
+        "https://en.wikipedia.org/wiki/Napoleon (wrote the romantic novella Clisson et Eugenie in 1795; emperor from 18 May 1804)",
+        "https://www.smithsonianjourneys.org/blogs/blog/2022/09/15/photo-what-happened-to-the-sphinxs-nose (the cannonball story is a legend; Norden's 1737 drawings show no nose)",
+        "https://en.wikipedia.org/wiki/Napoleon (born in 1769, one year after the Republic of Genoa ceded Corsica to France by the 1768 Treaty of Versailles)",
+        "https://en.wikipedia.org/wiki/View_from_the_Window_at_Le_Gras (oldest surviving photograph, 1827) + https://en.wikipedia.org/wiki/Napoleon (died 5 May 1821)"
       ]
     },
     {
@@ -115,9 +115,9 @@
       "cap": 0,
       "real": "When crowds stormed the Bastille on July 14, 1789, the old fortress prison held just seven prisoners.",
       "src": [
-        "https://en.wikipedia.org/wiki/Storming_of_the_Bastille",
-        "https://en.wikipedia.org/wiki/Decimal_time",
-        "https://en.wikipedia.org/wiki/Metric_system",
+        "https://en.wikipedia.org/wiki/Storming_of_the_Bastille (the prison contained only seven inmates on 14 July 1789)",
+        "https://en.wikipedia.org/wiki/Decimal_time (1793 decree: ten hours a day; mandatory use suspended 7 April 1795)",
+        "https://en.wikipedia.org/wiki/Metric_system (first devised in the early days of the French Revolution; launched in France in 1799)",
         "https://en.wikipedia.org/wiki/George_Washington (inaugurated April 30, 1789) + https://en.wikipedia.org/wiki/Storming_of_the_Bastille (July 14, 1789)"
       ]
     },
@@ -131,33 +131,33 @@
         "https://en.wikipedia.org/wiki/Ludwig_van_Beethoven (baptized 17 December 1770; exact birth date undocumented)",
         "https://en.wikipedia.org/wiki/Ludwig_van_Beethoven (Eroica, first titled Bonaparte; name scratched off in 1804)",
         "https://en.wikipedia.org/wiki/Ludwig_van_Beethoven (7 May 1824 premiere; Caroline Unger turned him around to see the applause)",
-        "https://en.wikipedia.org/wiki/Ludwig_van_Beethoven (moved to Vienna November 1792 after the recent death of Mozart; studied with Haydn)"
+        "https://en.wikipedia.org/wiki/Ludwig_van_Beethoven (moved to Vienna November 1792 and studied with Haydn) + https://www.themorgan.org/exhibitions/online/mozart/418 (Mozart 1756-1791)"
       ]
     },
     {
       "id": "hn11",
       "about": "Peter the Great",
-      "say": "Peter the Great [stood about 6 feet 8 inches tall], [worked four months in a Dutch shipyard under a fake name], [moved Russia's New Year's Day from January 1 to September 1], and [shaved the beards off his own party guests with a razor].",
+      "say": "Peter the Great [became tsar at age 10, sharing the throne with his half-brother], [worked four months in a Dutch shipyard under a fake name], [moved Russia's New Year's Day from January 1 to September 1], and [personally shaved the beards off his own party guests].",
       "cap": 2,
       "real": "It was the other way around: in 1699, Peter moved Russia's New Year from September 1 to January 1.",
       "src": [
-        "https://mdwiki.org/wiki/Peter_the_Great (reportedly 6 ft 8 in, 2.03 m)",
-        "https://www.smithsonianmag.com/smart-news/why-tsar-peter-great-established-beard-tax-180964693/ (traveled as Sergeant Pyotr Mikhaylov; four months at a Dutch East India Company shipyard)",
-        "https://mdwiki.org/wiki/Peter_the_Great (in 1699 moved the New Year from 1 September to 1 January)",
-        "https://www.smithsonianmag.com/smart-news/why-tsar-peter-great-established-beard-tax-180964693/"
+        "https://en.wikipedia.org/wiki/Peter_the_Great (chosen tsar at 10; ruled jointly with his elder half-brother Ivan V until 1696)",
+        "https://www.smithsonianmag.com/smart-news/why-tsar-peter-great-established-beard-tax-180964693/ (traveled as Sergeant Pyotr Mikhaylov; four months at a Dutch East India Company shipyard) + https://en.wikipedia.org/wiki/Peter_the_Great",
+        "https://en.wikipedia.org/wiki/Peter_the_Great (in 1699 moved the start of the year from 1 September to 1 January)",
+        "https://www.smithsonianmag.com/smart-news/why-tsar-peter-great-established-beard-tax-180964693/ (personally shaved the beards from his horrified guests at a reception)"
       ]
     },
     {
       "id": "hn12",
       "about": "Ada Lovelace",
-      "say": "Ada Lovelace [never met her father, the famous poet Lord Byron], [saw her program run on Charles Babbage's finished Analytical Engine], [wrote what historians call the first computer program, in 1843], and [predicted that computing machines could one day make music].",
+      "say": "Ada Lovelace [grew up without ever knowing her father, the poet Lord Byron], [saw her program run on Charles Babbage's finished Analytical Engine], [wrote what historians call the first computer program, in 1843], and [predicted that computing machines could one day make music].",
       "cap": 1,
       "real": "Babbage's Analytical Engine was never finished. Only a small piece of it was ever built, so her program never ran in her lifetime.",
       "src": [
-        "https://www.britannica.com/story/ada-lovelace-the-first-computer-programmer",
-        "https://www.britannica.com/story/ada-lovelace-the-first-computer-programmer (only a small piece of the engine was ever built)",
-        "https://www.britannica.com/story/ada-lovelace-the-first-computer-programmer",
-        "https://www.britannica.com/story/ada-lovelace-the-first-computer-programmer (engine could work on things besides number, such as musical notes)"
+        "https://www.britannica.com/story/ada-lovelace-the-first-computer-programmer (Ada never met her father; the marriage lasted little more than a year)",
+        "https://www.britannica.com/story/ada-lovelace-the-first-computer-programmer (only a small piece of the Analytical Engine was ever built)",
+        "https://www.britannica.com/story/ada-lovelace-the-first-computer-programmer (regarded by computer historians as the first computer program)",
+        "https://www.britannica.com/story/ada-lovelace-the-first-computer-programmer (the engine could work on things besides number, such as musical notes)"
       ]
     }
   ]

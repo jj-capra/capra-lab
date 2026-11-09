@@ -7,27 +7,27 @@
     {
       "id": "cw01",
       "about": "Betty White",
-      "say": "Betty White [was born before sliced bread was first sold], [was born closer to the Civil War than to the first iPhone], [hosted the Macy's Thanksgiving Day Parade for 20 years], and [had a TV career that Guinness measured at 79 years].",
+      "say": "Betty White [was born before sliced bread was first sold], [was born closer to the Civil War than to the first iPhone], [co-hosted the Macy's Thanksgiving Day Parade for 19 years], and [had a TV career that Guinness measured at 79 years].",
       "cap": 2,
-      "real": "She co-hosted NBC's Macy's parade coverage for about ten years, 1962 to 1971. Her 20-year run was as a commentator for the Rose Parade.",
+      "real": "She co-hosted NBC's Macy's parade coverage for ten years, 1962 to 1971. Her 20-year parade run was as a commentator for the Rose Parade.",
       "src": [
-        "https://en.wikipedia.org/wiki/Sliced_bread (first sold July 7, 1928; she was born January 17, 1922, per the Mental Floss page)",
-        "https://www.mentalfloss.com/article/61054/15-things-you-didnt-know-about-betty-white (born January 17, 1922; arithmetic: 57 years after the Civil War ended in 1865, 85 years before the first iPhone in 2007)",
-        "https://www.mentalfloss.com/article/61054/15-things-you-didnt-know-about-betty-white (Macy's parade 1962-1971; Rose Parade commentator 1956-1976)",
-        "https://www.guinnessworldrecords.com/world-records/107740-longest-tv-career-by-an-entertainer-female"
+        "https://en.wikipedia.org/wiki/Sliced_bread (first sold July 7, 1928, in Chillicothe, Missouri); https://www.guinnessworldrecords.com/world-records/107740-longest-tv-career-by-an-entertainer-female (born January 17, 1922)",
+        "NOT WEB-CHECKED (textbook anchors only: Civil War 1861 to 1865, first iPhone 2007. Born January 17, 1922 per Guinness: 57 years after 1865, 61 after 1861, against 85 before 2007) https://www.guinnessworldrecords.com/world-records/107740-longest-tv-career-by-an-entertainer-female",
+        "https://www.mentalfloss.com/article/61054/15-things-you-didnt-know-about-betty-white/5 (Macy's parade 1962 to 1971; Rose Parade 1956 to 1976); https://interviews.televisionacademy.com/interviews/betty-white (20-year co-host of the Rose Parade)",
+        "https://www.guinnessworldrecords.com/world-records/107740-longest-tv-career-by-an-entertainer-female (79 years, TV debut 1939, as of February 2018)"
       ]
     },
     {
       "id": "cw02",
       "about": "The lighter",
-      "say": "The lighter [had its most famous version, the Zippo, invented during World War II], [was invented before the friction match], [had an early model that made its own hydrogen gas from zinc and acid], and [was invented while Beethoven was still alive].",
+      "say": "The lighter [had its most famous version, the Zippo, invented during World War II], [was invented before the friction match], [had an early model that made its own hydrogen gas from zinc and acid], and [had a hydrogen-burning model invented while Beethoven was still alive].",
       "cap": 0,
       "real": "George Blaisdell invented the Zippo in 1932 in Bradford, Pennsylvania, seven years before World War II began.",
       "src": [
-        "https://www.todayifoundout.com/index.php/2011/10/lighters-were-invented-before-the-match/ (Zippo invented in 1932)",
-        "https://www.todayifoundout.com/index.php/2011/10/lighters-were-invented-before-the-match/ (Döbereiner's lamp 1823; John Walker's friction match 1826)",
-        "https://en.wikipedia.org/wiki/D%C3%B6bereiner%27s_lamp",
-        "NOT WEB-CHECKED (textbook: Beethoven died in March 1827; the lamp's 1823 date is confirmed here) https://en.wikipedia.org/wiki/D%C3%B6bereiner%27s_lamp"
+        "https://www.todayifoundout.com/index.php/2011/10/lighters-were-invented-before-the-match/ (Zippo invented by George Blaisdell in 1932 in Bradford, Pennsylvania); https://en.wikipedia.org/wiki/Lighter (Zippo 1932)",
+        "https://www.todayifoundout.com/index.php/2011/10/lighters-were-invented-before-the-match/ (Döbereiner's lamp 1823; John Walker's friction match 1826); https://en.wikipedia.org/wiki/Lighter (flintlock lighters by 1662): before 1826 under every reading",
+        "https://en.wikipedia.org/wiki/D%C3%B6bereiner%27s_lamp (zinc and dilute sulfuric acid make hydrogen, lit by a platinum sponge)",
+        "https://en.wikipedia.org/wiki/D%C3%B6bereiner%27s_lamp (invented 1823, based on Fürstenberger's 1780 hydrogen lighter); https://www.britannica.com/biography/Ludwig-van-Beethoven/The-last-years (died March 26, 1827)"
       ]
     },
     {
@@ -50,9 +50,9 @@
       "cap": 1,
       "real": "New Mexico became the 47th state in January 1912, with Santa Fe as its capital. Arizona was the 48th, a month later.",
       "src": [
-        "https://en.wikipedia.org/wiki/Santa_Fe,_New_Mexico (new city founded 1607, made capital 1610; the Pilgrims landed in 1620)",
+        "NOT WEB-CHECKED (textbook anchor only: Pilgrims landed 1620) https://en.wikipedia.org/wiki/Santa_Fe,_New_Mexico (new city founded 1607, made capital 1610: 10 or more years earlier either way)",
         "https://en.wikipedia.org/wiki/Santa_Fe,_New_Mexico (1912: New Mexico became the 47th state)",
-        "https://en.wikipedia.org/wiki/Santa_Fe,_New_Mexico (Confederate forces held the city in March 1862)",
+        "https://en.wikipedia.org/wiki/Santa_Fe,_New_Mexico (Sibley flew the Confederate flag over Santa Fe for a few days in March 1862)",
         "https://en.wikipedia.org/wiki/1616 (Shakespeare died April 23, 1616; Santa Fe founded 1607 to 1610)"
       ]
     },
@@ -63,10 +63,10 @@
       "cap": 1,
       "real": "The oldest surviving camera photograph was made in 1827. Alexander Bain's fax patent came 16 years later, in 1843.",
       "src": [
-        "https://en.wikipedia.org/wiki/Alexander_Bain_(inventor) (patent of May 27, 1843; Bell's telephone patent was 1876)",
-        "https://en.wikipedia.org/wiki/View_from_the_Window_at_Le_Gras (made in 1827)",
-        "https://en.wikipedia.org/wiki/Alexander_Bain_(inventor)",
-        "https://en.wikipedia.org/wiki/Pantelegraph (Paris-Lyon line open to the public from February 1863)"
+        "NOT WEB-CHECKED (textbook anchor only: Bell's telephone patent 1876) https://en.wikipedia.org/wiki/Alexander_Bain_(inventor) (patent of May 27, 1843: 33 years earlier)",
+        "https://en.wikipedia.org/wiki/View_from_the_Window_at_Le_Gras (made in 1827, the oldest surviving photograph)",
+        "https://en.wikipedia.org/wiki/Alexander_Bain_(inventor) (Scottish inventor, apprenticed to a clockmaker in Wick)",
+        "https://en.wikipedia.org/wiki/Pantelegraph (public use of the Paris-Lyon line from February 1863, official operation from February 16, 1865: both before the war ended in April 1865)"
       ]
     },
     {
@@ -76,10 +76,10 @@
       "cap": 3,
       "real": "The White House got its first telephone in 1877. Iolani Palace wasn't even finished until 1882.",
       "src": [
-        "https://ethw.org/Milestones:Electric_Lighting_Of_The_Kingdom_of_Hawaii_1886-1888 (1887, four years before the White House)",
-        "https://digital-release.khon2.com/aloha-authentic/%ca%bbiolani-palace-was-once-ahead-of-the-white-house/amp (completed 1882; the Eiffel Tower opened in 1889)",
-        "https://digital-release.khon2.com/aloha-authentic/%ca%bbiolani-palace-was-once-ahead-of-the-white-house/amp",
-        "https://loki.editorial.aetnd.com/this-day-in-history/hayes-has-first-phone-installed-in-white-house (White House phone May 10, 1877)"
+        "https://ethw.org/Milestones:Electric_Lighting_Of_The_Kingdom_of_Hawaii_1886-1888 (lit by 1887, four years before the White House)",
+        "NOT WEB-CHECKED (textbook anchor only: Eiffel Tower 1889) https://digital-release.khon2.com/aloha-authentic/%ca%bbiolani-palace-was-once-ahead-of-the-white-house/amp (completed 1882)",
+        "https://digital-release.khon2.com/aloha-authentic/%ca%bbiolani-palace-was-once-ahead-of-the-white-house/amp (Executive Building until the move to the new State Capitol in 1969)",
+        "https://mentalfloss.com/article/77785/first-oval-office-phone-wasnt-installed-until-1929 (White House phone installed 1877, years before the palace was finished in 1882)"
       ]
     },
     {
@@ -89,10 +89,10 @@
       "cap": 0,
       "real": "The bridge opened in May 1883. The Statue of Liberty wasn't dedicated until October 1886, three and a half years later.",
       "src": [
-        "https://www.newworldencyclopedia.org/entry/Statue_of_Liberty (dedicated October 28, 1886; bridge opened May 24, 1883 per the NYPL page)",
-        "https://www.nps.gov/wamo/learn/historyculture/monumentconstruction.htm (capstone set December 6, 1884)",
-        "https://www.nypl.org/blog/2019/05/24/not-for-sale-brooklyn-bridge-130-years",
-        "https://www.nypl.org/blog/2019/05/24/not-for-sale-brooklyn-bridge-130-years"
+        "https://www.newworldencyclopedia.org/entry/Statue_of_Liberty (dedicated October 28, 1886); https://www.nypl.org/blog/2019/05/24/not-for-sale-brooklyn-bridge-130-years (bridge opened May 24, 1883)",
+        "https://www.nps.gov/wamo/learn/historyculture/monumentconstruction.htm (capstone set December 6, 1884, a year and a half after the bridge opened)",
+        "https://www.nypl.org/blog/2019/05/24/not-for-sale-brooklyn-bridge-130-years (21 elephants, May 17, 1884)",
+        "https://www.nypl.org/blog/2019/05/24/not-for-sale-brooklyn-bridge-130-years (called the New York Bridge or East River Bridge until its official naming in 1915)"
       ]
     },
     {
@@ -102,23 +102,23 @@
       "cap": 2,
       "real": "Her check, number 00-000-001, was dated January 31, 1940. The Social Security Act passed in 1935, but monthly checks began in 1940.",
       "src": [
-        "https://en.wikipedia.org/wiki/Ida_May_Fuller (born September 6, 1874; Grant was president 1869 to 1877)",
-        "https://en.wikipedia.org/wiki/Ida_May_Fuller",
-        "https://en.wikipedia.org/wiki/Ida_May_Fuller",
-        "https://en.wikipedia.org/wiki/Ida_May_Fuller (collected until her death in 1975)"
+        "NOT WEB-CHECKED (textbook anchor only: Grant was president March 1869 to March 1877) https://en.wikipedia.org/wiki/Ida_May_Fuller (born September 6, 1874)",
+        "https://en.wikipedia.org/wiki/Ida_May_Fuller (Black River Academy, where her contemporaries included Calvin Coolidge)",
+        "https://en.wikipedia.org/wiki/Ida_May_Fuller (check 00-000-001, dated January 31, 1940)",
+        "https://en.wikipedia.org/wiki/Ida_May_Fuller (collected until her death in January 1975); https://www.guinnessworldrecords.com/records/icons/neil-armstrong-first-man-on-the-moon (July 20, 1969)"
       ]
     },
     {
       "id": "cw09",
       "about": "Alice Liddell",
-      "say": "Alice Liddell [was born before Abraham Lincoln became president], [spent her 80th birthday as guest of honor at Columbia University], [was still alive when Mickey Mouse made his debut], and [was 15 when Lewis Carroll first told her the Wonderland story].",
+      "say": "Alice Liddell [was born before Abraham Lincoln became president], [was guest of honor at Columbia University on her 80th birthday], [was still alive when Mickey Mouse made his debut], and [was 15 when Lewis Carroll first told her the Wonderland story].",
       "cap": 3,
       "real": "She was 10 on the July 1862 boat trip when Carroll first told her the story that became Alice's Adventures in Wonderland.",
       "src": [
-        "https://en.wikipedia.org/wiki/Alice_Liddell (born May 4, 1852; Lincoln took office in 1861)",
-        "https://library.columbia.edu/libraries/rbml/uarchives/resources/media/alice.html",
-        "https://en.wikipedia.org/wiki/Alice_Liddell (died November 16, 1934; Mickey Mouse debuted in 1928)",
-        "https://en.wikipedia.org/wiki/Alice_Liddell"
+        "NOT WEB-CHECKED (textbook anchor only: Lincoln took office March 1861) https://en.wikipedia.org/wiki/Alice_Liddell (born May 4, 1852: nine years earlier)",
+        "https://library.columbia.edu/libraries/rbml/uarchives/resources/media/alice.html (honorary degree May 2, 1932; guest of honor at the final Carroll Centennial ceremony, which fell on her 80th birthday)",
+        "NOT WEB-CHECKED (textbook anchor only: Mickey Mouse debuted in November 1928) https://en.wikipedia.org/wiki/Alice_Liddell (died November 16, 1934: six years later)",
+        "https://en.wikipedia.org/wiki/Alice_Liddell (10 years old on the July 1862 boat trip)"
       ]
     },
     {
@@ -128,10 +128,10 @@
       "cap": 0,
       "real": "Levi Strauss didn't reach San Francisco until 1853, and the riveted pants we call jeans were patented in 1873.",
       "src": [
-        "https://www.levistrauss.com/our-story/the-history-of-denim/",
-        "https://www.levistrauss.com/our-story/the-history-of-denim/ (patented May 20, 1873; Edison's bulb came in 1879)",
-        "https://www.levistrauss.com/our-story/the-history-of-denim/",
-        "https://www.levistrauss.com/our-story/the-history-of-denim/"
+        "https://www.levistrauss.com/our-story/the-history-of-denim/ (Levi Strauss came to San Francisco in 1853; patent May 20, 1873)",
+        "NOT WEB-CHECKED (textbook anchor only: Edison's bulb 1879, patented 1880) https://www.levistrauss.com/our-story/the-history-of-denim/ (patented May 20, 1873: six years earlier)",
+        "https://www.levistrauss.com/our-story/the-history-of-denim/ (waist overalls until 1960)",
+        "https://www.levistrauss.com/our-story/the-history-of-denim/ (Jacob Davis, a tailor who bought his cloth from Levi)"
       ]
     },
     {
@@ -141,10 +141,10 @@
       "cap": 2,
       "real": "Newgrange catches the sunrise around the winter solstice in December, when a beam lights its inner chamber for about 17 minutes.",
       "src": [
-        "https://www.nationalgeographic.com/travel/article/newgrange-lottery-winter-solstice-event",
-        "https://www.nationalgeographic.com/travel/article/newgrange-lottery-winter-solstice-event",
-        "https://www.nationalgeographic.com/travel/article/newgrange-lottery-winter-solstice-event",
-        "https://www.nationalgeographic.com/travel/article/newgrange-lottery-winter-solstice-event"
+        "https://www.nationalgeographic.com/travel/article/newgrange-lottery-winter-solstice-event (finished around 3200 BCE, predating the Great Pyramids)",
+        "https://www.nationalgeographic.com/travel/article/newgrange-lottery-winter-solstice-event (predating Stonehenge)",
+        "https://www.nationalgeographic.com/travel/article/newgrange-lottery-winter-solstice-event (winter solstice in December, lit for 17 minutes)",
+        "https://www.nationalgeographic.com/travel/article/newgrange-lottery-winter-solstice-event (38 places a year, chosen by lottery)"
       ]
     },
     {
@@ -154,10 +154,10 @@
       "cap": 1,
       "real": "Concorde cruised at twice the speed of sound, about 1,350 miles per hour, and crossed the Atlantic in around three and a half hours.",
       "src": [
-        "https://www.museeairespace.fr/en/collections/bac-sud-aviation-concorde-prototype-001-f-wtss/ (first flight March 2, 1969; Apollo 11 landed July 20, 1969)",
-        "https://www.history.com/this-day-in-history/october-24/the-concorde-makes-its-final-flight",
-        "https://www.museeairespace.fr/en/collections/bac-sud-aviation-concorde-prototype-001-f-wtss/",
-        "https://www.history.com/this-day-in-history/october-24/the-concorde-makes-its-final-flight (October 24, 2003); https://en.wikipedia.org/wiki/Me_at_the_zoo (April 23, 2005)"
+        "https://www.museeairespace.fr/en/collections/bac-sud-aviation-concorde-prototype-001-f-wtss/ (first flight March 2, 1969); https://www.guinnessworldrecords.com/records/icons/neil-armstrong-first-man-on-the-moon (July 20, 1969)",
+        "https://www.history.com/this-day-in-history/october-24/the-concorde-makes-its-final-flight (twice the speed of sound, 1,350 miles per hour)",
+        "https://www.museeairespace.fr/en/collections/bac-sud-aviation-concorde-prototype-001-f-wtss/ (June 30, 1973: eclipse watched for 74 minutes)",
+        "https://www.history.com/this-day-in-history/october-24/the-concorde-makes-its-final-flight (last commercial passenger flight October 24, 2003); https://en.wikipedia.org/wiki/Me_at_the_zoo (April 23, 2005)"
       ]
     }
   ]

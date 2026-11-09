@@ -11,10 +11,10 @@
       "cap": 3,
       "real": "The first iPod, released in November 2001, had a 5 GB hard drive and was sold as 1,000 songs in your pocket.",
       "src": [
-        "https://en.wikipedia.org/wiki/IPod (original software worked only with Mac; Windows support came in August 2002)",
+        "https://en.wikipedia.org/wiki/IPod (iPod software originally worked only with Mac; Windows support came with the second generation)",
         "https://en.wikipedia.org/wiki/IPod (Vinnie Chieco, inspired by Open the pod bay doors, Hal)",
         "https://en.wikipedia.org/wiki/IPod (iPod Touch discontinued May 10, 2022; the first iPhone went on sale in June 2007)",
-        "https://en.wikipedia.org/wiki/IPod (5 GB, 1,000 songs in your pocket) + https://www.npr.org/2021/10/23/1048706632/20-years-ago-the-ipod-was-born"
+        "https://en.wikipedia.org/wiki/IPod (first model, November 10, 2001: 5 GB, 1,000 songs in your pocket)"
       ]
     },
     {
@@ -27,13 +27,13 @@
         "https://www.androidcentral.com/apps-software/android-os/the-evolution-of-android-decades-of-transformation + https://www.computerworld.com/article/1405537/android-founder-we-aimed-to-make-a-camera-os.html",
         "https://www.androidcentral.com/apps-software/android-os/the-evolution-of-android-decades-of-transformation (HTC Dream / T-Mobile G1, October 2008)",
         "https://www.androidcentral.com/apps-software/android-os/the-evolution-of-android-decades-of-transformation (Google acquired Android Inc. in July 2005)",
-        "https://www.gotechtor.com/android-history/ (Cupcake, Donut, Eclair, Froyo, Gingerbread ... Pie; dropped with Android 10 in 2019)"
+        "https://www.slashgear.com/2196404/the-reason-why-android-stopped-using-dessert-names-for-new-versions/ (sweet treats in alphabetical order from Cupcake in 2009; dropped with Android 10 in 2019)"
       ]
     },
     {
       "id": "fy03",
       "about": "Gmail",
-      "say": "Gmail [launched with 10 megabytes of free storage], [was announced on April Fools' Day, so many people thought it was a joke], [took nearly three years to open to everyone without an invite], and [was code-named Caribou after a Dilbert comic strip].",
+      "say": "Gmail [launched by giving every user 10 megabytes of free storage], [was announced on April Fools' Day, so many people thought it was a joke], [took nearly three years to open to everyone without an invite], and [was code-named Caribou after a Dilbert comic strip].",
       "cap": 0,
       "real": "Gmail launched in 2004 with 1 gigabyte per user, when most free email gave 2 to 4 megabytes. That's partly why people thought it was a prank.",
       "src": [
@@ -50,9 +50,9 @@
       "cap": 2,
       "real": "Duolingo started at Carnegie Mellon University in Pittsburgh, where professor Luis von Ahn and grad student Severin Hacker came up with it in 2009.",
       "src": [
-        "https://en.wikipedia.org/wiki/Luis_von_Ahn (invented reCAPTCHA in 2007; co-founded Duolingo with Severin Hacker)",
-        "https://wiki.krisyotam.com/content/wikipedia_en_all_nopic_2026-03/Duolingo (Wikipedia copy: courses in Klingon and High Valyrian)",
-        "https://keystoneedge.com/2015/12/31/founder-profile-luis-von-ahn/ (a CMU spinoff, Pittsburgh) + https://wiki.krisyotam.com/content/wikipedia_en_all_nopic_2026-03/Duolingo",
+        "https://en.wikipedia.org/wiki/Luis_von_Ahn (in 2007 von Ahn invented reCAPTCHA; co-founded Duolingo with Severin Hacker)",
+        "https://www.engadget.com/2018/03/15/duolingos-klingon-language-course/ (Klingon course launched March 15, 2018)",
+        "https://keystoneedge.com/2015/12/31/founder-profile-luis-von-ahn/ (Duolingo is a CMU spinoff) + https://en.wikipedia.org/wiki/Luis_von_Ahn (professor at Carnegie Mellon)",
         "https://en.wikipedia.org/wiki/Luis_von_Ahn (in 2009 von Ahn, a CMU professor, and grad student Severin Hacker began developing Duolingo)"
       ]
     },
@@ -65,46 +65,46 @@
       "src": [
         "https://en.wikipedia.org/wiki/Shazam_(music_app) (UK service launched 2002 as 2580, the number users dialed)",
         "https://en.wikipedia.org/wiki/Shazam_(music_app) (a text message with the title and artist was sent back)",
-        "https://en.wikipedia.org/wiki/Shazam_(music_app) (Apple acquisition completed 24 September 2018, reported 400 million dollars)",
+        "https://en.wikipedia.org/wiki/Shazam_(music_app) (Apple announced the purchase in December 2017 for a reported 400 million dollars; completed 24 September 2018)",
         "https://en.wikipedia.org/wiki/Shazam_(music_app) (debuted on iPhone 10 July 2008 with the launch of the App Store)"
       ]
     },
     {
       "id": "fy06",
       "about": "BTS",
-      "say": "BTS [won a Grammy for its 2020 hit Dynamite], [has a name that means Bulletproof Boy Scouts in Korean], [spoke at the United Nations in 2018], and [became the first all-South Korean act to top the US Hot 100].",
+      "say": "BTS [won a Grammy for its 2020 hit Dynamite], [has a name that means Bulletproof Boy Scouts in Korean], [spoke at the United Nations in 2018], and [became the first Korean group to top the US Hot 100].",
       "cap": 0,
-      "real": "Dynamite earned BTS its first Grammy nomination, making it the first K-pop group nominated, but it didn't win.",
+      "real": "Dynamite made BTS the first K-pop group nominated for a Grammy, but the award went to Rain On Me by Lady Gaga and Ariana Grande.",
       "src": [
-        "https://learningenglish.voanews.com/amp/k-pop-band-bts-honored-to-receive-first-grammy-nomination/5807866.html + https://wikiwand.com/en/BTS_(band) (five nominations, no win for Dynamite)",
-        "https://wikiwand.com/en/BTS_(band) (Bangtan Sonyeondan, literally Bulletproof Boy Scouts)",
-        "https://wikiwand.com/en/BTS_(band) (addressed the UN General Assembly in September 2018)",
-        "https://wikiwand.com/en/BTS_(band) (Dynamite made BTS the first all-South Korean act with a US number one)"
+        "https://learningenglish.voanews.com/amp/k-pop-band-bts-honored-to-receive-first-grammy-nomination/5807866.html (first K-pop group nominated) + https://www.koreajoongangdaily.com/entertainment/bts-fails-to-take-win-from-first-grammy-nomination/10156438 (Rain On Me won)",
+        "https://www.britannica.com/topic/BTS (Bangtan Sonyeondan, Bulletproof Boy Scouts)",
+        "https://www.unicef.org/press-releases/remarks-kim-nam-jun-launch-generation-unlimited-new-york-24-september-2018 (RM spoke at the UN General Assembly, 24 September 2018)",
+        "https://www.hawaiipublicradio.org/asia-minute/2020-11-26/asia-minute-south-koreas-grammy-triumph-follows-oscar-win (first Korean group to top the Billboard Hot 100) + https://www.britannica.com/topic/BTS (Dynamite debuted at number one)"
       ]
     },
     {
       "id": "fy07",
       "about": "LeBron James",
-      "say": "LeBron James [was on the cover of Sports Illustrated while still in high school], [had his high school games shown on national TV], [played in an NBA game alongside his own son in 2024], and [played one season of college basketball before the NBA].",
+      "say": "LeBron James [was on the cover of Sports Illustrated while still in high school], [had one of his high school games shown on national TV], [played in an NBA game alongside his own son in 2024], and [scored 31 points in his very first game in the NBA].",
       "cap": 3,
-      "real": "LeBron went straight from St. Vincent-St. Mary High School in Akron, Ohio, to the NBA as the first pick of the 2003 draft.",
+      "real": "LeBron scored 25 points in his first NBA game, a 106 to 92 loss to the Sacramento Kings. He had gone first in the 2003 draft, straight from high school.",
       "src": [
-        "https://www.si.com/high-school/national/2022/08/30/lebron-james-court-sons-bronny-bryce-flank-the-king-on-sports-illustrated-cover (2002 cover)",
-        "https://www.aol.com/insiders-look-lebron-james-high-170228003.html (his high school games were broadcast nationally)",
-        "https://www.guinnessworldrecords.com/world-records/770480-first-father-son-duo-to-play-on-the-same-nba-team-at-the-same-time (October 22, 2024)",
-        "https://en.wikipedia.org/wiki/LeBron_James + https://www.aol.com/insiders-look-lebron-james-high-170228003.html (straight to the NBA, No. 1 pick)"
+        "https://www.si.com/high-school/national/2022/08/30/lebron-james-court-sons-bronny-bryce-flank-the-king-on-sports-illustrated-cover (first on the SI cover in 2002 at St. Vincent-St. Mary High School) + https://en.wikipedia.org/wiki/LeBron_James",
+        "https://en.wikipedia.org/wiki/LeBron_James (the December 12, 2002 game against Oak Hill Academy was nationally televised on ESPN2)",
+        "https://www.guinnessworldrecords.com/world-records/770480-first-father-son-duo-to-play-on-the-same-nba-team-at-the-same-time (with Bronny on 22 October 2024)",
+        "https://en.wikipedia.org/wiki/LeBron_James (25 points in a 106 to 92 debut loss to the Sacramento Kings; first pick of the 2003 draft, prep-to-pro)"
       ]
     },
     {
       "id": "fy08",
       "about": "Stephen Curry",
-      "say": "Stephen Curry [was born in LeBron James's hometown of Akron, Ohio], [was the first pick in the 2009 NBA draft], [was offered only a walk-on spot by his dad's old college], and [became the NBA's first unanimous MVP in 2016].",
+      "say": "Stephen Curry [was born in the very same Ohio hospital as LeBron James], [was the first overall pick in the 2009 NBA draft], [was offered only a walk-on spot by his dad's old college], and [became the NBA's first unanimous MVP in 2016].",
       "cap": 1,
-      "real": "Curry went seventh in the 2009 draft. The Timberwolves passed on him twice, taking other point guards fifth and sixth.",
+      "real": "Curry went seventh in the 2009 NBA draft, picked by the Golden State Warriors.",
       "src": [
-        "https://en.wikipedia.org/wiki/Stephen_Curry (born in Akron, Ohio) + https://www.si.com/high-school/national/2022/08/30/lebron-james-court-sons-bronny-bryce-flank-the-king-on-sports-illustrated-cover (LeBron's Akron high school)",
+        "https://en.wikipedia.org/wiki/Stephen_Curry (born at Summa Health Akron Campus, Akron, Ohio) + https://en.wikipedia.org/wiki/LeBron_James (born at Summa Health Akron Campus, Akron, Ohio)",
         "https://en.wikipedia.org/wiki/Stephen_Curry (seventh overall pick, 2009)",
-        "https://en.wikipedia.org/wiki/Stephen_Curry (Virginia Tech, his father's alma mater, offered only a walk-on spot)",
+        "https://en.wikipedia.org/wiki/Stephen_Curry (Virginia Tech, where his father had a storied career, offered only a walk-on spot)",
         "https://en.wikipedia.org/wiki/Stephen_Curry (first unanimous MVP, 2015-16 season)"
       ]
     },
@@ -128,23 +128,23 @@
       "cap": 0,
       "real": "Federer's Olympic gold came in doubles, with Stan Wawrinka in 2008. At London 2012 he took silver in singles, losing the final to Andy Murray.",
       "src": [
-        "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/Roger_Federer (Wikipedia copy: doubles gold 2008, singles silver 2012)",
-        "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/Roger_Federer (ball boy at the Swiss Indoors 1992 and 1993; won it 10 times)",
-        "https://www.tennis.com/baseline/articles/federer-to-be-minted-on-20-franc-silver-coin-in-switzerland (first living person honored with a Swissmint coin, 2020)",
-        "https://ipfs.ssi.eecc.de/ipns/en.wikipedia-on-ipfs.org/wiki/Roger_Federer (South African mother; Swiss and South African citizenship)"
+        "https://en.wikipedia.org/wiki/Roger_Federer (doubles gold with Stan Wawrinka in 2008; singles silver in London 2012, losing the final to Andy Murray)",
+        "https://en.wikipedia.org/wiki/Roger_Federer (ball boy at the Swiss Indoors in Basel in 1992 and 1993) + https://www.skysports.com/tennis/news/12110/11846691/roger-federer-claims-historic-10th-title-at-swiss-indoors-basel (10th title, October 2019)",
+        "https://www.tennis.com/baseline/articles/federer-to-be-minted-on-20-franc-silver-coin-in-switzerland (first living person in Switzerland honored with a Swissmint commemorative coin)",
+        "https://en.wikipedia.org/wiki/Roger_Federer (his mother is South African; he holds both Swiss and South African citizenship)"
       ]
     },
     {
       "id": "fy11",
       "about": "Lionel Messi",
-      "say": "Lionel Messi [had his first Barcelona deal written on a paper napkin at 13], [saw that napkin sell at auction for nearly a million dollars in 2024], [scored 672 goals for Barcelona, a club record], and [grew up in Argentina's capital city, Buenos Aires].",
+      "say": "Lionel Messi [had his first Barcelona deal written on a paper napkin at 13], [saw that napkin sell at auction for nearly a million dollars in 2024], [left Barcelona in 2021 with a club-record 672 goals], and [was born in Argentina's capital city, Buenos Aires].",
       "cap": 3,
-      "real": "Messi grew up in Rosario, a city northwest of Buenos Aires, and moved to Barcelona as a 13-year-old.",
+      "real": "Messi was born in Rosario, a city northwest of Buenos Aires, and moved to Barcelona as a 13-year-old.",
       "src": [
-        "https://www.kuow.org/stories/napkin-securing-lionel-messi-s-first-contract-fetches-nearly-1-million-at-auction (December 14, 2000, age 13)",
-        "https://wtop.com/funny-weird-news/2024/05/messi-napkin-that-sealed-barcelona-move-sells-for-965000-at-auction (762,400 pounds, about 965,000 dollars, May 2024)",
-        "https://www.kuow.org/stories/napkin-securing-lionel-messi-s-first-contract-fetches-nearly-1-million-at-auction (672 goals in 778 games, a club record)",
-        "https://www.bosshunting.com.au/sport/lionel-messi-paper-napkin-fc-barcelona-contract-auction (the prodigious talent from Rosario)"
+        "https://www.kuow.org/stories/napkin-securing-lionel-messi-s-first-contract-fetches-nearly-1-million-at-auction (napkin dated Dec. 14, 2000; Messi was 13)",
+        "https://wtop.com/funny-weird-news/2024/05/messi-napkin-that-sealed-barcelona-move-sells-for-965000-at-auction (762,400 pounds, about 965,000 dollars, Bonhams, May 2024)",
+        "https://www.kuow.org/stories/napkin-securing-lionel-messi-s-first-contract-fetches-nearly-1-million-at-auction (club-record 672 goals in 778 games; joined Paris Saint-Germain in 2021)",
+        "https://www.britannica.com/summary/Lionel-Messi (born June 24, 1987, Rosario, Argentina) + https://wtop.com/funny-weird-news/2024/05/messi-napkin-that-sealed-barcelona-move-sells-for-965000-at-auction (moved to Barcelona at 13)"
       ]
     },
     {
@@ -152,12 +152,12 @@
       "about": "Shohei Ohtani",
       "say": "Shohei Ohtani [became MLB's first 50-homer, 50-steal player in 2024], [started his pro career with the Los Angeles Dodgers], [signed a 700 million dollar deal, then the biggest in sports], and [had his dog Decoy deliver a ceremonial first pitch].",
       "cap": 1,
-      "real": "Ohtani turned pro in Japan with the Nippon-Ham Fighters, who drafted him in 2012, and joined the Angels in 2018. He signed with the Dodgers after 2023.",
+      "real": "Ohtani turned pro in Japan with the Nippon-Ham Fighters, who drafted him in 2012. He signed with the Angels in 2017 and with the Dodgers after the 2023 season.",
       "src": [
         "https://britannica.com/biography/Shohei-Ohtani (54 homers, 59 steals in 2024) + https://en.wikipedia.org/wiki/50%E2%80%9350_club_(baseball)",
         "https://britannica.com/biography/Shohei-Ohtani (drafted first by the Nippon-Ham Fighters in 2012; Angels 2018; Dodgers after 2023)",
-        "https://britannica.com/biography/Shohei-Ohtani (10-year, 700 million dollar contract, then the largest in sports history)",
-        "https://www.ksat.com/sports/2024/08/29/ohtani-and-his-dog-share-first-pitch-duties-before-dodgers-superstar-blasts-leadoff-homer/"
+        "https://britannica.com/biography/Shohei-Ohtani (10-year, 700 million dollar deal, the largest payday in sports history up to that time)",
+        "https://www.ksat.com/sports/2024/08/29/ohtani-and-his-dog-share-first-pitch-duties-before-dodgers-superstar-blasts-leadoff-homer/ (Decoy carried the ceremonial first pitch to Ohtani, August 29, 2024)"
       ]
     }
   ]
