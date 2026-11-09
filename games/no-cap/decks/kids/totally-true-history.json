@@ -46,9 +46,9 @@
     {
       "id": "th04",
       "about": "Mount Rushmore",
-      "say": "Mount Rushmore [was meant to show the presidents down to their waists], [has a hidden room cut 70 feet into the rock behind the heads], [was carved mostly by hand with hammers and chisels], and [had Jefferson's face blasted off and carved again on Washington's other side].",
+      "say": "Mount Rushmore [was meant to show the presidents down to their waists], [has a hidden room cut 70 feet into the rock behind the heads], [took 41 years to carve, from start to finish], and [had Jefferson's face blasted off and carved again on Washington's other side].",
       "cap": 2,
-      "real": "Most of the rock, about 450,000 tons of it, was blasted away with dynamite before carvers finished the faces.",
+      "real": "Carving started in 1927 and ended in 1941, so it took 14 years. Most of the rock was blasted off with dynamite.",
       "src": [
         "https://en.wikipedia.org/wiki/Mount_Rushmore",
         "https://en.wikipedia.org/wiki/Mount_Rushmore",
@@ -124,7 +124,7 @@
     {
       "id": "th10",
       "about": "Mr. Potato Head",
-      "say": "Mr. Potato Head [got more than 400 votes for mayor of a city in Idaho], [was the first toy ever advertised on TV], [started out with parts you stuck into a real potato], and [didn't get a plastic potato body until 1964].",
+      "say": "Mr. Potato Head [got 44 votes in a race for mayor in Idaho], [was the first toy ever advertised on TV], [started out with parts you stuck into a real potato], and [didn't get a plastic potato body until 1964].",
       "cap": 0,
       "real": "He got just four votes in the 1985 race for mayor of Boise, Idaho.",
       "src": [

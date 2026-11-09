@@ -20,9 +20,9 @@
     {
       "id": "ww02",
       "about": "T. rex",
-      "say": "T. rex [walked the Earth for more than 20 million years], [lived closer in time to us than to Stegosaurus], [lived at the same time as Triceratops], and [lived when a day on Earth lasted less than 24 hours].",
+      "say": "T. rex [walked the Earth for more than 12 million years], [lived closer in time to us than to Stegosaurus], [lived at the same time as Triceratops], and [lived when a day on Earth lasted less than 24 hours].",
       "cap": 0,
-      "real": "T. rex lived from about 67 to 66 million years ago, so roughly one million years, not twenty.",
+      "real": "T. rex lived from about 67 to 66 million years ago, so roughly one million years.",
       "src": [
         "https://livescience.com/23868-tyrannosaurus-rex-facts.html",
         "https://gizmodo.com/less-time-separates-us-from-t-rex-than-t-rex-from-stego-1614025559",
@@ -46,7 +46,7 @@
     {
       "id": "ww04",
       "about": "The Statue of Liberty",
-      "say": "The Statue of Liberty [is a few years older than the Eiffel Tower in Paris], [stood finished in Paris for ten years before it sailed to America], [opened the same year Coca-Cola was invented], and [worked as a lighthouse for its first 16 years].",
+      "say": "The Statue of Liberty [is a few years older than the Eiffel Tower in Paris], [stood finished in Paris for nine years before it sailed to America], [opened the same year Coca-Cola was invented], and [worked as a lighthouse for its first 16 years].",
       "cap": 1,
       "real": "It was finished in Paris in July 1884 and reached New York in June 1885, packed in 214 crates.",
       "src": [
@@ -98,7 +98,7 @@
     {
       "id": "ww08",
       "about": "The Moon",
-      "say": "The Moon [had people walk on it before the first home video game console was sold], [had its last Apollo moonwalk before the first Star Wars movie], [has a dark side that never gets any sunlight], and [has two golf balls lying on it that were hit in 1971].",
+      "say": "The Moon [had people walk on it before the first home video game console was sold], [had its last Apollo moonwalk before the first Star Wars movie], [has a dark side that sunlight can't reach], and [has two golf balls lying on it that were hit in 1971].",
       "cap": 2,
       "real": "The far side gets just as much sunlight as the side we see. We just never see it, because the same side of the Moon always faces Earth.",
       "src": [
@@ -124,7 +124,7 @@
     {
       "id": "ww10",
       "about": "Barbie",
-      "say": "Barbie [had her own spacesuit four years before anyone walked on the Moon], [cost 30 dollars when she first went on sale], [has the full name Barbara Millicent Roberts], and [is older than the first trip to space by a person].",
+      "say": "Barbie [had her own spacesuit four years before anyone walked on the Moon], [cost 13 dollars when she first went on sale], [has the full name Barbara Millicent Roberts], and [is older than the first trip to space by a person].",
       "cap": 1,
       "real": "The first Barbie, in 1959, cost just 3 dollars.",
       "src": [
