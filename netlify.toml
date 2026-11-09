@@ -81,6 +81,13 @@
   to = "/classified/index.html"
   status = 200
 
+# No Cap: its server claims /no-cap/api/* through its own config.path (netlify/functions/no-cap.mjs).
+# Room links (/no-cap/ABCD) and challenge links (/no-cap/c/<id>) load the page.
+[[redirects]]
+  from = "/no-cap/*"
+  to = "/no-cap/index.html"
+  status = 200
+
 # Modules must be served as JavaScript or the browser refuses them.
 [[headers]]
   for = "/*.js"
