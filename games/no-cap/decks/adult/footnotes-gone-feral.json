@@ -6,26 +6,26 @@
   "cards": [
     {
       "id": "fgf01",
-      "say": "[Olympic medals were once handed out for painting and poetry], [tug of war was an official Olympic sport for 20 years], [a runner in the 1904 Olympic marathon rode part of the way in a car], and [Olympic gold medals were made of solid gold until 1948].",
+      "say": "[Ice hockey made its Olympic debut at the 1920 Summer Games], [a Japanese marathoner who quit at the 1912 Olympics finished the race in 1967], [a runner in the 1904 Olympic marathon rode part of the way in a car], and [the five-ring Olympic flag first flew at the 1896 Athens Games].",
       "cap": 3,
-      "real": "Olympic gold medals were made of solid gold only from 1904 to 1912, decades before 1948.",
+      "real": "Pierre de Coubertin designed the five-ring flag in 1913, and it first flew at an Olympic Games in Antwerp in 1920.",
       "src": [
-        "https://www.smithsonianmag.com/arts-culture/when-the-olympics-gave-out-medals-for-art-6878965/",
-        "https://en.wikipedia.org/wiki/Tug_of_war_at_the_Summer_Olympics",
+        "https://en.wikipedia.org/wiki/1920_Summer_Olympics",
+        "https://en.wikipedia.org/wiki/Shizo_Kanakuri",
         "https://www.smithsonianmag.com/history/how-the-1904-marathon-became-one-of-the-weirdest-olympic-events-of-all-time-14910747/",
-        "https://en.wikipedia.org/wiki/Olympic_medal"
+        "https://olympics.com/en/news/ninety-nine-years-ago-the-olympic-flag-was-flown-for-the-first-time"
       ]
     },
     {
       "id": "fgf02",
-      "say": "[Abraham Lincoln was honored by the National Wrestling Hall of Fame], [Thomas Jefferson was the first president to live in the White House], [Calvin Coolidge adopted a raccoon that was sent to be his Thanksgiving dinner], and [President Taft kept a pet cow named Pauline at the White House].",
+      "say": "[Herbert Hoover and his wife spoke Chinese in the White House for privacy], [Thomas Jefferson was the first president to live in the White House], [Calvin Coolidge adopted a raccoon that was sent to be his Thanksgiving dinner], and [Chester Arthur sent 24 wagonloads of White House furniture to auction].",
       "cap": 1,
       "real": "John Adams moved into the White House in November 1800, a few months before Jefferson took office.",
       "src": [
-        "https://www.snopes.com/fact-check/is-lincoln-in-wrestling-hall-of-fame/",
+        "https://www.hooverminthorn.org/?p=1207",
         "https://en.wikipedia.org/wiki/White_House",
         "https://www.whitehousehistory.org/questions/what-are-some-unusual-animals-that-have-lived-in-and-around-the-white-house",
-        "https://www.whitehousehistory.org/questions/what-are-some-unusual-animals-that-have-lived-in-and-around-the-white-house"
+        "https://www.whitehousehistory.org/white-house-decorative-arts-in-the-1880s"
       ]
     },
     {
@@ -42,25 +42,25 @@
     },
     {
       "id": "fgf04",
-      "say": "[Julius Caesar was kidnapped by pirates, then came back and captured them], [Peter the Great made Russian men pay a tax to keep their beards], [Alexander the Great was personally tutored as a teenager by Plato], and [Isaac Newton ran England’s Royal Mint and hunted down counterfeiters].",
+      "say": "[Julius Caesar was kidnapped by pirates, then came back and captured them], [the Roman emperor Claudius added three new letters to the alphabet], [Alexander the Great was personally tutored as a teenager by Plato], and [a San Francisco man proclaimed himself Emperor of the United States in 1859].",
       "cap": 2,
       "real": "Alexander's teenage tutor was Aristotle, a former student of Plato. Plato had died years earlier, when Alexander was a young boy.",
       "src": [
         "https://en.wikipedia.org/wiki/Julius_Caesar",
-        "https://en.wikipedia.org/wiki/Beard_tax",
+        "https://en.wikipedia.org/wiki/Claudian_letters",
         "NOT WEB-CHECKED (textbook: Aristotle tutored Alexander from 343 BC; Plato died about 347 BC) https://en.wikipedia.org/wiki/Alexander_the_Great",
-        "https://www.britannica.com/biography/Isaac-Newton"
+        "NOT WEB-CHECKED (textbook: Joshua Norton proclaimed himself Emperor of the United States on September 17, 1859) https://en.wikipedia.org/wiki/Emperor_Norton"
       ]
     },
     {
       "id": "fgf05",
-      "say": "[The first tomato ketchup recipe was invented by Henry Heinz], [the oldest known potato chip recipe is from an 1817 English cookbook], [the cotton candy machine was co-invented by a dentist], and [early English ketchups were made from mushrooms or walnuts].",
+      "say": "[The first tomato ketchup recipe was invented by Henry Heinz], [the oldest known potato chip recipe is from an 1817 English cookbook], [nachos are named after the man who first served them in 1943], and [early English ketchups were made from mushrooms or walnuts].",
       "cap": 0,
       "real": "The first published tomato ketchup recipe came from Philadelphia scientist James Mease in 1812. Heinz didn't start selling ketchup until 1876.",
       "src": [
         "https://www.smithsonianmag.com/arts-culture/brief-but-global-history-ketchup-180969725/",
         "https://www.smithsonianmag.com/arts-culture/curious-history-potato-chip-180979232/",
-        "https://en.wikipedia.org/wiki/Cotton_candy",
+        "https://time.com/4534655/international-day-of-the-nacho-history/",
         "https://www.smithsonianmag.com/arts-culture/brief-but-global-history-ketchup-180969725/"
       ]
     },
@@ -78,14 +78,14 @@
     },
     {
       "id": "fgf07",
-      "say": "[The Statue of Liberty was officially run as a lighthouse until 1901], [the first stone of Notre-Dame in Paris was laid by a pope], [the Empire State Building's spire was built as a dock for airships], and [the Leaning Tower of Pisa began to tilt 200 years after it was finished].",
+      "say": "[Stonehenge was sold at a public auction in 1915 for 6,600 pounds], [the first stone of Notre-Dame in Paris was laid by a pope], [the Empire State Building's spire was built as a dock for airships], and [the Washington Monument was finished in time for the US centennial in 1876].",
       "cap": 3,
-      "real": "The tower started leaning in 1178, during construction, when builders reached the second floor. It wasn't finished until 1372.",
+      "real": "Work stopped in 1854 when donations ran out and only restarted in 1877, so the stone tower wasn't finished until 1884.",
       "src": [
-        "https://en.wikipedia.org/wiki/Statue_of_Liberty",
+        "https://www.english-heritage.org.uk/about-us/search-news/stonehenge-sold-100-years-ago/",
         "https://www.britannica.com/topic/Notre-Dame-de-Paris",
         "NOT WEB-CHECKED (textbook: the spire was designed as a mooring mast for dirigibles) https://en.wikipedia.org/wiki/Empire_State_Building",
-        "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
+        "https://wikipedia.com/wiki/Washington_Monument"
       ]
     },
     {
@@ -102,37 +102,37 @@
     },
     {
       "id": "fgf09",
-      "say": "[The first driver ever fined for speeding was going over 2 miles an hour], [the world's first traffic light exploded less than a month after it went up], [London's first underground railway opened after the US Civil War ended], and [the first animals ever sent into space were a batch of fruit flies].",
+      "say": "[The world's first parking meter was installed in Oklahoma City in 1935], [the world's first traffic light exploded less than a month after it went up], [London's first underground railway opened after the US Civil War ended], and [the first cat to reach space was launched by France in 1963].",
       "cap": 2,
       "real": "London's Metropolitan Railway, the world's first underground railway, opened in January 1863, more than two years before the US Civil War ended.",
       "src": [
-        "https://www.snopes.com/fact-check/walter-arnold-first-speeding-ticket/",
+        "NOT WEB-CHECKED (textbook: the first parking meter went in on July 16, 1935, in Oklahoma City) https://en.wikipedia.org/wiki/Parking_meter",
         "https://en.wikipedia.org/wiki/Traffic_light",
         "https://en.wikipedia.org/wiki/Metropolitan_Railway",
-        "https://en.wikipedia.org/wiki/Animals_in_space"
+        "https://en.wikipedia.org/wiki/F%C3%A9licette"
       ]
     },
     {
       "id": "fgf10",
-      "say": "[Three of the first five US presidents died on the Fourth of July], [most signers of the Declaration of Independence signed it in August], [the White House didn't get its official name until 1901], and [Paul Revere made it all the way to Concord on his famous midnight ride].",
+      "say": "[Three of the first five US presidents died on the Fourth of July], [the Continental Congress voted for independence on July 2, 1776], [the White House didn't get its official name until 1901], and [the Liberty Bell got its famous name during the American Revolution].",
       "cap": 3,
-      "real": "A British patrol stopped Revere in Lincoln, before he reached Concord. Samuel Prescott, who was riding with him, escaped the patrol.",
+      "real": "It was just the State House bell until abolitionists started calling it the Liberty Bell in the 1830s, as a symbol of the fight to end slavery.",
       "src": [
         "https://en.wikipedia.org/wiki/James_Monroe",
-        "https://en.wikipedia.org/wiki/Signing_of_the_United_States_Declaration_of_Independence",
+        "NOT WEB-CHECKED (textbook: Congress approved the Lee Resolution for independence on July 2, 1776) https://en.wikipedia.org/wiki/Lee_Resolution",
         "https://en.wikipedia.org/wiki/White_House",
-        "https://en.wikipedia.org/wiki/Paul_Revere"
+        "https://www.history.com/articles/liberty-bell-name-abolition-movement"
       ]
     },
     {
       "id": "fgf11",
-      "say": "[Albert Einstein won his Nobel Prize for the theory of relativity], [the first computer mouse had a body made of wood], [Ben Franklin invented swim fins for his hands as a kid], and [a British man who never visited the US paid to found the Smithsonian].",
+      "say": "[Albert Einstein won his Nobel Prize for the theory of relativity], [Liquid Paper was invented by the mother of one of the Monkees], [Kleenex was first sold in 1924 as a way to remove cold cream], and [a British man who never visited the US paid to found the Smithsonian].",
       "cap": 0,
       "real": "Einstein's 1921 Nobel Prize in Physics was awarded for his explanation of the photoelectric effect, not for relativity.",
       "src": [
         "https://en.wikipedia.org/wiki/Albert_Einstein",
-        "https://en.wikipedia.org/wiki/Douglas_Engelbart",
-        "https://en.wikipedia.org/wiki/Swimfin",
+        "https://lemelson.mit.edu/resources/bette-graham",
+        "https://www.kleenex.com/en-us/about-us/our-history",
         "NOT WEB-CHECKED (textbook: James Smithson never set foot in the US) https://en.wikipedia.org/wiki/James_Smithson"
       ]
     },

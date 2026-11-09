@@ -18,14 +18,14 @@
     },
     {
       "id": "cat02",
-      "say": "[Nokia started out in 1865 making wood pulp in Finland], [Slack began as a side tool at a company making an online game], [Twitch grew out of a site where one man livestreamed his life around the clock], and [Toyota started out as a company that built bicycles].",
+      "say": "[IKEA sold pens and wallets for five years before it sold furniture], [Slack began as a side tool at a company making an online game], [Twitch grew out of a site where one man livestreamed his life around the clock], and [Shopify grew out of an online store its founders ran to sell surfboards].",
       "cap": 3,
-      "real": "Toyota grew out of Toyoda Automatic Loom Works, which made weaving looms. Its car business was spun off in 1937.",
+      "real": "Shopify grew out of Snowdevil, an online store selling snowboards. Its founders built their own shop software for it in 2004, then turned that into Shopify.",
       "src": [
-        "https://en.wikipedia.org/wiki/Nokia",
+        "https://www.ikea.com/us/en/this-is-ikea/about-us/from-humble-origins-to-global-brand-a-brief-history-of-ikea-pubad29a981/",
         "https://en.wikipedia.org/wiki/Slack_(software)",
         "https://en.wikipedia.org/wiki/Justin_Kan",
-        "https://en.wikipedia.org/wiki/Toyota_Industries"
+        "https://signalvnoise.com/posts/2378-qa-with-tobias-ltke-of-shopify"
       ]
     },
     {
@@ -42,50 +42,50 @@
     },
     {
       "id": "cat04",
-      "say": "[Tom Brady was the 199th pick in the 2000 NFL draft], [Leicester City won the Premier League in 2016 at 5,000 to 1 odds], [Lionel Messi's first Barcelona deal was written on a pizza box in 2000], and [the 2016 Warriors won 73 games and still lost the NBA Finals].",
+      "say": "[Tom Brady was the 199th pick in the 2000 NFL draft], [the St. Louis Blues were last in the NHL in January 2019 and won the Stanley Cup that June], [Lionel Messi's first Barcelona deal was written on a pizza box in 2000], and [the 2016 Warriors won 73 games and still lost the NBA Finals].",
       "cap": 2,
       "real": "Messi's first agreement with Barcelona, in December 2000, was famously scribbled on a paper napkin.",
       "src": [
         "NOT WEB-CHECKED (textbook: Brady was pick 199 in the 2000 draft) https://en.wikipedia.org/wiki/Tom_Brady",
-        "https://en.wikipedia.org/wiki/2015%E2%80%9316_Leicester_City_F.C._season",
+        "https://www.nhl.com/news/st-louis-blues-enjoy-improbable-ride-to-first-stanley-cup-championship-307832390",
         "NOT WEB-CHECKED (textbook: the December 2000 napkin agreement) https://en.wikipedia.org/wiki/Lionel_Messi",
         "https://en.wikipedia.org/wiki/2015%E2%80%9316_Golden_State_Warriors_season"
       ]
     },
     {
       "id": "cat05",
-      "say": "[The Keyboard Cat video was actually filmed back in 1984], [the very first video posted on YouTube, in 2005, was filmed at a zoo], [the Charlie Bit My Finger video sold as an NFT for over 750,000 dollars], and [Gangnam Style became the first YouTube video to hit a billion views in 2014].",
+      "say": "[The Keyboard Cat video was actually filmed back in 1984], [the animal in the Dramatic Chipmunk video is a prairie dog], [the Charlie Bit My Finger video sold as an NFT for over 750,000 dollars], and [Vine launched in 2013 with a ten-second limit on every video].",
       "cap": 3,
-      "real": "Gangnam Style came out in July 2012 and became the first YouTube video to reach a billion views that December.",
+      "real": "Vine clips could be at most six seconds long. The app launched in January 2013, and that tiny limit is what made its looping videos famous.",
       "src": [
         "https://en.wikipedia.org/wiki/Keyboard_Cat",
-        "https://en.wikipedia.org/wiki/Timeline_of_online_video",
+        "https://en.wikipedia.org/wiki/Dramatic_Chipmunk",
         "https://www.rollingstone.com/culture/culture-news/charlie-bit-my-finger-nft-auction-1173526/",
-        "https://en.wikipedia.org/wiki/Gangnam_Style"
+        "NOT WEB-CHECKED (textbook: Vine launched in January 2013 with a six-second limit on clips) https://en.wikipedia.org/wiki/Vine_(service)"
       ]
     },
     {
       "id": "cat06",
-      "say": "[Microsoft bought Minecraft for 250 million dollars in 2014], [Apple's third co-founder sold his 10 percent share for 800 dollars], [Nike paid a college student 35 dollars to design its swoosh], and [Instagram had 13 employees when Facebook bought it for a billion dollars].",
+      "say": "[Microsoft bought Minecraft for 250 million dollars in 2014], [Apple's third co-founder sold his 10 percent share for 800 dollars], [Twitter's first bird logo was stock art bought for under 20 dollars], and [Instagram had 13 employees when Facebook bought it for a billion dollars].",
       "cap": 0,
       "real": "Microsoft paid 2.5 billion dollars for Mojang, the studio behind Minecraft, in 2014.",
       "src": [
         "https://en.wikipedia.org/wiki/Mojang_Studios",
         "https://en.wikipedia.org/wiki/Ronald_Wayne",
-        "https://en.wikipedia.org/wiki/Swoosh",
+        "https://en.wikipedia.org/wiki/Simon_Oxley",
         "https://www.aljazeera.com/economy/2012/4/10/facebook-updates-status-with-instagram-deal"
       ]
     },
     {
       "id": "cat07",
-      "say": "[Gmail launched on April Fools' Day in 2004], [Roblox came out before the first iPhone], [the first iPhone had a front camera for selfies], and [Minecraft's first test build was called Cave Game].",
+      "say": "[Android was first built to run digital cameras], [Angry Birds was the 52nd game its studio made], [the first iPhone had a front camera for selfies], and [epidemiologists studied a 2005 plague in World of Warcraft].",
       "cap": 2,
       "real": "The original 2007 iPhone had only a rear camera. Front cameras arrived with the iPhone 4 in 2010.",
       "src": [
-        "https://en.wikipedia.org/wiki/Gmail",
-        "https://en.wikipedia.org/wiki/Roblox",
+        "https://www.computerworld.com/article/1405537/android-founder-we-aimed-to-make-a-camera-os.html",
+        "https://www.eastidahonews.com/?p=116841",
         "https://en.wikipedia.org/wiki/IPhone_(1st_generation)",
-        "https://en.wikipedia.org/wiki/Minecraft"
+        "https://gamedeveloper.com/game-platforms/gdc-2011-an-epidemiologist-s-view-of-i-world-of-warcraft-i-s-corrupted-blood-plague"
       ]
     },
     {
@@ -102,35 +102,35 @@
     },
     {
       "id": "cat09",
-      "say": "[Toy Story won the first-ever Oscar for Best Animated Feature], [Parasite was the first Best Picture winner not in English], [in 2025 a Chinese film became the highest-grossing animated movie ever], and [Mickey Mouse's first version entered the public domain in 2024].",
+      "say": "[Netflix's Roma was the first streaming film to win Best Picture], [Return of the King won every one of the 11 Oscars it was up for], [in 2025 a Chinese film became the highest-grossing animated movie ever], and [Mickey Mouse's first version entered the public domain in 2024].",
       "cap": 0,
-      "real": "The Best Animated Feature Oscar wasn't handed out until 2002, for the films of 2001. Its first winner was Shrek.",
+      "real": "Roma lost Best Picture in 2019 to Green Book. The first streaming film to win was Apple's CODA, in 2022.",
       "src": [
-        "https://en.wikipedia.org/wiki/Academy_Award_for_Best_Animated_Feature",
-        "https://en.wikipedia.org/wiki/92nd_Academy_Awards",
+        "https://theweek.com/news/1011516/apple-not-netflix-becomes-1st-streamer-to-win-best-picture-with-coda",
+        "NOT WEB-CHECKED (textbook: The Return of the King won all 11 of its nominations at the 2004 Oscars) https://en.wikipedia.org/wiki/76th_Academy_Awards",
         "https://en.wikipedia.org/wiki/Ne_Zha_2",
         "NOT WEB-CHECKED (textbook: Steamboat Willie entered the US public domain on January 1, 2024) https://en.wikipedia.org/wiki/Steamboat_Willie"
       ]
     },
     {
       "id": "cat10",
-      "say": "[Bluetooth is named after a Viking king from the 900s], [the Museum of Modern Art added 176 emoji to its collection in 2016], [selfie was named Oxford's Word of the Year in 2013], and [the word emoji comes from the English words emotion and icon].",
+      "say": "[The word robot comes from a Czech play written in 1920], [Oxford's Word of the Year for 2015 was an emoji, not a word], [selfie was named Oxford's Word of the Year in 2013], and [the Python language, released in 1991, was named after the snake].",
       "cap": 3,
-      "real": "Emoji is Japanese: e means picture and moji means character. Its likeness to the word emotion is a coincidence.",
+      "real": "Guido van Rossum named Python after the British comedy show Monty Python's Flying Circus, not the snake.",
       "src": [
-        "https://en.wikipedia.org/wiki/Bluetooth",
-        "https://en.wikipedia.org/wiki/Shigetaka_Kurita",
+        "NOT WEB-CHECKED (textbook: Karel Capek's play R.U.R., written in 1920, introduced the word robot) https://en.wikipedia.org/wiki/R.U.R.",
+        "NOT WEB-CHECKED (textbook: Oxford Dictionaries picked the Face with Tears of Joy emoji for 2015) https://en.wikipedia.org/wiki/Word_of_the_year",
         "https://en.wikipedia.org/wiki/Word_of_the_year",
-        "https://en.wikipedia.org/wiki/Emoji"
+        "NOT WEB-CHECKED (textbook: Guido van Rossum named Python after Monty Python's Flying Circus; first released 1991) https://en.wikipedia.org/wiki/Python_(programming_language)"
       ]
     },
     {
       "id": "cat11",
-      "say": "[In 2010 someone paid 10,000 bitcoin for two pizzas], [Jack Dorsey's first tweet sold as an NFT for 29 million dollars], [Nvidia became the first company worth 4 trillion dollars in 2025], and [Dogecoin was created in 2013 as a joke, named after a meme dog].",
+      "say": "[In 2021 Reddit users sent GameStop's stock up over 1,000 percent], [Jack Dorsey's first tweet sold as an NFT for 29 million dollars], [Nvidia became the first company worth 4 trillion dollars in 2025], and [Dogecoin was created in 2013 as a joke, named after a meme dog].",
       "cap": 1,
       "real": "Jack Dorsey's first tweet sold as an NFT in March 2021 for about 2.9 million dollars, a tenth of that.",
       "src": [
-        "https://en.wikipedia.org/wiki/Bitcoin",
+        "NOT WEB-CHECKED (textbook: GameStop went from under 20 dollars to over 300 dollars in January 2021 in the WallStreetBets short squeeze) https://en.wikipedia.org/wiki/GameStop_short_squeeze",
         "https://www.nbcnews.com/tech/tech-news/twitter-boss-jack-dorseys-first-tweet-sold-29-million-nft-rcna467",
         "https://en.wikipedia.org/wiki/Nvidia",
         "https://en.wikipedia.org/wiki/Dogecoin"

@@ -6,12 +6,12 @@
   "cards": [
     {
       "id": "tg01",
-      "say": "[Cleopatra lived closer in time to the Moon landing than to the building of the Great Pyramid], [the first email was sent before the first call on a handheld cellphone], [the Inca Empire was still standing when the Mayflower sailed to America], and [Shakespeare was still alive when the English founded Jamestown].",
+      "say": "[Cleopatra lived closer in time to the Moon landing than to the building of the Great Pyramid], [the tin can was invented more than 40 years before the can opener], [the Inca Empire was still standing when the Mayflower sailed to America], and [Shakespeare was still alive when the English founded Jamestown].",
       "cap": 2,
       "real": "Spain conquered the Inca in the 1530s, and their last stronghold fell in 1572, nearly 50 years before the Mayflower sailed in 1620.",
       "src": [
         "https://www.worldatlas.com/articles/so-cleopatra-lived-closer-in-time-to-the-first-lunar-landing-than-the-great-pyramids.html",
-        "https://en.wikipedia.org/wiki/Ray_Tomlinson",
+        "https://en.wikipedia.org/wiki/Can_opener",
         "https://en.wikipedia.org/wiki/Neo-Inca_State",
         "https://pashakespeare.org/press/shakespeare-timeline/"
       ]
@@ -30,11 +30,11 @@
     },
     {
       "id": "tg03",
-      "say": "[tortoises flew around the Moon before any astronaut did], [Orville Wright lived to see a plane fly faster than sound], [hot-air balloons carried people before the US Constitution was signed], and [the first parachute jump came after the first airplane flight].",
+      "say": "[two pilots flew nonstop across the Atlantic before Charles Lindbergh did], [Orville Wright lived to see a plane fly faster than sound], [hot-air balloons carried people before the US Constitution was signed], and [the first parachute jump came after the first airplane flight].",
       "cap": 3,
       "real": "People parachuted long before airplanes: André-Jacques Garnerin jumped from a balloon over Paris in 1797, over 100 years before the Wright brothers flew.",
       "src": [
-        "https://www.astronomy.com/space-exploration/first-earthlings-around-the-moon-were-two-soviet-tortoises/",
+        "https://migflug.com/jetflights/de/before-lindbergh-the-two-men-who-first-crossed-the-atlantic-non-stop/",
         "https://www.nps.gov/daav/historyculture/orvillewrightslifestory.htm",
         "https://www.ebsco.com/research-starters/history/first-manned-balloon-flight",
         "https://www.history.com/this-day-in-history/october-22/the-first-parachutist"
@@ -42,23 +42,23 @@
     },
     {
       "id": "tg04",
-      "say": "[teaching at Oxford began before the Aztecs founded their capital, Tenochtitlan], [the first Ferris wheel was spinning before the Eiffel Tower opened], [London's Underground trains were running during the US Civil War], and [the game of basketball is older than the teddy bear].",
+      "say": "[teaching at Oxford began before the Aztecs founded their capital, Tenochtitlan], [the Washington Monument was finished before the US Civil War began], [London's Underground trains were running during the US Civil War], and [the game of basketball is older than the teddy bear].",
       "cap": 1,
-      "real": "The Eiffel Tower opened in 1889. The first Ferris wheel spun at the 1893 Chicago World's Fair, built to outdo it.",
+      "real": "Work began in 1848 but stopped in 1854 when the money ran out. It restarted in 1880, and the monument was finished in 1884, long after the war.",
       "src": [
         "https://ox.ac.uk/about/the-university/history",
-        "https://www.cbsnews.com/news/the-history-of-ferris-wheels",
+        "https://www.nps.gov/wamo/learn/historyculture/monumentconstruction.htm",
         "https://ltmuseum.co.uk/visit/museum-guide/worlds-first-underground",
         "https://www.nps.gov/thrb/learn/historyculture/storyofteddybear.htm"
       ]
     },
     {
       "id": "tg05",
-      "say": "[Abraham Lincoln and Charles Darwin were born on the very same day], [Isaac Newton was born on the very day that Galileo died], [Thomas Jefferson and John Adams died on the very same day], and [Mark Twain was born and died in years when Halley's Comet flew by].",
+      "say": "[Charles Schulz died the night before his last Peanuts comic strip ran],[Isaac Newton was born on the very day that Galileo died], [Thomas Jefferson and John Adams died on the very same day], and [Mark Twain was born and died in years when Halley's Comet flew by].",
       "cap": 1,
       "real": "Galileo died in January 1642. Newton was born almost a year later, on Christmas Day 1642 by England's calendar back then. The same-day story is a myth.",
       "src": [
-        "https://www.britannica.com/topic/The-Darwin-Lincoln-Double-Bicentennial-2222484",
+        "https://www.newson6.com/story/5e3685fd2f69d76f6209b8bb/timing-of-schulzs-death-as-if-he-had-written-it-that-way",
         "https://mathpages.com/home/kmath121/kmath121.htm",
         "https://www.history.com/this-day-in-history/thomas-jefferson-and-john-adams-die",
         "https://www.snopes.com/fact-check/mark-twain-halleys-comet/"
@@ -126,13 +126,13 @@
     },
     {
       "id": "tg11",
-      "say": "[Leonardo da Vinci started the Mona Lisa after Columbus reached the Americas], [Genghis Khan was still alive when England's Magna Carta was sealed], [Rome's Colosseum was built before work began on the Great Wall of China], and [Isaac Newton and Benjamin Franklin were alive at the same time].",
+      "say": "[Leonardo da Vinci started the Mona Lisa after Columbus reached the Americas], [Genghis Khan was still alive when England's Magna Carta was sealed], [Joan of Arc was still alive when Gutenberg printed his famous Bible], and [Isaac Newton and Benjamin Franklin were alive at the same time].",
       "cap": 2,
-      "real": "Work on China's first big defensive walls began in the 600s BC. Rome's Colosseum opened in AD 80, about 700 years later.",
+      "real": "Joan of Arc died in 1431. Gutenberg printed his famous Bible in the mid-1450s, more than 20 years later.",
       "src": [
         "https://en.wikipedia.org/wiki/Mona_Lisa",
         "https://www.britannica.com/biography/Genghis-khan",
-        "https://www.britannica.com/topic/Great-Wall-of-China",
+        "NOT WEB-CHECKED (textbook) Joan of Arc died in May 1431; Gutenberg's 42-line Bible was printed around 1454-1455",
         "https://en.wikipedia.org/wiki/Isaac_Newton"
       ]
     },

@@ -30,47 +30,47 @@
     },
     {
       "id": "sb03",
-      "say": "[in 2018, a rocket launched a sports car into orbit around the Sun], [in 2022, NASA crashed a spacecraft into an asteroid on purpose], [in 2019, the Hubble telescope took the first photo of a black hole], and [in 2021, a helicopter made the first powered flight on another planet].",
+      "say": "[in 2018, a rocket launched a sports car into orbit around the Sun], [in 2023, a NASA capsule landed in Utah carrying dust from an asteroid], [in 2019, the Hubble telescope took the first photo of a black hole], and [in 2021, a helicopter made the first powered flight on another planet].",
       "cap": 2,
       "real": "The first black hole photo came from the Event Horizon Telescope, a team of radio telescopes linked up around the world, not from Hubble.",
       "src": [
         "https://www.space.com/43242-spacex-falcon-heavy-starman-tesla-launch-anniversary.html",
-        "https://nasa.gov/feature/nasa-dart-imagery-shows-changed-orbit-of-target-asteroid",
+        "NOT WEB-CHECKED (textbook) NASA's OSIRIS-REx sample capsule landed in Utah on September 24, 2023, carrying rocks and dust from the asteroid Bennu",
         "https://www.technologyreview.com/2019/04/10/136124/this-is-the-first-ever-photo-of-a-black-hole/",
         "https://www.jpl.nasa.gov/news/nasas-ingenuity-mars-helicopter-succeeds-in-historic-first-flight/"
       ]
     },
     {
       "id": "sb04",
-      "say": "[the very first iPhone came with the App Store built in], [the first text message ever sent said Merry Christmas], [Bluetooth is named after a Viking king], and [the word emoji comes from Japanese, not from the word emotion].",
+      "say": "[the very first iPhone came with the App Store built in], [the power button symbol is a 1 and a 0 mashed together], [Bluetooth is named after a Viking king], and [the word emoji comes from Japanese, not from the word emotion].",
       "cap": 0,
       "real": "The first iPhone came out in 2007 with no App Store. The App Store opened a year later, in July 2008.",
       "src": [
         "https://www.macrumors.com/2018/07/10/happy-10th-anniversary-app-store",
-        "https://en.wikipedia.org/wiki/Neil_Papworth",
+        "https://99percentinvisible.org/article/modern-hieroglyphics-binary-logic-behind-universal-power-symbol/",
         "https://africacheck.org/fact-checks/meta-programme-fact-checks/yes-bluetooth-technology-was-named-after-viking-king-harald",
         "https://soranews24.com/2017/06/25/japan-would-like-to-remind-you-that-emoji-has-nothing-to-do-with-emotion/"
       ]
     },
     {
       "id": "sb05",
-      "say": "[in 2016, the Chicago Cubs won their first World Series since 1908], [at the Tokyo Olympics in 2021, two 13-year-olds won gold and silver in skateboarding], [in 2008, Michael Phelps won 9 gold medals at one Olympics], and [in 2012, a skydiver fell faster than the speed of sound].",
+      "say": "[in 2010, a Wimbledon match lasted more than 11 hours over three days], [at the Tokyo Olympics in 2021, two 13-year-olds won gold and silver in skateboarding], [in 2014, Germany beat host Brazil 7 to 1 in the World Cup final], and [in 2019, the Raptors became the first team outside the US to win an NBA title].",
       "cap": 2,
-      "real": "Phelps won 8 gold medals at the 2008 Beijing Olympics, beating the record of 7 that Mark Spitz set in 1972.",
+      "real": "Germany's 7 to 1 win over host Brazil came in the semifinal. In the final, Germany beat Argentina 1 to 0.",
       "src": [
-        "https://www.boston.com/sports/mlb/2016/11/03/cubs-win-first-world-series-title-since-1908/",
+        "NOT WEB-CHECKED (textbook) John Isner beat Nicolas Mahut at Wimbledon on June 22-24, 2010, after 11 hours 5 minutes of play",
         "https://www.cbsnews.com/news/momiji-nishiya-japan-olympics-skateboarding-gold-medal",
-        "https://www.npr.org/2008/08/17/93671607/phelps-turns-legend-with-8th-beijing-gold",
-        "https://www.guinnessworldrecords.com/world-records/107930-first-human-to-break-the-sound-barrier-in-freefall"
+        "NOT WEB-CHECKED (textbook) Germany beat Brazil 7-1 in the 2014 World Cup semifinal; the final was Germany 1-0 Argentina",
+        "NOT WEB-CHECKED (textbook) the Toronto Raptors won the 2019 NBA Finals, the first title for a team based outside the US"
       ]
     },
     {
       "id": "sb06",
-      "say": "[Shrek won the very first Oscar for Best Animated Feature], [the first Harry Potter book's first hardcover run was just 500 copies], [Gangnam Style was the first YouTube video to reach a billion views], and [Frozen was the first animated movie to earn a billion dollars].",
+      "say": "[SpongeBob's creator used to teach marine biology at an ocean institute],[the first Harry Potter book's first hardcover run was just 500 copies], [Gangnam Style was the first YouTube video to reach a billion views], and [Frozen was the first animated movie to earn a billion dollars].",
       "cap": 3,
       "real": "Toy Story 3 was the first animated movie to pass a billion dollars, in 2010. Frozen got there in 2014.",
       "src": [
-        "https://www.slashfilm.com/798202/20-years-after-getting-its-own-oscar-category-animation-is-still-an-afterthought",
+        "https://pbs.org/newshour/arts/spongebob-creator-stephen-hillenburg-dies-of-als-at-57",
         "https://www.sothebys.com/en/articles/the-very-first-appearance-of-harry-potter",
         "https://guinnessworldrecords.com/world-records/107048-first-video-to-receive-one-billion-views",
         "https://thewaltdisneycompany.com/?p=4881"
@@ -78,14 +78,14 @@
     },
     {
       "id": "sb07",
-      "say": "[in 2015, scientists first detected ripples in space called gravitational waves], [in 2006, Pluto was demoted because astronomers found it had no moons], [in 2013, the Curiosity rover played Happy Birthday to itself on Mars], and [in 2004, a Mars rover built to last 90 days landed and kept working for over 14 years].",
+      "say": "[in 2015, scientists first detected ripples in space called gravitational waves], [in 2006, Pluto was demoted because astronomers found it had no moons], [in 2013, the Curiosity rover played Happy Birthday to itself on Mars], and [in 2014, India reached Mars with a probe that cost less than the movie Gravity].",
       "cap": 1,
       "real": "Pluto has five known moons. It lost planet status because it hasn't cleared other objects out of its orbit, a rule for full planets.",
       "src": [
         "https://en.wikipedia.org/wiki/First_observation_of_gravitational_waves",
         "https://theconversation.com/nasa-mission-brings-pluto-into-sharp-focus-but-its-still-not-a-planet-40495",
         "https://www.nextgov.com/emerging-tech/2017/08/why-curiosity-rover-stopped-singing-happy-birthday-itself/140176/",
-        "https://www.jpl.nasa.gov/news/nasas-opportunity-rover-mission-on-mars-comes-to-end/"
+        "https://nbcnews.com/science/space/why-indias-mars-orbiter-mission-cost-less-gravity-movie-n210681"
       ]
     },
     {
