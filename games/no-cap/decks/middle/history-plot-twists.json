@@ -2,150 +2,162 @@
   "id": "history-plot-twists",
   "title": "History's Plot Twists",
   "shelf": "middle",
-  "blurb": "Empires, explorers and inventors did weirder stuff than any movie. One per card is cap.",
+  "blurb": "Presidents, explorers and inventors did weirder stuff than any movie. One per card is cap.",
   "cards": [
     {
       "id": "hp01",
-      "say": "[a monk from Beijing met the kings of France and England in the 1280s], [Marco Polo brought pasta to Italy for the first time in 1295], [Ibn Battuta traveled about 75,000 miles in the 1300s], and [Zheng He's Chinese fleet reached East Africa in the 1410s].",
+      "about": "Thomas Jefferson",
+      "say": "Thomas Jefferson [trained a pet mockingbird to take food from between his lips], [was the first president to live in the White House], [sold about 6,500 of his own books to Congress after the British burned its library], and [died on the very same day as John Adams].",
       "cap": 1,
-      "real": "Italy had pasta before Marco Polo got home in 1295: a Genoa soldier's belongings listed a basket of macaroni back in 1279.",
+      "real": "John Adams was the first, moving in on November 1, 1800. Jefferson moved in after he became president in 1801.",
       "src": [
-        "https://www.britannica.com/biography/Rabban-bar-Sauma",
-        "https://www.laphamsquarterly.org/node/10234",
-        "https://www.worldhistory.org/Ibn_Battuta/",
-        "https://www.britannica.com/summary/Zheng-He-Timeline"
+        "https://en.wikipedia.org/wiki/Dick_the_Mockingbird",
+        "https://en.wikipedia.org/wiki/White_House",
+        "https://en.wikipedia.org/wiki/Thomas_Jefferson",
+        "https://www.history.com/this-day-in-history/thomas-jefferson-and-john-adams-die"
       ]
     },
     {
       "id": "hp02",
-      "say": "[Thomas Edison's very first patent was for an electric vote counter], [a dentist helped invent the cotton candy machine], [the Super Soaker was invented by an engineer who worked on NASA missions], and [Benjamin Franklin got rich from the patents on his inventions].",
+      "about": "John Quincy Adams",
+      "say": "John Quincy Adams [kept a diary for almost 70 years of his life], [worked for an American diplomat in Russia when he was 14], [served 17 years in the House of Representatives after being president], and [won more electoral votes than anyone else in the 1824 election].",
       "cap": 3,
-      "real": "Franklin never patented any of his inventions. He wrote that since we all gain from other people's inventions, we should share ours freely.",
+      "real": "Andrew Jackson won the most electoral votes in 1824, 99 to 84, but not a majority, so the House of Representatives chose Adams.",
       "src": [
-        "https://www.thehenryford.org/collections/explore/artifact/251711?AssetId=THF11607",
-        "https://en.wikipedia.org/wiki/William_Morrison_(dentist)",
-        "https://www.engadget.com/2015/02/27/lonnie-johnson-the-rocket-scientist-and-super-soaker-inventor/",
-        "https://www.ushistory.org/FRANKLIN/autobiography/page55.htm"
+        "https://en.wikipedia.org/wiki/John_Quincy_Adams",
+        "https://en.wikipedia.org/wiki/John_Quincy_Adams",
+        "https://en.wikipedia.org/wiki/John_Quincy_Adams",
+        "https://en.wikipedia.org/wiki/John_Quincy_Adams"
       ]
     },
     {
       "id": "hp03",
-      "say": "[Julius Caesar was the very first Roman emperor], [Roman sea walls got stronger from soaking in seawater for centuries], [ancient Greeks built a gear-driven machine that predicted eclipses], and [the Romans had a goddess who looked after the sewers].",
+      "about": "William Howard Taft",
+      "say": "William Howard Taft [had the West Wing rebuilt after a fire on Christmas Eve], [became chief justice of the Supreme Court after being president], [became the first president to throw out a baseball first pitch, in 1910], and [kept a cow named Pauline on the White House lawn].",
       "cap": 0,
-      "real": "Caesar ruled Rome as dictator but was never emperor. His adopted heir Augustus became Rome's first emperor in 27 BC.",
+      "real": "That Christmas Eve fire hit the West Wing in 1929, when Herbert Hoover was president. Taft's big West Wing change was the first Oval Office.",
       "src": [
-        "https://britannica.com/question/Who-was-the-first-Roman-emperor",
-        "https://unews.utah.edu/?p=5676",
-        "https://www.livescience.com/60144-antikythera-computer-predicted-eclipses.html",
-        "https://en.wikipedia.org/wiki/Cloacina"
+        "https://en.wikipedia.org/wiki/White_House",
+        "https://en.wikipedia.org/wiki/William_Howard_Taft",
+        "https://en.wikipedia.org/wiki/Ceremonial_first_pitch",
+        "https://www.livescience.com/24563-first-paws-history-of-presidential-pets.html"
       ]
     },
     {
       "id": "hp04",
-      "say": "[the Inca built more than 10,000 miles of roads without using the wheel], [Mansa Musa of Mali brought thousands of people on his 1324 trip to Mecca], [the Mongol Empire conquered Japan in the 1280s], and [the Ottoman Empire lasted more than 600 years].",
+      "about": "Herbert Hoover",
+      "say": "Herbert Hoover [spoke Chinese with his wife in the White House to keep their talks private], [was a student in Stanford University's very first class], [was the first president born in California], and [was the first president with a telephone on his desk].",
       "cap": 2,
-      "real": "The Mongols tried to invade Japan in 1274 and again in 1281. Both attacks failed, and in 1281 a huge typhoon sank much of their fleet.",
+      "real": "Hoover was born in West Branch, Iowa, in 1874, which made him the first president born west of the Mississippi River.",
       "src": [
-        "https://en.wikipedia.org/wiki/Inca_road_system",
-        "https://www.britannica.com/biography/Musa-I-of-Mali",
-        "https://www.thecollector.com/why-mongol-invasions-of-japan-failed/",
-        "https://en.wikipedia.org/wiki/History_of_the_Ottoman_Empire"
+        "https://www.hooverminthorn.org/?p=1207",
+        "https://www.mentalfloss.com/history/presidents/7-presidential-facts-about-herbert-hoover",
+        "https://webarchive.library.unt.edu/web/20121129053222/http://en.wikipedia.org/wiki/Herbert_Hoover",
+        "https://www.smithsonianmag.com/smart-news/1929-nobody-thought-president-needed-telephone-his-office-180962646/"
       ]
     },
     {
       "id": "hp05",
-      "say": "[Yuri Gagarin circled Earth 17 times on the first human spaceflight], [the Apollo 11 crew filled out a customs form after coming home], [astronaut Alan Shepard hit golf balls on the Moon], and [Buzz Aldrin snapped a selfie during a spacewalk in 1966].",
-      "cap": 0,
-      "real": "Gagarin went around Earth just once, in about 108 minutes, in April 1961. Cosmonaut Gherman Titov made 17 orbits later that year.",
+      "about": "Christopher Columbus",
+      "say": "Christopher Columbus [was sent back to Spain in chains in 1500], [used a predicted eclipse of the Moon to get food in Jamaica], [insisted for the rest of his life that he had reached Asia], and [sailed home from his first voyage aboard the Santa Maria].",
+      "cap": 3,
+      "real": "The Santa Maria ran aground off Hispaniola on Christmas Day 1492, so Columbus sailed home on the smaller Niña instead.",
       "src": [
-        "NOT WEB-CHECKED (textbook) Gagarin's Vostok 1 made a single orbit of Earth in about 108 minutes on April 12, 1961; Titov's Vostok 2 made 17 orbits in August 1961",
-        "https://www.space.com/7044-moon-apollo-astronauts-customs.html",
-        "https://www.usga.org/content/usga/home-page/articles/2021/02/shepard-moon-club-50th-anniversary-usga-museum.html",
-        "https://www.space.com/34596-buzz-aldrin-space-selfie-tshirt.html"
+        "https://britannica.com/biography/Christopher-Columbus/The-second-and-third-voyages",
+        "https://britannica.com/biography/Christopher-Columbus/The-second-and-third-voyages",
+        "https://britannica.com/biography/Christopher-Columbus/The-second-and-third-voyages",
+        "https://www.britannica.com/biography/Christopher-Columbus/The-first-voyage"
       ]
     },
     {
       "id": "hp06",
-      "say": "[the stolen 1966 World Cup trophy was found by a dog named Pickles], [a pair of Dorothy's ruby slippers was stolen in 2005 and found in 2008], [the Statue of Liberty worked as a lighthouse for 16 years], and [a real moth got stuck inside a Harvard computer in 1947].",
+      "about": "Marco Polo",
+      "say": "Marco Polo [came home to Venice after 24 years away], [brought pasta back to Italy for the first time], [told the story of his travels to a cellmate in prison], and [had a travel book that later inspired Christopher Columbus].",
       "cap": 1,
-      "real": "The ruby slippers stolen from Minnesota's Judy Garland Museum in 2005 stayed missing for 13 years, until the FBI recovered them in 2018.",
+      "real": "Italy had pasta before Marco Polo got home in 1295: a soldier in Genoa left a basket of macaroni in his belongings back in 1279.",
       "src": [
-        "https://en.wikipedia.org/wiki/Pickles_(dog)",
-        "https://www.ksl.com/article/46385689/sting-operation-recovered-dorothys-stolen-ruby-slippers",
-        "https://www.newworldencyclopedia.org/entry/Statue_of_Liberty",
-        "https://www.si.edu/object/log-book-computer-bug:nmah_334663"
+        "https://en.wikipedia.org/wiki/Marco_Polo",
+        "https://www.laphamsquarterly.org/node/10234",
+        "https://en.wikipedia.org/wiki/Marco_Polo",
+        "https://en.wikipedia.org/wiki/Marco_Polo"
       ]
     },
     {
       "id": "hp07",
-      "say": "[President Gerald Ford turned down offers to play in the NFL], [Dr. Seuss wrote Green Eggs and Ham using just 50 different words], [Queen Elizabeth II trained as a mechanic during World War II], and [Napoleon's soldiers shot the nose off Egypt's Great Sphinx].",
-      "cap": 3,
-      "real": "The nose was already missing in drawings made in 1737, decades before Napoleon was born. His army didn't reach Egypt until 1798.",
+      "about": "Lewis and Clark",
+      "say": "Lewis and Clark [were the first explorers to cross North America to the Pacific], [brought along a big Newfoundland dog named Seaman], [packed 193 pounds of dried portable soup for the trip], and [let Sacagawea and an enslaved man named York vote on where to spend the winter].",
+      "cap": 0,
+      "real": "Alexander Mackenzie's party crossed Canada to the Pacific in 1793, twelve years before Lewis and Clark got there.",
       "src": [
-        "https://prologue.blogs.archives.gov/2011/02/02/green-bay-packer-detroit-lion-or-us-president/",
-        "NOT WEB-CHECKED (textbook) Dr. Seuss wrote Green Eggs and Ham (1960) with exactly 50 different words, on a bet with his publisher Bennett Cerf",
-        "https://www.snopes.com/fact-check/queen-elizabeth-ii-mechanic/",
-        "https://www.smithsonianjourneys.org/blogs/blog/2022/09/15/photo-what-happened-to-the-sphinxs-nose"
+        "https://en.wikipedia.org/wiki/Lewis_and_Clark_Expedition",
+        "https://en.wikipedia.org/wiki/Lewis_and_Clark_Expedition",
+        "https://en.wikipedia.org/wiki/Lewis_and_Clark_Expedition",
+        "https://en.wikipedia.org/wiki/Lewis_and_Clark_Expedition"
       ]
     },
     {
       "id": "hp08",
-      "say": "[bubble wrap was first invented to be a textured wallpaper], [the Slinky was invented by a naval engineer working with springs], [Teflon was found by accident in research on refrigerator gases], and [Velcro was inspired by the sticky feet of geckos].",
-      "cap": 3,
-      "real": "Velcro was inspired by burrs that stuck to an engineer's dog after a walk in the Swiss countryside in 1941.",
+      "about": "Julius Caesar",
+      "say": "Julius Caesar [was once kidnapped by pirates and held for ransom], [made the year 46 BC last 445 days], [was the very first Roman emperor], and [had the month of July named after him].",
+      "cap": 2,
+      "real": "Caesar ruled Rome as dictator but was never emperor. His adopted heir Augustus became the first Roman emperor in 27 BC.",
       "src": [
-        "https://www.smithsonianmag.com/innovation/accidental-invention-bubble-wrap-180971325/",
-        "https://en.wikipedia.org/wiki/Slinky",
-        "https://sciencehistory.org/education/scientific-biographies/roy-j-plunkett/",
-        "https://www.history.com/articles/velcro-invention"
+        "https://en.wikipedia.org/wiki/Julius_Caesar",
+        "https://en.wikipedia.org/wiki/Julian_calendar",
+        "https://britannica.com/question/Who-was-the-first-Roman-emperor",
+        "https://en.wikipedia.org/wiki/Julius_Caesar"
       ]
     },
     {
       "id": "hp09",
-      "say": "[the Eiffel Tower escaped being torn down because it was useful for radio], [the Leaning Tower of Pisa started leaning before it was finished], [King Tut's tomb was the first royal tomb found in the Valley of the Kings], and [Machu Picchu was built for an Inca emperor in the 1400s].",
-      "cap": 2,
-      "real": "Royal tombs had been found there long before, like Seti I's in 1817. Tut's, found in 1922, was special because it was still packed with treasure.",
+      "about": "Alexander the Great",
+      "say": "Alexander the Great [was born in the Greek city of Athens], [was taught by the philosopher Aristotle until he was 16], [named a city after his horse, Bucephalas], and [never lost a single battle he fought].",
+      "cap": 0,
+      "real": "Alexander was born in 356 BC in Pella, the capital of the kingdom of Macedon, north of Greece.",
       "src": [
-        "https://www.toureiffel.paris/en/news/130-years/how-did-radio-save-tower",
-        "https://www.ebsco.com/research-starters/history/leaning-tower-pisa",
-        "https://en.wikipedia.org/wiki/Tomb_of_Seti_I",
-        "https://worldhistory.org/timeline/Machu_Picchu"
+        "https://en.wikipedia.org/wiki/Alexander_the_Great",
+        "https://en.wikipedia.org/wiki/Alexander_the_Great",
+        "https://en.wikipedia.org/wiki/Alexander_the_Great",
+        "https://en.wikipedia.org/wiki/Alexander_the_Great"
       ]
     },
     {
       "id": "hp10",
-      "say": "[winners at the first modern Olympics in 1896 got gold medals], [tug-of-war was an Olympic sport until 1920], [painters and sculptors won Olympic medals until 1948], and [volleyball was invented in 1895 and first called mintonette].",
-      "cap": 0,
-      "real": "In 1896, winners got a silver medal and an olive branch. Gold medals for first place started in 1904.",
+      "about": "Thomas Edison",
+      "say": "Thomas Edison [got his very first patent for an electric vote counter], [started losing his hearing when he was about 12], [earned more than 1,000 patents in the United States], and [invented the very first electric light bulb].",
+      "cap": 3,
+      "real": "Inventors like Joseph Swan made electric bulbs before Edison. His big step was a long-lasting, practical bulb that could be sold.",
       "src": [
-        "https://en.wikipedia.org/wiki/Olympic_medal",
-        "https://en.wikipedia.org/wiki/Tug_of_war_at_the_Summer_Olympics",
-        "https://en.wikipedia.org/wiki/Art_competitions_at_the_Summer_Olympics",
-        "https://www.massmoments.org/moment-details/holyoke-man-invents-volleyball.html"
+        "https://www.thehenryford.org/collections/explore/artifact/251711?AssetId=THF11607",
+        "https://en.wikipedia.org/wiki/Thomas_Edison",
+        "https://en.wikipedia.org/wiki/Thomas_Edison",
+        "https://en.wikipedia.org/wiki/Thomas_Edison"
       ]
     },
     {
       "id": "hp11",
-      "say": "[Lewis and Clark brought a Newfoundland dog named Seaman on their trip], [Columbus sailed home from his first voyage aboard the Santa Maria], [America was named after explorer Amerigo Vespucci on a 1507 map], and [Magellan's crew left Spain with five ships and came back with one].",
-      "cap": 1,
-      "real": "The Santa Maria ran aground off Hispaniola on Christmas Day 1492, so Columbus sailed home on the smaller Niña instead.",
+      "about": "Alexander Graham Bell",
+      "say": "Alexander Graham Bell [wanted people to answer the phone by saying ahoy], [built a boat that set a world speed record of over 70 miles per hour], [made his very first phone call to his mother], and [sent a voice message on a beam of light in 1880].",
+      "cap": 2,
+      "real": "Bell's first call, in March 1876, was to his assistant Thomas Watson in the next room, asking him to come over.",
       "src": [
-        "https://www.nps.gov/lecl/learn/historyculture/little-known-facts.htm",
-        "https://www.britannica.com/biography/Christopher-Columbus/The-first-voyage",
-        "https://www.loc.gov/item/prn-01-093/",
-        "https://www.history.com/this-day-in-history/September-6/magellans-expedition-circumnavigates-globe"
+        "https://en.wikipedia.org/wiki/Ahoy",
+        "https://www.britannica.com/list/6-fast-facts-about-alexander-graham-bell",
+        "https://webarchive.library.unt.edu/eot2008/20090812232405/http://memory.loc.gov/ammem/bellhtml/bell1.html",
+        "https://www.mentalfloss.com/article/81620/10-amazing-facts-about-alexander-graham-bell"
       ]
     },
     {
       "id": "hp12",
-      "say": "[the first known photo of a person shows a man getting his boots shined], [the first traffic light, put up in London in 1868, ran on gas], [Alexander Graham Bell's first phone call was to his mother], and [the first person caught speeding in a car was going 8 miles per hour].",
-      "cap": 2,
-      "real": "Bell's first call, in 1876, was to his assistant Thomas Watson in the next room, asking him to come over.",
+      "about": "The ancient Olympic Games",
+      "say": "The ancient Olympic Games [were held every four years for more than 1,000 years], [ended with a long marathon race of about 26 miles], [crowned a cook as their first champion on record], and [listed a woman from Sparta as a winner of the chariot race].",
+      "cap": 1,
+      "real": "The marathon was invented for the first modern Olympics in 1896, by a French scholar named Michel Bréal. The ancient Games never had one.",
       "src": [
-        "https://www.guinnessworldrecords.com/world-records/107088-first-photograph-of-a-human",
-        "https://moneyweek.com/418437/10-december-1868-worlds-first-traffic-lights-erected-in-britain",
-        "https://webarchive.library.unt.edu/eot2008/20090812232405/http://memory.loc.gov/ammem/bellhtml/bell1.html",
-        "https://www.historic-uk.com/HistoryUK/HistoryofBritain/Walter-Arnold-Worlds-First-Speeding-Ticket/"
+        "https://en.wikipedia.org/wiki/Ancient_Olympic_Games",
+        "https://en.wikipedia.org/wiki/1896_Summer_Olympics",
+        "https://guinnessworldrecords.com/world-records/first-olympic-games",
+        "https://en.wikipedia.org/wiki/Ancient_Olympic_Games"
       ]
     }
   ]
