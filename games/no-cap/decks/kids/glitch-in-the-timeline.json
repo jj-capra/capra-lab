@@ -6,38 +6,38 @@
   "cards": [
     {
       "id": "gt01",
-      "say": "[Pokémon Go came out in 2016, twenty years after the first Pokémon game], [the Game Boy came out exactly 100 years after Nintendo was founded], [a Pikachu balloon first floated in the Macy's Thanksgiving parade in 2001], and [Mario was already a plumber in his very first game, back in 1981].",
+      "say": "[Pokémon Go came out in 2016, twenty years after the first Pokémon game], [Tetris came packed in the box with the Game Boy everywhere but Japan], [a Pikachu balloon first floated in the Macy's Thanksgiving parade in 2001], and [Mario was already a plumber in his very first game, back in 1981].",
       "cap": 3,
       "real": "In his first game, Donkey Kong in 1981, Mario was a carpenter called Jumpman. He became a plumber in Mario Bros. two years later.",
       "src": [
         "https://en.wikipedia.org/wiki/Pok%C3%A9mon",
-        "https://en.wikipedia.org/wiki/Nintendo",
+        "https://en.wikipedia.org/wiki/Game_Boy",
         "https://en.wikipedia.org/wiki/Pikachu",
         "https://en.wikipedia.org/wiki/Mario"
       ]
     },
     {
       "id": "gt02",
-      "say": "[Barbie and Ken broke up in 2004 and got back together in 2011], [the Nintendo Switch 2 hit stores in 2023, six years after the first Switch], [a man flew a balloon all the way around the world in 11 days in 2016], and [Pikachu was one of Japan's mascots for the 2014 World Cup].",
+      "say": "[The first video ever posted on YouTube, in 2005, was filmed at a zoo], [the Nintendo Switch 2 came out in 2025, four years after the first Switch], [in 2016, experts moved giant pandas from endangered to vulnerable], and [the first text message ever sent, in 1992, said Merry Christmas].",
       "cap": 1,
-      "real": "The Nintendo Switch 2 came out on June 5, 2025, eight years after the first Switch.",
+      "real": "The first Switch came out in March 2017, so the Switch 2, released on June 5, 2025, arrived more than eight years later.",
       "src": [
-        "https://history.co.uk/articles/facts-about-iconic-barbie",
+        "https://en.wikipedia.org/wiki/Me_at_the_zoo",
         "https://en.wikipedia.org/wiki/Nintendo",
-        "https://en.wikipedia.org/wiki/Hot_air_balloon",
-        "https://en.wikipedia.org/wiki/Pikachu"
+        "https://discovermagazine.com/planet-earth/giant-pandas-climb-from-endangered-to-vulnerable",
+        "https://en.wikipedia.org/wiki/Neil_Papworth"
       ]
     },
     {
       "id": "gt03",
-      "say": "[Scientists officially renamed Pluto a dwarf planet in 2016], [Disney's cartoon dog Pluto was first called Rover], [in 2025, scientists announced the oldest ant fossil ever found], and [in 2011, Neptune finished its first lap around the Sun since being discovered].",
+      "say": "[Scientists officially renamed Pluto a dwarf planet in 2016], [NASA's Opportunity rover was built to last 90 days on Mars and kept going almost 15 years], [in 2011, Neptune finished its first lap around the Sun since it was discovered], and [in 2022, NASA crashed a spacecraft into an asteroid on purpose to nudge it].",
       "cap": 0,
-      "real": "Pluto was reclassified as a dwarf planet in August 2006.",
+      "real": "Pluto was renamed a dwarf planet in August 2006, ten years earlier.",
       "src": [
         "https://universemagazine.com/en/pluto-five-facts-about-the-dwarf-planet-that-will-surprise-you",
-        "https://collectionslowellobservatory.omeka.net/exhibits/show/pluto/science",
-        "https://www.nationalgeographic.com/animals/article/oldest-hell-ant-fossil-discovery",
-        "https://space.com/12254-neptune-photos-hubble-telescope-discovery-anniversary.html"
+        "https://learningenglish.voanews.com/amp/nasa-s-rover-ends-mission-after-15-years/4788261.html",
+        "https://space.com/12254-neptune-photos-hubble-telescope-discovery-anniversary.html",
+        "https://www.technologyreview.com/2022/09/27/1060099/moment-nasa-dart-spacecraft-crash-asteroid"
       ]
     },
     {
@@ -54,38 +54,38 @@
     },
     {
       "id": "gt05",
-      "say": "[Pokémon Go got 130 million downloads in its very first month], [Mario got his mustache because early game screens couldn't show a mouth well], [Nintendo stopped making playing cards back in the 1970s], and [in 2012, a survey found the Great Wall of China is over 21,000 kilometers long].",
+      "say": "[Minecraft's creepers began as a mistake when the game's maker tried to make a pig], [in 2016, the Chicago Cubs won their first World Series since 1908], [Nintendo stopped making playing cards back in the 1970s], and [in 2025, scientists announced the oldest ant fossil ever found].",
       "cap": 2,
-      "real": "Nintendo kept making cards. In 2007 it even sold hanafuda playing cards with Mario on them.",
+      "real": "Nintendo kept making playing cards. In 2007 it even sold hanafuda cards with Mario on them.",
       "src": [
-        "https://en.wikipedia.org/wiki/Pok%C3%A9mon_Go",
-        "https://en.wikipedia.org/wiki/Mario",
+        "https://en.wikipedia.org/wiki/Creeper_(Minecraft)",
+        "https://www.aljazeera.com/sports/2016/11/3/cubs-win-first-world-series-in-more-than-a-century",
         "https://interestingengineering.com/culture/the-extraordinary-and-surprising-history-of-nintendo",
-        "https://en.wikipedia.org/wiki/Great_Wall_of_China"
+        "https://www.nationalgeographic.com/animals/article/oldest-hell-ant-fossil-discovery"
       ]
     },
     {
       "id": "gt06",
-      "say": "[In 2007, the Great Pyramid was voted one of the New Seven Wonders of the World], [the first coin-operated arcade video games showed up in 1971], [the Nintendo Switch came out more than 10 years after the Wii], and [Tetris came packed with the Game Boy everywhere except Japan].",
+      "say": "[In 2007, the Great Pyramid was voted one of the New Seven Wonders of the World], [the first coin-operated arcade video games showed up in 1971], [Nintendo sold a toy grabber arm called the Ultra Hand back in 1966], and [in 2016, scientists showed off a dinosaur tail, feathers and all, trapped in amber].",
       "cap": 0,
       "real": "The Great Pyramid wasn't one of the seven winners in 2007. It was given an honorary spot instead.",
       "src": [
         "https://en.wikipedia.org/wiki/New_7_Wonders_of_the_World",
         "https://en.wikipedia.org/wiki/Early_history_of_video_games",
-        "https://en.wikipedia.org/wiki/Nintendo",
-        "https://en.wikipedia.org/wiki/Game_Boy"
+        "https://en.wikipedia.org/wiki/Gunpei_Yokoi",
+        "https://www.nationalgeographic.com/animals/article/feathered-dinosaur-tail-amber-theropod-myanmar-burma-cretaceous"
       ]
     },
     {
       "id": "gt07",
-      "say": "[New Horizons flew for about nine and a half years to reach Pluto in 2015], [scientists found out that Pluto has blue skies, a bit like Earth's], [Pikachu's name mixes a sparkly sound with a mouse's squeak], and [tiny water bears called tardigrades rode a spacecraft to the Moon in 2007].",
+      "say": "[New Horizons flew for about nine and a half years to reach Pluto in 2015], [in 2016, an art museum in New York added 176 emoji from 1999 to its collection], [Pikachu's name mixes a sparkly sound with a mouse's squeak], and [tiny water bears called tardigrades rode a spacecraft to the Moon in 2007].",
       "cap": 3,
-      "real": "In 2007 the tardigrades rode a satellite that circled close to Earth, nowhere near the Moon.",
+      "real": "In 2007 the tardigrades rode the FOTON-M3 spacecraft in a low orbit around Earth, nowhere near the Moon.",
       "src": [
         "https://universemagazine.com/en/pluto-five-facts-about-the-dwarf-planet-that-will-surprise-you",
-        "https://universemagazine.com/en/pluto-five-facts-about-the-dwarf-planet-that-will-surprise-you",
+        "https://www.cbsnews.com/news/original-emojis-now-at-the-museum-of-modern-art",
         "https://en.wikipedia.org/wiki/Pikachu",
-        "https://worldatlas.com/articles/the-first-animals-in-space.html"
+        "https://www.space.com/5817-creature-survives-naked-space.html"
       ]
     },
     {
@@ -95,55 +95,55 @@
       "real": "In 2022 the two Barbie dolls toured the International Space Station, which circles Earth, not the Moon.",
       "src": [
         "https://history.co.uk/articles/facts-about-iconic-barbie",
-        "https://www.aol.com/lifestyle/barbie-first-became-astronaut-1965-130045397.html",
+        "https://airandspace.si.edu/stories/editorial/barbie-astronaut-ages",
         "https://www.aarp.org/politics-society/history/info-2018/first-cell-phone-call.html",
         "https://www.npr.org/2021/10/21/1047797376/researchers-discovered-the-date-vikings-arrived-in-canada"
       ]
     },
     {
       "id": "gt09",
-      "say": "[Pikachu, created in 1996, was designed by the same man who created Mario], [Pong came out the same year as the first home video game console], [The Super Mario Bros. Movie came out in April 2023], and [a hot air balloon flew across the Pacific Ocean in 1991].",
+      "say": "[Pikachu, created in 1996, was designed by the same man who created Mario], [Pong came out the same year as the first home video game console], [in 2012, a man jumped from a balloon 24 miles up and fell faster than sound], and [Toy Story, from 1995, was the first full-length movie made all on computers].",
       "cap": 0,
       "real": "Pikachu was drawn by Atsuko Nishida, and Ken Sugimori finished the design. Mario was created by Shigeru Miyamoto.",
       "src": [
         "https://en.wikipedia.org/wiki/Pikachu",
         "https://en.wikipedia.org/wiki/Early_history_of_video_games",
-        "https://en.wikipedia.org/wiki/Nintendo",
-        "https://en.wikipedia.org/wiki/Hot_air_balloon"
+        "https://www.guinnessworldrecords.com/world-records/107930-first-human-to-break-the-sound-barrier-in-freefall",
+        "NOT WEB-CHECKED (textbook fact) https://en.wikipedia.org/wiki/Toy_Story"
       ]
     },
     {
       "id": "gt10",
-      "say": "[Pokémon games didn't reach the rest of the world until 1998], [Nintendo sold a toy grabber called the Ultra Hand before it made video games], [Nintendo's first home video game, from 1977, was a Pong-style game], and [Pokémon Go came out in Japan first, before anywhere else in the world].",
+      "say": "[In 2008, Michael Phelps won eight gold medals at a single Olympics], [Shrek won the very first Oscar for Best Animated Feature], [the first Harry Potter book came out in 1997, in Britain], and [the first iPhone came out in 2010, the same year as the first iPad].",
       "cap": 3,
-      "real": "Pokémon Go launched first in Australia, New Zealand and the United States on July 6, 2016. Japan got it later.",
+      "real": "The first iPhone came out in 2007, three years before the first iPad in 2010.",
       "src": [
-        "https://en.wikipedia.org/wiki/Pok%C3%A9mon",
-        "https://en.wikipedia.org/wiki/Gunpei_Yokoi",
-        "https://interestingengineering.com/culture/the-extraordinary-and-surprising-history-of-nintendo",
-        "https://en.wikipedia.org/wiki/Pok%C3%A9mon_Go"
+        "NOT WEB-CHECKED (textbook fact) https://en.wikipedia.org/wiki/Michael_Phelps",
+        "https://en.wikipedia.org/wiki/Academy_Award_for_Best_Animated_Feature",
+        "NOT WEB-CHECKED (textbook fact) https://en.wikipedia.org/wiki/Harry_Potter_and_the_Philosopher%27s_Stone",
+        "NOT WEB-CHECKED (textbook fact) https://en.wikipedia.org/wiki/IPhone_(1st_generation)"
       ]
     },
     {
       "id": "gt11",
-      "say": "[Mario and Donkey Kong first showed up in the same video game], [basketball's handwritten first rules sold for about 43,000 dollars in 2010], [people at MIT made a space video game called Spacewar in 1962], and [Princess Peach first became a character you could play in 1988].",
+      "say": "[In 2009, Usain Bolt ran 100 meters in 9.58 seconds, a world record], [basketball's handwritten first rules sold for about 43,000 dollars in 2010], [people at MIT made a space video game called Spacewar in 1962], and [Wikipedia, the free online encyclopedia, first went online in 2001].",
       "cap": 1,
       "real": "James Naismith's original basketball rules sold at an auction in 2010 for 4.3 million dollars.",
       "src": [
-        "https://en.wikipedia.org/wiki/Mario",
+        "NOT WEB-CHECKED (textbook fact) https://en.wikipedia.org/wiki/Usain_Bolt",
         "https://thecanadianencyclopedia.ca/en/article/james-naismith",
         "https://en.wikipedia.org/wiki/Early_history_of_video_games",
-        "https://en.wikipedia.org/wiki/Princess_Peach"
+        "NOT WEB-CHECKED (textbook fact) https://en.wikipedia.org/wiki/Wikipedia"
       ]
     },
     {
       "id": "gt12",
-      "say": "[In Italian, the @ sign has a cute nickname: the snail], [China's first astronaut said he couldn't see the Great Wall from space], [Steve Fossett flew a balloon solo around the world on his very first try], and [a Japanese airline painted Pikachu on jumbo jets in 1998].",
+      "say": "[In 1999, two men made the first nonstop balloon trip around the world], [a man flew a balloon around the world in about 11 days in 2016], [Steve Fossett flew a balloon solo around the world in 2002, on his first try], and [a Japanese airline painted Pikachu on its jumbo jets in 1998].",
       "cap": 2,
-      "real": "Steve Fossett made it around the world alone in 2002, but only on his sixth try.",
+      "real": "Fossett did fly around the world alone in 2002, but only on his sixth try.",
       "src": [
-        "https://en.wikipedia.org/wiki/@_sign",
-        "https://en.wikipedia.org/wiki/Great_Wall_of_China",
+        "https://en.wikipedia.org/wiki/Hot_air_balloon",
+        "https://en.wikipedia.org/wiki/Hot_air_balloon",
         "https://en.wikipedia.org/wiki/Hot_air_balloon",
         "https://en.wikipedia.org/wiki/Pikachu"
       ]
