@@ -33,7 +33,8 @@ function help() {
     <li><b>The box bounces like an old screensaver.</b> Off a wall it flips. Into a corner, dead on, and it stops.</li>
     <li><b>It pauses mid-flight.</b> You get 25 seconds to tap the corner it will hit. Picture the rest of its path, bounce by bounce.</li>
     <li><b>Then it plays out.</b> Right corner: 100 points and more for each level, plus up to 100 for a fast call.</li>
-    <li><b>Three wrong corners and the run is over.</b> Boards grow, the box shrinks, it bounces more before the corner, and later boards are rooms joined at their corners. The box slips through the gaps.</li>
+    <li><b>Boards keep coming.</b> Each one rolls straight into the next. Three wrong corners and the run is over, or tap <b>End Run</b> any time to bank your points.</li>
+    <li><b>It gets harder.</b> Boards grow, the box shrinks, it bounces more before the corner, and later boards are rooms joined at their corners. The box slips through the gaps.</li>
     <li><b>Today’s run</b> is the same boards for everyone, and your first run of the day goes on the board. Practice is new boards every time.</li>
   </ul></div>`;
   v.addEventListener('click', (e) => { if (e.target === v || e.target.closest('.x')) v.remove(); });
@@ -142,7 +143,7 @@ async function home() {
       $('todayNote').textContent = `You scored ${hello.mine.score} today: level ${hello.mine.level}, #${hello.mine.rank} of ${hello.mine.of}. Play it again for fun; only your first run counts.`;
       $('dailyBtn').textContent = 'Play today’s boards again';
     } else if (!lab()) {
-      $('todayNote').textContent = 'The same boards for everyone today. Three wrong corners and the run is over. Sign in to Capra Lab to post your score.';
+      $('todayNote').textContent = 'The same boards for everyone today. Three wrong corners and the run is over, or end it whenever you like. Sign in to Capra Lab to post your score.';
     }
     board(hello.date);
   } catch (e) { toast(e.message); }
@@ -159,15 +160,26 @@ $('dailyBtn').onclick = () => start(hello && !hello.mine ? 'daily' : 'replay');
 $('practiceBtn').onclick = () => start('practice');
 
 /* ---------- a run ---------- */
-const G = { mode: null, seed: null, n: 0, lives: LIVES, score: 0, picks: [], lv: null, view: null, g: null, raf: null, timer: null, phase: null, pick: null, pausedAt: 0 };
-function stopGame() { cancelAnimationFrame(G.raf); clearTimeout(G.timer); G.raf = null; G.phase = null; }
+const G = { mode: null, seed: null, n: 0, lives: LIVES, score: 0, picks: [], lv: null, view: null, g: null, raf: null, timer: null, cd: null, phase: null, pick: null, pausedAt: 0, ended: false };
+function stopGame() { cancelAnimationFrame(G.raf); clearTimeout(G.timer); clearInterval(G.cd); G.raf = null; G.cd = null; G.phase = null; }
+// Boards roll on by themselves (JC, Nov 9 2026); this is how long the result stays up.
+const NEXT_MS = 3000, OVER_MS = 2600;
+const PROMPT_H = 132;   // the result line, the countdown and the End Run button
 function start(mode) {
   cancelAnimationFrame(demoRaf);
-  Object.assign(G, { mode, seed: mode === 'practice' ? 'p:' + Math.random().toString(36).slice(2) : 'ss:' + hello.date, n: 0, lives: LIVES, score: 0, picks: [] });
+  Object.assign(G, { mode, seed: mode === 'practice' ? 'p:' + Math.random().toString(36).slice(2) : 'ss:' + hello.date, n: 0, lives: LIVES, score: 0, picks: [], ended: false });
   show('game');
   next();
 }
-$('quitBtn').onclick = () => home();
+// JC (Nov 9 2026): "an 'End Run' button so the user has an option to end and count their points".
+// Ending mid-board drops that board (no life lost, no points); everything banked counts.
+function endRun() {
+  if (!G.mode || $('game').hidden) return;
+  G.ended = true;
+  if (!G.picks.length) return home();          // nothing played yet: nothing to count
+  finish();
+}
+$('quitBtn').onclick = endRun;
 function hud() {
   $('lvl').textContent = 'LEVEL ' + G.n;
   $('pts').textContent = G.score;
@@ -187,8 +199,11 @@ function next() {
     const a = lv.path[i - 1], b = lv.path[i];
     G.colors.push(G.colors[i - 1] + (a.vx !== b.vx || a.vy !== b.vy ? 1 : 0));
   }
-  const room = window.innerHeight - 320;
-  G.g = fit($('cv'), lv.W, lv.H, Math.max(240, Math.min(room, $('cv').parentElement.clientWidth)));
+  // the board gets the height left once the result, the countdown and End Run fit below it
+  const box = $('cv').parentElement, top = box.getBoundingClientRect().top + window.scrollY;
+  const padB = parseFloat(getComputedStyle($('prompt')).paddingBottom) || 0;
+  const room = window.innerHeight - top - 30 - PROMPT_H - padB;
+  G.g = fit($('cv'), lv.W, lv.H, Math.max(200, Math.min(room, box.clientWidth)));
   G.pick = null;
   hud();
   $('prompt').innerHTML = '<p class="say">Watch it…</p>';
@@ -302,8 +317,13 @@ function land(ms) {
   $('prompt').innerHTML = right
     ? `<p class="say good">PERFECT CORNER! +${pts}</p>`
     : `<p class="say bad">${G.pick < 0 ? 'Time!' : 'Nope.'} It hit ${ans}.</p>`;
-  $('prompt').insertAdjacentHTML('beforeend', `<button class="btn wide" type="button" id="nextBtn">${over ? 'See your run' : 'Next board'}</button>`);
-  $('nextBtn').onclick = () => (over ? finish() : next());
+  const wait = over ? OVER_MS : NEXT_MS, until = performance.now() + wait;
+  $('prompt').insertAdjacentHTML('beforeend', over
+    ? `<p class="soon" id="soon">${G.lives <= 0 ? 'THREE MISSES. RUN OVER.' : 'THAT’S EVERY BOARD!'}</p><button class="btn wide" type="button" id="nextBtn">See your run</button>`
+    : `<p class="soon" id="soon">NEXT BOARD IN ${Math.ceil(wait / 1000)}</p><button class="btn alt wide" type="button" id="endBtn">End Run · bank ${G.score}</button>`);
+  if (over) $('nextBtn').onclick = () => finish();
+  else $('endBtn').onclick = endRun;
+  if (!over) G.cd = setInterval(() => { const s = $('soon'); if (s) s.textContent = `NEXT BOARD IN ${Math.max(1, Math.ceil((until - performance.now()) / 1000))}`; }, 200);
   if (navigator.vibrate) navigator.vibrate(right ? 30 : [60, 40, 60]);
   const t0 = performance.now();
   const tick = (t) => {
@@ -312,16 +332,17 @@ function land(ms) {
     if (k < 1) G.raf = requestAnimationFrame(tick);
   };
   G.raf = requestAnimationFrame(tick);
-  if (!over) G.timer = setTimeout(() => { if (G.phase === 'reveal') next(); }, 3200);
+  G.timer = setTimeout(() => { if (G.phase !== 'reveal') return; if (over) finish(); else next(); }, wait);
 }
 
 async function finish() {
   stopGame();
   show('over');
   const right = G.picks.filter((p, i) => p.c === level(G.seed, i + 1).answer).length;
+  const played = G.picks.length, ended = G.ended && G.lives > 0;
   const el = $('overBody');
-  el.innerHTML = `<div class="card" style="text-align:center"><h2>RUN OVER</h2><div class="big">${G.score}</div>
-      <p class="note">Level ${G.n} · ${right} perfect corner${right === 1 ? '' : 's'}${G.mode === 'practice' ? ' · practice' : G.mode === 'replay' ? ' · not counted' : ''}</p><p class="note" id="postLine"></p></div>
+  el.innerHTML = `<div class="card" style="text-align:center"><h2>${ended ? 'RUN ENDED' : 'RUN OVER'}</h2><div class="big">${G.score}</div>
+      <p class="note">Level ${played} · ${right} perfect corner${right === 1 ? '' : 's'}${ended ? ` · ${G.lives} ♥ left` : ''}${G.mode === 'practice' ? ' · practice' : G.mode === 'replay' ? ' · not counted' : ''}</p><p class="note" id="postLine"></p></div>
     <section class="card" id="overBoard" ${G.mode === 'practice' ? 'hidden' : ''}><h2>TODAY’S BOARD</h2><ul class="board" id="board2"></ul></section>
     <button class="btn wide" type="button" id="againBtn">Practice run</button>
     <button class="btn alt wide" type="button" id="homeBtn">Home</button>`;

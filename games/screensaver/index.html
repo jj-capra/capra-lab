@@ -102,9 +102,10 @@
   .screen-box { position: relative; border-radius: 16px; padding: 8px; background: linear-gradient(#262942, #111325); border: 3px solid var(--ink); box-shadow: 0 0 0 2px #333866; }
   #cv { display: block; width: 100%; border-radius: 10px; background: #000; touch-action: none; }
   .prompt { text-align: center; display: grid; gap: 8px; min-height: 104px; align-content: start; padding: 2px 0 calc(var(--sb) + 10px); }
-  .prompt .say { font: 400 30px/1 var(--vt); letter-spacing: 0.04em; }
+  .prompt .say { margin: 0; font: 400 clamp(22px, 7.2vw, 30px)/1 var(--vt); letter-spacing: 0.04em; white-space: nowrap; }
   .prompt .say.good { color: var(--osd); }
   .prompt .say.bad { color: var(--red); }
+  .prompt .soon { margin: 0; font: 400 22px/1 var(--vt); letter-spacing: 0.12em; color: var(--dim); }
   .timer { height: 12px; border-radius: 999px; background: var(--panel2); overflow: hidden; border: 2px solid var(--ink); }
   .timer i { display: block; height: 100%; background: var(--osd); transform-origin: left; }
   .timer.low i { background: var(--red); }
@@ -151,7 +152,7 @@
 
 <section class="screen" id="game" hidden>
   <header class="bar">
-    <button class="round-btn" type="button" id="quitBtn" aria-label="Quit">✕</button>
+    <button class="round-btn" type="button" id="quitBtn" aria-label="End run and count my points">✕</button>
     <span class="lvl" id="lvl">LEVEL 1</span>
     <span class="pts" id="pts">0</span>
   </header>

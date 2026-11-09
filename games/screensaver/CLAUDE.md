@@ -25,7 +25,14 @@ runs). Going live takes out all three.
   level 6, rooms joined at their corners (2, then 3 from level 11, 4 from level 16) with a two-cell
   overlap the box slips through, so there are 6 to 10 corners to choose from.
 - **Daily run, three misses** (JC: "Daily run, 3 misses"): today's boards are the same for everyone
-  (seed `ss:<date>`, Pacific time); three wrong corners (or timeouts) end the run. The first run of
+  (seed `ss:<date>`, Pacific time); three wrong corners (or timeouts) end the run.
+- **Boards roll on by themselves, End Run banks the points** (JC, Nov 9 2026: "automatically go to
+  the next puzzle with a 'End Run' button so the user has an option to end and count their
+  points"): after each corner the result shows with "NEXT BOARD IN 3" and an **End Run · bank N**
+  button; the next board starts on its own after 3 s. End Run (or the ✕ in the corner, any time)
+  ends the run and counts everything banked: on today's run it posts to the board. Ending mid-board
+  drops that board; ending before the first guess just goes home. The board is sized so the
+  result, the countdown and End Run always fit above the home bar (`PROMPT_H`). The first run of
   the day goes on today's board; later runs are practice. **Practice** is new boards every time.
 - Solo for now (JC: "Solo first"); a party room can come later.
 
