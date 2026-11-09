@@ -66,7 +66,7 @@
     },
     {
       "id": "cw06",
-      "say": "[The real girl behind Alice in Wonderland visited New York in 1932],[the last crown prince of Austria-Hungary lived until 2011], [the first monthly Social Security check went to a woman who collected for 35 years], and [Napoleon was still alive when Queen Victoria took the throne].",
+      "say": "[The real girl behind Alice in Wonderland visited New York in 1932], [the last crown prince of Austria-Hungary lived until 2011], [the first monthly Social Security check went to a woman who collected for 35 years], and [Napoleon was still alive when Queen Victoria took the throne].",
       "cap": 3,
       "real": "Napoleon died in 1821, 16 years before Victoria became queen in 1837.",
       "src": [
