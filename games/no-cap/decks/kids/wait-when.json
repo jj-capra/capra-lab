@@ -34,7 +34,7 @@
       "cap": 3,
       "real": "Teddy bears first appeared in 1902, but Karl Benz built his first car in 1886, sixteen years earlier.",
       "src": [
-        "https://moneyweek.com/349214/23-september-1889-nintendo-starts-making-playing-cards",
+        "https://en.wikipedia.org/wiki/Nintendo",
         "https://airandspace.si.edu/stories/editorial/barbie-astronaut-ages",
         "https://www.whitehousehistory.org/the-white-house-gets-electric-lighting",
         "https://www.nps.gov/thrb/learn/historyculture/storyofteddybear.htm"
@@ -44,12 +44,12 @@
       "id": "ww04",
       "say": "[T. rex lived closer in time to us than to Stegosaurus], [ants were crawling around before the very first dinosaurs], [giant dragonflies with wings over two feet wide lived before the dinosaurs], and [Velociraptors were about the size of a turkey].",
       "cap": 1,
-      "real": "Ants came much later. Dinosaurs appeared about 230 million years ago, and the oldest ant fossil ever found is about 113 million years old.",
+      "real": "Ants came much later. Dinosaurs appeared about 230 million years ago, and the oldest ant fossil found so far is about 113 million years old.",
       "src": [
         "https://gizmodo.com/less-time-separates-us-from-t-rex-than-t-rex-from-stego-1614025559",
         "https://www.nationalgeographic.com/animals/article/oldest-hell-ant-fossil-discovery",
         "https://theconversation.com/are-the-paleozoic-eras-giant-dragonflies-still-among-us-102384",
-        "https://allthatsinteresting.com/craziest-dinosaur-facts"
+        "https://en.wikipedia.org/wiki/Velociraptor"
       ]
     },
     {
@@ -72,49 +72,49 @@
       "src": [
         "https://atlasobscura.com/places/methuselah-tree",
         "https://en.wikipedia.org/wiki/Ray_Tomlinson",
-        "https://en.wikipedia.org/wiki/Tennis_for_Two",
+        "https://en.wikipedia.org/wiki/Early_history_of_video_games",
         "https://www.guinnessworldrecords.com/world-records/first-colour-tv-transmission"
       ]
     },
     {
       "id": "ww07",
-      "say": "[Dogs were the very first animals ever sent into space], [tortoises flew around the Moon before any astronaut did], [Abraham Lincoln was born before the first photograph was taken], and [when T. rex was alive, a day on Earth was shorter than 24 hours].",
+      "say": "[Dogs were the very first animals ever sent into space], [tortoises flew around the Moon before any astronaut did], [a chimpanzee rode a rocket into space before any American astronaut], and [when T. rex was alive, a day on Earth was shorter than 24 hours].",
       "cap": 0,
       "real": "Fruit flies went first, in 1947. The first dogs didn't fly until 1951.",
       "src": [
         "https://worldatlas.com/articles/the-first-animals-in-space.html",
         "https://worldatlas.com/articles/the-first-animals-in-space.html",
-        "https://en.wikipedia.org/wiki/View_from_the_Window_at_Le_Gras",
+        "https://en.wikipedia.org/wiki/Ham_(chimpanzee)",
         "https://news.agu.org/press-release/ancient-shell-shows-days-were-half-hour-shorter-70-million-years-ago/"
       ]
     },
     {
       "id": "ww08",
-      "say": "[Vikings reached North America almost 500 years before Columbus], [people drank chocolate for thousands of years before the first chocolate bar], [Neptune was discovered before the United States became a country], and [Queen Elizabeth I had a toilet that flushed, back in the 1590s].",
+      "say": "[Builders took nearly 200 years to finish the Leaning Tower of Pisa], [people drank chocolate for thousands of years before the first chocolate bar], [Neptune was discovered before the United States became a country in 1776], and [Queen Elizabeth I had a toilet that flushed, back in the 1590s].",
       "cap": 2,
       "real": "Neptune was discovered in 1846, seventy years after the United States declared independence in 1776.",
       "src": [
-        "https://www.npr.org/2021/10/21/1047797376/researchers-discovered-the-date-vikings-arrived-in-canada",
+        "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa",
         "https://www.tastingtable.com/1915748/original-chocolate-purpose-not-eating/",
         "https://space.com/12254-neptune-photos-hubble-telescope-discovery-anniversary.html",
-        "https://www.mentalfloss.com/history/historically-important-toilets"
+        "https://britannica.com/print/article/255314"
       ]
     },
     {
       "id": "ww09",
       "say": "[People in Peru were munching popcorn thousands of years ago], [Hershey's chocolate bars came out before the first airplane flight], [Galileo and William Shakespeare were born in the same year], and [the very first ice skates had blades made of steel].",
       "cap": 3,
-      "real": "The first ice skates were made from animal bones, about 5,000 years ago in Finland.",
+      "real": "The earliest known ice skates had blades made from animal bones, used about 5,000 years ago.",
       "src": [
         "https://www.livescience.com/18034-oldest-popcorn-evidence-peru.html",
-        "https://www.thedailymeal.com/1516983/candy-bars-been-around-long-time",
+        "https://hersheyarchives.org/?p=8246",
         "https://users.sussex.ac.uk/~desw/galileo/issues/isabelle.html",
         "https://www.livescience.com/2202-5-000-year-origin-ice-skating.html"
       ]
     },
     {
       "id": "ww10",
-      "say": "[People started baking bread after they learned how to farm], [the very first computer mouse was a box made of wood], [people were playing tic-tac-toe against a computer back in 1950], and [the internet's great-grandparent sent its very first message in 1969].",
+      "say": "[People started baking bread after they learned how to farm], [the very first computer mouse was a box made of wood], [people were playing tic-tac-toe against a computer back in 1950], and [the network that grew into the internet sent its first message in 1969].",
       "cap": 0,
       "real": "Bread came first. Crumbs of bread baked about 14,400 years ago were found in Jordan, thousands of years before farming began.",
       "src": [
@@ -126,26 +126,26 @@
     },
     {
       "id": "ww11",
-      "say": "[People were calling clumsy folks butterfingers more than 400 years ago], [the Statue of Liberty took about 30 years to turn from brown to green], [a balloon first flew nonstop around the world in the 1800s], and [people in China were flying sky lanterns about 1,800 years ago].",
+      "say": "[Play-Doh was sold as a wallpaper cleaner before it became a toy], [Silly Putty was invented by a scientist during World War II], [the Slinky first went on sale in toy stores in the 1980s], and [the first box of Crayola crayons, in 1903, had eight colors].",
       "cap": 2,
-      "real": "The first nonstop balloon flight around the world came in 1999, when Bertrand Piccard and Brian Jones did it in about three weeks.",
+      "real": "The Slinky first went on sale in 1945, when all 400 of them sold out in about 90 minutes at a store in Philadelphia.",
       "src": [
-        "https://www.thedailymeal.com/1516983/candy-bars-been-around-long-time",
-        "https://thebettervacation.com/statue-of-liberty-facts",
-        "https://en.wikipedia.org/wiki/Hot_air_balloon",
-        "https://en.wikipedia.org/wiki/Hot_air_balloon"
+        "https://www.museumofplay.org/blog/the-history-of-play-doh-good-clean-fun/",
+        "https://www.thehenryford.org/collections/explore/articles/accidental-toy-inventions",
+        "https://time.com/4127170/slinky-70-years/",
+        "https://crayola.ca/about-us/history"
       ]
     },
     {
       "id": "ww12",
-      "say": "[Sharks have been around longer than the North Star has been shining], [Pluto was discovered before the Wright brothers' first flight], [Princess Peach was called Princess Toadstool in English until the 1990s], and [the first White House phone could only call one other building].",
+      "say": "[Olympic gold medals haven't been made of solid gold since 1912], [Pluto was discovered before the Wright brothers first flew, in 1903], [Princess Peach was called Princess Toadstool in English until the 1990s], and [Monopoly grew out of a game that a woman patented back in 1904].",
       "cap": 1,
       "real": "Pluto was found in 1930, 27 years after the Wright brothers first flew in 1903.",
       "src": [
-        "https://www.discoverwildlife.com/prehistoric-life/are-sharks-older-than-trees",
-        "https://universemagazine.com/en/pluto-five-facts-about-the-dwarf-planet-that-will-surprise-you",
+        "https://en.wikipedia.org/wiki/Gold_medal",
+        "https://collectionslowellobservatory.omeka.net/exhibits/show/pluto/science",
         "https://en.wikipedia.org/wiki/Princess_Peach",
-        "https://historydaily.com/the-first-phone-call-from-the-white-house"
+        "https://www.smithsonianmag.com/arts-culture/monopoly-was-designed-teach-99-about-income-inequality-180953630/"
       ]
     }
   ]

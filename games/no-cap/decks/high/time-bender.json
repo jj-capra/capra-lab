@@ -8,24 +8,24 @@
       "id": "tg01",
       "say": "[Harvard University is older than calculus], [Galileo and Shakespeare were born in the same year], [the Eiffel Tower is older than the Statue of Liberty], and [Disneyland opened before Hawaii became a state].",
       "cap": 2,
-      "real": "The Statue of Liberty was dedicated in 1886. The Eiffel Tower, whose engineer helped build Lady Liberty's iron frame, opened in 1889.",
+      "real": "The Statue of Liberty was dedicated in 1886. The Eiffel Tower, whose engineer built Lady Liberty's iron frame, was finished in 1889.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/History_of_calculus",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Galileo_Galilei",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Statue_of_Liberty",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Disneyland"
+        "https://en.wikipedia.org/wiki/History_of_calculus",
+        "https://en.wikipedia.org/wiki/1564",
+        "https://en.wikipedia.org/wiki/Statue_of_Liberty",
+        "https://en.wikipedia.org/wiki/Disneyland"
       ]
     },
     {
       "id": "tg02",
       "say": "[Napoleon was still alive when the oldest surviving photo was taken], [Florence Nightingale lived long enough to have her voice recorded], [Queen Victoria lived long enough to be filmed on a movie camera], and [Harriet Tubman was still alive when the Wright brothers first flew].",
       "cap": 0,
-      "real": "Napoleon died in 1821. The oldest surviving camera photo, a view from a window in France by Nicephore Niepce, dates from around 1826 or 1827.",
+      "real": "Napoleon died in 1821. The oldest surviving camera photo, a view from a window in France by Nicephore Niepce, dates from 1826 or 1827.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/View_from_the_Window_at_Le_Gras",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Florence_Nightingale",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Diamond_Jubilee_of_Queen_Victoria",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Harriet_Tubman"
+        "https://en.wikipedia.org/wiki/View_from_the_Window_at_Le_Gras",
+        "https://en.wikipedia.org/wiki/Florence_Nightingale",
+        "https://replay.bfi.org.uk/video/c54272df-aada-529c-b4e6-d583938883fe",
+        "https://en.wikipedia.org/wiki/Legacy_of_Harriet_Tubman"
       ]
     },
     {
@@ -34,10 +34,10 @@
       "cap": 3,
       "real": "The Wright brothers flew in 1903 and Apollo 11 landed in 1969, 66 years apart. From 1969 to 2025 is only 56 years.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Pluto",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Uranus",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Neptune",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Apollo_11"
+        "https://en.wikipedia.org/wiki/Pluto",
+        "https://en.wikipedia.org/wiki/Uranus",
+        "https://en.wikipedia.org/wiki/Neptune",
+        "https://en.wikipedia.org/wiki/Wright_brothers"
       ]
     },
     {
@@ -46,46 +46,46 @@
       "cap": 1,
       "real": "Lincoln shares his birthday with Charles Darwin: both were born on February 12, 1809. Charles Dickens was born in 1812.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/John_Adams",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Charles_Dickens",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/George_Frideric_Handel",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Marilyn_Monroe"
+        "https://en.wikipedia.org/wiki/John_Adams",
+        "https://clarklibrary.ucla.edu/blog/charles-darwin-abraham-lincoln-and-the-12th-of-february/",
+        "https://en.wikipedia.org/wiki/1685_in_music",
+        "https://en.wikipedia.org/wiki/1926_in_music"
       ]
     },
     {
       "id": "tg05",
-      "say": "[Notre-Dame in Paris is older than Machu Picchu], [a Japanese building company stayed in one family for over 1,400 years], [the Great Pyramid was the tallest human-made structure for over 3,800 years], and [the main pyramid at Chichen Itza is older than the Roman Colosseum].",
+      "say": "[Notre-Dame in Paris is older than Machu Picchu], [a Japanese building company stayed in one family for over 1,400 years], [the Great Pyramid was the tallest human-made structure for over 3,700 years], and [the main pyramid at Chichen Itza is older than the Roman Colosseum].",
       "cap": 3,
       "real": "Rome's Colosseum opened in AD 80. El Castillo, the great pyramid at Chichen Itza, was built centuries later, sometime between the 700s and 1100s AD.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Machu_Picchu",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Kong%C5%8D_Gumi",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/El_Castillo,_Chichen_Itza"
+        "https://en.wikipedia.org/wiki/Notre-Dame_de_Paris",
+        "https://en.wikipedia.org/wiki/Kong%C5%8D_Gumi",
+        "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza",
+        "https://en.wikipedia.org/wiki/El_Castillo,_Chichen_Itza"
       ]
     },
     {
       "id": "tg06",
       "say": "[Pocahontas visited London while Shakespeare was still alive], [Isaac Newton was still alive when Benjamin Franklin was born], [the first traffic light was installed before Karl Benz built his first car], and [people were flying in balloons before the U.S. Constitution was written].",
       "cap": 0,
-      "real": "Shakespeare died in April 1616. Pocahontas didn't arrive in England until that June, about two months later.",
+      "real": "Shakespeare died in April 1616. Pocahontas didn't arrive in England until June 12 that year, about seven weeks later.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Pocahontas",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Isaac_Newton",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Traffic_light",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Montgolfier_brothers"
+        "https://en.wikipedia.org/wiki/1616",
+        "https://en.wikipedia.org/wiki/Isaac_Newton",
+        "https://en.wikipedia.org/wiki/History_of_traffic_lights",
+        "https://en.wikipedia.org/wiki/List_of_firsts_in_aviation"
       ]
     },
     {
       "id": "tg07",
       "say": "[President John Tyler was born in 1790 and had a grandson alive in 2024], [the U.S. was still paying a Civil War pension in 2020], [a Civil War veteran was still alive when Apollo 11 landed on the Moon], and [Orville Wright lived to see a plane break the sound barrier].",
       "cap": 2,
-      "real": "The last verified Civil War veteran, Albert Woolson, died in 1956, 13 years before Apollo 11. The 2020 pension went to a veteran's daughter.",
+      "real": "The last undisputed Civil War veteran, Albert Woolson, died in 1956, 13 years before Apollo 11. The 2020 pension went to a veteran's daughter.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Harrison_Ruffin_Tyler",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Irene_Triplett",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Albert_Woolson",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Orville_Wright"
+        "https://www.kpbs.org/news/national/2025/05/29/harrison-ruffin-tyler-grandson-of-the-10th-u-s-president-dies-at-96",
+        "https://en.wikipedia.org/wiki/Irene_Triplett",
+        "https://en.wikipedia.org/wiki/Albert_Woolson",
+        "https://en.wikipedia.org/wiki/Wright_brothers"
       ]
     },
     {
@@ -94,10 +94,10 @@
       "cap": 1,
       "real": "The modern Olympics began in Athens in 1896. The first Tour de France was raced seven years later, in 1903.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Ottoman_Empire",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/1903_Tour_de_France",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Coca-Cola",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Alaska_Purchase"
+        "https://en.wikipedia.org/wiki/History_of_the_Ottoman_Empire",
+        "https://en.wikipedia.org/wiki/1903",
+        "https://en.wikipedia.org/wiki/Coca-Cola",
+        "https://en.wikipedia.org/wiki/Alaska_Purchase"
       ]
     },
     {
@@ -106,10 +106,10 @@
       "cap": 0,
       "real": "Women first competed at the 1900 Paris Olympics, in sports like tennis and golf. 1928 is when women's track and field was added.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/1900_Summer_Olympics",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Tug_of_war_at_the_Summer_Olympics",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Art_competitions_at_the_Summer_Olympics",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Basketball"
+        "https://en.wikipedia.org/wiki/Participation_of_women_in_the_Olympics",
+        "https://en.wikipedia.org/wiki/Tug_of_war_at_the_Summer_Olympics",
+        "https://en.wikipedia.org/wiki/Art_competitions_at_the_Summer_Olympics",
+        "https://en.wikipedia.org/wiki/The_First_Team"
       ]
     },
     {
@@ -118,34 +118,34 @@
       "cap": 3,
       "real": "Ray Tomlinson sent the first network email in 1971. Apple's first computer, the Apple I, didn't go on sale until 1976.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/History_of_the_World_Wide_Web",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Game_Boy",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/ARPANET",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Ray_Tomlinson"
+        "https://en.wikipedia.org/wiki/History_of_the_World_Wide_Web",
+        "https://en.wikipedia.org/wiki/Game_Boy",
+        "https://en.wikipedia.org/wiki/ARPANET",
+        "https://en.wikipedia.org/wiki/Ray_Tomlinson"
       ]
     },
     {
       "id": "tg11",
-      "say": "[Star Wars came out closer to the end of World War II than to 2025], [Mount Rushmore was finished before Mickey Mouse first appeared], [World War I ended before American women won the right to vote nationwide], and [Helen Keller met every U.S. president from Grover Cleveland to Lyndon Johnson].",
+      "say": "[Star Wars came out closer to the end of World War II than to 2025], [Mount Rushmore was finished before Mickey Mouse first appeared], [World War I ended before American women won the right to vote nationwide], and [Abraham Lincoln's son was at the Lincoln Memorial's dedication in 1922].",
       "cap": 1,
-      "real": "Mickey Mouse debuted in Steamboat Willie in 1928. Mount Rushmore wasn't finished until 1941.",
+      "real": "Mickey Mouse debuted in Steamboat Willie in 1928. Work on Mount Rushmore didn't stop until October 1941.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Star_Wars_(film)",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Mount_Rushmore",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Nineteenth_Amendment_to_the_United_States_Constitution",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Helen_Keller"
+        "https://en.wikipedia.org/wiki/Star_Wars_(film)",
+        "https://en.wikipedia.org/wiki/Mount_Rushmore",
+        "https://en.wikipedia.org/wiki/Nineteenth_Amendment_to_the_United_States_Constitution",
+        "https://en.wikipedia.org/wiki/Lincoln_Memorial"
       ]
     },
     {
       "id": "tg12",
-      "say": "[the last known person born in the 1800s died in 2017], [Japan's last shogun was still alive when the first Model T was sold], [China's last emperor died before the first person went to space], and [the Holy Roman Empire still existed when the United States was founded].",
+      "say": "[the last verified person born in the 1800s died in 2017], [Japan's last shogun was still alive when the first Model T was sold], [China's last emperor died before the first person went to space], and [the Holy Roman Empire still existed when the United States was founded].",
       "cap": 2,
       "real": "Puyi, China's last emperor, died in 1967, six years after Yuri Gagarin became the first person in space.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Emma_Morano",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Tokugawa_Yoshinobu",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Puyi",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Holy_Roman_Empire"
+        "https://en.wikipedia.org/wiki/Emma_Morano",
+        "https://en.wikipedia.org/wiki/Tokugawa_Yoshinobu",
+        "https://en.wikipedia.org/wiki/Puyi",
+        "https://en.wikipedia.org/wiki/Dissolution_of_the_Holy_Roman_Empire"
       ]
     }
   ]
