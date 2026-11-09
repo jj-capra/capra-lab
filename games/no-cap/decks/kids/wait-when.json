@@ -1,0 +1,152 @@
+{
+  "id": "wait-when",
+  "title": "Wait, WHEN?!",
+  "shelf": "kids",
+  "blurb": "Older than you think, newer than you'd guess, and totally out of order.",
+  "cards": [
+    {
+      "id": "ww01",
+      "say": "[Woolly mammoths were still alive when the Great Pyramid was built], [London had underground trains before anyone made a phone call], [the Great Wall of China is older than the Great Pyramid], and [the very first bicycles had no pedals at all].",
+      "cap": 2,
+      "real": "The oldest parts of the Great Wall date to the 600s BC, nearly 2,000 years after the Great Pyramid went up around 2560 BC.",
+      "src": [
+        "https://www.businessinsider.in/science/news/a-new-study-reveals-how-the-last-woolly-mammoths-died-out-4000-years-ago-thats-after-the-egyptians-had-built-the-pyramids-/articleshow/71496355.cms",
+        "https://ltmuseum.co.uk/visit/museum-guide/worlds-first-underground",
+        "https://en.wikipedia.org/wiki/Great_Wall_of_China",
+        "https://www.museonicolis.com/en/draisina/"
+      ]
+    },
+    {
+      "id": "ww02",
+      "say": "[Basketball was invented before the American Civil War], [sharks were swimming in the sea before there were any trees], [people flew in hot air balloons 120 years before the first airplane], and [Abraham Lincoln and Charles Darwin were born on the very same day].",
+      "cap": 0,
+      "real": "Basketball was invented in December 1891, about 26 years after the Civil War ended in 1865.",
+      "src": [
+        "https://www.massmoments.org/moment-details/first-game-of-basketball-played-in-springfield.html",
+        "https://www.discoverwildlife.com/prehistoric-life/are-sharks-older-than-trees",
+        "https://en.wikipedia.org/wiki/Jean-Fran%C3%A7ois_Pil%C3%A2tre_de_Rozier",
+        "https://www.mentalfloss.com/history/born-same-day-6-things-lincoln-and-darwin-had-common"
+      ]
+    },
+    {
+      "id": "ww03",
+      "say": "[Nintendo started out in 1889 by selling playing cards], [Barbie had a spacesuit four years before anyone walked on the Moon], [the White House got a telephone before it got electric lights], and [the first teddy bear was sold before the first car was built].",
+      "cap": 3,
+      "real": "Teddy bears first appeared in 1902, but Karl Benz built his first car in 1886, sixteen years earlier.",
+      "src": [
+        "https://moneyweek.com/349214/23-september-1889-nintendo-starts-making-playing-cards",
+        "https://airandspace.si.edu/stories/editorial/barbie-astronaut-ages",
+        "https://www.whitehousehistory.org/the-white-house-gets-electric-lighting",
+        "https://www.nps.gov/thrb/learn/historyculture/storyofteddybear.htm"
+      ]
+    },
+    {
+      "id": "ww04",
+      "say": "[T. rex lived closer in time to us than to Stegosaurus], [ants were crawling around before the very first dinosaurs], [giant dragonflies with wings over two feet wide lived before the dinosaurs], and [Velociraptors were about the size of a turkey].",
+      "cap": 1,
+      "real": "Ants came much later. Dinosaurs appeared about 230 million years ago, and the oldest ant fossil ever found is about 113 million years old.",
+      "src": [
+        "https://gizmodo.com/less-time-separates-us-from-t-rex-than-t-rex-from-stego-1614025559",
+        "https://www.nationalgeographic.com/animals/article/oldest-hell-ant-fossil-discovery",
+        "https://theconversation.com/are-the-paleozoic-eras-giant-dragonflies-still-among-us-102384",
+        "https://allthatsinteresting.com/craziest-dinosaur-facts"
+      ]
+    },
+    {
+      "id": "ww05",
+      "say": "[Disney's dog Pluto got his name after the planet Pluto was discovered], [Uranus was discovered before Columbus sailed to America], [the Statue of Liberty is older than the Eiffel Tower], and [nobody used the word dinosaur until after the first photo was taken].",
+      "cap": 1,
+      "real": "Uranus was discovered in 1781, almost 300 years after Columbus first sailed to the Americas in 1492.",
+      "src": [
+        "https://collectionslowellobservatory.omeka.net/exhibits/show/pluto/science",
+        "https://www.rmg.co.uk/stories/space-astronomy/astronomy/discovery-uranus",
+        "https://www.newworldencyclopedia.org/entry/Statue_of_Liberty",
+        "https://lindahall.org/experience/digital-exhibitions/paper-dinosaurs/03-early-restorations/04-the-word-dinosaur-is-coined-1842"
+      ]
+    },
+    {
+      "id": "ww06",
+      "say": "[A pine tree in California sprouted before the Great Pyramid was built], [the first email was sent before the first cell phone call], [people played video games before anyone walked on the Moon], and [people walked on the Moon before color TV was invented].",
+      "cap": 3,
+      "real": "John Logie Baird showed off color TV in 1928, more than 40 years before the first Moon landing in 1969.",
+      "src": [
+        "https://atlasobscura.com/places/methuselah-tree",
+        "https://en.wikipedia.org/wiki/Ray_Tomlinson",
+        "https://en.wikipedia.org/wiki/Tennis_for_Two",
+        "https://www.guinnessworldrecords.com/world-records/first-colour-tv-transmission"
+      ]
+    },
+    {
+      "id": "ww07",
+      "say": "[Dogs were the very first animals ever sent into space], [tortoises flew around the Moon before any astronaut did], [Abraham Lincoln was born before the first photograph was taken], and [when T. rex was alive, a day on Earth was shorter than 24 hours].",
+      "cap": 0,
+      "real": "Fruit flies went first, in 1947. The first dogs didn't fly until 1951.",
+      "src": [
+        "https://worldatlas.com/articles/the-first-animals-in-space.html",
+        "https://worldatlas.com/articles/the-first-animals-in-space.html",
+        "https://en.wikipedia.org/wiki/View_from_the_Window_at_Le_Gras",
+        "https://news.agu.org/press-release/ancient-shell-shows-days-were-half-hour-shorter-70-million-years-ago/"
+      ]
+    },
+    {
+      "id": "ww08",
+      "say": "[Vikings reached North America almost 500 years before Columbus], [people drank chocolate for thousands of years before the first chocolate bar], [Neptune was discovered before the United States became a country], and [Queen Elizabeth I had a toilet that flushed, back in the 1590s].",
+      "cap": 2,
+      "real": "Neptune was discovered in 1846, seventy years after the United States declared independence in 1776.",
+      "src": [
+        "https://www.npr.org/2021/10/21/1047797376/researchers-discovered-the-date-vikings-arrived-in-canada",
+        "https://www.tastingtable.com/1915748/original-chocolate-purpose-not-eating/",
+        "https://space.com/12254-neptune-photos-hubble-telescope-discovery-anniversary.html",
+        "https://www.mentalfloss.com/history/historically-important-toilets"
+      ]
+    },
+    {
+      "id": "ww09",
+      "say": "[People in Peru were munching popcorn thousands of years ago], [Hershey's chocolate bars came out before the first airplane flight], [Galileo and William Shakespeare were born in the same year], and [the very first ice skates had blades made of steel].",
+      "cap": 3,
+      "real": "The first ice skates were made from animal bones, about 5,000 years ago in Finland.",
+      "src": [
+        "https://www.livescience.com/18034-oldest-popcorn-evidence-peru.html",
+        "https://www.thedailymeal.com/1516983/candy-bars-been-around-long-time",
+        "https://users.sussex.ac.uk/~desw/galileo/issues/isabelle.html",
+        "https://www.livescience.com/2202-5-000-year-origin-ice-skating.html"
+      ]
+    },
+    {
+      "id": "ww10",
+      "say": "[People started baking bread after they learned how to farm], [the very first computer mouse was a box made of wood], [people were playing tic-tac-toe against a computer back in 1950], and [the internet's great-grandparent sent its very first message in 1969].",
+      "cap": 0,
+      "real": "Bread came first. Crumbs of bread baked about 14,400 years ago were found in Jordan, thousands of years before farming began.",
+      "src": [
+        "https://vice.com/en/article/the-oldest-breadloaf-ever-found-dates-back-14400-years-and-predates-agriculture",
+        "https://dougengelbart.org/content/view/162",
+        "https://en.wikipedia.org/wiki/Early_history_of_video_games",
+        "https://en.wikipedia.org/wiki/ARPANET"
+      ]
+    },
+    {
+      "id": "ww11",
+      "say": "[People were calling clumsy folks butterfingers more than 400 years ago], [the Statue of Liberty took about 30 years to turn from brown to green], [a balloon first flew nonstop around the world in the 1800s], and [people in China were flying sky lanterns about 1,800 years ago].",
+      "cap": 2,
+      "real": "The first nonstop balloon flight around the world came in 1999, when Bertrand Piccard and Brian Jones did it in about three weeks.",
+      "src": [
+        "https://www.thedailymeal.com/1516983/candy-bars-been-around-long-time",
+        "https://thebettervacation.com/statue-of-liberty-facts",
+        "https://en.wikipedia.org/wiki/Hot_air_balloon",
+        "https://en.wikipedia.org/wiki/Hot_air_balloon"
+      ]
+    },
+    {
+      "id": "ww12",
+      "say": "[Sharks have been around longer than the North Star has been shining], [Pluto was discovered before the Wright brothers' first flight], [Princess Peach was called Princess Toadstool in English until the 1990s], and [the first White House phone could only call one other building].",
+      "cap": 1,
+      "real": "Pluto was found in 1930, 27 years after the Wright brothers first flew in 1903.",
+      "src": [
+        "https://www.discoverwildlife.com/prehistoric-life/are-sharks-older-than-trees",
+        "https://universemagazine.com/en/pluto-five-facts-about-the-dwarf-planet-that-will-surprise-you",
+        "https://en.wikipedia.org/wiki/Princess_Peach",
+        "https://historydaily.com/the-first-phone-call-from-the-white-house"
+      ]
+    }
+  ]
+}

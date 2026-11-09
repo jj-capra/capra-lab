@@ -1,0 +1,152 @@
+{
+  "id": "calendar-whiplash",
+  "title": "Calendar Whiplash",
+  "shelf": "adult",
+  "blurb": "History's timeline, but somebody shuffled it. Three are real. One is cap.",
+  "cards": [
+    {
+      "id": "cw01",
+      "say": "[Betty White was born before sliced bread was first sold], [the first lighter was invented before the friction match], [Queen Victoria was still reigning when the Wright brothers flew], and [Genghis Khan was still alive when the Magna Carta was sealed].",
+      "cap": 2,
+      "real": "Queen Victoria died in January 1901, almost three years before the Wright brothers' first flight in December 1903.",
+      "src": [
+        "https://en.wikipedia.org/wiki/Sliced_bread",
+        "https://www.todayifoundout.com/index.php/2011/10/lighters-were-invented-before-the-match/",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Queen_Victoria",
+        "https://www.history.com/this-day-in-history/august-18/genghis-khan-dies"
+      ]
+    },
+    {
+      "id": "cw02",
+      "say": "[Charles Dickens lived long enough to see the telephone patented], [Harriet Tubman lived long enough to see the Wright brothers fly], [Orville Wright lived long enough to see a plane break the sound barrier], and [Ben Franklin lived long enough to see George Washington become president].",
+      "cap": 0,
+      "real": "Dickens died in 1870, six years before Alexander Graham Bell patented the telephone in 1876.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Charles_Dickens",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Harriet_Tubman",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Orville_Wright",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Benjamin_Franklin"
+      ]
+    },
+    {
+      "id": "cw03",
+      "say": "[Marilyn Monroe and Queen Elizabeth II were born in the same year], [Galileo was born the same week that Michelangelo died], [Bach and Handel were born in the same year and never once met], and [Shakespeare and Cervantes were born in the same year].",
+      "cap": 3,
+      "real": "Cervantes was born in 1547, 17 years before Shakespeare. The pair did die in the same year, 1616.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Marilyn_Monroe",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Galileo_Galilei",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/George_Frideric_Handel",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Miguel_de_Cervantes"
+      ]
+    },
+    {
+      "id": "cw04",
+      "say": "[The Eastern Roman Empire still existed when the Aztecs founded Tenochtitlan], [the Eiffel Tower was completed three years before the Statue of Liberty], [Ireland's Newgrange tomb is older than the Great Pyramid of Giza], and [Vikings were in Newfoundland 471 years before Columbus crossed the Atlantic].",
+      "cap": 1,
+      "real": "The Statue of Liberty was dedicated in 1886, three years before the Eiffel Tower opened in 1889. Gustave Eiffel even engineered the statue's iron frame.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Tenochtitlan",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Statue_of_Liberty",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Newgrange",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/L%27Anse_aux_Meadows"
+      ]
+    },
+    {
+      "id": "cw05",
+      "say": "[The first Pokémon games came out before Google existed], [Facebook was up and running before LinkedIn launched], [the Soviet Union still existed when the first website went online], and [the PlayStation 2 was still being made six years after the PS3 came out].",
+      "cap": 1,
+      "real": "LinkedIn launched in May 2003. Facebook, then called TheFacebook, didn't launch until February 2004.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Pok%C3%A9mon_Red_and_Blue",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/LinkedIn",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Info.cern.ch",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/PlayStation_2"
+      ]
+    },
+    {
+      "id": "cw06",
+      "say": "[China's last emperor was still alive for the first Super Bowl], [President John Tyler, born in 1790, had a grandson alive in 2024], [the US government was still paying a Civil War pension in 2020], and [Napoleon was still alive when Queen Victoria took the throne].",
+      "cap": 3,
+      "real": "Napoleon died in 1821, 16 years before Victoria became queen in 1837.",
+      "src": [
+        "https://en.wikipedia.org/wiki/Puyi",
+        "https://www.kpbs.org/news/national/2025/05/29/harrison-ruffin-tyler-grandson-of-the-10th-u-s-president-dies-at-96",
+        "https://en.wikipedia.org/wiki/Irene_Triplett",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Napoleon"
+      ]
+    },
+    {
+      "id": "cw07",
+      "say": "[The first Ferris wheel was built for the same fair as the Eiffel Tower], [Dr Pepper was being served in Texas before Coca-Cola existed], [the oldest recording of a human voice is older than the phonograph], and [the classic Nokia ringtone comes from a guitar piece written in 1902].",
+      "cap": 0,
+      "real": "The Eiffel Tower was built for the 1889 Paris fair. The first Ferris wheel was Chicago's answer to it, at the 1893 World's Fair.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Ferris_Wheel",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Dr_Pepper",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Phonautograph",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Nokia_tune"
+      ]
+    },
+    {
+      "id": "cw08",
+      "say": "[The last independent Maya kingdom fell after Newton published his laws of motion], [work on Neuschwanstein Castle began after the American Civil War ended], [Machu Picchu was already built when work began on Notre-Dame in Paris], and [Hawaii's royal palace had electric lights before the White House did].",
+      "cap": 2,
+      "real": "Work on Notre-Dame began in 1163. Machu Picchu was built for the Inca emperor Pachacuti around 1450, almost three centuries later.",
+      "src": [
+        "https://en.wikipedia.org/wiki/Spanish_conquest_of_Pet%C3%A9n",
+        "https://www.neuschwanstein.de/englisch/palace/history.htm",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Machu_Picchu",
+        "https://ethw.org/Milestones:Electric_Lighting_Of_The_Kingdom_of_Hawaii_1886-1888"
+      ]
+    },
+    {
+      "id": "cw09",
+      "say": "[Woodstock happened less than a month after the Moon landing], [the first email was sent two years after the first cellphone call], [Apple was founded before the first Star Wars movie came out], and [NBA games had no three-point line until the 1979 season].",
+      "cap": 1,
+      "real": "Ray Tomlinson sent the first network email in 1971, two years before Martin Cooper made the first handheld cellphone call in 1973.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Woodstock",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Ray_Tomlinson",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Apple_Inc.",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Three-point_field_goal"
+      ]
+    },
+    {
+      "id": "cw10",
+      "say": "[Queen Elizabeth II's first prime minister was born in 1874], [King Tut's tomb was found the same year the BBC began broadcasting], [Greece didn't switch to the modern calendar until 1923], and [Russia's October Revolution actually took place in September].",
+      "cap": 3,
+      "real": "Russia still used the old Julian calendar, so the revolution's October 25 was November 7 everywhere else. It was late, not early.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Winston_Churchill",
+        "NOT WEB-CHECKED (tomb date checked, BBC date not) https://www.livescience.com/archaeology/ancient-egyptians/science-history-archaeologists-discover-king-tuts-tomb-and-rumors-of-the-mummys-curse-begin-swirling-nov-4-1922",
+        "https://wikiwand.com/EN/Gregorian_Calendar",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/October_Revolution"
+      ]
+    },
+    {
+      "id": "cw11",
+      "say": "[The Battle of New Orleans came after the War of 1812 peace treaty was signed], [the Hundred Years' War between England and France lasted 116 years], [Concorde was still flying passengers when the first iPhone came out], and [the original VW Beetle was still being built in Mexico in 2003].",
+      "cap": 2,
+      "real": "Concorde's last passenger flight was in October 2003, almost four years before the first iPhone went on sale in June 2007.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Battle_of_New_Orleans",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Hundred_Years%27_War",
+        "https://www.history.com/this-day-in-history/october-24/the-concorde-makes-its-final-flight",
+        "https://history.com/this-day-in-history/last-classic-vw-beetle-rolls-off-the-line"
+      ]
+    },
+    {
+      "id": "cw12",
+      "say": "[England's first flushing toilet was built for Queen Victoria], [the first known written OMG was in a 1917 letter to Winston Churchill], [the word meme was coined in 1976, long before the World Wide Web], and [Santa Fe, New Mexico was founded before the Pilgrims reached Plymouth].",
+      "cap": 0,
+      "real": "Sir John Harington built a flushing toilet for Queen Elizabeth I around 1596, more than 200 years before Victoria was born.",
+      "src": [
+        "https://blog.sciencemuseum.org.uk/a-flushing-story/",
+        "https://www.snopes.com/fact-check/omg-winston-churchill/",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Meme",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Santa_Fe,_New_Mexico"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "id": "totally-true-history",
+  "title": "Totally True History (Mostly)",
+  "shelf": "kids",
+  "blurb": "Kings, presidents, inventors and candy bars. Three facts per card, and one is cap.",
+  "cards": [
+    {
+      "id": "th01",
+      "say": "[The first basketball game was played with a soccer ball], [Benjamin Franklin asked Congress to make the turkey the national bird], [Abraham Lincoln is honored in the National Wrestling Hall of Fame], and [a sheep, a duck and a rooster were the first passengers in a hot air balloon].",
+      "cap": 1,
+      "real": "Franklin praised the turkey in a letter to his daughter, but he never asked for it to become a national symbol.",
+      "src": [
+        "https://www.massmoments.org/moment-details/first-game-of-basketball-played-in-springfield.html",
+        "https://fi.edu/benjamin-franklin/franklin-national-bird",
+        "https://www.snopes.com/fact-check/is-lincoln-in-wrestling-hall-of-fame/",
+        "https://en.chateauversailles.fr/discover/history/key-dates/first-hot-air-balloon-flight"
+      ]
+    },
+    {
+      "id": "th02",
+      "say": "[The Statue of Liberty was used as a lighthouse for 16 years], [the teddy bear was invented by a candy shop owner in Brooklyn], [Uranus was almost named George's Star, after Britain's King George III], and [Viking warriors wore metal helmets with big horns sticking out].",
+      "cap": 3,
+      "real": "There's no evidence Vikings wore horned helmets. That look comes from opera costumes made in the 1870s.",
+      "src": [
+        "https://thebettervacation.com/statue-of-liberty-facts",
+        "https://www.nps.gov/thrb/learn/historyculture/storyofteddybear.htm",
+        "https://www.rmg.co.uk/stories/space-astronomy/astronomy/discovery-uranus",
+        "https://www.howitworksdaily.com/7-history-myths-busted/"
+      ]
+    },
+    {
+      "id": "th03",
+      "say": "[Knights in heavy armor had to be lifted onto their horses with cranes], [Benjamin Harrison and his wife were too scared to touch the White House light switches], [King Henry VIII had a bathroom with seats for 28 people at once], and [Pluto was named by an 11-year-old girl from England].",
+      "cap": 0,
+      "real": "Knights climbed onto their horses by themselves. A full suit of plate armor weighed about 45 to 55 pounds.",
+      "src": [
+        "https://www.thestar.com.my/news/true-or-not/2022/01/07/quickcheck-did-medieval-knights-need-to-use-a-crane-to-mount-a-horse",
+        "https://www.whitehousehistory.org/the-white-house-gets-electric-lighting",
+        "https://www.mentalfloss.com/history/historically-important-toilets",
+        "https://grunge.com/818655/how-pluto-got-its-name"
+      ]
+    },
+    {
+      "id": "th04",
+      "say": "[Barbie's full name is Barbara Millicent Roberts], [a flock of sheep once trimmed the White House lawn], [basketball was invented by an American gym teacher in New York], and [the Palace of Versailles started out as a hunting lodge].",
+      "cap": 2,
+      "real": "Basketball's inventor, James Naismith, was Canadian. He came up with the game in Springfield, Massachusetts, in 1891.",
+      "src": [
+        "https://history.co.uk/articles/facts-about-iconic-barbie",
+        "https://www.thecollector.com/five-unusual-facts-about-us-presidents/",
+        "https://www.massmoments.org/moment-details/first-game-of-basketball-played-in-springfield.html",
+        "https://en.wikipedia.org/wiki/Palace_of_Versailles"
+      ]
+    },
+    {
+      "id": "th05",
+      "say": "[Napoleon was much shorter than most men of his time], [Ken and Barbie were named after their inventor's real children], [people had toilets washed out by running water at least 5,000 years ago], and [merchants were writing the @ sign almost 500 years ago].",
+      "cap": 0,
+      "real": "Napoleon was about 5 feet 6 inches, above average for his time. Old French inches were longer, which confused people.",
+      "src": [
+        "https://www.howitworksdaily.com/7-history-myths-busted/",
+        "https://history.co.uk/articles/facts-about-iconic-barbie",
+        "https://history.com/articles/who-invented-the-flush-toilet",
+        "https://en.wikipedia.org/wiki/@_sign"
+      ]
+    },
+    {
+      "id": "th06",
+      "say": "[The first person to go up in a hot air balloon, in 1783, was tied down with a rope], [Hershey's chocolate bars sold for five cents each until the year 1999], [the Goo Goo Cluster, from 1912, was named after a baby's first words], and [the man who built the Eiffel Tower also designed the Statue of Liberty's insides].",
+      "cap": 1,
+      "real": "A Hershey's bar cost five cents from 1900 until 1969, when the price went up.",
+      "src": [
+        "https://en.wikipedia.org/wiki/Hot_air_balloon",
+        "https://www.thedailymeal.com/1516983/candy-bars-been-around-long-time",
+        "https://www.thedailymeal.com/1516983/candy-bars-been-around-long-time",
+        "https://www.newworldencyclopedia.org/entry/Statue_of_Liberty"
+      ]
+    },
+    {
+      "id": "th07",
+      "say": "[Caroline Herschel, an astronomer in the 1700s, discovered eight comets], [Alan Turing wrote a chess program in 1948 that no computer back then could run], [basketball's inventor tossed up the first jump ball at the 1936 Olympics], and [the teddy bear, first made in 1902, was named after Franklin Roosevelt].",
+      "cap": 3,
+      "real": "The teddy bear was named after President Theodore Roosevelt, whose nickname was Teddy.",
+      "src": [
+        "https://www.mentalfloss.com/science/space/how-amateur-astronomer-discovered-uranus",
+        "https://en.wikipedia.org/wiki/Early_history_of_video_games",
+        "https://thecanadianencyclopedia.ca/en/article/james-naismith",
+        "https://www.nps.gov/thrb/learn/historyculture/storyofteddybear.htm"
+      ]
+    },
+    {
+      "id": "th08",
+      "say": "[Nintendo's founder was 29 years old when he started the company], [Toblerone's name mixes its maker's family name with an Italian word for nougat], [you can see the Great Wall of China from the Moon with your own eyes], and [Herbert Hoover, in 1929, was the first president with a phone on his desk].",
+      "cap": 2,
+      "real": "The Great Wall is far too narrow to see from the Moon. Even from low orbit, astronauts can barely spot it, if at all.",
+      "src": [
+        "https://interestingengineering.com/culture/the-extraordinary-and-surprising-history-of-nintendo",
+        "https://www.thedailymeal.com/1516983/candy-bars-been-around-long-time",
+        "https://en.wikipedia.org/wiki/Great_Wall_of_China",
+        "https://www.smithsonianmag.com/smart-news/1929-nobody-thought-president-needed-telephone-his-office-180962646/"
+      ]
+    },
+    {
+      "id": "th09",
+      "say": "[Cadbury Dairy Milk chocolate was almost named Dairy Maid], [the Statue of Liberty's sandals would be about a size 879], [the Hall of Mirrors at Versailles has 578 mirrors], and [ancient Romans built special rooms for throwing up at big feasts].",
+      "cap": 3,
+      "real": "A vomitorium was really a passageway that let crowds pour in and out of a Roman stadium.",
+      "src": [
+        "https://www.thedailymeal.com/1516983/candy-bars-been-around-long-time",
+        "https://thebettervacation.com/statue-of-liberty-facts",
+        "https://en.wikipedia.org/wiki/Palace_of_Versailles",
+        "https://www.howitworksdaily.com/7-history-myths-busted/"
+      ]
+    },
+    {
+      "id": "th10",
+      "say": "[The world's first underground railway opened in New York City], [a toilet hidden inside a fake book was made in France in the 1700s], [the man who designed the Game Boy started out fixing machines in Nintendo's card factory], and [James Garfield gave a campaign speech in German before he became president].",
+      "cap": 0,
+      "real": "The world's first underground railway opened in London in 1863.",
+      "src": [
+        "https://ltmuseum.co.uk/visit/museum-guide/worlds-first-underground",
+        "https://www.mentalfloss.com/history/historically-important-toilets",
+        "https://en.wikipedia.org/wiki/Gunpei_Yokoi",
+        "https://www.thecollector.com/five-unusual-facts-about-us-presidents/"
+      ]
+    },
+    {
+      "id": "th11",
+      "say": "[Japan banned playing cards from other countries in the 1600s], [Barbie was invented after her creator saw how much her daughter loved paper dolls], [the very first solid chocolate bar was made at a factory in America], and [the man who discovered Uranus was a musician before he was an astronomer].",
+      "cap": 2,
+      "real": "The first solid chocolate bar was made in England by Joseph Fry in 1847.",
+      "src": [
+        "https://interestingengineering.com/culture/the-extraordinary-and-surprising-history-of-nintendo",
+        "https://history.co.uk/articles/facts-about-iconic-barbie",
+        "https://www.tastingtable.com/1915748/original-chocolate-purpose-not-eating/",
+        "https://www.mentalfloss.com/science/space/how-amateur-astronomer-discovered-uranus"
+      ]
+    },
+    {
+      "id": "th12",
+      "say": "[The man who created Pokémon was nicknamed Dr. Bug as a kid], [a recording of Abraham Lincoln's voice still exists today], [the inventor of basketball had a losing record as a college coach], and [the first free balloon flight with people ended early because the balloon caught fire].",
+      "cap": 1,
+      "real": "No recording of Lincoln exists. The oldest recorded voice of any president belongs to Benjamin Harrison.",
+      "src": [
+        "https://en.wikipedia.org/wiki/Satoshi_Tajiri",
+        "https://historycollection.com/these-little-known-facts-about-40-of-americas-presidents-snatched-our-powdered-wigs/23/",
+        "https://thecanadianencyclopedia.ca/en/article/james-naismith",
+        "https://www.todayifoundout.com/index.php/2011/11/november-21-two-frenchman-make-the-worlds-first-untethered-manned-hot-air-balloon-flight/"
+      ]
+    }
+  ]
+}

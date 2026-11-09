@@ -1,0 +1,152 @@
+{
+  "id": "timeline-glitch",
+  "title": "Timeline Glitch",
+  "shelf": "middle",
+  "blurb": "History's calendar is glitching. Three of these really line up. One is pure cap.",
+  "cards": [
+    {
+      "id": "tg01",
+      "say": "[Cleopatra lived closer in time to the Moon landing than to the building of the Great Pyramid], [the first email was sent before the first call on a handheld cellphone], [the Eiffel Tower was finished before the Statue of Liberty was unveiled], and [Shakespeare was still alive when the English founded Jamestown].",
+      "cap": 2,
+      "real": "The Statue of Liberty was unveiled in New York in 1886. The Eiffel Tower wasn't finished until 1889.",
+      "src": [
+        "https://www.worldatlas.com/articles/so-cleopatra-lived-closer-in-time-to-the-first-lunar-landing-than-the-great-pyramids.html",
+        "https://en.wikipedia.org/wiki/Ray_Tomlinson",
+        "https://www.nps.gov/stli/learn/historyculture/history-continued.htm",
+        "https://pashakespeare.org/press/shakespeare-timeline/"
+      ]
+    },
+    {
+      "id": "tg02",
+      "say": "[the supersonic Concorde made its last passenger flight in 1993], [Western Union sent its very last telegram in 2006], [the US government was still paying a Civil War pension in 2020], and [a Japanese temple-building company stayed independent for over 1,400 years].",
+      "cap": 0,
+      "real": "The Concorde's last passenger flights were in 2003, when British Airways retired it after 27 years of service.",
+      "src": [
+        "https://www.history.com/this-day-in-history/october-24/the-concorde-makes-its-final-flight",
+        "https://www.mainepublic.org/npr-news/2006-02-02/western-union-sends-its-last-telegram",
+        "https://www.spokesman.com/stories/2020/jun/04/the-last-american-to-collect-a-civil-war-pension-7/",
+        "https://www.amusingplanet.com/2019/11/kongo-gumi-1400-year-old-company.html"
+      ]
+    },
+    {
+      "id": "tg03",
+      "say": "[tortoises flew around the Moon before any astronaut did], [Orville Wright lived to see a plane fly faster than sound], [hot-air balloons carried people before the US Constitution was signed], and [the first parachute jump came after the first airplane flight].",
+      "cap": 3,
+      "real": "People parachuted long before airplanes: André-Jacques Garnerin jumped from a balloon over Paris in 1797, over 100 years before the Wright brothers flew.",
+      "src": [
+        "https://www.astronomy.com/space-exploration/first-earthlings-around-the-moon-were-two-soviet-tortoises/",
+        "https://www.nps.gov/daav/historyculture/orvillewrightslifestory.htm",
+        "https://www.ebsco.com/research-starters/history/first-manned-balloon-flight",
+        "https://www.history.com/this-day-in-history/october-22/the-first-parachutist"
+      ]
+    },
+    {
+      "id": "tg04",
+      "say": "[teaching at Oxford began before the Aztecs founded their capital, Tenochtitlan], [the first Ferris wheel was spinning before the Eiffel Tower opened], [London's Underground trains were running during the US Civil War], and [the game of basketball is older than the teddy bear].",
+      "cap": 1,
+      "real": "The Eiffel Tower opened in 1889. The first Ferris wheel spun at the 1893 Chicago World's Fair, built to outdo it.",
+      "src": [
+        "https://ox.ac.uk/about/the-university/history",
+        "https://www.cbsnews.com/news/the-history-of-ferris-wheels",
+        "https://ltmuseum.co.uk/visit/museum-guide/worlds-first-underground",
+        "https://www.nps.gov/thrb/learn/historyculture/storyofteddybear.htm"
+      ]
+    },
+    {
+      "id": "tg05",
+      "say": "[Abraham Lincoln and Charles Darwin were born on the very same day], [Isaac Newton was born on the very day that Galileo died], [Thomas Jefferson and John Adams died on the very same day], and [Mark Twain was born and died in years when Halley's Comet flew by].",
+      "cap": 1,
+      "real": "Galileo died on January 8, 1642. Newton was born that December, almost a year later. The same-day story is a myth.",
+      "src": [
+        "https://www.britannica.com/topic/The-Darwin-Lincoln-Double-Bicentennial-2222484",
+        "https://mathpages.com/home/kmath121/kmath121.htm",
+        "https://www.history.com/this-day-in-history/thomas-jefferson-and-john-adams-die",
+        "https://www.snopes.com/fact-check/mark-twain-halleys-comet/"
+      ]
+    },
+    {
+      "id": "tg06",
+      "say": "[Pac-Man hit arcades before the first music CDs went on sale], [Nintendo's Game Boy came out the same year the Berlin Wall fell], [the first Pokémon games came out before Google was founded], and [Netflix was streaming movies online before YouTube existed].",
+      "cap": 3,
+      "real": "YouTube launched in 2005. Netflix mailed out DVDs for years and didn't start streaming movies until 2007.",
+      "src": [
+        "https://moneyweek.com/392564/22-may-1980-pac-man-hits-the-arcades/",
+        "https://hothardware.com/news/nintendo-gameboy-handheld-gaming-console-turned-30",
+        "https://www.westporttechmuseum.com/blogs/techtastic/today-in-video-game-history-february-27th-1996-the-first-pokemon-games-pocket-monsters-red-green-were-released-in-japan",
+        "https://qz.com/887010/netflix-nflx-launched-streaming-video-10-years-ago-and-changed-the-way-we-watch-everything"
+      ]
+    },
+    {
+      "id": "tg07",
+      "say": "[the Eiffel Tower's first permit let it stand for only 3 years], [Louis XIV was king of France for 72 years], [the Empire State Building was built in just 410 days], and [the Hundred Years' War actually lasted 116 years].",
+      "cap": 0,
+      "real": "The Eiffel Tower's original permit was for 20 years. It was kept because it turned out to be useful for radio.",
+      "src": [
+        "https://www.toureiffel.paris/en/news/130-years/how-did-radio-save-tower",
+        "https://www.pen-and-sword.co.uk/anniversary/600/King-Louis-XIV-of-France-dies-after-a-reign-of-72-years",
+        "https://www.historyhit.com/locations/empire-state-building/",
+        "https://www.worldatlas.com/articles/how-long-was-the-hundred-years-war.html"
+      ]
+    },
+    {
+      "id": "tg08",
+      "say": "[the fax machine was patented before the telephone], [a flushing toilet was built for England's Queen Elizabeth I], [the first photograph was taken after the telephone was invented], and [an engineer in ancient Alexandria built a coin-operated vending machine].",
+      "cap": 2,
+      "real": "The oldest surviving photo was taken in France around 1826, about 50 years before Bell patented the telephone in 1876.",
+      "src": [
+        "https://en.wikipedia.org/wiki/Alexander_Bain_(inventor)",
+        "https://blog.sciencemuseum.org.uk/a-flushing-story/",
+        "https://historyofinformation.com/detail.php?id=3665",
+        "https://www.mentalfloss.com/history/worlds-first-vending-machine-dispensed-holy-water"
+      ]
+    },
+    {
+      "id": "tg09",
+      "say": "[the Soviets sent a woman to space 20 years before the US did], [people walked on the Moon within 66 years of the first airplane flight], [astronauts walked on the Moon before the first home video game console was sold], and [the first person to float outside a spacecraft was an American].",
+      "cap": 3,
+      "real": "Soviet cosmonaut Alexei Leonov made the first spacewalk in March 1965. American Ed White's came about three months later.",
+      "src": [
+        "https://www.airandspace.si.edu/stories/editorial/reaching-new-heights-space",
+        "https://www.worldatlas.com/articles/did-you-know-only-66-years-separated-the-first-successful-plane-flights-and-moon-landings.html",
+        "https://en.wikipedia.org/wiki/Magnavox_Odyssey",
+        "https://www.space.com/28858-first-spacewalk-alexei-leonov-50th-anniversary.html"
+      ]
+    },
+    {
+      "id": "tg10",
+      "say": "[Pepsi was invented before Coca-Cola went on sale], [Oreo cookies were around before Mickey Mouse was created], [Jell-O was invented before the Wright brothers first flew], and [Crayola crayons first went on sale the year the Wright brothers flew].",
+      "cap": 0,
+      "real": "Coca-Cola first went on sale in 1886. Pepsi came along seven years later, in 1893, under the name Brad's Drink.",
+      "src": [
+        "https://www.dncr.nc.gov/index.php/blog/2023/12/07/caleb-bradham-1867-1934-c-60",
+        "https://en.wikipedia.org/wiki/Oreo",
+        "https://en.wikipedia.org/wiki/Jell-O",
+        "https://www.crayola.com/es-mx/faqs/what-were-the-original-eight-(8)-colors-in-the-1903-box-of-crayola-crayons-faq"
+      ]
+    },
+    {
+      "id": "tg11",
+      "say": "[Leonardo da Vinci started the Mona Lisa after Columbus reached the Americas], [Genghis Khan was still alive when England's Magna Carta was sealed], [Rome's Colosseum was built before work began on the Great Wall of China], and [Isaac Newton and Benjamin Franklin were alive at the same time].",
+      "cap": 2,
+      "real": "China's first long defensive walls went up in the 600s BC. Rome's Colosseum opened around AD 80, centuries later.",
+      "src": [
+        "https://en.wikipedia.org/wiki/Mona_Lisa",
+        "https://www.britannica.com/biography/Genghis-khan",
+        "https://www.britannica.com/topic/Great-Wall-of-China",
+        "https://www.wikipedia.org/wiki/Later_life_of_Isaac_Newton"
+      ]
+    },
+    {
+      "id": "tg12",
+      "say": "[people could pay for video phone calls before the Moon landing], [the first text message was sent before the first website went online], [Kodak built the first digital camera before the first Star Wars movie came out], and [the computer mouse is older than the Super Bowl].",
+      "cap": 1,
+      "real": "The first website went online at CERN at the end of 1990. The first text message wasn't sent until December 1992.",
+      "src": [
+        "https://ethw.org/Picturephone",
+        "https://www.engadget.com/2015/12/20/first-website-is-25-years-old/",
+        "https://petapixel.com/2010/08/05/the-worlds-first-digital-camera-by-kodak-and-steve-sasson/",
+        "https://www.computerhistory.org/revolution/artifact/350/1546"
+      ]
+    }
+  ]
+}

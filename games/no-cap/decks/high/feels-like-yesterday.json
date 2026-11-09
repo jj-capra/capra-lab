@@ -1,0 +1,152 @@
+{
+  "id": "feels-like-yesterday",
+  "title": "Feels Like Yesterday",
+  "shelf": "high",
+  "blurb": "Apps, hits, memes and money from 2000 to 2025, scrambled with history until time breaks.",
+  "cards": [
+    {
+      "id": "fy01",
+      "say": "[Roblox came out before the first iPhone], [Spotify launched after the first iPhone], [Netflix was founded before Google], and [Minecraft came out before the first iPhone].",
+      "cap": 3,
+      "real": "Minecraft first went public in 2009, two years after the iPhone. Roblox beat the iPhone by almost a year, launching in 2006.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Roblox",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Spotify",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Netflix",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Minecraft"
+      ]
+    },
+    {
+      "id": "fy02",
+      "say": "[Google's search engine was first called BackRub], [Instagram started out as an app called Picaboo], [Amazon was originally named Cadabra, as in abracadabra], and [Bluetooth is named after a Viking king from the 900s].",
+      "cap": 1,
+      "real": "Picaboo was Snapchat's first name. Instagram grew out of a check-in app called Burbn.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/History_of_Google",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Instagram",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/History_of_Amazon",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Bluetooth"
+      ]
+    },
+    {
+      "id": "fy03",
+      "say": "[Billie Eilish swept the four biggest Grammys at age 18], [in 2019, Old Town Road broke the record for most weeks at number one], [Gangnam Style hit number one on the Billboard Hot 100], and [Apple's iTunes Store opened in 2003 selling songs for 99 cents].",
+      "cap": 2,
+      "real": "Gangnam Style peaked at number two on the Hot 100 in 2012, stuck behind Maroon 5's One More Night.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Billie_Eilish",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Old_Town_Road",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Gangnam_Style",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/ITunes_Store"
+      ]
+    },
+    {
+      "id": "fy04",
+      "say": "[Amazon was the first U.S. company to be worth a trillion dollars], [Google bought YouTube for 1.65 billion dollars in 2006], [a man paid 10,000 bitcoin for two pizzas in 2010], and [in 1997, Microsoft invested 150 million dollars to help save Apple].",
+      "cap": 0,
+      "real": "Apple hit a trillion dollars first, in August 2018. Amazon briefly touched the mark about a month later.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Apple_Inc.",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/History_of_YouTube",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/History_of_bitcoin",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/History_of_Apple_Inc."
+      ]
+    },
+    {
+      "id": "fy05",
+      "say": "[Shrek won the first ever Oscar for Best Animated Feature], [in 2023, Oppenheimer made more money worldwide than Barbie], [Parasite was the first non-English-language film to win Best Picture], and [Steve Jobs owned most of Pixar when Toy Story came out].",
+      "cap": 1,
+      "real": "Barbie was 2023's biggest movie worldwide, at about 1.4 billion dollars. Oppenheimer made just under 1 billion.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Academy_Award_for_Best_Animated_Feature",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Barbie_(film)",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Parasite_(2019_film)",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Pixar"
+      ]
+    },
+    {
+      "id": "fy06",
+      "say": "[the word meme was coined in a 1976 book about genes], [Keyboard Cat was filmed in 1984, decades before it went viral], [the Rickroll song came out in 1987, 20 years before Rickrolling], and [the first emoji were designed by Apple for the iPhone in 2008].",
+      "cap": 3,
+      "real": "Emoji started in Japan in the late 1990s. A famous 1999 set by Shigetaka Kurita is now in New York's Museum of Modern Art.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Meme",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Keyboard_Cat",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Rickrolling",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Emoji"
+      ]
+    },
+    {
+      "id": "fy07",
+      "say": "[LeBron James played a year of college ball before the NBA], [Leicester City won the Premier League in 2016 at odds of 5,000 to 1], [the Chicago Cubs went 108 years between World Series titles], and [in 2024, Shohei Ohtani became MLB's first 50-homer, 50-steal player].",
+      "cap": 0,
+      "real": "LeBron went straight from high school in Akron, Ohio, to the NBA as the first pick of the 2003 draft.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/LeBron_James",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/2015%E2%80%9316_Leicester_City_F.C._season",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/2016_World_Series",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Shohei_Ohtani"
+      ]
+    },
+    {
+      "id": "fy08",
+      "say": "[the first iPhone couldn't copy and paste], [Gmail launched on April Fools' Day in 2004], [Twitter's founders invented the hashtag in 2007], and [Facebook went five years without a like button].",
+      "cap": 2,
+      "real": "The hashtag was suggested in 2007 by a Twitter user, Chris Messina. Twitter didn't start linking hashtags until 2009.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/IPhone_(1st_generation)",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Gmail",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Hashtag",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Like_button"
+      ]
+    },
+    {
+      "id": "fy09",
+      "say": "[Toyota started out as a company that made motorcycles], [Nokia started out as a paper mill in 1865], [Samsung began in 1938 selling dried fish and groceries], and [Doritos were first made at a restaurant inside Disneyland].",
+      "cap": 0,
+      "real": "Toyota grew out of Toyoda Automatic Loom Works, a company that made weaving machines. Its car business started in the 1930s.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Toyota",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Nokia",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Samsung",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Doritos"
+      ]
+    },
+    {
+      "id": "fy10",
+      "say": "[NASA's Mars helicopter carried a scrap of fabric from the Wright brothers' plane], [the first photo of a black hole was released in 2019], [Voyager 1 reached interstellar space before YouTube was founded], and [the James Webb Space Telescope launched on Christmas Day 2021].",
+      "cap": 2,
+      "real": "Voyager 1 crossed into interstellar space in August 2012, seven years after YouTube launched in 2005.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Ingenuity_(helicopter)",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Event_Horizon_Telescope",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Voyager_1",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/James_Webb_Space_Telescope"
+      ]
+    },
+    {
+      "id": "fy11",
+      "say": "[Tetris was created by a computer scientist in the Soviet Union], [Mario was called Jumpman when he debuted in 1981's Donkey Kong], [the first PlayStation started as a CD add-on for a Nintendo console], and [Apple banned Flappy Bird in 2014 for being too addictive].",
+      "cap": 3,
+      "real": "Flappy Bird's creator, Dong Nguyen, pulled the game himself in 2014, saying it had become too addictive.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Tetris",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Mario",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Super_NES_CD-ROM",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Flappy_Bird"
+      ]
+    },
+    {
+      "id": "fy12",
+      "say": "[Nike paid a college student 35 dollars to design its swoosh], [Crocs were first sold in 2002 as a comfy shoe for nurses], [Dogecoin was created in 2013 as a joke making fun of crypto], and [the QR code was invented in 1994 to keep track of car parts].",
+      "cap": 1,
+      "real": "Crocs debuted in 2002 as a boating shoe, launched at a boat show in Fort Lauderdale, Florida.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Swoosh",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Crocs",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Dogecoin",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/QR_code"
+      ]
+    }
+  ]
+}

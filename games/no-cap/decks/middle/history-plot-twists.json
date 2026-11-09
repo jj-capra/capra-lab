@@ -1,0 +1,152 @@
+{
+  "id": "history-plot-twists",
+  "title": "History's Plot Twists",
+  "shelf": "middle",
+  "blurb": "Empires, explorers and inventors did weirder stuff than any movie. One per card is cap.",
+  "cards": [
+    {
+      "id": "hp01",
+      "say": "[Vikings were cutting wood in Newfoundland in the year 1021], [Marco Polo brought noodles home to Italy from China in 1295], [Ibn Battuta traveled about 75,000 miles in the 1300s], and [Zheng He's Chinese fleet reached East Africa in the 1410s].",
+      "cap": 1,
+      "real": "Italians were already eating pasta before Marco Polo got home in 1295. The noodle story came from a 1929 pasta trade magazine.",
+      "src": [
+        "https://www.sciencenews.org/?p=3104801",
+        "https://www.tampabay.com/archive/1997/10/09/marco-polo-and-the-myth-of-pasta",
+        "https://www.worldhistory.org/Ibn_Battuta/",
+        "https://www.britannica.com/summary/Zheng-He-Timeline"
+      ]
+    },
+    {
+      "id": "hp02",
+      "say": "[Thomas Edison's very first patent was for an electric vote counter], [a dentist helped invent the cotton candy machine], [Louis Braille created his reading system for blind people at age 15], and [Benjamin Franklin got rich from the patents on his inventions].",
+      "cap": 3,
+      "real": "Franklin never patented any of his inventions. He wrote that since we all gain from other people's inventions, we should share ours freely.",
+      "src": [
+        "https://www.thehenryford.org/collections/explore/artifact/251711?AssetId=THF11607",
+        "https://en.wikipedia.org/wiki/William_Morrison_(dentist)",
+        "https://content.govdelivery.com/accounts/TXGOV/bulletins/562edb",
+        "https://www.ushistory.org/FRANKLIN/autobiography/page55.htm"
+      ]
+    },
+    {
+      "id": "hp03",
+      "say": "[Julius Caesar was the very first Roman emperor], [ancient Romans grabbed fast food at street-side counters], [ancient Greeks built a gear-driven machine that predicted eclipses], and [the Romans had a goddess who looked after the sewers].",
+      "cap": 0,
+      "real": "Caesar ruled Rome as dictator but was never emperor. His adopted heir Augustus became Rome's first emperor in 27 BC.",
+      "src": [
+        "https://britannica.com/question/Who-was-the-first-Roman-emperor",
+        "https://www.sci.news/archaeology/pompeii-thermopolium-09193.html",
+        "https://www.livescience.com/60144-antikythera-computer-predicted-eclipses.html",
+        "https://en.wikipedia.org/wiki/Cloacina"
+      ]
+    },
+    {
+      "id": "hp04",
+      "say": "[the Inca built over 20,000 miles of roads without using the wheel], [Mansa Musa spent so much gold in Cairo in 1324 that its value dropped], [the Mongol Empire conquered Japan in the 1280s], and [the Ottoman Empire lasted more than 600 years].",
+      "cap": 2,
+      "real": "The Mongols tried to invade Japan in 1274 and again in 1281. Both attacks failed, partly because of huge storms.",
+      "src": [
+        "https://en.wikipedia.org/wiki/Inca_road_system",
+        "https://worldhistorycommons.org/al-umaris-account-mansa-musas-visit-cairo",
+        "https://www.thecollector.com/why-mongol-invasions-of-japan-failed/",
+        "https://en.wikipedia.org/wiki/History_of_the_Ottoman_Empire"
+      ]
+    },
+    {
+      "id": "hp05",
+      "say": "[the first animals ever sent into space were two monkeys], [the Apollo 11 crew filled out a customs form after coming home], [astronaut Alan Shepard hit golf balls on the Moon], and [Buzz Aldrin snapped a selfie during a spacewalk in 1966].",
+      "cap": 0,
+      "real": "The first animals in space were fruit flies, launched on a US rocket in 1947. Monkeys came later.",
+      "src": [
+        "https://www.history.com/articles/what-was-the-first-animal-in-space",
+        "https://www.space.com/7044-moon-apollo-astronauts-customs.html",
+        "https://www.usga.org/content/usga/home-page/articles/2021/02/shepard-moon-club-50th-anniversary-usga-museum.html",
+        "https://www.space.com/34596-buzz-aldrin-space-selfie-tshirt.html"
+      ]
+    },
+    {
+      "id": "hp06",
+      "say": "[the stolen 1966 World Cup trophy was found by a dog named Pickles], [the Mona Lisa was stolen in 1911 and not found again until 1925], [the Statue of Liberty worked as a lighthouse for 16 years], and [a real moth got stuck inside a Harvard computer in 1947].",
+      "cap": 1,
+      "real": "The Mona Lisa was stolen from the Louvre in 1911 and turned up in Italy in December 1913, about two years later.",
+      "src": [
+        "https://en.wikipedia.org/wiki/Pickles_(dog)",
+        "https://www.historytoday.com/archive/months-past/mona-lisa-stolen-louvre",
+        "https://lighthousefriends.com/light.asp?ID=581",
+        "https://www.si.edu/object/log-book-computer-bug:nmah_334663"
+      ]
+    },
+    {
+      "id": "hp07",
+      "say": "[Abraham Lincoln is in the National Wrestling Hall of Fame], [Ben Franklin invented swim fins when he was a kid], [Queen Elizabeth II trained as a mechanic during World War II], and [George Washington's false teeth were carved out of wood].",
+      "cap": 3,
+      "real": "Washington's dentures were made of ivory, metal, and human and animal teeth. None of them were wood.",
+      "src": [
+        "https://www.snopes.com/fact-check/is-lincoln-in-wrestling-hall-of-fame/",
+        "https://fi.edu/en/science-and-education/benjamin-franklin/inventions",
+        "https://www.snopes.com/fact-check/queen-elizabeth-ii-mechanic/",
+        "https://www.mountvernon.org/library/digitalhistory/digital-encyclopedia/article/false-teeth"
+      ]
+    },
+    {
+      "id": "hp08",
+      "say": "[bubble wrap was first invented to be a textured wallpaper], [the Slinky was invented by a naval engineer working with springs], [a melted candy bar led to the invention of the microwave oven], and [Velcro was inspired by the sticky feet of geckos].",
+      "cap": 3,
+      "real": "Velcro was inspired by burrs that stuck to an engineer's dog after a walk in the Swiss countryside in 1941.",
+      "src": [
+        "https://www.smithsonianmag.com/innovation/accidental-invention-bubble-wrap-180971325/",
+        "https://en.wikipedia.org/wiki/Slinky",
+        "https://en.wikipedia.org/wiki/Percy_Spencer",
+        "https://www.history.com/articles/velcro-invention"
+      ]
+    },
+    {
+      "id": "hp09",
+      "say": "[the Eiffel Tower escaped being torn down because it was useful for radio], [the Leaning Tower of Pisa started leaning before it was finished], [King Tut's tomb was found empty, cleaned out by ancient robbers], and [Machu Picchu was built for an Inca emperor around 1450].",
+      "cap": 2,
+      "real": "Robbers did break in twice long ago, but the tomb was found mostly intact in 1922, with more than 5,000 objects inside.",
+      "src": [
+        "https://www.toureiffel.paris/en/news/130-years/how-did-radio-save-tower",
+        "https://www.ebsco.com/research-starters/history/leaning-tower-pisa",
+        "https://en.wikipedia.org/wiki/Tomb_of_Tutankhamun",
+        "https://worldhistory.org/timeline/Machu_Picchu"
+      ]
+    },
+    {
+      "id": "hp10",
+      "say": "[winners at the first modern Olympics in 1896 got gold medals], [tug-of-war was an Olympic sport until 1920], [painters and sculptors won Olympic medals until 1948], and [the first basketball game, in 1891, used peach baskets and a soccer ball].",
+      "cap": 0,
+      "real": "In 1896, winners got a silver medal and an olive branch. Gold medals for first place started in 1904.",
+      "src": [
+        "https://en.wikipedia.org/wiki/Olympic_medal",
+        "https://en.wikipedia.org/wiki/Tug_of_war_at_the_Summer_Olympics",
+        "https://en.wikipedia.org/wiki/Art_competitions_at_the_Summer_Olympics",
+        "https://www.worldbook.com/then-and-now/Two-Peach-Baskets-and-a-Soccer-Ball"
+      ]
+    },
+    {
+      "id": "hp11",
+      "say": "[Lewis and Clark brought a Newfoundland dog named Seaman on their trip], [Columbus sailed west to prove that the Earth was round], [America was named after explorer Amerigo Vespucci on a 1507 map], and [Magellan's crew left Spain with five ships and came back with one].",
+      "cap": 1,
+      "real": "Educated Europeans already knew the Earth was round. Columbus's argument was about its size, which he guessed far too small.",
+      "src": [
+        "https://www.nps.gov/lecl/learn/historyculture/little-known-facts.htm",
+        "https://www.ripleys.com/stories/columbus-earth",
+        "https://www.loc.gov/item/prn-01-093/",
+        "https://www.history.com/this-day-in-history/September-6/magellans-expedition-circumnavigates-globe"
+      ]
+    },
+    {
+      "id": "hp12",
+      "say": "[the first known photo of a person shows a man getting his boots shined], [the first traffic light, put up in London in 1868, ran on gas], [Alexander Graham Bell's first phone call was to his mother], and [the first person charged with speeding was going 8 miles per hour].",
+      "cap": 2,
+      "real": "Bell's first call, in 1876, was to his assistant Thomas Watson in the next room, asking him to come over.",
+      "src": [
+        "https://www.guinnessworldrecords.com/world-records/107088-first-photograph-of-a-human",
+        "https://moneyweek.com/418437/10-december-1868-worlds-first-traffic-lights-erected-in-britain",
+        "https://webarchive.library.unt.edu/eot2008/20090812232405/http://memory.loc.gov/ammem/bellhtml/bell1.html",
+        "https://www.historic-uk.com/HistoryUK/HistoryofBritain/Walter-Arnold-Worlds-First-Speeding-Ticket/"
+      ]
+    }
+  ]
+}

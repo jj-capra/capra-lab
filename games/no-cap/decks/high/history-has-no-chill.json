@@ -1,0 +1,152 @@
+{
+  "id": "history-has-no-chill",
+  "title": "History Has No Chill",
+  "shelf": "high",
+  "blurb": "Revolutions, empires, inventors and true stories too weird to make up. Except one.",
+  "cards": [
+    {
+      "id": "hn01",
+      "say": "[Revolutionary France briefly used clocks with 10 hours in a day], [the Bastille held more than 100 prisoners on the day it was stormed], [the metric system was born during the French Revolution], and [Haiti became the first country born from a successful slave revolt].",
+      "cap": 1,
+      "real": "When crowds stormed the Bastille on July 14, 1789, it held just seven prisoners.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Decimal_time",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Storming_of_the_Bastille",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/History_of_the_metric_system",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Haitian_Revolution"
+      ]
+    },
+    {
+      "id": "hn02",
+      "say": "[Louis Braille invented his reading system for the blind as a teenager], [earmuffs were invented by a 15-year-old in Maine], [a dentist helped invent the machine that makes cotton candy], and [the Slinky was invented by a 12-year-old playing with springs].",
+      "cap": 3,
+      "real": "The Slinky was invented by Richard James, a naval engineer, after he watched a spring tumble off a shelf in 1943.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Louis_Braille",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Chester_Greenwood",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Cotton_candy",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Slinky"
+      ]
+    },
+    {
+      "id": "hn03",
+      "say": "[Marie Curie won Nobel Prizes in both physics and medicine], [Isaac Newton worked at England's Royal Mint hunting down counterfeiters], [Albert Einstein was once offered the job of president of Israel], and [Ada Lovelace, often called the first programmer, was Lord Byron's daughter].",
+      "cap": 0,
+      "real": "Marie Curie won the 1903 Nobel Prize in Physics and the 1911 Nobel Prize in Chemistry. She never won one for medicine.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Marie_Curie",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Isaac_Newton",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Albert_Einstein",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Ada_Lovelace"
+      ]
+    },
+    {
+      "id": "hn04",
+      "say": "[Sweden once had a February 30, in the year 1712], [Russia's October Revolution happened in November on our calendar], [Britain skipped an entire month in 1752 to fix its calendar], and [the Hundred Years' War actually lasted 116 years].",
+      "cap": 2,
+      "real": "Britain skipped 11 days, not a month: in 1752, September 2 was followed straight by September 14.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/February_30",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/October_Revolution",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Calendar_(New_Style)_Act_1750",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Hundred_Years%27_War"
+      ]
+    },
+    {
+      "id": "hn05",
+      "say": "[Mansa Musa spent so much gold in Cairo that its value dropped for years], [Alexander the Great named a city after his horse], [Julius Caesar was the first emperor of ancient Rome], and [the Inca kept their empire's records on knotted strings].",
+      "cap": 2,
+      "real": "Julius Caesar ruled as dictator, never emperor. His adopted heir Augustus became Rome's first emperor in 27 BC.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Mansa_Musa",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Bucephalus",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Augustus",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Quipu"
+      ]
+    },
+    {
+      "id": "hn06",
+      "say": "[Paul Revere made his famous midnight ride all by himself], [most signers of the Declaration of Independence signed it in August], [the Battle of New Orleans was fought after the peace treaty was signed], and [Mozart wrote music for an instrument invented by Benjamin Franklin].",
+      "cap": 0,
+      "real": "Revere didn't ride alone: William Dawes took another route, and Samuel Prescott joined them. Only Prescott made it all the way to Concord.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Paul_Revere",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Signing_of_the_United_States_Declaration_of_Independence",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Battle_of_New_Orleans",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Glass_harmonica"
+      ]
+    },
+    {
+      "id": "hn07",
+      "say": "[the first person to go over Niagara Falls in a barrel was a 63-year-old teacher], [a dancing plague in 1518 left people in Strasbourg dancing for days], [Bertha Benz took the first long car trip without telling her husband], and [the world's first speeding ticket went to Henry Ford in Detroit].",
+      "cap": 3,
+      "real": "The first speeding conviction went to Walter Arnold of Kent, England, in 1896, for going 8 mph in a 2 mph zone.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Annie_Edson_Taylor",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Dancing_plague_of_1518",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Bertha_Benz",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Speed_limits_in_the_United_Kingdom"
+      ]
+    },
+    {
+      "id": "hn08",
+      "say": "[Peter the Great put a tax on beards in Russia], [Catherine the Great was born and raised in Russia], [Lady Jane Grey ruled England for just nine days], and [Louis XIV became king of France at age four].",
+      "cap": 1,
+      "real": "Catherine the Great was a German princess, born in Stettin in Prussia. She moved to Russia at 14 to marry the future tsar.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Beard_tax",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Catherine_the_Great",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Lady_Jane_Grey",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Louis_XIV"
+      ]
+    },
+    {
+      "id": "hn09",
+      "say": "[Super Glue was discovered by people trying to make clear gun sights], [bubble wrap was originally invented to be wallpaper], [Alexander Graham Bell wanted phone calls to start with the word ahoy], and [Velcro was invented after an engineer studied gecko feet].",
+      "cap": 3,
+      "real": "Velcro came from burrs. George de Mestral got the idea in 1941 after picking prickly burrs off his dog after a walk.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Cyanoacrylate",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Bubble_wrap",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Hello",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Hook-and-loop_fastener"
+      ]
+    },
+    {
+      "id": "hn10",
+      "say": "[Pablo Picasso was questioned by police after the Mona Lisa was stolen in 1911], [Michelangelo painted the Sistine Chapel ceiling in 10 months], [Leonardo da Vinci designed a robot knight around 1495], and [Shakespeare's Globe Theatre burned down after a stage cannon set its roof on fire in 1613].",
+      "cap": 1,
+      "real": "Michelangelo spent about four years on the Sistine Chapel ceiling, from 1508 to 1512.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Mona_Lisa",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Sistine_Chapel_ceiling",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Leonardo%27s_robot",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Globe_Theatre"
+      ]
+    },
+    {
+      "id": "hn11",
+      "say": "[Margaret Thatcher was the first woman ever elected prime minister], [New Zealand let women vote in national elections in 1893], [Monopoly is based on a game a woman made to show how landlords get rich], and [windshield wipers were patented by a woman, Mary Anderson, in 1903].",
+      "cap": 0,
+      "real": "Sri Lanka's Sirimavo Bandaranaike became the world's first female prime minister in 1960, almost 20 years before Thatcher.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Sirimavo_Bandaranaike",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Women%27s_suffrage_in_New_Zealand",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/The_Landlord%27s_Game",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Mary_Anderson_(inventor)"
+      ]
+    },
+    {
+      "id": "hn12",
+      "say": "[the first recorded labor strike was by tomb builders in ancient Egypt], [an ancient Greek gadget found in a shipwreck could predict eclipses], [the Great Pyramid of Giza was built as a tomb for King Tut], and [Great Zimbabwe's huge stone walls were built without any mortar].",
+      "cap": 2,
+      "real": "The Great Pyramid was built for the pharaoh Khufu around 2560 BC, more than 1,200 years before Tutankhamun was born.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Deir_el-Medina",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Antikythera_mechanism",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Great_Zimbabwe"
+      ]
+    }
+  ]
+}

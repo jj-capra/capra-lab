@@ -1,0 +1,152 @@
+{
+  "id": "ctrl-alt-timeline",
+  "title": "Ctrl+Alt+Timeline",
+  "shelf": "adult",
+  "blurb": "Your feed, your playlist, your paycheck, and the decades they secretly overlap.",
+  "cards": [
+    {
+      "id": "cat01",
+      "say": "[Netflix mailed out its very last rental DVD in 2023], [Netflix's first original series was House of Cards, in 2013], [Blockbuster passed on buying Netflix for 50 million dollars in 2000], and [Netflix started streaming a full ten years after it was founded].",
+      "cap": 1,
+      "real": "Netflix's first original series was Lilyhammer, about a New York mobster hiding out in Norway, which premiered in February 2012.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Netflix",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Lilyhammer",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Blockbuster_LLC",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Netflix"
+      ]
+    },
+    {
+      "id": "cat02",
+      "say": "[Nokia started out in 1865 as a paper mill in Finland], [Slack began as a side tool at a company making an online game], [Twitch grew out of a site where one man livestreamed his whole life], and [Toyota started out as a company that built bicycles].",
+      "cap": 3,
+      "real": "Toyota grew out of Toyoda Automatic Loom Works, which made weaving looms. Its car business was spun off in 1937.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Nokia",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Slack_(software)",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Justin.tv",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Toyota_Industries"
+      ]
+    },
+    {
+      "id": "cat03",
+      "say": "[Kendrick Lamar won his Pulitzer Prize for an album he put out in 2015], [All I Want for Christmas Is You first hit number one 25 years after release], [Kate Bush topped the UK chart in 2022 with a song from 1985], and [Never Gonna Give You Up passed one billion YouTube views in 2021].",
+      "cap": 0,
+      "real": "Kendrick Lamar won the 2018 Pulitzer Prize for Music for DAMN., released in 2017. He was the first winner outside classical and jazz.",
+      "src": [
+        "NOT WEB-CHECKED https://www.pulitzer.org/winners/kendrick-lamar",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/All_I_Want_for_Christmas_Is_You",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Running_Up_That_Hill",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Never_Gonna_Give_You_Up"
+      ]
+    },
+    {
+      "id": "cat04",
+      "say": "[Tom Brady was the 199th pick in the 2000 NFL draft], [Leicester City won the Premier League in 2016 at 5,000 to 1 odds], [Lionel Messi's first Barcelona deal was written on a pizza box in 2000], and [the 2016 Warriors won 73 games and still lost the NBA Finals].",
+      "cap": 2,
+      "real": "Messi's first agreement with Barcelona, in December 2000, was famously scribbled on a paper napkin.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Tom_Brady",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/2015%E2%80%9316_Leicester_City_F.C._season",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Lionel_Messi",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/2015%E2%80%9316_Golden_State_Warriors_season"
+      ]
+    },
+    {
+      "id": "cat05",
+      "say": "[The Keyboard Cat video was actually filmed back in 1984], [the This Is Fine dog first appeared in a webcomic in 2013], [the Charlie Bit My Finger video sold as an NFT for over 750,000 dollars], and [Gangnam Style became the first YouTube video to hit a billion views in 2010].",
+      "cap": 3,
+      "real": "Gangnam Style came out in July 2012 and became the first YouTube video to reach a billion views that December.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Keyboard_Cat",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/This_is_fine",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Charlie_Bit_My_Finger",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Gangnam_Style"
+      ]
+    },
+    {
+      "id": "cat06",
+      "say": "[Microsoft bought Minecraft for 250 million dollars in 2014], [Apple's third co-founder sold his 10 percent share for 800 dollars], [Nike paid a college student 35 dollars to design its swoosh], and [Instagram had 13 employees when Facebook bought it for a billion dollars].",
+      "cap": 0,
+      "real": "Microsoft paid 2.5 billion dollars for Mojang, the studio behind Minecraft, in 2014.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Mojang_Studios",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Ronald_Wayne",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Swoosh",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Instagram"
+      ]
+    },
+    {
+      "id": "cat07",
+      "say": "[Gmail launched on April Fools' Day in 2004], [Roblox came out before the first iPhone], [the first iPhone had a front camera for selfies], and [Minecraft's first test build was called Cave Game].",
+      "cap": 2,
+      "real": "The original 2007 iPhone had only a rear camera. Front cameras arrived with the iPhone 4 in 2010.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Gmail",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Roblox",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/IPhone_(1st_generation)",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Minecraft"
+      ]
+    },
+    {
+      "id": "cat08",
+      "say": "[New VCRs were still being manufactured in 2016], [the world's last Blockbuster store closed its doors in 2019], [Japan's last pager service didn't shut down until 2019], and [AOL still offered dial-up internet in 2025].",
+      "cap": 1,
+      "real": "The Blockbuster in Bend, Oregon, became the last one on Earth in 2019, and it was still renting movies in 2025.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Videocassette_recorder",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Blockbuster_LLC",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Pager",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/AOL"
+      ]
+    },
+    {
+      "id": "cat09",
+      "say": "[Toy Story won the first-ever Oscar for Best Animated Feature], [Parasite was the first Best Picture winner not in English], [in 2025 a Chinese film became the highest-grossing animated movie ever], and [Mickey Mouse's first version entered the public domain in 2024].",
+      "cap": 0,
+      "real": "The Best Animated Feature Oscar wasn't handed out until 2002, for the films of 2001. Its first winner was Shrek.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Academy_Award_for_Best_Animated_Feature",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Parasite_(2019_film)",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Ne_Zha_2",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Steamboat_Willie"
+      ]
+    },
+    {
+      "id": "cat10",
+      "say": "[Bluetooth is named after a Viking king from the 900s], [the Museum of Modern Art added 176 emoji to its collection in 2016], [selfie was named Oxford's Word of the Year in 2013], and [the word emoji comes from the English words emotion and icon].",
+      "cap": 3,
+      "real": "Emoji is Japanese: e means picture and moji means character. Its likeness to the word emotion is a coincidence.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Bluetooth",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Emoji",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Selfie",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Emoji"
+      ]
+    },
+    {
+      "id": "cat11",
+      "say": "[In 2010 someone paid 10,000 bitcoin for two pizzas], [Jack Dorsey's first tweet sold as an NFT for 29 million dollars], [Nvidia became the first company worth 4 trillion dollars in 2025], and [Dogecoin was created in 2013 as a joke about a meme dog].",
+      "cap": 1,
+      "real": "Jack Dorsey's first tweet sold as an NFT in March 2021 for about 2.9 million dollars, a tenth of that.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Bitcoin",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Non-fungible_token",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Nvidia",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Dogecoin"
+      ]
+    },
+    {
+      "id": "cat12",
+      "say": "[Pizza Hut delivered a pizza to the International Space Station in 2001], [McDonald's was once the biggest investor in Chipotle], [Starbucks is named after the ship's captain in Moby-Dick], and [Airbnb began with three air mattresses on an apartment floor].",
+      "cap": 2,
+      "real": "Starbuck is the first mate of the whaling ship in Moby-Dick. The captain is Ahab.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Pizza_Hut",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Chipotle_Mexican_Grill",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Starbucks",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Airbnb"
+      ]
+    }
+  ]
+}

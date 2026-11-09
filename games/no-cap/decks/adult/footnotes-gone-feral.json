@@ -1,0 +1,152 @@
+{
+  "id": "footnotes-gone-feral",
+  "title": "Footnotes Gone Feral",
+  "shelf": "adult",
+  "blurb": "The parts of history your textbook skipped because nobody would believe them.",
+  "cards": [
+    {
+      "id": "fgf01",
+      "say": "[Olympic medals were once handed out for painting and poetry], [tug of war was an official Olympic sport for 20 years], [a runner in the 1904 Olympic marathon rode part of the way in a car], and [Olympic gold medals were made of solid gold until 1948].",
+      "cap": 3,
+      "real": "The last solid gold Olympic medals were awarded in 1912. Gold medals since then are mostly silver with a gold coating.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Art_competitions_at_the_Summer_Olympics",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Tug_of_war_at_the_Summer_Olympics",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Athletics_at_the_1904_Summer_Olympics_%E2%80%93_Men%27s_marathon",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Olympic_medal"
+      ]
+    },
+    {
+      "id": "fgf02",
+      "say": "[Abraham Lincoln is in the National Wrestling Hall of Fame], [Thomas Jefferson was the first president to live in the White House], [Martin Van Buren grew up speaking Dutch, not English], and [President Taft kept a cow named Pauline on the White House lawn].",
+      "cap": 1,
+      "real": "John Adams moved into the unfinished White House in November 1800, a few months before Jefferson took office.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/National_Wrestling_Hall_of_Fame_and_Museum",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/White_House",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Martin_Van_Buren",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Pauline_Wayne"
+      ]
+    },
+    {
+      "id": "fgf03",
+      "say": "[The Pony Express carried mail across the West for twelve years], [in 1914 a little girl in Idaho was mailed to her grandparents], [the US Navy and Post Office once delivered mail by cruise missile], and [the Hope Diamond was sent to the Smithsonian by ordinary mail].",
+      "cap": 0,
+      "real": "The Pony Express ran for only about 18 months, from April 1860 to October 1861, before the telegraph put it out of business.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Pony_Express",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Charlotte_May_Pierstorff",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Missile_mail",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Hope_Diamond"
+      ]
+    },
+    {
+      "id": "fgf04",
+      "say": "[Julius Caesar was kidnapped by pirates and demanded a bigger ransom], [Peter the Great made Russian men pay a tax to keep their beards], [Alexander the Great was personally tutored as a teenager by Plato], and [Mansa Musa spent so much gold in Cairo that its value crashed].",
+      "cap": 2,
+      "real": "Alexander's teenage tutor was Aristotle, a former student of Plato. Plato had died years earlier, when Alexander was a young boy.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Julius_Caesar",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Beard_tax",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Alexander_the_Great",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Mansa_Musa"
+      ]
+    },
+    {
+      "id": "fgf05",
+      "say": "[The first chocolate bar was made in Switzerland], [Caesar salad was invented in Tijuana, Mexico], [cotton candy was co-invented by a dentist], and [ketchup was once sold as medicine in pill form].",
+      "cap": 0,
+      "real": "The first solid chocolate bar was made by J.S. Fry and Sons in Bristol, England, in 1847. The Swiss came later, with milk chocolate.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/J._S._Fry_%26_Sons",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Caesar_salad",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Cotton_candy",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Ketchup"
+      ]
+    },
+    {
+      "id": "fgf06",
+      "say": "[Julia Child worked for a US spy agency before she became a chef], [J.R.R. Tolkien once worked on the Oxford English Dictionary], [Florence Nightingale was the first person ever to draw a pie chart], and [Marie Curie's notebooks are still too radioactive to handle without gear].",
+      "cap": 2,
+      "real": "William Playfair drew the first known pie chart in 1801. Nightingale did make a famous chart of her own, the rose diagram.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Julia_Child",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/J._R._R._Tolkien",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Pie_chart",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Marie_Curie"
+      ]
+    },
+    {
+      "id": "fgf07",
+      "say": "[The Statue of Liberty worked as an official lighthouse until 1902], [P.T. Barnum marched 21 elephants across the Brooklyn Bridge], [the Empire State Building's spire was built as a dock for airships], and [the Leaning Tower of Pisa began to tilt 200 years after it was finished].",
+      "cap": 3,
+      "real": "The tower started leaning in 1178, during construction, when builders reached the second floor. That's partly why it took almost 200 years to finish.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Statue_of_Liberty",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Brooklyn_Bridge",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Empire_State_Building",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
+      ]
+    },
+    {
+      "id": "fgf08",
+      "say": "[When the Mona Lisa was stolen in 1911, police questioned Pablo Picasso], [Mozart wrote the tune of Twinkle Twinkle Little Star at age five], [Napoleon wrote a short romance novel years before he became emperor], and [the first Academy Awards ceremony lasted just 15 minutes].",
+      "cap": 1,
+      "real": "The melody is an old French folk song. Mozart wrote a set of variations on it in his twenties, which is why it gets credited to him.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Mona_Lisa",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Twinkle,_Twinkle,_Little_Star",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Clisson_et_Eug%C3%A9nie",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/1st_Academy_Awards"
+      ]
+    },
+    {
+      "id": "fgf09",
+      "say": "[The first speeding ticket was for going 8 miles an hour], [the world's first traffic light exploded less than a month after it went up], [the world's first underground railway opened in New York City], and [the first animals ever sent into space were a batch of fruit flies].",
+      "cap": 2,
+      "real": "The first underground railway was London's Metropolitan Railway, opened in 1863. New York's subway didn't open until 1904.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Walter_Arnold",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Traffic_light",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Metropolitan_Railway",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Animals_in_space"
+      ]
+    },
+    {
+      "id": "fgf10",
+      "say": "[Three of the first five US presidents died on the Fourth of July], [most signers of the Declaration of Independence signed it in August], [the White House didn't get its official name until 1901], and [Paul Revere made it all the way to Concord on his famous midnight ride].",
+      "cap": 3,
+      "real": "Revere was stopped by a British patrol before he reached Concord. Samuel Prescott, who escaped the same patrol, carried the warning there.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/James_Monroe",
+        "NOT WEB-CHECKED https://www.archives.gov/founding-docs/declaration-history",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/White_House",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Midnight_ride_of_Paul_Revere"
+      ]
+    },
+    {
+      "id": "fgf11",
+      "say": "[Albert Einstein won his Nobel Prize for the theory of relativity], [the first computer mouse had a body carved out of wood], [Ben Franklin invented swim fins for his hands as a kid], and [a British man who never visited the US paid to found the Smithsonian].",
+      "cap": 0,
+      "real": "Einstein's 1921 Nobel Prize in Physics was awarded for his explanation of the photoelectric effect, not for relativity.",
+      "src": [
+        "NOT WEB-CHECKED https://www.nobelprize.org/prizes/physics/1921/einstein/facts/",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Computer_mouse",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Swimfin",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/James_Smithson"
+      ]
+    },
+    {
+      "id": "fgf12",
+      "say": "[The only casualty of the 1859 Pig War between the US and Britain was a pig], [the Pilgrims wore tall black hats with shiny buckles on the front], [Monopoly sets smuggled escape maps to prisoners of war in World War II], and [the US bought Alaska from Russia for about two cents an acre].",
+      "cap": 1,
+      "real": "Buckles weren't in fashion until later in the 1600s. The buckled Pilgrim hat comes from artwork made in the 1800s.",
+      "src": [
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Pig_War",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Pilgrims_(Plymouth_Colony)",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Monopoly_(game)",
+        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Alaska_Purchase"
+      ]
+    }
+  ]
+}
