@@ -32,13 +32,21 @@ on purpose; do not bring any of them back unless JC asks.
 5. **Double** (hidden): answer right and your crew picks again.
 6. **Hacker mode is on**: **one** hidden Hacker tile scrambles the question as the clock runs.
    Right pays ×2 and, in a crew game, that crew picks the **next three tiles in a row**
-   (cut short by rule 6a). Wrong or no answer costs the tile's value.
+   (cut short by rules 6a and 6b). Wrong or no answer costs the tile's value.
    6a. **Four in a row at most** (JC, Nov 5 2026: with every option on he "got too many picks in
    a row"; with two players one crew could pick six). `MAX_STREAK` = 4 tiles picked in a row by
    one crew (`room.streak`), then the turn passes. A Hacker run is cut to fit (beat it on your
    second straight pick and two follow; the takeover says how many, `cur.runIf`), and a Double
    that can't add a pick (inside a Hacker run, or on a fourth straight pick) plays as a plain
    tile, the same as a late special. Solo runs and face-offs don't count streaks.
+   6b. **Two in a row at most for one player** (JC, Nov 8 2026, a two-player game: "The host is
+   picking too many tiles in a row"; beating the Hacker had given him four straight picks). A
+   crew's cap is two picks per player on it, never more than four (`PLAYER_STREAK`, `streakCap()`
+   in `engine.mjs`). So a crew of one (every two-player game) stops at two: beat the Hacker on a
+   first pick and you get one more, a Double on a second straight pick plays plain. Crews of two
+   or more keep four in a row.
+   - Two players are a crew of one each, so their names are the crews everywhere ("JJ-Capra", not
+     "JJ-Capra's crew": `crewName` on the server, `crewLabel` in `room.js`).
    - Specials only show up while they can be used: the Double needs at least 3 tiles left
      (itself included), the Hacker at least 4. Picked later, they play as plain tiles and never
      show as specials (`tile.off`, read through `spOf()`).
@@ -350,6 +358,18 @@ once; each room is its own blob.
   `python3 tests/iphone_fit.py BASE OUT` after any layout or look change, and with `--home`
   (the Home Screen app: full 393 x 852 screen, real 59 px / 34 px safe areas, fails any button
   under the clock).
+- **Every name shows all 17 characters** (JC, Nov 8 2026: on the coin flip "DA_ROMAN_EMPIRE is
+  aqua." ran off the screen and pushed the coin and button right). A name never breaks mid-word
+  and never ends in "…": it sits in a `.pname` span or a `Fit`/`FitName` element and the type
+  shrinks until it fits (`useFit` in `room.js`). Grids that hold names use `minmax(0, 1fr)` so a
+  long name can't widen the screen. Phone score strips drop "'s crew" and put a long name over its
+  money; lobby chips size to their names.
+- **The host's lobby** (JC, Nov 8 2026: "the take and double options aren't there"; the start
+  button sat above every setting, so he never scrolled to them): the game's options come first,
+  right under the crew (Hacker, Hidden Doubles, Take mode, Lifelines, Power cards, then the clock,
+  the look, Open mic), and on phones the start button rides just above the dock (sticky) while
+  they scroll by. Once two players are in, the phone's invite card folds to the code and Send
+  invite (which opens the full sheet with the QR).
 - **Invite pop-up** (JC): tap the room code at the top any time (or Send invite / Invite more)
   for a sheet with the big code, QR, "Text the invite" (an `sms:` link on phones), Share and
   Copy link. It pops up on its own once for a host waiting alone in a new lobby, and closes

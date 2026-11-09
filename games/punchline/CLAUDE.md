@@ -25,7 +25,11 @@ the server's clock (`shared/rules.mjs`):
    lines) and its odd one is the typo; a design card or a shirt with a back gets a flaw made for it
    (a dead bulb on neon and marquee signs, otherwise a swapped, doubled, dropped or look-alike
    letter), the same on every phone, never one that adds a rude word. All four tiles wear the same
-   shirt color. A **joke** puts its setup on top and four punchlines in the square (9 to 16 seconds
+   shirt color. **No tells** (JC, Nov 8 2026: "Sometimes the ugly t is noticeable because there is
+   a missing or slight outline of the missing letter. It should never be this easy"): on a shirt or
+   a peeled sign the missing letter is simply gone while players look (no ghost, no outline, no
+   gap; the word closes up, `GONE` in `art.js`). The faint ghost and the red ring show only on the
+   reveal. A burnt-out bulb on neon or a marquee still shows dark: that is the sign. A **joke** puts its setup on top and four punchlines in the square (9 to 16 seconds
    to read them); tap the one that lands.
 2. **Reveal** (5.5 seconds): the odd tile zooms up with the **difference circled in red** like a
    spot-the-difference answer key, a stamp lands (BULB OUT!, TYPO!, FADED!, or BA-DUM-TSS! with a

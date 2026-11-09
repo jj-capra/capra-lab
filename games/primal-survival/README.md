@@ -2,6 +2,26 @@
 
 # Primal Survival
 
+## Head to head (JC, Nov 8 2026)
+
+"Best of five or best of three in head to head deck building and then run." From the home menu,
+**Head to head**: one player starts a match (best of 3 or 5) and sends the link
+(`/primal-survival/#vs=CODE`) or the four-letter code; the rival joins on their own phone. Every
+round both draft five **from the same spins** (`shared/versus.js`: `spinOrder`, `respinRoll`),
+picks hidden, then lock in. Once both are locked the server plays both squads through **the same
+year** (`runSeason(..., { fair: true })`: the day's ground, matchups and rolls come from the round
+seed and the day alone) and the **longer run takes the round**; equal days go to more duels won,
+then to whoever locked in first (the same spins often give two players the same five, and the same
+five live the same year). First to 2 (or 3) wins; Rematch keeps both seats. Both phones replay the
+two runs side by side, day by day, from the same engine.
+
+The match lives in this game's store as small blobs so the two players never write the same one:
+`vs/<CODE>` (best of, the host's seat), `vs/<CODE>/p1` (the rival), `vs/<CODE>/r<N>/<slot>` (a locked
+five), `vs/<CODE>/r<N>/res` (both runs, written once), `vs/<CODE>/next` (the rematch). A seat is a
+name and a random token kept on the phone (`capra-lab.primal.vs`); signed-in players sit under
+their Capra Lab name. Routes: `GET /api/vs?m=`, `POST /api/vs-new`, `vs-join`, `vs-lock`,
+`vs-again`. Head-to-head runs don't touch the daily board or careers.
+
 Draft five animals into five roles. They face another five every day for a
 year. Lose one day and the run is over. Nobody has reached 365.
 

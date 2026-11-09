@@ -190,6 +190,9 @@
   .menu button:nth-child(1){transform:rotate(-.5deg)}
   .menu button:nth-child(2){transform:rotate(.4deg)}
   .menu button:nth-child(3){transform:rotate(-.3deg)}
+  .menu button:nth-child(4){transform:rotate(.35deg)}
+  .menu button.vsgo{background:var(--sky);color:var(--ink)}
+  .menu button.vsgo .md{color:rgba(17,6,11,.78)}
   .menu button:active{transform:translate(var(--drop),var(--drop)) rotate(0deg);box-shadow:none}
   .menu .mt{
     display:block;font-family:var(--display);font-weight:400;
@@ -571,6 +574,82 @@
   }
   .spin-note{color:var(--ash);font-size:12.5px;margin-top:9px;font-weight:600}
 
+  /* ---- head to head (JC, Nov 8 2026) ----------------------------- */
+  .h2h-title{
+    font-family:var(--display);font-weight:400;text-transform:uppercase;
+    font-size:clamp(30px,9vw,46px);line-height:.95;margin:14px 0 0;letter-spacing:.01em;
+    text-shadow:3px 0 var(--sky),-3px 0 var(--blood),0 4px 0 var(--ink);
+  }
+  .h2h-lede{color:var(--ash);font-size:13.5px;margin:8px 0 0;max-width:52ch}
+  .h2h-pick{display:flex;gap:10px;margin:2px 0 12px}
+  .h2h-pick button{
+    flex:1;padding:10px;background:var(--bone);color:var(--ink);
+    border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);
+    font-family:var(--display);font-size:18px;text-transform:uppercase;letter-spacing:.02em;
+  }
+  .h2h-pick button.on{background:var(--flare)}
+  .h2h-pick button:active{transform:translate(3px,3px);box-shadow:none}
+  .h2h-code{
+    display:block;margin:6px 0 2px;font-family:var(--display);font-weight:400;
+    font-size:clamp(64px,22vw,96px);line-height:1;letter-spacing:.12em;color:var(--ink);
+  }
+  /* the scoreboard: one row a player, so two 17-character names never share a line */
+  .h2h-board{margin-top:16px;display:grid;gap:8px}
+  .h2h-row{
+    display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;
+    padding:10px 14px;background:var(--ink2);border:3px solid var(--ink);
+    box-shadow:4px 4px 0 var(--ink);border-left:10px solid var(--sky);
+  }
+  .h2h-row.p0{border-left-color:var(--flare)}
+  .h2h-row .nm{
+    font-family:var(--display);font-weight:400;font-size:clamp(20px,6vw,28px);line-height:1.05;
+    overflow-wrap:anywhere;min-width:0;
+  }
+  .h2h-row .nm small{display:block;font-family:var(--sans);font-size:10px;font-weight:800;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--ash);margin-bottom:2px}
+  .h2h-row .pts{font-family:var(--display);font-size:clamp(40px,12vw,58px);line-height:.9;color:var(--flare);
+    font-variant-numeric:tabular-nums}
+  .h2h-row.lead .pts{text-shadow:3px 3px 0 var(--blood)}
+  .h2h-row.waiting .nm{color:var(--ash)}
+  .h2h-meta{margin-top:10px;color:var(--ash);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;text-align:center}
+  .h2h-status{
+    margin-top:16px;padding:13px 14px;background:var(--paper);color:var(--ink);
+    border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);transform:rotate(-.4deg);
+    font-weight:700;font-size:15px;line-height:1.35;
+  }
+  .h2h-status b{font-family:var(--display);font-weight:400;font-size:22px;display:block;text-transform:uppercase;line-height:1.05;margin-bottom:3px}
+  .h2h-rounds{margin-top:14px}
+  .h2h-rounds .lrow{grid-template-columns:34px minmax(0,1fr) auto}
+  .h2h-rounds .lrow b{font-size:18px}
+  .h2h-rounds .lrow .sub{font-family:var(--sans);font-size:10.5px;color:var(--ash);text-align:left}
+  /* the run: both squads count up through the same year, side by side */
+  .h2h-sides{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-top:14px}
+  .h2h-side{
+    padding:12px 10px;background:var(--ink2);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);
+    text-align:center;border-top:8px solid var(--sky);min-width:0;transition:opacity .3s ease;
+  }
+  .h2h-side.p0{border-top-color:var(--flare)}
+  .h2h-side .nm{font-family:var(--display);font-size:clamp(15px,4.4vw,20px);line-height:1.05;overflow-wrap:anywhere}
+  .h2h-side .dn{font-family:var(--display);font-size:clamp(54px,17vw,84px);line-height:.9;margin-top:8px;
+    font-variant-numeric:tabular-nums;text-shadow:3px 0 var(--sky),-3px 0 var(--blood),0 4px 0 var(--ink)}
+  .h2h-side .ds{color:var(--ash);font-size:9.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-top:6px}
+  .h2h-side .mk{display:flex;justify-content:center;gap:3px;margin-top:10px}
+  .h2h-side .mk span{width:20%;max-width:34px;transition:opacity .15s ease}
+  .h2h-side .mk span.lost{opacity:.3}
+  .h2h-side .mk svg{width:100%;height:auto;display:block}
+  .h2h-side .ln{margin-top:9px;font-size:11.5px;font-weight:600;color:var(--bone);line-height:1.3;min-height:4em;text-align:left}
+  .h2h-side.out{opacity:.62}
+  .h2h-side.out .ln{color:var(--blood);font-weight:800}
+  .h2h-side.won{opacity:1;box-shadow:4px 4px 0 var(--ink),0 0 0 3px var(--flare)}
+  .h2h-verdict{
+    margin-top:16px;padding:14px;text-align:center;background:var(--flare);color:var(--ink);
+    border:4px solid var(--ink);box-shadow:6px 6px 0 var(--ink);transform:rotate(-1deg);
+  }
+  .h2h-verdict b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(26px,8vw,40px);line-height:1;text-transform:uppercase;overflow-wrap:anywhere}
+  .h2h-verdict span{display:block;margin-top:6px;font-weight:700;font-size:14px}
+  .h2h-verdict.lost{background:var(--blood);color:var(--bone)}
+  .h2h-verdict.even{background:var(--paper)}
+
   @media (prefers-reduced-motion:reduce){
     *{transition:none !important;animation:none !important}
   }
@@ -593,12 +672,23 @@
   <div class="menu">
     <button class="primary" id="goPlay"><span class="mt">Play today's season</span>
       <span class="md">Draft five. Survive as long as you can.</span></button>
+    <button class="vsgo" id="goVs"><span class="mt">Head to head</span>
+      <span class="md">Best of three or five against a friend. Same spins, then both run the year. The longer run takes the round.</span></button>
     <button id="goBoard"><span class="mt">Leaderboard</span>
       <span class="md">Today's best runs, and every name that ever lasted.</span></button>
     <button id="goProfile"><span class="mt">Profile</span>
       <span class="md">Your rank, your record, your key.</span></button>
   </div>
   <div class="foot"><span id="rosterNote"></span></div>
+</section>
+
+<!-- ============ HEAD TO HEAD ============ -->
+<section id="viewVs" class="hidden">
+  <div class="homebar">
+    <button id="vHome">&larr; Home</button>
+    <span class="who" id="whoVs">Playing as<b>Guest</b></span>
+  </div>
+  <div id="vsBody"></div>
 </section>
 
 <!-- ============ PROFILE ============ -->

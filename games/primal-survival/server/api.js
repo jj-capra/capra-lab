@@ -16,10 +16,11 @@
  * need a transaction the blob store does not offer.
  */
 import { ROLES } from '../shared/constants.js';
-import { resolveSquad, runSeason, squadRating, runHash } from '../shared/engine.js';
+import { resolveSquad, runSeason, squadRating, runHash, hashStr } from '../shared/engine.js';
 import { gradeFor } from '../shared/grade.js';
 import { rankFor, emptyStats, applyRun } from '../shared/ranks.js';
-import { createProfiles, handleOf } from '../../../lab/profiles.js';
+import { createProfiles, handleOf, NAME_MAX } from '../../../lab/profiles.js';
+import { BEST_OF, MAX_ROUNDS, winsNeeded, roundSeed, roundWinner } from '../shared/versus.js';
 
 export const LADDER_SIZE = 240;
 
@@ -34,6 +35,24 @@ const cleanName = s => String(s || '').replace(/[^\w \-'.]/g, '').trim().slice(0
 const seasonKey = seed => 'season/' + seed;
 const runPrefix = seed => 'run/' + seed + '/';
 const statsKey = handle => 'stats/' + handle;
+
+/* ---------------- head to head ----------------
+ * A match is a handful of small blobs, so the two players never write the same
+ * one (the store has no transactions):
+ *   vs/<CODE>                 the match: best of, the host's seat
+ *   vs/<CODE>/p1              the rival's seat, written once when they join
+ *   vs/<CODE>/r<N>/<slot>     a player's locked five for round N
+ *   vs/<CODE>/r<N>/res        both runs, written once both are locked (pure,
+ *                             so two writers write the same thing)
+ *   vs/<CODE>/next            the rematch's code
+ * A seat is a name plus a random token the phone keeps; a signed-in player's
+ * name comes from their Capra Lab profile. */
+const VS_ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+const vsCode = s => String(s || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 4);
+const vsKey = code => 'vs/' + code;
+const newToken = () => Array.from(globalThis.crypto.getRandomValues(new Uint8Array(12)),
+  b => b.toString(16).padStart(2, '0')).join('');
+const vsName = s => String(s || '').replace(/[^\w \-'.]/g, '').trim().slice(0, NAME_MAX);
 
 /* ---------------- profiles ----------------
  * Identity belongs to Capra Lab (lab/profiles.js): one name and six-digit key
@@ -84,6 +103,74 @@ export function createApi(store, profiles = createProfiles(store)) {
       feats: { kills: entry.kills, stuns: entry.stuns, routs: entry.routs, close: entry.close },
       place: runs.filter(r => r.days > entry.days).length + 1,
       of: runs.length
+    };
+  }
+
+  /* who is sitting down: a verified Capra Lab profile, or a guest's name */
+  async function vsWho(body) {
+    if (body.name && body.code) {
+      const p = await profiles.verify(body.name, body.code);
+      if (!p) return { status: 401, error: 'That key does not match that name.' };
+      return { name: p.name, handle: p.handle };
+    }
+    const name = vsName(body.name);
+    if (!name) return { status: 400, error: 'Type a name first.' };
+    return { name, handle: null };
+  }
+
+  async function vsSeat(code, tok) {
+    const meta = await store.get(vsKey(code));
+    if (!meta) return { status: 404, error: 'No match with that code.' };
+    if (tok && tok === meta.host.tok) return { slot: 0 };
+    const p1 = (await store.list(vsKey(code) + '/')).find(x => x.kind === 'p1');
+    if (tok && p1 && tok === p1.tok) return { slot: 1 };
+    return { status: 403, error: 'You are not playing in this match.' };
+  }
+
+  /* The whole match as both phones see it. A round's squads stay hidden until
+   * both are locked; then both runs are played (once) and stored. */
+  async function vsView(code) {
+    const meta = await store.get(vsKey(code));
+    if (!meta) return null;
+    const parts = await store.list(vsKey(code) + '/');
+    const p1 = parts.find(x => x.kind === 'p1');
+    const next = parts.find(x => x.kind === 'next');
+    const seat = p => (p ? { name: p.name, handle: p.handle || null } : null);
+    const need = winsNeeded(meta.bestOf);
+    const score = [0, 0], rounds = [];
+    let round = 1, winner = null;
+    for (let n = 1; n <= MAX_ROUNDS; n++) {
+      const locks = [0, 1].map(k => parts.find(x => x.kind === 'lock' && x.round === n && x.slot === k));
+      if (!locks[0] && !locks[1]) { round = n; break; }
+      const r = { n, locked: locks.map(Boolean) };
+      rounds.push(r);
+      if (!locks[0] || !locks[1]) { round = n; break; }
+      let res = parts.find(x => x.kind === 'res' && x.round === n);
+      if (!res) {
+        const seed = roundSeed(code, n);
+        const runs = locks.map(l => runSeason(resolveSquad(l.squad), seed, null, { fair: true }));
+        res = {
+          kind: 'res', round: n,
+          days: runs.map(x => x.days), kills: runs.map(x => x.feats.kills),
+          at: locks.map(l => l.at),
+          winner: roundWinner(...runs.map((x, k) => ({ days: x.days, kills: x.feats.kills, at: locks[k].at })))
+        };
+        await store.set(vsKey(code) + '/r' + n + '/res', res);
+      }
+      Object.assign(r, { squads: locks.map(l => l.squad), days: res.days, kills: res.kills, winner: res.winner,
+        first: res.at && res.at[0] !== res.at[1] ? (res.at[0] < res.at[1] ? 0 : 1) : null });
+      if (res.winner >= 0) score[res.winner] += 1;
+      if (score[0] >= need || score[1] >= need) { winner = score[0] >= need ? 0 : 1; round = n; break; }
+      round = n + 1;
+    }
+    /* fifteen rounds without a winner: whoever leads takes it, level is a draw */
+    if (winner == null && rounds.length >= MAX_ROUNDS && rounds.every(r => r.winner != null)) {
+      winner = score[0] === score[1] ? -1 : score[0] > score[1] ? 0 : 1;
+    }
+    return {
+      code, bestOf: meta.bestOf, need, created: meta.created,
+      players: [seat(meta.host), seat(p1)],
+      rounds, round, score, winner, next: next ? next.code : null
     };
   }
 
@@ -166,6 +253,92 @@ export function createApi(store, profiles = createProfiles(store)) {
       return publicProfile(r.identity, await statsFor(r.identity.handle));
     },
 
+    /* ---------------- head to head ---------------- */
+
+    async vsNew(body) {
+      const bestOf = BEST_OF.includes(Number(body.bestOf)) ? Number(body.bestOf) : 3;
+      const who = await vsWho(body);
+      if (who.status) return who;
+      let code = '';
+      for (let i = 0; i < 20 && !code; i++) {
+        const c = Array.from({ length: 4 }, () => VS_ALPHA[Math.floor(Math.random() * VS_ALPHA.length)]).join('');
+        if (!(await store.get(vsKey(c)))) code = c;
+      }
+      if (!code) return { status: 503, error: 'No free match codes. Try again.' };
+      const seat = { name: who.name, handle: who.handle, tok: newToken() };
+      await store.set(vsKey(code), { code, bestOf, created: new Date().toISOString(), host: seat });
+      return { code, slot: 0, tok: seat.tok, match: await vsView(code) };
+    },
+
+    async vsJoin(body) {
+      const code = vsCode(body.m);
+      const meta = await store.get(vsKey(code));
+      if (!meta) return { status: 404, error: 'No match with that code.' };
+      const parts = await store.list(vsKey(code) + '/');
+      const p1 = parts.find(x => x.kind === 'p1');
+      /* the same phone coming back keeps its seat */
+      if (body.tok && body.tok === meta.host.tok) return { code, slot: 0, tok: meta.host.tok, match: await vsView(code) };
+      if (body.tok && p1 && body.tok === p1.tok) return { code, slot: 1, tok: p1.tok, match: await vsView(code) };
+      if (p1) return { status: 409, error: 'That match already has two players.' };
+      const who = await vsWho(body);
+      if (who.status) return who;
+      if (who.handle && who.handle === meta.host.handle) return { status: 409, error: 'That is your own match. Send the link to your rival.' };
+      const seat = { kind: 'p1', name: who.name, handle: who.handle, tok: newToken(), at: new Date().toISOString() };
+      await store.set(vsKey(code) + '/p1', seat);
+      return { code, slot: 1, tok: seat.tok, match: await vsView(code) };
+    },
+
+    async vsGet(m) {
+      const code = vsCode(m);
+      const view = await vsView(code);
+      return view || { status: 404, error: 'No match with that code.' };
+    },
+
+    /* Lock in five for the current round. Each player writes only their own blob. */
+    async vsLock(body) {
+      const code = vsCode(body.m);
+      const seat = await vsSeat(code, body.tok);
+      if (seat.status) return seat;
+      const view = await vsView(code);
+      if (view.winner != null) return { status: 409, error: 'This match is over.' };
+      if (!view.players[1]) return { status: 409, error: 'Your rival has not joined yet.' };
+      if (Number(body.round) !== view.round) return { status: 409, error: 'That round is already over.', match: view };
+      const ids = {};
+      for (const r of ROLES) ids[r] = Number(body.squad?.[r]);
+      try { resolveSquad(ids); }
+      catch (e) { return { status: 400, error: e.message }; }
+      const cur = view.rounds[view.round - 1];
+      if (cur && cur.locked[seat.slot]) return { status: 409, error: 'Your five are already locked in.', match: view };
+      await store.set(vsKey(code) + '/r' + view.round + '/' + seat.slot,
+        { kind: 'lock', round: view.round, slot: seat.slot, squad: ids, at: new Date().toISOString() });
+      return { ok: true, match: await vsView(code) };
+    },
+
+    /* Rematch: the same two seats, a fresh match. The code comes from the old
+     * one, so both phones tapping at once land in the same match. */
+    async vsAgain(body) {
+      const code = vsCode(body.m);
+      const seat = await vsSeat(code, body.tok);
+      if (seat.status) return seat;
+      const view = await vsView(code);
+      if (view.winner == null) return { status: 409, error: 'Finish this match first.' };
+      const meta = await store.get(vsKey(code));
+      const p1 = (await store.list(vsKey(code) + '/')).find(x => x.kind === 'p1');
+      for (let salt = 0; salt < 30; salt++) {
+        const h = hashStr('again:' + code + ':' + salt);
+        const next = Array.from({ length: 4 }, (_, i) => VS_ALPHA[(h >>> (i * 5)) % VS_ALPHA.length]).join('');
+        const there = await store.get(vsKey(next));
+        if (there && there.host.tok !== meta.host.tok) continue;   /* taken by someone else */
+        if (!there) {
+          await store.set(vsKey(next), { code: next, bestOf: meta.bestOf, created: new Date().toISOString(), host: meta.host, from: code });
+          await store.set(vsKey(next) + '/p1', { ...p1, at: new Date().toISOString() });
+          await store.set(vsKey(code) + '/next', { kind: 'next', code: next });
+        }
+        return { code: next, slot: seat.slot, tok: body.tok, match: await vsView(next) };
+      }
+      return { status: 503, error: 'Could not open a rematch. Start a new match.' };
+    },
+
     /* The client sends five animal ids. The server plays the year itself. */
     async submitRun(body) {
       const seed = String(body.seed || seedForNow()).slice(0, 32);
@@ -239,5 +412,10 @@ export async function route(api, method, pathname, query, body) {
   if (method === 'POST' && op === 'create') return api.createProfile(body || {});
   if (method === 'POST' && op === 'signin') return api.signIn(body || {});
   if (method === 'POST' && op === 'key') return api.rotateKey(body || {});
+  if (method === 'GET' && op === 'vs') return api.vsGet(query.get('m'));
+  if (method === 'POST' && op === 'vs-new') return api.vsNew(body || {});
+  if (method === 'POST' && op === 'vs-join') return api.vsJoin(body || {});
+  if (method === 'POST' && op === 'vs-lock') return api.vsLock(body || {});
+  if (method === 'POST' && op === 'vs-again') return api.vsAgain(body || {});
   return { status: 404, error: 'no such route: ' + method + ' /' + op };
 }

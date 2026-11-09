@@ -22,7 +22,13 @@ const FONTS = {
 
 // The letters to circle at the reveal (set by panel() while it draws the odd tile).
 let MARKS = null;
+// While players hunt for the odd tile, a shirt's (or a peeled sign's) missing letter is simply gone:
+// no ghost, no outline, no gap, the word closes up (JC, Nov 8 2026: "Sometimes the ugly t is
+// noticeable because there is a missing or slight outline of the missing letter. It should never
+// be this easy"). The faint ghost comes back only on the reveal, where the red ring circles it.
+let GONE = false;
 const glyphs = (l, k) => letters(l).map((g, i) => {
+  if (g.off && GONE) return `<tspan class="off gone" font-size="0" letter-spacing="0">${esc(g.c)}</tspan>`;
   const cls = [g.off && 'off', MARKS && MARKS[k] && MARKS[k].includes(i) && 'diff'].filter(Boolean).join(' ');
   return cls ? `<tspan class="${cls}">${esc(g.c)}</tspan>` : esc(g.c);
 }).join('');
@@ -302,8 +308,9 @@ export function panel(card, { back = false, lines = null, marks = null } = {}) {
   const id = 'p' + (++uid);
   const c = lines ? { ...card, sign: lines } : card;
   MARKS = marks;
+  GONE = !marks && c.type !== 'joke' && (c.scene === 'tee' || c.kind === 'peeled');
   let body;
-  try { body = c.type === 'joke' ? jokeStage(id) : back && c.scene === 'tee' ? tee(c, id, true) : (SCENES[c.scene] || SCENES.storefront)(c, id); } finally { MARKS = null; }
+  try { body = c.type === 'joke' ? jokeStage(id) : back && c.scene === 'tee' ? tee(c, id, true) : (SCENES[c.scene] || SCENES.storefront)(c, id); } finally { MARKS = null; GONE = false; }
   return `<svg class="panel-art" viewBox="0 0 400 280" role="img" aria-label="${esc(describe(c))}" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
 }
 

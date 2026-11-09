@@ -110,9 +110,14 @@ export function adaptBonus(day) {
   return Math.min(TUNE.adaptCap, Math.floor(day / TUNE.adaptEvery) * TUNE.adaptStep);
 }
 
-/* ---------- one day ---------- */
-export function simulateDay(day, mine, seed = '', ladder = null) {
-  const rnd = rngFrom(hashStr('day:' + seed + ':' + day + ':' + ROLES.map(r => mine[r].id).join('-')));
+/* ---------- one day ----------
+ * `fair` is head to head: the day's ground, matchups and rolls come from the
+ * seed and the day alone, so two squads in the same round live the same year
+ * and only the drafting differs. Solo seasons keep the squad in the roll. */
+export function simulateDay(day, mine, seed = '', ladder = null, fair = false) {
+  const rnd = rngFrom(hashStr(fair
+    ? 'vsday:' + seed + ':' + day
+    : 'day:' + seed + ':' + day + ':' + ROLES.map(r => mine[r].id).join('-')));
   const opp = (ladder && ladder.length >= 8) ? ladderSquad(day, seed, ladder) : ghostSquad(day, seed);
   const biomes = Object.keys(BIOME_NAME);
   const terrain = biomes[Math.floor(rnd() * biomes.length)];
@@ -162,7 +167,7 @@ export function simulateDay(day, mine, seed = '', ladder = null) {
 /* ---------- the whole year, in one call ----------
  * This is what the server runs to verify a submitted result, and what the
  * client runs behind its own animation. Both must agree exactly. */
-export function runSeason(mine, seed = '', ladder = null) {
+export function runSeason(mine, seed = '', ladder = null, { fair = false, onDay = null } = {}) {
   const tally = {}; ROLES.forEach(r => tally[r] = { w: 0, l: 0 });
   const feats = { kills: 0, stuns: 0, routs: 0, close: 0 };
   const terrains = new Set();
@@ -170,7 +175,7 @@ export function runSeason(mine, seed = '', ladder = null) {
   let last = null, days = 0;
 
   for (let day = 1; day <= 365; day++) {
-    const res = simulateDay(day, mine, seed, ladder);
+    const res = simulateDay(day, mine, seed, ladder, fair);
     last = res;
     terrains.add(res.terrain);
     res.duels.forEach(d => {
@@ -191,14 +196,17 @@ export function runSeason(mine, seed = '', ladder = null) {
         rallyDays.push(day);
         res.rallied = true;
         days = day;
+        if (onDay) onDay(res);
         continue;
       }
+      if (onDay) onDay(res);
       return {
         days: day - 1, perfect: false, finalDay: res, tally, feats,
         terrains: terrains.size, rallyDays
       };
     }
     days = day;
+    if (onDay) onDay(res);
   }
   return { days, perfect: true, finalDay: last, tally, feats,
            terrains: terrains.size, rallyDays };

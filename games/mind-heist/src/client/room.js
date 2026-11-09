@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'preact/hooks';
+import { useState, useEffect, useLayoutEffect, useRef, useMemo } from 'preact/hooks';
 import qrcode from 'qrcode-generator';
 import { html, Avatar, money, Money, LETTERS, crewClass, toast, confetti, useNow, copyText, shareOrCopy, gridEmoji,
   BADGES, BADGE_ICONS, pickWord, Sheet } from './ui.js';
@@ -410,7 +410,10 @@ function Floaters({ room, hook }) {
 
 const isJokes = (room) => !!(room.deck && room.deck.kind === 'jokes' && room.kind !== 'solo');
 const memberOf = (room, id) => room.members.find(m => m.id === id) || { name: 'Someone', avatar: '❔' };
-const crewLabel = (room, k) => (room.crews && room.crews[k] ? `${memberOf(room, room.crews[k].cap).name}'s crew` : k ? 'Aqua crew' : 'Bubblegum crew');
+// Two players are a crew of one each: their names are the crews (JJ-Capra, not JJ-Capra's crew).
+const duo = (room) => !!(room.crews && room.crews.length === 2 && room.crews.every(c => c.mem.length === 1));
+const capName = (room, k) => memberOf(room, room.crews[k].cap).name;
+const crewLabel = (room, k) => (room.crews && room.crews[k] ? (duo(room) ? capName(room, k) : `${capName(room, k)}'s crew`) : k ? 'Aqua crew' : 'Bubblegum crew');
 // Can this viewer make the move for player `mid`? (themselves, or the host for guests / party rooms)
 function actsFor(room, mid) {
   if (!mid) return false;
@@ -452,7 +455,7 @@ function Lobby({ room, send, me, nav, tv, hand, invite }) {
   const share = async () => { const r = await shareOrCopy({ title: 'Join my Mind Heist', text: `Join my heist. Room ${room.code}`, url }); if (r === 'copied') toast('Invite link copied. Paste it in the chat.'); };
 
   return html`<div class="lobby">
-    ${room.kind === 'invite' ? html`<section class="invite stk" aria-label="Invite">
+    ${room.kind === 'invite' ? html`<section class=${'invite stk' + (players.length >= 2 && !tv ? ' compact' : '')} aria-label="Invite">
       <span class="tag hi">Room code</span>
       <div class="code num">${room.code}</div>
       <div class="url">${url.replace(/^https?:\/\//, '')}</div>
@@ -489,28 +492,57 @@ function Lobby({ room, send, me, nav, tv, hand, invite }) {
         ${!room.members.length && html`<div class="empty">No one yet.</div>`}
       </div>
       ${room.host ? html`<div class="opt-grid">
-        <div class="opt-row"><span>Look for everyone in this room</span><div class="pills">${THEME_IDS.map(id => html`<button class="pill" aria-pressed=${s.theme === id} onClick=${() => send('theme', { theme: id })}>${THEMES[id].name}</button>`)}</div></div>
-        <div class="opt-row"><span>Answer clock</span><div class="pills">${CLOCKS.map(([v, l]) => html`<button class="pill" aria-pressed=${s.clock === v} onClick=${() => send('settings', { clock: v })}>${l}</button>`)}</div></div>
         ${jokes && html`<div class="opt-row faceoff-note"><span>Face-off deck</span><small>Every tile is a face-off: one player from each crew, secret picks, fastest right punchline wins the money and the next pick. Hacker, Doubles, Take tiles, lifelines and power cards sit this deck out.</small></div>`}
-        ${!jokes && html`<div class="opt-row"><span>Hacker mode</span><div class="pills"><button class="pill" aria-pressed=${s.hacker} onClick=${() => send('settings', { hacker: true })}>On: 1 Hacker tile</button><button class="pill" aria-pressed=${!s.hacker} onClick=${() => send('settings', { hacker: false })}>Off</button></div></div>`}
-        ${!jokes && html`<div class="opt-row"><span>Lifelines</span><div class="pills"><button class="pill" aria-pressed=${s.fifty} onClick=${() => send('settings', { fifty: !s.fifty })}>50/50 for each crew</button><button class="pill" aria-pressed=${true} disabled>One timeout each</button></div></div>
+        ${!jokes && html`<div class="opt-row"><span>Hacker mode</span><div class="pills"><button class="pill" aria-pressed=${s.hacker} onClick=${() => send('settings', { hacker: true })}>On: 1 Hacker tile</button><button class="pill" aria-pressed=${!s.hacker} onClick=${() => send('settings', { hacker: false })}>Off</button></div></div>
+        <div class="opt-row"><span>Hidden Doubles</span><div class="pills">${[0, 1, 2].map(n => html`<button class="pill" aria-pressed=${s.doubles === n} onClick=${() => send('settings', { doubles: n })}>${n === 0 ? 'None' : n}</button>`)}</div></div>
         <div class="opt-row"><span>Take mode</span><div class="pills"><button class="pill" aria-pressed=${!!s.take} onClick=${() => send('settings', { take: true })}>On: 6 Take tiles</button><button class="pill" aria-pressed=${!s.take} onClick=${() => send('settings', { take: false })}>Off</button></div>
-          <small class="muted">Miss a Take tile and the other crew gets one shot at it.</small></div>`}
-        ${room.kind === 'invite' && html`<div class="opt-row"><span>Open mic</span><div class="pills"><button class="pill" aria-pressed=${!!s.mic} onClick=${() => send('mic', { on: true })}>On: crews can talk</button><button class="pill" aria-pressed=${!s.mic} onClick=${() => send('mic', { on: false })}>Off</button></div>
-          <small class="muted">For friends playing from different homes. Leave it off when everyone's already on a Teams or Zoom call.</small></div>`}
+          <small class="muted">Miss a Take tile and the other crew gets one shot at it.</small></div>
+        <div class="opt-row"><span>Lifelines</span><div class="pills"><button class="pill" aria-pressed=${s.fifty} onClick=${() => send('settings', { fifty: !s.fifty })}>50/50 for each crew</button><button class="pill" aria-pressed=${true} disabled>One timeout each</button></div></div>`}
         ${room.kind === 'invite' && !jokes && html`<div class="opt-row"><span>Power cards</span><div class="pills"><button class="pill" aria-pressed=${!!s.cards} onClick=${() => send('settings', { cards: true })}>On: Mole and Hidden 50/50</button><button class="pill" aria-pressed=${!s.cards} onClick=${() => send('settings', { cards: false })}>Off</button></div>
           <small class="muted">Players win these cards in the daily draw and play them from their own phones.</small></div>`}
-        ${!jokes && html`<div class="opt-row"><span>Hidden Doubles</span><div class="pills">${[0, 1, 2].map(n => html`<button class="pill" aria-pressed=${s.doubles === n} onClick=${() => send('settings', { doubles: n })}>${n === 0 ? 'None' : n}</button>`)}</div></div>`}
+        <div class="opt-row"><span>Answer clock</span><div class="pills">${CLOCKS.map(([v, l]) => html`<button class="pill" aria-pressed=${s.clock === v} onClick=${() => send('settings', { clock: v })}>${l}</button>`)}</div></div>
+        <div class="opt-row"><span>Look for everyone in this room</span><div class="pills">${THEME_IDS.map(id => html`<button class="pill" aria-pressed=${s.theme === id} onClick=${() => send('theme', { theme: id })}>${THEMES[id].name}</button>`)}</div></div>
+        ${room.kind === 'invite' && html`<div class="opt-row"><span>Open mic</span><div class="pills"><button class="pill" aria-pressed=${!!s.mic} onClick=${() => send('mic', { on: true })}>On: crews can talk</button><button class="pill" aria-pressed=${!s.mic} onClick=${() => send('mic', { on: false })}>Off</button></div>
+          <small class="muted">For friends playing from different homes. Leave it off when everyone's already on a Teams or Zoom call.</small></div>`}
         ${room.kind === 'invite' && html`<label class="check"><input type="checkbox" checked=${!!(room.members.find(m => m.id === room.me) || {}).spec} onChange=${() => send('spectate')} /> I'm just hosting, not playing</label>`}
-        <button class="btn hi big" disabled=${players.length < 2} onClick=${() => send('start')}>${players.length < 2 ? 'Need 2 players' : players.length === 2 ? 'Flip the coin' : 'Draw the captains'}</button>
+        <button class="btn hi big start-btn" disabled=${players.length < 2} onClick=${() => send('start')}>${players.length < 2 ? 'Need 2 players' : players.length === 2 ? 'Flip the coin' : 'Draw the captains'}</button>
       </div>` : jokes ? html`<div class="empty">Waiting for ${memberOf(room, room.hostId).name} to start. It's a joke deck: every tile is a face-off between one player from each crew. Fastest right punchline wins. Clock ${s.clock ? s.clock + 's' : 'off'}.</div>`
-      : html`<div class="empty">Waiting for ${memberOf(room, room.hostId).name} to start. Clock ${s.clock ? s.clock + 's' : 'off'} · Hacker mode ${s.hacker ? 'on' : 'off'} · Take mode ${s.take ? 'on' : 'off'} · 50/50 ${s.fifty ? 'on' : 'off'}${room.kind === 'invite' ? ` · Power cards ${s.cards ? 'on' : 'off'}` : ''}.</div>`}
+      : html`<div class="empty">Waiting for ${memberOf(room, room.hostId).name} to start. Clock ${s.clock ? s.clock + 's' : 'off'} · Hacker mode ${s.hacker ? 'on' : 'off'} · Hidden Doubles ${s.doubles || 'none'} · Take mode ${s.take ? 'on' : 'off'} · 50/50 ${s.fifty ? 'on' : 'off'}${room.kind === 'invite' ? ` · Power cards ${s.cards ? 'on' : 'off'}` : ''}.</div>`}
       ${room.kind === 'invite' && s.cards && !room.host && html`<div class="lobby-hand"><span class="muted">Your hand</span><${HandChips} hand=${hand} /></div>`}
     </section>
   </div>`;
 }
 
 /* =================== captains, toss, draft =================== */
+
+// Big type that shrinks until it fits its box, so a 17-character name (DA_ROMAN_EMPIRE) never
+// breaks or runs off a phone screen. Names inside sit in .nm spans that never wrap.
+function useFit(ref, key, min = 16) {
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const fit = () => {
+      el.style.fontSize = '';
+      let size = parseFloat(getComputedStyle(el).fontSize);
+      while (el.scrollWidth > el.clientWidth + 1 && size > min) { size -= 1; el.style.fontSize = size + 'px'; }
+    };
+    fit();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    addEventListener('resize', fit);
+    return () => removeEventListener('resize', fit);
+  }, [key]);
+}
+// Any element whose text shrinks to fit: <${Fit} as="b" key=${text}>…<//>.
+function Fit({ as = 'b', cls = '', fit, min = 12, children }) {
+  const ref = useRef(null);
+  useFit(ref, fit, min);
+  return html`<${as} class=${cls} ref=${ref}>${children}<//>`;
+}
+function FitName({ name, cls = 'b' }) {
+  const ref = useRef(null);
+  useFit(ref, name, 14);
+  return html`<b class=${'fit-name ' + cls} ref=${ref}>${name}</b>`;
+}
 
 function Captains({ room, send }) {
   const now = useNow(true, 90);
@@ -524,7 +556,7 @@ function Captains({ room, send }) {
     <div class="duo">
       ${[0, 1].map(k => {
         const m = spinning ? roll(k) : caps[k];
-        return html`<div class=${`cap c${k} ${spinning ? 'spin' : ''}`}><${Avatar} a=${m.avatar} size="xl" /><b>${m.id === room.me && !spinning ? 'You' : m.name}</b><span class="tag">${(th().crews || ['Bubblegum', 'Aqua'])[k]} crew</span></div>`;
+        return html`<div class=${`cap c${k} ${spinning ? 'spin' : ''}`}><${Avatar} a=${m.avatar} size="xl" /><${FitName} name=${m.id === room.me && !spinning ? 'You' : m.name} /><span class="tag">${(th().crews || ['Bubblegum', 'Aqua'])[k]} crew</span></div>`;
       }).reduce((a, el, i) => (i ? [...a, html`<span class="vs">vs</span>`, el] : [el]), [])}
     </div>
     <p>Captains draft their crews. Everyone takes turns in the hot seat.</p>
@@ -538,15 +570,20 @@ function Toss({ room, send }) {
   const caps = room.crews.map(c => memberOf(room, c.cap));
   const w = room.toss;
   const noDraft = room.members.filter(m => !m.spec).length <= 2 || room.crews.some(c => c.mem.length > 1);
-  return html`<section class="show stk">
+  const colors = (th().crews || ['Pink', 'Aqua']).map(c => c.toLowerCase());
+  const head = useRef(null), line = useRef(null);
+  useFit(head, caps.map(c => c.name).join('|'), 18);
+  useFit(line, `${w}|${flipping}`, 14);
+  const nm = (k) => html`<span class=${'pname c' + k}>${caps[k].name}</span>`;
+  return html`<section class="show stk toss">
     <span class="tag">${noDraft ? 'Coin flip' : 'Step 2 of 3'}</span>
-    <h2>${th().crews ? `${caps[0].name} is ${th().crews[0].toLowerCase()}. ${caps[1].name} is ${th().crews[1].toLowerCase()}.` : `${caps[0].name} is pink. ${caps[1].name} is aqua.`}</h2>
+    <h2 ref=${head}><span class="ln">${nm(0)} is ${colors[0]}.</span> <span class="ln">${nm(1)} is ${colors[1]}.</span></h2>
     <div class="coin-stage"><div class=${'coin' + (flipping ? ' flipping' : '')} style=${`--end:${w ? 1980 : 1800}deg;${flipping ? '' : `transform:rotateY(${w ? 180 : 0}deg)`}`}>
       <div class="face f0">${caps[0].avatar}</div><div class="face f1">${caps[1].avatar}</div>
     </div></div>
-    <p class="toss-line">${flipping ? '' : noDraft
-      ? html`<b>${caps[w].name}</b>'s crew wins the toss and picks the first tile.`
-      : html`<b>${caps[w].name}</b> wins the toss and drafts first. <b>${caps[1 - w].name}</b>'s crew picks the first tile.`}</p>
+    <p class="toss-line" ref=${line}>${flipping ? '' : noDraft
+      ? html`<b class="pname">${caps[w].name}</b>${duo(room) ? '' : "'s crew"} wins the toss and picks the first tile.`
+      : html`<b class="pname">${caps[w].name}</b> wins the toss and drafts first. <b class="pname">${caps[1 - w].name}</b>'s crew picks the first tile.`}</p>
     ${room.host && !flipping && html`<button class="btn hi big" onClick=${() => send('draft')}>${noDraft ? 'Start the heist' : 'Start the draft'}</button>`}
   </section>`;
 }
@@ -597,7 +634,7 @@ function HotSeat({ room, compact = false }) {
   else { line = cur.right ? `${you ? 'You' : m.name} got it` : `${you ? 'You' : m.name} missed`; act = cur.right ? money(cur.delta + (cur.bonus || 0)) : cur.delta ? money(cur.delta) : 'No money'; }
   return html`<div class=${`seat ${compact ? 'compact' : ''} ${solo ? 'solo' : crewClass(k)} ${duel && room.phase !== 'reveal' ? 'duel' : ''} ${you && (room.phase === 'board' || room.phase === 'ask') ? 'you' : ''}`} key=${mid + room.phase} aria-live="polite">
     <${Avatar} a=${m.avatar} size="lg" />
-    <div class="who"><b>${line}</b><span>${solo ? (room.challengeId ? 'Challenge run' : 'Solo run') : `${crewLabel(room, k)}${you ? '' : ` · ${m.name}`}`}</span></div>
+    <div class="who"><${Fit} fit=${line} min=${12}>${line}<//><span>${solo ? (room.challengeId ? 'Challenge run' : 'Solo run') : `${crewLabel(room, k)}${you || duo(room) ? '' : ` · ${m.name}`}`}</span></div>
     <span class="act">${act}</span>
   </div>`;
 }
@@ -616,7 +653,7 @@ function Crews({ room }) {
   }
   const up = room.cur ? room.cur.mid : room.picker;
   return html`<div class="crews">${room.crews.map((c, k) => html`<div class=${`crew-card ${crewClass(k)} ${(room.cur ? room.cur.crew : room.turn) === k && room.phase !== 'sudden' ? 'on' : ''}`}>
-    <div class="nm"><span>${crewLabel(room, k)}</span></div>
+    <div class="nm"><${Fit} as="span" fit=${crewLabel(room, k)} min=${8}>${crewLabel(room, k)}<//></div>
     <${Money} value=${c.haul} cls=${'haul' + (c.haul < 0 ? ' neg' : '')} />
     <div class="meta">${c.heat >= 2 ? html`<span class="heat">🔥 On fire</span>` : ''}${!isJokes(room) && html`${room.settings.fifty && html`<span class=${'life' + (c.fifty ? ' used' : '')}>50/50</span>`}<span class=${'life' + (c.tout ? ' used' : '')}>Timeout</span>`}</div>
     <div class="mems">${c.mem.map(id => { const m = memberOf(room, id); return html`<span title=${m.name}><${Avatar} a=${m.avatar} cls=${id === up ? 'up' : ''} /></span>`; })}</div>
@@ -633,8 +670,10 @@ function ScoreStrip({ room }) {
     </div></div>`;
   }
   const on = room.cur ? room.cur.crew : room.turn;
-  return html`<div class="scores">${room.crews.map((c, k) => html`<div class=${`score ${crewClass(k)} ${on === k && room.phase !== 'sudden' ? 'on' : ''}`}>
-    <span class="nm">${crewLabel(room, k)}${c.heat >= 2 ? ' 🔥' : ''}</span>
+  // A long name gets the cell's whole width on a phone, with the money under it.
+  const tall = room.crews.some((c, k) => capName(room, k).length > 11);
+  return html`<div class=${'scores' + (tall ? ' tall' : '')}>${room.crews.map((c, k) => html`<div class=${`score ${crewClass(k)} ${on === k && room.phase !== 'sudden' ? 'on' : ''}`}>
+    <${Fit} as="span" cls="nm" fit=${crewLabel(room, k) + c.heat} min=${10}>${duo(room) ? capName(room, k) : html`${capName(room, k)}<span class="sfx">'s crew</span>`}${c.heat >= 2 ? ' 🔥' : ''}<//>
     <span class="ll">${!isJokes(room) && html`${room.settings.fifty && html`<span class=${'life' + (c.fifty ? ' used' : '')}>50/50</span>`}<span class=${'life' + (c.tout ? ' used' : '')}>Timeout</span>`}</span>
     <${Money} value=${c.haul} cls=${'amt' + (c.haul < 0 ? ' neg' : '')} />
   </div>`)}</div>`;
@@ -1213,8 +1252,8 @@ function Final({ room, send, nav, tv, invite }) {
         </section>`
       : html`<section class=${'winner stk ' + (w === -1 ? 'tie' : crewClass(w))}>
           <span class="tag">${room.ended ? 'Ended early' : room.suddenWin != null ? 'Won in sudden death' : 'Final'}</span>
-          <h1>${w === -1 ? 'Dead heat.' : `${crewLabel(room, w)} pulled it off`}</h1>
-          ${mvp && html`<p style="font-weight:700">${th().mvp}: ${mvp.avatar} ${mvp.id === room.me ? 'You' : mvp.name}${room.stats[mvp.id] ? ` with ${money(room.stats[mvp.id].earn)}` : ''}</p>`}
+          <${Fit} as="h1" fit=${w + crewLabel(room, Math.max(0, w))} min=${22}>${w === -1 ? 'Dead heat.' : html`<span class="pname">${crewLabel(room, w)}</span> pulled it off`}<//>
+          ${mvp && html`<p style="font-weight:700">${th().mvp}: ${mvp.avatar} <span class="pname">${mvp.id === room.me ? 'You' : mvp.name}</span>${room.stats[mvp.id] ? ` with ${money(room.stats[mvp.id].earn)}` : ''}</p>`}
         </section>
         <div class="hauls">${room.crews.map((c, k) => html`<div class=${'haul-card stk'} style=${`background:var(--${k ? 'aqua' : 'gum'})`}>
           <span style="font-weight:800">${crewLabel(room, k)}${w === k ? ' 👑' : ''}</span><span class="amt num">${money(c.haul)}</span>

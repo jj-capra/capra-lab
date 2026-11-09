@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const FILES = ['client/app.js', 'client/render.js', 'client/format.js', 'client/shapes.js',
-               'shared/engine.js', 'shared/grade.js', 'shared/roster.js', 'shared/constants.js',
+               'shared/engine.js', 'shared/grade.js', 'shared/roster.js', 'shared/constants.js', 'shared/versus.js',
                'server/api.js', 'server/stores.js', 'netlify/functions/api.mjs'];
 
 const GLOBALS = new Set(('Math JSON Object Array String Number Boolean Date RegExp Map Set Promise ' +

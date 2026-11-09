@@ -9,7 +9,8 @@
  */
 import { ROLES, ROLE_LABEL, ROLE_DESC, ERA_NAME, BIOME_NAME } from '../shared/constants.js';
 import { ROSTER, COMBOS } from '../shared/roster.js';
-import { rating, simulateDay, squadIds, adaptBonus } from '../shared/engine.js';
+import { rating, simulateDay, squadIds, adaptBonus, runSeason, resolveSquad } from '../shared/engine.js';
+import { BEST_OF, roundSeed, spinOrder, respinRoll } from '../shared/versus.js';
 import { TUNE, BEATS } from '../shared/constants.js';
 import { gradeFor, epitaph } from '../shared/grade.js';
 import { badge, discSVG, fieldSVG } from './render.js';
@@ -47,13 +48,13 @@ function paintWho() {
   const label = me
     ? 'Playing as<b>' + me.name + '</b>'
     : 'Playing as<b>Guest</b>';
-  ['whoHome', 'whoProfile', 'whoBoard', 'whoDraft'].forEach(id => {
+  ['whoHome', 'whoVs', 'whoProfile', 'whoBoard', 'whoDraft'].forEach(id => {
     const el = $(id); if (el) el.innerHTML = label;
   });
 }
 
 /* ---------------- screens ---------------- */
-const VIEWS = ['viewHome', 'viewProfile', 'viewBoard', 'viewDraft', 'viewSeason', 'viewResult'];
+const VIEWS = ['viewHome', 'viewVs', 'viewProfile', 'viewBoard', 'viewDraft', 'viewSeason', 'viewResult'];
 function show(view) {
   VIEWS.forEach(v => { const el = $(v); if (el) el.classList.toggle('hidden', v !== view); });
   window.scrollTo(0, 0);
@@ -230,8 +231,14 @@ function showReels() {
 function spin() {
   if (!openSlots().length) return;
   let tries = 0, combo;
-  do { combo = COMBOS[Math.floor(Math.random() * COMBOS.length)]; tries++; }
-  while (tries < 40 && !usable(combo));
+  if (VS.active) {
+    /* head to head: both players get the same spins, in the same order */
+    const order = spinOrder(VS.code, VS.match.round, spun);
+    combo = order.find(usable) || order[0];
+  } else {
+    do { combo = COMBOS[Math.floor(Math.random() * COMBOS.length)]; tries++; }
+    while (tries < 40 && !usable(combo));
+  }
   current = combo;
   spun++;
   showReels();
@@ -247,7 +254,8 @@ function respin(axis) {
     (axis === 'era' ? c.biome === current.biome : c.era === current.era) &&
     (axis === 'era' ? c.era !== current.era : c.biome !== current.biome) && usable(c));
   if (!others.length) { $('spinNote').textContent = 'Nothing else works with that reel.'; return; }
-  current = others[Math.floor(Math.random() * others.length)];
+  const roll = VS.active ? respinRoll(VS.code, VS.match.round, spun, axis) : Math.random();
+  current = others[Math.floor(roll * others.length)];
   respins[axis]--;
   showReels();
   renderField();
@@ -322,6 +330,7 @@ $('sheetCancel').onclick = () => $('sheet').classList.add('hidden');
 
 /* ---------- season ---------- */
 $('runBtn').onclick = () => {
+  if (VS.active) return vsLock();
   show('viewSeason');
   season = { day: 0, alive: true, rallies: TUNE.rallies, adapt: 0 };
   tally = {}; ROLES.forEach(r => tally[r] = { w: 0, l: 0 });
@@ -507,9 +516,8 @@ $('copyBtn').onclick = () => {
   $('copyBtn').textContent = 'Copied';
   setTimeout(() => $('copyBtn').textContent = 'Copy result', 1400);
 };
-$('againBtn').onclick = () => {
+function resetDraft() {
   squad = {}; respins = { era: 1, biome: 1 }; spun = 0; current = null; season = null; fast = false;
-  show('viewDraft');
   $('spinZone').classList.remove('hidden');
   $('runBtn').classList.add('hidden');
   $('spinBtn').classList.remove('hidden');
@@ -518,8 +526,325 @@ $('againBtn').onclick = () => {
   document.body.classList.remove('compact');
   $('spinNote').textContent = 'Five spins, five slots. One respin of each reel.';
   $('stripNote').textContent = 'nobody has done it';
-};
+}
+$('againBtn').onclick = () => { resetDraft(); show('viewDraft'); };
 
+
+/* ---------------- head to head ----------------
+ * JC, Nov 8 2026: "best of five or best of three in head to head deck
+ * building and then run". Two players, each on their own phone. Every round
+ * both draft five from the same spins (shared/versus.js), lock them in, and
+ * both squads run the same year; the longer run takes the round. The server
+ * holds the match and plays the runs; the phones replay them day by day. */
+const VS_KEY = 'capra-lab.primal.vs';
+const GUEST_KEY = 'capra-lab.primal.guest';
+const VS = { active: false, drafted: false, code: null, slot: 0, tok: null, match: null, seen: 0,
+             bestOf: 3, poll: null, playing: false, joinCode: '' };
+const DRAFT_WORDS = { tag: $('tagline').textContent, run: $('runBtn').textContent };
+function draftWords() {
+  $('tagline').textContent = DRAFT_WORDS.tag;
+  $('runBtn').textContent = DRAFT_WORDS.run;
+  $('runBtn').disabled = false;
+  $('dHome').innerHTML = '&larr; Home';
+}
+/* quotes written as escapes, so scripts/check-modules.mjs can still read the file */
+const ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\u0022': '&quot;', '\u0027': '&#39;' };
+const esc = s => String(s == null ? '' : s).replace(/[&<>\u0022\u0027]/g, c => ESC[c]);
+
+function vsStore() {
+  try {
+    if (VS.code) localStorage.setItem(VS_KEY, JSON.stringify({ code: VS.code, slot: VS.slot, tok: VS.tok, seen: VS.seen }));
+    else localStorage.removeItem(VS_KEY);
+  } catch { /* private mode: the match still plays, it just will not survive a reload */ }
+}
+function vsSeat(out, keepSeen = false) {
+  const seen = keepSeen && out.code === VS.code ? VS.seen : 0;
+  Object.assign(VS, { code: out.code, slot: out.slot, tok: out.tok, match: out.match, seen, joinCode: '' });
+  vsStore();
+  if (/vs=/.test(location.hash)) { try { history.replaceState(null, '', location.pathname + location.search); } catch { /* fine */ } }
+}
+function vsLeave() {
+  clearTimeout(VS.poll);
+  Object.assign(VS, { code: null, tok: null, match: null, seen: 0, playing: false });
+  vsStore();
+  renderVs();
+}
+function vsBody(body) {
+  if (me) { body.name = me.name; body.code = me.code; }
+  else {
+    body.name = ($('vsName') ? $('vsName').value : '').trim();
+    try { localStorage.setItem(GUEST_KEY, body.name); } catch { /* fine */ }
+  }
+  return body;
+}
+const vsPost = (op, body) => api('/api/' + op, {
+  method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body)
+});
+const vsName = k => (VS.match && VS.match.players[k] ? VS.match.players[k].name : 'your rival');
+const vsLink = code => new URL('./', location.href).href.split('#')[0] + '#vs=' + code;
+
+/* a link (…/primal-survival/#vs=ABCD) opens the match: back into your seat, or to join it */
+function vsBoot() {
+  try {
+    const v = JSON.parse(localStorage.getItem(VS_KEY) || 'null');
+    if (v && v.code && v.tok) Object.assign(VS, { code: v.code, slot: v.slot, tok: v.tok, seen: v.seen || 0 });
+  } catch { /* nothing saved */ }
+  const h = location.hash.match(/vs=([A-Za-z]{4})/);
+  if (h) {
+    const code = h[1].toUpperCase();
+    if (code !== VS.code) VS.joinCode = code;
+    openVs();
+  }
+}
+async function openVs() {
+  show('viewVs');
+  if (VS.joinCode && VS.code !== VS.joinCode) VS.match = null;
+  if (VS.code && !VS.joinCode) {
+    $('vsBody').innerHTML = '<p class="h2h-lede">Opening match ' + esc(VS.code) + '&hellip;</p>';
+    await vsRefresh();
+  } else renderVs();
+}
+async function vsRefresh() {
+  if (!VS.code) return renderVs();
+  try { VS.match = await api('/api/vs?m=' + VS.code); }
+  catch (e) {
+    if (e.status === 404) return vsLeave();
+    if (!VS.match) { $('vsBody').innerHTML = '<p class="h2h-lede">Could not reach the match: ' + esc(e.message) + '</p>'; return vsSchedule(true); }
+  }
+  renderVs();
+}
+function vsSchedule(retry = false) {
+  clearTimeout(VS.poll); VS.poll = null;
+  if (!VS.code || VS.playing || $('viewVs').classList.contains('hidden')) return;
+  const m = VS.match;
+  const cur = m && m.rounds[m.round - 1];
+  const waiting = retry || !m || !m.players[1] ||
+    (m.winner == null && cur && cur.locked[VS.slot] && !cur.locked[1 - VS.slot]) ||
+    (m.winner != null && !m.next);
+  if (waiting) VS.poll = setTimeout(vsRefresh, document.hidden ? 8000 : 2500);
+}
+
+function renderVs() {
+  const m = VS.match;
+  if (VS.playing) return;
+  if (!VS.code || !m) { renderVsStart(); return vsSchedule(); }
+  const mine = VS.slot, them = 1 - mine;
+  /* a round both squads have run since this phone last looked: watch it first */
+  const fresh = m.rounds.find(r => r.days && r.n > VS.seen);
+  if (fresh) return playVsRound(fresh);
+
+  const board = '<div class="h2h-board">' + [mine, them].map(k =>
+    '<div class="h2h-row p' + k + (m.score[k] > m.score[1 - k] ? ' lead' : '') + (m.players[k] ? '' : ' waiting') + '">' +
+    '<span class="nm"><small>' + (k === mine ? 'You' : 'Rival') + '</small>' +
+    esc(m.players[k] ? m.players[k].name : 'Waiting for a rival') + '</span>' +
+    '<span class="pts">' + m.score[k] + '</span></div>').join('') + '</div>' +
+    '<div class="h2h-meta">Best of ' + m.bestOf + ' &middot; first to ' + m.need + ' &middot; match ' + esc(m.code) + '</div>';
+  const done = m.rounds.filter(r => r.days);
+  const rounds = done.length ? '<div class="h2h-rounds">' + done.map(r =>
+    '<div class="lrow"><span>' + r.n + '</span><span>' +
+    (r.winner === mine ? 'You took it' : r.winner === them ? esc(vsName(them)) + ' took it' : 'Dead even, played again') +
+    '<span class="sub">' + r.days[mine] + ' days to ' + r.days[them] + '</span></span>' +
+    '<b>' + (r.winner === mine ? 'W' : r.winner === them ? 'L' : '=') + '</b></div>').join('') + '</div>' : '';
+
+  let main = '';
+  if (!m.players[1]) {
+    main = '<div class="panel"><h3>Send this to your rival</h3>' +
+      '<p>They open the link, or type the code under Head to head, and round one starts.</p>' +
+      '<span class="h2h-code">' + esc(m.code) + '</span>' +
+      '<button class="btn" id="vsShare">Send the link</button>' +
+      '<button class="btn ghost" id="vsCopy">Copy the link</button><div class="msg" id="vsMsg"></div></div>';
+  } else if (m.winner != null) {
+    const cls = m.winner === mine ? '' : m.winner === them ? ' lost' : ' even';
+    const title = m.winner === mine ? 'You win the match' : m.winner === them ? esc(vsName(them)) + ' wins the match' : 'A drawn match';
+    main = '<div class="h2h-verdict' + cls + '"><b>' + title + '</b><span>' + m.score[mine] + '&ndash;' + m.score[them] +
+      ' &middot; best of ' + m.bestOf + '</span></div>' +
+      '<button class="btn" id="vsAgain">' + (m.next ? esc(vsName(them)) + ' wants a rematch: join it' : 'Rematch') + '</button>' +
+      '<button class="btn ghost" id="vsNewMatch">New match</button>';
+  } else {
+    const cur = m.rounds[m.round - 1];
+    const locked = cur ? cur.locked : [false, false];
+    main = !locked[mine]
+      ? '<div class="h2h-status"><b>Round ' + m.round + '</b>Draft your five. ' + esc(vsName(them)) +
+        ' gets the same spins.' + (locked[them] ? ' They have locked in already.' : '') + '</div>' +
+        '<button class="btn" id="vsDraftBtn">Draft round ' + m.round + '</button>'
+      : '<div class="h2h-status"><b>Locked in</b>Waiting for ' + esc(vsName(them)) + ' to draft their five&hellip;</div>';
+  }
+  $('vsBody').innerHTML = '<h2 class="h2h-title">Head to head</h2>' + board + main + rounds +
+    (m.winner == null ? '<button class="btn ghost" id="vsQuit">Leave this match</button>' : '');
+
+  if ($('vsShare')) $('vsShare').onclick = async () => {
+    const url = vsLink(m.code);
+    if (navigator.share) {
+      try { await navigator.share({ title: 'Primal Survival', text: 'Head to head in Primal Survival, best of ' + m.bestOf + '. Code ' + m.code + '.', url }); }
+      catch { /* closed the sheet */ }
+    } else $('vsCopy').click();
+  };
+  if ($('vsCopy')) $('vsCopy').onclick = async () => {
+    try { await navigator.clipboard.writeText(vsLink(m.code)); $('vsMsg').textContent = 'Link copied. Paste it to your rival.'; }
+    catch { $('vsMsg').textContent = vsLink(m.code); }
+  };
+  if ($('vsDraftBtn')) $('vsDraftBtn').onclick = vsDraft;
+  if ($('vsAgain')) $('vsAgain').onclick = async () => {
+    $('vsAgain').disabled = true;
+    try { vsSeat(await vsPost('vs-again', { m: m.code, tok: VS.tok })); renderVs(); }
+    catch (e) { $('vsAgain').disabled = false; $('vsAgain').textContent = e.message; }
+  };
+  if ($('vsNewMatch')) $('vsNewMatch').onclick = vsLeave;
+  if ($('vsQuit')) $('vsQuit').onclick = () => {
+    $('vsQuit').textContent = 'Tap again to leave. ' + vsName(them) + ' will be left waiting.';
+    $('vsQuit').onclick = vsLeave;
+  };
+  vsSchedule();
+}
+
+function renderVsStart() {
+  const join = VS.joinCode;
+  let guest = '';
+  try { guest = localStorage.getItem(GUEST_KEY) || ''; } catch { /* fine */ }
+  const nameBox = me ? '' :
+    '<div class="panel"><h3>Your name</h3><p>You are playing as a guest. A Capra Lab profile plays under one name in every game.</p>' +
+    '<input id="vsName" maxlength="17" placeholder="Name" autocomplete="off" value="' + esc(guest) + '"></div>';
+  const joinBox = '<div class="panel"><h3>' + (join ? 'Join the match' : 'Got a code?') + '</h3>' +
+    '<p id="vsHostLine">' + (join ? 'Checking match ' + esc(join) + '&hellip;' : 'Type the four letters your rival sent.') + '</p>' +
+    '<input id="vsCode" maxlength="4" placeholder="ABCD" autocomplete="off" autocapitalize="characters" value="' + esc(join) + '">' +
+    '<button class="btn' + (join ? '' : ' ghost') + '" id="vsJoin">Join the match</button><div class="msg" id="vsJoinMsg"></div></div>';
+  const newBox = '<div class="panel"><h3>Start a match</h3>' +
+    '<div class="h2h-pick">' + BEST_OF.map(n => '<button data-n="' + n + '" class="' + (VS.bestOf === n ? 'on' : '') + '">Best of ' + n + '</button>').join('') + '</div>' +
+    '<button class="btn' + (join ? ' ghost' : '') + '" id="vsNew">Start the match</button><div class="msg" id="vsNewMsg"></div></div>';
+  $('vsBody').innerHTML = '<h2 class="h2h-title">Head to head</h2>' +
+    '<p class="h2h-lede">Best of three or five against one friend, each on your own phone. Every round you both draft five from the same spins, then both squads run the same year. The longer run takes the round.</p>' +
+    nameBox + (join ? joinBox + newBox : newBox + joinBox);
+  $('vsBody').querySelectorAll('.h2h-pick button').forEach(b => {
+    b.onclick = () => { VS.bestOf = Number(b.dataset.n); renderVsStart(); };
+  });
+  if (join) {
+    api('/api/vs?m=' + join).then(m => {
+      const el = $('vsHostLine');
+      if (el) el.textContent = m.players[1]
+        ? 'That match already has two players.'
+        : m.players[0].name + ' wants a best of ' + m.bestOf + '.';
+    }).catch(() => { const el = $('vsHostLine'); if (el) el.textContent = 'No match with that code.'; });
+  }
+  $('vsNew').onclick = async () => {
+    $('vsNew').disabled = true;
+    try { vsSeat(await vsPost('vs-new', vsBody({ bestOf: VS.bestOf }))); renderVs(); }
+    catch (e) { $('vsNewMsg').className = 'msg bad'; $('vsNewMsg').textContent = e.message; $('vsNew').disabled = false; }
+  };
+  $('vsJoin').onclick = async () => {
+    const code = $('vsCode').value.trim().toUpperCase();
+    if (!/^[A-Z]{4}$/.test(code)) { $('vsJoinMsg').className = 'msg bad'; $('vsJoinMsg').textContent = 'A code is four letters.'; return; }
+    $('vsJoin').disabled = true;
+    try { vsSeat(await vsPost('vs-join', vsBody({ m: code }))); renderVs(); }
+    catch (e) { $('vsJoinMsg').className = 'msg bad'; $('vsJoinMsg').textContent = e.message; $('vsJoin').disabled = false; }
+  };
+}
+
+function vsDraft() {
+  const m = VS.match, mine = VS.slot, them = 1 - mine;
+  VS.active = true; VS.drafted = true;
+  resetDraft();
+  $('tagline').textContent = 'Round ' + m.round + ' against ' + vsName(them) + ', best of ' + m.bestOf +
+    '. You both get the same spins. Lock in your five and both squads run the same year; the longer run takes the round.';
+  $('stripNote').textContent = 'You ' + m.score[mine] + ' \u2013 ' + m.score[them] + ' ' + vsName(them);
+  $('runBtn').textContent = 'Lock in my five';
+  $('dHome').innerHTML = '&larr; Match';
+  show('viewDraft');
+}
+
+async function vsLock() {
+  const btn = $('runBtn');
+  btn.disabled = true;
+  btn.textContent = 'Locking in\u2026';
+  try {
+    const out = await vsPost('vs-lock', { m: VS.code, tok: VS.tok, round: VS.match.round, squad: squadIds(squad) });
+    VS.match = out.match;
+  } catch (e) {
+    if (e.status !== 409) {
+      btn.disabled = false;
+      btn.textContent = 'Lock in my five';
+      $('stripNote').textContent = 'Could not lock in: ' + e.message;
+      return;
+    }
+    await vsRefresh();
+  }
+  VS.active = false;
+  resetDraft();
+  draftWords();
+  show('viewVs');
+  renderVs();
+}
+
+/* one neutral line a day, the same voice for both squads */
+function vsLine(res) {
+  const ground = BIOME_NAME[res.terrain].toLowerCase();
+  const score = res.wins + '\u2013' + (5 - res.wins);
+  if (res.rallied) return 'Day ' + res.day + ': broken ' + score + ' in the ' + ground + ', got up anyway.';
+  if (!res.survived) return 'Fell on day ' + res.day + ': ' + res.opp + ' took the ' + ground + ' ' + score + '.';
+  return 'Day ' + res.day + ': held the ' + ground + ' ' + score + '.';
+}
+
+/* Both runs, counted up together. The phone plays the same years the server
+ * scored (runSeason in fair mode), so the numbers always match the result. */
+function playVsRound(r) {
+  VS.playing = true;
+  clearTimeout(VS.poll);
+  const m = VS.match, mine = VS.slot, them = 1 - mine;
+  const seed = roundSeed(m.code, r.n);
+  const sides = [mine, them].map(k => {
+    const sq = resolveSquad(r.squads[k]);
+    const days = [];
+    const res = runSeason(sq, seed, null, { fair: true, onDay: d => days.push(d) });
+    return { k, sq, days, res };
+  });
+  const len = Math.max(...sides.map(s => s.days.length));
+  $('vsBody').innerHTML = '<h2 class="h2h-title">Round ' + r.n + '</h2>' +
+    '<p class="h2h-lede">Same year, same ground, same packs. The longer run takes it.</p>' +
+    '<div class="h2h-sides">' + sides.map((s, i) =>
+      '<div class="h2h-side p' + s.k + '" id="vsSide' + i + '"><div class="nm">' + (i === 0 ? 'You' : esc(vsName(s.k))) + '</div>' +
+      '<div class="dn">0</div><div class="ds">days survived</div>' +
+      '<div class="mk">' + ROLES.map(role => '<span>' + badge(s.sq[role], role, 'mark') + '</span>').join('') + '</div>' +
+      '<div class="ln"></div></div>').join('') + '</div>' +
+    '<div id="vsAfter"><button class="btn ghost" id="vsSkip">Skip ahead</button></div>';
+  let d = 0, skip = false;
+  const step = Math.max(10, Math.min(60, Math.round(5200 / len)));
+  const paint = () => sides.forEach((s, i) => {
+    const el = $('vsSide' + i);
+    const res = s.days[Math.min(d, s.days.length) - 1];
+    if (!el || !res) return;
+    const over = d >= s.days.length;
+    const fell = over && !s.res.perfect;
+    el.querySelector('.dn').textContent = res.survived || res.rallied ? res.day : res.day - 1;
+    el.querySelectorAll('.mk span').forEach((sp, j) => {
+      const du = res.duels.find(x => x.myRole === ROLES[j]);
+      sp.classList.toggle('lost', !!du && !du.won);
+    });
+    el.querySelector('.ln').textContent = over && s.res.perfect ? 'All 365 days. Nothing took one off them.' : vsLine(res);
+    el.classList.toggle('out', fell);
+  });
+  const end = () => {
+    const w = r.winner;
+    sides.forEach((s, i) => $('vsSide' + i).classList.toggle('won', w === s.k));
+    const cls = w === mine ? '' : w === them ? ' lost' : ' even';
+    const title = w === mine ? 'You take round ' + r.n : w === them ? esc(vsName(them)) + ' takes round ' + r.n : 'Dead even. Round ' + r.n + ' again';
+    const sub = r.days[mine] !== r.days[them] ? r.days[mine] + ' days to ' + r.days[them]
+      : r.kills[mine] !== r.kills[them] ? r.days[mine] + ' days each &middot; ' + r.kills[mine] + ' duels won to ' + r.kills[them]
+      : r.first != null ? 'The same five, the same year. ' + (r.first === mine ? 'You' : esc(vsName(them))) + ' locked in first.'
+      : r.days[mine] + ' days each';
+    const last = m.winner != null && r.n === m.round;
+    $('vsAfter').innerHTML = '<div class="h2h-verdict' + cls + '"><b>' + title + '</b><span>' + sub + '</span></div>' +
+      '<button class="btn" id="vsOn">' + (last ? 'See the match' : 'On to the scores') + '</button>';
+    $('vsOn').onclick = () => { VS.playing = false; VS.seen = Math.max(VS.seen, r.n); vsStore(); renderVs(); };
+  };
+  const tick = () => {
+    if (!VS.playing) return;
+    d = skip ? len : d + 1;
+    paint();
+    if (d >= len) return end();
+    setTimeout(tick, step);
+  };
+  $('vsSkip').onclick = () => { skip = true; };
+  tick();
+}
 
 /* ---------------- profile screen ---------------- */
 function statTile(v, label) {
@@ -673,12 +998,18 @@ async function acceptCard(file) {
 }
 
 /* ---------------- navigation ---------------- */
-$('goPlay').onclick = () => { show('viewDraft'); };
+$('goPlay').onclick = () => {
+  /* coming from a head-to-head draft: start a clean solo one */
+  if (VS.active || VS.drafted) { VS.active = false; VS.drafted = false; resetDraft(); draftWords(); }
+  show('viewDraft');
+};
+$('goVs').onclick = () => openVs();
+$('vHome').onclick = () => { VS.playing = false; clearTimeout(VS.poll); show('viewHome'); };
 $('goBoard').onclick = () => { show('viewBoard'); openBoard('today'); };
 $('goProfile').onclick = () => { show('viewProfile'); paintProfile(); };
 $('pHome').onclick = () => show('viewHome');
 $('bHome').onclick = () => show('viewHome');
-$('dHome').onclick = () => show('viewHome');
+$('dHome').onclick = () => { if (VS.active) { show('viewVs'); renderVs(); } else show('viewHome'); };
 $('tabToday').onclick = () => openBoard('today');
 $('tabAll').onclick = () => openBoard('lifetime');
 /* profiles are made in Capra Lab, where the key-card save step cannot be skipped */
@@ -707,6 +1038,7 @@ $('rosterNote').textContent = ROSTER.length + ' animals across ' +
 loadMe();
 paintWho();
 show('viewHome');
+vsBoot();
 renderDiscs();
 renderField();
 showReels();

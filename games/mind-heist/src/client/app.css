@@ -298,6 +298,7 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
 .score.c1 { --c: var(--aqua); }
 .score.on { border-color: var(--c); }
 .score .nm { font-weight: 700; font-size: var(--t-sm); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.score .nm .sfx { font-size: inherit; }
 .score .amt { font-family: var(--f-display); font-weight: 800; font-size: clamp(22px, 2.4vw, 30px); color: var(--money); }
 .score .amt.neg { color: var(--wrong); }
 .score .ll { display: flex; gap: 4px; }
@@ -457,7 +458,7 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
 .members { padding: 18px; display: grid; gap: 14px; }
 .mem-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
 .mem { display: grid; justify-items: center; gap: 6px; padding: 14px 8px 10px; border-radius: 16px; background: var(--deep-2); border: 2px solid var(--edge); text-align: center; position: relative; animation: pop .35s cubic-bezier(.2, 1.6, .4, 1); }
-.mem b { font-weight: 700; font-size: var(--t-sm); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mem b { font-weight: 700; font-size: var(--t-sm); max-width: 100%; overflow-wrap: anywhere; }
 .mem .tag { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--hi); color: var(--ink); }
 .mem .rm { position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; border-radius: 8px; border: 1.5px solid var(--edge); background: var(--deep); color: var(--chalk); font-weight: 800; line-height: 1; padding: 0; }
 .mem.spec { opacity: .55; }
@@ -466,10 +467,16 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
 .check input { width: 22px; height: 22px; accent-color: var(--hi); }
 
 /* ---------- captains / coin / draft ---------- */
-.show { padding: 26px 22px; display: grid; gap: 20px; justify-items: center; text-align: center; margin-top: 14px; }
-.show h2 { font-size: var(--t-2xl); line-height: .95; }
-.duo { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; width: 100%; max-width: 760px; }
-.cap { display: grid; justify-items: center; gap: 10px; padding: 18px 12px; border-radius: 22px; border: var(--line) solid var(--ink); color: var(--ink); box-shadow: 5px 5px 0 var(--cobalt); }
+.show { padding: 26px 22px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; justify-items: center; text-align: center; margin-top: 14px; }
+.show h2 { font-size: var(--t-2xl); line-height: .95; justify-self: stretch; }
+/* Names never break or run off the screen: they stay on one line and the type shrinks to fit
+   (useFit in room.js), up to all 17 characters. */
+.pname, .fit-name { white-space: nowrap; overflow-wrap: normal; }
+.fit-name { display: block; justify-self: stretch; min-width: 0; max-width: 100%; }
+.toss h2 .ln { display: block; }
+.toss h2 .ln + .ln { margin-top: .12em; }
+.duo { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 16px; align-items: center; width: 100%; max-width: 760px; }
+.cap { display: grid; justify-items: center; gap: 10px; min-width: 0; padding: 18px 12px; border-radius: 22px; border: var(--line) solid var(--ink); color: var(--ink); box-shadow: 5px 5px 0 var(--cobalt); }
 .cap.c0 { background: var(--gum); } .cap.c1 { background: var(--aqua); }
 .cap .av { background: rgba(255, 255, 255, .6); border-color: var(--ink); }
 .cap b { font-family: var(--f-display); font-weight: 800; font-size: var(--t-xl); line-height: 1; overflow-wrap: anywhere; }
@@ -482,7 +489,7 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
 @keyframes flip { from { transform: rotateY(0) translateY(0); } 40% { transform: rotateY(1440deg) translateY(-60px); } to { transform: rotateY(var(--end)) translateY(0); } }
 .face { position: absolute; inset: 0; border-radius: 50%; display: grid; place-items: center; backface-visibility: hidden; border: 5px solid var(--ink); box-shadow: inset 0 0 0 10px rgba(255, 255, 255, .45); font-size: 82px; }
 .face.f0 { background: var(--gum); } .face.f1 { background: var(--aqua); transform: rotateY(180deg); }
-.toss-line { font-size: var(--t-lg); font-weight: 700; max-width: 40ch; min-height: 2.6em; }
+.toss-line { font-size: var(--t-lg); font-weight: 700; max-width: 40ch; min-height: 2.6em; justify-self: stretch; margin-inline: auto; }
 .toss-line b { color: var(--money); }
 .draft { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr); gap: 14px; margin-top: 14px; align-items: start; }
 .draft .crew-col { padding: 14px; border-radius: 20px; border: var(--line) solid var(--ink); display: grid; gap: 8px; align-content: start; min-height: 220px; color: var(--ink); box-shadow: 5px 5px 0 var(--cobalt); }
@@ -499,8 +506,9 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
 
 /* ---------- final ---------- */
 .final { display: grid; gap: 18px; margin-top: 14px; }
-.winner { padding: 28px 22px; display: grid; gap: 12px; justify-items: center; text-align: center; color: var(--ink); border: 4px solid var(--ink); }
-.winner h1 { font-size: var(--t-3xl); line-height: .88; letter-spacing: -0.04em; }
+.winner { padding: 28px 22px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; justify-items: center; text-align: center; color: var(--ink); border: 4px solid var(--ink); }
+.winner h1 { font-size: var(--t-3xl); line-height: .88; letter-spacing: -0.04em; justify-self: stretch; }
+.winner p { max-width: 100%; }
 .winner .tag { background: var(--ink); color: var(--chalk); }
 .winner.c0 { background: var(--gum); } .winner.c1 { background: var(--aqua); } .winner.tie, .winner.solo { background: var(--hi); }
 .hauls { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -1052,6 +1060,10 @@ html[data-theme="bar"] body::before {
   .crew-card .meta { display: none; }
   .score { padding: 6px 10px; gap: 8px; border-left-width: 6px; }
   .score .ll { display: none; }
+  .score .nm .sfx { display: none; }
+  .scores.tall .score { flex-wrap: wrap; row-gap: 0; padding-block: 4px; }
+  .scores.tall .score .nm { flex: 1 0 100%; font-size: 13px; line-height: 1.15; }
+  .scores.tall .score .amt { line-height: 1; }
   .score .amt { font-size: 21px; }
   .duo { grid-template-columns: 1fr; }
   .hauls { grid-template-columns: 1fr; }
@@ -1304,14 +1316,24 @@ html[data-theme="bar"] body::before {
   .invite > .row { grid-column: 1 / -1; flex-wrap: nowrap; gap: 12px; }
   .qr { width: 104px; height: 104px; padding: 6px; border-radius: 12px; flex: none; }
   .invite > p { font-size: 13px !important; }
+  /* Once players are in, the invite card folds to the code and one button (Send invite opens the
+     full invite sheet with the QR, as does the room code at the top), so the crew and the game's options sit high on the screen. */
+  .invite.compact { grid-template-columns: minmax(0, 1fr) auto; align-items: center; row-gap: 2px; }
+  .invite.compact > .url, .invite.compact > p, .invite.compact .qr, .invite.compact .stack > .btn.sm { display: none; }
+  .invite.compact .code { font-size: 40px; line-height: 1; }
+  .invite.compact > .row { grid-column: 2; grid-row: 1 / span 2; }
   .members { padding: 12px; gap: 8px; }
-  .mem-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; }
-  .mem { grid-template-columns: auto minmax(0, 1fr); justify-items: start; align-items: center; gap: 8px; padding: 6px 8px; text-align: left; }
+  /* Chips size to their names, so all 17 characters show. */
+  .mem-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+  .mem { flex: 1 1 auto; min-width: 96px; grid-template-columns: auto minmax(0, 1fr); justify-items: start; align-items: center; gap: 8px; padding: 6px 8px; text-align: left; }
+  .mem:has(.rm) { padding-right: 32px; }
+  .mem b { white-space: nowrap; overflow-wrap: normal; }
   .mem .av.lg { width: 32px; height: 32px; font-size: 18px; }
   .mem .tag { top: -8px; left: auto; right: 6px; transform: none; font-size: 10px; }
   .mem .rm { top: 50%; transform: translateY(-50%); right: 4px; width: 22px; height: 22px; }
   .opt-grid { gap: 8px; }
-  .opt-row { gap: 4px; }
+  /* A setting's name and its pills share a line when they fit. */
+  .opt-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 10px; }
   .opt-row > span { font-size: 14px; }
   .opt-row small { display: none; }
   .opt-row .pill { min-height: 32px; padding: 2px 10px; font-size: 13px; }
@@ -1356,9 +1378,10 @@ html[data-theme="bar"] body::before {
   .haul-card .mems { display: none !important; }
   .mine .big { font-size: 26px; }
   .final > .row .btn { min-height: 44px; }
-  /* Host: start the game without scrolling past every setting. */
-  .opt-grid > .btn.big { order: -2; min-height: 54px; font-size: 20px; }
-  .opt-grid > .check { order: -1; }
+  /* Host (JC, Nov 8 2026: "the take and double options aren't there"): the game's options come
+     first, right under the crew, and the start button rides just above the dock while they scroll
+     by, so nobody starts without seeing them. */
+  .opt-grid > .start-btn { position: sticky; bottom: calc(var(--dock) + 6px); z-index: 30; min-height: 54px; font-size: 20px; }
 }
 
 /* ---------- the fun fact, on its own screen ---------- */

@@ -48,6 +48,9 @@ export const HACKER_RUN = 3;           // beat the Hacker and your crew picks th
 // No crew picks more than four tiles in a row (JC, Nov 2026: with every option on, one crew could
 // pick six). A Hacker run is cut to fit, and a Double that can't add a pick plays as a plain tile.
 export const MAX_STREAK = 4;
+// And nobody picks more than two in a row (JC, Nov 8 2026, a two-player game: "The host is
+// picking too many tiles in a row"). A crew of one stops at two; crews of two or more at four.
+export const PLAYER_STREAK = 2;
 // A special only shows up while there are enough tiles left to use it.
 export const DOUBLE_MIN_LEFT = 3;      // the Double plus at least two more
 export const HACKER_MIN_LEFT = 4;      // the Hacker plus a full run of three
@@ -164,7 +167,9 @@ export function crewName(room, k) {
   const c = room.crews && room.crews[k];
   if (!c) return k ? 'Aqua crew' : 'Bubblegum crew';
   const m = room.members[c.cap];
-  return m ? `${m.name}'s crew` : (k ? 'Aqua crew' : 'Bubblegum crew');
+  // Two players: each is a crew of one, so the name is the crew (JJ-Capra, not JJ-Capra's crew).
+  const duo = room.crews.length === 2 && room.crews.every(x => x.mem.length === 1);
+  return m ? (duo ? m.name : `${m.name}'s crew`) : (k ? 'Aqua crew' : 'Bubblegum crew');
 }
 export function picker(room, k = room.turn) {
   if (!room.crews) return null;
@@ -228,8 +233,14 @@ function tilesLeft(room) {
 
 // How many tiles in a row crew k has picked, counting the one on the clock.
 function streakOf(room, k) { return room.streak && room.streak.crew === k ? room.streak.n : 0; }
-// The picks a Hacker run would give crew k now, cut so the crew stays within four in a row.
-function runIf(room, k) { return Math.max(0, Math.min(HACKER_RUN, MAX_STREAK - streakOf(room, k))); }
+// The most tiles crew k may pick in a row: two per player on it, never more than four.
+export function streakCap(room, k) {
+  const c = room.crews && room.crews[k];
+  const n = c ? c.mem.filter(id => room.members[id]).length : 1;
+  return Math.min(MAX_STREAK, PLAYER_STREAK * Math.max(1, n));
+}
+// The picks a Hacker run would give crew k now, cut so the crew stays within its cap.
+function runIf(room, k) { return Math.max(0, Math.min(HACKER_RUN, streakCap(room, k) - streakOf(room, k))); }
 
 function startAsk(room, now, clockMs = room.settings.clock * 1000) {
   const cur = room.cur;
@@ -311,9 +322,10 @@ function resolve(room, picked, now) {
   const who = room.members[cur.mid] ? room.members[cur.mid].name : 'Someone';
   const what = `${room.board[cur.c].name} $${tile.v}`;
   if (cur.hidden) pushFeed(room, now, `${crewName(room, cur.crew)} had a Hidden 50/50 on that one`, cur.crew, 'fifty');
-  if (right) pushFeed(room, now, `${who} got ${what} right (+$${total})`, cur.crew, 'right');
-  if (right && room.run && room.run.crew === cur.crew && spOf(tile) === 'hacker') pushFeed(room, now, `Hacker beaten. ${crewName(room, cur.crew)} picks the next ${room.run.left === 1 ? 'tile' : `${room.run.left} tiles`}.`, cur.crew, 'hacker');
-  else if (picked == null) pushFeed(room, now, `${who} ran out of time on ${what}${delta ? ` (-$${-delta})` : ''}`, cur.crew, 'wrong');
+  if (right) {
+    pushFeed(room, now, `${who} got ${what} right (+$${total})`, cur.crew, 'right');
+    if (room.run && room.run.crew === cur.crew && spOf(tile) === 'hacker') pushFeed(room, now, `Hacker beaten. ${crewName(room, cur.crew)} picks the next ${room.run.left === 1 ? 'tile' : `${room.run.left} tiles`}.`, cur.crew, 'hacker');
+  } else if (picked == null) pushFeed(room, now, `${who} ran out of time on ${what}${delta ? ` (-$${-delta})` : ''}`, cur.crew, 'wrong');
   else pushFeed(room, now, `${who} missed ${what}${delta ? ` (-$${-delta})` : ''}`, cur.crew, 'wrong');
 }
 
@@ -552,13 +564,13 @@ function advance(room, now) {
   if (again && run) run.left += 1; // a Double inside a Hacker run adds a pick (only while under the cap)
   let keep = again || (run && run.left > 0);
   if (run && run.left <= 0) room.run = null;
-  const capped = keep && room.crews.length === 2 && streakOf(room, k) >= MAX_STREAK;
+  const capped = keep && room.crews.length === 2 && streakOf(room, k) >= streakCap(room, k);
   if (capped) { keep = false; room.run = null; }
   if (room.crews.length === 2) room.turn = keep ? k : 1 - k;
   room.phase = 'board';
   room.phaseAt = now;
   if (again && keep) pushFeed(room, now, `Double! ${crewName(room, room.turn)} picks again.`, room.turn, 'double');
-  if (capped) pushFeed(room, now, `${crewName(room, k)} picked ${MAX_STREAK} in a row. ${crewName(room, room.turn)} is up.`, room.turn, 'info');
+  if (capped) pushFeed(room, now, `${crewName(room, k)} picked ${streakOf(room, k)} in a row. ${crewName(room, room.turn)} is up.`, room.turn, 'info');
 }
 
 function finishBoard(room, now) {
@@ -851,11 +863,11 @@ export function act(room, actor, a, now, deckLookup) {
       if (room.run && room.run.crew === room.turn) room.run.left -= 1;
       if (!room.streak || room.streak.crew !== room.turn) room.streak = { crew: room.turn, n: 0 };
       room.streak.n += 1;
-      // A Double that can't add a pick (four in a row already, or a Hacker run that already
-      // reaches four) plays as a plain tile.
+      // A Double that can't add a pick (the crew's cap reached already, or a Hacker run that
+      // already reaches it) plays as a plain tile.
       if (tile.sp === 'double' && room.kind !== 'solo' && room.crews.length === 2) {
-        const n = room.streak.n, run = room.run && room.run.crew === room.turn ? room.run.left : 0;
-        if (n >= MAX_STREAK || run >= MAX_STREAK - n) tile.off = true;
+        const n = room.streak.n, run = room.run && room.run.crew === room.turn ? room.run.left : 0, cap = streakCap(room, room.turn);
+        if (n >= cap || run >= cap - n) tile.off = true;
       }
       room.cur = { c: a.c, r: a.r, crew: room.turn, mid: who, phase: 'intro', removed: null, sug: {}, pickedAt: now };
       const rival = isDuel(room) ? picker(room, 1 - room.turn) : null;
@@ -1171,7 +1183,7 @@ export function view(room, viewerPid, now, { tv = false } = {}) {
     draft: room.draft && { turn: room.draft.turn, pool: room.draft.pool, last: room.draft.log[room.draft.log.length - 1] || null },
     turn: room.turn, picker: room.crews ? picker(room) : null,
     run: room.run ? { crew: room.run.crew, left: room.run.left } : null,
-    streak: room.streak ? { crew: room.streak.crew, n: room.streak.n, max: MAX_STREAK } : null,
+    streak: room.streak ? { crew: room.streak.crew, n: room.streak.n, max: streakCap(room, room.streak.crew) } : null,
     board: room.board && room.board.map(col => ({
       name: col.name,
       tiles: col.tiles.map(t => ({ v: t.v, taken: !!t.res, sp: t.res ? spOf(t) : null, tk: !!t.tk,

@@ -108,7 +108,8 @@ test('no crew picks more than four tiles in a row, with every option on', () => 
     while (g.room.phase === 'board' && guard++ < 40) {
       const k = g.room.turn;
       n = k === last ? n + 1 : 1; last = k;
-      assert.ok(n <= E.MAX_STREAK, `seed ${seed}, ${players} players: crew ${k} picked ${n} in a row`);
+      assert.ok(n <= E.streakCap(g.room, k), `seed ${seed}, ${players} players: crew ${k} picked ${n} in a row`);
+      assert.ok(n <= (players === 2 ? 2 : E.MAX_STREAK), `seed ${seed}, ${players} players: crew ${k} picked ${n} in a row`);
       const left = cells(g.room).filter(x => !x.t.res);
       play(g, left[Math.floor(rnd() * left.length)], rnd() < 0.75);
     }
@@ -116,7 +117,7 @@ test('no crew picks more than four tiles in a row, with every option on', () => 
 });
 
 test('beat the Hacker on the second pick in a row: the run is cut to two', () => {
-  const g = game({ players: 2, settings: { ...ALL_ON, take: false } });
+  const g = game({ players: 4, settings: { ...ALL_ON, take: false } });
   g.setup();
   const A = g.room.turn;
   const dbl = open(g.room, t => t.sp === 'double');
@@ -124,7 +125,7 @@ test('beat the Hacker on the second pick in a row: the run is cut to two', () =>
   assert.equal(g.room.turn, A, 'the Double keeps the turn');
   const hk = open(g.room, t => t.sp === 'hacker');
   g.act(E.picker(g.room), { type: 'pick', c: hk.c, r: hk.r });
-  assert.equal(E.view(g.room, 'p1', g.now).cur.runIf, 2, 'the takeover says two picks follow');
+  assert.equal(E.view(g.room, 'p0', g.now).cur.runIf, 2, 'the takeover says two picks follow');
   g.tick(E.INTRO_MS);
   g.act(g.room.cur.mid, { type: 'lock', i: hk.t.ans });
   assert.deepEqual(g.room.run, { crew: A, left: 2 });
@@ -136,7 +137,7 @@ test('beat the Hacker on the second pick in a row: the run is cut to two', () =>
 });
 
 test('a Double inside a Hacker run plays as a plain tile', () => {
-  const g = game({ players: 2, settings: { ...ALL_ON, take: false } });
+  const g = game({ players: 4, settings: { ...ALL_ON, take: false } });
   g.setup();
   const A = g.room.turn;
   play(g, open(g.room, t => t.sp === 'hacker'), true);
@@ -144,13 +145,60 @@ test('a Double inside a Hacker run plays as a plain tile', () => {
   const dbl = open(g.room, t => t.sp === 'double');
   g.act(E.picker(g.room), { type: 'pick', c: dbl.c, r: dbl.r });
   assert.equal(g.room.phase, 'ask', 'no Double takeover');
-  assert.equal(E.view(g.room, 'p1', g.now).cur.sp, null);
+  assert.equal(E.view(g.room, 'p0', g.now).cur.sp, null);
   g.act(g.room.cur.mid, { type: 'lock', i: dbl.t.ans });
   g.tick(E.REVEAL_MS);
   play(g, open(g.room, t => !t.sp), true);
   play(g, open(g.room, t => !t.sp), true);
   assert.equal(g.room.turn, 1 - A, 'still four in a row: Hacker plus three');
-  assert.equal(E.view(g.room, 'p1', g.now).board[dbl.c].tiles[dbl.r].sp, null, 'never shows as a Double');
+  assert.equal(E.view(g.room, 'p0', g.now).board[dbl.c].tiles[dbl.r].sp, null, 'never shows as a Double');
+});
+
+// JC, Nov 8 2026, a two-player game: "The host is picking too many tiles in a row."
+test('two players: nobody picks more than two tiles in a row', () => {
+  const g = game({ players: 2, settings: { ...ALL_ON, take: false } });
+  g.setup();
+  const A = g.room.turn;
+  const hk = open(g.room, t => t.sp === 'hacker');
+  g.act(E.picker(g.room), { type: 'pick', c: hk.c, r: hk.r });
+  assert.equal(E.view(g.room, 'p0', g.now).cur.runIf, 1, 'beat the Hacker and one pick follows');
+  g.tick(E.INTRO_MS);
+  g.act(g.room.cur.mid, { type: 'lock', i: hk.t.ans });
+  assert.deepEqual(g.room.run, { crew: A, left: 1 });
+  assert.match(g.room.feed[g.room.feed.length - 1].text, /picks the next tile\./);
+  g.tick(E.REVEAL_MS);
+  assert.equal(g.room.turn, A, 'the Hacker keeps the turn for one more');
+  // A Double on that second pick can't add a third: it plays plain and the turn passes.
+  const dbl = open(g.room, t => t.sp === 'double');
+  g.act(E.picker(g.room), { type: 'pick', c: dbl.c, r: dbl.r });
+  assert.equal(g.room.phase, 'ask', 'no Double takeover on a second straight pick');
+  g.act(g.room.cur.mid, { type: 'lock', i: dbl.t.ans });
+  g.tick(E.REVEAL_MS);
+  assert.equal(g.room.turn, 1 - A, 'two in a row, then the turn passes');
+  assert.equal(E.view(g.room, 'p0', g.now).streak.max, 2);
+
+  // A Double on a first pick still gives the second.
+  const h = game({ players: 2, settings: { ...ALL_ON, hacker: false, take: false } });
+  h.setup();
+  const B = h.room.turn;
+  play(h, open(h.room, t => t.sp === 'double'), true);
+  assert.equal(h.room.turn, B, 'the Double keeps the turn');
+  play(h, open(h.room, t => !t.sp), true);
+  assert.equal(h.room.turn, 1 - B, 'then it passes');
+});
+
+test('the play-by-play says right or missed, never both', () => {
+  const g = game({ players: 2, settings: { ...ALL_ON, take: false } });
+  g.setup();
+  for (let i = 0; i < 6 && g.room.phase === 'board'; i++) {
+    const before = g.room.feed.length;
+    const right = i % 2 === 0;
+    play(g, open(g.room), right);
+    const lines = g.room.feed.slice(before).map(f => f.text).join(' | ');
+    if (right) assert.doesNotMatch(lines, /missed|ran out/, lines);
+    else assert.doesNotMatch(lines, /got .* right/, lines);
+    assert.doesNotMatch(lines, /-\$-/, lines);
+  }
 });
 
 test('a Double still gives another pick when it fits under four', () => {

@@ -9,6 +9,8 @@ import { createApi, route, seedForNow } from '../server/api.js';
 import { memoryStore } from '../server/stores.js';
 import { ROLES } from '../shared/constants.js';
 import { ROSTER } from '../shared/roster.js';
+import { resolveSquad, runSeason, simulateDay, rating } from '../shared/engine.js';
+import { roundSeed, roundWinner } from '../shared/versus.js';
 
 let passed = 0;
 const test = async (name, fn) => {
@@ -338,6 +340,112 @@ await test('an unknown route is a 404, not a crash', async () => {
   const api = fresh();
   const out = await route(api, 'GET', '/api/nope', q());
   assert.equal(out.status, 404);
+});
+
+/* ---------------- head to head (JC, Nov 8 2026) ---------------- */
+console.log('\nhead to head');
+
+const vs = (api, op, body) => route(api, 'POST', '/api/' + op, q(), body);
+
+await test('a match: make it, join it, both lock, the longer run takes the round', async () => {
+  const api = fresh();
+  const host = await vs(api, 'vs-new', { name: 'JJ-Capra', bestOf: 3 });
+  assert.match(host.code, /^[A-Z]{4}$/);
+  assert.equal(host.match.need, 2, 'best of three: first to two');
+  assert.equal(host.match.players[1], null);
+  const early = await vs(api, 'vs-lock', { m: host.code, tok: host.tok, round: 1, squad: pick(1) });
+  assert.equal(early.status, 409, 'nobody to play yet');
+  const riv = await vs(api, 'vs-join', { m: host.code, name: 'DA_ROMAN_EMPIRE' });
+  assert.equal(riv.slot, 1);
+  assert.equal(riv.match.players[1].name, 'DA_ROMAN_EMPIRE');
+  assert.equal((await vs(api, 'vs-join', { m: host.code, name: 'Third' })).status, 409, 'two seats only');
+  const back = await vs(api, 'vs-join', { m: host.code, tok: riv.tok });
+  assert.equal(back.slot, 1, 'the same phone keeps its seat');
+
+  const a = await vs(api, 'vs-lock', { m: host.code, tok: host.tok, round: 1, squad: pick(11) });
+  assert.ok(a.ok);
+  assert.deepEqual(a.match.rounds[0].locked, [true, false]);
+  assert.equal(a.match.rounds[0].squads, undefined, 'squads stay hidden until both lock');
+  assert.equal((await vs(api, 'vs-lock', { m: host.code, tok: host.tok, round: 1, squad: pick(12) })).status, 409, 'locked is locked');
+  assert.equal((await vs(api, 'vs-lock', { m: host.code, tok: 'nope', round: 1, squad: pick(12) })).status, 403);
+  const b = await vs(api, 'vs-lock', { m: host.code, tok: riv.tok, round: 1, squad: pick(22) });
+  const r1 = b.match.rounds[0];
+  assert.ok(r1.squads && r1.days, 'both runs are in');
+  const runs = [pick(11), pick(22)].map(ids => runSeason(resolveSquad(ids), roundSeed(host.code, 1), null, { fair: true }));
+  assert.deepEqual(r1.days, runs.map(x => x.days), 'the server plays the same years the phones animate');
+  if (runs[0].days !== runs[1].days) assert.equal(r1.winner, runs[0].days > runs[1].days ? 0 : 1, 'the longer run takes it');
+  if (r1.winner >= 0) assert.equal(b.match.score[r1.winner], 1);
+  assert.equal(b.match.round, r1.winner >= 0 ? 2 : 2);
+  const view = await route(api, 'GET', '/api/vs', q('m=' + host.code));
+  assert.deepEqual(view.rounds[0].days, r1.days, 'stored once, read back the same');
+});
+
+await test('the same five on both sides: the same year, so the first to lock in takes it', async () => {
+  const api = fresh();
+  const h = await vs(api, 'vs-new', { name: 'A', bestOf: 3 });
+  const r = await vs(api, 'vs-join', { m: h.code, name: 'B' });
+  await vs(api, 'vs-lock', { m: h.code, tok: r.tok, round: 1, squad: pick(5) });
+  await new Promise(res => setTimeout(res, 5));
+  const out = await vs(api, 'vs-lock', { m: h.code, tok: h.tok, round: 1, squad: pick(5) });
+  const r1 = out.match.rounds[0];
+  assert.equal(r1.days[0], r1.days[1]);
+  assert.equal(r1.kills[0], r1.kills[1]);
+  assert.equal(r1.winner, 1, 'B locked in first');
+  assert.equal(r1.first, 1);
+  assert.deepEqual(out.match.score, [0, 1]);
+  assert.equal(roundWinner({ days: 9, kills: 9, at: 'x' }, { days: 9, kills: 9, at: 'x' }), -1, 'only a dead heat to the moment replays');
+});
+
+await test('both players live the same year: ground, matchups and rolls', async () => {
+  const A = resolveSquad(pick(3)), B = resolveSquad(pick(4));
+  for (const day of [1, 50, 200]) {
+    const x = simulateDay(day, A, 'vs:TEST:1', null, true), y = simulateDay(day, B, 'vs:TEST:1', null, true);
+    assert.equal(x.terrain, y.terrain);
+    assert.equal(x.opp, y.opp);
+    assert.deepEqual(x.duels.map(d => d.theirRole), y.duels.map(d => d.theirRole));
+  }
+});
+
+await test('best of five ends at three wins, then a rematch keeps both seats', async () => {
+  const api = fresh();
+  const h = await vs(api, 'vs-new', { name: 'A', bestOf: 5 });
+  const r = await vs(api, 'vs-join', { m: h.code, name: 'B' });
+  /* the best squad there is against a scrappy one, until the match is decided */
+  const used = new Set(), best = {};
+  for (const R of ROLES) {
+    const c = ROSTER.filter(x => x.roles.includes(R) && !used.has(x.id))
+      .sort((x, y) => rating(y, R) - rating(x, R))[0];
+    used.add(c.id); best[R] = c.id;
+  }
+  let m = null;
+  for (let n = 1; n <= 9; n++) {
+    m = (await vs(api, 'vs-lock', { m: h.code, tok: h.tok, round: n, squad: best })).match;
+    m = (await vs(api, 'vs-lock', { m: h.code, tok: r.tok, round: n, squad: pick(100 + n) })).match;
+    if (m.winner != null) break;
+  }
+  assert.equal(m.need, 3);
+  assert.equal(m.score[m.winner], 3, 'the winner has three');
+  assert.equal((await vs(api, 'vs-lock', { m: h.code, tok: h.tok, round: m.round + 1, squad: best })).status, 409, 'over is over');
+  const again1 = await vs(api, 'vs-again', { m: h.code, tok: r.tok });
+  const again2 = await vs(api, 'vs-again', { m: h.code, tok: h.tok });
+  assert.equal(again1.code, again2.code, 'both phones land in the same rematch');
+  assert.notEqual(again1.code, h.code);
+  assert.equal(again1.slot, 1);
+  assert.equal(again2.slot, 0);
+  assert.deepEqual(again2.match.score, [0, 0]);
+  assert.equal(again2.match.players[1].name, 'B');
+  const old = await route(api, 'GET', '/api/vs', q('m=' + h.code));
+  assert.equal(old.next, again1.code, 'the old match points at the rematch');
+});
+
+await test('a signed-in player plays under their lab name; a wrong key is refused', async () => {
+  const api = fresh();
+  const made = await route(api, 'POST', '/api/profile/create', q(), { name: 'Keyholder' });
+  const h = await vs(api, 'vs-new', { name: 'Keyholder', code: made.code, bestOf: 3 });
+  assert.equal(h.match.players[0].handle, 'keyholder');
+  assert.equal((await vs(api, 'vs-new', { name: 'Keyholder', code: '000000' })).status, 401);
+  assert.equal((await vs(api, 'vs-join', { m: h.code, name: 'Keyholder', code: made.code })).status, 409, 'not your own match');
+  assert.equal((await vs(api, 'vs-new', { name: '' })).status, 400, 'a guest needs a name');
 });
 
 console.log('\n' + passed + ' passing\n');
