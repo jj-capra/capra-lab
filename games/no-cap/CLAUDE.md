@@ -16,16 +16,24 @@ takes out all three.
 ## How it plays (JC's decisions, Nov 8 2026)
 
 - **A card is one sentence with four claims**: three facts and one cap (made up).
+- **One subject per card** (JC, Nov 9 2026: "I would prefer all statements to be related... on a
+  President and have three facts and a fiction about a certain famous president. The related piece
+  makes it harder to decipher the fiction"): every card has an `about` (a president, a place, an
+  invention...) shown on every phone above the card ("THIS ONE'S ABOUT"), and all four claims are
+  about it. A subject appears once in the whole game (`docs/subjects.md`).
 - **Live, a reader reads it** (JC: "A reader reads it"): players take turns as reader, one card
   each in order. The reader's phone shows the sentence with the cap marked; they read it out loud
   with a straight face and tap Done (or the clock starts by itself after 60 s; the host can start
   it for a stuck reader). Everyone else's phone shows only "X is reading" until then.
 - **Tap the facts one by one** (JC: "Tap facts one by one"): the four claims pop up; each fact
-  tapped locks green; tapping the cap busts you for the card. 25 seconds; the reveal comes early
-  once everyone is done or busted.
+  tapped locks green; tapping the cap busts you for the card. 45 seconds (JC, Nov 9 2026: "Give
+  the No Cap 20 more seconds... Sometimes it takes longer to read depending on the deck"); the
+  reveal comes early once everyone is done or busted.
 - **Reveal** (8 s): the cap stamped, the real story (`real`), everyone's points for the card.
-- **Points** (`shared/rules.mjs`): 50 a fact, 100 more for all three plus up to 100 for speed;
-  busted keeps nothing for that card; the reader gets 50 for every player busted on their card.
+- **Points** (`shared/rules.mjs`): 50 a fact, 100 more for all three plus up to 150 for speed
+  (JC: "In head-to-head, the quicker to answer gets more points"), and in a live game 50 more for
+  the first to find all three on the card (⚡ first! at the reveal); busted keeps nothing for that
+  card; the reader gets 50 for every player busted on their card.
 - A live game deals enough cards that everyone reads about equally (2 players: 8, 3: 9, 4: 8...),
   2 to 12 players. The host can deal again with any deck.
 - **Solo and challenges**: ten cards on your own (you read it yourself; tap Go for each card). At
@@ -38,8 +46,8 @@ takes out all three.
 
 `decks/<shelf>/<id>.json`, written to `docs/DECK_SPEC.md`; every deck is fact-checked by someone
 who didn't write it (`docs/CHECK_SPEC.md`, logs in `docs/checks/`). The build refuses a deck that
-fails `problems()` in `server/load.mjs` (four [bracketed] claims, lengths, caps spread across
-positions, a `real` line, a source per claim). Check one with
+fails `problems()` in `server/load.mjs` (an `about`, four [bracketed] claims, lengths, caps
+spread across positions, a `real` line, a source per claim) or repeats a claim (`duplicates()`). Check one with
 `node games/no-cap/scripts/check-decks.mjs <file>`. The build bakes the decks (without their
 sources) into `server/decks.gen.mjs` (not committed), so caps never reach `public/`.
 

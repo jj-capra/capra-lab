@@ -2,150 +2,162 @@
   "id": "scroll-back",
   "title": "Scroll Back",
   "shelf": "middle",
-  "blurb": "Phones, games, space and sports since 2000, scrambled up with stuff way older.",
+  "blurb": "Phones, games, space and sports since 2000. Three facts per card are real, one is cap.",
   "cards": [
     {
       "id": "sb01",
-      "say": "[Tetris was invented in Moscow, back in the Soviet Union], [the PlayStation started out as a Sony project with Nintendo], [Mario was a carpenter before he became a plumber], and [the first version of Minecraft came out before Roblox launched].",
+      "about": "YouTube",
+      "say": "YouTube [had a clip filmed at a zoo as its very first video], [was founded before Voyager 1 reached interstellar space], [got its first video with a billion views in 2012], and [was bought by Google in 2010, five years after it started].",
       "cap": 3,
-      "real": "Roblox launched in 2006. Minecraft's first public test version didn't come out until 2009.",
+      "real": "Google bought YouTube in 2006 for 1.65 billion dollars, less than two years after the site started in 2005.",
       "src": [
-        "https://www.computerhistory.org/revolution/computer-games/16/194/811",
-        "https://en.wikipedia.org/wiki/PlayStation_(console)",
-        "https://wtop.com/entertainment/2020/09/surprising-reason-nintendo-made-super-mario-a-plumber-35-years-ago/",
-        "https://www.pocketgamer.com/roblox/when-was-roblox-made-complete-history"
+        "https://en.wikipedia.org/wiki/Me_at_the_zoo",
+        "https://en.wikipedia.org/wiki/Voyager_1",
+        "https://guinnessworldrecords.com/world-records/107048-first-video-to-receive-one-billion-views",
+        "https://en.wikipedia.org/wiki/YouTube"
       ]
     },
     {
       "id": "sb02",
-      "say": "[the first item sold on eBay was a broken laser pointer], [the first YouTube video showed a cat playing the piano], [one of the first webcams was set up just to watch a coffee pot], and [Google's name comes from googol, a 1 followed by 100 zeros].",
-      "cap": 1,
-      "real": "The first YouTube video, posted in 2005, is an 18-second clip of a co-founder at the San Diego Zoo talking about elephants.",
+      "about": "Minecraft",
+      "say": "Minecraft [came out before the first version of Roblox], [started out as a test version called Cave Game], [got its creeper from a mistake while making a pig], and [was bought by Microsoft, along with its maker, for 2.5 billion dollars].",
+      "cap": 0,
+      "real": "Roblox launched in 2006. Minecraft's first public test version didn't come out until 2009.",
       "src": [
-        "https://time.com/4018841/first-item-sold-listed-ebay/",
-        "https://www.nbcwashington.com/news/national-international/20-years-ago-an-18-second-video-recorded-at-the-san-diego-zoo-launched-youtube/3898015/",
-        "https://en.wikipedia.org/wiki/Trojan_Room_coffee_pot",
-        "https://factly.in/the-word-google-was-derived-from-the-mathematical-number-googol-officially-google-has-no-full-form"
+        "https://www.pocketgamer.com/roblox/when-was-roblox-made-complete-history",
+        "https://minefort.com/blog/when-was-minecraft-released",
+        "https://collections.vam.ac.uk/item/O1349223/creeper-action-figure-persson-markus (V&A: created by accident when Persson wrongly coded a pig)",
+        "https://en.wikipedia.org/wiki/Mojang_Studios (Microsoft agreed to buy Mojang for 2.5 billion dollars in September 2014)"
       ]
     },
     {
       "id": "sb03",
-      "say": "[in 2018, a rocket launched a sports car into orbit around the Sun], [in 2022, NASA crashed a spacecraft into an asteroid on purpose], [in 2019, the Hubble telescope took the first photo of a black hole], and [in 2021, a helicopter made the first powered flight on another planet].",
+      "about": "Wordle",
+      "say": "Wordle [started as a gift from a software engineer to his partner], [had only 90 players at the start of November 2021], [was bought by the New York Times for about 100 million dollars], and [got the idea for its emoji share grid from friends in New Zealand].",
       "cap": 2,
-      "real": "The first black hole photo came from the Event Horizon Telescope, a team of radio telescopes linked up around the world, not from Hubble.",
+      "real": "The New York Times bought Wordle in January 2022 for a price in the low seven figures, meaning a few million dollars.",
       "src": [
-        "https://www.space.com/43242-spacex-falcon-heavy-starman-tesla-launch-anniversary.html",
-        "https://nasa.gov/feature/nasa-dart-imagery-shows-changed-orbit-of-target-asteroid",
-        "https://www.technologyreview.com/2019/04/10/136124/this-is-the-first-ever-photo-of-a-black-hole/",
-        "https://www.jpl.nasa.gov/news/nasas-ingenuity-mars-helicopter-succeeds-in-historic-first-flight/"
+        "https://www.boston.com/news/national-news/2022/01/04/he-made-wordle-for-his-partner-now-its-an-online-hit/",
+        "https://en.wikipedia.org/wiki/Wordle",
+        "https://en.wikipedia.org/wiki/Wordle",
+        "https://en.wikipedia.org/wiki/Wordle"
       ]
     },
     {
       "id": "sb04",
-      "say": "[the very first iPhone came with the App Store built in], [the first text message ever sent said Merry Christmas], [Bluetooth is named after a Viking king], and [the word emoji comes from Japanese, not from the word emotion].",
-      "cap": 0,
-      "real": "The first iPhone came out in 2007 with no App Store. The App Store opened a year later, in July 2008.",
+      "about": "The Wii",
+      "say": "The Wii [was code-named Revolution before it got its real name], [could play DVD movies right out of the box], [came with Wii Sports in the box in America], and [could play GameCube games when it first came out].",
+      "cap": 1,
+      "real": "The Wii couldn't play DVD movies or music CDs at all. Its disc drive only took game discs.",
       "src": [
-        "https://www.macrumors.com/2018/07/10/happy-10th-anniversary-app-store",
-        "https://en.wikipedia.org/wiki/Neil_Papworth",
-        "https://africacheck.org/fact-checks/meta-programme-fact-checks/yes-bluetooth-technology-was-named-after-viking-king-harald",
-        "https://soranews24.com/2017/06/25/japan-would-like-to-remind-you-that-emoji-has-nothing-to-do-with-emotion/"
+        "https://www.engadget.com/2006/04/27/nintendo-revolution-now-called-wii/",
+        "https://en.wikipedia.org/wiki/Wii",
+        "https://en.wikipedia.org/wiki/Wii",
+        "https://en.wikipedia.org/wiki/Wii"
       ]
     },
     {
       "id": "sb05",
-      "say": "[in 2016, the Chicago Cubs won their first World Series since 1908], [at the Tokyo Olympics in 2021, two 13-year-olds won gold and silver in skateboarding], [in 2008, Michael Phelps won 9 gold medals at one Olympics], and [in 2012, a skydiver fell faster than the speed of sound].",
-      "cap": 2,
-      "real": "Phelps won 8 gold medals at the 2008 Beijing Olympics, beating the record of 7 that Mark Spitz set in 1972.",
+      "about": "The first iPhone",
+      "say": "The first iPhone [came with the App Store already built in], [had no way to copy and paste text], [had no front camera for taking selfies], and [came out more than a year before Spotify launched].",
+      "cap": 0,
+      "real": "The first iPhone came out in June 2007 with no App Store. The App Store opened a year later, in July 2008.",
       "src": [
-        "https://www.boston.com/sports/mlb/2016/11/03/cubs-win-first-world-series-title-since-1908/",
-        "https://www.cbsnews.com/news/momiji-nishiya-japan-olympics-skateboarding-gold-medal",
-        "https://www.npr.org/2008/08/17/93671607/phelps-turns-legend-with-8th-beijing-gold",
-        "https://www.guinnessworldrecords.com/world-records/107930-first-human-to-break-the-sound-barrier-in-freefall"
+        "https://www.macrumors.com/2018/07/10/happy-10th-anniversary-app-store",
+        "https://en.wikipedia.org/wiki/IPhone_(1st_generation)",
+        "https://en.wikipedia.org/wiki/IPhone_(1st_generation)",
+        "https://en.wikipedia.org/wiki/IPhone_(1st_generation) (released June 29, 2007); https://en.wikipedia.org/wiki/Spotify (launched October 7, 2008)"
       ]
     },
     {
       "id": "sb06",
-      "say": "[Shrek won the very first Oscar for Best Animated Feature], [the first Harry Potter book's first hardcover run was just 500 copies], [Gangnam Style was the first YouTube video to reach a billion views], and [Frozen was the first animated movie to earn a billion dollars].",
+      "about": "Ingenuity, the Mars helicopter",
+      "say": "Ingenuity, the Mars helicopter, [made the first powered flight on another planet, in 2021], [carried a scrap of fabric from the Wright brothers' first plane], [flew 72 times after being built for just five test flights], and [rode to Mars tucked under the belly of the Curiosity rover].",
       "cap": 3,
-      "real": "Toy Story 3 was the first animated movie to pass a billion dollars, in 2010. Frozen got there in 2014.",
+      "real": "Ingenuity rode to Mars strapped under NASA's Perseverance rover, which landed in 2021. Curiosity had landed back in 2012.",
       "src": [
-        "https://www.slashfilm.com/798202/20-years-after-getting-its-own-oscar-category-animation-is-still-an-afterthought",
-        "https://www.sothebys.com/en/articles/the-very-first-appearance-of-harry-potter",
-        "https://guinnessworldrecords.com/world-records/107048-first-video-to-receive-one-billion-views",
-        "https://thewaltdisneycompany.com/?p=4881"
+        "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/",
+        "https://en.wikipedia.org/wiki/Wright_Flyer",
+        "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/",
+        "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/"
       ]
     },
     {
       "id": "sb07",
-      "say": "[in 2015, scientists first detected ripples in space called gravitational waves], [in 2006, Pluto was demoted because astronomers found it had no moons], [in 2013, the Curiosity rover played Happy Birthday to itself on Mars], and [in 2004, a Mars rover built to last 90 days landed and kept working for over 14 years].",
+      "about": "New Horizons",
+      "say": "New Horizons [set off for Pluto months before Pluto was demoted to a dwarf planet], [discovered Pluto's biggest moon, Charon, when it flew past], [flew for about nine and a half years to reach Pluto], and [sent home pictures of a giant heart shape on Pluto].",
       "cap": 1,
-      "real": "Pluto has five known moons. It lost planet status because it hasn't cleared other objects out of its orbit, a rule for full planets.",
+      "real": "Charon was found in 1978 by astronomers here on Earth. New Horizons flew past Pluto and its five moons in 2015.",
       "src": [
-        "https://en.wikipedia.org/wiki/First_observation_of_gravitational_waves",
-        "https://theconversation.com/nasa-mission-brings-pluto-into-sharp-focus-but-its-still-not-a-planet-40495",
-        "https://www.nextgov.com/emerging-tech/2017/08/why-curiosity-rover-stopped-singing-happy-birthday-itself/140176/",
-        "https://www.jpl.nasa.gov/news/nasas-opportunity-rover-mission-on-mars-comes-to-end/"
+        "https://www.britannica.com/print/article/1081294 (launched January 19, 2006); https://universemagazine.com/en/pluto-five-facts-about-the-dwarf-planet-that-will-surprise-you (IAU demoted Pluto in August 2006)",
+        "https://science.nasa.gov/dwarf-planets/pluto/moons/charon (discovered June 1978 by James Christy and Robert Harrington; largest of Pluto's five moons)",
+        "https://www.britannica.com/print/article/1081294 (launched January 19, 2006; closest approach July 14, 2015)",
+        "https://www.britannica.com/print/article/1081294 (a large heart-shaped region of ice); https://www.space.com/29971-pluto-heart-named-for-clyde-tombaugh.html (Tombaugh Regio)"
       ]
     },
     {
       "id": "sb08",
-      "say": "[Facebook was first open only to students at Stanford], [Instagram was an iPhone-only app when it launched], [TikTok merged with the lip-sync app Musical.ly in 2018], and [the first dot-com domain name was registered in 1985].",
-      "cap": 0,
-      "real": "Facebook launched in 2004 just for Harvard students. It opened to other colleges next, and later to everyone.",
+      "about": "Michael Phelps",
+      "say": "Michael Phelps [won eight gold medals at a single Olympics in 2008], [got the nicknames the Flying Fish and the Baltimore Bullet], [won more than 30 Olympic medals in all], and [won 23 Olympic gold medals in his career].",
+      "cap": 2,
+      "real": "Phelps won 28 Olympic medals in all: 23 gold, 3 silver and 2 bronze.",
       "src": [
-        "https://www.historyhit.com/2004-facebook-founded-mark-zuckerberg/",
-        "https://martech.org/instagram-for-android-finally-arrives",
-        "https://techcrunch.com/2018/08/02/musically-tiktok",
-        "https://www.stackscale.com/blog/symbolics-com-domain-name"
+        "https://olympics.com/en/news/michael-phelps-olympic-medals-record-how-many-gold-swimmer-world-record (eight golds at Beijing 2008)",
+        "https://en.wikipedia.org/wiki/Michael_Phelps (nicknamed The Baltimore Bullet and Flying Fish)",
+        "https://olympics.com/en/news/michael-phelps-olympic-medals-record-how-many-gold-swimmer-world-record (28 medals: 23 gold, 3 silver, 2 bronze; retired after Rio 2016)",
+        "https://olympics.com/en/news/michael-phelps-olympic-medals-record-how-many-gold-swimmer-world-record (23 gold medals)"
       ]
     },
     {
       "id": "sb09",
-      "say": "[in 2001, the first space tourist flew up on NASA's space shuttle], [the Hubble telescope launched in 1990 with a mirror that was the wrong shape], [John Glenn went back to space at age 77], and [in 2015, astronauts ate lettuce they grew on the space station].",
-      "cap": 0,
-      "real": "The first space tourist, Dennis Tito, rode a Russian Soyuz rocket to the space station in 2001, paying about 20 million dollars.",
+      "about": "Usain Bolt",
+      "say": "Usain Bolt [ran a world record 100 meters at the 2008 Olympics with a shoelace untied], [set a world record of 9.58 seconds for 100 meters in 2009], [played cricket and soccer in the street as a kid], and [won his first Olympic gold medal at the 2004 Olympics].",
+      "cap": 3,
+      "real": "At his first Olympics, in Athens in 2004, Bolt was hurt and went out in the first round of the 200 meters. His first golds came in 2008.",
       "src": [
-        "https://www.space.com/11492-space-tourism-pioneer-dennis-tito.html",
-        "https://asd.gsfc.nasa.gov/archive/hubble/missions/sm1.html",
-        "https://nasa.gov/mission/sts-95",
-        "https://www.collectspace.com/news/news-081015c-astronauts-space-grown-lettuce.html"
+        "https://en.wikipedia.org/wiki/Usain_Bolt",
+        "https://en.wikipedia.org/wiki/Usain_Bolt",
+        "https://en.wikipedia.org/wiki/Usain_Bolt",
+        "https://en.wikipedia.org/wiki/Usain_Bolt"
       ]
     },
     {
       "id": "sb10",
-      "say": "[Nintendo's Wii was code-named Revolution before it came out], [Minecraft's very first test version was called Cave Game], [Pac-Man was called Munch Man when it came out in Japan], and [the first Pokémon games were called Red and Green, not Red and Blue].",
+      "about": "The James Webb Space Telescope",
+      "say": "The James Webb Space Telescope [launched into space on Christmas Day 2021], [has a sunshield about the size of a tennis court], [orbits Earth just a little higher than the space station], and [cost about 10 billion dollars to build].",
       "cap": 2,
-      "real": "Pac-Man's original Japanese name was Puck Man. It became Pac-Man when it came to America later in 1980.",
+      "real": "Webb works nearly a million miles from Earth, thousands of times farther out than the space station.",
       "src": [
-        "https://www.engadget.com/2006/04/27/nintendo-revolution-now-called-wii/",
-        "https://minefort.com/blog/when-was-minecraft-released",
-        "https://moneyweek.com/392564/22-may-1980-pac-man-hits-the-arcades/",
-        "https://www.westporttechmuseum.com/blogs/techtastic/today-in-video-game-history-february-27th-1996-the-first-pokemon-games-pocket-monsters-red-green-were-released-in-japan"
+        "https://en.wikipedia.org/wiki/Launch_and_commissioning_of_the_James_Webb_Space_Telescope (launched December 25, 2021)",
+        "https://www.space.com/6183-huge-sun-shield-built-space-telescope.html (sunshield the size of a tennis court); https://www.goodmorningamerica.com/news/story/nasas-webb-telescope-works-facts-81913525 (69.5 by 46.5 feet)",
+        "https://www.space.com/6183-huge-sun-shield-built-space-telescope.html (orbit at the second Lagrange point, 1 million miles from Earth); https://www.goodmorningamerica.com/news/story/nasas-webb-telescope-works-facts-81913525 (nearly 1 million miles)",
+        "https://www.goodmorningamerica.com/news/story/nasas-webb-telescope-works-facts-81913525 (ended up costing 10 billion dollars)"
       ]
     },
     {
       "id": "sb11",
-      "say": "[the first handheld cellphone call was made to the caller's biggest rival], [in 2001, the first iPod promised 1,000 songs in your pocket], [in 2010, Disney became the first studio with two billion-dollar movies in one year], and [in 1974, the first barcode scanned at a store checkout was on a cereal box].",
-      "cap": 3,
-      "real": "The first barcode scanned at a checkout, in Troy, Ohio, in 1974, was on a 10-pack of Juicy Fruit gum that cost 67 cents.",
+      "about": "The Tokyo 2020 Olympics",
+      "say": "The Tokyo 2020 Olympics [were the first Olympics, summer or winter, held in Japan], [took place in 2021 but kept the name Tokyo 2020], [gave out medals made from metal in donated old phones], and [had two 13-year-olds win gold and silver in skateboarding].",
+      "cap": 0,
+      "real": "They were the fourth Olympics in Japan. Tokyo also hosted in 1964, and Japan held Winter Games in Sapporo in 1972 and Nagano in 1998.",
       "src": [
-        "https://www.guinnessworldrecords.com/news/2015/8/60/1973-first-mobile-phone-call-392969",
-        "https://www.npr.org/2021/10/23/1048706632/20-years-ago-the-ipod-was-born",
-        "https://thewaltdisneycompany.com/?p=4881",
-        "https://www.gs1.org/articles/marsh-holds-place-honor-history-gs1-barcode"
+        "https://en.wikipedia.org/wiki/2020_Summer_Olympics (the fourth Olympics held in Japan, after 1964, 1972 and 1998)",
+        "https://en.wikipedia.org/wiki/2020_Summer_Olympics (kept the Tokyo 2020 branding despite the move to 2021)",
+        "https://www.ecowatch.com/olympics-medals-recycled-smartphones-computers-2654414145.html (medals made from recycled phones and laptops donated by the public)",
+        "https://olympics.com/en/news/13-year-old-nishiya-momiji-wins-first-ever-women-s-street-skateboarding-gold (Nishiya, 13, gold; Rayssa Leal, also 13, silver); https://www.cbsnews.com/news/momiji-nishiya-japan-olympics-skateboarding-gold-medal"
       ]
     },
     {
       "id": "sb12",
-      "say": "[in 1997, a computer called Deep Blue beat chess champion Garry Kasparov], [in 2019, a NASA lander made the first landing on the far side of the Moon], [in 2014, a space probe landed on a comet for the first time], and [Wordle was made by a software engineer as a gift for his partner].",
+      "about": "The Curiosity rover",
+      "say": "The Curiosity rover [played Happy Birthday to itself on Mars in 2013], [runs on electricity from big solar panels], [has wheels that stamp the letters JPL in Morse code into the dirt], and [was lowered onto Mars on cables from a hovering rocket crane].",
       "cap": 1,
-      "real": "The first soft landing on the Moon's far side was China's Chang'e 4, in January 2019. It even dropped off a little rover to explore.",
+      "real": "Curiosity runs on a nuclear battery, not solar panels. It landed in Gale Crater on Mars in August 2012.",
       "src": [
-        "https://www.history.com/this-day-in-history/may-11/deep-blue-defeats-garry-kasparov-in-chess-match",
-        "https://livescience.com/64408-china-first-landing-moon-far-side.html",
-        "https://www.jpl.nasa.gov/news/rosettas-philae-makes-historic-first-landing-on-a-comet/",
-        "https://www.boston.com/news/national-news/2022/01/04/he-made-wordle-for-his-partner-now-its-an-online-hit/"
+        "https://www.nextgov.com/emerging-tech/2017/08/why-curiosity-rover-stopped-singing-happy-birthday-itself/140176/ (August 2013, first anniversary on Mars)",
+        "https://space.com/space-exploration/on-this-day-in-space-august-6-2026 (powered by a nuclear battery; landed August 6, 2012, in Gale Crater)",
+        "https://www.jpl.nasa.gov/news/rover-leaves-tracks-in-morse-code/ (Morse code for JPL on all six wheels)",
+        "https://space.com/space-exploration/on-this-day-in-space-august-6-2026 (the sky crane hovered and lowered it with cables)"
       ]
     }
   ]

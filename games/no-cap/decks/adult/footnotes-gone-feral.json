@@ -6,146 +6,158 @@
   "cards": [
     {
       "id": "fgf01",
-      "say": "[Olympic medals were once handed out for painting and poetry], [tug of war was an official Olympic sport for 20 years], [a runner in the 1904 Olympic marathon rode part of the way in a car], and [Olympic gold medals were made of solid gold until 1948].",
-      "cap": 3,
-      "real": "Olympic gold medals were made of solid gold only from 1904 to 1912, decades before 1948.",
+      "about": "Martin Van Buren",
+      "say": "Martin Van Buren [was the first president born after the Declaration of Independence], [gave us the word OK, which started out as his nickname], [grew up speaking Dutch as his first language], and [was the last sitting vice president elected president until 1988].",
+      "cap": 1,
+      "real": "OK first appeared in an 1839 Boston newspaper as a joke for oll korrect. His 1840 campaign's OK Clubs, for Old Kinderhook, made it popular.",
       "src": [
-        "https://www.smithsonianmag.com/arts-culture/when-the-olympics-gave-out-medals-for-art-6878965/",
-        "https://en.wikipedia.org/wiki/Tug_of_war_at_the_Summer_Olympics",
-        "https://www.smithsonianmag.com/history/how-the-1904-marathon-became-one-of-the-weirdest-olympic-events-of-all-time-14910747/",
-        "https://en.wikipedia.org/wiki/Olympic_medal"
+        "https://www.history.com/news/who-was-the-first-president-born-an-american-citizen (born 1782; the seven presidents before him were all born before 1776)",
+        "https://www.merriam-webster.com/wordplay/the-hilarious-history-of-ok-okay (1839 Boston Morning Post, oll korrect; the 1840 OK Clubs only popularized it)",
+        "https://www.history.com/news/who-was-the-first-president-born-an-american-citizen (spoke Dutch as his first language)",
+        "https://www.history.com/news/who-was-the-first-president-born-an-american-citizen (the last sitting VP to win until George H.W. Bush in 1988)"
       ]
     },
     {
       "id": "fgf02",
-      "say": "[Abraham Lincoln was honored by the National Wrestling Hall of Fame], [Thomas Jefferson was the first president to live in the White House], [Calvin Coolidge adopted a raccoon that was sent to be his Thanksgiving dinner], and [President Taft kept a pet cow named Pauline at the White House].",
-      "cap": 1,
-      "real": "John Adams moved into the White House in November 1800, a few months before Jefferson took office.",
+      "about": "James Garfield",
+      "say": "James Garfield [gave part of a campaign speech in German], [worked the mules on a canal boat as a teenager], [won his party's nomination on the 36th ballot], and [published his own proof of the Pythagorean theorem while president].",
+      "cap": 3,
+      "real": "His trapezoid proof was published in 1876, while he was a congressman from Ohio, five years before he became president.",
       "src": [
-        "https://www.snopes.com/fact-check/is-lincoln-in-wrestling-hall-of-fame/",
-        "https://en.wikipedia.org/wiki/White_House",
-        "https://www.whitehousehistory.org/questions/what-are-some-unusual-animals-that-have-lived-in-and-around-the-white-house",
-        "https://www.whitehousehistory.org/questions/what-are-some-unusual-animals-that-have-lived-in-and-around-the-white-house"
+        "https://www.nps.gov/articles/000/1880-front-porch-campaign-speeches.htm (October 16, 1880: addressed German immigrants in part in their native language)",
+        "https://wikiwand.com/en/James_A._Garfield (at 16, a canal boat job managing the mules that pulled it)",
+        "https://wikiwand.com/en/James_A._Garfield (compromise nominee on the 36th ballot)",
+        "https://en.wikipedia.org/wiki/Garfield%27s_proof_of_the_Pythagorean_theorem; https://wikiwand.com/en/James_A._Garfield (published 1876, as a congressman)"
       ]
     },
     {
       "id": "fgf03",
-      "say": "[The Pony Express carried mail across the West for twelve years], [in 1914 a little girl in Idaho was mailed to her grandparents], [the US Navy and Post Office once delivered mail by cruise missile], and [the Hope Diamond was mailed to the Smithsonian wrapped in brown paper].",
+      "about": "Chester A. Arthur",
+      "say": "Chester A. Arthur [was born in Canada and moved to Vermont as a baby], [had Louis Comfort Tiffany's design firm redo rooms in the White House], [helped win a case that desegregated a New York streetcar line], and [sold 24 wagonloads of White House furniture at auction].",
       "cap": 0,
-      "real": "The Pony Express ran for only about 19 months, from April 1860 to November 1861. The telegraph put it out of business.",
+      "real": "Arthur was born in Vermont. The story that he was secretly born in Canada was a rumor that never held up.",
       "src": [
-        "https://www.nps.gov/poex/faqs.htm",
-        "https://postalmuseum.si.edu/research-article/100-years-of-parcels-packages-and-packets-oh-my/the-oddest-parcels",
-        "https://postalmuseum.si.edu/exhibition/oddly-interesting-things-that-carried-the-mail/cruise-missile-mail",
-        "https://postalmuseum.si.edu/collections/object-spotlight/hope-diamond-package"
+        "https://www.mentalfloss.com/article/28917/21-things-you-didnt-know-about-21st-president (born in Vermont despite rumors he was born in Canada)",
+        "https://www.whitehousehistory.org/white-house-decorative-arts-in-the-1880s (Arthur commissioned Associated Artists, of which Louis Comfort Tiffany was a partner, to make over several rooms)",
+        "https://history.nycourts.gov/elizabeth-jennings-streetcar-desegregation-in-nyc/ (the case was assigned to junior partner Arthur; the jury found for Jennings and the Third Avenue Railroad agreed to desegregate its streetcars at once); https://millercenter.org/node/38820",
+        "https://www.whitehousehistory.org/white-house-decorative-arts-in-the-1880s (twenty-four wagonloads of furniture sent to auction)"
       ]
     },
     {
       "id": "fgf04",
-      "say": "[Julius Caesar was kidnapped by pirates, then came back and captured them], [Peter the Great made Russian men pay a tax to keep their beards], [Alexander the Great was personally tutored as a teenager by Plato], and [Isaac Newton ran England’s Royal Mint and hunted down counterfeiters].",
+      "about": "Grover Cleveland",
+      "say": "Grover Cleveland [got married inside the White House], [had secret surgery in a chair tied to the mast of a friend's yacht], [was mayor of New York City before becoming president], and [vetoed more bills in his first term than all earlier presidents combined].",
       "cap": 2,
-      "real": "Alexander's teenage tutor was Aristotle, a former student of Plato. Plato had died years earlier, when Alexander was a young boy.",
+      "real": "Cleveland was mayor of Buffalo in 1882 and then governor of New York, before winning the presidency in 1884.",
       "src": [
-        "https://en.wikipedia.org/wiki/Julius_Caesar",
-        "https://en.wikipedia.org/wiki/Beard_tax",
-        "NOT WEB-CHECKED (textbook: Aristotle tutored Alexander from 343 BC; Plato died about 347 BC) https://en.wikipedia.org/wiki/Alexander_the_Great",
-        "https://www.britannica.com/biography/Isaac-Newton"
+        "https://millercenter.org/node/237 (married Frances Folsom in 1886, the first president married in the White House)",
+        "https://millercenter.org/node/237 (June 1893, aboard a friend's yacht, seated in a chair tied to the mast)",
+        "https://potus.com/grover-cleveland (mayor of Buffalo 1882, governor of New York 1883 to 1885)",
+        "https://potus.com/grover-cleveland (414 vetoes in his first term, more than double the 204 by all earlier presidents)"
       ]
     },
     {
       "id": "fgf05",
-      "say": "[The first tomato ketchup recipe was invented by Henry Heinz], [the oldest known potato chip recipe is from an 1817 English cookbook], [the cotton candy machine was co-invented by a dentist], and [early English ketchups were made from mushrooms or walnuts].",
+      "about": "Rutherford B. Hayes",
+      "say": "Rutherford B. Hayes [got America's first Siamese cat as a gift from the King of Siam], [had the first White House telephone, and its number was 1], [took his first oath of office privately inside the White House], and [started the White House Easter Egg Roll after Congress banned it at the Capitol].",
       "cap": 0,
-      "real": "The first published tomato ketchup recipe came from Philadelphia scientist James Mease in 1812. Heinz didn't start selling ketchup until 1876.",
+      "real": "Siam the cat came in 1878 from David Sickels, an American diplomat at the consulate in Bangkok, not from the king.",
       "src": [
-        "https://www.smithsonianmag.com/arts-culture/brief-but-global-history-ketchup-180969725/",
-        "https://www.smithsonianmag.com/arts-culture/curious-history-potato-chip-180979232/",
-        "https://en.wikipedia.org/wiki/Cotton_candy",
-        "https://www.smithsonianmag.com/arts-culture/brief-but-global-history-ketchup-180969725/"
+        "https://carlanthonyonline.com/2013/10/09/the-foreign-feline-of-president-hayes-first-siamese-cat-in-the-u-s/ (sent in 1878 by David Sickels, a US diplomat at the consulate in Bangkok)",
+        "https://mentalfloss.com/article/77785/first-oval-office-phone-wasnt-installed-until-1929 (installed 1877, phone number 1); https://historynet.com/?p=13689414",
+        "https://artsandculture.google.com/exhibit/rutherford-b-hayes/gQL40xJL (oath taken privately in the Red Room because March 4 fell on a Sunday)",
+        "https://thereconstructionera.com/?p=22536 (Congress outlawed the egg roll at the Capitol by 1876; Hayes opened the White House grounds in 1878)"
       ]
     },
     {
       "id": "fgf06",
-      "say": "[Julia Child worked for a US spy agency before she became a chef], [J.R.R. Tolkien once worked on the Oxford English Dictionary], [Florence Nightingale was the first person ever to draw a pie chart], and [Marie Curie's notebooks are still radioactive and kept in lead-lined boxes].",
-      "cap": 2,
-      "real": "William Playfair drew the first known pie chart in 1801, almost 20 years before Nightingale was born. Her famous chart was the rose diagram.",
+      "about": "Dwight D. Eisenhower",
+      "say": "Dwight D. Eisenhower [was named David Dwight at birth], [was born in a small town in Kansas], [was kept home training troops in World War I despite asking to go overseas], and [got squirrels banished for digging up his White House putting green].",
+      "cap": 1,
+      "real": "Eisenhower was born in Denison, Texas, in 1890. His family moved back to Kansas before he was two, and that's where he grew up.",
       "src": [
-        "NOT WEB-CHECKED (textbook: Child worked for the OSS in World War II) https://en.wikipedia.org/wiki/Julia_Child",
-        "https://en.wikipedia.org/wiki/Oxford_English_Dictionary",
-        "https://en.wikipedia.org/wiki/Florence_Nightingale",
-        "https://www.smithsonianmag.com/smart-news/three-quirky-facts-about-marie-curie-180967075/"
+        "https://www.history.com/articles/10-things-you-may-not-know-about-dwight-d-eisenhower (birth name David Dwight Eisenhower)",
+        "https://thc.texas.gov/state-historic-sites/eisenhower-birthplace/eisenhower-birthplace-history (born in Denison, Texas, October 14, 1890; back to Kansas at about 18 months)",
+        "https://www.history.com/articles/10-things-you-may-not-know-about-dwight-d-eisenhower (asked for an overseas assignment in World War I but stayed in training roles at home)",
+        "https://www.history.com/articles/10-things-you-may-not-know-about-dwight-d-eisenhower (1954 putting green; squirrels trapped and released in Rock Creek Park)"
       ]
     },
     {
       "id": "fgf07",
-      "say": "[The Statue of Liberty was officially run as a lighthouse until 1901], [the first stone of Notre-Dame in Paris was laid by a pope], [the Empire State Building's spire was built as a dock for airships], and [the Leaning Tower of Pisa began to tilt 200 years after it was finished].",
+      "about": "Emperor Norton",
+      "say": "Emperor Norton [demanded a bridge across San Francisco Bay decades before one was built], [paid for meals with money he issued himself], [pardoned the officer who arrested him], and [later added Protector of Canada to his royal title].",
       "cap": 3,
-      "real": "The tower started leaning in 1178, during construction, when builders reached the second floor. It wasn't finished until 1372.",
+      "real": "His add-on title was Protector of Mexico, taken up in the 1860s. He had declared himself Emperor of the United States in 1859.",
       "src": [
-        "https://en.wikipedia.org/wiki/Statue_of_Liberty",
-        "https://www.britannica.com/topic/Notre-Dame-de-Paris",
-        "NOT WEB-CHECKED (textbook: the spire was designed as a mooring mast for dirigibles) https://en.wikipedia.org/wiki/Empire_State_Building",
-        "https://en.wikipedia.org/wiki/Leaning_Tower_of_Pisa"
+        "https://en.wikipedia.org/wiki/Emperor_Norton (bridge decrees of 1872; the Bay Bridge opened in 1936)",
+        "https://en.wikipedia.org/wiki/Emperor_Norton (his own scrip, 50 cents to 10 dollars, accepted by some restaurants)",
+        "https://en.wikipedia.org/wiki/Emperor_Norton (1867: granted an Imperial Pardon to Armand Barbier, the officer who arrested him)",
+        "https://en.wikipedia.org/wiki/Emperor_Norton (Emperor from September 17, 1859; Protector of Mexico by early 1866)"
       ]
     },
     {
       "id": "fgf08",
-      "say": "[When the Mona Lisa was stolen in 1911, police questioned Pablo Picasso], [Mozart wrote the tune of Twinkle Twinkle Little Star at age five], [Napoleon wrote a romantic novella years before he became emperor], and [the first Academy Awards ceremony lasted just 15 minutes].",
-      "cap": 1,
-      "real": "The melody is an old French folk song. Mozart wrote a set of variations on it in his twenties, which is why it gets credited to him.",
+      "about": "Arthur Conan Doyle",
+      "say": "Arthur Conan Doyle [believed two girls' fake fairy photos were real], [worked as a ship's surgeon on an Arctic whaling voyage], [was knighted for creating Sherlock Holmes], and [helped make skiing popular in Switzerland].",
+      "cap": 2,
+      "real": "Doyle was knighted in 1902 for his writing defending Britain's side in the Boer War, not for Sherlock Holmes.",
       "src": [
-        "https://en.wikipedia.org/wiki/Mona_Lisa",
-        "NOT WEB-CHECKED (textbook: the tune is the French song Ah! vous dirai-je, maman; Mozart's variations date from his twenties) https://en.wikipedia.org/wiki/Twinkle,_Twinkle,_Little_Star",
-        "https://en.wikipedia.org/wiki/Napoleon",
-        "https://www.kunc.org/2023-03-09/the-first-oscars-lasted-15-minutes-plus-other-surprises-from-95-years-of-awards"
+        "https://en.wikipedia.org/wiki/Cottingley_Fairies",
+        "https://www.smithsonianmag.com/smart-news/sir-arthur-conan-doyle-went-on-his-own-adventuresto-the-arctic-52100539/ (ship's surgeon on the whaler Hope at 20, in 1880)",
+        "https://arthurconandoyle.co.uk/knight (knighted October 24, 1902, for his defense of Britain's cause in the Boer War)",
+        "https://swissinfo.ch/eng/culture/sherlock-holmes-creator-s-swiss-skiing-legacy-fact-or-fiction/49100300 (learned to ski in Davos in 1894 and helped popularise it, though he did not introduce it)"
       ]
     },
     {
       "id": "fgf09",
-      "say": "[The first driver ever fined for speeding was going over 2 miles an hour], [the world's first traffic light exploded less than a month after it went up], [London's first underground railway opened after the US Civil War ended], and [the first animals ever sent into space were a batch of fruit flies].",
-      "cap": 2,
-      "real": "London's Metropolitan Railway, the world's first underground railway, opened in January 1863, more than two years before the US Civil War ended.",
+      "about": "Julia Child",
+      "say": "Julia Child [was turned away by the Army for being too tall], [published her first cookbook at 39], [helped cook up a shark repellent for a US spy agency], and [voiced a character in a 1993 animated dinosaur movie].",
+      "cap": 1,
+      "real": "Mastering the Art of French Cooking, her first book, came out in 1961, when she was 49.",
       "src": [
-        "https://www.snopes.com/fact-check/walter-arnold-first-speeding-ticket/",
-        "https://en.wikipedia.org/wiki/Traffic_light",
-        "https://en.wikipedia.org/wiki/Metropolitan_Railway",
-        "https://en.wikipedia.org/wiki/Animals_in_space"
+        "https://en.wikipedia.org/wiki/Julia_Child (too tall at 6 feet 2 for the Women's Army Corps or the WAVES)",
+        "https://en.wikipedia.org/wiki/Julia_Child (born August 15, 1912; Mastering the Art of French Cooking, 1961)",
+        "https://en.wikipedia.org/wiki/Julia_Child (OSS shark repellent)",
+        "https://en.wikipedia.org/wiki/Julia_Child (Dr. Juliet Bleeb in We're Back! A Dinosaur's Story, 1993)"
       ]
     },
     {
       "id": "fgf10",
-      "say": "[Three of the first five US presidents died on the Fourth of July], [most signers of the Declaration of Independence signed it in August], [the White House didn't get its official name until 1901], and [Paul Revere made it all the way to Concord on his famous midnight ride].",
-      "cap": 3,
-      "real": "A British patrol stopped Revere in Lincoln, before he reached Concord. Samuel Prescott, who was riding with him, escaped the patrol.",
+      "about": "The Pig War",
+      "say": "The Pig War [started when a British farmer shot an American's pig], [had a pig as its only casualty], [left US and British troops sharing one island for about 12 years], and [was settled by the German Kaiser in 1872].",
+      "cap": 0,
+      "real": "It was the other way around: American Lyman Cutlar shot a pig belonging to Britain's Hudson's Bay Company in June 1859.",
       "src": [
-        "https://en.wikipedia.org/wiki/James_Monroe",
-        "https://en.wikipedia.org/wiki/Signing_of_the_United_States_Declaration_of_Independence",
-        "https://en.wikipedia.org/wiki/White_House",
-        "https://en.wikipedia.org/wiki/Paul_Revere"
+        "https://home.nps.gov/sajh/learn/historyculture/the-pig-war.htm/index.htm",
+        "https://home.nps.gov/sajh/learn/historyculture/the-pig-war.htm/index.htm",
+        "https://home.nps.gov/sajh/learn/historyculture/the-pig-war.htm/index.htm",
+        "https://home.nps.gov/sajh/learn/historyculture/the-pig-war.htm/index.htm"
       ]
     },
     {
       "id": "fgf11",
-      "say": "[Albert Einstein won his Nobel Prize for the theory of relativity], [the first computer mouse had a body made of wood], [Ben Franklin invented swim fins for his hands as a kid], and [a British man who never visited the US paid to found the Smithsonian].",
-      "cap": 0,
-      "real": "Einstein's 1921 Nobel Prize in Physics was awarded for his explanation of the photoelectric effect, not for relativity.",
+      "about": "The Hope Diamond",
+      "say": "The Hope Diamond [was stolen with the French crown jewels in 1792], [keeps glowing red after an ultraviolet light is switched off], [was dug out of a South African mine in the 1800s], and [was sent to the Smithsonian by registered mail in a brown paper box].",
+      "cap": 2,
+      "real": "It came from the Kollur Mine in India. The gem trader Tavernier bought it there in 1666 and sold it to Louis XIV of France.",
       "src": [
-        "https://en.wikipedia.org/wiki/Albert_Einstein",
-        "https://en.wikipedia.org/wiki/Douglas_Engelbart",
-        "https://en.wikipedia.org/wiki/Swimfin",
-        "NOT WEB-CHECKED (textbook: James Smithson never set foot in the US) https://en.wikipedia.org/wiki/James_Smithson"
+        "https://en.wikipedia.org/wiki/Hope_Diamond (stolen in 1792 with most of the crown jewels)",
+        "https://en.wikipedia.org/wiki/Hope_Diamond (intense red phosphorescence after short-wave ultraviolet light)",
+        "https://en.wikipedia.org/wiki/Hope_Diamond (Kollur Mine, India; Tavernier bought it in 1666 and sold it to Louis XIV)",
+        "https://postalmuseum.si.edu/collections/object-spotlight/hope-diamond-package; https://en.wikipedia.org/wiki/Hope_Diamond (1958, registered mail, brown paper)"
       ]
     },
     {
       "id": "fgf12",
-      "say": "[The only casualty of the 1859 Pig War between the US and Britain was a pig], [the Pilgrims wore shiny buckles on the front of their hats], [Monopoly sets smuggled escape maps to prisoners of war in World War II], and [the US bought Alaska from Russia for about two cents an acre].",
-      "cap": 1,
-      "real": "Pilgrim hats never had buckles. The buckled Pilgrim hat was invented by artists in the 1800s.",
+      "about": "Big Ben",
+      "say": "Big Ben [is the name of the bell, not the clock or the tower], [rings for a clock kept on time with old pennies on its pendulum], [cracked soon after it was hung and went silent for four years], and [hangs in a tower renamed for the Queen's 1953 coronation].",
+      "cap": 3,
+      "real": "The Clock Tower was renamed Elizabeth Tower in 2012 for Queen Elizabeth II's Diamond Jubilee, her 60th year on the throne.",
       "src": [
-        "https://home.nps.gov/sajh/learn/historyculture/the-pig-war.htm/index.htm",
-        "https://en.wikipedia.org/wiki/Capotain",
-        "https://en.wikipedia.org/wiki/Monopoly_(game)",
-        "https://en.wikipedia.org/wiki/Alaska_Purchase"
+        "https://www.parliament.uk/about/living-heritage/building/palace/big-ben/facts-figures/ (Big Ben, the Great Bell); https://www.history.com/articles/how-did-big-ben-get-its-name",
+        "https://www.parliament.uk/about/living-heritage/building/palace/big-ben/facts-figures/great-clock-facts/ (pre-decimal pennies regulate the clock)",
+        "https://www.history.com/articles/how-did-big-ben-get-its-name (first rang July 11, 1859, cracked two months later and fell silent for upwards of four years)",
+        "https://www.history.com/articles/how-did-big-ben-get-its-name (renamed Elizabeth Tower for the Diamond Jubilee in 2012); https://www.rnz.co.nz/news/world/109300/big-ben-to-be-renamed-elizabeth-tower"
       ]
     }
   ]

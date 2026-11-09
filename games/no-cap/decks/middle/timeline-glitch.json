@@ -6,146 +6,158 @@
   "cards": [
     {
       "id": "tg01",
-      "say": "[Cleopatra lived closer in time to the Moon landing than to the building of the Great Pyramid], [the first email was sent before the first call on a handheld cellphone], [the Inca Empire was still standing when the Mayflower sailed to America], and [Shakespeare was still alive when the English founded Jamestown].",
+      "about": "Cleopatra",
+      "say": "Cleopatra [lived closer in time to the Moon landing than to the building of the Great Pyramid], [was born about 250 years after Alexander the Great died], [ruled Egypt as queen for more than 40 years before Rome took over], and [was staying in Rome when Julius Caesar was assassinated].",
       "cap": 2,
-      "real": "Spain conquered the Inca in the 1530s, and their last stronghold fell in 1572, nearly 50 years before the Mayflower sailed in 1620.",
+      "real": "Cleopatra ruled for about 21 years, from 51 BC until her death in 30 BC, when she was 39.",
       "src": [
         "https://www.worldatlas.com/articles/so-cleopatra-lived-closer-in-time-to-the-first-lunar-landing-than-the-great-pyramids.html",
-        "https://en.wikipedia.org/wiki/Ray_Tomlinson",
-        "https://en.wikipedia.org/wiki/Neo-Inca_State",
-        "https://pashakespeare.org/press/shakespeare-timeline/"
+        "https://en.wikipedia.org/wiki/Alexander_the_Great",
+        "https://en.wikipedia.org/wiki/Cleopatra",
+        "https://en.wikipedia.org/wiki/Cleopatra"
       ]
     },
     {
       "id": "tg02",
-      "say": "[the supersonic Concorde made its last passenger flight in 1993], [Western Union sent its very last telegram in 2006], [the US government was still paying a Civil War pension in 2020], and [a Japanese temple-building company stayed independent for over 1,400 years].",
+      "about": "Oxford University",
+      "say": "Oxford University [got its first royal charter from King Henry VIII], [was teaching students before the Aztecs founded their capital city], [didn't let women earn degrees until after World War I], and [had a group of its scholars leave and help start Cambridge University].",
       "cap": 0,
-      "real": "The Concorde's last passenger flights were in 2003, when Air France and British Airways retired it after 27 years of service.",
+      "real": "Oxford's first royal charter came in 1248, from King Henry III, long before Henry VIII's time.",
       "src": [
-        "https://www.history.com/this-day-in-history/october-24/the-concorde-makes-its-final-flight",
-        "https://www.mainepublic.org/npr-news/2006-02-02/western-union-sends-its-last-telegram",
-        "https://www.spokesman.com/stories/2020/jun/04/the-last-american-to-collect-a-civil-war-pension-7/",
-        "https://www.amusingplanet.com/2019/11/kongo-gumi-1400-year-old-company.html"
+        "https://www.bestcolleges.com/blog/how-old-is-the-university-of-oxford/ (Henry III issued the royal charter in 1248)",
+        "https://ox.ac.uk/about/the-university/history (teaching in some form by 1096); https://www.britannica.com/place/Tenochtitlan (founded c. 1325)",
+        "https://en.wikipedia.org/wiki/First_women_admitted_to_degrees_at_the_University_of_Oxford",
+        "https://en.wikipedia.org/wiki/University_of_Cambridge"
       ]
     },
     {
       "id": "tg03",
-      "say": "[tortoises flew around the Moon before any astronaut did], [Orville Wright lived to see a plane fly faster than sound], [hot-air balloons carried people before the US Constitution was signed], and [the first parachute jump came after the first airplane flight].",
+      "about": "The Hubble Space Telescope",
+      "say": "The Hubble Space Telescope [went up into space before the first website went online], [was already in orbit when Google was founded], [launched with a main mirror that was ground to the wrong shape], and [took the first picture of a black hole while orbiting Earth].",
       "cap": 3,
-      "real": "People parachuted long before airplanes: André-Jacques Garnerin jumped from a balloon over Paris in 1797, over 100 years before the Wright brothers flew.",
+      "real": "The first black hole photo, shown in 2019, came from the Event Horizon Telescope, a team of radio telescopes linked up around Earth.",
       "src": [
-        "https://www.astronomy.com/space-exploration/first-earthlings-around-the-moon-were-two-soviet-tortoises/",
-        "https://www.nps.gov/daav/historyculture/orvillewrightslifestory.htm",
-        "https://www.ebsco.com/research-starters/history/first-manned-balloon-flight",
-        "https://www.history.com/this-day-in-history/october-22/the-first-parachutist"
+        "https://sci.esa.int/web/hubble/-/37633-launch (launched April 24, 1990); https://www.engadget.com/2015/12/20/first-website-is-25-years-old/ (first website went live at CERN on December 20, 1990)",
+        "https://sci.esa.int/web/hubble/-/37633-launch (launched April 24, 1990); https://loki.editorial.aetnd.com/this-day-in-history/google-is-incorporated (HISTORY.com: Google incorporated September 4, 1998)",
+        "https://asd.gsfc.nasa.gov/archive/hubble/missions/sm1.html",
+        "https://www.technologyreview.com/2019/04/10/136124/this-is-the-first-ever-photo-of-a-black-hole/"
       ]
     },
     {
       "id": "tg04",
-      "say": "[teaching at Oxford began before the Aztecs founded their capital, Tenochtitlan], [the first Ferris wheel was spinning before the Eiffel Tower opened], [London's Underground trains were running during the US Civil War], and [the game of basketball is older than the teddy bear].",
+      "about": "The Great Pyramid of Giza",
+      "say": "The Great Pyramid of Giza [was the tallest human-made structure on Earth for more than 3,700 years], [took its builders about 90 years of work to finish], [was already more than 2,000 years old when Alexander the Great was born], and [has graffiti inside left by the work crews who built it].",
       "cap": 1,
-      "real": "The Eiffel Tower opened in 1889. The first Ferris wheel spun at the 1893 Chicago World's Fair, built to outdo it.",
+      "real": "Most estimates say it took about 20 to 27 years to build, for the pharaoh Khufu, around 2600 BC.",
       "src": [
-        "https://ox.ac.uk/about/the-university/history",
-        "https://www.cbsnews.com/news/the-history-of-ferris-wheels",
-        "https://ltmuseum.co.uk/visit/museum-guide/worlds-first-underground",
-        "https://www.nps.gov/thrb/learn/historyculture/storyofteddybear.htm"
+        "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza (tallest human-made structure for more than 3,700 years)",
+        "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza (built over about 26 years; Herodotus said 20)",
+        "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza (built c. 2600 BC; Khufu's reign estimated 2700 to 2500 BC); https://en.wikipedia.org/wiki/Alexander_the_Great (born 356 BC)",
+        "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza (work-gang names painted in the relieving chambers)"
       ]
     },
     {
       "id": "tg05",
-      "say": "[Abraham Lincoln and Charles Darwin were born on the very same day], [Isaac Newton was born on the very day that Galileo died], [Thomas Jefferson and John Adams died on the very same day], and [Mark Twain was born and died in years when Halley's Comet flew by].",
+      "about": "Tutankhamun",
+      "say": "Tutankhamun [ruled Egypt more than 1,000 years after the Great Pyramid was built], [had the first royal tomb found in the Valley of the Kings], [became pharaoh when he was only eight or nine years old], and [had his tomb found the same year the BBC started broadcasting].",
       "cap": 1,
-      "real": "Galileo died in January 1642. Newton was born almost a year later, on Christmas Day 1642 by England's calendar back then. The same-day story is a myth.",
+      "real": "Royal tombs there were found long before his, like Seti I's in 1817. Tut's, found in 1922, was famous because it was nearly intact.",
       "src": [
-        "https://www.britannica.com/topic/The-Darwin-Lincoln-Double-Bicentennial-2222484",
-        "https://mathpages.com/home/kmath121/kmath121.htm",
-        "https://www.history.com/this-day-in-history/thomas-jefferson-and-john-adams-die",
-        "https://www.snopes.com/fact-check/mark-twain-halleys-comet/"
+        "https://en.wikipedia.org/wiki/Tutankhamun",
+        "https://en.wikipedia.org/wiki/Valley_of_the_Kings",
+        "https://en.wikipedia.org/wiki/Tutankhamun",
+        "https://en.wikipedia.org/wiki/Tutankhamun (tomb found November 1922); https://en.wikipedia.org/wiki/BBC (formed October 18, 1922, first broadcast a few weeks later)"
       ]
     },
     {
       "id": "tg06",
-      "say": "[Pac-Man hit arcades before the first music CDs went on sale], [Nintendo's Game Boy came out the same year the Berlin Wall fell], [the first Toy Story movie came out before Google was founded], and [Netflix was streaming movies online before YouTube existed].",
+      "about": "The Colosseum",
+      "say": "The Colosseum [opened more than 100 years after Julius Caesar died], [had a giant sun awning worked by hundreds of sailors], [was already more than 1,100 years old when the Magna Carta was sealed], and [was opened by Emperor Nero with 100 days of games].",
       "cap": 3,
-      "real": "YouTube launched in 2005. Netflix mailed out DVDs for years and didn't start streaming movies until 2007.",
+      "real": "Emperor Titus opened it in AD 80 with 100 days of games. Nero had died in AD 68, before work on it even began.",
       "src": [
-        "https://moneyweek.com/392564/22-may-1980-pac-man-hits-the-arcades/",
-        "https://hothardware.com/news/nintendo-gameboy-handheld-gaming-console-turned-30",
-        "https://en.wikipedia.org/wiki/Toy_Story",
-        "https://qz.com/887010/netflix-nflx-launched-streaming-video-10-years-ago-and-changed-the-way-we-watch-everything"
+        "https://www.britannica.com/topic/Colosseum (dedicated in 80 CE); https://en.wikipedia.org/wiki/Julius_Caesar (assassinated 44 BC)",
+        "https://www.britannica.com/topic/Colosseum (hundreds of Roman sailors worked the velarium rigging)",
+        "https://www.britannica.com/topic/Colosseum (dedicated in 80 CE); https://en.wikipedia.org/wiki/Magna_Carta (sealed by King John on June 15, 1215)",
+        "https://www.britannica.com/topic/Colosseum (begun 70 to 72 CE under Vespasian, dedicated by Titus in 80 CE with 100 days of games)"
       ]
     },
     {
       "id": "tg07",
-      "say": "[the Golden Gate Bridge took 14 years to build], [Louis XIV was king of France for 72 years], [the Empire State Building was built in just 410 days], and [the Hundred Years' War actually lasted 116 years].",
+      "about": "Leif Erikson",
+      "say": "Leif Erikson [grew up in Norway, the homeland of his Viking ancestors], [reached North America about 500 years before Columbus], [landed in America before William the Conqueror invaded England], and [was the son of the explorer who gave Greenland its name].",
       "cap": 0,
-      "real": "Building the Golden Gate Bridge took just over four years: work began in January 1933, and it opened in May 1937.",
+      "real": "Leif was probably born in Iceland and grew up in Greenland, where his father, Erik the Red, founded the Viking settlement. He sailed to Norway as a young man.",
       "src": [
-        "https://www.goldengate.org/the-golden-gate-bridge-turns-88-/",
-        "https://www.pen-and-sword.co.uk/anniversary/600/King-Louis-XIV-of-France-dies-after-a-reign-of-72-years",
-        "https://www.britannica.com/print/article/186115",
-        "https://www.worldatlas.com/articles/how-long-was-the-hundred-years-war.html"
+        "https://www.worldhistory.org/Leif_Erikson (probably born in Iceland; Erik settled Greenland c. 985, where young Leif grew up)",
+        "https://www.worldhistory.org/Leif_Erikson (reached North America c. 1000)",
+        "https://www.worldhistory.org/Leif_Erikson (c. 1000); https://www.history.com/this-day-in-history/september-28/william-the-conqueror-invades-england (landed September 28, 1066)",
+        "https://www.worldhistory.org/Leif_Erikson (Erik the Red coined the name Greenland)"
       ]
     },
     {
       "id": "tg08",
-      "say": "[the fax machine was patented before the telephone], [a flushing toilet was built for England's Queen Elizabeth I], [the first photograph was taken after the telephone was invented], and [an engineer in ancient Alexandria built a coin-operated vending machine].",
+      "about": "Leonardo da Vinci",
+      "say": "Leonardo da Vinci [started painting the Mona Lisa after Columbus reached the Americas], [designed a robot knight more than 500 years ago], [was born while Joan of Arc was still alive in France], and [had his Mona Lisa stolen in 1911 and missing for over two years].",
       "cap": 2,
-      "real": "The oldest surviving photo was taken in France around 1826, about 50 years before Bell patented the telephone in 1876.",
+      "real": "Joan of Arc died in 1431. Leonardo was born in 1452, more than 20 years later.",
       "src": [
-        "https://en.wikipedia.org/wiki/Alexander_Bain_(inventor)",
-        "https://blog.sciencemuseum.org.uk/a-flushing-story/",
-        "https://historyofinformation.com/detail.php?id=3665",
-        "https://www.mentalfloss.com/history/worlds-first-vending-machine-dispensed-holy-water"
+        "https://en.wikipedia.org/wiki/Mona_Lisa (begun by October 1503); https://www.britannica.com/biography/Christopher-Columbus/The-first-voyage (1492)",
+        "https://en.wikipedia.org/wiki/Leonardo%27s_robot (designed in the late 15th century, prototype around 1495)",
+        "https://www.history.com/this-day-in-history/may-30/joan-of-arc-martyred (Joan died May 30, 1431); https://en.wikipedia.org/wiki/Leonardo_da_Vinci (born April 15, 1452)",
+        "https://www.smithsonianmag.com/arts-culture/the-theft-that-made-the-mona-lisa-a-masterpiece-16406234/"
       ]
     },
     {
       "id": "tg09",
-      "say": "[the Soviets sent a woman to space 20 years before the US did], [people walked on the Moon within 66 years of the first airplane flight], [astronauts walked on the Moon before the first home video game console was sold], and [the first person to float outside a spacecraft was an American].",
+      "about": "Benjamin Franklin",
+      "say": "Benjamin Franklin [was alive at the same time as Isaac Newton], [watched one of the first balloon flights to carry people, in Paris], [lived long enough to see George Washington become president], and [got rich from the patents on his inventions].",
       "cap": 3,
-      "real": "Soviet cosmonaut Alexei Leonov made the first spacewalk in March 1965. American Ed White made his less than three months later.",
+      "real": "Franklin never patented any of his inventions. He wrote that since we gain from the inventions of others, we should share ours freely.",
       "src": [
-        "https://www.airandspace.si.edu/stories/editorial/reaching-new-heights-space",
-        "https://www.worldatlas.com/articles/did-you-know-only-66-years-separated-the-first-successful-plane-flights-and-moon-landings.html",
-        "https://en.wikipedia.org/wiki/Magnavox_Odyssey",
-        "https://www.space.com/28858-first-spacewalk-alexei-leonov-50th-anniversary.html"
+        "https://en.wikipedia.org/wiki/Isaac_Newton (died March 1727); https://en.wikipedia.org/wiki/Benjamin_Franklin (born January 17, 1706)",
+        "https://en.wikipedia.org/wiki/Benjamin_Franklin (honored guest at the crewed balloon flight from the Tuileries, December 1, 1783)",
+        "https://en.wikipedia.org/wiki/Benjamin_Franklin (died April 17, 1790); https://www.archives.gov/legislative/features/gw-inauguration (Washington sworn in April 30, 1789)",
+        "https://www.ushistory.org/FRANKLIN/autobiography/page55.htm"
       ]
     },
     {
       "id": "tg10",
-      "say": "[Pepsi was invented before Coca-Cola went on sale], [Oreo cookies were around before Mickey Mouse was created], [Jell-O was invented before the Wright brothers first flew], and [Crayola crayons first went on sale the year the Wright brothers flew].",
+      "about": "Orville Wright",
+      "say": "Orville Wright [was born while Abraham Lincoln was still president], [made his famous first flight while Harriet Tubman was still alive], [was still alive when a plane first flew faster than sound], and [kept that famous first flight in the air for just 12 seconds].",
       "cap": 0,
-      "real": "Coca-Cola first went on sale in 1886. Pepsi came along in the 1890s as Brad's Drink, and only got the name Pepsi-Cola in 1898.",
+      "real": "Orville was born on August 19, 1871, six years after Lincoln died in April 1865.",
       "src": [
-        "https://www.dncr.nc.gov/blog/2023/12/07/caleb-bradham-1867-1934-c-60",
-        "https://en.wikipedia.org/wiki/Oreo",
-        "https://en.wikipedia.org/wiki/Jell-O",
-        "https://www.crayola.com/es-mx/faqs/what-were-the-original-eight-(8)-colors-in-the-1903-box-of-crayola-crayons-faq"
+        "https://www.nps.gov/people/orvillewright.htm (born August 19, 1871); https://www.pbs.org/newshour/health/april-15-1865-tragic-last-hours-abraham-lincoln (Lincoln died April 15, 1865)",
+        "https://en.wikipedia.org/wiki/Legacy_of_Harriet_Tubman (Tubman 1822 to 1913); https://en.wikipedia.org/wiki/Wright_Flyer (first flight December 17, 1903)",
+        "https://www.history.com/this-day-in-history/october-14/yeager-breaks-sound-barrier (Yeager, October 14, 1947); https://www.nps.gov/people/orvillewright.htm (Orville died January 30, 1948)",
+        "https://en.wikipedia.org/wiki/Wright_Flyer (first flight lasted 12 seconds, 120 feet, Orville at the controls)"
       ]
     },
     {
       "id": "tg11",
-      "say": "[Leonardo da Vinci started the Mona Lisa after Columbus reached the Americas], [Genghis Khan was still alive when England's Magna Carta was sealed], [Rome's Colosseum was built before work began on the Great Wall of China], and [Isaac Newton and Benjamin Franklin were alive at the same time].",
+      "about": "Sputnik 1",
+      "say": "Sputnik 1 [went into orbit before NASA had even been created], [was a metal ball only about 23 inches wide], [launched closer in time to the first airplane flight than to the first iPhone], and [went up less than 12 years before people walked on the Moon].",
       "cap": 2,
-      "real": "Work on China's first big defensive walls began in the 600s BC. Rome's Colosseum opened in AD 80, about 700 years later.",
+      "real": "Sputnik went up in October 1957, almost 54 years after the first airplane flight in 1903 but less than 50 years before the first iPhone in 2007.",
       "src": [
-        "https://en.wikipedia.org/wiki/Mona_Lisa",
-        "https://www.britannica.com/biography/Genghis-khan",
-        "https://www.britannica.com/topic/Great-Wall-of-China",
-        "https://en.wikipedia.org/wiki/Isaac_Newton"
+        "https://www.nationalmuseum.af.mil/Visit/Museum-Exhibits/Fact-Sheets/Display/Article/197681/sputnik-i/ (October 4, 1957; NASA created in 1958)",
+        "https://centennialofflight.net/essay/Dictionary/SPUTNIK/DI195.htm (23-inch-diameter capsule)",
+        "https://en.wikipedia.org/wiki/IPhone_(1st_generation) (released June 29, 2007); https://en.wikipedia.org/wiki/Wright_Flyer (December 17, 1903)",
+        "https://centennialofflight.net/essay/Dictionary/SPUTNIK/DI195.htm (October 4, 1957); https://www.worldatlas.com/articles/did-you-know-only-66-years-separated-the-first-successful-plane-flights-and-moon-landings.html (Moon landing July 20, 1969)"
       ]
     },
     {
       "id": "tg12",
-      "say": "[people could pay for video phone calls before the Moon landing], [the first text message was sent before the first website went online], [Kodak built the first digital camera before the first Star Wars movie came out], and [the computer mouse is older than the Super Bowl].",
+      "about": "Apollo 11",
+      "say": "Apollo 11 [touched down on the Moon before the first message was sent over the internet], [beamed its moonwalk to TV sets around the world in full color], [ended with its crew filling out a customs form back on Earth], and [landed less than 66 years after the Wright brothers' first flight].",
       "cap": 1,
-      "real": "The first website went online at CERN at the end of 1990. The first text message wasn't sent until December 1992.",
+      "real": "Apollo 11's live TV from the Moon's surface was black and white. Only its broadcasts from the spacecraft were in color.",
       "src": [
-        "https://ethw.org/Picturephone",
-        "https://www.engadget.com/2015/12/20/first-website-is-25-years-old/",
-        "https://petapixel.com/2010/08/05/the-worlds-first-digital-camera-by-kodak-and-steve-sasson/",
-        "https://www.computerhistory.org/revolution/artifact/350/1546"
+        "https://www.cbsnews.com/news/first-message-sent-over-the-internet-45-years-ago (October 29, 1969, over ARPANET); https://www.worldatlas.com/articles/did-you-know-only-66-years-separated-the-first-successful-plane-flights-and-moon-landings.html (landing July 20, 1969)",
+        "https://www.smithsonianmag.com/air-space-magazine/live-from-the-moon-1882006/ (first lunar-surface TV was black and white, command module TV in color); https://www.parkes.atnf.csiro.au/news_events/apollo11/tv_from_moon.html (black-and-white slow-scan camera)",
+        "https://www.space.com/7044-moon-apollo-astronauts-customs.html (Honolulu, July 24, 1969; NASA: authentic)",
+        "https://www.worldatlas.com/articles/did-you-know-only-66-years-separated-the-first-successful-plane-flights-and-moon-landings.html (December 17, 1903 to July 20, 1969)"
       ]
     }
   ]

@@ -1,31 +1,26 @@
 # Fact-check log: ctrl-alt-timeline (adult)
 
-Checked 2026-11-08 by an independent checker using WebSearch/WebFetch on Wikipedia, TechCrunch, Fox Business, Quartz, NBC, Rolling Stone, Al Jazeera, PC Gamer, Hawaii Public Radio, 6abc/AP and Unilad Tech.
+Checked 2026-11-09 by an independent checker (one-subject version of the deck), using WebSearch/WebFetch on Wikipedia (Vine read through a 2023 Kiwix snapshot), Britannica, NPR, NBC News, Time, TechCrunch, Al Jazeera, MarTech, Today, Mental Floss, Afar, UNILAD Tech and Wikiwand.
 
 ## Changes
-- cat01: the cap "Netflix's first original series was House of Cards" is disputed: Netflix's own timeline calls House of Cards its "first original content", while Lilyhammer came earlier as an exclusive. New cap: "[Netflix mailed out VHS tapes until it switched to DVDs in 1999]". TechCrunch: the founders rejected VHS as too bulky to mail; Netflix only ever mailed DVDs.
-- cat01: "Netflix started streaming a full ten years after it was founded" was false (Aug 29, 1997 to Jan 2007 is 9 years 5 months). Changed to "[Netflix was founded in 1997 but didn't start streaming until 2007]" (Fox Business, Timeline of Netflix). Confirmed: the last DVD shipped Sept 29, 2023, and the $50M Blockbuster pass was in 2000 (Timeline of Netflix, Fox Business).
-- cat02: "a paper mill" changed to "making wood pulp" (Wikipedia: Nokia was founded as a pulp mill in Tampere, 1865).
-- cat02: Twitch "livestreamed his whole life" changed to "his life around the clock" (Wikipedia: Justin Kan's 24/7 feed lasted about eight months). Confirmed: Slack (Wikipedia), and Toyoda's looms with Toyota Motor spun off in 1937 (Wikipedia).
-- cat03: the cap "won his Pulitzer for an album he put out in 2015" depended on DAMN.'s release year. Changed to "[Kendrick Lamar won a 2018 Pulitzer Prize for his album To Pimp a Butterfly]" (Quartz: the 2018 prize went to DAMN., the first winner outside classical and jazz). Real updated.
-- cat03: confirmed All I Want for Christmas Is You, released Oct 29, 1994 and first No. 1 on the chart dated Dec 21, 2019 (Wikipedia), and Rick Astley passing a billion views July 28, 2021 (Wikipedia). Kate Bush was left as textbook (label stays).
-- cat04: no text change. Confirmed: Leicester at 5000-1 (Wikipedia) and the Warriors at 73-9 losing the Finals (Wikipedia). Brady and the napkin were left as textbook (labels stay).
-- cat05: the "This Is Fine" date could not be confirmed. Replaced with "[the very first video posted on YouTube, in 2005, was filmed at a zoo]" (Timeline of online video: "Me at the zoo", Apr 23, 2005).
-- cat05: the cap "Gangnam Style ... a billion views in 2010" was easy, since many players remember 2012. Changed to "2014", still false: it passed a billion on Dec 21, 2012 (Wikipedia). Confirmed: Keyboard Cat filmed in 1984 (Wikipedia) and the Charlie NFT at $760,999 (Rolling Stone).
-- cat06: no text change. Confirmed: Mojang for $2.5B (Wikipedia); Wayne's 10% for $800 (Wikipedia); the Swoosh for $35 from a Portland State student (Wikipedia); 13 employees and $1bn (Al Jazeera).
-- cat07: no text change. Confirmed: Gmail Apr 1, 2004; Roblox Sept 1, 2006, before the iPhone's June 29, 2007 release; the first iPhone had only a rear camera; Cave Game in May 2009 (all Wikipedia).
-- cat08: real said the Bend Blockbuster was "still renting movies in 2025". Changed to "in 2024", the latest source (Unilad Tech, Dec 2024). Confirmed: Funai's last VCR July 2016 (6abc/AP); Japan's last pager service ended Sept 30, 2019 (Hawaii Public Radio); AOL ended dial-up Sept 30, 2025, so it was still offered in 2025 (PC Gamer).
-- cat09: no text change. Confirmed: Shrek won the first award in 2002 (Wikipedia); Parasite (Wikipedia: 92nd Academy Awards); Ne Zha 2 passed Inside Out 2 in Feb 2025 (Wikipedia). Steamboat Willie was left as textbook (label stays).
-- cat10: no text change. Confirmed: Harald Bluetooth, a 10th-century king (Wikipedia); MoMA's 176 emoji in 2016 (Wikipedia: Shigetaka Kurita); "selfie" in 2013 (Wikipedia: Word of the year); the emoji etymology is a coincidence (Wikipedia: Emoji).
-- cat11: "Dogecoin was created ... as a joke about a meme dog" was off: the joke satirized crypto speculation, and the meme only gave the name and logo (Wikipedia). Changed to "[Dogecoin was created in 2013 as a joke, named after a meme dog]". Confirmed: the pizzas on May 22, 2010 (Wikipedia: Bitcoin); Dorsey at $2.9M (NBC); Nvidia's first close above $4T on July 10, 2025 (Wikipedia).
-- cat12: the Pizza Hut space delivery could not be confirmed. Replaced with "[Microsoft was founded in Albuquerque, New Mexico, in 1975]" (Wikipedia: History of Microsoft, Apr 4, 1975). Confirmed: McDonald's was Chipotle's largest investor by 2001 (Wikipedia), the writer's soft spot. Starbuck and Airbnb were left as textbook (labels stay).
+- cat01: "turned down a 15 million dollar offer" changed to "an offer of about 15 million dollars", since accounts of Amazon's 1998 offer vary (TechCrunch: "to the tune of $15 million"). Confirmed: the 50 million dollar Blockbuster offer in 2000 and the last DVD shipped Sept 29, 2023 (Timeline of Netflix). Netflix judged VHS too bulky to mail (TechCrunch).
+- cat02: the cap "shut down for good in January 2019" was arguable, because Wikipedia says the Vine archive was discontinued in 2019. Changed to "[was shut down by Twitter in January 2015]", which is false under every reading (launched Jan 24, 2013; announced Oct 2016; shut down Jan 17/18, 2017). "Dropped its six-second limit in 2016" overstated a test (Wikipedia: June 2016, clips up to 140 seconds). Changed to "[started testing videos longer than six seconds in 2016]". "Had its stars move into" changed to "had several of its stars move into" (NBC: "a number of" stars). Real rewritten. Sources: NBC News and Wikipedia.
+- cat03: "was pulled on followers by the White House's Twitter account" changed to "was pulled by the White House's own Twitter account". It was a reply in a July 27, 2011 Twitter chat (Wikipedia). Confirmed: Best Act Ever 2008, the 2008 Macy's float, and the first rickroll on May 15, 2007 posing as a GTA IV trailer (Wikipedia).
+- cat04: no change. Whitepaper Oct 31, 2008; genesis block Jan 3, 2009, carrying the Times headline; two pizzas for 10,000 BTC on May 22, 2010 (Wikipedia: History of bitcoin).
+- cat05: no change. More than 115 million dollars over eight weeks, 77 million to research, NEK1 found through Project MinE, LeBron James and Bill Gates (Time).
+- cat06: "had its very first tweet sold as an NFT" changed to "saw its cofounder's first tweet sell as an NFT". NBC calls it Jack Dorsey's first tweet (just over 2.9 million dollars), not the platform's. Confirmed: Messina's hashtag tweet of Aug 23, 2007, not adopted right away; clickable from July 2, 2009 (Wikipedia: Hashtag). The bird cost 10 to 15 dollars (Wikipedia: Simon Oxley).
+- cat07: "openly admitted copying its Stories feature" changed to "[had its own CEO say Snapchat deserved all the credit for Stories]", Systrom's own words (TechCrunch, Aug 2016). Confirmed: 1 billion dollars and 13 employees (Al Jazeera); Android Apr 3, 2012 (MarTech); Picaboo was Snapchat's first name (Wikipedia: Timeline of Snapchat).
+- cat08: no text change. Most visited US site in 2006, and 50 million songs lost in a server migration (NPR). Created by Anderson and DeWolfe in 2003; bought for 580 million in 2005; sold for about 35 million in 2011 to Specific Media and Justin Timberlake (Britannica).
+- cat09: no text change. Salesforce, about 27.7 billion dollars; started at Tiny Speck during Glitch; the backronym; 8,000 customers within 24 hours (Wikipedia).
+- cat10: no text change. 11 for 11; the tenth Best Picture winner without acting nominations (Wikipedia: 76th Academy Awards); the second film past a billion dollars (Today); only the second sequel to win, after The Godfather Part II (Wikipedia).
+- cat11: the cap "named Chief Hopper after a character in Jaws" was not plainly false: Hopper is a police chief like Jaws's Brody, and the Predator origin rests on Collider alone. Changed to "[was filmed in Indiana, where its town of Hawkins is set]" (Afar: most of the series was filmed in Georgia, with Jackson standing in for Hawkins). "About 1,000 kids" changed to "more than 1,200 kids ... using scenes from Stand by Me" (Mental Floss: 1,213 child actors). Collider sources replaced with Mental Floss (Montauk; Matt Duffer to Rolling Stone: 15 to 20 networks) and Afar. Real rewritten.
+- cat12: no text change. 9,094 stores at the 2004 peak (Wikipedia via Wikiwand). Online offering in 2004 (TechCrunch; no better source found). Bend was the only US store from 2018 and the last in the world from 2019, having opened as Pacific Video in 1992 (UNILAD Tech).
 
-## Difficulty notes
-- The cat07 cap (a front camera on the first iPhone) may be guessable for phone-savvy players; kept.
-- Caps are spread three to a position (positions 0/1/2/3: cat03, cat06, cat09 / cat01, cat08, cat11 / cat04, cat07, cat12 / cat02, cat05, cat10).
+## Difficulty and spread
+- Caps by position: 0 = cat02, cat06, cat09; 1 = cat04, cat08, cat11; 2 = cat01, cat07, cat12; 3 = cat03, cat05, cat10.
 
 ## Counts
 - Cards checked: 12
-- Cards changed: 7 (cat01, cat02, cat03, cat05, cat08, cat11, cat12)
-- Cards replaced: 0 (claims replaced: cat01 claims 2 and 4, cat05 claim 2, cat12 claim 1)
-- Claims still NOT WEB-CHECKED: 6 (cat03 claim 3, cat04 claims 1 and 3, cat09 claim 4, cat12 claims 3 and 4), all textbook-level
+- Cards changed: 6 (cat01, cat02, cat03, cat06, cat07, cat11); sources also updated on cat08, cat09, cat10 and cat12
+- Cards replaced: 0 (caps replaced: 2, cat02 and cat11, both kept in the same position)
+- Claims marked NOT WEB-CHECKED: 0

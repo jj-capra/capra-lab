@@ -2,150 +2,162 @@
   "id": "ctrl-alt-timeline",
   "title": "Ctrl+Alt+Timeline",
   "shelf": "adult",
-  "blurb": "Your feed, your playlist, your paycheck, and the decades they secretly overlap.",
+  "blurb": "Your feed, your playlist, your paycheck, and the plot twists behind all three.",
   "cards": [
     {
       "id": "cat01",
-      "say": "[Netflix mailed out its very last rental DVD in 2023], [Netflix mailed out VHS tapes until it switched to DVDs in 1999], [Blockbuster passed on buying Netflix for 50 million dollars in 2000], and [Netflix was founded in 1997 but didn't start streaming until 2007].",
-      "cap": 1,
-      "real": "Netflix never rented VHS. Tapes were too bulky to mail cheaply, so the founders bet on brand-new DVDs from the start.",
+      "about": "Netflix",
+      "say": "Netflix [turned down an offer of about 15 million dollars from Amazon in 1998], [tried to sell itself to Blockbuster for 50 million dollars in 2000], [mailed out VHS tapes until it switched to DVDs in 1999], and [mailed out its very last rental DVD in 2023].",
+      "cap": 2,
+      "real": "Netflix never rented VHS. Tapes were too bulky to mail cheaply, so it shipped DVDs from the start.",
       "src": [
-        "https://www.wikiwand.com/en/articles/Timeline_of_Netflix",
-        "https://techcrunch.com/2023/04/22/netflix-history-25-years/amp/",
-        "https://www.wikiwand.com/en/articles/Timeline_of_Netflix",
-        "https://www.foxbusiness.com/markets/how-was-netflix-founded-history"
+        "https://techcrunch.com/2023/04/22/netflix-history-25-years/amp/ (Amazon was interested to the tune of 15 million dollars)",
+        "https://www.wikiwand.com/en/articles/Timeline_of_Netflix (2000: offered itself to Blockbuster for 50 million dollars)",
+        "https://techcrunch.com/2023/04/22/netflix-history-25-years/amp/ (VHS tapes too bulky to mail; DVDs instead)",
+        "https://www.wikiwand.com/en/articles/Timeline_of_Netflix (last shipment September 29, 2023)"
       ]
     },
     {
       "id": "cat02",
-      "say": "[Nokia started out in 1865 making wood pulp in Finland], [Slack began as a side tool at a company making an online game], [Twitch grew out of a site where one man livestreamed his life around the clock], and [Toyota started out as a company that built bicycles].",
-      "cap": 3,
-      "real": "Toyota grew out of Toyoda Automatic Loom Works, which made weaving looms. Its car business was spun off in 1937.",
+      "about": "Vine",
+      "say": "Vine [was shut down by Twitter in January 2015], [was bought by Twitter for 30 million dollars in 2012], [started testing videos longer than six seconds in 2016], and [had several of its stars move into one apartment complex on Vine Street].",
+      "cap": 0,
+      "real": "Twitter announced Vine's end in October 2016, and it shut down in January 2017, about four years after it launched.",
       "src": [
-        "https://en.wikipedia.org/wiki/Nokia",
-        "https://en.wikipedia.org/wiki/Slack_(software)",
-        "https://en.wikipedia.org/wiki/Justin_Kan",
-        "https://en.wikipedia.org/wiki/Toyota_Industries"
+        "https://www.nbcnews.com/pop-culture/pop-culture-news/look-back-vine-six-second-video-app-made-us-scream-laugh-cry-rcna10910 (shutdown announced October 2016, folded January 18, 2017); https://en.wikipedia.org/wiki/Vine_(service) (launched January 24, 2013, shut down January 17, 2017)",
+        "https://www.nbcnews.com/pop-culture/pop-culture-news/look-back-vine-six-second-video-app-made-us-scream-laugh-cry-rcna10910 (acquired by Twitter in October 2012 for 30 million dollars); https://en.wikipedia.org/wiki/Vine_(service)",
+        "https://en.wikipedia.org/wiki/Vine_(service) (June 2016: testing clips up to 140 seconds); https://www.nbcnews.com/pop-culture/pop-culture-news/look-back-vine-six-second-video-app-made-us-scream-laugh-cry-rcna10910 (broke away from its six-second rule in 2016)",
+        "https://www.nbcnews.com/pop-culture/pop-culture-news/look-back-vine-six-second-video-app-made-us-scream-laugh-cry-rcna10910 (around 2014, a number of Vine stars moved into an apartment complex on Vine Street)"
       ]
     },
     {
       "id": "cat03",
-      "say": "[Kendrick Lamar won a 2018 Pulitzer Prize for his album To Pimp a Butterfly], [All I Want for Christmas Is You first hit number one 25 years after release], [Kate Bush topped the UK chart in 2022 with a song from 1985], and [Never Gonna Give You Up passed one billion YouTube views in 2021].",
-      "cap": 0,
-      "real": "Kendrick Lamar's 2018 Pulitzer Prize for Music was for DAMN. He was the first winner from outside classical music and jazz.",
+      "about": "Rickrolling",
+      "say": "Rickrolling [got Rick Astley voted Best Act Ever at the 2008 MTV Europe Music Awards], [put Rick Astley on a float in the 2008 Macy's Thanksgiving Day Parade], [was pulled by the White House's own Twitter account in 2011], and [began in 2007 as a fake link to a Halo 3 trailer].",
+      "cap": 3,
+      "real": "The first rickroll, in May 2007, was a link dressed up as a trailer for Grand Theft Auto IV.",
       "src": [
-        "https://qz.com/quartzy/1253889/kendrick-lamar-won-a-pulitzer-prize-for-music-for-damn",
-        "https://en.wikipedia.org/wiki/All_I_Want_for_Christmas_Is_You",
-        "NOT WEB-CHECKED (textbook: Running Up That Hill hit UK number one in June 2022) https://en.wikipedia.org/wiki/Running_Up_That_Hill",
-        "https://en.wikipedia.org/wiki/Never_Gonna_Give_You_Up"
+        "https://en.wikipedia.org/wiki/Rickrolling (Best Act Ever, 2008 MTV Europe Music Awards)",
+        "https://en.wikipedia.org/wiki/Rickrolling (Foster's Home for Imaginary Friends float, 2008)",
+        "https://en.wikipedia.org/wiki/Rickrolling (July 27, 2011, during a White House Twitter chat)",
+        "https://en.wikipedia.org/wiki/Rickrolling (May 15, 2007, on 4chan, posing as the Grand Theft Auto IV trailer)"
       ]
     },
     {
       "id": "cat04",
-      "say": "[Tom Brady was the 199th pick in the 2000 NFL draft], [Leicester City won the Premier League in 2016 at 5,000 to 1 odds], [Lionel Messi's first Barcelona deal was written on a pizza box in 2000], and [the 2016 Warriors won 73 games and still lost the NBA Finals].",
-      "cap": 2,
-      "real": "Messi's first agreement with Barcelona, in December 2000, was famously scribbled on a paper napkin.",
+      "about": "Bitcoin",
+      "say": "Bitcoin [was first described in a paper posted on Halloween 2008], [had its very first block mined on New Year's Day 2009], [hid a London newspaper headline inside its very first block], and [was used to buy two pizzas for 10,000 bitcoins in 2010].",
+      "cap": 1,
+      "real": "The first block was mined on January 3, 2009, with a headline from that day's Times of London tucked inside.",
       "src": [
-        "NOT WEB-CHECKED (textbook: Brady was pick 199 in the 2000 draft) https://en.wikipedia.org/wiki/Tom_Brady",
-        "https://en.wikipedia.org/wiki/2015%E2%80%9316_Leicester_City_F.C._season",
-        "NOT WEB-CHECKED (textbook: the December 2000 napkin agreement) https://en.wikipedia.org/wiki/Lionel_Messi",
-        "https://en.wikipedia.org/wiki/2015%E2%80%9316_Golden_State_Warriors_season"
+        "https://en.wikipedia.org/wiki/History_of_bitcoin",
+        "https://en.wikipedia.org/wiki/History_of_bitcoin",
+        "https://en.wikipedia.org/wiki/History_of_bitcoin",
+        "https://en.wikipedia.org/wiki/History_of_bitcoin"
       ]
     },
     {
       "id": "cat05",
-      "say": "[The Keyboard Cat video was actually filmed back in 1984], [the very first video posted on YouTube, in 2005, was filmed at a zoo], [the Charlie Bit My Finger video sold as an NFT for over 750,000 dollars], and [Gangnam Style became the first YouTube video to hit a billion views in 2014].",
+      "about": "The Ice Bucket Challenge",
+      "say": "The Ice Bucket Challenge [got buckets dumped on both LeBron James and Bill Gates], [sent 77 million dollars of its haul to research], [helped pay for research that found a new ALS gene in 2016], and [raised more than 115 million dollars in a single weekend].",
       "cap": 3,
-      "real": "Gangnam Style came out in July 2012 and became the first YouTube video to reach a billion views that December.",
+      "real": "The 115 million dollars came in over about eight weeks in the summer of 2014, not in one weekend.",
       "src": [
-        "https://en.wikipedia.org/wiki/Keyboard_Cat",
-        "https://en.wikipedia.org/wiki/Timeline_of_online_video",
-        "https://www.rollingstone.com/culture/culture-news/charlie-bit-my-finger-nft-auction-1173526/",
-        "https://en.wikipedia.org/wiki/Gangnam_Style"
+        "https://time.com/4426072/ice-bucket-challenge-als-discovery",
+        "https://time.com/4426072/ice-bucket-challenge-als-discovery",
+        "https://time.com/4426072/ice-bucket-challenge-als-discovery",
+        "https://time.com/4426072/ice-bucket-challenge-als-discovery"
       ]
     },
     {
       "id": "cat06",
-      "say": "[Microsoft bought Minecraft for 250 million dollars in 2014], [Apple's third co-founder sold his 10 percent share for 800 dollars], [Nike paid a college student 35 dollars to design its swoosh], and [Instagram had 13 employees when Facebook bought it for a billion dollars].",
+      "about": "Twitter",
+      "say": "Twitter [got the hashtag from its own founders in 2007], [bought its first bird logo from a stock image site for under 20 dollars], [saw its cofounder's first tweet sell as an NFT for about 2.9 million dollars], and [didn't make hashtags clickable until 2009].",
       "cap": 0,
-      "real": "Microsoft paid 2.5 billion dollars for Mojang, the studio behind Minecraft, in 2014.",
+      "real": "Blogger Chris Messina proposed the hashtag in an August 2007 tweet, and Twitter didn't adopt it right away.",
       "src": [
-        "https://en.wikipedia.org/wiki/Mojang_Studios",
-        "https://en.wikipedia.org/wiki/Ronald_Wayne",
-        "https://en.wikipedia.org/wiki/Swoosh",
-        "https://www.aljazeera.com/economy/2012/4/10/facebook-updates-status-with-instagram-deal"
+        "https://en.wikipedia.org/wiki/Hashtag (Chris Messina's tweet of August 23, 2007; not immediately adopted by Twitter)",
+        "https://en.wikipedia.org/wiki/Simon_Oxley (bought for 10 to 15 dollars)",
+        "https://www.nbcnews.com/tech/tech-news/twitter-boss-jack-dorseys-first-tweet-sold-29-million-nft-rcna467 (Jack Dorsey's first tweet, just over 2.9 million dollars)",
+        "https://en.wikipedia.org/wiki/Hashtag (hyperlinked from July 2, 2009)"
       ]
     },
     {
       "id": "cat07",
-      "say": "[Gmail launched on April Fools' Day in 2004], [Roblox came out before the first iPhone], [the first iPhone had a front camera for selfies], and [Minecraft's first test build was called Cave Game].",
+      "about": "Instagram",
+      "say": "Instagram [had 13 employees when Facebook bought it for a billion dollars], [didn't come out for Android phones until 2012], [started out under the name Picaboo], and [had its own CEO say Snapchat deserved all the credit for Stories].",
       "cap": 2,
-      "real": "The original 2007 iPhone had only a rear camera. Front cameras arrived with the iPhone 4 in 2010.",
+      "real": "Picaboo was Snapchat's original name in 2011. Instagram launched as Instagram, on the iPhone, in October 2010.",
       "src": [
-        "https://en.wikipedia.org/wiki/Gmail",
-        "https://en.wikipedia.org/wiki/Roblox",
-        "https://en.wikipedia.org/wiki/IPhone_(1st_generation)",
-        "https://en.wikipedia.org/wiki/Minecraft"
+        "https://www.aljazeera.com/economy/2012/4/10/facebook-updates-status-with-instagram-deal (1 billion dollars, 13 employees)",
+        "https://martech.org/instagram-for-android-finally-arrives (April 3, 2012)",
+        "https://en.wikipedia.org/wiki/Timeline_of_Snapchat (Snapchat launched as Picaboo in July 2011)",
+        "https://techcrunch.com/?p=1362463 (Instagram CEO on Stories: Snapchat deserves all the credit, August 2016); https://en.wikipedia.org/wiki/Timeline_of_Snapchat"
       ]
     },
     {
       "id": "cat08",
-      "say": "[New VCRs were still being manufactured in 2016], [the world's last Blockbuster store closed its doors in 2019], [Japan's last pager service didn't shut down until 2019], and [AOL still offered dial-up internet in 2025].",
+      "about": "Myspace",
+      "say": "Myspace [was the most visited website in the US in 2006], [was co-founded by Justin Timberlake in 2003], [sold for 35 million dollars, six years after selling for 580 million], and [lost more than 50 million uploaded songs in a server move].",
       "cap": 1,
-      "real": "The Blockbuster in Bend, Oregon, became the last one on Earth in 2019, and it was still renting movies in 2024.",
+      "real": "Tom Anderson and Chris DeWolfe created Myspace in 2003. Justin Timberlake came in as a part-owner in 2011.",
       "src": [
-        "https://6abc.com/post/worlds-last-vcr-to-be-manufactured-this-month/1441648/",
-        "https://www.uniladtech.com/news/backstory-world-last-blockbuster-bend-oregon-975141-20241217",
-        "https://www.hawaiipublicradio.org/asia-minute/2019-10-01/asia-minute-japan-ends-its-era-of-phone-pagers",
-        "https://www.pcgamer.com/gaming-industry/aol-discontinues-its-dial-up-internet-and-were-just-surprised-they-even-offered-it-in-2025"
+        "https://www.npr.org/2019/03/18/704458168/myspace-says-it-lost-years-of-user-uploaded-music (in 2006 MySpace was the most visited site in the US)",
+        "https://britannica.com/topic/Myspace (created by Tom Anderson and Chris DeWolfe in 2003; sold in 2011 to Specific Media and Justin Timberlake)",
+        "https://britannica.com/topic/Myspace (580 million dollars in 2005; about 35 million in 2011)",
+        "https://www.npr.org/2019/03/18/704458168/myspace-says-it-lost-years-of-user-uploaded-music (more than 50 million tracks lost in a server migration)"
       ]
     },
     {
       "id": "cat09",
-      "say": "[Toy Story won the first-ever Oscar for Best Animated Feature], [Parasite was the first Best Picture winner not in English], [in 2025 a Chinese film became the highest-grossing animated movie ever], and [Mickey Mouse's first version entered the public domain in 2024].",
+      "about": "Slack",
+      "say": "Slack [was bought by Microsoft for 27.7 billion dollars], [began as a chat tool inside a company making an online game], [is named for Searchable Log of All Conversation and Knowledge], and [signed up 8,000 customers in its first day].",
       "cap": 0,
-      "real": "The Best Animated Feature Oscar wasn't handed out until 2002, for the films of 2001. Its first winner was Shrek.",
+      "real": "Salesforce bought Slack for about 27.7 billion dollars. The deal was announced in December 2020 and closed in July 2021.",
       "src": [
-        "https://en.wikipedia.org/wiki/Academy_Award_for_Best_Animated_Feature",
-        "https://en.wikipedia.org/wiki/92nd_Academy_Awards",
-        "https://en.wikipedia.org/wiki/Ne_Zha_2",
-        "NOT WEB-CHECKED (textbook: Steamboat Willie entered the US public domain on January 1, 2024) https://en.wikipedia.org/wiki/Steamboat_Willie"
+        "https://en.wikipedia.org/wiki/Slack_(software) (Salesforce, about 27.7 billion dollars, announced December 2020, closed July 2021)",
+        "https://en.wikipedia.org/wiki/Slack_(software) (internal tool at Tiny Speck while it made the game Glitch)",
+        "https://en.wikipedia.org/wiki/Slack_(software) (Searchable Log of All Conversation and Knowledge)",
+        "https://en.wikipedia.org/wiki/Slack_(software) (8,000 customers within 24 hours of its August 2013 launch)"
       ]
     },
     {
       "id": "cat10",
-      "say": "[Bluetooth is named after a Viking king from the 900s], [the Museum of Modern Art added 176 emoji to its collection in 2016], [selfie was named Oxford's Word of the Year in 2013], and [the word emoji comes from the English words emotion and icon].",
+      "about": "The Return of the King",
+      "say": "The Return of the King [won every one of the 11 Oscars it was up for], [won Best Picture without a single acting nomination], [was the second movie ever to make a billion dollars], and [was the first sequel ever to win Best Picture].",
       "cap": 3,
-      "real": "Emoji is Japanese: e means picture and moji means character. Its likeness to the word emotion is a coincidence.",
+      "real": "The Godfather Part II was the first sequel to win Best Picture, for 1974. The Return of the King was the second, 29 years later.",
       "src": [
-        "https://en.wikipedia.org/wiki/Bluetooth",
-        "https://en.wikipedia.org/wiki/Shigetaka_Kurita",
-        "https://en.wikipedia.org/wiki/Word_of_the_year",
-        "https://en.wikipedia.org/wiki/Emoji"
+        "https://en.wikipedia.org/wiki/76th_Academy_Awards (a clean sweep of its eleven nominations)",
+        "https://en.wikipedia.org/wiki/76th_Academy_Awards (the tenth Best Picture winner without any acting nominations)",
+        "https://www.today.com/popculture/return-king-hits-1-billion-wbna4356306 (the second movie ever past 1 billion dollars, after Titanic)",
+        "https://en.wikipedia.org/wiki/The_Lord_of_the_Rings_(film_series) (only the second sequel to win Best Picture, after The Godfather Part II)"
       ]
     },
     {
       "id": "cat11",
-      "say": "[In 2010 someone paid 10,000 bitcoin for two pizzas], [Jack Dorsey's first tweet sold as an NFT for 29 million dollars], [Nvidia became the first company worth 4 trillion dollars in 2025], and [Dogecoin was created in 2013 as a joke, named after a meme dog].",
+      "about": "Stranger Things",
+      "say": "Stranger Things [was first pitched under the title Montauk], [was filmed in Indiana, where its town of Hawkins is set], [was turned down by more than a dozen networks before Netflix], and [had more than 1,200 kids audition using scenes from Stand by Me].",
       "cap": 1,
-      "real": "Jack Dorsey's first tweet sold as an NFT in March 2021 for about 2.9 million dollars, a tenth of that.",
+      "real": "Hawkins, Indiana is made up. Most of the show was filmed in Georgia, with the small town of Jackson standing in for Hawkins.",
       "src": [
-        "https://en.wikipedia.org/wiki/Bitcoin",
-        "https://www.nbcnews.com/tech/tech-news/twitter-boss-jack-dorseys-first-tweet-sold-29-million-nft-rcna467",
-        "https://en.wikipedia.org/wiki/Nvidia",
-        "https://en.wikipedia.org/wiki/Dogecoin"
+        "https://www.mentalfloss.com/entertainment/stranger-things/facts-about-stranger-things-netflix (initially called Montauk)",
+        "https://www.afar.com/magazine/stranger-things-filming-locations-in-georgia (most of the series filmed in Georgia; downtown Jackson stands in for Hawkins)",
+        "https://www.mentalfloss.com/entertainment/stranger-things/several-networks-passed-on-netflix-stranger-things (Matt Duffer to Rolling Stone: rejected by 15 to 20 networks)",
+        "https://www.mentalfloss.com/entertainment/stranger-things/facts-about-stranger-things-netflix (1,213 child actors read pilot scenes and scenes from Stand By Me)"
       ]
     },
     {
       "id": "cat12",
-      "say": "[Microsoft was founded in Albuquerque, New Mexico, in 1975], [McDonald's was once the biggest investor in Chipotle], [Starbucks is named after the ship's captain in Moby-Dick], and [Airbnb began with three air mattresses on an apartment floor].",
+      "about": "Blockbuster",
+      "say": "Blockbuster [had about 9,000 stores at its peak], [didn't offer online rentals until 2004], [was down to one last store, in Alaska, by 2019], and [ended up with a last store that opened in 1992 as Pacific Video].",
       "cap": 2,
-      "real": "Starbuck is the first mate of the whaling ship in Moby-Dick. The captain is Ahab.",
+      "real": "In 2019 the last Blockbuster on Earth was the one in Bend, Oregon.",
       "src": [
-        "https://en.wikipedia.org/wiki/History_of_Microsoft",
-        "https://en.wikipedia.org/wiki/Chipotle_Mexican_Grill",
-        "NOT WEB-CHECKED (textbook: Starbuck is the Pequod's first mate; Ahab is the captain) https://en.wikipedia.org/wiki/Starbucks",
-        "NOT WEB-CHECKED (textbook: AirBed and Breakfast, 2007) https://en.wikipedia.org/wiki/Airbnb"
+        "https://wikiwand.com/en/Blockbuster_LLC (9,094 stores at its peak in 2004)",
+        "https://techcrunch.com/2023/04/22/netflix-history-25-years/amp/ (it took Blockbuster until 2004 to set up an online offering)",
+        "https://www.uniladtech.com/news/backstory-world-last-blockbuster-bend-oregon-975141-20241217 (Bend the only US store from 2018, the last in the world since 2019); https://wikiwand.com/en/Blockbuster_LLC",
+        "https://www.uniladtech.com/news/backstory-world-last-blockbuster-bend-oregon-975141-20241217 (opened as Pacific Video in 1992, a Blockbuster from 2000)"
       ]
     }
   ]

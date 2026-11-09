@@ -2,150 +2,162 @@
   "id": "feels-like-yesterday",
   "title": "Feels Like Yesterday",
   "shelf": "high",
-  "blurb": "Apps, hits, memes and money from 2000 to 2025, scrambled with history until time breaks.",
+  "blurb": "Apps, gadgets, athletes and hits from 2000 to 2025. Three facts, one cap, zero mercy.",
   "cards": [
     {
       "id": "fy01",
-      "say": "[Roblox came out before the first iPhone], [Spotify launched after the first iPhone], [Netflix was founded before Google], and [Minecraft came out before the first iPhone].",
+      "about": "The iPod",
+      "say": "The iPod [only worked with Mac computers when it first came out], [got its name from a line in the movie 2001: A Space Odyssey], [was sold until 2022, almost 15 years after the first iPhone], and [could hold about 10,000 songs in its very first version].",
       "cap": 3,
-      "real": "Minecraft first went public in 2009, two years after the iPhone. Roblox beat the iPhone by almost a year, launching in 2006.",
+      "real": "The first iPod, released in November 2001, had a 5 GB hard drive and was sold as 1,000 songs in your pocket.",
       "src": [
-        "https://en.wikipedia.org/wiki/Roblox",
-        "https://en.wikipedia.org/wiki/Spotify",
-        "https://en.wikipedia.org/wiki/Netflix,_Inc.",
-        "https://en.wikipedia.org/wiki/Minecraft"
+        "https://en.wikipedia.org/wiki/IPod (iPod software originally worked only with Mac; Windows support came with the second generation)",
+        "https://en.wikipedia.org/wiki/IPod (Vinnie Chieco, inspired by Open the pod bay doors, Hal)",
+        "https://en.wikipedia.org/wiki/IPod (iPod Touch discontinued May 10, 2022; the first iPhone went on sale in June 2007)",
+        "https://en.wikipedia.org/wiki/IPod (first model, November 10, 2001: 5 GB, 1,000 songs in your pocket)"
       ]
     },
     {
       "id": "fy02",
-      "say": "[Google's search engine was first called BackRub], [Instagram started out as an app called Picaboo], [Amazon was first incorporated under the name Cadabra], and [Bluetooth is named after a Danish king from the 900s].",
+      "about": "Android",
+      "say": "Android [was first built to run digital cameras], [came out on its first phone before the iPhone did], [was bought by Google three years before the first Android phone], and [named its versions after desserts, in ABC order].",
       "cap": 1,
-      "real": "Picaboo was Snapchat's first name. Instagram grew out of an earlier app called Burbn.",
+      "real": "The first Android phone, the T-Mobile G1, came out in October 2008, more than a year after the first iPhone in June 2007.",
       "src": [
-        "https://en.wikipedia.org/wiki/History_of_Google",
-        "https://en.wikipedia.org/wiki/Timeline_of_Snapchat",
-        "https://en.wikipedia.org/wiki/History_of_Amazon",
-        "https://en.wikipedia.org/wiki/Bluetooth"
+        "https://www.androidcentral.com/apps-software/android-os/the-evolution-of-android-decades-of-transformation + https://www.computerworld.com/article/1405537/android-founder-we-aimed-to-make-a-camera-os.html",
+        "https://www.androidcentral.com/apps-software/android-os/the-evolution-of-android-decades-of-transformation (HTC Dream / T-Mobile G1, October 2008)",
+        "https://www.androidcentral.com/apps-software/android-os/the-evolution-of-android-decades-of-transformation (Google acquired Android Inc. in July 2005)",
+        "https://www.slashgear.com/2196404/the-reason-why-android-stopped-using-dessert-names-for-new-versions/ (sweet treats in alphabetical order from Cupcake in 2009; dropped with Android 10 in 2019)"
       ]
     },
     {
       "id": "fy03",
-      "say": "[Billie Eilish swept the four biggest Grammys at age 18], [in 2019, Old Town Road broke the record for most weeks at number one], [Gangnam Style hit number one on the Billboard Hot 100], and [Apple's iTunes Store opened in 2003 selling songs for 99 cents].",
-      "cap": 2,
-      "real": "Gangnam Style peaked at number two on the Hot 100 in 2012, though it did become the first YouTube video to pass a billion views.",
+      "about": "Gmail",
+      "say": "Gmail [launched by giving every user 10 megabytes of free storage], [was announced on April Fools' Day, so many people thought it was a joke], [took nearly three years to open to everyone without an invite], and [was code-named Caribou after a Dilbert comic strip].",
+      "cap": 0,
+      "real": "Gmail launched in 2004 with 1 gigabyte per user, when most free email gave 2 to 4 megabytes. That's partly why people thought it was a prank.",
       "src": [
-        "https://en.wikipedia.org/wiki/62nd_Annual_Grammy_Awards",
-        "https://en.wikipedia.org/wiki/Old_Town_Road",
-        "https://en.wikipedia.org/wiki/Gangnam_Style",
-        "https://en.wikipedia.org/wiki/ITunes_Store"
+        "https://en.wikipedia.org/wiki/History_of_Gmail (1 GB per account; the standard was 2 to 4 MB)",
+        "https://en.wikipedia.org/wiki/History_of_Gmail (announced April 1, 2004, met with skepticism)",
+        "https://en.wikipedia.org/wiki/History_of_Gmail (invitations no longer required from February 14, 2007)",
+        "https://en.wikipedia.org/wiki/History_of_Gmail (Project Caribou, a Dilbert reference)"
       ]
     },
     {
       "id": "fy04",
-      "say": "[Amazon was the first U.S. company to be worth a trillion dollars], [Google bought YouTube for 1.65 billion dollars in 2006], [a man paid 10,000 bitcoin for two pizzas in 2010], and [in 1997, Microsoft invested 150 million dollars to help save Apple].",
-      "cap": 0,
-      "real": "Apple got there first, on August 2, 2018. Amazon briefly touched the mark about a month later.",
+      "about": "Duolingo",
+      "say": "Duolingo [was co-founded by the inventor of reCAPTCHA], [has offered a course in Klingon, the language from Star Trek], [began as a project at Stanford University in California], and [was dreamed up in 2009 by a professor and his grad student].",
+      "cap": 2,
+      "real": "Duolingo started at Carnegie Mellon University in Pittsburgh, where professor Luis von Ahn and grad student Severin Hacker came up with it in 2009.",
       "src": [
-        "https://en.wikipedia.org/wiki/History_of_Apple_Inc.",
-        "https://en.wikipedia.org/wiki/YouTube",
-        "https://en.wikipedia.org/wiki/History_of_bitcoin",
-        "https://en.wikipedia.org/wiki/History_of_Apple_Inc."
+        "https://en.wikipedia.org/wiki/Luis_von_Ahn (in 2007 von Ahn invented reCAPTCHA; co-founded Duolingo with Severin Hacker)",
+        "https://www.engadget.com/2018/03/15/duolingos-klingon-language-course/ (Klingon course launched March 15, 2018)",
+        "https://keystoneedge.com/2015/12/31/founder-profile-luis-von-ahn/ (Duolingo is a CMU spinoff) + https://en.wikipedia.org/wiki/Luis_von_Ahn (professor at Carnegie Mellon)",
+        "https://en.wikipedia.org/wiki/Luis_von_Ahn (in 2009 von Ahn, a CMU professor, and grad student Severin Hacker began developing Duolingo)"
       ]
     },
     {
       "id": "fy05",
-      "say": "[Shrek won the first ever Oscar for Best Animated Feature], [Up was the first animated movie nominated for Best Picture], [Parasite was the first non-English-language film to win Best Picture], and [Steve Jobs owned most of Pixar when Toy Story came out].",
-      "cap": 1,
-      "real": "Disney's Beauty and the Beast, from 1991, was the first animated film nominated for Best Picture, nearly two decades before Up.",
+      "about": "Shazam",
+      "say": "Shazam [started in 2002 as a number you dialed while a song played], [texted you the song's name after the call], [was bought by Google in a 2018 deal worth 400 million dollars], and [was one of the first apps in Apple's App Store in 2008].",
+      "cap": 2,
+      "real": "It was Apple that bought Shazam, finishing the deal in September 2018 for a reported 400 million dollars.",
       "src": [
-        "https://en.wikipedia.org/wiki/Academy_Award_for_Best_Animated_Feature",
-        "https://en.wikipedia.org/wiki/Academy_Award_for_Best_Animated_Feature",
-        "https://en.wikipedia.org/wiki/92nd_Academy_Awards",
-        "https://en.wikipedia.org/wiki/Pixar"
+        "https://en.wikipedia.org/wiki/Shazam_(music_app) (UK service launched 2002 as 2580, the number users dialed)",
+        "https://en.wikipedia.org/wiki/Shazam_(music_app) (a text message with the title and artist was sent back)",
+        "https://en.wikipedia.org/wiki/Shazam_(music_app) (Apple announced the purchase in December 2017 for a reported 400 million dollars; completed 24 September 2018)",
+        "https://en.wikipedia.org/wiki/Shazam_(music_app) (debuted on iPhone 10 July 2008 with the launch of the App Store)"
       ]
     },
     {
       "id": "fy06",
-      "say": "[the word meme was coined in a 1976 book about genes], [Keyboard Cat was filmed in 1984, decades before it went viral], [the Rickroll song came out in 1987, 20 years before Rickrolling], and [the first emoji were designed by Apple for the iPhone in 2008].",
-      "cap": 3,
-      "real": "Emoji started in Japan in the late 1990s. Shigetaka Kurita's early set from 1999 is now in New York's Museum of Modern Art.",
+      "about": "BTS",
+      "say": "BTS [won a Grammy for its 2020 hit Dynamite], [has a name that means Bulletproof Boy Scouts in Korean], [spoke at the United Nations in 2018], and [became the first Korean group to top the US Hot 100].",
+      "cap": 0,
+      "real": "Dynamite made BTS the first K-pop group nominated for a Grammy, but the award went to Rain On Me by Lady Gaga and Ariana Grande.",
       "src": [
-        "https://en.wikipedia.org/wiki/Internet_meme",
-        "https://en.wikipedia.org/wiki/Keyboard_Cat",
-        "https://en.wikipedia.org/wiki/Rickrolling",
-        "https://en.wikipedia.org/wiki/Shigetaka_Kurita"
+        "https://learningenglish.voanews.com/amp/k-pop-band-bts-honored-to-receive-first-grammy-nomination/5807866.html (first K-pop group nominated) + https://www.koreajoongangdaily.com/entertainment/bts-fails-to-take-win-from-first-grammy-nomination/10156438 (Rain On Me won)",
+        "https://www.britannica.com/topic/BTS (Bangtan Sonyeondan, Bulletproof Boy Scouts)",
+        "https://www.unicef.org/press-releases/remarks-kim-nam-jun-launch-generation-unlimited-new-york-24-september-2018 (RM spoke at the UN General Assembly, 24 September 2018)",
+        "https://www.hawaiipublicradio.org/asia-minute/2020-11-26/asia-minute-south-koreas-grammy-triumph-follows-oscar-win (first Korean group to top the Billboard Hot 100) + https://www.britannica.com/topic/BTS (Dynamite debuted at number one)"
       ]
     },
     {
       "id": "fy07",
-      "say": "[LeBron James played a year of college ball before the NBA], [Leicester City won the Premier League in 2016 at odds of 5,000 to 1], [the Chicago Cubs went 108 years between World Series titles], and [in 2024, Shohei Ohtani became MLB's first 50-homer, 50-steal player].",
-      "cap": 0,
-      "real": "LeBron went straight from high school in Akron, Ohio, to the NBA as the first pick of the 2003 draft.",
+      "about": "LeBron James",
+      "say": "LeBron James [was on the cover of Sports Illustrated while still in high school], [had one of his high school games shown on national TV], [played in an NBA game alongside his own son in 2024], and [scored 31 points in his very first game in the NBA].",
+      "cap": 3,
+      "real": "LeBron scored 25 points in his first NBA game, a 106 to 92 loss to the Sacramento Kings. He had gone first in the 2003 draft, straight from high school.",
       "src": [
-        "https://en.wikipedia.org/wiki/LeBron_James",
-        "https://en.wikipedia.org/wiki/2015%E2%80%9316_Leicester_City_F.C._season",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/2016_World_Series",
-        "https://en.wikipedia.org/wiki/50%E2%80%9350_club_(baseball)"
+        "https://www.si.com/high-school/national/2022/08/30/lebron-james-court-sons-bronny-bryce-flank-the-king-on-sports-illustrated-cover (first on the SI cover in 2002 at St. Vincent-St. Mary High School) + https://en.wikipedia.org/wiki/LeBron_James",
+        "https://en.wikipedia.org/wiki/LeBron_James (the December 12, 2002 game against Oak Hill Academy was nationally televised on ESPN2)",
+        "https://www.guinnessworldrecords.com/world-records/770480-first-father-son-duo-to-play-on-the-same-nba-team-at-the-same-time (with Bronny on 22 October 2024)",
+        "https://en.wikipedia.org/wiki/LeBron_James (25 points in a 106 to 92 debut loss to the Sacramento Kings; first pick of the 2003 draft, prep-to-pro)"
       ]
     },
     {
       "id": "fy08",
-      "say": "[the first iPhone couldn't copy and paste], [Gmail launched on April Fools' Day in 2004], [Twitter's founders invented the hashtag in 2007], and [Facebook went five years without a like button].",
-      "cap": 2,
-      "real": "The hashtag was suggested in 2007 by a Twitter user, Chris Messina. Twitter didn't start linking hashtags until 2009.",
+      "about": "Stephen Curry",
+      "say": "Stephen Curry [was born in the very same Ohio hospital as LeBron James], [was the first overall pick in the 2009 NBA draft], [was offered only a walk-on spot by his dad's old college], and [became the NBA's first unanimous MVP in 2016].",
+      "cap": 1,
+      "real": "Curry went seventh in the 2009 NBA draft, picked by the Golden State Warriors.",
       "src": [
-        "https://en.wikipedia.org/wiki/IPhone_(1st_generation)",
-        "https://en.wikipedia.org/wiki/Gmail",
-        "https://en.wikipedia.org/wiki/Hashtag",
-        "https://en.wikipedia.org/wiki/Facebook_like_button"
+        "https://en.wikipedia.org/wiki/Stephen_Curry (born at Summa Health Akron Campus, Akron, Ohio) + https://en.wikipedia.org/wiki/LeBron_James (born at Summa Health Akron Campus, Akron, Ohio)",
+        "https://en.wikipedia.org/wiki/Stephen_Curry (seventh overall pick, 2009)",
+        "https://en.wikipedia.org/wiki/Stephen_Curry (Virginia Tech, where his father had a storied career, offered only a walk-on spot)",
+        "https://en.wikipedia.org/wiki/Stephen_Curry (first unanimous MVP, 2015-16 season)"
       ]
     },
     {
       "id": "fy09",
-      "say": "[Toyota started out as a company that made motorcycles], [Nokia started out in 1865 as a mill making wood pulp], [Samsung began in 1938 selling dried fish and groceries], and [Lamborghini built farm tractors before it ever built a sports car].",
-      "cap": 0,
-      "real": "Toyota grew out of Toyoda Automatic Loom Works, a company that made weaving machines. Its car business started in the 1930s.",
+      "about": "Serena Williams",
+      "say": "Serena Williams [turned pro at just 14 years old], [won her 23rd and final Grand Slam title while pregnant], [won her first Grand Slam singles title at Wimbledon in 1999], and [won four Olympic golds, three of them with her sister Venus].",
+      "cap": 2,
+      "real": "Serena's first Grand Slam singles title came at the 1999 US Open. Her first Wimbledon title came three years later, in 2002.",
       "src": [
-        "https://en.wikipedia.org/wiki/Toyota_Industries",
-        "https://en.wikipedia.org/wiki/Nokia",
-        "https://en.wikipedia.org/wiki/Samsung",
-        "https://en.wikipedia.org/wiki/Lamborghini_Trattori"
+        "https://wtatennis.com/serena-career-timeline/1995-2022 (pro debut at 14 in Quebec City, 1995)",
+        "https://wtatennis.com/serena-career-timeline/1995-2022 (2017 Australian Open, while pregnant)",
+        "https://wtatennis.com/serena-career-timeline/1995-2022 (first Slam at the 1999 US Open; first Wimbledon title 2002)",
+        "https://wtatennis.com/serena-career-timeline/1995-2022 (singles gold 2012; doubles gold with Venus 2000, 2008, 2012)"
       ]
     },
     {
       "id": "fy10",
-      "say": "[NASA's Mars helicopter carried a scrap of fabric from the Wright brothers' plane], [the first photo of a black hole was released in 2019], [Voyager 1 reached interstellar space before YouTube was founded], and [the James Webb Space Telescope launched on Christmas Day 2021].",
-      "cap": 2,
-      "real": "Voyager 1 crossed into interstellar space in August 2012, seven years after YouTube launched in 2005.",
+      "about": "Roger Federer",
+      "say": "Roger Federer [won an Olympic gold medal in men's singles at London 2012], [was a ball boy at the Basel tournament he later won 10 times], [was the first living person honored on a Swiss coin], and [holds both Swiss and South African citizenship].",
+      "cap": 0,
+      "real": "Federer's Olympic gold came in doubles, with Stan Wawrinka in 2008. At London 2012 he took silver in singles, losing the final to Andy Murray.",
       "src": [
-        "https://en.wikipedia.org/wiki/Wright_Flyer",
-        "https://en.wikipedia.org/wiki/Event_Horizon_Telescope",
-        "https://en.wikipedia.org/wiki/Voyager_1",
-        "https://en.wikipedia.org/wiki/Launch_and_commissioning_of_the_James_Webb_Space_Telescope"
+        "https://en.wikipedia.org/wiki/Roger_Federer (doubles gold with Stan Wawrinka in 2008; singles silver in London 2012, losing the final to Andy Murray)",
+        "https://en.wikipedia.org/wiki/Roger_Federer (ball boy at the Swiss Indoors in Basel in 1992 and 1993) + https://www.skysports.com/tennis/news/12110/11846691/roger-federer-claims-historic-10th-title-at-swiss-indoors-basel (10th title, October 2019)",
+        "https://www.tennis.com/baseline/articles/federer-to-be-minted-on-20-franc-silver-coin-in-switzerland (first living person in Switzerland honored with a Swissmint commemorative coin)",
+        "https://en.wikipedia.org/wiki/Roger_Federer (his mother is South African; he holds both Swiss and South African citizenship)"
       ]
     },
     {
       "id": "fy11",
-      "say": "[Tetris was created by a computer scientist in the Soviet Union], [Mario was called Jumpman when he debuted in 1981's Donkey Kong], [Sony's PlayStation started out as a joint project with Nintendo], and [Apple banned Flappy Bird in 2014 for being too addictive].",
+      "about": "Lionel Messi",
+      "say": "Lionel Messi [had his first Barcelona deal written on a paper napkin at 13], [saw that napkin sell at auction for nearly a million dollars in 2024], [left Barcelona in 2021 with a club-record 672 goals], and [was born in Argentina's capital city, Buenos Aires].",
       "cap": 3,
-      "real": "Flappy Bird's creator, Dong Nguyen, pulled the game himself in 2014, saying it had become too addictive.",
+      "real": "Messi was born in Rosario, a city northwest of Buenos Aires, and moved to Barcelona as a 13-year-old.",
       "src": [
-        "https://en.wikipedia.org/wiki/Tetris",
-        "https://en.wikipedia.org/wiki/Donkey_Kong_(1981_video_game)",
-        "https://en.wikipedia.org/wiki/Super_NES_CD-ROM",
-        "https://en.wikipedia.org/wiki/Flappy_Bird"
+        "https://www.kuow.org/stories/napkin-securing-lionel-messi-s-first-contract-fetches-nearly-1-million-at-auction (napkin dated Dec. 14, 2000; Messi was 13)",
+        "https://wtop.com/funny-weird-news/2024/05/messi-napkin-that-sealed-barcelona-move-sells-for-965000-at-auction (762,400 pounds, about 965,000 dollars, Bonhams, May 2024)",
+        "https://www.kuow.org/stories/napkin-securing-lionel-messi-s-first-contract-fetches-nearly-1-million-at-auction (club-record 672 goals in 778 games; joined Paris Saint-Germain in 2021)",
+        "https://www.britannica.com/summary/Lionel-Messi (born June 24, 1987, Rosario, Argentina) + https://wtop.com/funny-weird-news/2024/05/messi-napkin-that-sealed-barcelona-move-sells-for-965000-at-auction (moved to Barcelona at 13)"
       ]
     },
     {
       "id": "fy12",
-      "say": "[Nike paid a college student 35 dollars to design its swoosh], [Crocs were first sold in 2002 as a comfy shoe for nurses], [Dogecoin was created in 2013 as a joke making fun of crypto], and [the QR code was invented in 1994 to keep track of car parts].",
+      "about": "Shohei Ohtani",
+      "say": "Shohei Ohtani [became MLB's first 50-homer, 50-steal player in 2024], [started his pro career with the Los Angeles Dodgers], [signed a 700 million dollar deal, then the biggest in sports], and [had his dog Decoy deliver a ceremonial first pitch].",
       "cap": 1,
-      "real": "Crocs debuted in 2002 at a boat show in Fort Lauderdale, Florida, where all 200 pairs sold out.",
+      "real": "Ohtani turned pro in Japan with the Nippon-Ham Fighters, who drafted him in 2012. He signed with the Angels in 2017 and with the Dodgers after the 2023 season.",
       "src": [
-        "https://en.wikipedia.org/wiki/Carolyn_Davidson_(graphic_designer)",
-        "https://en.wikipedia.org/wiki/Crocs",
-        "https://en.wikipedia.org/wiki/Dogecoin",
-        "https://en.wikipedia.org/wiki/QR_code"
+        "https://britannica.com/biography/Shohei-Ohtani (54 homers, 59 steals in 2024) + https://en.wikipedia.org/wiki/50%E2%80%9350_club_(baseball)",
+        "https://britannica.com/biography/Shohei-Ohtani (drafted first by the Nippon-Ham Fighters in 2012; Angels 2018; Dodgers after 2023)",
+        "https://britannica.com/biography/Shohei-Ohtani (10-year, 700 million dollar deal, the largest payday in sports history up to that time)",
+        "https://www.ksat.com/sports/2024/08/29/ohtani-and-his-dog-share-first-pitch-duties-before-dodgers-superstar-blasts-leadoff-homer/ (Decoy carried the ceremonial first pitch to Ohtani, August 29, 2024)"
       ]
     }
   ]

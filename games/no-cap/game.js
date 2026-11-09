@@ -1,7 +1,7 @@
 // No Cap's page (JC, Nov 8 2026): home, the deck picker, the lobby, a card (read → find → reveal),
 // the final, and challenge links. The server holds every answer; a phone only learns the cap at
 // the reveal (or when it's the reader's turn).
-import { SHELVES, pieces } from './shared/rules.mjs';
+import { SHELVES, pieces, POINTS } from './shared/rules.mjs';
 
 const API = '/no-cap/api';
 const $ = (id) => document.getElementById(id);
@@ -71,10 +71,11 @@ const typedName = (input) => { const n = (input.value || '').trim(); if (n) stor
 
 function help() {
   sheet(`<h2>How No Cap works</h2><ul>
-    <li><b>Every card is one sentence with four claims.</b> Three are facts. One is cap: made up.</li>
+    <li><b>Every card is one sentence with four claims about the same thing.</b> Three are facts. One is cap: made up.</li>
     <li><b>Live with friends:</b> everyone takes turns reading. The reader’s phone shows which part is cap; they read it out loud with a straight face.</li>
     <li><b>Find the three facts.</b> When the reader is done, the four claims pop up on your phone. Tap the facts one at a time. Tap the cap and you’re busted for that card.</li>
-    <li><b>Points:</b> 50 a fact, 100 more for all three, up to 100 more for speed. Busted keeps nothing. The reader gets 50 for every friend they bust.</li>
+    <li><b>Every card is about one thing</b> (a president, a place, an invention…), so all four claims sound like they could be true.</li>
+    <li><b>Points:</b> 50 a fact, 100 more for all three, and up to 150 more the faster you find them (45 seconds on the clock). In a live game the first to find all three gets 50 more. Busted keeps nothing. The reader gets 50 for every friend they bust.</li>
     <li><b>Solo and challenges:</b> play ten cards on your own, then send a friend the same ten and see who scores higher.</li>
   </ul>`);
 }
@@ -235,7 +236,8 @@ const nameOf = (pid) => { const p = room.players.find((x) => x.pid === pid); ret
 
 function renderPlay() {
   const r = room, el = $('playBody'), mineIsReader = r.reader && r.reader === r.me;
-  const hud = `<div class="hud"><span>CARD <b>${r.i + 1}</b> OF ${r.n}</span><span>${r.kind === 'live' && r.readerName ? `🎤 ${esc(r.readerName)}` : esc(r.deck.title)}</span></div>`;
+  const hud = `<div class="hud"><span>CARD <b>${r.i + 1}</b> OF ${r.n}</span><span>${r.kind === 'live' && r.readerName ? `🎤 ${esc(r.readerName)}` : esc(r.deck.title)}</span></div>`
+    + (r.about && r.stage !== 'ready' ? `<p class="about"><small>THIS ONE’S ABOUT</small><b>${esc(r.about)}</b></p>` : '');
   cancelAnimationFrame(raf);
   if (r.stage === 'ready') {
     el.innerHTML = `${hud}<div class="banner"><div class="big">Card ${r.i + 1}</div><p class="note">Four claims. Three are facts, one is cap. Tap the facts one at a time; tap the cap and you’re busted.</p></div>
@@ -276,7 +278,7 @@ function renderPlay() {
         const stamp = m.found.includes(k) ? '<span class="stamp">NO CAP</span>' : m.busted && m.pick === k ? '<span class="stamp">CAP!</span>' : '';
         return `<button class="claim${cls}${done ? ' done' : ''}${pending.has(k) ? ' wait' : ''}" type="button" data-k="${k}" ${done || cls ? 'disabled' : ''}>${esc(t)}${stamp}</button>`;
       }).join('')}</div>${status}
-      ${r.kind === 'live' ? `<p class="note" style="text-align:center">${r.doneCount} of ${r.hunting} done</p>` : ''}`;
+      <p class="note" style="text-align:center">${r.kind === 'live' ? `${r.doneCount} of ${r.hunting} done · first to all three: ⚡ +${POINTS.first}` : 'Faster finds score more'}</p>`;
     for (const b of el.querySelectorAll('[data-k]:not(:disabled)')) b.onclick = () => tap(Number(b.dataset.k));
     tickClock();
     return;
@@ -286,7 +288,7 @@ function renderPlay() {
   const verdict = mineIsReader ? `You fooled ${mine ? mine.fooled : 0}` : m.busted ? 'Busted' : m.found.length === 3 ? 'No cap!' : 'Time’s up';
   const pts = mine ? mine.pts : 0;
   const rows = Object.entries(r.round || {}).sort((a, b) => b[1].pts - a[1].pts).map(([pid, x]) => {
-    const how = x.reader ? `🎤 fooled ${x.fooled}` : x.busted ? '💥 busted' : x.found === 3 ? '⭐ all three' : `${x.found} of 3`;
+    const how = x.reader ? `🎤 fooled ${x.fooled}` : x.busted ? '💥 busted' : x.found === 3 ? (x.first ? '⚡ first!' : '⭐ all three') : `${x.found} of 3`;
     return `<li class="${pid === r.me ? 'me' : ''}"><span class="nm">${esc(nameOf(pid))}</span><span class="how">${how}</span><b>+${x.pts}</b></li>`;
   }).join('');
   el.innerHTML = `${hud}<div class="banner"><div class="big">${esc(verdict)}</div>${pts ? `<p class="status good">+${pts}</p>` : ''}</div>
@@ -309,7 +311,7 @@ function tickClock() {
   const t = room.t;
   const step = () => {
     const c = $('clock'); if (!c || !t.findEnd) return;
-    const left = Math.max(0, t.findEnd - srvNow()), frac = left / (t.find || 25000);
+    const left = Math.max(0, t.findEnd - srvNow()), frac = left / (t.find || 45000);
     c.firstElementChild.style.transform = `scaleX(${frac})`;
     c.classList.toggle('low', left < 5000);
     if (left > 0) raf = requestAnimationFrame(step);

@@ -6,146 +6,158 @@
   "cards": [
     {
       "id": "cw01",
-      "say": "[Betty White was born before sliced bread was first sold], [the first lighter was invented before the friction match], [Queen Victoria was still reigning when the Wright brothers flew], and [Genghis Khan was still alive when the Magna Carta was sealed].",
+      "about": "Betty White",
+      "say": "Betty White [was born before sliced bread was first sold], [was born closer to the Civil War than to the first iPhone], [co-hosted the Macy's Thanksgiving Day Parade for 19 years], and [had a TV career that Guinness measured at 79 years].",
       "cap": 2,
-      "real": "Queen Victoria died in January 1901, almost three years before the Wright brothers' first flight in December 1903.",
+      "real": "She co-hosted NBC's Macy's parade coverage for ten years, 1962 to 1971. Her 20-year parade run was as a commentator for the Rose Parade.",
       "src": [
-        "https://en.wikipedia.org/wiki/Sliced_bread",
-        "https://www.todayifoundout.com/index.php/2011/10/lighters-were-invented-before-the-match/",
-        "https://en.wikipedia.org/wiki/Victorian_era",
-        "https://www.history.com/this-day-in-history/august-18/genghis-khan-dies"
+        "https://en.wikipedia.org/wiki/Sliced_bread (first sold July 7, 1928, in Chillicothe, Missouri); https://www.guinnessworldrecords.com/world-records/107740-longest-tv-career-by-an-entertainer-female (born January 17, 1922)",
+        "NOT WEB-CHECKED (textbook anchors only: Civil War 1861 to 1865, first iPhone 2007. Born January 17, 1922 per Guinness: 57 years after 1865, 61 after 1861, against 85 before 2007) https://www.guinnessworldrecords.com/world-records/107740-longest-tv-career-by-an-entertainer-female",
+        "https://www.mentalfloss.com/article/61054/15-things-you-didnt-know-about-betty-white/5 (Macy's parade 1962 to 1971; Rose Parade 1956 to 1976); https://interviews.televisionacademy.com/interviews/betty-white (20-year co-host of the Rose Parade)",
+        "https://www.guinnessworldrecords.com/world-records/107740-longest-tv-career-by-an-entertainer-female (79 years, TV debut 1939, as of February 2018)"
       ]
     },
     {
       "id": "cw02",
-      "say": "[Charles Dickens lived long enough to see the telephone patented], [Harriet Tubman lived long enough to see the Wright brothers fly], [Orville Wright lived long enough to see a plane break the sound barrier], and [Ben Franklin lived long enough to see George Washington become president].",
+      "about": "The lighter",
+      "say": "The lighter [had its most famous version, the Zippo, invented during World War II], [was invented before the friction match], [had an early model that made its own hydrogen gas from zinc and acid], and [had a hydrogen-burning model invented while Beethoven was still alive].",
       "cap": 0,
-      "real": "Dickens died in 1870, six years before Alexander Graham Bell patented the telephone in 1876.",
+      "real": "George Blaisdell invented the Zippo in 1932 in Bradford, Pennsylvania, seven years before World War II began.",
       "src": [
-        "NOT WEB-CHECKED (Bell's March 1876 patent confirmed; Dickens's 1870 death is textbook) https://en.wikipedia.org/wiki/Alexander_Graham_Bell",
-        "https://en.wikipedia.org/wiki/Legacy_of_Harriet_Tubman",
-        "https://en.wikipedia.org/wiki/Wright_brothers",
-        "NOT WEB-CHECKED (Washington's April 30, 1789 inauguration confirmed; Franklin's April 1790 death is textbook) https://en.wikipedia.org/wiki/George_Washington"
+        "https://www.todayifoundout.com/index.php/2011/10/lighters-were-invented-before-the-match/ (Zippo invented by George Blaisdell in 1932 in Bradford, Pennsylvania); https://en.wikipedia.org/wiki/Lighter (Zippo 1932)",
+        "https://www.todayifoundout.com/index.php/2011/10/lighters-were-invented-before-the-match/ (Döbereiner's lamp 1823; John Walker's friction match 1826); https://en.wikipedia.org/wiki/Lighter (flintlock lighters by 1662): before 1826 under every reading",
+        "https://en.wikipedia.org/wiki/D%C3%B6bereiner%27s_lamp (zinc and dilute sulfuric acid make hydrogen, lit by a platinum sponge)",
+        "https://en.wikipedia.org/wiki/D%C3%B6bereiner%27s_lamp (invented 1823, based on Fürstenberger's 1780 hydrogen lighter); https://www.britannica.com/biography/Ludwig-van-Beethoven/The-last-years (died March 26, 1827)"
       ]
     },
     {
       "id": "cw03",
-      "say": "[Marilyn Monroe and Queen Elizabeth II were born in the same year], [Galileo was born the same week that Michelangelo died], [Bach and Handel were born in the same year and never once met], and [Shakespeare and Cervantes were born in the same year].",
+      "about": "Queen Victoria",
+      "say": "Queen Victoria [was born while Napoleon was still alive], [proposed to Prince Albert, not the other way around], [lived long enough to be filmed with a movie camera], and [was still on the throne when the Wright brothers first flew].",
       "cap": 3,
-      "real": "Cervantes was born in 1547, 17 years before Shakespeare. The pair did die in the same year, 1616.",
+      "real": "Victoria died in January 1901, almost three years before the Wright brothers' first flight in December 1903.",
       "src": [
-        "https://en.wikipedia.org/wiki/1926_in_music",
-        "https://en.wikipedia.org/wiki/1564",
-        "https://engines.egr.uh.edu/episode/1186",
-        "https://en.wikipedia.org/wiki/1616"
+        "https://en.wikipedia.org/wiki/Napoleon (died May 5, 1821; Victoria born May 24, 1819 per https://www.royalmint.com/discover/uk-coins/victoria-200/queen-victoria---a-remarkable-life-and-reign/)",
+        "https://www.royalmint.com/discover/uk-coins/victoria-200/queen-victoria---a-remarkable-life-and-reign/",
+        "https://replay.bfi.org.uk/video/c54272df-aada-529c-b4e6-d583938883fe (Scenes at Balmoral, filmed by Downey in 1896)",
+        "https://www.royalmint.com/discover/uk-coins/victoria-200/queen-victoria---a-remarkable-life-and-reign/ (died January 22, 1901); https://en.wikipedia.org/wiki/Wright_brothers (first flight December 17, 1903)"
       ]
     },
     {
       "id": "cw04",
-      "say": "[The Eastern Roman Empire still existed when the Aztecs founded Tenochtitlan], [the Eiffel Tower was completed three years before the Statue of Liberty], [Ireland's Newgrange tomb is older than the Great Pyramid of Giza], and [Vikings were in Newfoundland 471 years before Columbus crossed the Atlantic].",
+      "about": "Santa Fe",
+      "say": "Santa Fe [was founded before the Pilgrims reached Plymouth], [became the capital of the 48th state in 1912], [was briefly held by Confederate troops in 1862], and [was founded while Shakespeare was still alive].",
       "cap": 1,
-      "real": "The Statue of Liberty was dedicated in 1886, three years before the Eiffel Tower opened in 1889. Gustave Eiffel even engineered the statue's iron frame.",
+      "real": "New Mexico became the 47th state in January 1912, with Santa Fe as its capital. Arizona was the 48th, a month later.",
       "src": [
-        "https://en.wikipedia.org/wiki/Tenochtitlan",
-        "https://en.wikipedia.org/wiki/Statue_of_Liberty",
-        "https://kids.britannica.com/students/article/Newgrange/601152",
-        "https://www.cbsnews.com/news/vikings-north-america-470-years-before-christopher-columbus"
+        "NOT WEB-CHECKED (textbook anchor only: Pilgrims landed 1620) https://en.wikipedia.org/wiki/Santa_Fe,_New_Mexico (new city founded 1607, made capital 1610: 10 or more years earlier either way)",
+        "https://en.wikipedia.org/wiki/Santa_Fe,_New_Mexico (1912: New Mexico became the 47th state)",
+        "https://en.wikipedia.org/wiki/Santa_Fe,_New_Mexico (Sibley flew the Confederate flag over Santa Fe for a few days in March 1862)",
+        "https://en.wikipedia.org/wiki/1616 (Shakespeare died April 23, 1616; Santa Fe founded 1607 to 1610)"
       ]
     },
     {
       "id": "cw05",
-      "say": "[A movie was streamed over the internet before Netflix was even founded], [Facebook was up and running before LinkedIn launched], [the Soviet Union still existed when the first website went online], and [the PlayStation 2 was still being made five years after the PS3 came out].",
+      "about": "The fax machine",
+      "say": "The fax machine [was patented before the telephone], [was patented before the first photograph was taken], [was first patented by a Scottish clockmaker], and [had a public line running in France during the US Civil War].",
       "cap": 1,
-      "real": "LinkedIn launched in May 2003. Facebook didn't launch until February 2004.",
+      "real": "The oldest surviving camera photograph was made in 1827. Alexander Bain's fax patent came 16 years later, in 1843.",
       "src": [
-        "https://en.wikipedia.org/wiki/Timeline_of_online_video",
-        "https://www.cbsnews.com/pictures/then-and-now-a-history-of-social-networking-sites",
-        "https://www.engadget.com/2015/12/20/first-website-is-25-years-old/",
-        "https://www.engadget.com/2012/12/28/playstation-2-discontinued-in-japan/"
+        "NOT WEB-CHECKED (textbook anchor only: Bell's telephone patent 1876) https://en.wikipedia.org/wiki/Alexander_Bain_(inventor) (patent of May 27, 1843: 33 years earlier)",
+        "https://en.wikipedia.org/wiki/View_from_the_Window_at_Le_Gras (made in 1827, the oldest surviving photograph)",
+        "https://en.wikipedia.org/wiki/Alexander_Bain_(inventor) (Scottish inventor, apprenticed to a clockmaker in Wick)",
+        "https://en.wikipedia.org/wiki/Pantelegraph (public use of the Paris-Lyon line from February 1863, official operation from February 16, 1865: both before the war ended in April 1865)"
       ]
     },
     {
       "id": "cw06",
-      "say": "[China's last emperor was still alive for the first Super Bowl], [President John Tyler, born in 1790, had a grandson alive in 2024], [the US government was still paying a Civil War pension in 2020], and [Napoleon was still alive when Queen Victoria took the throne].",
+      "about": "Iolani Palace",
+      "say": "Iolani Palace [had electric lights before the White House did], [was finished before the Eiffel Tower], [served as Hawaii's government headquarters until 1969], and [had a telephone before the White House did].",
       "cap": 3,
-      "real": "Napoleon died in 1821, 16 years before Victoria became queen in 1837.",
+      "real": "The White House got its first telephone in 1877. Iolani Palace wasn't even finished until 1882.",
       "src": [
-        "https://en.wikipedia.org/wiki/Puyi",
-        "https://www.kpbs.org/news/national/2025/05/29/harrison-ruffin-tyler-grandson-of-the-10th-u-s-president-dies-at-96",
-        "https://en.wikipedia.org/wiki/Irene_Triplett",
-        "https://en.wikipedia.org/wiki/Napoleon"
+        "https://ethw.org/Milestones:Electric_Lighting_Of_The_Kingdom_of_Hawaii_1886-1888 (lit by 1887, four years before the White House)",
+        "NOT WEB-CHECKED (textbook anchor only: Eiffel Tower 1889) https://digital-release.khon2.com/aloha-authentic/%ca%bbiolani-palace-was-once-ahead-of-the-white-house/amp (completed 1882)",
+        "https://digital-release.khon2.com/aloha-authentic/%ca%bbiolani-palace-was-once-ahead-of-the-white-house/amp (Executive Building until the move to the new State Capitol in 1969)",
+        "https://mentalfloss.com/article/77785/first-oval-office-phone-wasnt-installed-until-1929 (White House phone installed 1877, years before the palace was finished in 1882)"
       ]
     },
     {
       "id": "cw07",
-      "say": "[The first Ferris wheel was built for the same fair as the Eiffel Tower], [Dr Pepper was being served in Texas before Coca-Cola existed], [the oldest recording of a human voice is older than the phonograph], and [the classic Nokia ringtone comes from a guitar piece written in 1902].",
+      "about": "The Brooklyn Bridge",
+      "say": "The Brooklyn Bridge [opened after the Statue of Liberty was unveiled], [opened before the Washington Monument was finished], [was crossed by 21 of P.T. Barnum's elephants in 1884], and [wasn't officially named the Brooklyn Bridge until 1915].",
       "cap": 0,
-      "real": "The Eiffel Tower was built for the 1889 Paris fair. The first Ferris wheel was Chicago's answer to it, at the 1893 World's Fair.",
+      "real": "The bridge opened in May 1883. The Statue of Liberty wasn't dedicated until October 1886, three and a half years later.",
       "src": [
-        "https://www.smithsonianmag.com/history/history-ferris-wheel-180955300/",
-        "https://www.todayifoundout.com/index.php/2024/01/the-twisting-turning-tale-of-the-invention-of-dr-pepper/",
-        "https://www.smithsonianmag.com/smithsonian-institution/from-the-collections-sound-recordings-heard-for-the-first-time-6989525/",
-        "https://en.wikipedia.org/wiki/Nokia_tune"
+        "https://www.newworldencyclopedia.org/entry/Statue_of_Liberty (dedicated October 28, 1886); https://www.nypl.org/blog/2019/05/24/not-for-sale-brooklyn-bridge-130-years (bridge opened May 24, 1883)",
+        "https://www.nps.gov/wamo/learn/historyculture/monumentconstruction.htm (capstone set December 6, 1884, a year and a half after the bridge opened)",
+        "https://www.nypl.org/blog/2019/05/24/not-for-sale-brooklyn-bridge-130-years (21 elephants, May 17, 1884)",
+        "https://www.nypl.org/blog/2019/05/24/not-for-sale-brooklyn-bridge-130-years (called the New York Bridge or East River Bridge until its official naming in 1915)"
       ]
     },
     {
       "id": "cw08",
-      "say": "[The last independent Maya kingdom fell after Newton published his laws of motion], [work on Neuschwanstein Castle began after the American Civil War ended], [Machu Picchu was already built when work began on Notre-Dame in Paris], and [Hawaii's royal palace had electric lights before the White House did].",
+      "about": "Ida May Fuller",
+      "say": "Ida May Fuller [was born while Ulysses S. Grant was president], [went to school with future president Calvin Coolidge], [got the first monthly Social Security check in 1935], and [was still collecting Social Security after the 1969 Moon landing].",
       "cap": 2,
-      "real": "Work on Notre-Dame began in 1163. Machu Picchu was built by the Inca in the mid-1400s, almost three centuries later.",
+      "real": "Her check, number 00-000-001, was dated January 31, 1940. The Social Security Act passed in 1935, but monthly checks began in 1940.",
       "src": [
-        "https://en.wikipedia.org/wiki/Spanish_conquest_of_Pet%C3%A9n",
-        "https://www.neuschwanstein.de/englisch/palace/history.htm",
-        "https://kids.britannica.com/kids/article/Machu-Picchu/346167",
-        "https://ethw.org/Milestones:Electric_Lighting_Of_The_Kingdom_of_Hawaii_1886-1888"
+        "NOT WEB-CHECKED (textbook anchor only: Grant was president March 1869 to March 1877) https://en.wikipedia.org/wiki/Ida_May_Fuller (born September 6, 1874)",
+        "https://en.wikipedia.org/wiki/Ida_May_Fuller (Black River Academy, where her contemporaries included Calvin Coolidge)",
+        "https://en.wikipedia.org/wiki/Ida_May_Fuller (check 00-000-001, dated January 31, 1940)",
+        "https://en.wikipedia.org/wiki/Ida_May_Fuller (collected until her death in January 1975); https://www.guinnessworldrecords.com/records/icons/neil-armstrong-first-man-on-the-moon (July 20, 1969)"
       ]
     },
     {
       "id": "cw09",
-      "say": "[Woodstock happened less than a month after the Moon landing], [the first email was sent two years after the first cellphone call], [Apple was founded before the first Star Wars movie came out], and [NBA games had no three-point line until 1979].",
-      "cap": 1,
-      "real": "Ray Tomlinson sent the first network email in 1971, two years before Martin Cooper made the first handheld cellphone call in 1973.",
+      "about": "Alice Liddell",
+      "say": "Alice Liddell [was born before Abraham Lincoln became president], [was guest of honor at Columbia University on her 80th birthday], [was still alive when Mickey Mouse made his debut], and [was 15 when Lewis Carroll first told her the Wonderland story].",
+      "cap": 3,
+      "real": "She was 10 on the July 1862 boat trip when Carroll first told her the story that became Alice's Adventures in Wonderland.",
       "src": [
-        "NOT WEB-CHECKED (textbook: Moon landing July 20, 1969; Woodstock August 15-18, 1969) https://en.wikipedia.org/wiki/Woodstock",
-        "https://en.wikipedia.org/wiki/Ray_Tomlinson",
-        "https://en.wikipedia.org/wiki/Apple_Inc.",
-        "NOT WEB-CHECKED (textbook: the NBA adopted the three-point line for the 1979-80 season) https://en.wikipedia.org/wiki/Three-point_field_goal"
+        "NOT WEB-CHECKED (textbook anchor only: Lincoln took office March 1861) https://en.wikipedia.org/wiki/Alice_Liddell (born May 4, 1852: nine years earlier)",
+        "https://library.columbia.edu/libraries/rbml/uarchives/resources/media/alice.html (honorary degree May 2, 1932; guest of honor at the final Carroll Centennial ceremony, which fell on her 80th birthday)",
+        "NOT WEB-CHECKED (textbook anchor only: Mickey Mouse debuted in November 1928) https://en.wikipedia.org/wiki/Alice_Liddell (died November 16, 1934: six years later)",
+        "https://en.wikipedia.org/wiki/Alice_Liddell (10 years old on the July 1862 boat trip)"
       ]
     },
     {
       "id": "cw10",
-      "say": "[Queen Elizabeth II's first prime minister was born in 1874], [King Tut's tomb was found the same year the BBC began broadcasting], [Greece didn't switch to the modern calendar until 1923], and [Russia's October Revolution actually took place in September].",
-      "cap": 3,
-      "real": "Russia still used the old Julian calendar, so the revolution's October 25 was November 7 everywhere else. It was late, not early.",
+      "about": "Levi's jeans",
+      "say": "Levi's jeans [were first made for miners in the 1849 Gold Rush], [were patented before Edison's light bulb], [were called waist overalls, not jeans, until about 1960], and [were the idea of a tailor who bought cloth from Levi Strauss].",
+      "cap": 0,
+      "real": "Levi Strauss didn't reach San Francisco until 1853, and the riveted pants we call jeans were patented in 1873.",
       "src": [
-        "NOT WEB-CHECKED (textbook: Churchill, born 1874, was prime minister at Elizabeth II's 1952 accession) https://en.wikipedia.org/wiki/Winston_Churchill",
-        "https://en.wikipedia.org/wiki/BBC",
-        "https://wikiwand.com/EN/Gregorian_Calendar",
-        "https://en.wikipedia.org/wiki/Russian_Revolution"
+        "https://www.levistrauss.com/our-story/the-history-of-denim/ (Levi Strauss came to San Francisco in 1853; patent May 20, 1873)",
+        "NOT WEB-CHECKED (textbook anchor only: Edison's bulb 1879, patented 1880) https://www.levistrauss.com/our-story/the-history-of-denim/ (patented May 20, 1873: six years earlier)",
+        "https://www.levistrauss.com/our-story/the-history-of-denim/ (waist overalls until 1960)",
+        "https://www.levistrauss.com/our-story/the-history-of-denim/ (Jacob Davis, a tailor who bought his cloth from Levi)"
       ]
     },
     {
       "id": "cw11",
-      "say": "[The Battle of New Orleans came after the War of 1812 peace treaty was signed], [the Hundred Years' War between England and France lasted 116 years], [Concorde was still flying passengers when the first iPhone came out], and [the original VW Beetle was still being built in Mexico in 2003].",
+      "about": "Newgrange",
+      "say": "Newgrange [is older than the Great Pyramid of Giza], [is older than Stonehenge], [was lined up to catch the sunrise on the summer solstice], and [picks who gets to watch its solstice sunrise from inside by lottery].",
       "cap": 2,
-      "real": "Concorde's last passenger flight was in October 2003, almost four years before the first iPhone went on sale in June 2007.",
+      "real": "Newgrange catches the sunrise around the winter solstice in December, when a beam lights its inner chamber for about 17 minutes.",
       "src": [
-        "https://en.wikipedia.org/wiki/Treaty_of_Ghent",
-        "https://www.britannica.com/topic/list-of-wars-2031197",
-        "https://www.history.com/this-day-in-history/october-24/the-concorde-makes-its-final-flight",
-        "https://history.com/this-day-in-history/last-classic-vw-beetle-rolls-off-the-line"
+        "https://www.nationalgeographic.com/travel/article/newgrange-lottery-winter-solstice-event (finished around 3200 BCE, predating the Great Pyramids)",
+        "https://www.nationalgeographic.com/travel/article/newgrange-lottery-winter-solstice-event (predating Stonehenge)",
+        "https://www.nationalgeographic.com/travel/article/newgrange-lottery-winter-solstice-event (winter solstice in December, lit for 17 minutes)",
+        "https://www.nationalgeographic.com/travel/article/newgrange-lottery-winter-solstice-event (38 places a year, chosen by lottery)"
       ]
     },
     {
       "id": "cw12",
-      "say": "[England's first flushing toilet was built for Queen Victoria], [the first known written OMG was in a 1917 letter to Winston Churchill], [the word meme was coined in 1976, long before the World Wide Web], and [Santa Fe, New Mexico was founded before the Pilgrims reached Plymouth].",
-      "cap": 0,
-      "real": "Sir John Harington built a flushing toilet for Queen Elizabeth I around 1596, more than 200 years before Victoria was born.",
+      "about": "Concorde",
+      "say": "Concorde [made its first flight before anyone walked on the Moon], [cruised at three times the speed of sound], [once chased a solar eclipse so astronomers could watch it for 74 minutes], and [carried its last passengers before the first YouTube video was posted].",
+      "cap": 1,
+      "real": "Concorde cruised at twice the speed of sound, about 1,350 miles per hour, and crossed the Atlantic in around three and a half hours.",
       "src": [
-        "https://blog.sciencemuseum.org.uk/a-flushing-story/",
-        "https://www.snopes.com/fact-check/omg-winston-churchill/",
-        "https://en.wikipedia.org/wiki/Meme",
-        "https://en.wikipedia.org/wiki/Santa_Fe,_New_Mexico"
+        "https://www.museeairespace.fr/en/collections/bac-sud-aviation-concorde-prototype-001-f-wtss/ (first flight March 2, 1969); https://www.guinnessworldrecords.com/records/icons/neil-armstrong-first-man-on-the-moon (July 20, 1969)",
+        "https://www.history.com/this-day-in-history/october-24/the-concorde-makes-its-final-flight (twice the speed of sound, 1,350 miles per hour)",
+        "https://www.museeairespace.fr/en/collections/bac-sud-aviation-concorde-prototype-001-f-wtss/ (June 30, 1973: eclipse watched for 74 minutes)",
+        "https://www.history.com/this-day-in-history/october-24/the-concorde-makes-its-final-flight (last commercial passenger flight October 24, 2003); https://en.wikipedia.org/wiki/Me_at_the_zoo (April 23, 2005)"
       ]
     }
   ]

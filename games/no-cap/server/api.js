@@ -139,10 +139,15 @@ export function createApi({ store, decks, verify, role = async () => null, clock
       const t = room.taps[i] || {}, row = {};
       const from = tl.times[i] ? tl.times[i].findStart : null;
       let fooled = 0;
+      // live: the first to find all three on this card gets a bonus on top of the speed points
+      const finishers = listeners(room, i).filter((p) => t[p] && t[p].found.length === 3 && !t[p].busted);
+      const firstAt = room.kind === 'live' && finishers.length ? Math.min(...finishers.map((p) => t[p].doneAt)) : null;
       for (const p of listeners(room, i)) {
         const x = t[p] || { found: [], busted: false };
-        const pts = cardPoints(x.found.length, x.busted, x.doneAt != null && from != null ? x.doneAt - from : FIND_MS);
-        row[p] = { pts, found: x.found.length, busted: !!x.busted };
+        let pts = cardPoints(x.found.length, x.busted, x.doneAt != null && from != null ? x.doneAt - from : FIND_MS);
+        const first = firstAt != null && x.found.length === 3 && !x.busted && x.doneAt === firstAt;
+        if (first) pts += POINTS.first;
+        row[p] = { pts, found: x.found.length, busted: !!x.busted, first };
         if (x.busted) fooled++;
         if (total[p] != null) total[p] += pts;
       }
@@ -179,7 +184,8 @@ export function createApi({ store, decks, verify, role = async () => null, clock
     out.hunting = ls.length;
     out.doneCount = ls.filter((p) => ((room.taps[i] || {})[p] || {}).doneAt != null).length;
     const showText = tl.stage === 'find' || tl.stage === 'reveal' || me === reader;
-    if (showText) out.card = { say: c.say, claims: claims(c.say) };
+    out.about = c.about || null;
+    if (showText) out.card = { say: c.say, about: c.about || null, claims: claims(c.say) };
     if (out.card && (me === reader || tl.stage === 'reveal')) out.card.cap = c.cap;
     if (tl.stage === 'reveal') {
       out.card.real = c.real;
