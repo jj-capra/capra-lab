@@ -164,8 +164,9 @@
   .claim.cap { background: var(--cap); color: #fff; }
   .claim.cap::before { content: "✕"; color: var(--cap); background: #fff; }
   .claim.done:not(.fact):not(.cap) { opacity: 0.55; }
-  .claim:has(.stamp) { padding-right: 88px; }
-  .claim .stamp { position: absolute; right: 10px; top: 50%; margin-top: -14px; padding: 2px 8px; border-radius: 6px; border: 2.5px solid var(--ink); font: 400 17px/1.2 var(--display); letter-spacing: 0.08em; transform: rotate(4deg); white-space: nowrap; }
+  /* the stamp gets its own column, so it never sits on the words */
+  .claim:has(.stamp) { grid-template-columns: 34px minmax(0, 1fr) auto; }
+  .claim .stamp { justify-self: end; padding: 2px 8px; border-radius: 6px; border: 2.5px solid var(--ink); font: 400 16px/1.2 var(--display); letter-spacing: 0.08em; transform: rotate(4deg); white-space: nowrap; }
   .claim.fact .stamp { background: var(--ink); color: var(--fact); }
   .claim.cap .stamp { background: var(--yellow); color: var(--ink); animation: slam 0.35s cubic-bezier(.2, 1.6, .4, 1); }
   @keyframes slam { from { transform: scale(2) rotate(-12deg); opacity: 0; } }

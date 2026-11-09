@@ -42,12 +42,12 @@
     },
     {
       "id": "hp04",
-      "say": "[the Inca built more than 10,000 miles of roads without using the wheel], [Mansa Musa spent so much gold in Cairo in 1324 that its value dropped], [the Mongol Empire conquered Japan in the 1280s], and [the Ottoman Empire lasted more than 600 years].",
+      "say": "[the Inca built more than 10,000 miles of roads without using the wheel], [Mansa Musa of Mali brought thousands of people on his 1324 trip to Mecca], [the Mongol Empire conquered Japan in the 1280s], and [the Ottoman Empire lasted more than 600 years].",
       "cap": 2,
       "real": "The Mongols tried to invade Japan in 1274 and again in 1281. Both attacks failed, and in 1281 a huge typhoon sank much of their fleet.",
       "src": [
         "https://en.wikipedia.org/wiki/Inca_road_system",
-        "https://worldhistorycommons.org/al-umaris-account-mansa-musas-visit-cairo",
+        "https://www.britannica.com/biography/Musa-I-of-Mali",
         "https://www.thecollector.com/why-mongol-invasions-of-japan-failed/",
         "https://en.wikipedia.org/wiki/History_of_the_Ottoman_Empire"
       ]
