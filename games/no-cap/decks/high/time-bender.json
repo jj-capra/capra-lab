@@ -5,147 +5,159 @@
   "blurb": "History's dates are messing with you. Three are real, one is cap. Trust nothing.",
   "cards": [
     {
-      "id": "tg01",
-      "say": "[Harvard University is older than calculus], [the steam train is older than the bicycle], [Big Ben is older than the United States], and [Disneyland opened before Hawaii became a state].",
+      "id": "tb01",
+      "about": "Harvard University",
+      "say": "Harvard University [was founded before anyone had invented calculus], [held its first graduation, for nine students, the year Galileo died], [was founded before William Shakespeare died], and [is named after a minister who left it his library].",
       "cap": 2,
-      "real": "Big Ben's clock tower in London was finished in 1859, more than 80 years after the United States declared independence in 1776.",
+      "real": "Shakespeare died in 1616. Harvard was founded 20 years later, in 1636, by a vote of the Massachusetts Bay Colony's legislature.",
       "src": [
-        "https://en.wikipedia.org/wiki/History_of_calculus",
-        "NOT WEB-CHECKED (textbook) Trevithick's steam locomotive ran on rails in 1804; Karl Drais's running machine, the first bicycle, came in 1817 https://en.wikipedia.org/wiki/Richard_Trevithick",
-        "NOT WEB-CHECKED (textbook) Big Ben's tower and Great Clock were finished in 1859; the US declared independence in 1776 https://en.wikipedia.org/wiki/Big_Ben",
-        "https://en.wikipedia.org/wiki/Disneyland"
+        "https://en.wikipedia.org/wiki/History_of_Harvard_University (founded 1636) + https://en.wikipedia.org/wiki/History_of_calculus (Newton and Leibniz, 1660s to 1680s)",
+        "https://en.wikipedia.org/wiki/History_of_Harvard_University (first commencement 1642, nine students) + https://en.wikipedia.org/wiki/Galileo_Galilei (died 8 January 1642)",
+        "https://en.wikipedia.org/wiki/1616 (Shakespeare died April 1616) + https://en.wikipedia.org/wiki/History_of_Harvard_University (founded 1636)",
+        "https://en.wikipedia.org/wiki/History_of_Harvard_University (named Harvard College in 1639 for John Harvard, who willed it his library of some 400 books)"
       ]
     },
     {
-      "id": "tg02",
-      "say": "[Napoleon was still alive when the oldest surviving photo was taken], [Florence Nightingale lived long enough to have her voice recorded], [Queen Victoria lived long enough to be filmed on a movie camera], and [Harriet Tubman was still alive when the Wright brothers first flew].",
+      "id": "tb02",
+      "about": "The Ottoman Empire",
+      "say": "The Ottoman Empire [still existed when Mickey Mouse first appeared in a cartoon], [lasted for more than six centuries], [conquered Constantinople almost 40 years before Columbus sailed], and [still existed when the Wright brothers first flew].",
       "cap": 0,
-      "real": "Napoleon died in 1821. The oldest surviving camera photo, a view from a window in France by Nicephore Niepce, dates from 1826 or 1827.",
+      "real": "The Ottoman sultanate was abolished in November 1922, six years before Mickey Mouse's first cartoons came out in 1928.",
       "src": [
-        "https://en.wikipedia.org/wiki/View_from_the_Window_at_Le_Gras",
-        "https://en.wikipedia.org/wiki/Florence_Nightingale",
-        "https://replay.bfi.org.uk/video/c54272df-aada-529c-b4e6-d583938883fe",
-        "https://en.wikipedia.org/wiki/Legacy_of_Harriet_Tubman"
+        "https://en.wikipedia.org/wiki/Ottoman_Empire (sultanate abolished 1 November 1922) + https://en.wikipedia.org/wiki/Steamboat_Willie (1928)",
+        "https://en.wikipedia.org/wiki/Ottoman_Empire (founded c. 1299, sultanate abolished 1922) + https://en.wikipedia.org/wiki/History_of_the_Ottoman_Empire",
+        "https://en.wikipedia.org/wiki/Ottoman_Empire (Constantinople conquered 29 May 1453) + https://www.britannica.com/biography/Christopher-Columbus/The-first-voyage (1492)",
+        "https://en.wikipedia.org/wiki/History_of_the_Ottoman_Empire (empire lasted to 1922; Wright brothers flew December 1903, https://en.wikipedia.org/wiki/Wright_brothers)"
       ]
     },
     {
-      "id": "tg03",
-      "say": "[Pluto was discovered and demoted within one person's lifetime], [Uranus was discovered while the American Revolution was still going on], [the first photo of Earth from space was taken 11 years before Sputnik], and [the Moon landing is closer to the Wright brothers' first flight than to 2025].",
+      "id": "tb03",
+      "about": "Wolfgang Amadeus Mozart",
+      "say": "Wolfgang Amadeus Mozart [is younger than America's Liberty Bell], [wrote music for a glass instrument invented by Benjamin Franklin], [was still alive when George Washington became president], and [wrote the tune of Twinkle Twinkle Little Star at age five].",
       "cap": 3,
-      "real": "The Wright brothers flew in 1903 and Apollo 11 landed in 1969, 66 years apart. From 1969 to 2025 is only 56 years.",
+      "real": "The tune is an older French song from around 1765. Mozart wrote 12 variations on it in 1781 or 1782, in his twenties, so he gets the credit.",
       "src": [
-        "https://en.wikipedia.org/wiki/Pluto",
-        "https://en.wikipedia.org/wiki/Uranus",
-        "https://www.smithsonianmag.com/smart-news/70-years-ago-today-nazi-rockets-and-american-scientists-took-first-photo-earth-space-180960890/",
-        "https://en.wikipedia.org/wiki/Wright_brothers"
+        "https://en.wikipedia.org/wiki/Liberty_Bell (cast 1752, recast June 1753) + https://www.themorgan.org/exhibitions/online/mozart/418 (Mozart born 1756)",
+        "https://www.parlancechamberconcerts.org/individual-program-notes/wolfgang-amadeus-mozart-(1756-1791)/adagio-in-c-for-armonica,-k.-617 (Adagio K. 617 for Franklin's armonica, 1791)",
+        "https://www.parlancechamberconcerts.org/individual-program-notes/wolfgang-amadeus-mozart-(1756-1791)/adagio-in-c-for-armonica,-k.-617 (Mozart 1756-1791) + https://en.wikipedia.org/wiki/George_Washington (inaugurated April 30, 1789)",
+        "https://www.themorgan.org/exhibitions/online/mozart/418 (variations K. 265 written in Vienna 1781-1782 on a tune by an unknown composer from around 1765)"
       ]
     },
     {
-      "id": "tg04",
-      "say": "[the authors C.S. Lewis and Aldous Huxley died on the same day], [the rivals Thomas Edison and Nikola Tesla died on the same day], [the composers Bach and Handel were born in the same year], and [Marilyn Monroe and Queen Elizabeth II were born in the same year].",
+      "id": "tb04",
+      "about": "Marie Curie",
+      "say": "Marie Curie [was born the same year the United States bought Alaska], [won her second Nobel Prize after World War I ended], [won her first Nobel Prize the same year the Wright brothers first flew], and [set up mobile X-ray units for soldiers in World War I].",
       "cap": 1,
-      "real": "Thomas Edison died in 1931. His rival Nikola Tesla outlived him by more than 11 years and died in January 1943.",
+      "real": "Curie's second Nobel Prize, in chemistry, came in 1911, three years before World War I began. She was the first person ever to win two.",
       "src": [
-        "https://www.wgbh.org/news/local/2013-11-22/two-other-20th-century-titans-who-died-on-nov-22-1963",
-        "NOT WEB-CHECKED (textbook) Edison died October 18, 1931; Tesla died January 7, 1943 https://en.wikipedia.org/wiki/Nikola_Tesla",
-        "https://en.wikipedia.org/wiki/1685_in_music",
-        "https://en.wikipedia.org/wiki/1926_in_music"
+        "https://www.nobelprize.org/prizes/physics/1903/marie-curie/facts (born 7 November 1867) + https://en.wikipedia.org/wiki/Alaska_Purchase (1867)",
+        "https://www.nobelprize.org/prizes/physics/1903/marie-curie/facts (Chemistry prize 1911, first person to win two)",
+        "https://www.nobelprize.org/prizes/physics/1903/marie-curie/facts (Physics prize 1903) + https://en.wikipedia.org/wiki/Wright_brothers (first flight December 1903)",
+        "https://www.nobelprize.org/prizes/physics/1903/marie-curie/facts (organized mobile X-ray teams in World War I)"
       ]
     },
     {
-      "id": "tg05",
-      "say": "[Notre-Dame in Paris is older than Machu Picchu], [the concrete dome of Rome's Pantheon has stood for about 1,900 years], [the Great Pyramid was the tallest human-made structure for over 3,700 years], and [the main pyramid at Chichen Itza is older than the Roman Colosseum].",
+      "id": "tb05",
+      "about": "Charles Darwin",
+      "say": "Charles Darwin [was born on the very same day as Abraham Lincoln], [died before Alexander Graham Bell patented the telephone], [ate puma, armadillo and iguana on his voyage around the world], and [published his theory of evolution before the US Civil War began].",
+      "cap": 1,
+      "real": "Bell patented the telephone in 1876. Darwin lived six more years and died in April 1882.",
+      "src": [
+        "https://clarklibrary.ucla.edu/blog/charles-darwin-abraham-lincoln-and-the-12th-of-february/ (both born 12 February 1809)",
+        "https://darwin-online.org.uk/converted/Ancillary/1882_RGSobituary_A118.html (died 19 April 1882) + https://en.wikipedia.org/wiki/Alexander_Graham_Bell (patent March 1876)",
+        "https://www.nhpr.org/npr-blogs/2015-08-12/dining-like-darwin-when-scientists-swallow-their-subjects (puma, armadillos and iguanas on the Beagle voyage)",
+        "https://clarklibrary.ucla.edu/blog/charles-darwin-abraham-lincoln-and-the-12th-of-february/ (On the Origin of Species, 1859; the Civil War began April 1861)"
+      ]
+    },
+    {
+      "id": "tb06",
+      "about": "Apple",
+      "say": "Apple [was founded before the first Star Wars movie came out], [was founded closer in time to the Moon landing than to the first iPhone], [had a third co-founder who sold his 10 percent share for 800 dollars], and [got its start a year before its rival Microsoft did].",
       "cap": 3,
-      "real": "Rome's Colosseum opened in AD 80. El Castillo, the great pyramid at Chichen Itza, was built centuries later, sometime between the 700s and 1100s AD.",
+      "real": "Microsoft was founded in April 1975 in Albuquerque, New Mexico, a year before Apple started on April 1, 1976.",
       "src": [
-        "https://en.wikipedia.org/wiki/Notre-Dame_de_Paris",
-        "https://en.wikipedia.org/wiki/Pantheon,_Rome",
-        "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza",
-        "https://en.wikipedia.org/wiki/El_Castillo,_Chichen_Itza"
+        "https://en.wikipedia.org/wiki/Apple_Inc. (founded April 1, 1976; Star Wars opened May 25, 1977)",
+        "https://en.wikipedia.org/wiki/Apple_Inc. (founded 1976: 7 years after the July 1969 Moon landing, 31 years before the 2007 iPhone)",
+        "https://en.wikipedia.org/wiki/Ronald_Wayne",
+        "https://en.wikipedia.org/wiki/History_of_Microsoft (founded April 4, 1975, in Albuquerque)"
       ]
     },
     {
-      "id": "tg06",
-      "say": "[Pocahontas visited London while Shakespeare was still alive], [Moctezuma still ruled the Aztecs when Henry VIII became king], [the first traffic light was installed before Karl Benz built his first car], and [the Rosetta Stone was found after the U.S. Constitution was written].",
+      "id": "tb07",
+      "about": "Nokia",
+      "say": "Nokia [made the world's first mobile phone call, back in 1973], [started out as a pulp mill before the telephone was even invented], [was once the third-biggest TV maker in Europe], and [got its classic ringtone from a guitar piece older than the airplane].",
       "cap": 0,
-      "real": "Shakespeare died in April 1616. Pocahontas didn't arrive in England until June 12 that year, about seven weeks later.",
+      "real": "The first mobile phone call was made by Martin Cooper of Motorola in 1973. Nokia's first mobile phone, the Mobira Senator car phone, came in 1982.",
       "src": [
-        "https://en.wikipedia.org/wiki/1616",
-        "NOT WEB-CHECKED (textbook) Moctezuma II ruled the Aztecs from 1502 to 1520; Henry VIII became king of England in April 1509 https://en.wikipedia.org/wiki/Moctezuma_II",
-        "https://en.wikipedia.org/wiki/History_of_traffic_lights",
-        "NOT WEB-CHECKED (textbook) the Rosetta Stone was found in July 1799; the US Constitution was written and signed in 1787 https://en.wikipedia.org/wiki/Rosetta_Stone"
+        "https://www.aarp.org/politics-society/history/info-2018/first-cell-phone-call.html (Motorola's Martin Cooper, 1973) + https://en.wikipedia.org/wiki/Nokia (first mobile phone, Mobira Senator, 1982)",
+        "https://en.wikipedia.org/wiki/Nokia (pulp mill founded 1865) + https://en.wikipedia.org/wiki/Alexander_Graham_Bell (telephone patent 1876)",
+        "https://en.wikipedia.org/wiki/Nokia (third-largest television manufacturer in Europe)",
+        "https://en.wikipedia.org/wiki/Nokia_tune (Tarrega's Gran Vals, 1902; the Wright brothers first flew December 1903)"
       ]
     },
     {
-      "id": "tg07",
-      "say": "[President John Tyler was born in 1790 and had a grandson alive in 2024], [a veteran of the American Revolution was photographed in 1864], [a Civil War veteran was still alive when Apollo 11 landed on the Moon], and [a signer of the Declaration of Independence broke ground for a railroad in 1828].",
+      "id": "tb08",
+      "about": "The Mongol Empire",
+      "say": "The Mongol Empire [was founded nine years before England's Magna Carta], [is about a century older than the Ottoman Empire], [took over Japan after invading it in 1281], and [had more than 1,400 postal relay stations in China alone].",
       "cap": 2,
-      "real": "The last undisputed Civil War veteran, Albert Woolson, died in 1956, 13 years before Apollo 11.",
+      "real": "The Mongols invaded Japan in 1274 and 1281 and failed both times. In 1281 a huge typhoon wrecked much of their fleet.",
       "src": [
-        "https://www.kpbs.org/news/national/2025/05/29/harrison-ruffin-tyler-grandson-of-the-10th-u-s-president-dies-at-96",
-        "https://en.wikipedia.org/wiki/Lemuel_Cook",
-        "https://en.wikipedia.org/wiki/Albert_Woolson",
-        "https://www.msa.maryland.gov/megafile/msa/speccol/sc2900/sc2908/000001/000602/html/am602--328.html"
+        "https://www.britannica.com/facts/Genghis-Khan (khan of the Mongol empire from 1206; Magna Carta was sealed in 1215)",
+        "https://www.britannica.com/facts/Genghis-Khan (1206) + https://en.wikipedia.org/wiki/Ottoman_Empire (founded c. 1299)",
+        "https://www.thecollector.com/why-mongol-invasions-of-japan-failed/",
+        "https://historyofinformation.com/detail.php?id=3043 (more than 1,400 postal stations in China under Kublai Khan)"
       ]
     },
     {
-      "id": "tg08",
-      "say": "[the Ottoman Empire still existed when the first airplanes flew], [the Tour de France is older than the modern Olympic Games], [Coca-Cola was invented before the Eiffel Tower was built], and [Alaska still belonged to Russia when Abraham Lincoln died].",
-      "cap": 1,
-      "real": "The modern Olympics began in Athens in 1896. The first Tour de France was raced seven years later, in 1903.",
-      "src": [
-        "https://en.wikipedia.org/wiki/History_of_the_Ottoman_Empire",
-        "https://en.wikipedia.org/wiki/1903",
-        "https://en.wikipedia.org/wiki/Coca-Cola",
-        "https://en.wikipedia.org/wiki/Alaska_Purchase"
-      ]
-    },
-    {
-      "id": "tg09",
-      "say": "[women first competed at the Olympics in 1928], [golf came back to the Olympics in 2016 after 112 years away], [a gymnast with a wooden leg won six Olympic medals in 1904], and [the first basketball game ever played ended 1 to 0].",
-      "cap": 0,
-      "real": "Women first competed at the 1900 Paris Olympics, in sports like tennis and golf. 1928 is when women's track and field was added.",
-      "src": [
-        "https://en.wikipedia.org/wiki/Participation_of_women_in_the_Olympics",
-        "https://edition.cnn.com/2016/05/13/golf/golf-success-failure-olympic-games-rio-2016",
-        "https://olympics.com/en/news/george-eyser-medals-mystery-and-the-games-first-amputee",
-        "https://en.wikipedia.org/wiki/The_First_Team"
-      ]
-    },
-    {
-      "id": "tg10",
-      "say": "[the Soviet Union still existed when the first website went online], [Macau was still ruled by Portugal when Google was founded], [the first message sent over the early internet crashed it after two letters], and [the first email was sent after the first Apple computer went on sale].",
+      "id": "tb09",
+      "about": "Galileo Galilei",
+      "say": "Galileo Galilei [was born the same year as William Shakespeare], [was still alive when the Pilgrims landed at Plymouth], [has one of his fingers on display in a museum in Florence], and [built the world's very first telescope in 1608].",
       "cap": 3,
-      "real": "Ray Tomlinson sent the first network email in 1971. Apple's first computer, the Apple I, didn't go on sale until 1976.",
+      "real": "A Dutch eyeglass maker, Hans Lippershey, tried to patent a telescope in 1608. Galileo heard about it and built his own better one in 1609.",
       "src": [
-        "https://en.wikipedia.org/wiki/History_of_the_World_Wide_Web",
-        "NOT WEB-CHECKED (textbook) Google was founded in September 1998; Portugal handed Macau over to China on December 20, 1999 https://en.wikipedia.org/wiki/Transfer_of_sovereignty_over_Macau",
-        "https://en.wikipedia.org/wiki/ARPANET",
-        "https://en.wikipedia.org/wiki/Ray_Tomlinson"
+        "https://users.sussex.ac.uk/~desw/galileo/issues/isabelle.html",
+        "https://en.wikipedia.org/wiki/Galileo_Galilei (died 8 January 1642; the Mayflower Pilgrims landed in 1620)",
+        "https://en.wikipedia.org/wiki/Galileo%27s_middle_finger (in the Museo Galileo, Florence)",
+        "https://en.wikipedia.org/wiki/Galileo_Galilei (Lippershey's 1608 patent attempt; Galileo's own telescope 1609)"
       ]
     },
     {
-      "id": "tg11",
-      "say": "[Star Wars came out closer to the end of World War II than to 2025], [Mount Rushmore was finished before Mickey Mouse first appeared], [World War I ended before American women won the right to vote nationwide], and [Abraham Lincoln's son was at the Lincoln Memorial's dedication in 1922].",
+      "id": "tb10",
+      "about": "The Beatles",
+      "say": "The Beatles [released their first single on the day the first James Bond movie premiered], [hit number one in Britain with their very first single], [gave their final public performance before the first Moon landing], and [had the police come up to stop their final show].",
       "cap": 1,
-      "real": "Mickey Mouse debuted in Steamboat Willie in 1928. Work on Mount Rushmore didn't stop until October 1941.",
+      "real": "Love Me Do, their first single, came out in October 1962 and peaked at number 17 on the UK chart.",
       "src": [
-        "https://en.wikipedia.org/wiki/Star_Wars_(film)",
-        "https://en.wikipedia.org/wiki/Mount_Rushmore",
-        "https://en.wikipedia.org/wiki/Nineteenth_Amendment_to_the_United_States_Constitution",
-        "https://en.wikipedia.org/wiki/Lincoln_Memorial"
+        "https://blog.oup.com/2012/10/beatles-friday-5-october-1962-love-me-do/ (Love Me Do issued and Dr. No premiered on 5 October 1962)",
+        "https://history.co.uk/this-day-in-history/05-october/first-james-bond-movie-and-beatles-single-released (Love Me Do peaked at number 17)",
+        "https://en.wikipedia.org/wiki/The_Beatles%27_rooftop_concert (30 January 1969, final public performance; Apollo 11 landed July 20, 1969)",
+        "https://en.wikipedia.org/wiki/The_Beatles%27_rooftop_concert (Metropolitan Police officers came to stop the performance)"
       ]
     },
     {
-      "id": "tg12",
-      "say": "[the last verified person born in the 1800s died in 2017], [Japan's last shogun was still alive when the first Model T was sold], [China's last emperor died before the first person went to space], and [the Holy Roman Empire still existed when the United States was founded].",
+      "id": "tb11",
+      "about": "Johann Sebastian Bach",
+      "say": "Johann Sebastian Bach [was born the same year as the composer Handel], [died less than six years before Mozart was born], [was born after Isaac Newton published his laws of motion], and [had 20 children with his two wives].",
       "cap": 2,
-      "real": "Puyi, China's last emperor, died in 1967, six years after Yuri Gagarin became the first person in space.",
+      "real": "Bach was born in March 1685. Newton's Principia, with his laws of motion, came out two years later, in July 1687.",
       "src": [
-        "https://en.wikipedia.org/wiki/Emma_Morano",
-        "https://en.wikipedia.org/wiki/Tokugawa_Yoshinobu",
-        "https://en.wikipedia.org/wiki/Puyi",
-        "https://en.wikipedia.org/wiki/Dissolution_of_the_Holy_Roman_Empire"
+        "https://en.wikipedia.org/wiki/George_Frideric_Handel (born 1685, the same year as Bach)",
+        "https://en.wikipedia.org/wiki/Johann_Sebastian_Bach (died 28 July 1750) + https://www.themorgan.org/exhibitions/online/mozart/418 (Mozart born 1756)",
+        "https://en.wikipedia.org/wiki/Isaac_Newton (Principia published 5 July 1687) + https://en.wikipedia.org/wiki/Johann_Sebastian_Bach (born 31 March 1685)",
+        "https://en.wikipedia.org/wiki/Johann_Sebastian_Bach (seven children with Maria Barbara, 13 with Anna Magdalena)"
+      ]
+    },
+    {
+      "id": "tb12",
+      "about": "Jackie Robinson",
+      "say": "Jackie Robinson [played his first big-league game before World War II ended], [broke baseball's color line before the US Air Force existed], [won the first Rookie of the Year award baseball ever handed out], and [had his number 42 retired by every MLB team in 1997].",
+      "cap": 0,
+      "real": "World War II ended in 1945. Robinson, who served in the Army during the war, played his first game for the Brooklyn Dodgers on April 15, 1947.",
+      "src": [
+        "https://www.britannica.com/biography/Jackie-Robinson (Army 1942 to 1944, debut April 15, 1947; World War II ended in 1945)",
+        "https://wiki.riteme.site/wiki/1947_in_the_United_States (Robinson's debut April 15; the Air Force became a separate branch in September 1947)",
+        "https://www.britannica.com/biography/Jackie-Robinson (MLB's inaugural Rookie of the Year award, 1947)",
+        "https://www.britannica.com/biography/Jackie-Robinson (number 42 retired for all of MLB in April 1997)"
       ]
     }
   ]

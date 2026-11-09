@@ -2,150 +2,162 @@
   "id": "history-has-no-chill",
   "title": "History Has No Chill",
   "shelf": "high",
-  "blurb": "Revolutions, empires, inventors and true stories too weird to make up. Except one.",
+  "blurb": "Presidents, scientists, emperors and composers, with true stories too weird to make up.",
   "cards": [
     {
       "id": "hn01",
-      "say": "[Revolutionary France briefly used clocks with 10 hours in a day], [the Bastille held more than 100 prisoners on the day it was stormed], [the metric system was born during the French Revolution], and [Haiti became a nation after a successful revolt by enslaved people].",
+      "about": "John Adams",
+      "say": "John Adams [was the first president to live in the White House], [lived in the White House for all four years of his presidency], [left town before the man who beat him was sworn in], and [died on the very same day as Thomas Jefferson].",
       "cap": 1,
-      "real": "When crowds stormed the Bastille on July 14, 1789, it held just seven prisoners.",
+      "real": "Adams moved into the unfinished White House on November 1, 1800, with only about four months left in his term.",
       "src": [
-        "https://en.wikipedia.org/wiki/Decimal_time",
-        "https://en.wikipedia.org/wiki/Storming_of_the_Bastille",
-        "https://en.wikipedia.org/wiki/Metric_system",
-        "https://en.wikipedia.org/wiki/Haitian_Revolution"
+        "https://en.wikipedia.org/wiki/White_House + https://www.history.com/this-day-in-history/november-1/john-adams-moves-into-white-house (moved in November 1, 1800)",
+        "https://www.history.com/this-day-in-history/november-1/john-adams-moves-into-white-house (moved in November 1, 1800; Jefferson sworn in March 4, 1801)",
+        "https://www.history.com/this-day-in-history/november-1/john-adams-moves-into-white-house (as Jefferson was sworn in, Adams was already on his way back to Massachusetts)",
+        "https://www.history.com/this-day-in-history/thomas-jefferson-and-john-adams-die"
       ]
     },
     {
       "id": "hn02",
-      "say": "[Mark Twain patented a scrapbook with the glue already on its pages], [a 15-year-old in Maine came up with an improved design for earmuffs], [a woman fed up with her chipped china patented a dishwasher in 1886], and [a 12-year-old girl invented a machine to make flat-bottomed paper bags].",
+      "about": "James Madison",
+      "say": "James Madison [stood just 5 feet 4 inches tall], [once suggested hiring Portugal's navy to fight pirates], [has his face on the 5,000 dollar bill], and [lost a 1789 race for Congress to James Monroe].",
       "cap": 3,
-      "real": "Margaret Knight was about 30 when she invented her paper bag machine in 1868. At 12, she'd come up with a safety device for mill looms.",
+      "real": "Madison beat James Monroe for a seat in the first House of Representatives in 1789. Monroe later followed him as president.",
       "src": [
-        "https://www.americanheritage.com/twain-patent-poet",
-        "https://www.smithsonianmag.com/smart-news/chester-greenwood-invented-earmuffs-or-did-he-180962434/",
-        "https://www.northernpublicradio.org/wnij-news/2021-12-27/this-week-in-illinois-history-josephine-cochrane-patents-the-dishwasher-december-28-1886",
-        "https://en.wikipedia.org/wiki/Margaret_E._Knight"
+        "https://www.mentalfloss.com/history/presidents/16-fun-facts-james-madisons-birthday",
+        "https://www.mentalfloss.com/history/presidents/16-fun-facts-james-madisons-birthday",
+        "https://www.mentalfloss.com/history/presidents/16-fun-facts-james-madisons-birthday",
+        "https://www.mentalfloss.com/history/presidents/16-fun-facts-james-madisons-birthday (he defeated Monroe for a House seat in 1789)"
       ]
     },
     {
       "id": "hn03",
-      "say": "[Marie Curie won Nobel Prizes in both physics and medicine], [Isaac Newton worked at England's Royal Mint hunting down counterfeiters], [Albert Einstein was once offered the job of president of Israel], and [Ada Lovelace, often called the first programmer, was Lord Byron's daughter].",
+      "about": "Ulysses S. Grant",
+      "say": "Ulysses S. Grant [graduated first in his class at West Point], [was born with the first name Hiram], [was arrested for speeding in his horse carriage while president], and [signed the law that made Yellowstone the first national park].",
       "cap": 0,
-      "real": "Marie Curie won the 1903 Nobel Prize in Physics and the 1911 Nobel Prize in Chemistry. She never won one for medicine.",
+      "real": "Grant finished 21st out of 39 cadets in West Point's class of 1843, strong in math and science but weak in military subjects.",
       "src": [
-        "https://en.wikipedia.org/wiki/Marie_Curie",
-        "https://en.wikipedia.org/wiki/Isaac_Newton",
-        "https://en.wikipedia.org/wiki/Albert_Einstein",
-        "https://en.wikipedia.org/wiki/Ada_Lovelace"
+        "https://www.nps.gov/articles/000/grant-s-early-years.htm (graduated 21st of 39 in 1843)",
+        "https://www.nps.gov/people/ulysses-s-grant.htm (born Hiram Ulysses Grant)",
+        "https://www.smithsonianmag.com/smart-news/when-president-ulysses-s-grant-was-arrested-for-speeding-in-a-horse-drawn-carriage-180981916/",
+        "https://www.nps.gov/people/ulysses-s-grant.htm (signed the Yellowstone act on March 1, 1872)"
       ]
     },
     {
       "id": "hn04",
-      "say": "[Sweden once had a February 30, in the year 1712], [Russia's October Revolution happened in November on our calendar], [Britain skipped an entire month in 1752 to fix its calendar], and [Julius Caesar made the year 46 BC last 445 days].",
+      "about": "Franklin D. Roosevelt",
+      "say": "Franklin D. Roosevelt [moved Thanksgiving up a week in 1939 to help stores], [was the first president to appear on television], [was the first president ever heard on the radio], and [had a dog who got his own statue at the FDR Memorial].",
       "cap": 2,
-      "real": "Britain skipped 11 days, not a month: in 1752, September 2 was followed straight by September 14.",
+      "real": "Presidents were on the radio before FDR: Calvin Coolidge's December 1923 speech to Congress went out over the air. FDR made it famous with fireside chats.",
       "src": [
-        "https://en.wikipedia.org/wiki/List_of_non-standard_dates",
-        "https://en.wikipedia.org/wiki/October_Revolution",
-        "https://en.wikipedia.org/wiki/Calendar_(New_Style)_Act_1750",
-        "NOT WEB-CHECKED (textbook) Caesar's calendar reform stretched 46 BC to 445 days so the new Julian calendar could start in step with the seasons https://en.wikipedia.org/wiki/46_BC"
+        "https://www.stripes.com/history/2021-11-24/franklin-roosevelt-moved-thanksgiving-week-1939-3742553.html",
+        "https://www.worldatlas.com/articles/who-was-the-first-us-president-to-appear-on-television.html (April 30, 1939, World's Fair)",
+        "https://en.wikipedia.org/wiki/Calvin_Coolidge (December 6, 1923 address broadcast over the radio, ten years before FDR took office)",
+        "https://www.nps.gov/articles/fala.htm (Fala is the only presidential pet so honored)"
       ]
     },
     {
       "id": "hn05",
-      "say": "[a European world map from 1375 shows Mali's king Mansa Musa], [Alexander the Great named a city after his horse], [Rome built Hadrian's Wall to keep out Viking raiders], and [the Inca kept their empire's records on knotted strings].",
-      "cap": 2,
-      "real": "Hadrian's Wall went up around AD 122, more than 650 years before the first Viking raids on Britain. It guarded Rome's border against northern tribes.",
+      "about": "Calvin Coolidge",
+      "say": "Calvin Coolidge [was born on the Fourth of July], [adopted a raccoon that was sent to be his Thanksgiving dinner], [was sworn in as president by his own father, by lamplight], and [served as governor of Vermont before he became president].",
+      "cap": 3,
+      "real": "Coolidge was born in Vermont but made his career in Massachusetts, where he was governor from 1919 to 1921.",
       "src": [
-        "https://en.wikipedia.org/wiki/Catalan_Atlas",
-        "https://en.wikipedia.org/wiki/Bucephalus",
-        "NOT WEB-CHECKED (textbook) Hadrian's Wall was begun in AD 122; the first recorded Viking raids on Britain came in the 790s https://en.wikipedia.org/wiki/Hadrian%27s_Wall",
-        "https://en.wikipedia.org/wiki/Quipu"
+        "https://en.wikipedia.org/wiki/Calvin_Coolidge (born July 4, 1872)",
+        "https://www.whitehousehistory.org/questions/what-are-some-unusual-animals-that-have-lived-in-and-around-the-white-house",
+        "https://en.wikipedia.org/wiki/Calvin_Coolidge (his father, a notary public, gave the oath by kerosene lamp on August 3, 1923)",
+        "https://en.wikipedia.org/wiki/Calvin_Coolidge (48th governor of Massachusetts, 1919 to 1921)"
       ]
     },
     {
       "id": "hn06",
-      "say": "[Paul Revere made his famous midnight ride all by himself], [most signers of the Declaration of Independence signed it in August], [the Battle of New Orleans was fought after the peace treaty was signed], and [Mozart wrote music for an instrument invented by Benjamin Franklin].",
+      "about": "Isaac Newton",
+      "say": "Isaac Newton [was born on the very day that Galileo died], [hunted down counterfeiters while working at England's Royal Mint], [was knighted by Queen Anne in 1705], and [served two short terms in Parliament].",
       "cap": 0,
-      "real": "Revere didn't ride alone: William Dawes took another route, and Samuel Prescott joined them. Only Prescott made it all the way to Concord.",
+      "real": "Galileo died on January 8, 1642. Newton was born almost a year later, on Christmas Day 1642 by England's old calendar.",
       "src": [
-        "https://en.wikipedia.org/wiki/Paul_Revere%27s_Ride",
-        "https://en.wikipedia.org/wiki/Signing_of_the_United_States_Declaration_of_Independence",
-        "https://en.wikipedia.org/wiki/1815_in_the_United_States",
-        "https://en.wikipedia.org/wiki/Glass_harmonica"
+        "https://en.wikipedia.org/wiki/Isaac_Newton (born 25 December 1642 Old Style) + https://en.wikipedia.org/wiki/Galileo_Galilei (died 8 January 1642)",
+        "https://en.wikipedia.org/wiki/Isaac_Newton (Warden then Master of the Royal Mint; prosecuted 28 coiners)",
+        "https://en.wikipedia.org/wiki/Isaac_Newton (knighted by Queen Anne, April 1705)",
+        "https://en.wikipedia.org/wiki/Isaac_Newton (MP for Cambridge University 1689 to 1690 and 1701 to 1702)"
       ]
     },
     {
       "id": "hn07",
-      "say": "[the first person to survive going over Niagara Falls in a barrel was a 63-year-old teacher], [a dancing plague in 1518 left people in Strasbourg dancing for days], [Bertha Benz took the first long car trip without telling her husband], and [the world's first speeding ticket went to Henry Ford in Detroit].",
-      "cap": 3,
-      "real": "The first speeding conviction went to Walter Arnold in Kent, England, in 1896, for going 8 mph in a 2 mph zone.",
+      "about": "Albert Einstein",
+      "say": "Albert Einstein [turned down an offer to be president of Israel], [hated socks so much that he refused to wear them], [won his Nobel Prize for his theory of relativity], and [was such a bad sailor that his neighbors had to rescue him].",
+      "cap": 2,
+      "real": "Einstein's 1921 Nobel Prize in Physics was for explaining the photoelectric effect, work very different from relativity.",
       "src": [
-        "https://en.wikipedia.org/wiki/Annie_Edson_Taylor",
-        "https://en.wikipedia.org/wiki/Dancing_plague_of_1518",
-        "https://en.wikipedia.org/wiki/Bertha_Benz",
-        "https://guinnessworldrecords.com/news/2024/1/bizarre-story-of-the-horseless-carriage-charged-with-first-speeding-offence-763941"
+        "https://www.livescience.com/physics-mathematics/32-fun-and-random-facts-about-albert-einstein (offered in 1952, declined)",
+        "https://www.livescience.com/physics-mathematics/32-fun-and-random-facts-about-albert-einstein",
+        "https://www.livescience.com/physics-mathematics/32-fun-and-random-facts-about-albert-einstein (prize was for the photoelectric effect) + https://en.wikipedia.org/wiki/Albert_Einstein",
+        "https://www.livescience.com/physics-mathematics/32-fun-and-random-facts-about-albert-einstein (neighbors often had to rescue him when his boat capsized)"
       ]
     },
     {
       "id": "hn08",
-      "say": "[Peter the Great put a tax on beards in Russia], [Catherine the Great was born and raised in Russia], [Lady Jane Grey was deposed nine days after being proclaimed queen], and [Louis XIV became king of France at age four].",
+      "about": "Napoleon",
+      "say": "Napoleon [wrote a romance novella years before he became emperor], [had his soldiers shoot the nose off Egypt's Great Sphinx], [stood about 5 foot 6, taller than the average Frenchman then], and [died before anyone took a photo that still survives today].",
       "cap": 1,
-      "real": "Catherine the Great was a German princess, born in Stettin in Prussia. She moved to Russia as a teenager to marry the future tsar.",
+      "real": "Drawings from 1737 already show the Sphinx without its nose, decades before Napoleon was born. His army reached Egypt in 1798.",
       "src": [
-        "https://en.wikipedia.org/wiki/Beard_tax",
-        "https://en.wikipedia.org/wiki/Catherine_the_Great",
-        "https://en.wikipedia.org/wiki/Lady_Jane_Grey",
-        "https://en.wikipedia.org/wiki/Louis_XIV"
+        "https://en.wikipedia.org/wiki/Napoleon",
+        "https://www.smithsonianjourneys.org/blogs/blog/2022/09/15/photo-what-happened-to-the-sphinxs-nose",
+        "https://www.howitworksdaily.com/7-history-myths-busted/",
+        "https://en.wikipedia.org/wiki/View_from_the_Window_at_Le_Gras (oldest surviving camera photo, 1826 or 1827; Napoleon died 1821, https://en.wikipedia.org/wiki/Napoleon)"
       ]
     },
     {
       "id": "hn09",
-      "say": "[Super Glue was discovered in World War II and rejected for being too sticky], [the Frisbee got its name from a pie company in Connecticut], [Alexander Graham Bell wanted phone calls to start with the word ahoy], and [the word zipper started out as a brand name for leather jackets].",
-      "cap": 3,
-      "real": "Zipper began in 1923 as B.F. Goodrich's name for its new rubber boots, which closed with the fastener. The name then stuck to the fastener itself.",
+      "about": "The French Revolution",
+      "say": "The French Revolution [freed more than 100 prisoners when crowds stormed the Bastille], [briefly used official clocks with 10 hours in a day], [gave the world the metric system], and [began the same year George Washington became president].",
+      "cap": 0,
+      "real": "When crowds stormed the Bastille on July 14, 1789, the old fortress prison held just seven prisoners.",
       "src": [
-        "https://en.wikipedia.org/wiki/Harry_Coover",
-        "https://newenglandhistoricalsociety.com/the-sweet-new-england-history-of-the-frisbee/",
-        "https://en.wikipedia.org/wiki/Ahoy",
-        "https://en.wikipedia.org/wiki/Zipper"
+        "https://en.wikipedia.org/wiki/Storming_of_the_Bastille",
+        "https://en.wikipedia.org/wiki/Decimal_time",
+        "https://en.wikipedia.org/wiki/Metric_system",
+        "https://en.wikipedia.org/wiki/George_Washington (inaugurated April 30, 1789) + https://en.wikipedia.org/wiki/Storming_of_the_Bastille (July 14, 1789)"
       ]
     },
     {
       "id": "hn10",
-      "say": "[Pablo Picasso was questioned by police after the Mona Lisa was stolen in 1911], [Michelangelo painted the Sistine Chapel ceiling in 10 months], [Salvador Dalí designed the logo for Chupa Chups lollipops], and [Shakespeare's Globe Theatre burned down after a stage cannon set its roof on fire in 1613].",
-      "cap": 1,
-      "real": "Michelangelo spent about four years on the Sistine Chapel ceiling, from 1508 to 1512.",
+      "about": "Ludwig van Beethoven",
+      "say": "Ludwig van Beethoven [has no known birthday, only the date he was baptized], [scratched Napoleon's name off a symphony he had named after him], [had to be turned around to see the crowd cheering his Ninth Symphony], and [moved to Vienna in 1792 to take lessons from Mozart].",
+      "cap": 3,
+      "real": "Mozart had died in December 1791. When Beethoven moved to Vienna in 1792, he studied with Joseph Haydn instead.",
       "src": [
-        "https://en.wikipedia.org/wiki/Vincenzo_Peruggia",
-        "https://en.wikipedia.org/wiki/Sistine_Chapel_ceiling",
-        "https://news.artnet.com/art-world/art-bites-salvador-dali-chupa-chups-2446377",
-        "https://en.wikipedia.org/wiki/Globe_Theatre"
+        "https://en.wikipedia.org/wiki/Ludwig_van_Beethoven (baptized 17 December 1770; exact birth date undocumented)",
+        "https://en.wikipedia.org/wiki/Ludwig_van_Beethoven (Eroica, first titled Bonaparte; name scratched off in 1804)",
+        "https://en.wikipedia.org/wiki/Ludwig_van_Beethoven (7 May 1824 premiere; Caroline Unger turned him around to see the applause)",
+        "https://en.wikipedia.org/wiki/Ludwig_van_Beethoven (moved to Vienna November 1792 after the recent death of Mozart; studied with Haydn)"
       ]
     },
     {
       "id": "hn11",
-      "say": "[Margaret Thatcher was the first woman ever elected prime minister], [New Zealand let women vote in national elections in 1893], [reporter Nellie Bly raced around the world in 72 days, starting in 1889], and [windshield wipers were patented by a woman, Mary Anderson, in 1903].",
-      "cap": 0,
-      "real": "Sri Lanka's Sirimavo Bandaranaike became the world's first female prime minister in 1960, almost 20 years before Thatcher.",
+      "about": "Peter the Great",
+      "say": "Peter the Great [stood about 6 feet 8 inches tall], [worked four months in a Dutch shipyard under a fake name], [moved Russia's New Year's Day from January 1 to September 1], and [shaved the beards off his own party guests with a razor].",
+      "cap": 2,
+      "real": "It was the other way around: in 1699, Peter moved Russia's New Year from September 1 to January 1.",
       "src": [
-        "https://en.wikipedia.org/wiki/Sirimavo_Bandaranaike",
-        "https://en.wikipedia.org/wiki/Women%27s_suffrage_in_New_Zealand",
-        "https://en.wikipedia.org/wiki/Around_the_World_in_Seventy-Two_Days",
-        "https://en.wikipedia.org/wiki/Mary_Anderson_(inventor)"
+        "https://mdwiki.org/wiki/Peter_the_Great (reportedly 6 ft 8 in, 2.03 m)",
+        "https://www.smithsonianmag.com/smart-news/why-tsar-peter-great-established-beard-tax-180964693/ (traveled as Sergeant Pyotr Mikhaylov; four months at a Dutch East India Company shipyard)",
+        "https://mdwiki.org/wiki/Peter_the_Great (in 1699 moved the New Year from 1 September to 1 January)",
+        "https://www.smithsonianmag.com/smart-news/why-tsar-peter-great-established-beard-tax-180964693/"
       ]
     },
     {
       "id": "hn12",
-      "say": "[ancient Egyptian tomb builders went on strike when their supplies ran late], [an ancient Greek gadget found in a shipwreck could predict eclipses], [the Great Pyramid of Giza was built as a tomb for King Tut], and [Great Zimbabwe's huge stone walls were built without any mortar].",
-      "cap": 2,
-      "real": "The Great Pyramid was built for the pharaoh Khufu around 2600 BC, more than a thousand years before Tutankhamun was born.",
+      "about": "Ada Lovelace",
+      "say": "Ada Lovelace [never met her father, the famous poet Lord Byron], [saw her program run on Charles Babbage's finished Analytical Engine], [wrote what historians call the first computer program, in 1843], and [predicted that computing machines could one day make music].",
+      "cap": 1,
+      "real": "Babbage's Analytical Engine was never finished. Only a small piece of it was ever built, so her program never ran in her lifetime.",
       "src": [
-        "https://en.wikipedia.org/wiki/Deir_el-Medina",
-        "https://en.wikipedia.org/wiki/Antikythera_mechanism",
-        "https://en.wikipedia.org/wiki/Khufu",
-        "https://en.wikipedia.org/wiki/Great_Zimbabwe"
+        "https://www.britannica.com/story/ada-lovelace-the-first-computer-programmer",
+        "https://www.britannica.com/story/ada-lovelace-the-first-computer-programmer (only a small piece of the engine was ever built)",
+        "https://www.britannica.com/story/ada-lovelace-the-first-computer-programmer",
+        "https://www.britannica.com/story/ada-lovelace-the-first-computer-programmer (engine could work on things besides number, such as musical notes)"
       ]
     }
   ]
