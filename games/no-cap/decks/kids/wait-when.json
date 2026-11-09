@@ -22,7 +22,7 @@
       "about": "T. rex",
       "say": "T. rex [walked the Earth for more than 12 million years], [lived closer in time to us than to Stegosaurus], [lived at the same time as Triceratops], and [lived when a day on Earth lasted less than 24 hours].",
       "cap": 0,
-      "real": "T. rex lived from about 67 to 66 million years ago, so roughly one million years.",
+      "real": "T. rex showed up only about 67 or 68 million years ago and died out 66 million years ago, so it was around for just one or two million years.",
       "src": [
         "https://livescience.com/23868-tyrannosaurus-rex-facts.html",
         "https://gizmodo.com/less-time-separates-us-from-t-rex-than-t-rex-from-stego-1614025559",
@@ -33,66 +33,66 @@
     {
       "id": "ww03",
       "about": "Pluto",
-      "say": "Pluto [was discovered after Mickey Mouse's first cartoon came out], [got its name from an 11-year-old girl in England], [was called a planet for only 76 years], and [was discovered before the Wright brothers' first flight].",
+      "say": "Pluto [was discovered after Mickey Mouse's first cartoon came out], [got its name from an 11-year-old girl in England], [was called a planet for only 76 years], and [was discovered before the first Winter Olympics were held].",
       "cap": 3,
-      "real": "Pluto was found in 1930, 27 years after the Wright brothers first flew in 1903.",
+      "real": "Pluto was found in 1930. The first Winter Olympics were held six years earlier, in 1924, in Chamonix, France.",
       "src": [
         "https://d23.com/character/mickey-mouse/",
         "https://en.wikipedia.org/wiki/Pluto",
         "https://en.wikipedia.org/wiki/Pluto",
-        "https://en.wikipedia.org/wiki/Pluto"
+        "https://www.britannica.com/event/Chamonix-1924-Olympic-Winter-Games"
       ]
     },
     {
       "id": "ww04",
       "about": "The Statue of Liberty",
-      "say": "The Statue of Liberty [is a few years older than the Eiffel Tower in Paris], [stood finished in Paris for nine years before it sailed to America], [opened the same year Coca-Cola was invented], and [worked as a lighthouse for its first 16 years].",
+      "say": "The Statue of Liberty [is a few years older than the Eiffel Tower in Paris], [stood finished in Paris for nine years before it sailed away], [opened the same year Coca-Cola was invented], and [stopped letting visitors climb up into its torch in 1916].",
       "cap": 1,
       "real": "It was finished in Paris in July 1884 and reached New York in June 1885, packed in 214 crates.",
       "src": [
         "https://www.toureiffel.paris/en/news/130-years/how-did-radio-save-tower",
         "https://www.newworldencyclopedia.org/entry/Statue_of_Liberty",
         "https://www.coca-colacompany.com/about-us/history/the-birth-of-a-refreshing-idea",
-        "https://www.newworldencyclopedia.org/entry/Statue_of_Liberty"
+        "https://www.islands.com/1743672/new-york-lady-liberty-original-torch-banned-tourists-visiting-seeing-century"
       ]
     },
     {
       "id": "ww05",
       "about": "Sharks",
-      "say": "Sharks [were swimming in the sea before there were any trees], [have skeletons made of thick, heavy bone], [were around about 200 million years before the first dinosaurs], and [can grow thousands of teeth in one lifetime].",
+      "say": "Sharks [were swimming in the sea before there were any trees], [have skeletons made of thick, heavy bone], [were around more than 150 million years before the first dinosaurs], and [can grow thousands of teeth in one lifetime].",
       "cap": 1,
       "real": "Sharks have no bones at all. Their skeletons are made of cartilage, the same bendy stuff that's in your nose and ears.",
       "src": [
         "https://www.discoverwildlife.com/prehistoric-life/are-sharks-older-than-trees",
         "https://www.cmnh.org/learn/science-blog/2026/07/22/how-sharks-survived-nearly-450-million-years-of-change",
-        "https://www.cmnh.org/learn/science-blog/2026/07/22/how-sharks-survived-nearly-450-million-years-of-change",
+        "https://greekreporter.com/2026/05/01/dinosaurs-originated-tne-million-years-earlier/",
         "https://www.cmnh.org/learn/science-blog/2026/07/22/how-sharks-survived-nearly-450-million-years-of-change"
       ]
     },
     {
       "id": "ww06",
       "about": "Oreo cookies",
-      "say": "Oreo cookies [went on sale before sliced bread did], [started out as a copy of an older cookie called Hydrox], [are older than the states of Alaska and Hawaii], and [are older than the very first teddy bear].",
+      "say": "Oreo cookies [went on sale before sliced bread did], [came out four years after a look-alike cookie called Hydrox], [are older than the states of Alaska and Hawaii], and [are older than the very first teddy bear].",
       "cap": 3,
-      "real": "Teddy bears came first, in 1902. The first Oreo was sold ten years later, in March 1912.",
+      "real": "Teddy bears came first, around 1902. The first Oreo was sold about ten years later, in March 1912.",
       "src": [
         "https://en.wikipedia.org/wiki/Sliced_bread",
         "https://en.wikipedia.org/wiki/Oreo",
-        "NOT WEB-CHECKED (textbook: Alaska and Hawaii both became states in 1959; the first Oreo was sold on March 6, 1912) https://en.wikipedia.org/wiki/Oreo",
+        "https://constitutioncenter.org/blog/happy-statehood-birthday-alaska",
         "https://www.nps.gov/thrb/learn/historyculture/storyofteddybear.htm"
       ]
     },
     {
       "id": "ww07",
       "about": "Hot air balloons",
-      "say": "Hot air balloons [carried people for the first time before the Declaration of Independence], [carried a sheep, a duck and a rooster before carrying any people], [were invented by two brothers whose family made paper], and [carried people 120 years before the first airplane flight].",
+      "say": "Hot air balloons [carried people for the first time before the Declaration of Independence], [carried a sheep, a duck and a rooster before carrying any people], [were invented by two brothers whose family made paper], and [carried people before George Washington became president].",
       "cap": 0,
       "real": "The first people flew in a balloon over Paris on November 21, 1783, seven years after the Declaration of Independence in 1776.",
       "src": [
         "https://www.ebsco.com/research-starters/history/first-manned-balloon-flight",
         "https://www.ebsco.com/research-starters/history/first-manned-balloon-flight",
         "https://www.ebsco.com/research-starters/history/first-manned-balloon-flight",
-        "https://www.ebsco.com/research-starters/history/first-manned-balloon-flight"
+        "https://en.wikipedia.org/wiki/George_Washington"
       ]
     },
     {
@@ -113,12 +113,12 @@
       "about": "Nintendo",
       "say": "Nintendo [is older than the game of basketball], [ran its own taxi company back in the 1960s], [is older than the very first Ferris wheel], and [stopped making playing cards once it started making video games].",
       "cap": 3,
-      "real": "Nintendo never stopped. It started out making playing cards in 1889 and still makes card games today.",
+      "real": "Nintendo never stopped. It started out making playing cards in 1889 and still makes them, even Mario and Pokémon decks.",
       "src": [
         "https://www.massmoments.org/moment-details/first-game-of-basketball-played-in-springfield.html",
         "https://www.nintendolife.com/news/2022/03/random-70s-photo-reminds-us-that-once-upon-a-time-nintendo-ran-a-taxi-firm",
         "https://www.smithsonianmag.com/history/history-ferris-wheel-180955300/",
-        "https://en.wikipedia.org/wiki/Nintendo"
+        "https://kotaku.com/nintendo-japan-hanafuda-cards-beauty-gambling-tradition-1848724872"
       ]
     },
     {
@@ -131,7 +131,7 @@
         "https://airandspace.si.edu/stories/editorial/barbie-astronaut-ages",
         "https://www.wfla.com/news/barbie-doll-makes-debut-61-years-ago-for-just-3/amp/",
         "https://history.co.uk/articles/facts-about-iconic-barbie",
-        "https://history.co.uk/articles/facts-about-iconic-barbie"
+        "https://www.skyatnightmagazine.com/space-missions/yuri-gagarin-first-human-in-space"
       ]
     },
     {

@@ -66,20 +66,20 @@
         "https://en.wikipedia.org/wiki/Elsa_(Frozen)",
         "https://en.wikipedia.org/wiki/Elsa_(Frozen)",
         "https://thewaltdisneycompany.com/?p=4881",
-        "https://en.wikipedia.org/wiki/Elsa_(Frozen)"
+        "https://www.rollingstone.com/music/music-news/oscars-2014-frozen-track-let-it-go-wins-best-song-184501/"
       ]
     },
     {
       "id": "gt06",
       "about": "Lightning McQueen",
-      "say": "Lightning McQueen [races as number 95 because Toy Story came out in 1995], [is named after Glenn McQueen, an animator at Pixar], [got a Crocs shoe made to look like him in 2021], and [wins the Piston Cup at the end of the first Cars movie].",
+      "say": "Lightning McQueen [races as number 95 because Toy Story came out in 1995], [is named after Glenn McQueen, an animator at Pixar], [raced onto movie screens the same year Pluto stopped being a planet], and [wins the Piston Cup at the end of the first Cars movie].",
       "cap": 3,
       "real": "He stops just short of the finish line to help The King, and Chick Hicks takes the Piston Cup.",
       "src": [
-        "https://en.wikipedia.org/wiki/Lightning_McQueen",
-        "https://en.wikipedia.org/wiki/Lightning_McQueen",
-        "https://en.wikipedia.org/wiki/Lightning_McQueen",
-        "https://en.wikipedia.org/wiki/Lightning_McQueen"
+        "https://en.wikipedia.org/wiki/Cars_(film)",
+        "https://www.disneyplus.com/explore/articles/cars-movies-in-order",
+        "https://en.wikipedia.org/wiki/Pluto",
+        "https://en.wikipedia.org/wiki/Cars_(film)"
       ]
     },
     {
@@ -124,27 +124,27 @@
     {
       "id": "gt10",
       "about": "Moana",
-      "say": "Moana [had a 14-year-old picked to be the voice of Moana], [has a demigod, Maui, whose tattoos were drawn by hand], [has a rooster named Heihei who sneaks onto her boat], and [has a pet pig, Pua, who sails with her the whole way].",
+      "say": "Moana [had a 14-year-old picked to be the voice of Moana], [has a demigod, Maui, whose moving tattoos were drawn by hand], [has a rooster named Heihei who ends up sailing with her], and [was the first Disney princess movie made on computers].",
       "cap": 3,
-      "real": "Pua stays home on the island. Heihei the rooster is the one who ends up on the voyage.",
+      "real": "Tangled got there first, in 2010. Rapunzel was the first Disney princess made with computer animation, six years before Moana.",
       "src": [
-        "https://www.doc.surf/wiki/moana-2016-film",
-        "https://www.doc.surf/wiki/moana-2016-film",
-        "https://www.doc.surf/wiki/moana-2016-film",
-        "https://www.slashfilm.com/1723710/disney-moana-2-fixes-original-movie-mistake-pua"
+        "https://www.nbcnews.com/news/amp/ncna440131",
+        "https://en.wikipedia.org/wiki/Maui_(Moana)",
+        "https://www.slashfilm.com/1723710/disney-moana-2-fixes-original-movie-mistake-pua",
+        "https://en.wikipedia.org/wiki/Rapunzel_(Tangled)"
       ]
     },
     {
       "id": "gt11",
       "about": "The 2024 solar eclipse",
-      "say": "The 2024 solar eclipse [passed over Mexico, the United States and Canada], [could be seen as a total eclipse in 15 U.S. states], [crossed the United States from California to Maine], and [turned day into night for over four minutes in some places].",
+      "say": "The 2024 solar eclipse [passed over Mexico, the United States and Canada], [could be seen as a total eclipse in more than a dozen U.S. states], [crossed the United States from California to Maine], and [turned day into night for over four minutes in some places].",
       "cap": 2,
       "real": "It came up from Mexico into Texas and left the country over Maine. California wasn't on the path at all.",
       "src": [
-        "https://en.wikipedia.org/wiki/Solar_eclipse_of_April_8,_2024",
-        "https://en.wikipedia.org/wiki/Solar_eclipse_of_April_8,_2024",
-        "https://en.wikipedia.org/wiki/Solar_eclipse_of_April_8,_2024",
-        "https://en.wikipedia.org/wiki/Solar_eclipse_of_April_8,_2024"
+        "https://science.nasa.gov/eclipses/future-eclipses/eclipse-2024/where-when/",
+        "https://science.nasa.gov/eclipses/future-eclipses/eclipse-2024/where-when/",
+        "https://www.greatamericaneclipse.com/april-8-2024",
+        "https://www.greatamericaneclipse.com/april-8-2024"
       ]
     },
     {

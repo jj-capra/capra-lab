@@ -14,13 +14,13 @@
         "https://www.mountvernon.org/library/digitalhistory/digital-encyclopedia/article/false-teeth/inn",
         "https://en.wikipedia.org/wiki/White_House",
         "https://en.wikipedia.org/wiki/George_Washington",
-        "https://en.wikipedia.org/wiki/George_Washington"
+        "https://www.mountvernon.org/digital-encyclopedia/article/royal-gift-donkey/"
       ]
     },
     {
       "id": "th02",
       "about": "Abraham Lincoln",
-      "say": "Abraham Lincoln [is honored in the National Wrestling Hall of Fame], [was born on the very same day as Charles Darwin], [got a patent for a way to lift boats over sandbars], and [had his voice recorded, and you can still hear it today].",
+      "say": "Abraham Lincoln [got an award from the National Wrestling Hall of Fame], [was born on the very same day as Charles Darwin], [got a patent for a way to lift boats over sandbars], and [had his voice recorded, and you can still hear it today].",
       "cap": 3,
       "real": "No recording of Lincoln exists. He died 12 years before Thomas Edison invented the phonograph in 1877.",
       "src": [
@@ -33,22 +33,22 @@
     {
       "id": "th03",
       "about": "Theodore Roosevelt",
-      "say": "Theodore Roosevelt [was the first president to fly in an airplane while in office], [had kids who kept a green snake named Emily Spinach], [was the first president to ride in a submarine], and [was the first person from outside Europe to win a Nobel Prize].",
+      "say": "Theodore Roosevelt [was the first president to fly in an airplane while in office], [had kids who kept a green snake named Emily Spinach], [was the first president to ride in a submarine], and [was the first American to win a Nobel Prize].",
       "cap": 0,
       "real": "His first airplane ride was in 1910, the year after he left office. Franklin Roosevelt was the first to fly while president.",
       "src": [
         "https://www.flightjournal.com/?p=219483",
         "https://www.whitehousehistory.org/questions/what-are-some-unusual-animals-that-have-lived-in-and-around-the-white-house",
-        "https://potus.com/presidential-firsts/transportation-firsts",
-        "https://en.wikipedia.org/wiki/Theodore_Roosevelt"
+        "https://www.history.navy.mil/content/history/museums/nmusn/explore/photography/ships-us/ships-usn-p/plunger-class-submarines.html",
+        "https://www.smithsonianmag.com/smart-news/on-this-day-in-1906-a-nobel-prize-was-awarded-to-an-american-for-the-first-time-for-ending-a-war-on-the-other-side-of-the-globe-180985564/"
       ]
     },
     {
       "id": "th04",
       "about": "Mount Rushmore",
-      "say": "Mount Rushmore [was meant to show the presidents down to their waists], [has a hidden room cut 70 feet into the rock behind the heads], [took 41 years to carve, from start to finish], and [had Jefferson's face blasted off and carved again on Washington's other side].",
+      "say": "Mount Rushmore [was meant to show the presidents down to their waists], [has a hidden tunnel cut 70 feet into the rock behind the heads], [took 41 years to carve, from start to finish], and [had Jefferson's face blasted off and carved again on Washington's other side].",
       "cap": 2,
-      "real": "Carving started in 1927 and ended in 1941, so it took 14 years. Most of the rock was blasted off with dynamite.",
+      "real": "Carving started in October 1927 and ended in October 1941, so it took 14 years.",
       "src": [
         "https://en.wikipedia.org/wiki/Mount_Rushmore",
         "https://en.wikipedia.org/wiki/Mount_Rushmore",
@@ -85,7 +85,7 @@
     {
       "id": "th07",
       "about": "Chocolate",
-      "say": "Chocolate [was used as money by the ancient Maya], [was worth so much that people made fake cacao beans from clay], [became a solid candy bar for the first time in England in 1847], and [comes from a tree that first grew wild in Africa].",
+      "say": "Chocolate [is made from beans the ancient Maya used as money], [was worth so much that people made fake cacao beans from clay], [got its first factory-made candy bars in England in 1847], and [comes from a tree that first grew wild in Africa].",
       "cap": 3,
       "real": "Cacao trees come from the rainforests of South America. The first people known to use cacao lived in what's now Ecuador.",
       "src": [
@@ -104,16 +104,16 @@
       "src": [
         "https://amp.cbc.ca/books/63-facts-about-the-world-of-dr-seuss-1.4557340",
         "https://amp.cbc.ca/books/63-facts-about-the-world-of-dr-seuss-1.4557340",
-        "https://amp.cbc.ca/books/63-facts-about-the-world-of-dr-seuss-1.4557340",
+        "https://springfieldmuseums.org/exhibitions/ted-geisels-cadillac/",
         "https://amp.cbc.ca/books/63-facts-about-the-world-of-dr-seuss-1.4557340"
       ]
     },
     {
       "id": "th09",
       "about": "Mickey Mouse",
-      "say": "Mickey Mouse [was voiced by Walt Disney himself until 1946], [was the first cartoon character with a star on the Hollywood Walk of Fame], [made his first appearance in a full-color cartoon], and [starred in two cartoons that were made before his first one came out].",
+      "say": "Mickey Mouse [was voiced by Walt Disney himself for almost 20 years], [was the first cartoon character with a star on the Hollywood Walk of Fame], [made his first appearance in a full-color cartoon], and [starred in two cartoons that were made before his first one came out].",
       "cap": 2,
-      "real": "His first cartoon, Steamboat Willie in 1928, was black and white. His first color cartoon was The Band Concert in 1935.",
+      "real": "His first cartoon, Steamboat Willie in 1928, was black and white. His cartoons didn't switch to color until The Band Concert in 1935.",
       "src": [
         "https://d23.com/character/mickey-mouse/",
         "https://d23.com/character/mickey-mouse/",
@@ -150,7 +150,7 @@
     {
       "id": "th12",
       "about": "Crayola crayons",
-      "say": "Crayola crayons [came in a box of eight for a nickel in 1903], [got their name from the wife of one of the company's owners], [had a sharpener built into the very first box], and [came from a company that made school chalk before it made crayons].",
+      "say": "Crayola crayons [came in a box of eight for a nickel in 1903], [got their name from the wife of one of the company's owners], [had a sharpener built into the very first box], and [came from a company that made red coloring for barn paint].",
       "cap": 2,
       "real": "The built-in sharpener came in 1958, with the first 64-color box. The first box, in 1903, had just eight crayons.",
       "src": [
