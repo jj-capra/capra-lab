@@ -6,12 +6,12 @@
   "cards": [
     {
       "id": "hp01",
-      "say": "[Vikings were cutting wood in Newfoundland in the year 1021], [Marco Polo brought noodles home to Italy from China in 1295], [Ibn Battuta traveled about 75,000 miles in the 1300s], and [Zheng He's Chinese fleet reached East Africa in the 1410s].",
+      "say": "[Vikings were cutting wood in Newfoundland in the year 1021], [Marco Polo brought pasta to Italy for the first time in 1295], [Ibn Battuta traveled about 75,000 miles in the 1300s], and [Zheng He's Chinese fleet reached East Africa in the 1410s].",
       "cap": 1,
-      "real": "Italians were already eating pasta before Marco Polo got home in 1295. The noodle story came from a 1929 pasta trade magazine.",
+      "real": "Italy had pasta before Marco Polo got home in 1295: a Genoa soldier's belongings listed a basket of macaroni back in 1279.",
       "src": [
         "https://www.sciencenews.org/?p=3104801",
-        "https://www.tampabay.com/archive/1997/10/09/marco-polo-and-the-myth-of-pasta",
+        "https://www.laphamsquarterly.org/node/10234",
         "https://www.worldhistory.org/Ibn_Battuta/",
         "https://www.britannica.com/summary/Zheng-He-Timeline"
       ]
@@ -42,9 +42,9 @@
     },
     {
       "id": "hp04",
-      "say": "[the Inca built over 20,000 miles of roads without using the wheel], [Mansa Musa spent so much gold in Cairo in 1324 that its value dropped], [the Mongol Empire conquered Japan in the 1280s], and [the Ottoman Empire lasted more than 600 years].",
+      "say": "[the Inca built more than 10,000 miles of roads without using the wheel], [Mansa Musa spent so much gold in Cairo in 1324 that its value dropped], [the Mongol Empire conquered Japan in the 1280s], and [the Ottoman Empire lasted more than 600 years].",
       "cap": 2,
-      "real": "The Mongols tried to invade Japan in 1274 and again in 1281. Both attacks failed, partly because of huge storms.",
+      "real": "The Mongols tried to invade Japan in 1274 and again in 1281. Both attacks failed, and in 1281 a huge typhoon sank much of their fleet.",
       "src": [
         "https://en.wikipedia.org/wiki/Inca_road_system",
         "https://worldhistorycommons.org/al-umaris-account-mansa-musas-visit-cairo",
@@ -68,47 +68,47 @@
       "id": "hp06",
       "say": "[the stolen 1966 World Cup trophy was found by a dog named Pickles], [the Mona Lisa was stolen in 1911 and not found again until 1925], [the Statue of Liberty worked as a lighthouse for 16 years], and [a real moth got stuck inside a Harvard computer in 1947].",
       "cap": 1,
-      "real": "The Mona Lisa was stolen from the Louvre in 1911 and turned up in Italy in December 1913, about two years later.",
+      "real": "The Mona Lisa was stolen from the Louvre in 1911 and turned up in Italy in December 1913, a bit over two years later.",
       "src": [
         "https://en.wikipedia.org/wiki/Pickles_(dog)",
         "https://www.historytoday.com/archive/months-past/mona-lisa-stolen-louvre",
-        "https://lighthousefriends.com/light.asp?ID=581",
+        "https://www.newworldencyclopedia.org/entry/Statue_of_Liberty",
         "https://www.si.edu/object/log-book-computer-bug:nmah_334663"
       ]
     },
     {
       "id": "hp07",
-      "say": "[Abraham Lincoln is in the National Wrestling Hall of Fame], [Ben Franklin invented swim fins when he was a kid], [Queen Elizabeth II trained as a mechanic during World War II], and [George Washington's false teeth were carved out of wood].",
+      "say": "[Abraham Lincoln is honored in the National Wrestling Hall of Fame], [Ben Franklin invented swim fins when he was a kid], [Queen Elizabeth II trained as a mechanic during World War II], and [Napoleon's soldiers shot the nose off Egypt's Great Sphinx].",
       "cap": 3,
-      "real": "Washington's dentures were made of ivory, metal, and human and animal teeth. None of them were wood.",
+      "real": "The nose was already missing in drawings made in 1737, decades before Napoleon was born. His army didn't reach Egypt until 1798.",
       "src": [
         "https://www.snopes.com/fact-check/is-lincoln-in-wrestling-hall-of-fame/",
         "https://fi.edu/en/science-and-education/benjamin-franklin/inventions",
         "https://www.snopes.com/fact-check/queen-elizabeth-ii-mechanic/",
-        "https://www.mountvernon.org/library/digitalhistory/digital-encyclopedia/article/false-teeth"
+        "https://www.smithsonianjourneys.org/blogs/blog/2022/09/15/photo-what-happened-to-the-sphinxs-nose"
       ]
     },
     {
       "id": "hp08",
-      "say": "[bubble wrap was first invented to be a textured wallpaper], [the Slinky was invented by a naval engineer working with springs], [a melted candy bar led to the invention of the microwave oven], and [Velcro was inspired by the sticky feet of geckos].",
+      "say": "[bubble wrap was first invented to be a textured wallpaper], [the Slinky was invented by a naval engineer working with springs], [Silly Putty came from a World War II attempt to make fake rubber], and [Velcro was inspired by the sticky feet of geckos].",
       "cap": 3,
       "real": "Velcro was inspired by burrs that stuck to an engineer's dog after a walk in the Swiss countryside in 1941.",
       "src": [
         "https://www.smithsonianmag.com/innovation/accidental-invention-bubble-wrap-180971325/",
         "https://en.wikipedia.org/wiki/Slinky",
-        "https://en.wikipedia.org/wiki/Percy_Spencer",
+        "https://en.wikipedia.org/wiki/James_Wright_(inventor)",
         "https://www.history.com/articles/velcro-invention"
       ]
     },
     {
       "id": "hp09",
-      "say": "[the Eiffel Tower escaped being torn down because it was useful for radio], [the Leaning Tower of Pisa started leaning before it was finished], [King Tut's tomb was found empty, cleaned out by ancient robbers], and [Machu Picchu was built for an Inca emperor around 1450].",
+      "say": "[the Eiffel Tower escaped being torn down because it was useful for radio], [the Leaning Tower of Pisa started leaning before it was finished], [King Tut's tomb was the first royal tomb found in the Valley of the Kings], and [Machu Picchu was built for an Inca emperor in the 1400s].",
       "cap": 2,
-      "real": "Robbers did break in twice long ago, but the tomb was found mostly intact in 1922, with more than 5,000 objects inside.",
+      "real": "Royal tombs had been found there long before, like Seti I's in 1817. Tut's, found in 1922, was special because it was still packed with treasure.",
       "src": [
         "https://www.toureiffel.paris/en/news/130-years/how-did-radio-save-tower",
         "https://www.ebsco.com/research-starters/history/leaning-tower-pisa",
-        "https://en.wikipedia.org/wiki/Tomb_of_Tutankhamun",
+        "https://en.wikipedia.org/wiki/Tomb_of_Seti_I",
         "https://worldhistory.org/timeline/Machu_Picchu"
       ]
     },
@@ -126,19 +126,19 @@
     },
     {
       "id": "hp11",
-      "say": "[Lewis and Clark brought a Newfoundland dog named Seaman on their trip], [Columbus sailed west to prove that the Earth was round], [America was named after explorer Amerigo Vespucci on a 1507 map], and [Magellan's crew left Spain with five ships and came back with one].",
+      "say": "[Lewis and Clark brought a Newfoundland dog named Seaman on their trip], [Columbus sailed home from his first voyage aboard the Santa Maria], [America was named after explorer Amerigo Vespucci on a 1507 map], and [Magellan's crew left Spain with five ships and came back with one].",
       "cap": 1,
-      "real": "Educated Europeans already knew the Earth was round. Columbus's argument was about its size, which he guessed far too small.",
+      "real": "The Santa Maria ran aground off Hispaniola on Christmas Day 1492, so Columbus sailed home on the smaller Niña instead.",
       "src": [
         "https://www.nps.gov/lecl/learn/historyculture/little-known-facts.htm",
-        "https://www.ripleys.com/stories/columbus-earth",
+        "https://www.britannica.com/biography/Christopher-Columbus/The-first-voyage",
         "https://www.loc.gov/item/prn-01-093/",
         "https://www.history.com/this-day-in-history/September-6/magellans-expedition-circumnavigates-globe"
       ]
     },
     {
       "id": "hp12",
-      "say": "[the first known photo of a person shows a man getting his boots shined], [the first traffic light, put up in London in 1868, ran on gas], [Alexander Graham Bell's first phone call was to his mother], and [the first person charged with speeding was going 8 miles per hour].",
+      "say": "[the first known photo of a person shows a man getting his boots shined], [the first traffic light, put up in London in 1868, ran on gas], [Alexander Graham Bell's first phone call was to his mother], and [the first person caught speeding in a car was going 8 miles per hour].",
       "cap": 2,
       "real": "Bell's first call, in 1876, was to his assistant Thomas Watson in the next room, asking him to come over.",
       "src": [

@@ -54,7 +54,7 @@
     },
     {
       "id": "sb05",
-      "say": "[in 2016, the Chicago Cubs won their first World Series since 1908], [at the 2021 Tokyo Olympics, two 13-year-olds won gold and silver in skateboarding], [in 2008, Michael Phelps won 9 gold medals at one Olympics], and [in 2012, a skydiver fell faster than the speed of sound].",
+      "say": "[in 2016, the Chicago Cubs won their first World Series since 1908], [at the Tokyo Olympics in 2021, two 13-year-olds won gold and silver in skateboarding], [in 2008, Michael Phelps won 9 gold medals at one Olympics], and [in 2012, a skydiver fell faster than the speed of sound].",
       "cap": 2,
       "real": "Phelps won 8 gold medals at the 2008 Beijing Olympics, beating the record of 7 that Mark Spitz set in 1972.",
       "src": [
@@ -78,7 +78,7 @@
     },
     {
       "id": "sb07",
-      "say": "[in 2015, scientists first detected ripples in space called gravitational waves], [in 2006, Pluto was demoted because astronomers found it had no moons], [in 2013, the Curiosity rover played Happy Birthday to itself on Mars], and [in 2004, a Mars rover built to last 90 days began a 14-year mission].",
+      "say": "[in 2015, scientists first detected ripples in space called gravitational waves], [in 2006, Pluto was demoted because astronomers found it had no moons], [in 2013, the Curiosity rover played Happy Birthday to itself on Mars], and [in 2004, a Mars rover built to last 90 days landed and kept working for over 14 years].",
       "cap": 1,
       "real": "Pluto has five known moons. It lost planet status because it hasn't cleared other objects out of its orbit, a rule for full planets.",
       "src": [
@@ -90,7 +90,7 @@
     },
     {
       "id": "sb08",
-      "say": "[Facebook was first open only to students at Stanford], [Instagram was an iPhone-only app when it launched], [TikTok merged with the lip-sync app Musical.ly in 2018], and [the first dot-com web address was registered in 1985].",
+      "say": "[Facebook was first open only to students at Stanford], [Instagram was an iPhone-only app when it launched], [TikTok merged with the lip-sync app Musical.ly in 2018], and [the first dot-com domain name was registered in 1985].",
       "cap": 0,
       "real": "Facebook launched in 2004 just for Harvard students. It opened to other colleges next, and later to everyone.",
       "src": [
@@ -114,11 +114,11 @@
     },
     {
       "id": "sb10",
-      "say": "[eBay started out under the name AuctionWeb], [Minecraft's very first test version was called Cave Game], [Pac-Man was called Munch Man when it came out in Japan], and [the first Pokémon games were called Red and Green, not Red and Blue].",
+      "say": "[Nintendo's Wii was code-named Revolution before it came out], [Minecraft's very first test version was called Cave Game], [Pac-Man was called Munch Man when it came out in Japan], and [the first Pokémon games were called Red and Green, not Red and Blue].",
       "cap": 2,
       "real": "Pac-Man's original Japanese name was Puck Man. It became Pac-Man when it came to America later in 1980.",
       "src": [
-        "https://www.todayifoundout.com/?p=36378",
+        "https://www.engadget.com/2006/04/27/nintendo-revolution-now-called-wii/",
         "https://minefort.com/blog/when-was-minecraft-released",
         "https://moneyweek.com/392564/22-may-1980-pac-man-hits-the-arcades/",
         "https://www.westporttechmuseum.com/blogs/techtastic/today-in-video-game-history-february-27th-1996-the-first-pokemon-games-pocket-monsters-red-green-were-released-in-japan"
@@ -126,26 +126,26 @@
     },
     {
       "id": "sb11",
-      "say": "[the first handheld cellphone call was made to the caller's biggest rival], [the first Game Boys sold in America came with Tetris packed in], [in 2010, Disney became the first studio with two billion-dollar movies in one year], and [Kodak's first digital camera saved its photos onto floppy disks].",
+      "say": "[the first handheld cellphone call was made to the caller's biggest rival], [in 2001, the first iPod promised 1,000 songs in your pocket], [in 2010, Disney became the first studio with two billion-dollar movies in one year], and [in 1974, the first barcode scanned at a store checkout was on a cereal box].",
       "cap": 3,
-      "real": "Kodak's 1975 camera recorded each black-and-white photo onto a cassette tape, and it took about 23 seconds per picture.",
+      "real": "The first barcode scanned at a checkout, in Troy, Ohio, in 1974, was on a 10-pack of Juicy Fruit gum that cost 67 cents.",
       "src": [
         "https://www.guinnessworldrecords.com/news/2015/8/60/1973-first-mobile-phone-call-392969",
-        "https://hothardware.com/news/nintendo-gameboy-handheld-gaming-console-turned-30",
+        "https://www.npr.org/2021/10/23/1048706632/20-years-ago-the-ipod-was-born",
         "https://thewaltdisneycompany.com/?p=4881",
-        "https://petapixel.com/2010/08/05/the-worlds-first-digital-camera-by-kodak-and-steve-sasson/"
+        "https://www.gs1.org/articles/marsh-holds-place-honor-history-gs1-barcode"
       ]
     },
     {
       "id": "sb12",
-      "say": "[the first Super Bowl was shown on two TV networks at the same time], [in 2015, NASA's New Horizons probe landed on Pluto], [in 2020, a painted fast-food counter was dug up in Pompeii], and [the first home video game console used see-through sheets laid over the TV].",
+      "say": "[in 1997, a computer called Deep Blue beat chess champion Garry Kasparov], [in 2019, a NASA lander made the first landing on the far side of the Moon], [in 2014, a space probe landed on a comet for the first time], and [Wordle was made by a software engineer as a gift for his partner].",
       "cap": 1,
-      "real": "New Horizons never landed. It zoomed past Pluto in July 2015, snapped the first close-up photos, and kept flying out into deep space.",
+      "real": "The first soft landing on the Moon's far side was China's Chang'e 4, in January 2019. It even dropped off a little rover to explore.",
       "src": [
-        "https://www.lacoliseum.com/timeline/coliseum-hosts-first-super-bowl/",
-        "https://theconversation.com/nasa-mission-brings-pluto-into-sharp-focus-but-its-still-not-a-planet-40495",
-        "https://www.gpb.org/news/2020/12/27/whats-on-the-menu-in-ancient-pompeii-duck-goat-snail-researchers-say",
-        "https://www.slashgear.com/1609702/magnavox-odyssey-first-gaming-console-history"
+        "https://www.history.com/this-day-in-history/may-11/deep-blue-defeats-garry-kasparov-in-chess-match",
+        "https://livescience.com/64408-china-first-landing-moon-far-side.html",
+        "https://www.jpl.nasa.gov/news/rosettas-philae-makes-historic-first-landing-on-a-comet/",
+        "https://www.boston.com/news/national-news/2022/01/04/he-made-wordle-for-his-partner-now-its-an-online-hit/"
       ]
     }
   ]
