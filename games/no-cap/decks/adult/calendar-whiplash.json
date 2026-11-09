@@ -12,7 +12,7 @@
       "src": [
         "https://en.wikipedia.org/wiki/Sliced_bread",
         "https://www.todayifoundout.com/index.php/2011/10/lighters-were-invented-before-the-match/",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Queen_Victoria",
+        "https://en.wikipedia.org/wiki/Victorian_era",
         "https://www.history.com/this-day-in-history/august-18/genghis-khan-dies"
       ]
     },
@@ -22,10 +22,10 @@
       "cap": 0,
       "real": "Dickens died in 1870, six years before Alexander Graham Bell patented the telephone in 1876.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Charles_Dickens",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Harriet_Tubman",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Orville_Wright",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Benjamin_Franklin"
+        "NOT WEB-CHECKED (Bell's March 1876 patent confirmed; Dickens's 1870 death is textbook) https://en.wikipedia.org/wiki/Alexander_Graham_Bell",
+        "https://en.wikipedia.org/wiki/Legacy_of_Harriet_Tubman",
+        "https://en.wikipedia.org/wiki/Wright_brothers",
+        "NOT WEB-CHECKED (Washington's April 30, 1789 inauguration confirmed; Franklin's April 1790 death is textbook) https://en.wikipedia.org/wiki/George_Washington"
       ]
     },
     {
@@ -34,10 +34,10 @@
       "cap": 3,
       "real": "Cervantes was born in 1547, 17 years before Shakespeare. The pair did die in the same year, 1616.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Marilyn_Monroe",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Galileo_Galilei",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/George_Frideric_Handel",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Miguel_de_Cervantes"
+        "https://en.wikipedia.org/wiki/1926_in_music",
+        "https://en.wikipedia.org/wiki/1564",
+        "https://engines.egr.uh.edu/episode/1186",
+        "https://en.wikipedia.org/wiki/1616"
       ]
     },
     {
@@ -46,22 +46,22 @@
       "cap": 1,
       "real": "The Statue of Liberty was dedicated in 1886, three years before the Eiffel Tower opened in 1889. Gustave Eiffel even engineered the statue's iron frame.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Tenochtitlan",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Statue_of_Liberty",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Newgrange",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/L%27Anse_aux_Meadows"
+        "https://en.wikipedia.org/wiki/Tenochtitlan",
+        "https://en.wikipedia.org/wiki/Statue_of_Liberty",
+        "https://kids.britannica.com/students/article/Newgrange/601152",
+        "https://www.cbsnews.com/news/vikings-north-america-470-years-before-christopher-columbus"
       ]
     },
     {
       "id": "cw05",
-      "say": "[The first Pokémon games came out before Google existed], [Facebook was up and running before LinkedIn launched], [the Soviet Union still existed when the first website went online], and [the PlayStation 2 was still being made six years after the PS3 came out].",
+      "say": "[A movie was streamed over the internet before Netflix was even founded], [Facebook was up and running before LinkedIn launched], [the Soviet Union still existed when the first website went online], and [the PlayStation 2 was still being made five years after the PS3 came out].",
       "cap": 1,
-      "real": "LinkedIn launched in May 2003. Facebook, then called TheFacebook, didn't launch until February 2004.",
+      "real": "LinkedIn launched in May 2003. Facebook didn't launch until February 2004.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Pok%C3%A9mon_Red_and_Blue",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/LinkedIn",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Info.cern.ch",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/PlayStation_2"
+        "https://en.wikipedia.org/wiki/Timeline_of_online_video",
+        "https://www.cbsnews.com/pictures/then-and-now-a-history-of-social-networking-sites",
+        "https://www.engadget.com/2015/12/20/first-website-is-25-years-old/",
+        "https://www.engadget.com/2012/12/28/playstation-2-discontinued-in-japan/"
       ]
     },
     {
@@ -73,7 +73,7 @@
         "https://en.wikipedia.org/wiki/Puyi",
         "https://www.kpbs.org/news/national/2025/05/29/harrison-ruffin-tyler-grandson-of-the-10th-u-s-president-dies-at-96",
         "https://en.wikipedia.org/wiki/Irene_Triplett",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Napoleon"
+        "https://en.wikipedia.org/wiki/Napoleon"
       ]
     },
     {
@@ -82,34 +82,34 @@
       "cap": 0,
       "real": "The Eiffel Tower was built for the 1889 Paris fair. The first Ferris wheel was Chicago's answer to it, at the 1893 World's Fair.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Ferris_Wheel",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Dr_Pepper",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Phonautograph",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Nokia_tune"
+        "https://www.smithsonianmag.com/history/history-ferris-wheel-180955300/",
+        "https://www.todayifoundout.com/index.php/2024/01/the-twisting-turning-tale-of-the-invention-of-dr-pepper/",
+        "https://www.smithsonianmag.com/smithsonian-institution/from-the-collections-sound-recordings-heard-for-the-first-time-6989525/",
+        "https://en.wikipedia.org/wiki/Nokia_tune"
       ]
     },
     {
       "id": "cw08",
       "say": "[The last independent Maya kingdom fell after Newton published his laws of motion], [work on Neuschwanstein Castle began after the American Civil War ended], [Machu Picchu was already built when work began on Notre-Dame in Paris], and [Hawaii's royal palace had electric lights before the White House did].",
       "cap": 2,
-      "real": "Work on Notre-Dame began in 1163. Machu Picchu was built for the Inca emperor Pachacuti around 1450, almost three centuries later.",
+      "real": "Work on Notre-Dame began in 1163. Machu Picchu was built by the Inca in the mid-1400s, almost three centuries later.",
       "src": [
         "https://en.wikipedia.org/wiki/Spanish_conquest_of_Pet%C3%A9n",
         "https://www.neuschwanstein.de/englisch/palace/history.htm",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Machu_Picchu",
+        "https://kids.britannica.com/kids/article/Machu-Picchu/346167",
         "https://ethw.org/Milestones:Electric_Lighting_Of_The_Kingdom_of_Hawaii_1886-1888"
       ]
     },
     {
       "id": "cw09",
-      "say": "[Woodstock happened less than a month after the Moon landing], [the first email was sent two years after the first cellphone call], [Apple was founded before the first Star Wars movie came out], and [NBA games had no three-point line until the 1979 season].",
+      "say": "[Woodstock happened less than a month after the Moon landing], [the first email was sent two years after the first cellphone call], [Apple was founded before the first Star Wars movie came out], and [NBA games had no three-point line until 1979].",
       "cap": 1,
       "real": "Ray Tomlinson sent the first network email in 1971, two years before Martin Cooper made the first handheld cellphone call in 1973.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Woodstock",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Ray_Tomlinson",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Apple_Inc.",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Three-point_field_goal"
+        "NOT WEB-CHECKED (textbook: Moon landing July 20, 1969; Woodstock August 15-18, 1969) https://en.wikipedia.org/wiki/Woodstock",
+        "https://en.wikipedia.org/wiki/Ray_Tomlinson",
+        "https://en.wikipedia.org/wiki/Apple_Inc.",
+        "NOT WEB-CHECKED (textbook: the NBA adopted the three-point line for the 1979-80 season) https://en.wikipedia.org/wiki/Three-point_field_goal"
       ]
     },
     {
@@ -118,10 +118,10 @@
       "cap": 3,
       "real": "Russia still used the old Julian calendar, so the revolution's October 25 was November 7 everywhere else. It was late, not early.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Winston_Churchill",
-        "NOT WEB-CHECKED (tomb date checked, BBC date not) https://www.livescience.com/archaeology/ancient-egyptians/science-history-archaeologists-discover-king-tuts-tomb-and-rumors-of-the-mummys-curse-begin-swirling-nov-4-1922",
+        "NOT WEB-CHECKED (textbook: Churchill, born 1874, was prime minister at Elizabeth II's 1952 accession) https://en.wikipedia.org/wiki/Winston_Churchill",
+        "https://en.wikipedia.org/wiki/BBC",
         "https://wikiwand.com/EN/Gregorian_Calendar",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/October_Revolution"
+        "https://en.wikipedia.org/wiki/Russian_Revolution"
       ]
     },
     {
@@ -130,8 +130,8 @@
       "cap": 2,
       "real": "Concorde's last passenger flight was in October 2003, almost four years before the first iPhone went on sale in June 2007.",
       "src": [
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Battle_of_New_Orleans",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Hundred_Years%27_War",
+        "https://en.wikipedia.org/wiki/Treaty_of_Ghent",
+        "https://www.britannica.com/topic/list-of-wars-2031197",
         "https://www.history.com/this-day-in-history/october-24/the-concorde-makes-its-final-flight",
         "https://history.com/this-day-in-history/last-classic-vw-beetle-rolls-off-the-line"
       ]
@@ -144,8 +144,8 @@
       "src": [
         "https://blog.sciencemuseum.org.uk/a-flushing-story/",
         "https://www.snopes.com/fact-check/omg-winston-churchill/",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Meme",
-        "NOT WEB-CHECKED https://en.wikipedia.org/wiki/Santa_Fe,_New_Mexico"
+        "https://en.wikipedia.org/wiki/Meme",
+        "https://en.wikipedia.org/wiki/Santa_Fe,_New_Mexico"
       ]
     }
   ]
