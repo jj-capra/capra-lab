@@ -5,6 +5,13 @@ import { SHELVES, claims, SAY_MAX, CLAIM_MIN, CLAIM_MAX, REAL_MAX } from '../sha
 
 const SHELF_IDS = SHELVES.map(s => s.id);
 
+// Deck ids must be unique across every shelf (the server finds decks by id).
+export function duplicates(decks) {
+  const seen = new Map(), out = [];
+  for (const d of decks) { if (seen.has(d.id)) out.push(`${d.file}: deck id "${d.id}" is already used by ${seen.get(d.id)}`); else seen.set(d.id, d.file); }
+  return out;
+}
+
 export function loadDecks(root) {
   const decks = [];
   for (const shelf of SHELF_IDS) {

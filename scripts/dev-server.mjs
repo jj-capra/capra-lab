@@ -24,6 +24,8 @@ import { loadContent as classifiedContent } from '../games/classified/server/con
 import { createApi as noCapApi } from '../games/no-cap/server/api.js';
 import { memoryStore as noCapMemory } from '../games/no-cap/server/store.js';
 import { loadDecks as noCapDecks } from '../games/no-cap/server/load.mjs';
+import { createApi as screensaverApi } from '../games/screensaver/server/api.js';
+import { memoryStore as screensaverMemory } from '../games/screensaver/server/store.js';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'public');
 const PORT = Number(process.env.PORT) || 8790;
@@ -58,6 +60,9 @@ const classified = classifiedApi({ store: classifiedMemory(), content: classifie
 // No Cap reads its decks straight from games/no-cap/decks/; /no-cap/__clock?add=ms moves its clock
 let noCapOffset = 0;
 const noCap = noCapApi({ store: noCapMemory(), decks: noCapDecks(path.join(ROOT, '..', 'games', 'no-cap')), role: (handle) => crew.role(handle), clock: () => Date.now() + noCapOffset,
+  verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
+
+const screensaver = screensaverApi({ store: screensaverMemory(), role: (handle) => crew.role(handle),
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 
 // Mind Heist's handler speaks Request/Response (Netlify Functions v2)
@@ -119,6 +124,7 @@ http.createServer(async (req, res) => {
   if (url.pathname.startsWith('/punchline/api/')) return toFunction(req, res, (r) => punch.handle(r));
   if (url.pathname.startsWith('/classified/api/')) return toFunction(req, res, (r) => classified.handle(r));
   if (url.pathname.startsWith('/no-cap/api/')) return toFunction(req, res, (r) => noCap.handle(r));
+  if (url.pathname.startsWith('/screensaver/api/')) return toFunction(req, res, (r) => screensaver.handle(r));
   if (url.pathname === '/no-cap/__clock') {
     noCapOffset += Number(url.searchParams.get('add') || 0);
     res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: noCapOffset }));
@@ -140,7 +146,7 @@ http.createServer(async (req, res) => {
     return json(res, await route(primal, req.method, url.pathname, url.searchParams, body));
   }
   let rel = decodeURIComponent(url.pathname);
-  if (rel === '/primal-survival' || rel === '/mind-heist' || rel === '/goat-getaway' || rel === '/punchline' || rel === '/classified' || rel === '/no-cap') { res.writeHead(301, { location: rel + '/' }); return res.end(); }
+  if (rel === '/primal-survival' || rel === '/mind-heist' || rel === '/goat-getaway' || rel === '/punchline' || rel === '/classified' || rel === '/no-cap' || rel === '/screensaver') { res.writeHead(301, { location: rel + '/' }); return res.end(); }
   if (rel.endsWith('/')) rel += 'index.html';
   const file = path.normalize(path.join(ROOT, rel));
   if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end(); }

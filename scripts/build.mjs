@@ -122,9 +122,9 @@ async function buildClassified() {
    reach public/; the page gets index.html, game.js and the shared rules. */
 async function buildNoCap() {
   const game = path.join(ROOT, 'games', 'no-cap'), out = path.join(ROOT, 'public', 'no-cap');
-  const { loadDecks, problems } = await import(path.join(game, 'server', 'load.mjs'));
+  const { loadDecks, problems, duplicates } = await import(path.join(game, 'server', 'load.mjs'));
   const decks = loadDecks(game);
-  const bad = decks.flatMap((d) => problems(d));
+  const bad = [...duplicates(decks), ...decks.flatMap((d) => problems(d))];
   if (bad.length) throw new Error('no-cap decks:\n  ' + bad.join('\n  '));
   await fs.writeFile(path.join(game, 'server', 'decks.gen.mjs'),
     `// Built by scripts/build.mjs from games/no-cap/decks/. Edit those files, not this one.\nexport const DECKS = ${JSON.stringify(decks.map(({ file, ...d }) => ({ ...d, cards: d.cards.map(({ src, ...c }) => c) })))};\n`);
@@ -133,6 +133,16 @@ async function buildNoCap() {
   for (const f of ['index.html', 'game.js']) await fs.copyFile(path.join(game, f), path.join(out, f));
   await fs.copyFile(path.join(game, 'shared', 'rules.mjs'), path.join(out, 'shared', 'rules.mjs'));
   console.log(`built public/no-cap/ (${decks.length} decks, ${decks.reduce((n, d) => n + d.cards.length, 0)} cards)`);
+}
+
+/* Screensaver: the page and the shared board engine (the server scores runs with the same file). */
+async function buildScreensaver() {
+  const game = path.join(ROOT, 'games', 'screensaver'), out = path.join(ROOT, 'public', 'screensaver');
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(path.join(out, 'shared'), { recursive: true });
+  for (const f of ['index.html', 'game.js']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  await fs.copyFile(path.join(game, 'shared', 'board.mjs'), path.join(out, 'shared', 'board.mjs'));
+  console.log('built public/screensaver/');
 }
 
 /* Mind Heist: its own build validates the decks and bundles the app and the function;
@@ -157,3 +167,4 @@ await buildGoatGetaway();
 await buildPunchline();
 await buildClassified();
 await buildNoCap();
+await buildScreensaver();
