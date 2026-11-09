@@ -54,11 +54,11 @@
     },
     {
       "id": "cat05",
-      "say": "[The Keyboard Cat video was actually filmed back in 1984], [the animal in the Dramatic Chipmunk video is a prairie dog], [the Charlie Bit My Finger video sold as an NFT for over 750,000 dollars], and [Vine launched in 2013 with a ten-second limit on every video].",
+      "say": "[The viral Trololo video was actually filmed for Soviet TV in 1976],[the animal in the Dramatic Chipmunk video is a prairie dog], [the Charlie Bit My Finger video sold as an NFT for over 750,000 dollars], and [Vine launched in 2013 with a ten-second limit on every video].",
       "cap": 3,
       "real": "Vine clips could be at most six seconds long. The app launched in January 2013, and that tiny limit is what made its looping videos famous.",
       "src": [
-        "https://en.wikipedia.org/wiki/Keyboard_Cat",
+        "https://en.wikipedia.org/wiki/I_Am_Very_Glad,_As_I_Am_Finally_Returning_Back_Home",
         "https://en.wikipedia.org/wiki/Dramatic_Chipmunk",
         "https://www.rollingstone.com/culture/culture-news/charlie-bit-my-finger-nft-auction-1173526/",
         "NOT WEB-CHECKED (textbook: Vine launched in January 2013 with a six-second limit on clips) https://en.wikipedia.org/wiki/Vine_(service)"
@@ -126,14 +126,14 @@
     },
     {
       "id": "cat11",
-      "say": "[In 2021 Reddit users sent GameStop's stock up over 1,000 percent], [Jack Dorsey's first tweet sold as an NFT for 29 million dollars], [Nvidia became the first company worth 4 trillion dollars in 2025], and [Dogecoin was created in 2013 as a joke, named after a meme dog].",
+      "say": "[In 2021 Reddit users sent GameStop's stock up over 1,000 percent], [Jack Dorsey's first tweet sold as an NFT for 29 million dollars], [Nvidia became the first company worth 4 trillion dollars in 2025], and [in 2017 a game about cartoon cats clogged up the Ethereum network].",
       "cap": 1,
       "real": "Jack Dorsey's first tweet sold as an NFT in March 2021 for about 2.9 million dollars, a tenth of that.",
       "src": [
         "NOT WEB-CHECKED (textbook: GameStop went from under 20 dollars to over 300 dollars in January 2021 in the WallStreetBets short squeeze) https://en.wikipedia.org/wiki/GameStop_short_squeeze",
         "https://www.nbcnews.com/tech/tech-news/twitter-boss-jack-dorseys-first-tweet-sold-29-million-nft-rcna467",
         "https://en.wikipedia.org/wiki/Nvidia",
-        "https://en.wikipedia.org/wiki/Dogecoin"
+        "https://www.bloomberg.com/news/articles/2017-12-04/cryptokitties-quickly-becomes-most-widely-used-ethereum-app"
       ]
     },
     {

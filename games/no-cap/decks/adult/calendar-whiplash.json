@@ -42,14 +42,14 @@
     },
     {
       "id": "cw04",
-      "say": "[The Eastern Roman Empire still existed when the Aztecs founded Tenochtitlan], [Easter Island's moai statues were carved before Rome was founded], [Ireland's Newgrange tomb is older than the Great Pyramid of Giza], and [Vikings were in Newfoundland 471 years before Columbus crossed the Atlantic].",
+      "say": "[The Eastern Roman Empire still existed when the Aztecs founded Tenochtitlan], [Easter Island's moai statues were carved before Rome was founded], [Ireland's Newgrange tomb is older than the Great Pyramid of Giza], and [explorers first spotted Antarctica after the United States was founded].",
       "cap": 1,
       "real": "Rome's traditional founding date is 753 BC. People didn't settle Easter Island until around 800 to 1200 AD, and the moai were carved after that.",
       "src": [
         "https://en.wikipedia.org/wiki/Tenochtitlan",
         "https://www.livescience.com/archaeology/easter-island-rapa-nui-and-its-famous-moai-statues",
         "https://kids.britannica.com/students/article/Newgrange/601152",
-        "https://www.cbsnews.com/news/vikings-north-america-470-years-before-christopher-columbus"
+        "https://blogs.fcdo.gov.uk/fcoeditorial/2020/01/31/reflecting-on-200-years-of-antarctica/amp"
       ]
     },
     {
@@ -66,11 +66,11 @@
     },
     {
       "id": "cw06",
-      "say": "[China's last emperor was still alive for the first Super Bowl], [the last crown prince of Austria-Hungary lived until 2011], [the first monthly Social Security check went to a woman who collected for 35 years], and [Napoleon was still alive when Queen Victoria took the throne].",
+      "say": "[The real girl behind Alice in Wonderland visited New York in 1932],[the last crown prince of Austria-Hungary lived until 2011], [the first monthly Social Security check went to a woman who collected for 35 years], and [Napoleon was still alive when Queen Victoria took the throne].",
       "cap": 3,
       "real": "Napoleon died in 1821, 16 years before Victoria became queen in 1837.",
       "src": [
-        "https://en.wikipedia.org/wiki/Puyi",
+        "https://library.columbia.edu/libraries/rbml/uarchives/resources/media/alice.html",
         "https://en.wikipedia.org/wiki/Otto_von_Habsburg",
         "https://en.wikipedia.org/wiki/Ida_May_Fuller",
         "https://en.wikipedia.org/wiki/Napoleon"

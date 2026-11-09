@@ -6,11 +6,11 @@
   "cards": [
     {
       "id": "hp01",
-      "say": "[Vikings were cutting wood in Newfoundland in the year 1021], [Marco Polo brought pasta to Italy for the first time in 1295], [Ibn Battuta traveled about 75,000 miles in the 1300s], and [Zheng He's Chinese fleet reached East Africa in the 1410s].",
+      "say": "[a monk from Beijing met the kings of France and England in the 1280s], [Marco Polo brought pasta to Italy for the first time in 1295], [Ibn Battuta traveled about 75,000 miles in the 1300s], and [Zheng He's Chinese fleet reached East Africa in the 1410s].",
       "cap": 1,
       "real": "Italy had pasta before Marco Polo got home in 1295: a Genoa soldier's belongings listed a basket of macaroni back in 1279.",
       "src": [
-        "https://www.sciencenews.org/?p=3104801",
+        "https://www.britannica.com/biography/Rabban-bar-Sauma",
         "https://www.laphamsquarterly.org/node/10234",
         "https://www.worldhistory.org/Ibn_Battuta/",
         "https://www.britannica.com/summary/Zheng-He-Timeline"
@@ -90,13 +90,13 @@
     },
     {
       "id": "hp08",
-      "say": "[bubble wrap was first invented to be a textured wallpaper], [the Slinky was invented by a naval engineer working with springs], [Silly Putty came from a World War II attempt to make fake rubber], and [Velcro was inspired by the sticky feet of geckos].",
+      "say": "[bubble wrap was first invented to be a textured wallpaper], [the Slinky was invented by a naval engineer working with springs], [Teflon was found by accident in research on refrigerator gases], and [Velcro was inspired by the sticky feet of geckos].",
       "cap": 3,
       "real": "Velcro was inspired by burrs that stuck to an engineer's dog after a walk in the Swiss countryside in 1941.",
       "src": [
         "https://www.smithsonianmag.com/innovation/accidental-invention-bubble-wrap-180971325/",
         "https://en.wikipedia.org/wiki/Slinky",
-        "https://en.wikipedia.org/wiki/James_Wright_(inventor)",
+        "https://sciencehistory.org/education/scientific-biographies/roy-j-plunkett/",
         "https://www.history.com/articles/velcro-invention"
       ]
     },

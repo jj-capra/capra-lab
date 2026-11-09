@@ -126,12 +126,12 @@
     },
     {
       "id": "fy11",
-      "say": "[Tetris was created by a computer scientist in the Soviet Union], [Mario was called Jumpman when he debuted in 1981's Donkey Kong], [Princess Zelda was named after the wife of The Great Gatsby's author], and [Apple banned Flappy Bird in 2014 for being too addictive].",
+      "say": "[Halo was first unveiled as a Mac game at a 1999 Steve Jobs keynote], [Sonic's shoes were inspired by a Michael Jackson album cover], [Princess Zelda was named after the wife of The Great Gatsby's author], and [Apple banned Flappy Bird in 2014 for being too addictive].",
       "cap": 3,
       "real": "Flappy Bird's creator, Dong Nguyen, pulled the game himself in 2014, saying it had become too addictive.",
       "src": [
-        "https://en.wikipedia.org/wiki/Tetris",
-        "https://en.wikipedia.org/wiki/Donkey_Kong_(1981_video_game)",
+        "https://www.macworld.com/article/3249377/25-years-of-xbox-why-halo-should-have-come-to-the-mac-first.html",
+        "https://en.wikipedia.org/wiki/Sonic_the_Hedgehog_(character)",
         "https://en.wikipedia.org/wiki/Princess_Zelda",
         "https://en.wikipedia.org/wiki/Flappy_Bird"
       ]

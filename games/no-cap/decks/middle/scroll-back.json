@@ -6,24 +6,24 @@
   "cards": [
     {
       "id": "sb01",
-      "say": "[Tetris was invented in Moscow, back in the Soviet Union], [the PlayStation started out as a Sony project with Nintendo], [Mario was a carpenter before he became a plumber], and [the first version of Minecraft came out before Roblox launched].",
+      "say": "[Tetris was invented in Moscow, back in the Soviet Union], [the PlayStation started out as a Sony project with Nintendo], [the NES first went on sale in America bundled with a toy robot], and [the first version of Minecraft came out before Roblox launched].",
       "cap": 3,
       "real": "Roblox launched in 2006. Minecraft's first public test version didn't come out until 2009.",
       "src": [
         "https://www.computerhistory.org/revolution/computer-games/16/194/811",
         "https://en.wikipedia.org/wiki/PlayStation_(console)",
-        "https://wtop.com/entertainment/2020/09/surprising-reason-nintendo-made-super-mario-a-plumber-35-years-ago/",
+        "https://en.wikipedia.org/wiki/R.O.B.",
         "https://www.pocketgamer.com/roblox/when-was-roblox-made-complete-history"
       ]
     },
     {
       "id": "sb02",
-      "say": "[the first item sold on eBay was a broken laser pointer], [the first YouTube video showed a cat playing the piano], [one of the first webcams was set up just to watch a coffee pot], and [Google's name comes from googol, a 1 followed by 100 zeros].",
+      "say": "[the first item sold on eBay was a broken laser pointer], [the sideways smiley face was first typed by a professor at MIT], [one of the first webcams was set up just to watch a coffee pot], and [Google's name comes from googol, a 1 followed by 100 zeros].",
       "cap": 1,
-      "real": "The first YouTube video, posted in 2005, is an 18-second clip of a co-founder at the San Diego Zoo talking about elephants.",
+      "real": "The first sideways smiley was typed in 1982 by Scott Fahlman of Carnegie Mellon University, on an online message board.",
       "src": [
         "https://time.com/4018841/first-item-sold-listed-ebay/",
-        "https://www.nbcwashington.com/news/national-international/20-years-ago-an-18-second-video-recorded-at-the-san-diego-zoo-launched-youtube/3898015/",
+        "https://www.guinnessworldrecords.com/world-records/first-digital-emoticon",
         "https://en.wikipedia.org/wiki/Trojan_Room_coffee_pot",
         "https://factly.in/the-word-google-was-derived-from-the-mathematical-number-googol-officially-google-has-no-full-form"
       ]
@@ -126,11 +126,11 @@
     },
     {
       "id": "sb11",
-      "say": "[the first handheld cellphone call was made to the caller's biggest rival], [in 2001, the first iPod promised 1,000 songs in your pocket], [in 2010, Disney became the first studio with two billion-dollar movies in one year], and [in 1974, the first barcode scanned at a store checkout was on a cereal box].",
+      "say": "[in 1994, IBM sold a touchscreen phone that could send email and faxes], [in 2001, the first iPod promised 1,000 songs in your pocket], [in 2010, Disney became the first studio with two billion-dollar movies in one year], and [in 1974, the first barcode scanned at a store checkout was on a cereal box].",
       "cap": 3,
       "real": "The first barcode scanned at a checkout, in Troy, Ohio, in 1974, was on a 10-pack of Juicy Fruit gum that cost 67 cents.",
       "src": [
-        "https://www.guinnessworldrecords.com/news/2015/8/60/1973-first-mobile-phone-call-392969",
+        "https://en.wikipedia.org/wiki/IBM_Simon",
         "https://www.npr.org/2021/10/23/1048706632/20-years-ago-the-ipod-was-born",
         "https://thewaltdisneycompany.com/?p=4881",
         "https://www.gs1.org/articles/marsh-holds-place-honor-history-gs1-barcode"

@@ -90,11 +90,11 @@
     },
     {
       "id": "fgf08",
-      "say": "[When the Mona Lisa was stolen in 1911, police questioned Pablo Picasso], [Mozart wrote the tune of Twinkle Twinkle Little Star at age five], [Napoleon wrote a romantic novella years before he became emperor], and [the first Academy Awards ceremony lasted just 15 minutes].",
+      "say": "[Sherlock Holmes's creator believed two girls' fake fairy photos were real],[Mozart wrote the tune of Twinkle Twinkle Little Star at age five], [Napoleon wrote a romantic novella years before he became emperor], and [the first Academy Awards ceremony lasted just 15 minutes].",
       "cap": 1,
       "real": "The melody is an old French folk song. Mozart wrote a set of variations on it in his twenties, which is why it gets credited to him.",
       "src": [
-        "https://en.wikipedia.org/wiki/Mona_Lisa",
+        "https://en.wikipedia.org/wiki/Cottingley_Fairies",
         "NOT WEB-CHECKED (textbook: the tune is the French song Ah! vous dirai-je, maman; Mozart's variations date from his twenties) https://en.wikipedia.org/wiki/Twinkle,_Twinkle,_Little_Star",
         "https://en.wikipedia.org/wiki/Napoleon",
         "https://www.kunc.org/2023-03-09/the-first-oscars-lasted-15-minutes-plus-other-surprises-from-95-years-of-awards"
@@ -102,13 +102,13 @@
     },
     {
       "id": "fgf09",
-      "say": "[The world's first parking meter was installed in Oklahoma City in 1935], [the world's first traffic light exploded less than a month after it went up], [London's first underground railway opened after the US Civil War ended], and [the first cat to reach space was launched by France in 1963].",
+      "say": "[The world's first parking meter was installed in Oklahoma City in 1935], [the world's first traffic light exploded less than a month after it went up], [the world's first scheduled airline flight crossed Lake Michigan in 1914], and [the first cat to reach space was launched by France in 1963].",
       "cap": 2,
-      "real": "London's Metropolitan Railway, the world's first underground railway, opened in January 1863, more than two years before the US Civil War ended.",
+      "real": "The first scheduled airline flight, on January 1, 1914, hopped across Tampa Bay in Florida. Its one passenger had won the seat at auction for 400 dollars.",
       "src": [
         "NOT WEB-CHECKED (textbook: the first parking meter went in on July 16, 1935, in Oklahoma City) https://en.wikipedia.org/wiki/Parking_meter",
         "https://en.wikipedia.org/wiki/Traffic_light",
-        "https://en.wikipedia.org/wiki/Metropolitan_Railway",
+        "https://www.iata.org/en/about/history/flying-100-years/firstairline-story",
         "https://en.wikipedia.org/wiki/F%C3%A9licette"
       ]
     },

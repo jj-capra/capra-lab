@@ -30,13 +30,13 @@
     },
     {
       "id": "tg03",
-      "say": "[Pluto was discovered and demoted within one person's lifetime], [Uranus was discovered while the American Revolution was still going on], [Neptune finished its first full orbit since its discovery in 2011], and [the Moon landing is closer to the Wright brothers' first flight than to 2025].",
+      "say": "[Pluto was discovered and demoted within one person's lifetime], [Uranus was discovered while the American Revolution was still going on], [the first photo of Earth from space was taken 11 years before Sputnik], and [the Moon landing is closer to the Wright brothers' first flight than to 2025].",
       "cap": 3,
       "real": "The Wright brothers flew in 1903 and Apollo 11 landed in 1969, 66 years apart. From 1969 to 2025 is only 56 years.",
       "src": [
         "https://en.wikipedia.org/wiki/Pluto",
         "https://en.wikipedia.org/wiki/Uranus",
-        "https://en.wikipedia.org/wiki/Neptune",
+        "https://www.smithsonianmag.com/smart-news/70-years-ago-today-nazi-rockets-and-american-scientists-took-first-photo-earth-space-180960890/",
         "https://en.wikipedia.org/wiki/Wright_brothers"
       ]
     },
@@ -102,13 +102,13 @@
     },
     {
       "id": "tg09",
-      "say": "[women first competed at the Olympics in 1928], [golf came back to the Olympics in 2016 after 112 years away], [the Olympics handed out medals for painting until 1948], and [the first basketball game ever played ended 1 to 0].",
+      "say": "[women first competed at the Olympics in 1928], [golf came back to the Olympics in 2016 after 112 years away], [a gymnast with a wooden leg won six Olympic medals in 1904], and [the first basketball game ever played ended 1 to 0].",
       "cap": 0,
       "real": "Women first competed at the 1900 Paris Olympics, in sports like tennis and golf. 1928 is when women's track and field was added.",
       "src": [
         "https://en.wikipedia.org/wiki/Participation_of_women_in_the_Olympics",
         "https://edition.cnn.com/2016/05/13/golf/golf-success-failure-olympic-games-rio-2016",
-        "https://en.wikipedia.org/wiki/Art_competitions_at_the_Summer_Olympics",
+        "https://olympics.com/en/news/george-eyser-medals-mystery-and-the-games-first-amputee",
         "https://en.wikipedia.org/wiki/The_First_Team"
       ]
     },

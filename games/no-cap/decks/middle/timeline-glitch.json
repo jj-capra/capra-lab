@@ -90,12 +90,12 @@
     },
     {
       "id": "tg08",
-      "say": "[the fax machine was patented before the telephone], [a flushing toilet was built for England's Queen Elizabeth I], [the first photograph was taken after the telephone was invented], and [an engineer in ancient Alexandria built a coin-operated vending machine].",
+      "say": "[the fax machine was patented before the telephone], [a submarine powered by oars traveled along London's River Thames in the 1620s], [the first photograph was taken after the telephone was invented], and [an engineer in ancient Alexandria built a coin-operated vending machine].",
       "cap": 2,
       "real": "The oldest surviving photo was taken in France around 1826, about 50 years before Bell patented the telephone in 1876.",
       "src": [
         "https://en.wikipedia.org/wiki/Alexander_Bain_(inventor)",
-        "https://blog.sciencemuseum.org.uk/a-flushing-story/",
+        "https://www.britannica.com/biography/Cornelis-Jacobszoon-Drebbel",
         "https://historyofinformation.com/detail.php?id=3665",
         "https://www.mentalfloss.com/history/worlds-first-vending-machine-dispensed-holy-water"
       ]
@@ -114,14 +114,14 @@
     },
     {
       "id": "tg10",
-      "say": "[Pepsi was invented before Coca-Cola went on sale], [Oreo cookies were around before Mickey Mouse was created], [Jell-O was invented before the Wright brothers first flew], and [Crayola crayons first went on sale the year the Wright brothers flew].",
+      "say": "[Pepsi was invented before Coca-Cola went on sale], [Oreo cookies were around before Mickey Mouse was created], [Jell-O was invented before the Wright brothers first flew], and [jigsaw puzzles are older than the United States].",
       "cap": 0,
       "real": "Coca-Cola first went on sale in 1886. Pepsi came along in the 1890s as Brad's Drink, and only got the name Pepsi-Cola in 1898.",
       "src": [
         "https://www.dncr.nc.gov/blog/2023/12/07/caleb-bradham-1867-1934-c-60",
         "https://en.wikipedia.org/wiki/Oreo",
         "https://en.wikipedia.org/wiki/Jell-O",
-        "https://www.crayola.com/es-mx/faqs/what-were-the-original-eight-(8)-colors-in-the-1903-box-of-crayola-crayons-faq"
+        "https://www.guinnessworldrecords.com/world-records/688261-first-jigsaw-puzzle"
       ]
     },
     {

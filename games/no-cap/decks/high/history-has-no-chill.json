@@ -102,14 +102,14 @@
     },
     {
       "id": "hn09",
-      "say": "[Super Glue was discovered in World War II and rejected for being too sticky], [the Frisbee got its name from a pie company in Connecticut], [Alexander Graham Bell wanted phone calls to start with the word ahoy], and [Velcro was invented by an engineer who studied how gecko feet stick].",
+      "say": "[Super Glue was discovered in World War II and rejected for being too sticky], [the Frisbee got its name from a pie company in Connecticut], [Alexander Graham Bell wanted phone calls to start with the word ahoy], and [the word zipper started out as a brand name for leather jackets].",
       "cap": 3,
-      "real": "Velcro came from burrs. George de Mestral got the idea in 1941 after pulling prickly burrs off his clothes and his dog.",
+      "real": "Zipper began in 1923 as B.F. Goodrich's name for its new rubber boots, which closed with the fastener. The name then stuck to the fastener itself.",
       "src": [
         "https://en.wikipedia.org/wiki/Harry_Coover",
         "https://newenglandhistoricalsociety.com/the-sweet-new-england-history-of-the-frisbee/",
         "https://en.wikipedia.org/wiki/Ahoy",
-        "https://en.wikipedia.org/wiki/George_de_Mestral"
+        "https://en.wikipedia.org/wiki/Zipper"
       ]
     },
     {
@@ -126,13 +126,13 @@
     },
     {
       "id": "hn11",
-      "say": "[Margaret Thatcher was the first woman ever elected prime minister], [New Zealand let women vote in national elections in 1893], [Monopoly is based on a game a woman made to show how landlords get rich], and [windshield wipers were patented by a woman, Mary Anderson, in 1903].",
+      "say": "[Margaret Thatcher was the first woman ever elected prime minister], [New Zealand let women vote in national elections in 1893], [reporter Nellie Bly raced around the world in 72 days, starting in 1889], and [windshield wipers were patented by a woman, Mary Anderson, in 1903].",
       "cap": 0,
       "real": "Sri Lanka's Sirimavo Bandaranaike became the world's first female prime minister in 1960, almost 20 years before Thatcher.",
       "src": [
         "https://en.wikipedia.org/wiki/Sirimavo_Bandaranaike",
         "https://en.wikipedia.org/wiki/Women%27s_suffrage_in_New_Zealand",
-        "https://en.wikipedia.org/wiki/The_Landlord%27s_Game",
+        "https://en.wikipedia.org/wiki/Around_the_World_in_Seventy-Two_Days",
         "https://en.wikipedia.org/wiki/Mary_Anderson_(inventor)"
       ]
     },
