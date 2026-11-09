@@ -85,7 +85,7 @@
     {
       "id": "tb07",
       "about": "Nokia",
-      "say": "Nokia [made the world's first mobile phone call, back in 1973], [started out as a pulp mill before the telephone was even invented], [was once the third-biggest TV maker in Europe], and [got its classic ringtone from a guitar piece older than the airplane].",
+      "say": "Nokia [made the world's first mobile phone call, back in 1973], [started out as a pulp mill before the telephone was even invented], [was once the third-biggest TV maker in Europe], and [got its classic ringtone from a guitar piece written before the first airplane flight].",
       "cap": 0,
       "real": "The first mobile phone call was made by Martin Cooper of Motorola in 1973. Nokia's first mobile phone, the Mobira Senator car phone, came in 1982.",
       "src": [
@@ -150,11 +150,11 @@
     {
       "id": "tb12",
       "about": "Jackie Robinson",
-      "say": "Jackie Robinson [played his first big-league game before World War II ended], [broke baseball's color line before the US Air Force existed], [won the first Rookie of the Year award baseball ever handed out], and [had his number 42 retired by every MLB team in 1997].",
+      "say": "Jackie Robinson [broke baseball's color line before World War II ended], [played his first Dodgers game before the US Air Force existed], [won the first Rookie of the Year award baseball ever handed out], and [had his number 42 retired by every MLB team in 1997].",
       "cap": 0,
       "real": "World War II ended in 1945. Robinson, who served in the Army during the war, played his first game for the Brooklyn Dodgers on April 15, 1947.",
       "src": [
-        "https://www.britannica.com/biography/Jackie-Robinson (Army 1942 to 1944, debut April 15, 1947; World War II ended in 1945)",
+        "https://www.britannica.com/biography/Jackie-Robinson (Army 1942 to 1944; broke the color barrier with the Brooklyn Dodgers on April 15, 1947; World War II ended in 1945)",
         "https://wiki.riteme.site/wiki/1947_in_the_United_States (Robinson's debut April 15; the Air Force became a separate branch in September 1947)",
         "https://www.britannica.com/biography/Jackie-Robinson (MLB's inaugural Rookie of the Year award, 1947)",
         "https://www.britannica.com/biography/Jackie-Robinson (number 42 retired for all of MLB in April 1997)"

@@ -2,150 +2,162 @@
   "id": "totally-true-history",
   "title": "Totally True History (Mostly)",
   "shelf": "kids",
-  "blurb": "Kings, presidents, inventors and candy bars. Three facts per card, and one is cap.",
+  "blurb": "Presidents, landmarks, toys and candy. Every card has three facts, and one is cap.",
   "cards": [
     {
       "id": "th01",
-      "say": "[The first basketball game was played with a soccer ball], [Benjamin Franklin asked Congress to make the turkey the national bird], [Abraham Lincoln is honored in the National Wrestling Hall of Fame], and [a sheep, a duck and a rooster were the first passengers in a hot air balloon].",
+      "about": "George Washington",
+      "say": "George Washington [had just one of his own teeth left when he became president], [lived in the White House during his last year as president], [became an official land surveyor when he was 17], and [got a donkey from the King of Spain and started raising mules].",
       "cap": 1,
-      "real": "Franklin praised the turkey in a letter to his daughter, but he never asked for it to become a national symbol.",
+      "real": "The White House wasn't finished until 1800, after Washington's presidency. John Adams was the first president to live there.",
       "src": [
-        "https://www.massmoments.org/moment-details/first-game-of-basketball-played-in-springfield.html",
-        "https://fi.edu/benjamin-franklin/franklin-national-bird",
-        "https://www.snopes.com/fact-check/is-lincoln-in-wrestling-hall-of-fame/",
-        "https://en.wikipedia.org/wiki/Jean-Fran%C3%A7ois_Pil%C3%A2tre_de_Rozier"
+        "https://www.mountvernon.org/library/digitalhistory/digital-encyclopedia/article/false-teeth/inn",
+        "https://en.wikipedia.org/wiki/White_House",
+        "https://en.wikipedia.org/wiki/George_Washington",
+        "https://en.wikipedia.org/wiki/George_Washington"
       ]
     },
     {
       "id": "th02",
-      "say": "[The first Ferris wheel, built in 1893, was America's answer to the Eiffel Tower], [Toblerone's name mixes its maker's family name with an Italian word for nougat], [the first Olympic champion on record, about 2,800 years ago, was a cook], and [Viking warriors wore metal helmets with big horns sticking out].",
+      "about": "Abraham Lincoln",
+      "say": "Abraham Lincoln [is honored in the National Wrestling Hall of Fame], [was born on the very same day as Charles Darwin], [got a patent for a way to lift boats over sandbars], and [had his voice recorded, and you can still hear it today].",
       "cap": 3,
-      "real": "There's no evidence Vikings wore horned helmets. That look comes from opera costumes made in the 1870s.",
+      "real": "No recording of Lincoln exists. He died 12 years before Thomas Edison invented the phonograph in 1877.",
       "src": [
-        "https://www.smithsonianmag.com/history/history-ferris-wheel-180955300/",
-        "https://en.wikipedia.org/wiki/Toblerone",
-        "https://guinnessworldrecords.com/world-records/first-olympic-games",
-        "https://www.howitworksdaily.com/7-history-myths-busted/"
+        "https://www.snopes.com/fact-check/is-lincoln-in-wrestling-hall-of-fame/",
+        "https://www.mentalfloss.com/history/born-same-day-6-things-lincoln-and-darwin-had-common",
+        "https://www.smithsonianmag.com/history/abraham-lincoln-only-president-have-patent-131184751/",
+        "https://www.smithsonianmag.com/history/ask-an-expert-what-did-abraham-lincolns-voice-sound-like-13446201"
       ]
     },
     {
       "id": "th03",
-      "say": "[Knights in heavy armor had to be lifted onto their horses with cranes], [Benjamin Harrison and his wife were too scared to touch the White House light switches], [King Henry VIII's palace had one giant toilet room that could seat 28 people], and [Pluto was named by an 11-year-old girl from England].",
+      "about": "Theodore Roosevelt",
+      "say": "Theodore Roosevelt [was the first president to fly in an airplane while in office], [had kids who kept a green snake named Emily Spinach], [was the first president to ride in a submarine], and [was the first person from outside Europe to win a Nobel Prize].",
       "cap": 0,
-      "real": "Knights could climb onto their horses by themselves. A full suit of plate armor usually weighed about 45 to 55 pounds.",
+      "real": "His first airplane ride was in 1910, the year after he left office. Franklin Roosevelt was the first to fly while president.",
       "src": [
-        "https://www.thestar.com.my/news/true-or-not/2022/01/07/quickcheck-did-medieval-knights-need-to-use-a-crane-to-mount-a-horse",
-        "https://www.whitehousehistory.org/the-white-house-gets-electric-lighting",
-        "https://www.mentalfloss.com/history/historically-important-toilets",
-        "https://grunge.com/818655/how-pluto-got-its-name"
+        "https://www.flightjournal.com/?p=219483",
+        "https://www.whitehousehistory.org/questions/what-are-some-unusual-animals-that-have-lived-in-and-around-the-white-house",
+        "https://potus.com/presidential-firsts/transportation-firsts",
+        "https://en.wikipedia.org/wiki/Theodore_Roosevelt"
       ]
     },
     {
       "id": "th04",
-      "say": "[A flock of sheep once trimmed the White House lawn], [William Taft became the first president to throw out a baseball first pitch, in 1910], [George Washington's false teeth were carved out of wood], and [the Palace of Versailles started out as a hunting lodge].",
+      "about": "Mount Rushmore",
+      "say": "Mount Rushmore [was meant to show the presidents down to their waists], [has a hidden room cut 70 feet into the rock behind the heads], [was carved mostly by hand with hammers and chisels], and [had Jefferson's face blasted off and carved again on Washington's other side].",
       "cap": 2,
-      "real": "Washington never had wooden teeth. His false teeth were made from things like hippo ivory, metal and real teeth.",
+      "real": "Most of the rock, about 450,000 tons of it, was blasted away with dynamite before carvers finished the faces.",
       "src": [
-        "https://www.whitehousehistory.org/questions/what-are-some-unusual-animals-that-have-lived-in-and-around-the-white-house",
-        "https://en.wikipedia.org/wiki/Ceremonial_first_pitch",
-        "https://www.mountvernon.org/library/digitalhistory/digital-encyclopedia/article/false-teeth/inn",
-        "https://en.wikipedia.org/wiki/Palace_of_Versailles"
+        "https://en.wikipedia.org/wiki/Mount_Rushmore",
+        "https://en.wikipedia.org/wiki/Mount_Rushmore",
+        "https://en.wikipedia.org/wiki/Mount_Rushmore",
+        "https://en.wikipedia.org/wiki/Mount_Rushmore"
       ]
     },
     {
       "id": "th05",
-      "say": "[Napoleon was much shorter than most men of his time], [Ken and Barbie were named after their inventor's real children], [President Calvin Coolidge kept a raccoon named Rebecca as a pet], and [merchants were writing the @ sign almost 500 years ago].",
+      "about": "The White House",
+      "say": "The White House [was first painted white to hide burn marks from a fire in 1814], [got its official name from Theodore Roosevelt in 1901], [had a flock of sheep trim its lawn during World War I], and [has 132 rooms, and 35 of them are bathrooms].",
       "cap": 0,
-      "real": "Napoleon was about 5 feet 6 inches, above average for his time. Old French inches were longer, which confused people.",
+      "real": "It was whitewashed when it was first built, to protect the stone, long before 1814. The burn-mark story is a myth.",
       "src": [
-        "https://www.howitworksdaily.com/7-history-myths-busted/",
-        "https://history.co.uk/articles/facts-about-iconic-barbie",
-        "https://www.whitehousehistory.org/raccoons-at-the-white-house",
-        "https://en.wikipedia.org/wiki/@_sign"
+        "https://en.wikipedia.org/wiki/White_House",
+        "https://en.wikipedia.org/wiki/White_House",
+        "https://www.whitehousehistory.org/questions/what-are-some-unusual-animals-that-have-lived-in-and-around-the-white-house",
+        "https://en.wikipedia.org/wiki/White_House"
       ]
     },
     {
       "id": "th06",
-      "say": "[Mount Rushmore was meant to show the presidents down to their waists], [Hershey's chocolate bars sold for five cents each until the year 1999], [Louis Braille was 15 when he came up with his reading system for blind people], and [Theodore Roosevelt's kids kept a badger and a one-legged rooster at the White House].",
+      "about": "The Liberty Bell",
+      "say": "The Liberty Bell [cracked the first time it was rung in Philadelphia], [got its famous name during the American Revolution], [has Pennsylvania spelled with a missing N on it], and [was hidden under a church floor to keep it from the British].",
       "cap": 1,
-      "real": "The five-cent Hershey's bar ended in 1969. After that, a bigger bar that cost ten cents became the standard.",
+      "real": "It got the name Liberty Bell in the 1830s, from people working to end slavery.",
       "src": [
-        "https://bensguide.gpo.gov/j-mount-rushmore",
-        "https://hersheyarchives.org/?p=8246",
-        "https://en.wikipedia.org/wiki/Louis_Braille",
-        "https://www.whitehousehistory.org/questions/what-are-some-unusual-animals-that-have-lived-in-and-around-the-white-house"
+        "https://en.wikipedia.org/wiki/Liberty_Bell",
+        "https://en.wikipedia.org/wiki/Liberty_Bell",
+        "https://en.wikipedia.org/wiki/Liberty_Bell",
+        "https://en.wikipedia.org/wiki/Liberty_Bell"
       ]
     },
     {
       "id": "th07",
-      "say": "[Caroline Herschel, an astronomer in the 1700s, discovered eight comets], [Alan Turing wrote a chess program in 1948 that no computer back then could run], [Lincoln Logs were invented by the son of the architect Frank Lloyd Wright], and [the teddy bear, first made in 1902, was named after Franklin Roosevelt].",
+      "about": "Chocolate",
+      "say": "Chocolate [was used as money by the ancient Maya], [was worth so much that people made fake cacao beans from clay], [became a solid candy bar for the first time in England in 1847], and [comes from a tree that first grew wild in Africa].",
       "cap": 3,
-      "real": "The teddy bear was named after President Theodore Roosevelt, whose nickname was Teddy.",
+      "real": "Cacao trees come from the rainforests of South America. The first people known to use cacao lived in what's now Ecuador.",
       "src": [
-        "https://rmg.co.uk/stories/topics/caroline-herschel",
-        "https://en.wikipedia.org/wiki/Early_history_of_video_games",
-        "https://en.wikipedia.org/wiki/Lincoln_Logs",
-        "https://www.nps.gov/thrb/learn/historyculture/storyofteddybear.htm"
+        "https://kids.nationalgeographic.com/history/article/the-secret-history-of-chocolate",
+        "https://kids.nationalgeographic.com/history/article/the-secret-history-of-chocolate",
+        "https://kids.nationalgeographic.com/history/article/the-secret-history-of-chocolate",
+        "https://kids.nationalgeographic.com/history/article/the-secret-history-of-chocolate"
       ]
     },
     {
       "id": "th08",
-      "say": "[The Liberty Bell cracked the first time it was rung in Philadelphia], [the Eiffel Tower was only supposed to stand for 20 years], [you can see the Great Wall of China from the Moon with your own eyes], and [Herbert Hoover, in 1929, was the first president with a phone on his desk].",
-      "cap": 2,
-      "real": "The Great Wall is far too narrow to see from the Moon. Even from low orbit, astronauts can barely spot it, if at all.",
+      "about": "Dr. Seuss",
+      "say": "Dr. Seuss [had Seuss as his real middle name, not his last name], [wrote Green Eggs and Ham using just 50 different words], [had a license plate on his car that said GRINCH], and [trained to be a medical doctor before he wrote books].",
+      "cap": 3,
+      "real": "He never studied medicine. He added Dr. to his name partly for his dad, who had hoped he would become a doctor.",
       "src": [
-        "https://en.wikipedia.org/wiki/Liberty_Bell",
-        "https://www.toureiffel.paris/en/news/130-years/how-did-radio-save-tower",
-        "https://en.wikipedia.org/wiki/Great_Wall_of_China",
-        "https://www.smithsonianmag.com/smart-news/1929-nobody-thought-president-needed-telephone-his-office-180962646/"
+        "https://amp.cbc.ca/books/63-facts-about-the-world-of-dr-seuss-1.4557340",
+        "https://amp.cbc.ca/books/63-facts-about-the-world-of-dr-seuss-1.4557340",
+        "https://amp.cbc.ca/books/63-facts-about-the-world-of-dr-seuss-1.4557340",
+        "https://amp.cbc.ca/books/63-facts-about-the-world-of-dr-seuss-1.4557340"
       ]
     },
     {
       "id": "th09",
-      "say": "[People in ancient Pompeii bought hot food at street counters, like fast food], [Cadbury Dairy Milk chocolate was almost named Dairy Maid], [Sacagawea carried her baby son along on the Lewis and Clark expedition], and [ancient Romans built special rooms for throwing up at big feasts].",
-      "cap": 3,
-      "real": "A vomitorium was really a passageway that let crowds pour in and out of a Roman amphitheater.",
+      "about": "Mickey Mouse",
+      "say": "Mickey Mouse [was voiced by Walt Disney himself until 1946], [was the first cartoon character with a star on the Hollywood Walk of Fame], [made his first appearance in a full-color cartoon], and [starred in two cartoons that were made before his first one came out].",
+      "cap": 2,
+      "real": "His first cartoon, Steamboat Willie in 1928, was black and white. His first color cartoon was The Band Concert in 1935.",
       "src": [
-        "https://www.smithsonianmag.com/smart-news/romans-loved-fast-food-much-we-do-180971845/",
-        "https://en.wikipedia.org/wiki/Cadbury_Dairy_Milk",
-        "https://www.history.com/topics/19th-century/sacagawea",
-        "https://www.howitworksdaily.com/7-history-myths-busted/"
+        "https://d23.com/character/mickey-mouse/",
+        "https://d23.com/character/mickey-mouse/",
+        "https://d23.com/character/mickey-mouse/",
+        "https://d23.com/character/mickey-mouse/"
       ]
     },
     {
       "id": "th10",
-      "say": "[The scientist Albert Einstein failed math when he was a boy in school], [Leonardo da Vinci designed a robot knight more than 500 years ago], [the Game Boy's designer started out fixing machines in Nintendo's card factory], and [James Garfield gave part of a campaign speech in German before he became president].",
+      "about": "Mr. Potato Head",
+      "say": "Mr. Potato Head [got more than 400 votes for mayor of a city in Idaho], [was the first toy ever advertised on TV], [started out with parts you stuck into a real potato], and [didn't get a plastic potato body until 1964].",
       "cap": 0,
-      "real": "Einstein was great at math. He taught himself algebra and geometry at about 12 and said he had mastered calculus before he was 15.",
+      "real": "He got just four votes in the 1985 race for mayor of Boise, Idaho.",
       "src": [
-        "https://www.todayifoundout.com/index.php/2011/12/albert-einstein-did-not-fail-at-mathematics-in-school/",
-        "https://en.wikipedia.org/wiki/Leonardo%27s_robot",
-        "https://en.wikipedia.org/wiki/Gunpei_Yokoi",
-        "https://www.nps.gov/articles/000/1880-front-porch-campaign-speeches.htm"
+        "https://en.wikipedia.org/wiki/Mr._Potato_Head",
+        "https://en.wikipedia.org/wiki/Mr._Potato_Head",
+        "https://en.wikipedia.org/wiki/Mr._Potato_Head",
+        "https://en.wikipedia.org/wiki/Mr._Potato_Head"
       ]
     },
     {
       "id": "th11",
-      "say": "[The Mona Lisa was stolen in 1911 and stayed missing for over two years], [William Herschel, who discovered Uranus, was a musician before he was an astronomer], [the very first solid chocolate bar was made at a factory in America], and [Benjamin Franklin invented swim fins when he was just 11 years old].",
-      "cap": 2,
-      "real": "The first solid chocolate bar was made in England in 1847 by Joseph Fry of the J.S. Fry & Sons chocolate company.",
+      "about": "The Slinky",
+      "say": "The Slinky [was invented by a naval engineer after a spring fell off a shelf], [was first sold at a store in New York City], [got its name from a word the inventor's wife found in a dictionary], and [was used by soldiers in the Vietnam War as a radio antenna].",
+      "cap": 1,
+      "real": "It was first sold at Gimbels in Philadelphia in 1945, where all 400 sold out in 90 minutes.",
       "src": [
-        "https://www.smithsonianmag.com/arts-culture/the-theft-that-made-the-mona-lisa-a-masterpiece-16406234/",
-        "https://www.rmg.co.uk/stories/space-astronomy/astronomy/discovery-uranus",
-        "https://www.tastingtable.com/1915748/original-chocolate-purpose-not-eating/",
-        "https://fi.edu/en/science-and-education/benjamin-franklin/inventions"
+        "https://en.wikipedia.org/wiki/Slinky",
+        "https://time.com/4127170/slinky-70-years/",
+        "https://time.com/4127170/slinky-70-years/",
+        "https://en.wikipedia.org/wiki/Slinky"
       ]
     },
     {
       "id": "th12",
-      "say": "[The man who created Pokémon was nicknamed Dr. Bug as a kid], [a recording of Abraham Lincoln's voice still exists today], [the inventor of basketball had a losing record as a college coach], and [President William Taft kept a cow named Pauline at the White House].",
-      "cap": 1,
-      "real": "No recording of Lincoln's voice exists. He died in 1865, twelve years before Thomas Edison invented the phonograph in 1877.",
+      "about": "Crayola crayons",
+      "say": "Crayola crayons [came in a box of eight for a nickel in 1903], [got their name from the wife of one of the company's owners], [had a sharpener built into the very first box], and [came from a company that made school chalk before it made crayons].",
+      "cap": 2,
+      "real": "The built-in sharpener came in 1958, with the first 64-color box. The first box, in 1903, had just eight crayons.",
       "src": [
-        "https://en.wikipedia.org/wiki/Satoshi_Tajiri",
-        "https://historycollection.com/these-little-known-facts-about-40-of-americas-presidents-snatched-our-powdered-wigs/23/",
-        "https://thecanadianencyclopedia.ca/en/article/james-naismith",
-        "https://www.whitehousehistory.org/questions/what-are-some-unusual-animals-that-have-lived-in-and-around-the-white-house"
+        "https://crayola.ca/about-us/history",
+        "https://crayola.ca/about-us/history",
+        "https://crayola.ca/about-us/history",
+        "https://crayola.ca/about-us/history"
       ]
     }
   ]

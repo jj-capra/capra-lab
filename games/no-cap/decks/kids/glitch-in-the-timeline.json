@@ -2,150 +2,162 @@
   "id": "glitch-in-the-timeline",
   "title": "Glitch in the Timeline",
   "shelf": "kids",
-  "blurb": "Pokémon, Pluto, phones and brand-new discoveries, all scrambled up with older stuff.",
+  "blurb": "Games, movies, shows and space from 2000 to 2025. Three facts per card, and one is cap.",
   "cards": [
     {
       "id": "gt01",
-      "say": "[Pokémon Go came out in 2016, twenty years after the first Pokémon game], [Tetris came packed in the box with the Game Boy everywhere but Japan], [a Pikachu balloon first floated in the Macy's Thanksgiving parade in 2001], and [Mario was already a plumber in his very first game, back in 1981].",
+      "about": "The Nintendo Switch",
+      "say": "The Nintendo Switch [was code-named NX while it was being made], [has game cards coated to taste awful so kids won't swallow them], [had shipped more than 150 million units by the end of 2025], and [came out with Super Mario Odyssey on its very first day].",
       "cap": 3,
-      "real": "In his first game, Donkey Kong in 1981, Mario was a carpenter called Jumpman. He became a plumber in Mario Bros. two years later.",
+      "real": "The Switch came out on March 3, 2017. Super Mario Odyssey didn't arrive until October 27, 2017.",
       "src": [
-        "https://en.wikipedia.org/wiki/Pok%C3%A9mon",
-        "https://en.wikipedia.org/wiki/Game_Boy",
-        "https://en.wikipedia.org/wiki/Pikachu",
-        "https://en.wikipedia.org/wiki/Mario"
+        "https://en.wikipedia.org/wiki/Nintendo_Switch",
+        "https://en.wikipedia.org/wiki/Nintendo_Switch",
+        "https://en.wikipedia.org/wiki/Nintendo_Switch",
+        "https://en.wikipedia.org/wiki/Nintendo_Switch"
       ]
     },
     {
       "id": "gt02",
-      "say": "[The first video ever posted on YouTube, in 2005, was filmed at a zoo], [the Nintendo Switch 2 came out in 2025, four years after the first Switch], [in 2016, experts moved giant pandas from endangered to vulnerable], and [the first text message ever sent, in 1992, said Merry Christmas].",
+      "about": "Pokémon Go",
+      "say": "Pokémon Go [grew out of a Google Maps April Fools' joke], [was made by Nintendo's own game studio], [had Pokémon you could catch in only one part of the world], and [had eggs you had to walk 10 kilometers to hatch].",
       "cap": 1,
-      "real": "The first Switch came out in March 2017, so the Switch 2, released on June 5, 2025, arrived more than eight years later.",
+      "real": "It was made by Niantic, a company that started inside Google. Nintendo helped pay for it but didn't make it.",
       "src": [
-        "https://en.wikipedia.org/wiki/Me_at_the_zoo",
-        "https://en.wikipedia.org/wiki/Nintendo",
-        "https://discovermagazine.com/planet-earth/giant-pandas-climb-from-endangered-to-vulnerable",
-        "https://en.wikipedia.org/wiki/Neil_Papworth"
+        "https://phys.org/news/2016-07-pokemon-prank-phenomenon.html",
+        "https://phys.org/news/2016-07-pokemon-prank-phenomenon.html",
+        "https://www.gamesradar.com/looks-like-pokemon-gos-four-region-exclusives-can-also-hatch-from-eggs",
+        "https://www.gamesradar.com/looks-like-pokemon-gos-four-region-exclusives-can-also-hatch-from-eggs"
       ]
     },
     {
       "id": "gt03",
-      "say": "[Scientists officially renamed Pluto a dwarf planet in 2016], [NASA's Opportunity rover was built to last 90 days on Mars and kept going almost 15 years], [in 2011, Neptune finished its first lap around the Sun since it was discovered], and [in 2022, NASA crashed a spacecraft into an asteroid on purpose to nudge it].",
-      "cap": 0,
-      "real": "Pluto was renamed a dwarf planet in August 2006, ten years earlier.",
+      "about": "The Super Mario Bros. Movie",
+      "say": "The Super Mario Bros. Movie [made more than a billion dollars around the world], [had Jack Black as the voice of Bowser], [was the very first movie ever made about Mario], and [put Bowser's song Peaches on the Billboard Hot 100].",
+      "cap": 2,
+      "real": "A live-action Super Mario Bros. movie came out back in 1993, thirty years earlier.",
       "src": [
-        "https://universemagazine.com/en/pluto-five-facts-about-the-dwarf-planet-that-will-surprise-you",
-        "https://learningenglish.voanews.com/amp/nasa-s-rover-ends-mission-after-15-years/4788261.html",
-        "https://space.com/12254-neptune-photos-hubble-telescope-discovery-anniversary.html",
-        "https://www.technologyreview.com/2022/09/27/1060099/moment-nasa-dart-spacecraft-crash-asteroid"
+        "https://en.wikipedia.org/wiki/The_Super_Mario_Bros._Movie",
+        "https://en.wikipedia.org/wiki/The_Super_Mario_Bros._Movie",
+        "https://en.wikipedia.org/wiki/The_Super_Mario_Bros._Movie",
+        "https://www.kuow.org/stories/peaches-from-mario-bros-movie-entered-the-billboard-hot-100-at-no-83"
       ]
     },
     {
       "id": "gt04",
-      "say": "[The first cell phone call ever was made to a worker at a rival company], [the first cell phone weighed about two and a half pounds], [when cell phones first went on sale, they cost about 400 dollars], and [in 2020, NASA sent a brand-new toilet up to the space station].",
-      "cap": 2,
-      "real": "When cell phones first went on sale in 1983, they cost about 3,500 to 4,000 dollars.",
+      "about": "Shrek",
+      "say": "Shrek [was made by Pixar, the studio behind Toy Story], [won the first Oscar ever given for Best Animated Feature], [is based on a picture book that came out in 1990], and [had its star redo all his lines in a Scottish accent].",
+      "cap": 0,
+      "real": "Shrek was made by DreamWorks. It even beat Pixar's Monsters, Inc. to win that first Oscar.",
       "src": [
-        "https://www.aarp.org/politics-society/history/info-2018/first-cell-phone-call.html",
-        "https://www.aarp.org/politics-society/history/info-2018/first-cell-phone-call.html",
-        "https://www.aarp.org/politics-society/history/info-2018/first-cell-phone-call.html",
-        "https://www.mentalfloss.com/history/historically-important-toilets"
+        "https://en.wikipedia.org/wiki/Shrek",
+        "https://en.wikipedia.org/wiki/Shrek",
+        "https://en.wikipedia.org/wiki/Shrek",
+        "https://en.wikipedia.org/wiki/Shrek"
       ]
     },
     {
       "id": "gt05",
-      "say": "[Minecraft's creepers began as a mistake when the game's maker tried to make a pig], [in 2016, the Chicago Cubs won their first World Series since 1908], [Nintendo stopped making playing cards back in the 1970s], and [in 2025, scientists announced the oldest ant fossil ever found].",
+      "about": "Frozen",
+      "say": "Frozen [is loosely based on a fairy tale called The Snow Queen], [had Elsa written as a villain at first], [was the first animated movie to make a billion dollars], and [won an Oscar for the song Let It Go].",
       "cap": 2,
-      "real": "Nintendo kept making playing cards. In 2007 it even sold hanafuda cards with Mario on them.",
+      "real": "Toy Story 3 got there first, in 2010, three years before Frozen came out.",
       "src": [
-        "https://en.wikipedia.org/wiki/Creeper_(Minecraft)",
-        "https://www.aljazeera.com/sports/2016/11/3/cubs-win-first-world-series-in-more-than-a-century",
-        "https://interestingengineering.com/culture/the-extraordinary-and-surprising-history-of-nintendo",
-        "https://www.nationalgeographic.com/animals/article/oldest-hell-ant-fossil-discovery"
+        "https://en.wikipedia.org/wiki/Elsa_(Frozen)",
+        "https://en.wikipedia.org/wiki/Elsa_(Frozen)",
+        "https://thewaltdisneycompany.com/?p=4881",
+        "https://en.wikipedia.org/wiki/Elsa_(Frozen)"
       ]
     },
     {
       "id": "gt06",
-      "say": "[In 2007, the Great Pyramid was voted one of the New Seven Wonders of the World], [the first coin-operated arcade video games showed up in 1971], [Nintendo sold a toy grabber arm called the Ultra Hand back in 1966], and [in 2016, scientists showed off a dinosaur tail, feathers and all, trapped in amber].",
-      "cap": 0,
-      "real": "The Great Pyramid wasn't one of the seven winners in 2007. It was given an honorary spot instead.",
+      "about": "Lightning McQueen",
+      "say": "Lightning McQueen [races as number 95 because Toy Story came out in 1995], [is named after Glenn McQueen, an animator at Pixar], [got a Crocs shoe made to look like him in 2021], and [wins the Piston Cup at the end of the first Cars movie].",
+      "cap": 3,
+      "real": "He stops just short of the finish line to help The King, and Chick Hicks takes the Piston Cup.",
       "src": [
-        "https://en.wikipedia.org/wiki/New_7_Wonders_of_the_World",
-        "https://en.wikipedia.org/wiki/Early_history_of_video_games",
-        "https://en.wikipedia.org/wiki/Gunpei_Yokoi",
-        "https://www.nationalgeographic.com/animals/article/feathered-dinosaur-tail-amber-theropod-myanmar-burma-cretaceous"
+        "https://en.wikipedia.org/wiki/Lightning_McQueen",
+        "https://en.wikipedia.org/wiki/Lightning_McQueen",
+        "https://en.wikipedia.org/wiki/Lightning_McQueen",
+        "https://en.wikipedia.org/wiki/Lightning_McQueen"
       ]
     },
     {
       "id": "gt07",
-      "say": "[New Horizons flew for about nine and a half years to reach Pluto in 2015], [in 2016, an art museum in New York added 176 emoji from 1999 to its collection], [Pikachu's name mixes a sparkly sound with a mouse's squeak], and [tiny water bears called tardigrades rode a spacecraft to the Moon in 2007].",
-      "cap": 3,
-      "real": "In 2007 the tardigrades rode the FOTON-M3 spacecraft in a low orbit around Earth, nowhere near the Moon.",
+      "about": "Encanto",
+      "say": "Encanto [is set in a magical house in the mountains of Colombia], [won an Oscar for the song We Don't Talk About Bruno], [won the Oscar for Best Animated Feature], and [gave Disney its first number one song since Aladdin].",
+      "cap": 1,
+      "real": "Bruno wasn't even nominated. Encanto's nominated song was Dos Oruguitas, and it lost.",
       "src": [
-        "https://universemagazine.com/en/pluto-five-facts-about-the-dwarf-planet-that-will-surprise-you",
-        "https://www.cbsnews.com/news/original-emojis-now-at-the-museum-of-modern-art",
-        "https://en.wikipedia.org/wiki/Pikachu",
-        "https://www.space.com/5817-creature-survives-naked-space.html"
+        "https://www.aldianews.com/en/culture/screen/encanto-triumphs-oscars",
+        "https://abc7.com/oscar-nominations-2022-oscars-we-dont-talk-about-bruno-encanto/11545848",
+        "https://www.aldianews.com/en/culture/screen/encanto-triumphs-oscars",
+        "https://abc7.com/oscar-nominations-2022-oscars-we-dont-talk-about-bruno-encanto/11545848"
       ]
     },
     {
       "id": "gt08",
-      "say": "[Barbie's official birthday is March 9, 1959], [two Barbie dolls blasted off to visit the Moon in 2022], [the first cell phone could only talk for about 35 minutes on one charge], and [in 2021, tree rings proved Vikings were in Canada in the year 1021].",
-      "cap": 1,
-      "real": "In 2022 the two Barbie dolls toured the International Space Station, which circles Earth, not the Moon.",
+      "about": "Bluey",
+      "say": "Bluey [is made at a studio in Sydney, Australia], [has episodes that are usually just seven minutes long], [has a mom, Chilli, who works part-time in airport security], and [won an International Emmy Kids Award in 2019].",
+      "cap": 0,
+      "real": "Bluey is made by Ludo Studio in Brisbane, Australia.",
       "src": [
-        "https://history.co.uk/articles/facts-about-iconic-barbie",
-        "https://airandspace.si.edu/stories/editorial/barbie-astronaut-ages",
-        "https://www.aarp.org/politics-society/history/info-2018/first-cell-phone-call.html",
-        "https://www.npr.org/2021/10/21/1047797376/researchers-discovered-the-date-vikings-arrived-in-canada"
+        "https://en.wikipedia.org/wiki/Bluey_(TV_series)",
+        "https://en.wikipedia.org/wiki/Bluey_(TV_series)",
+        "https://en.wikipedia.org/wiki/Bluey_(TV_series)",
+        "https://en.wikipedia.org/wiki/Bluey_(TV_series)"
       ]
     },
     {
       "id": "gt09",
-      "say": "[Pikachu, created in 1996, was designed by the same man who created Mario], [Pong came out the same year as the first home video game console], [in 2012, a man jumped from a balloon 24 miles up and fell faster than sound], and [Toy Story, from 1995, was the first full-length movie made all on computers].",
+      "about": "The International Space Station",
+      "say": "The International Space Station [is too small to see from the ground without a telescope], [lets the astronauts on board see 16 sunrises every day], [is about as big as a football field], and [had two Barbie dolls on board in 2022].",
       "cap": 0,
-      "real": "Pikachu was drawn by Atsuko Nishida, and Ken Sugimori finished the design. Mario was created by Shigeru Miyamoto.",
+      "real": "You can see it with just your eyes. Around dawn or dusk it's one of the brightest things in the sky, after the Moon and Venus.",
       "src": [
-        "https://en.wikipedia.org/wiki/Pikachu",
-        "https://en.wikipedia.org/wiki/Early_history_of_video_games",
-        "https://www.guinnessworldrecords.com/world-records/107930-first-human-to-break-the-sound-barrier-in-freefall",
-        "NOT WEB-CHECKED (textbook fact) https://en.wikipedia.org/wiki/Toy_Story"
+        "https://www.slashgear.com/764332/13-interesting-facts-about-the-international-space-station",
+        "https://www.armstrongmuseum.org/international-space-station-facts",
+        "https://www.armstrongmuseum.org/international-space-station-facts",
+        "https://airandspace.si.edu/stories/editorial/barbie-astronaut-ages"
       ]
     },
     {
       "id": "gt10",
-      "say": "[In 2008, Michael Phelps won eight gold medals at a single Olympics], [Shrek won the very first Oscar for Best Animated Feature], [the first Harry Potter book came out in 1997, in Britain], and [the first iPhone came out in 2010, the same year as the first iPad].",
+      "about": "Moana",
+      "say": "Moana [had a 14-year-old picked to be the voice of Moana], [has a demigod, Maui, whose tattoos were drawn by hand], [has a rooster named Heihei who sneaks onto her boat], and [has a pet pig, Pua, who sails with her the whole way].",
       "cap": 3,
-      "real": "The first iPhone came out in 2007, three years before the first iPad in 2010.",
+      "real": "Pua stays home on the island. Heihei the rooster is the one who ends up on the voyage.",
       "src": [
-        "NOT WEB-CHECKED (textbook fact) https://en.wikipedia.org/wiki/Michael_Phelps",
-        "https://en.wikipedia.org/wiki/Academy_Award_for_Best_Animated_Feature",
-        "NOT WEB-CHECKED (textbook fact) https://en.wikipedia.org/wiki/Harry_Potter_and_the_Philosopher%27s_Stone",
-        "NOT WEB-CHECKED (textbook fact) https://en.wikipedia.org/wiki/IPhone_(1st_generation)"
+        "https://www.doc.surf/wiki/moana-2016-film",
+        "https://www.doc.surf/wiki/moana-2016-film",
+        "https://www.doc.surf/wiki/moana-2016-film",
+        "https://www.slashfilm.com/1723710/disney-moana-2-fixes-original-movie-mistake-pua"
       ]
     },
     {
       "id": "gt11",
-      "say": "[In 2009, Usain Bolt ran 100 meters in 9.58 seconds, a world record], [basketball's handwritten first rules sold for about 43,000 dollars in 2010], [people at MIT made a space video game called Spacewar in 1962], and [Wikipedia, the free online encyclopedia, first went online in 2001].",
-      "cap": 1,
-      "real": "James Naismith's original basketball rules sold at an auction in 2010 for 4.3 million dollars.",
+      "about": "The 2024 solar eclipse",
+      "say": "The 2024 solar eclipse [passed over Mexico, the United States and Canada], [could be seen as a total eclipse in 15 U.S. states], [crossed the United States from California to Maine], and [turned day into night for over four minutes in some places].",
+      "cap": 2,
+      "real": "It came up from Mexico into Texas and left the country over Maine. California wasn't on the path at all.",
       "src": [
-        "NOT WEB-CHECKED (textbook fact) https://en.wikipedia.org/wiki/Usain_Bolt",
-        "https://thecanadianencyclopedia.ca/en/article/james-naismith",
-        "https://en.wikipedia.org/wiki/Early_history_of_video_games",
-        "NOT WEB-CHECKED (textbook fact) https://en.wikipedia.org/wiki/Wikipedia"
+        "https://en.wikipedia.org/wiki/Solar_eclipse_of_April_8,_2024",
+        "https://en.wikipedia.org/wiki/Solar_eclipse_of_April_8,_2024",
+        "https://en.wikipedia.org/wiki/Solar_eclipse_of_April_8,_2024",
+        "https://en.wikipedia.org/wiki/Solar_eclipse_of_April_8,_2024"
       ]
     },
     {
       "id": "gt12",
-      "say": "[In 1999, two men made the first nonstop balloon trip around the world], [a man flew a balloon around the world in about 11 days in 2016], [Steve Fossett flew a balloon solo around the world in 2002, on his first try], and [a Japanese airline painted Pikachu on its jumbo jets in 1998].",
-      "cap": 2,
-      "real": "Fossett did fly around the world alone in 2002, but only on his sixth try.",
+      "about": "Diary of a Wimpy Kid",
+      "say": "Diary of a Wimpy Kid [started out online on a kids' website in 2004], [became a movie for the first time in 2021], [was written by the man who created Poptropica], and [has an author who opened his own bookstore].",
+      "cap": 1,
+      "real": "The first Diary of a Wimpy Kid movie came out in 2010. The 2021 film was a newer, animated one.",
       "src": [
-        "https://en.wikipedia.org/wiki/Hot_air_balloon",
-        "https://en.wikipedia.org/wiki/Hot_air_balloon",
-        "https://en.wikipedia.org/wiki/Hot_air_balloon",
-        "https://en.wikipedia.org/wiki/Pikachu"
+        "https://en.wikipedia.org/wiki/Diary_of_a_Wimpy_Kid",
+        "https://en.wikipedia.org/wiki/Diary_of_a_Wimpy_Kid",
+        "https://en.wikipedia.org/wiki/Jeff_Kinney",
+        "https://en.wikipedia.org/wiki/Jeff_Kinney"
       ]
     }
   ]
