@@ -10,6 +10,15 @@ of topics that entertain elementary, middle school, high school and young adults
 lessons in a fun delivery with a good mix of modern events too. **These have to be hard to figure
 out.**"
 
+## One subject per card (JC, Nov 9 2026)
+
+"I would prefer all statements to be related. So for example it would be on a President and have
+three facts and a fiction about a certain famous president. The related piece makes it harder to
+decipher the fiction." Every card is about **one subject**: a person (a president, an inventor,
+an athlete), a place (a city, a building, a country), a thing (an invention, a game, a food, an
+animal), or an event. All four claims are about that subject, so the cap can't stand out by
+topic: it has to be caught on its detail.
+
 ## The file
 
 `decks/<shelf>/<id>.json`, shelf one of `kids`, `middle`, `high`, `adult`:
@@ -23,9 +32,10 @@ out.**"
   "cards": [
     {
       "id": "twj01",
-      "say": "[Nintendo started out in 1889 selling playing cards], [the first toy advertised on TV was Mr. Potato Head], [the yo-yo was invented in the 1980s], and [sharks are older than trees].",
-      "cap": 2,
-      "real": "Yo-yos go back thousands of years: one painted on a Greek vase is about 2,500 years old.",
+      "about": "Nintendo",
+      "say": "Nintendo [started out in 1889 selling playing cards], [once ran a taxi company], [named Mario after the owner of its American warehouse], and [made the first video game console ever sold].",
+      "cap": 3,
+      "real": "The first home console was the Magnavox Odyssey in 1972. Nintendo's first home console came out in 1977.",
       "src": ["https://...", "https://...", "https://...", "https://..."]
     }
   ]
@@ -33,44 +43,50 @@ out.**"
 ```
 
 - **12 cards per deck.** `id` short and unique in the deck.
-- `say`: **one sentence**, read out loud, at most 320 characters, with **exactly four claims in
-  [square brackets]**, in the order they're read. Keep the glue outside the brackets short
-  (", ", ", and ", "; "). Each claim 18 to 110 characters and makes sense on its own (it becomes a
-  button players tap).
+- `about`: the card's one subject, as players would say it (at most 40 characters): "Abraham
+  Lincoln", "The Eiffel Tower", "Pac-Man". It shows on every phone above the card.
+- `say`: **one sentence**, read out loud, at most 340 characters. It starts with the subject and
+  then has **exactly four claims in [square brackets]**, in the order they're read, joined by
+  ", " and ", and ". Each claim 12 to 110 characters. A claim is a predicate that reads well on its
+  own as a button under the subject ("was a licensed bartender", "is older than the United
+  States"), so start it with a verb, never with the subject's name.
 - `cap`: which claim is made up, 0 to 3. **Spread the caps out**: in a 12-card deck each position
   is the cap 3 times, in a mixed-up order (not 0,1,2,3,0,1...).
-- `real`: at most 170 characters, shown at the reveal: the truth behind the cap, said plainly
-  ("Yo-yos go back thousands of years..."). Never repeat the cap as if true.
-- `src`: one source URL per claim, in order (4). For the cap, a source showing the truth.
+- `real`: at most 170 characters, shown at the reveal: the truth behind the cap, said plainly.
+  Never repeat the cap as if true.
+- `src`: one source URL per claim, in order (4). For the cap, a source showing the truth. Claims
+  about one subject can share a source (the same Britannica or museum page).
 - `title` at most 32 characters, `blurb` at most 90.
+- **A subject appears once in the whole game**: never on two cards, two decks or two shelves (the
+  registry is `docs/subjects.md`; add yours there before you write the card).
 
 Check your file with `node games/no-cap/scripts/check-decks.mjs path/to/file.json`.
 
 ## Hard to figure out (the whole game)
 
-- **The facts should sound fake.** Pick true things that make people say "no way": time warps,
-  surprising firsts, weird-but-true people and events, numbers that sound wrong.
-- **The cap should sound true.** Build it from a real fact with one detail bent: a date moved, two
-  people or places swapped, a number changed, an order reversed, a "first" given to the wrong
-  thing. It must sound as plausible as the facts, never silly.
+- **The facts should sound fake.** Pick the true things about the subject that make people say
+  "no way": surprising firsts, odd jobs, strange habits, time warps, numbers that sound wrong.
+- **The cap should sound true.** Build it from a real fact about the subject with one detail bent:
+  a date moved, a number changed, a "first" given to the wrong one, a famous story about them
+  that's a myth. It must sound as plausible as the facts, never silly.
 - **No tells.** All four claims in the same shape and about the same length and detail. The cap
   is never the only claim with a hedge, an "only", "always", "never", a round number, or a vague
   word; never the only one without a number if the others have numbers (and vice versa). Mix the
   cap's position (see above). Don't make the cap the most boring claim on the card.
 - **Definitely false, definitely true.** The cap must be plainly wrong by reputable sources, not
   "technically true", disputed, or true under another definition. Each fact must be confirmed by
-  reputable sources, not a myth or a disputed story. Common myths make great caps.
-- Each card mixes it up: a card can stay on one theme (four time warps) or blend old history with
-  modern events. Across a deck, mix ancient, medieval, early modern, 1900s and 2000s-2020s.
+  reputable sources, not a myth or a disputed story. Common myths about the subject make great caps.
+- Famous subjects are best (everyone has heard of them, nobody knows all four things), but pick
+  facts about them that most people don't know.
 
 ## Perception of time (JC's favorite)
 
-Time warps bend how people picture history: "Cleopatra lived closer in time to the Moon landing
-than to the building of the Great Pyramid", "Oxford University is older than the Aztec Empire",
-"woolly mammoths were still alive when the pyramids were built", "the fax machine was invented
-before the telephone", "Nintendo was founded in 1889". Comparisons ("closer in time to", "older
-than", "at the same time as", "before", "within a few years of") are the heart of it. Do the
-arithmetic for every comparison and keep a margin: if two dates are close, don't use it.
+Time warps bend how people picture history, and they fit inside one subject: Cleopatra "lived
+closer in time to the Moon landing than to the building of the Great Pyramid"; Oxford University
+"is older than the Aztec Empire"; woolly mammoths "were still alive when the pyramids were built".
+In the time-warp decks every card is a subject with at least two time-warp claims ("closer in time
+to", "older than", "at the same time as", "still alive when"). Do the arithmetic for every
+comparison and keep a margin of years.
 
 ## Shelves (who it's for)
 
@@ -84,8 +100,9 @@ arithmetic for every comparison and keep a margin: if two dates are close, don't
   internet culture, sports, music, film), money and work.
 
 Each shelf gets three decks: **a time-warp deck**, **a history deck** (people, places, events told
-with fun) and **a modern deck** (2000 to 2025 events, mixed with older things for the warp). Name
-them with some personality.
+with fun; presidents and other famous figures are great subjects) and **a modern deck** (subjects
+from 2000 to 2025: companies, games, apps, athletes, movies, events). Name them with some
+personality.
 
 ## Content rules (every shelf)
 

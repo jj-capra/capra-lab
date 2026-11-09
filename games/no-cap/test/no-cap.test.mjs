@@ -17,7 +17,7 @@ const test = async (name, fn) => {
 const fake = (id, shelf = 'kids', n = 12) => ({
   id, title: 'Test ' + id, shelf, blurb: 'A test deck.',
   cards: Array.from({ length: n }, (_, i) => ({
-    id: id + i, cap: [2, 0, 3, 1][i % 4],
+    id: id + i, cap: [2, 0, 3, 1][i % 4], about: `Thing number ${i}`,
     say: `[claim one about thing number ${i}], [claim two about thing number ${i}], [claim three about thing number ${i}], and [claim four about thing number ${i}].`,
     real: 'What really happened.', src: ['a', 'b', 'c', 'd'],
   })),
@@ -45,6 +45,7 @@ await test('a card is four bracketed claims; points add up', async () => {
   assert.equal(cardPoints(2, true, 1000), 0, 'busted keeps nothing');
   assert.equal(cardPoints(2, false, FIND_MS), 2 * POINTS.fact);
   assert.equal(cardPoints(3, false, 0), 3 * POINTS.fact + POINTS.allThree + POINTS.speed);
+  assert.ok(cardPoints(3, false, 5000) > cardPoints(3, false, 20000), 'quicker scores more');
 });
 
 await test('the real decks pass the checks', async () => {
@@ -85,6 +86,8 @@ await test('a live game: the reader reads, everyone else finds the facts, busted
   assert.ok(rv.card && rv.card.say && rv.card.cap != null, 'the reader sees the card and the cap');
   const lv = (await g.call(`/rooms/${h.code}`, as(others[0]))).room;
   assert.equal(lv.card, undefined, 'listeners hear it, they don’t read it');
+  assert.match(lv.about, /^Thing number \d+$/, 'everyone sees what the card is about');
+  assert.equal(lv.about, rv.card.about);
   await assert.rejects(g.call(`/rooms/${h.code}/tap`, as(others[0], { i: 0, k: 0 })), /Time’s up/);
   g.tick(4000);
   v = (await g.call(`/rooms/${h.code}/read`, as(reader, { i: 0 }))).room;
@@ -104,7 +107,8 @@ await test('a live game: the reader reads, everyone else finds the facts, busted
   assert.ok(v.card.real);
   assert.equal(v.round[others[1].pid].busted, true);
   assert.equal(v.round[others[1].pid].pts, 0);
-  assert.equal(v.round[others[0].pid].pts, cardPoints(3, false, 2000));
+  assert.equal(v.round[others[0].pid].pts, cardPoints(3, false, 2000) + POINTS.first, 'first to find all three gets the bonus');
+  assert.equal(v.round[others[0].pid].first, true);
   assert.equal(v.round[reader.pid].pts, POINTS.fooled, 'the reader scores for fooling one');
   g.tick(REVEAL_MS);
   v = (await g.call(`/rooms/${h.code}`, as(h))).room;
@@ -115,7 +119,25 @@ await test('a live game: the reader reads, everyone else finds the facts, busted
   g.tick(READ_MS);
   v = (await g.call(`/rooms/${h.code}`, as(h))).room;
   assert.equal(v.stage, 'find');
+  // both find all three: the quicker one scores more and gets "first"
+  const reader2 = seat[v.reader], others2 = [h, a, b].filter((s) => s !== reader2);
+  const cap2 = (await g.call(`/rooms/${h.code}`, as(reader2))).room.card.cap, facts2 = [0, 1, 2, 3].filter((k) => k !== cap2);
+  g.tick(3000);
+  for (const k of facts2) await g.call(`/rooms/${h.code}/tap`, as(others2[0], { i: 1, k }));
+  g.tick(9000);
+  for (const k of facts2) v = (await g.call(`/rooms/${h.code}/tap`, as(others2[1], { i: 1, k }))).room;
+  assert.equal(v.stage, 'reveal');
+  const quick = v.round[others2[0].pid], slow = v.round[others2[1].pid];
+  assert.equal(quick.first, true);
+  assert.equal(slow.first, false);
+  assert.equal(quick.pts, cardPoints(3, false, 3000) + POINTS.first);
+  assert.equal(slow.pts, cardPoints(3, false, 12000));
+  assert.ok(quick.pts > slow.pts, 'the quicker to answer gets more points');
+  g.tick(REVEAL_MS);
   // nobody taps: time runs out, reveal, next
+  g.tick(READ_MS);
+  v = (await g.call(`/rooms/${h.code}`, as(h))).room;
+  assert.equal(v.stage, 'find');
   g.tick(FIND_MS);
   v = (await g.call(`/rooms/${h.code}`, as(h))).room;
   assert.equal(v.stage, 'reveal');

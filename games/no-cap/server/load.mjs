@@ -1,7 +1,7 @@
 // No Cap's decks: read them and check them. The build refuses a deck that fails problems().
 import fs from 'node:fs';
 import path from 'node:path';
-import { SHELVES, claims, SAY_MAX, CLAIM_MIN, CLAIM_MAX, REAL_MAX } from '../shared/rules.mjs';
+import { SHELVES, claims, SAY_MAX, CLAIM_MIN, CLAIM_MAX, REAL_MAX, ABOUT_MAX } from '../shared/rules.mjs';
 
 const SHELF_IDS = SHELVES.map(s => s.id);
 
@@ -40,6 +40,8 @@ export function problems(d) {
     if (!c.id) out.push(`${w}: no id`);
     if (seen.has(c.id)) out.push(`${w}: duplicate id`);
     seen.add(c.id);
+    // JC, Nov 9 2026: every claim on a card is about one subject (a president, a place, an invention...)
+    if (!c.about || c.about.length > ABOUT_MAX) out.push(`${w}: about (the card's one subject) missing or over ${ABOUT_MAX} characters`);
     const cl = claims(c.say || '');
     if (cl.length !== 4) out.push(`${w}: needs exactly four [bracketed] claims, has ${cl.length}`);
     if ((c.say || '').length > SAY_MAX) out.push(`${w}: say is ${c.say.length} characters (max ${SAY_MAX})`);

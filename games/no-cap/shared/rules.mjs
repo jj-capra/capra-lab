@@ -12,16 +12,17 @@ export const SHELVES = [
 export const MAX_PLAYERS = 12;
 export const MIN_LIVE = 3;            // a reader and at least two to fool
 export const CARDS_PER_GAME = 10;     // a challenge run, and the most a live game deals
-export const FIND_MS = 25000;         // the clock once the reader is done reading
+export const FIND_MS = 45000;         // the clock once the reader is done reading (JC, Nov 9 2026: 20 s more)
 export const REVEAL_MS = 8000;        // live: the cap, the real story, the scores
 export const READ_MS = 60000;         // a reader who never taps Done gets nudged on after this
-export const SAY_MAX = 320, CLAIM_MIN = 18, CLAIM_MAX = 110, REAL_MAX = 170;
+export const SAY_MAX = 340, CLAIM_MIN = 12, CLAIM_MAX = 110, REAL_MAX = 170, ABOUT_MAX = 40;
 export const NAME_MAX = 17;
 
 export const POINTS = {
   fact: 50,          // each fact found (banked as you go)
   allThree: 100,     // all three without touching the cap
-  speed: 100,        // up to this much more for finding all three fast
+  speed: 150,        // up to this much more for finding all three fast (JC: "the quicker to answer gets more points")
+  first: 50,         // live: the first player to find all three on a card
   fooled: 50,        // the reader, for every listener busted on their card
 };
 

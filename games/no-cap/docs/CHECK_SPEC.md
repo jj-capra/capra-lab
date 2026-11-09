@@ -15,15 +15,20 @@ Read the writing rules first: `games/no-cap/docs/DECK_SPEC.md`.
    always get checked; do the arithmetic for every comparison, with a clear margin.
 2. **The cap is definitely false**, not technically true, not true under another definition, not
    disputed. `real` states the truth correctly.
-3. **No tells**: the cap isn't the odd one out in length, detail, hedging, numbers or tone; caps
+3. **One subject** (JC, Nov 9 2026): all four claims are about the card's `about`, the sentence
+   starts with it, and each claim reads well as a button under it. Since all four are about the
+   same subject, one good page about it often settles all four: use it.
+4. **No tells**: the cap isn't the odd one out in length, detail, hedging, numbers or tone; caps
    are spread across positions (each position 3 times in 12 cards).
-4. **Hard enough**: the facts sound surprising and the cap sounds plausible. Rewrite a cap that is
+5. **Hard enough**: the facts sound surprising and the cap sounds plausible. Rewrite a cap that is
    silly or obviously wrong; swap out a "fact" everyone knows.
-5. **On spec**: the shelf's age, the content rules, nothing time-sensitive, modern events no later
+6. **On spec**: the shelf's age, the content rules, nothing time-sensitive, modern events no later
    than 2025, easy to read aloud, lengths (check-decks.mjs).
 
 ## Fixing
 - Fix in place: correct a claim, sharpen a cap, rewrite `real`, update `src`.
+- A replacement claim stays about the card's subject. A replaced card needs a new subject that
+  isn't already in `docs/subjects.md` (add it there).
 - If a claim can't be confirmed in a couple of searches, or is contested, **replace it** with one you
   can confirm (and keep the card's cap position). Replace a whole card if needed; no duplicates.
 - Keep each deck's `id`, `title` (unless it's weak), `shelf`.
