@@ -20,14 +20,14 @@
     {
       "id": "sb02",
       "about": "Minecraft",
-      "say": "Minecraft [came out before the very first version of Roblox], [started out as a test version called Cave Game], [got its creeper from a mistake while making a pig], and [was bought by Microsoft, along with its maker, for 2.5 billion dollars].",
+      "say": "Minecraft [came out before the first version of Roblox], [started out as a test version called Cave Game], [got its creeper from a mistake while making a pig], and [was bought by Microsoft, along with its maker, for 2.5 billion dollars].",
       "cap": 0,
       "real": "Roblox launched in 2006. Minecraft's first public test version didn't come out until 2009.",
       "src": [
         "https://www.pocketgamer.com/roblox/when-was-roblox-made-complete-history",
         "https://minefort.com/blog/when-was-minecraft-released",
-        "https://en.wikipedia.org/wiki/Creeper_(Minecraft)",
-        "https://en.wikipedia.org/wiki/Mojang_Studios"
+        "https://collections.vam.ac.uk/item/O1349223/creeper-action-figure-persson-markus (V&A: created by accident when Persson wrongly coded a pig)",
+        "https://en.wikipedia.org/wiki/Mojang_Studios (Microsoft agreed to buy Mojang for 2.5 billion dollars in September 2014)"
       ]
     },
     {
@@ -66,7 +66,7 @@
         "https://www.macrumors.com/2018/07/10/happy-10th-anniversary-app-store",
         "https://en.wikipedia.org/wiki/IPhone_(1st_generation)",
         "https://en.wikipedia.org/wiki/IPhone_(1st_generation)",
-        "https://en.wikipedia.org/wiki/Spotify"
+        "https://en.wikipedia.org/wiki/IPhone_(1st_generation) (released June 29, 2007); https://en.wikipedia.org/wiki/Spotify (launched October 7, 2008)"
       ]
     },
     {
@@ -85,27 +85,27 @@
     {
       "id": "sb07",
       "about": "New Horizons",
-      "say": "New Horizons [set off for Pluto months before Pluto was demoted to a dwarf planet], [found out up close that Pluto has no moons at all], [flew for about nine and a half years to reach Pluto], and [sent home pictures of a giant heart shape on Pluto].",
+      "say": "New Horizons [set off for Pluto months before Pluto was demoted to a dwarf planet], [discovered Pluto's biggest moon, Charon, when it flew past], [flew for about nine and a half years to reach Pluto], and [sent home pictures of a giant heart shape on Pluto].",
       "cap": 1,
-      "real": "Pluto has five known moons, including a big one named Charon. New Horizons flew past Pluto and its moons in 2015.",
+      "real": "Charon was found in 1978 by astronomers here on Earth. New Horizons flew past Pluto and its five moons in 2015.",
       "src": [
-        "https://universemagazine.com/en/pluto-five-facts-about-the-dwarf-planet-that-will-surprise-you",
-        "https://theconversation.com/nasa-mission-brings-pluto-into-sharp-focus-but-its-still-not-a-planet-40495",
-        "https://universemagazine.com/en/pluto-five-facts-about-the-dwarf-planet-that-will-surprise-you",
-        "NOT WEB-CHECKED (textbook) New Horizons' July 2015 flyby photographed the heart-shaped region later named Tombaugh Regio https://en.wikipedia.org/wiki/New_Horizons"
+        "https://www.britannica.com/print/article/1081294 (launched January 19, 2006); https://universemagazine.com/en/pluto-five-facts-about-the-dwarf-planet-that-will-surprise-you (IAU demoted Pluto in August 2006)",
+        "https://science.nasa.gov/dwarf-planets/pluto/moons/charon (discovered June 1978 by James Christy and Robert Harrington; largest of Pluto's five moons)",
+        "https://www.britannica.com/print/article/1081294 (launched January 19, 2006; closest approach July 14, 2015)",
+        "https://www.britannica.com/print/article/1081294 (a large heart-shaped region of ice); https://www.space.com/29971-pluto-heart-named-for-clyde-tombaugh.html (Tombaugh Regio)"
       ]
     },
     {
       "id": "sb08",
       "about": "Michael Phelps",
-      "say": "Michael Phelps [won eight gold medals at a single Olympics in 2008], [goes by the nickname the Flying Fish], [won more than 30 Olympic medals in all], and [won 23 Olympic gold medals in his career].",
+      "say": "Michael Phelps [won eight gold medals at a single Olympics in 2008], [got the nicknames the Flying Fish and the Baltimore Bullet], [won more than 30 Olympic medals in all], and [won 23 Olympic gold medals in his career].",
       "cap": 2,
       "real": "Phelps won 28 Olympic medals in all: 23 gold, 3 silver and 2 bronze.",
       "src": [
-        "https://en.wikipedia.org/wiki/Michael_Phelps",
-        "https://en.wikipedia.org/wiki/Michael_Phelps",
-        "https://en.wikipedia.org/wiki/Michael_Phelps",
-        "https://en.wikipedia.org/wiki/Michael_Phelps"
+        "https://olympics.com/en/news/michael-phelps-olympic-medals-record-how-many-gold-swimmer-world-record (eight golds at Beijing 2008)",
+        "https://en.wikipedia.org/wiki/Michael_Phelps (nicknamed The Baltimore Bullet and Flying Fish)",
+        "https://olympics.com/en/news/michael-phelps-olympic-medals-record-how-many-gold-swimmer-world-record (28 medals: 23 gold, 3 silver, 2 bronze; retired after Rio 2016)",
+        "https://olympics.com/en/news/michael-phelps-olympic-medals-record-how-many-gold-swimmer-world-record (23 gold medals)"
       ]
     },
     {
@@ -128,36 +128,36 @@
       "cap": 2,
       "real": "Webb works nearly a million miles from Earth, thousands of times farther out than the space station.",
       "src": [
-        "https://en.wikipedia.org/wiki/Launch_and_commissioning_of_the_James_Webb_Space_Telescope",
-        "https://www.goodmorningamerica.com/news/story/nasas-webb-telescope-works-facts-81913525",
-        "https://www.goodmorningamerica.com/news/story/nasas-webb-telescope-works-facts-81913525",
-        "https://www.goodmorningamerica.com/news/story/nasas-webb-telescope-works-facts-81913525"
+        "https://en.wikipedia.org/wiki/Launch_and_commissioning_of_the_James_Webb_Space_Telescope (launched December 25, 2021)",
+        "https://www.space.com/6183-huge-sun-shield-built-space-telescope.html (sunshield the size of a tennis court); https://www.goodmorningamerica.com/news/story/nasas-webb-telescope-works-facts-81913525 (69.5 by 46.5 feet)",
+        "https://www.space.com/6183-huge-sun-shield-built-space-telescope.html (orbit at the second Lagrange point, 1 million miles from Earth); https://www.goodmorningamerica.com/news/story/nasas-webb-telescope-works-facts-81913525 (nearly 1 million miles)",
+        "https://www.goodmorningamerica.com/news/story/nasas-webb-telescope-works-facts-81913525 (ended up costing 10 billion dollars)"
       ]
     },
     {
       "id": "sb11",
       "about": "The Tokyo 2020 Olympics",
-      "say": "The Tokyo 2020 Olympics [were the first Olympics ever held in Japan], [took place in 2021 but kept the name Tokyo 2020], [gave out medals made from metal in donated old phones], and [had two 13-year-olds win gold and silver in skateboarding].",
+      "say": "The Tokyo 2020 Olympics [were the first Olympics, summer or winter, held in Japan], [took place in 2021 but kept the name Tokyo 2020], [gave out medals made from metal in donated old phones], and [had two 13-year-olds win gold and silver in skateboarding].",
       "cap": 0,
       "real": "They were the fourth Olympics in Japan. Tokyo also hosted in 1964, and Japan held Winter Games in Sapporo in 1972 and Nagano in 1998.",
       "src": [
-        "https://en.wikipedia.org/wiki/2020_Summer_Olympics",
-        "https://en.wikipedia.org/wiki/2020_Summer_Olympics",
-        "https://en.wikipedia.org/wiki/2020_Summer_Olympics",
-        "https://www.cbsnews.com/news/momiji-nishiya-japan-olympics-skateboarding-gold-medal"
+        "https://en.wikipedia.org/wiki/2020_Summer_Olympics (the fourth Olympics held in Japan, after 1964, 1972 and 1998)",
+        "https://en.wikipedia.org/wiki/2020_Summer_Olympics (kept the Tokyo 2020 branding despite the move to 2021)",
+        "https://www.ecowatch.com/olympics-medals-recycled-smartphones-computers-2654414145.html (medals made from recycled phones and laptops donated by the public)",
+        "https://olympics.com/en/news/13-year-old-nishiya-momiji-wins-first-ever-women-s-street-skateboarding-gold (Nishiya, 13, gold; Rayssa Leal, also 13, silver); https://www.cbsnews.com/news/momiji-nishiya-japan-olympics-skateboarding-gold-medal"
       ]
     },
     {
       "id": "sb12",
       "about": "The Curiosity rover",
-      "say": "The Curiosity rover [played Happy Birthday to itself on Mars in 2013], [runs on electricity from big solar panels], [leaves the letters JPL in Morse code in its wheel tracks], and [was lowered onto Mars on cables from a hovering rocket crane].",
+      "say": "The Curiosity rover [played Happy Birthday to itself on Mars in 2013], [runs on electricity from big solar panels], [has wheels that stamp the letters JPL in Morse code into the dirt], and [was lowered onto Mars on cables from a hovering rocket crane].",
       "cap": 1,
       "real": "Curiosity runs on a nuclear battery, not solar panels. It landed in Gale Crater on Mars in August 2012.",
       "src": [
-        "https://www.nextgov.com/emerging-tech/2017/08/why-curiosity-rover-stopped-singing-happy-birthday-itself/140176/",
-        "https://space.com/space-exploration/on-this-day-in-space-august-6-2026",
-        "https://www.jpl.nasa.gov/news/rover-leaves-tracks-in-morse-code/",
-        "https://space.com/space-exploration/on-this-day-in-space-august-6-2026"
+        "https://www.nextgov.com/emerging-tech/2017/08/why-curiosity-rover-stopped-singing-happy-birthday-itself/140176/ (August 2013, first anniversary on Mars)",
+        "https://space.com/space-exploration/on-this-day-in-space-august-6-2026 (powered by a nuclear battery; landed August 6, 2012, in Gale Crater)",
+        "https://www.jpl.nasa.gov/news/rover-leaves-tracks-in-morse-code/ (Morse code for JPL on all six wheels)",
+        "https://space.com/space-exploration/on-this-day-in-space-august-6-2026 (the sky crane hovered and lowered it with cables)"
       ]
     }
   ]

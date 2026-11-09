@@ -7,7 +7,7 @@
     {
       "id": "tg01",
       "about": "Cleopatra",
-      "say": "Cleopatra [lived closer in time to the Moon landing than to the building of the Great Pyramid], [was born about 250 years after Alexander the Great died], [ruled Egypt as queen for more than 40 years before Rome took over], and [was living in Rome when Julius Caesar was assassinated].",
+      "say": "Cleopatra [lived closer in time to the Moon landing than to the building of the Great Pyramid], [was born about 250 years after Alexander the Great died], [ruled Egypt as queen for more than 40 years before Rome took over], and [was staying in Rome when Julius Caesar was assassinated].",
       "cap": 2,
       "real": "Cleopatra ruled for about 21 years, from 51 BC until her death in 30 BC, when she was 39.",
       "src": [
@@ -20,12 +20,12 @@
     {
       "id": "tg02",
       "about": "Oxford University",
-      "say": "Oxford University [got its first royal charter from King Henry VIII], [was teaching students before the Aztecs founded their capital city], [didn't let women earn degrees until after World War I], and [had a group of its scholars leave and start Cambridge University].",
+      "say": "Oxford University [got its first royal charter from King Henry VIII], [was teaching students before the Aztecs founded their capital city], [didn't let women earn degrees until after World War I], and [had a group of its scholars leave and help start Cambridge University].",
       "cap": 0,
-      "real": "Oxford's first royal charter came in 1248, from King Henry III. Henry VIII wasn't born until 1491.",
+      "real": "Oxford's first royal charter came in 1248, from King Henry III, long before Henry VIII's time.",
       "src": [
-        "https://www.bestcolleges.com/blog/how-old-is-the-university-of-oxford/",
-        "https://ox.ac.uk/about/the-university/history",
+        "https://www.bestcolleges.com/blog/how-old-is-the-university-of-oxford/ (Henry III issued the royal charter in 1248)",
+        "https://ox.ac.uk/about/the-university/history (teaching in some form by 1096); https://www.britannica.com/place/Tenochtitlan (founded c. 1325)",
         "https://en.wikipedia.org/wiki/First_women_admitted_to_degrees_at_the_University_of_Oxford",
         "https://en.wikipedia.org/wiki/University_of_Cambridge"
       ]
@@ -33,12 +33,12 @@
     {
       "id": "tg03",
       "about": "The Hubble Space Telescope",
-      "say": "The Hubble Space Telescope [went up into space before the first website went online], [was already in orbit when Google was founded], [launched with a main mirror that was ground to the wrong shape], and [took the first photo ever of a black hole, in 2019].",
+      "say": "The Hubble Space Telescope [went up into space before the first website went online], [was already in orbit when Google was founded], [launched with a main mirror that was ground to the wrong shape], and [took the first picture of a black hole while orbiting Earth].",
       "cap": 3,
       "real": "The first black hole photo, shown in 2019, came from the Event Horizon Telescope, a team of radio telescopes linked up around Earth.",
       "src": [
-        "https://www.engadget.com/2015/12/20/first-website-is-25-years-old/",
-        "NOT WEB-CHECKED (textbook) Hubble launched on April 24, 1990; Google was founded in September 1998 https://asd.gsfc.nasa.gov/archive/hubble/missions/sm1.html",
+        "https://sci.esa.int/web/hubble/-/37633-launch (launched April 24, 1990); https://www.engadget.com/2015/12/20/first-website-is-25-years-old/ (first website went live at CERN on December 20, 1990)",
+        "https://sci.esa.int/web/hubble/-/37633-launch (launched April 24, 1990); https://loki.editorial.aetnd.com/this-day-in-history/google-is-incorporated (HISTORY.com: Google incorporated September 4, 1998)",
         "https://asd.gsfc.nasa.gov/archive/hubble/missions/sm1.html",
         "https://www.technologyreview.com/2019/04/10/136124/this-is-the-first-ever-photo-of-a-black-hole/"
       ]
@@ -46,40 +46,40 @@
     {
       "id": "tg04",
       "about": "The Great Pyramid of Giza",
-      "say": "The Great Pyramid of Giza [was the tallest human-made structure on Earth for more than 3,700 years], [took its builders about 90 years of work to finish], [was built while woolly mammoths were still alive], and [has graffiti inside left by the work crews who built it].",
+      "say": "The Great Pyramid of Giza [was the tallest human-made structure on Earth for more than 3,700 years], [took its builders about 90 years of work to finish], [was already more than 2,000 years old when Alexander the Great was born], and [has graffiti inside left by the work crews who built it].",
       "cap": 1,
       "real": "Most estimates say it took about 20 to 27 years to build, for the pharaoh Khufu, around 2600 BC.",
       "src": [
-        "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza",
-        "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza",
-        "https://www.businessinsider.in/science/news/a-new-study-reveals-how-the-last-woolly-mammoths-died-out-4000-years-ago-thats-after-the-egyptians-had-built-the-pyramids-/articleshow/71496355.cms",
-        "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza"
+        "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza (tallest human-made structure for more than 3,700 years)",
+        "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza (built over about 26 years; Herodotus said 20)",
+        "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza (built c. 2600 BC; Khufu's reign estimated 2700 to 2500 BC); https://en.wikipedia.org/wiki/Alexander_the_Great (born 356 BC)",
+        "https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza (work-gang names painted in the relieving chambers)"
       ]
     },
     {
       "id": "tg05",
       "about": "Tutankhamun",
-      "say": "Tutankhamun [ruled Egypt more than 1,000 years after the Great Pyramid was built], [had the first royal tomb ever found in the Valley of the Kings], [became pharaoh when he was only eight or nine years old], and [had his tomb found the same year the BBC started broadcasting].",
+      "say": "Tutankhamun [ruled Egypt more than 1,000 years after the Great Pyramid was built], [had the first royal tomb found in the Valley of the Kings], [became pharaoh when he was only eight or nine years old], and [had his tomb found the same year the BBC started broadcasting].",
       "cap": 1,
       "real": "Royal tombs there were found long before his, like Seti I's in 1817. Tut's, found in 1922, was famous because it was nearly intact.",
       "src": [
         "https://en.wikipedia.org/wiki/Tutankhamun",
         "https://en.wikipedia.org/wiki/Valley_of_the_Kings",
         "https://en.wikipedia.org/wiki/Tutankhamun",
-        "https://en.wikipedia.org/wiki/BBC"
+        "https://en.wikipedia.org/wiki/Tutankhamun (tomb found November 1922); https://en.wikipedia.org/wiki/BBC (formed October 18, 1922, first broadcast a few weeks later)"
       ]
     },
     {
       "id": "tg06",
       "about": "The Colosseum",
-      "say": "The Colosseum [opened more than 100 years after Julius Caesar died], [had a giant sun awning worked by hundreds of sailors], [was already 1,000 years old when Oxford University started teaching], and [was opened by Emperor Nero with 100 days of games].",
+      "say": "The Colosseum [opened more than 100 years after Julius Caesar died], [had a giant sun awning worked by hundreds of sailors], [was already more than 1,100 years old when the Magna Carta was sealed], and [was opened by Emperor Nero with 100 days of games].",
       "cap": 3,
       "real": "Emperor Titus opened it in AD 80 with 100 days of games. Nero had died in AD 68, before work on it even began.",
       "src": [
-        "https://www.britannica.com/topic/Colosseum",
-        "https://www.britannica.com/topic/Colosseum",
-        "https://www.britannica.com/topic/Colosseum",
-        "https://www.britannica.com/topic/Colosseum"
+        "https://www.britannica.com/topic/Colosseum (dedicated in 80 CE); https://en.wikipedia.org/wiki/Julius_Caesar (assassinated 44 BC)",
+        "https://www.britannica.com/topic/Colosseum (hundreds of Roman sailors worked the velarium rigging)",
+        "https://www.britannica.com/topic/Colosseum (dedicated in 80 CE); https://en.wikipedia.org/wiki/Magna_Carta (sealed by King John on June 15, 1215)",
+        "https://www.britannica.com/topic/Colosseum (begun 70 to 72 CE under Vespasian, dedicated by Titus in 80 CE with 100 days of games)"
       ]
     },
     {
@@ -87,12 +87,12 @@
       "about": "Leif Erikson",
       "say": "Leif Erikson [grew up in Norway, the homeland of his Viking ancestors], [reached North America about 500 years before Columbus], [landed in America before William the Conqueror invaded England], and [was the son of the explorer who gave Greenland its name].",
       "cap": 0,
-      "real": "Leif was probably born in Iceland and grew up in Greenland, where his father, Erik the Red, set up the first Viking settlement.",
+      "real": "Leif was probably born in Iceland and grew up in Greenland, where his father, Erik the Red, founded the Viking settlement. He sailed to Norway as a young man.",
       "src": [
-        "https://www.worldhistory.org/Leif_Erikson",
-        "https://www.worldhistory.org/Leif_Erikson",
-        "https://www.worldhistory.org/Leif_Erikson",
-        "https://www.worldhistory.org/Leif_Erikson"
+        "https://www.worldhistory.org/Leif_Erikson (probably born in Iceland; Erik settled Greenland c. 985, where young Leif grew up)",
+        "https://www.worldhistory.org/Leif_Erikson (reached North America c. 1000)",
+        "https://www.worldhistory.org/Leif_Erikson (c. 1000); https://www.history.com/this-day-in-history/september-28/william-the-conqueror-invades-england (landed September 28, 1066)",
+        "https://www.worldhistory.org/Leif_Erikson (Erik the Red coined the name Greenland)"
       ]
     },
     {
@@ -102,9 +102,9 @@
       "cap": 2,
       "real": "Joan of Arc died in 1431. Leonardo was born in 1452, more than 20 years later.",
       "src": [
-        "https://en.wikipedia.org/wiki/Mona_Lisa",
-        "https://en.wikipedia.org/wiki/Leonardo%27s_robot",
-        "NOT WEB-CHECKED (textbook) Joan of Arc died on May 30, 1431; Leonardo da Vinci was born on April 15, 1452 https://en.wikipedia.org/wiki/Leonardo_da_Vinci",
+        "https://en.wikipedia.org/wiki/Mona_Lisa (begun by October 1503); https://www.britannica.com/biography/Christopher-Columbus/The-first-voyage (1492)",
+        "https://en.wikipedia.org/wiki/Leonardo%27s_robot (designed in the late 15th century, prototype around 1495)",
+        "https://www.history.com/this-day-in-history/may-30/joan-of-arc-martyred (Joan died May 30, 1431); https://en.wikipedia.org/wiki/Leonardo_da_Vinci (born April 15, 1452)",
         "https://www.smithsonianmag.com/arts-culture/the-theft-that-made-the-mona-lisa-a-masterpiece-16406234/"
       ]
     },
@@ -115,23 +115,23 @@
       "cap": 3,
       "real": "Franklin never patented any of his inventions. He wrote that since we gain from the inventions of others, we should share ours freely.",
       "src": [
-        "https://en.wikipedia.org/wiki/Isaac_Newton",
-        "https://en.wikipedia.org/wiki/Benjamin_Franklin",
-        "https://en.wikipedia.org/wiki/Benjamin_Franklin",
+        "https://en.wikipedia.org/wiki/Isaac_Newton (died March 1727); https://en.wikipedia.org/wiki/Benjamin_Franklin (born January 17, 1706)",
+        "https://en.wikipedia.org/wiki/Benjamin_Franklin (honored guest at the crewed balloon flight from the Tuileries, December 1, 1783)",
+        "https://en.wikipedia.org/wiki/Benjamin_Franklin (died April 17, 1790); https://www.archives.gov/legislative/features/gw-inauguration (Washington sworn in April 30, 1789)",
         "https://www.ushistory.org/FRANKLIN/autobiography/page55.htm"
       ]
     },
     {
       "id": "tg10",
       "about": "Orville Wright",
-      "say": "Orville Wright [made his famous first flight while Queen Victoria was still alive], [made his famous first flight while Harriet Tubman was still alive], [lived long enough to see a plane fly faster than sound], and [kept that famous first flight in the air for just 12 seconds].",
+      "say": "Orville Wright [was born while Abraham Lincoln was still president], [made his famous first flight while Harriet Tubman was still alive], [was still alive when a plane first flew faster than sound], and [kept that famous first flight in the air for just 12 seconds].",
       "cap": 0,
-      "real": "Queen Victoria died in January 1901, almost three years before Orville flew at Kitty Hawk on December 17, 1903.",
+      "real": "Orville was born on August 19, 1871, six years after Lincoln died in April 1865.",
       "src": [
-        "https://en.wikipedia.org/wiki/Victorian_era",
-        "https://en.wikipedia.org/wiki/Legacy_of_Harriet_Tubman",
-        "https://www.nps.gov/daav/historyculture/orvillewrightslifestory.htm",
-        "NOT WEB-CHECKED (textbook) Orville's first flight on December 17, 1903 lasted 12 seconds and covered 120 feet https://en.wikipedia.org/wiki/Wright_Flyer"
+        "https://www.nps.gov/people/orvillewright.htm (born August 19, 1871); https://www.pbs.org/newshour/health/april-15-1865-tragic-last-hours-abraham-lincoln (Lincoln died April 15, 1865)",
+        "https://en.wikipedia.org/wiki/Legacy_of_Harriet_Tubman (Tubman 1822 to 1913); https://en.wikipedia.org/wiki/Wright_Flyer (first flight December 17, 1903)",
+        "https://www.history.com/this-day-in-history/october-14/yeager-breaks-sound-barrier (Yeager, October 14, 1947); https://www.nps.gov/people/orvillewright.htm (Orville died January 30, 1948)",
+        "https://en.wikipedia.org/wiki/Wright_Flyer (first flight lasted 12 seconds, 120 feet, Orville at the controls)"
       ]
     },
     {
@@ -141,23 +141,23 @@
       "cap": 2,
       "real": "Sputnik went up in October 1957, almost 54 years after the first airplane flight in 1903 but less than 50 years before the first iPhone in 2007.",
       "src": [
-        "https://www.nationalmuseum.af.mil/Visit/Museum-Exhibits/Fact-Sheets/Display/Article/197681/sputnik-i/",
-        "https://centennialofflight.net/essay/Dictionary/SPUTNIK/DI195.htm",
-        "https://en.wikipedia.org/wiki/IPhone_(1st_generation)",
-        "https://centennialofflight.net/essay/Dictionary/SPUTNIK/DI195.htm"
+        "https://www.nationalmuseum.af.mil/Visit/Museum-Exhibits/Fact-Sheets/Display/Article/197681/sputnik-i/ (October 4, 1957; NASA created in 1958)",
+        "https://centennialofflight.net/essay/Dictionary/SPUTNIK/DI195.htm (23-inch-diameter capsule)",
+        "https://en.wikipedia.org/wiki/IPhone_(1st_generation) (released June 29, 2007); https://en.wikipedia.org/wiki/Wright_Flyer (December 17, 1903)",
+        "https://centennialofflight.net/essay/Dictionary/SPUTNIK/DI195.htm (October 4, 1957); https://www.worldatlas.com/articles/did-you-know-only-66-years-separated-the-first-successful-plane-flights-and-moon-landings.html (Moon landing July 20, 1969)"
       ]
     },
     {
       "id": "tg12",
       "about": "Apollo 11",
-      "say": "Apollo 11 [landed on the Moon before the first home video game console went on sale], [touched down while a Civil War veteran was still alive], [ended with its crew filling out a customs form back on Earth], and [landed less than 66 years after the Wright brothers' first flight].",
+      "say": "Apollo 11 [touched down on the Moon before the first message was sent over the internet], [beamed its moonwalk to TV sets around the world in full color], [ended with its crew filling out a customs form back on Earth], and [landed less than 66 years after the Wright brothers' first flight].",
       "cap": 1,
-      "real": "The last known Civil War veteran, Albert Woolson, died in 1956, 13 years before Apollo 11 landed in July 1969.",
+      "real": "Apollo 11's live TV from the Moon's surface was black and white. Only its broadcasts from the spacecraft were in color.",
       "src": [
-        "https://en.wikipedia.org/wiki/Magnavox_Odyssey",
-        "https://en.wikipedia.org/wiki/Albert_Woolson",
-        "https://www.space.com/7044-moon-apollo-astronauts-customs.html",
-        "https://www.worldatlas.com/articles/did-you-know-only-66-years-separated-the-first-successful-plane-flights-and-moon-landings.html"
+        "https://www.cbsnews.com/news/first-message-sent-over-the-internet-45-years-ago (October 29, 1969, over ARPANET); https://www.worldatlas.com/articles/did-you-know-only-66-years-separated-the-first-successful-plane-flights-and-moon-landings.html (landing July 20, 1969)",
+        "https://www.smithsonianmag.com/air-space-magazine/live-from-the-moon-1882006/ (first lunar-surface TV was black and white, command module TV in color); https://www.parkes.atnf.csiro.au/news_events/apollo11/tv_from_moon.html (black-and-white slow-scan camera)",
+        "https://www.space.com/7044-moon-apollo-astronauts-customs.html (Honolulu, July 24, 1969; NASA: authentic)",
+        "https://www.worldatlas.com/articles/did-you-know-only-66-years-separated-the-first-successful-plane-flights-and-moon-landings.html (December 17, 1903 to July 20, 1969)"
       ]
     }
   ]

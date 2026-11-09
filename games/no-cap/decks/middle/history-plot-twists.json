@@ -7,14 +7,14 @@
     {
       "id": "hp01",
       "about": "Thomas Jefferson",
-      "say": "Thomas Jefferson [trained a pet mockingbird to take food from between his lips], [was the first president to live in the White House], [sold about 6,500 of his own books to Congress after the British burned its library], and [died on the very same day as John Adams].",
+      "say": "Thomas Jefferson [trained a pet mockingbird to take food from between his lips], [served as the first vice president, under George Washington], [sold about 6,500 of his own books to Congress after the British burned its library], and [was the first president sworn in at Washington, D.C.].",
       "cap": 1,
-      "real": "John Adams was the first, moving in on November 1, 1800. Jefferson moved in after he became president in 1801.",
+      "real": "John Adams was Washington's vice president. Jefferson was his secretary of state, and later the second vice president, under Adams.",
       "src": [
-        "https://en.wikipedia.org/wiki/Dick_the_Mockingbird",
-        "https://en.wikipedia.org/wiki/White_House",
-        "https://en.wikipedia.org/wiki/Thomas_Jefferson",
-        "https://www.history.com/this-day-in-history/thomas-jefferson-and-john-adams-die"
+        "https://en.wikipedia.org/wiki/Dick_the_Mockingbird (trained Dick to take food from between his lips)",
+        "https://en.wikipedia.org/wiki/Thomas_Jefferson (first secretary of state, 1790 to 1793; vice president 1797 to 1801, under John Adams)",
+        "https://en.wikipedia.org/wiki/Thomas_Jefferson (sold his library, nearly 6,500 volumes, after the British burned the Library of Congress)",
+        "https://www.inaugural.senate.gov/4th-inaugural-ceremonies (March 4, 1801: first inauguration in Washington, D.C.)"
       ]
     },
     {
@@ -33,14 +33,14 @@
     {
       "id": "hp03",
       "about": "William Howard Taft",
-      "say": "William Howard Taft [had the West Wing rebuilt after a fire on Christmas Eve], [became chief justice of the Supreme Court after being president], [became the first president to throw out a baseball first pitch, in 1910], and [kept a cow named Pauline on the White House lawn].",
+      "say": "William Howard Taft [had the West Wing rebuilt after a fire on Christmas Eve], [became chief justice of the Supreme Court after being president], [began the tradition of presidents throwing out baseball's first pitch, in 1910], and [kept a cow named Pauline on the White House lawn].",
       "cap": 0,
-      "real": "That Christmas Eve fire hit the West Wing in 1929, when Herbert Hoover was president. Taft's big West Wing change was the first Oval Office.",
+      "real": "The West Wing burned on Christmas Eve 1929, under Herbert Hoover. Taft's West Wing work came in 1909, when he enlarged it and added the first Oval Office.",
       "src": [
-        "https://en.wikipedia.org/wiki/White_House",
-        "https://en.wikipedia.org/wiki/William_Howard_Taft",
-        "https://en.wikipedia.org/wiki/Ceremonial_first_pitch",
-        "https://www.livescience.com/24563-first-paws-history-of-presidential-pets.html"
+        "https://en.wikipedia.org/wiki/White_House (fire on Christmas Eve 1929, under Hoover; Taft expanded the West Wing and created the first Oval Office in 1909)",
+        "https://en.wikipedia.org/wiki/William_Howard_Taft (appointed chief justice in 1921)",
+        "https://en.wikipedia.org/wiki/Ceremonial_first_pitch (the tradition of presidential first pitches began with Taft in 1910)",
+        "https://www.livescience.com/24563-first-paws-history-of-presidential-pets.html (Pauline Wayne, a Holstein that grazed the White House lawn)"
       ]
     },
     {
@@ -50,10 +50,10 @@
       "cap": 2,
       "real": "Hoover was born in West Branch, Iowa, in 1874, which made him the first president born west of the Mississippi River.",
       "src": [
-        "https://www.hooverminthorn.org/?p=1207",
-        "https://www.mentalfloss.com/history/presidents/7-presidential-facts-about-herbert-hoover",
-        "https://webarchive.library.unt.edu/web/20121129053222/http://en.wikipedia.org/wiki/Herbert_Hoover",
-        "https://www.smithsonianmag.com/smart-news/1929-nobody-thought-president-needed-telephone-his-office-180962646/"
+        "https://www.meridian.org/pathtoharmony/gallery/17/ (the Hoovers spoke Chinese for private talks in the White House); https://www.hooverminthorn.org/?p=1207 (the same)",
+        "https://www.history.com/articles/10-things-you-may-not-know-about-herbert-hoover (a member of Stanford's inaugural class, 1891); https://en.wikipedia.org/wiki/Herbert_Hoover (Pioneer Class)",
+        "https://www.history.com/articles/10-things-you-may-not-know-about-herbert-hoover (born in West Branch, Iowa; the first president born west of the Mississippi)",
+        "https://www.smithsonianmag.com/smart-news/1929-nobody-thought-president-needed-telephone-his-office-180962646/ (Hoover had the first phone put on the president's desk in 1929)"
       ]
     },
     {
@@ -66,7 +66,7 @@
         "https://britannica.com/biography/Christopher-Columbus/The-second-and-third-voyages",
         "https://britannica.com/biography/Christopher-Columbus/The-second-and-third-voyages",
         "https://britannica.com/biography/Christopher-Columbus/The-second-and-third-voyages",
-        "https://www.britannica.com/biography/Christopher-Columbus/The-first-voyage"
+        "https://www.britannica.com/biography/Christopher-Columbus/The-first-voyage (Santa María ran aground December 25, 1492); https://www.history.com/articles/christopher-columbus-ships (Columbus sailed back to Spain on the Niña)"
       ]
     },
     {
@@ -85,22 +85,22 @@
     {
       "id": "hp07",
       "about": "Lewis and Clark",
-      "say": "Lewis and Clark [were the first explorers to cross North America to the Pacific], [brought along a big Newfoundland dog named Seaman], [packed 193 pounds of dried portable soup for the trip], and [let Sacagawea and an enslaved man named York vote on where to spend the winter].",
+      "say": "Lewis and Clark [were the first explorers to cross North America to the Pacific], [brought along a big Newfoundland dog named Seaman], [packed 193 pounds of dried portable soup for the trip], and [let Sacagawea and an enslaved man named York vote on where to move their camp].",
       "cap": 0,
       "real": "Alexander Mackenzie's party crossed Canada to the Pacific in 1793, twelve years before Lewis and Clark got there.",
       "src": [
-        "https://en.wikipedia.org/wiki/Lewis_and_Clark_Expedition",
-        "https://en.wikipedia.org/wiki/Lewis_and_Clark_Expedition",
-        "https://en.wikipedia.org/wiki/Lewis_and_Clark_Expedition",
-        "https://en.wikipedia.org/wiki/Lewis_and_Clark_Expedition"
+        "https://en.wikipedia.org/wiki/Lewis_and_Clark_Expedition (Mackenzie crossed from Quebec to the Pacific 1792 to 1793; the expedition reached the Pacific in November 1805)",
+        "https://en.wikipedia.org/wiki/Lewis_and_Clark_Expedition (Seaman, the only animal to finish the trip)",
+        "https://en.wikipedia.org/wiki/Lewis_and_Clark_Expedition (193 pounds of portable soup)",
+        "https://en.wikipedia.org/wiki/Lewis_and_Clark_Expedition (Sacagawea and York both took part in the November 1805 vote on moving the camp)"
       ]
     },
     {
       "id": "hp08",
       "about": "Julius Caesar",
-      "say": "Julius Caesar [was once kidnapped by pirates and held for ransom], [made the year 46 BC last 445 days], [was the very first Roman emperor], and [had the month of July named after him].",
+      "say": "Julius Caesar [was once kidnapped by pirates and held for ransom], [made the year 46 BC last 445 days], [was the first emperor of ancient Rome], and [had the month of July named after him].",
       "cap": 2,
-      "real": "Caesar ruled Rome as dictator but was never emperor. His adopted heir Augustus became the first Roman emperor in 27 BC.",
+      "real": "Caesar ruled Rome as dictator but was never emperor. His adopted heir, Augustus, became the first Roman emperor after Caesar died.",
       "src": [
         "https://en.wikipedia.org/wiki/Julius_Caesar",
         "https://en.wikipedia.org/wiki/Julian_calendar",
@@ -113,7 +113,7 @@
       "about": "Alexander the Great",
       "say": "Alexander the Great [was born in the Greek city of Athens], [was taught by the philosopher Aristotle until he was 16], [named a city after his horse, Bucephalas], and [never lost a single battle he fought].",
       "cap": 0,
-      "real": "Alexander was born in 356 BC in Pella, the capital of the kingdom of Macedon, north of Greece.",
+      "real": "Alexander was born in 356 BC in Pella, the capital of the kingdom of Macedon. Athens was a separate city-state far to the south.",
       "src": [
         "https://en.wikipedia.org/wiki/Alexander_the_Great",
         "https://en.wikipedia.org/wiki/Alexander_the_Great",
@@ -128,23 +128,23 @@
       "cap": 3,
       "real": "Inventors like Joseph Swan made electric bulbs before Edison. His big step was a long-lasting, practical bulb that could be sold.",
       "src": [
-        "https://www.thehenryford.org/collections/explore/artifact/251711?AssetId=THF11607",
-        "https://en.wikipedia.org/wiki/Thomas_Edison",
-        "https://en.wikipedia.org/wiki/Thomas_Edison",
-        "https://en.wikipedia.org/wiki/Thomas_Edison"
+        "https://www.thehenryford.org/collections/explore/artifact/251711?AssetId=THF11607 (patent for the electrographic vote recorder, 1869)",
+        "https://en.wikipedia.org/wiki/Thomas_Edison (developed hearing problems at the age of 12)",
+        "https://en.wikipedia.org/wiki/Thomas_Edison (1,093 US patents)",
+        "https://en.wikipedia.org/wiki/Thomas_Edison (many incandescent lamps were devised before Edison; Joseph Swan's similar lamp)"
       ]
     },
     {
       "id": "hp11",
       "about": "Alexander Graham Bell",
-      "say": "Alexander Graham Bell [wanted people to answer the phone by saying ahoy], [built a boat that set a world speed record of over 70 miles per hour], [made his very first phone call to his mother], and [sent a voice message on a beam of light in 1880].",
+      "say": "Alexander Graham Bell [wanted people to answer the phone by saying ahoy], [built a boat that set a world speed record of over 70 miles per hour], [made his first telephone call to his mother], and [sent a voice message on a beam of light in 1880].",
       "cap": 2,
-      "real": "Bell's first call, in March 1876, was to his assistant Thomas Watson in the next room, asking him to come over.",
+      "real": "Bell's first call, on March 10, 1876, was to his assistant Thomas Watson in another room, asking him to come over.",
       "src": [
-        "https://en.wikipedia.org/wiki/Ahoy",
-        "https://www.britannica.com/list/6-fast-facts-about-alexander-graham-bell",
-        "https://webarchive.library.unt.edu/eot2008/20090812232405/http://memory.loc.gov/ammem/bellhtml/bell1.html",
-        "https://www.mentalfloss.com/article/81620/10-amazing-facts-about-alexander-graham-bell"
+        "https://en.wikipedia.org/wiki/Ahoy (Bell first suggested ahoy as the telephone greeting)",
+        "https://www.britannica.com/list/6-fast-facts-about-alexander-graham-bell (HD-4 hit 70.8 mph in 1919, a speed record)",
+        "https://webarchive.library.unt.edu/eot2008/20090812232405/http://memory.loc.gov/ammem/bellhtml/bell1.html (Library of Congress page, archived: Bell's March 10, 1876 notebook, Watson in another room); https://www.mentalfloss.com/article/81620/10-amazing-facts-about-alexander-graham-bell (the same)",
+        "https://www.mentalfloss.com/article/81620/10-amazing-facts-about-alexander-graham-bell (photophone voice message by light beam, 1880)"
       ]
     },
     {
