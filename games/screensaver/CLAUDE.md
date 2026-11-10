@@ -8,9 +8,10 @@ corner, it starts in a small square and it gets bigger and the square gets small
 harder. Maybe it isn't always a square and it expands and they have to pick a corner from the
 expanded board that might be squares adjoined at their corners leaving a path for the box."
 
-**A JJ Brew** (JC picked "JJ Brew first"): `brew.js` first in the page's head, the hub tile in
-Capra's Lab's "In testing" (`#clGames`), `BREW = true` in `server/api.js` (only Capra's Lab posts
-runs). Going live takes out all three.
+**Live for everyone since Nov 9 2026** (JC: "No cap and screensaver need to go live to everyone");
+a JJ Brew from Nov 8 until then. The tile is in the hub's public grid and `BREW = false` in
+`server/api.js`: anyone plays; a run goes on today's board when the player is signed in to Capra
+Lab.
 
 ## How it plays (JC's decisions, Nov 8 2026)
 

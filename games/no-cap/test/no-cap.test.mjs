@@ -54,19 +54,18 @@ await test('the real decks pass the checks', async () => {
   console.log(`     ${decks.length} decks, ${decks.reduce((n, d) => n + d.cards.length, 0)} cards`);
 });
 
-await test('JJ Brew: only Capra’s Lab starts games; links still work for guests', async () => {
+await test('live for everyone: a guest with a name opens a room, a friend joins with the link', async () => {
   const g = setup();
   const hi = await g.call('/hello', {});
-  assert.equal(hi.brew, true);
-  assert.equal(hi.canHost, false);
-  assert.deepEqual(hi.decks, [], 'the public sees no decks');
-  await assert.rejects(g.call('/rooms', { kind: 'live', deckId: 'alpha', name: 'Guest' }), /Capra’s Lab/);
-  const crew = await g.call('/hello', JJ);
-  assert.equal(crew.canHost, true);
-  assert.equal(crew.decks.length, 2);
-  const h = await g.call('/rooms', { kind: 'live', deckId: 'alpha', ...JJ });
+  assert.equal(hi.brew, false);
+  assert.equal(hi.canHost, true);
+  assert.equal(hi.decks.length, 2, 'everyone sees the decks');
+  await assert.rejects(g.call('/rooms', { kind: 'live', deckId: 'alpha' }), /name/);
+  const h = await g.call('/rooms', { kind: 'live', deckId: 'alpha', name: 'Guest Host' });
   const j = await g.call(`/rooms/${h.code}/join`, { name: 'Guest Friend' });
   assert.ok(j.pid, 'a guest with the link joins');
+  const s = await g.call('/rooms', { kind: 'solo', deckId: 'beta', ...JJ });
+  assert.ok(s.code, 'signed-in players play as their lab name');
 });
 
 await test('a live game: the reader reads, everyone else finds the facts, busted on the cap', async () => {

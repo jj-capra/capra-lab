@@ -62,7 +62,7 @@ await test('scoring a run: points for right corners, three misses and out', () =
   assert.equal(LIVES, 3);
 });
 
-await test('the daily board: one counted run a day, scored by the server, JJ Brew', async () => {
+await test('the daily board: one counted run a day, scored by the server, open to everyone', async () => {
   let now = Date.parse('2026-11-09T18:00:00Z');
   const api = createApi({ store: memoryStore(), clock: () => now,
     verify: async (name, code) => (code === '123456' ? { name, handle: name.toLowerCase() } : null),
@@ -71,11 +71,13 @@ await test('the daily board: one counted run a day, scored by the server, JJ Bre
   const JJ = { lab: { name: 'JJ-Capra', code: '123456' } };
   const hi = await call('/hello', {});
   assert.equal(hi.date, dayOf(now));
-  assert.equal(hi.canPlay, false, 'the public waits while it brews');
+  assert.equal(hi.brew, false);
+  assert.equal(hi.canPlay, true, 'live for everyone');
   assert.equal((await call('/hello', JJ)).canPlay, true);
   const seed = daySeed(hi.date);
   const picks = [1, 2, 3].map((n) => ({ c: level(seed, n).answer, ms: 2000 }));
-  await assert.rejects(call('/run', { date: hi.date, picks, lab: { name: 'Stranger', code: '123456' } }), /tested in Capra’s Lab/);
+  const other = await call('/run', { date: hi.date, picks: picks.slice(0, 1), lab: { name: 'Stranger', code: '123456' } });
+  assert.equal(other.counted, true, 'anyone signed in posts a run');
   const r = await call('/run', { date: hi.date, picks, ...JJ });
   assert.equal(r.counted, true);
   assert.equal(r.right, 3);

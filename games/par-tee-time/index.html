@@ -374,6 +374,7 @@ table.card td.tot { font-weight: 700; }
           <div class="seg" id="onCourseSeg" role="group" aria-label="Course length" style="margin-top:10px"></div>
           <button class="btn big green" id="onTee" style="margin-top:12px">Tee off<small>You putt first on hole one</small></button>
         </div>
+        <button class="btn sky" id="onInvite" hidden style="margin-top:10px">Send the invite link</button>
         <button class="btn" id="onLeave" style="margin-top:12px">Leave this game</button>
       </div>
     </div>
@@ -3137,35 +3138,123 @@ function initMic() {
   });
 }
 
-/* ---------------- online (room capability) ---------------- */
-const NET = { room: null, avail: null, named: null, code: '', role: '', seat: 0, oppPeer: '', opp: null, matchId: '', mySay: 0, lastSay: 0, lastShotN: 0, pend: null, unsubs: [] };
+/* ---------------- online rooms ----------------
+   Inside Claude the page used Claude's room capability. On Capra Lab the same calls (join, presence,
+   onPeers, leave) go to the lab's server, /par-tee-time/api (games/par-tee-time/server/api.js),
+   which the page polls while two phones play (JC, Nov 9 2026: "Par-Tee Time needs to be playable
+   online against a friend"). The shooter's phone sends where every ball comes to rest, so the
+   server only relays. */
+const NET = { room: null, avail: null, named: null, code: '', role: '', seat: 0, oppPeer: '', opp: null, matchId: '', mySay: 0, lastSay: 0, lastShotN: 0, pend: null, queue: [], sent: [], unsubs: [] };
+function netPollMs() {
+  if (document.hidden) return 5000;
+  if (G.mode !== 'online') return 1500;                                   // the lobby
+  return G.state === 'remote' || G.state === 'holeover' ? 900 : 2500;     // quick while your friend lines up
+}
+function labRoom() {
+  const API = '/par-tee-time/api/rooms/', ABC = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let me = '';
+  try { me = sessionStorage.getItem('pt-peer') || ''; } catch (e) { /* storage blocked */ }
+  if (!/^[a-z0-9]{8,32}$/.test(me)) {
+    me = Array.from({ length: 16 }, () => ABC[Math.floor(Math.random() * ABC.length)]).join('');
+    try { sessionStorage.setItem('pt-peer', me); } catch (e) { /* storage blocked */ }
+  }
+  async function post(code, what, body) {
+    let r;
+    try { r = await fetch(API + code + '/' + what, { method: 'POST', headers: { 'content-type': 'application/json' }, cache: 'no-store', body: JSON.stringify(Object.assign({ peer: me }, body)) }); }
+    catch (e) { const er = new Error('offline'); er.code = 'offline'; throw er; }
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) { const er = new Error(j.error || 'Something went wrong.'); er.code = j.code || 'http_' + r.status; throw er; }
+    return j;
+  }
+  return {
+    async join(name, role) {
+      const code = String(name).replace(/^pt-/, '').toUpperCase();
+      let mine = {}, subs = [], lastKey = '', lastJ = null, timer = null, fails = 0, warned = false, left = false, dirty = false, chain = Promise.resolve();
+      const feed = (j) => {
+        lastJ = j;
+        const peers = (j.peers || []).map(p => ({ peer: p.peer, sameTab: p.peer === me, presence: p.presence }));
+        const key = JSON.stringify(peers);
+        if (key === lastKey) return;
+        lastKey = key;
+        subs.forEach(x => { try { x.cb({ peers }); } catch (e) { console.error(e); } });
+      };
+      const sendMine = () => post(code, 'presence', { presence: mine }).then(j => { dirty = false; feed(j); return j; });
+      async function poll() {
+        clearTimeout(timer); timer = null;
+        if (left) return;
+        try {
+          if (dirty) await sendMine(); else feed(await post(code, 'peers', {}));
+          fails = 0; warned = false;
+        } catch (e) {
+          if (e.code === 'gone') { try { feed(await post(code, 'join', { role, presence: mine })); fails = 0; } catch (e2) { fails++; } }
+          else fails++;
+          if (fails >= 4 && !warned) { warned = true; subs.forEach(x => { if (x.onErr) x.onErr(e); }); }
+        }
+        if (!left) timer = setTimeout(poll, netPollMs());
+      }
+      const wake = () => { if (!document.hidden && !left) poll(); };
+      feed(await post(code, 'join', { role, presence: mine }));
+      document.addEventListener('visibilitychange', wake);
+      timer = setTimeout(poll, netPollMs());
+      return {
+        presence(patch) {
+          mine = Object.assign({}, mine, patch); dirty = true;
+          const p = chain.catch(() => {}).then(sendMine);
+          chain = p;
+          return p;
+        },
+        onPeers(cb, onErr) {
+          const x = { cb, onErr }; subs.push(x);
+          if (lastJ) { lastKey = ''; feed(lastJ); }
+          return () => { subs = subs.filter(y => y !== x); };
+        },
+        leave() {
+          left = true; clearTimeout(timer); document.removeEventListener('visibilitychange', wake);
+          return post(code, 'leave', {}).catch(() => {});
+        },
+      };
+    },
+  };
+}
 async function netInit() {
   let room = null;
   try { if (window.claude && typeof window.claude.use === 'function') room = await window.claude.use('room'); } catch (e) { room = null; }
+  if (!room && /^https?:$/.test(location.protocol)) room = labRoom();
   NET.room = room; NET.avail = !!room; renderOnline();
   if (!room) { const b = $('#goOnline'); if (b) b.hidden = true; }
+  // an invite link (/par-tee-time/#ABCD) opens the join box with the code filled in
+  const m = /^#([A-Za-z0-9]{4})$/.exec(location.hash || '');
+  if (room && m) { history.replaceState(null, '', location.pathname); openOnline(); $('#onCode').value = m[1].toUpperCase(); setOnStatus('Your friend sent you this code. Check your name and ball, then tap Join.'); }
 }
 function genCode() { const A = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; let s = ''; for (let i = 0; i < 4; i++) s += A[Math.floor(Math.random() * A.length)]; return s; }
 function setOnStatus(msg, warn) { const el = $('#onStatus'); el.textContent = msg; el.classList.toggle('warn', !!warn); }
 function renderOnline() {
+  $('#onStatus').hidden = !!NET.named;
+  $('#onKicker').textContent = NET.named ? 'YOUR GAME' : 'START OR JOIN';
   if (NET.named) { show($('#onStart'), false); show($('#onRoom')); updateRoomUI(); return; }
   show($('#onRoom'), false);
   if (NET.avail === null) { setOnStatus('Checking whether online play is available here…'); show($('#onStart'), false); }
   else if (!NET.avail) { setOnStatus('Online play works when this game is open inside Claude and shared with your friend. Signed-in friends you share it with can join by code. On this screen you can still play pass & play or a hustler.', true); show($('#onStart'), false); }
-  else { setOnStatus('Create a game and send your friend the code, or type the code they sent you. Your friend needs this same game shared with them.'); show($('#onStart')); }
+  else { setOnStatus('Create a game and send your friend the code, or type the code they sent you.'); show($('#onStart')); }
 }
 async function netJoinRoom(code, role) {
   try {
     setOnStatus('Connecting…');
-    const named = await NET.room.join('pt-' + code.toLowerCase());
-    Object.assign(NET, { named, code, role, seat: role === 'host' ? 0 : 1, matchId: '', lastShotN: 0, mySay: 0, lastSay: 0, opp: null, oppPeer: '', pend: null });
+    let named = null;
+    for (let tries = 0; !named; tries++) {
+      try { named = await NET.room.join('pt-' + code.toLowerCase(), role); }
+      catch (e) { if (role === 'host' && e && e.code === 'taken' && tries < 4) code = genCode(); else throw e; }
+    }
+    Object.assign(NET, { named, code, role, seat: role === 'host' ? 0 : 1, matchId: '', lastShotN: 0, mySay: 0, lastSay: 0, opp: null, oppPeer: '', pend: null, queue: [], sent: [] });
     PREF.p1.name = cleanName($('#onName').value) || PREF.p1.name; savePrefs();
     named.presence({ v: 1, role, name: PREF.p1.name, color: PREF.p1.color, match: null, shot: null, say: null }).catch(() => {});
     NET.unsubs.push(named.onPeers(netPeers, () => { toast('The room connection dropped.'); }));
     $('#onCodeShow').textContent = code;
     renderOnline();
   } catch (e) {
-    setOnStatus(e && e.code === 'not_permitted' ? 'Online rooms aren’t available for your account in this view.' : 'Couldn’t connect to the room. Check your connection and try again.', true);
+    const why = { not_permitted: 'Online rooms aren’t available for your account in this view.', no_room: 'No game with that code right now. Check it with your friend, or ask them to create one.',
+      full: 'That game already has two players.', taken: 'Couldn’t find a free code. Try Create again.', offline: 'Couldn’t reach Capra Lab. Check your connection and try again.' };
+    setOnStatus((e && why[e.code]) || 'Couldn’t connect to the room. Check your connection and try again.', true);
   }
 }
 function netPeers(ch) {
@@ -3187,14 +3276,21 @@ function netHandle(pr) {
     const text = String(pr.say.text || '').replace(/[\u0000-\u001f\u007f]/g, ' ').slice(0, 140);
     if (text && G.mode === 'online') { bubble(1 - NET.seat, text); if (PREF.readFriend) speak(text, null); }
   }
-  if (pr.shot && pr.shot.m === NET.matchId && pr.shot.n > NET.lastShotN) { NET.pend = pr.shot; tryRemoteShot(); }
+  const shots = (Array.isArray(pr.shots) ? pr.shots : []).concat(pr.shot ? [pr.shot] : []);
+  let added = false;
+  for (const s of shots) {
+    if (!s || s.m !== NET.matchId || !(s.n > NET.lastShotN) || NET.queue.some(q => q.n === s.n)) continue;
+    NET.queue.push(s); added = true;
+  }
+  if (added) { NET.queue.sort((x, y) => x.n - y.n); NET.pend = NET.queue[0]; tryRemoteShot(); }
 }
 function updateRoomUI() {
   if (!NET.named) return;
   const st = $('#onRoomStatus');
+  show($('#onInvite'), NET.role === 'host' && !NET.opp);
   if (NET.role === 'host') {
     if (NET.opp) { st.textContent = `${cleanName(NET.opp.name) || 'Your friend'} is here. Pick the course and tee off.`; show($('#onHostCourse')); }
-    else { st.textContent = 'Send your friend this code. They open this same game, tap Online with a friend, and join with it. Waiting…'; show($('#onHostCourse'), false); }
+    else { st.textContent = 'Send your friend this code or the invite link. They open Par-Tee Time in Capra Lab, tap Online with a friend and join with it. Waiting…'; show($('#onHostCourse'), false); }
   } else {
     show($('#onHostCourse'), false);
     st.textContent = NET.opp ? `Connected to ${cleanName(NET.opp.name) || 'the host'}. Waiting for them to tee off…` : 'Joined the room. Waiting for the host to show up…';
@@ -3206,13 +3302,13 @@ function netHostStart() {
   let c2 = BALL_COLORS.includes(NET.opp.color) ? NET.opp.color : BALL_COLORS[1];
   if (c2 === PREF.p1.color) c2 = BALL_COLORS.find(c => c !== PREF.p1.color && c !== '#f7f1e1') || BALL_COLORS[2];
   const m = { id, holes, p: [{ n: PREF.p1.name, c: PREF.p1.color }, { n: cleanName(NET.opp.name) || 'Friend', c: c2 }] };
-  NET.named.presence({ match: m, shot: null, say: null }).catch(() => {});
+  NET.named.presence({ match: m, shot: null, shots: [], say: null }).catch(() => {});
   startOnlineMatch(m);
 }
 function startOnlineMatch(m) {
   const holes = (Array.isArray(m.holes) ? m.holes : []).map(n => n | 0).filter(n => n >= 0 && n < HOLE_DEFS.length).slice(0, 9);
   if (!holes.length || !Array.isArray(m.p) || m.p.length < 2) return;
-  NET.matchId = String(m.id); NET.lastShotN = 0; NET.lastSay = 0; NET.mySay = 0; NET.pend = null;
+  NET.matchId = String(m.id); NET.lastShotN = 0; NET.lastSay = 0; NET.mySay = 0; NET.pend = null; NET.queue = []; NET.sent = [];
   const players = m.p.slice(0, 2).map(p => ({ name: cleanName(p.n) || 'Player', color: BALL_COLORS.includes(p.c) ? p.c : '#f7f1e1' }));
   startMatch({ mode: 'online', id: NET.matchId, holes, players, courseKey: 'online' });
   if (NET.pend) tryRemoteShot();
@@ -3221,18 +3317,24 @@ function tryRemoteShot() {
   const s = NET.pend; if (!s || G.mode !== 'online') return;
   if (s.hi > G.hi && G.state === 'holeover') { advanceHole(); return; }
   if (G.state !== 'remote' || G.paused) return;
+  if (s.n <= G.shotN) { NET.queue = NET.queue.filter(q => q.n > G.shotN); NET.pend = NET.queue[0] || null; return tryRemoteShot(); }
   if (s.hi !== G.hi || s.n !== G.shotN + 1 || s.by !== G.cur) return;
   const nums = [s.a, s.p, s.sx, s.sy, s.t0];
-  if (!nums.every(v => typeof v === 'number' && isFinite(v))) { NET.pend = null; return; }
-  NET.pend = null; NET.lastShotN = s.n;
+  NET.queue = NET.queue.filter(q => q.n > s.n);
+  if (!nums.every(v => typeof v === 'number' && isFinite(v))) { NET.pend = NET.queue[0] || null; return; }
+  NET.pend = NET.queue[0] || null; NET.lastShotN = s.n;
   doShot(s.by, s.a, clamp(s.p, 0, 1), clamp(s.sx, -1, 1), clamp(s.sy, -1, 1), s.t0, s.res);
 }
-function netSendShot(shot) { NET.lastShotN = shot.n; if (NET.named) NET.named.presence({ shot }).catch(() => toast('That shot didn’t reach your friend. Check your connection.')); }
+function netSendShot(shot) {
+  NET.lastShotN = shot.n;
+  NET.sent = NET.sent.filter(x => x.m === shot.m).concat([shot]).slice(-10);   // the last few, for a phone that missed some
+  if (NET.named) NET.named.presence({ shot, shots: NET.sent }).catch(() => toast('That shot is slow to reach your friend. It will go through when your connection is back.'));
+}
 function netSay(text) { if (!NET.named) return; NET.mySay++; NET.named.presence({ say: { n: NET.mySay, m: NET.matchId, text } }).catch(() => {}); }
 function netLeave() {
   NET.unsubs.forEach(u => { try { u(); } catch (e) { /* ignore */ } }); NET.unsubs = [];
   if (NET.named) NET.named.leave().catch(() => {});
-  Object.assign(NET, { named: null, code: '', role: '', opp: null, oppPeer: '', matchId: '', pend: null });
+  Object.assign(NET, { named: null, code: '', role: '', opp: null, oppPeer: '', matchId: '', pend: null, queue: [], sent: [] });
 }
 
 /* ---------------- setup screens ---------------- */
@@ -3369,6 +3471,13 @@ function bindUI() {
   $('#onName').addEventListener('change', () => { PREF.p1.name = cleanName($('#onName').value) || PREF.p1.name; savePrefs(); if (NET.named) NET.named.presence({ name: PREF.p1.name }).catch(() => {}); });
   $('#onTee').addEventListener('click', () => { au(); netHostStart(); });
   $('#onLeave').addEventListener('click', () => { netLeave(); renderOnline(); });
+  $('#onInvite').addEventListener('click', async () => {
+    au();
+    const url = location.origin + '/par-tee-time/#' + NET.code, text = `Play me in Par-Tee Time! Code ${NET.code}`;
+    try { if (navigator.share) { await navigator.share({ title: 'Par-Tee Time', text, url }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+    try { await navigator.clipboard.writeText(text + ' ' + url); toast('Invite link copied. Paste it to your friend.'); }
+    catch (e) { toast('Send your friend the code: ' + NET.code); }
+  });
   $('#cardNext').addEventListener('click', () => {
     au(); sfx.ui();
     if (G.cardFromMenu) { G.cardFromMenu = false; show($('#mdCard'), false); G.paused = false; if (G.mode === 'online') tryRemoteShot(); return; }

@@ -7,11 +7,10 @@ things that mess with perception of time and events and other decks about a vari
 entertain elementary, middle school, high school and young adults. It's history lessons in a fun
 delivery with a good mix of modern events too. These have to be hard to figure out."
 
-**A JJ Brew** (JC picked "JJ Brew first"): `brew.js` is first in the page's head (room links
-`/no-cap/ABCD` and challenge links `/no-cap/c/<id>` get through, `data-invite`), the hub tile sits
-in Capra's Lab's "In testing" (`#clGames`), and `BREW = true` in `server/api.js` (only Capra's
-Lab can open a room or play solo; anyone with a link can join or take a challenge). Going live
-takes out all three.
+**Live for everyone since Nov 9 2026** (JC: "No cap and screensaver need to go live to everyone");
+a JJ Brew from Nov 8 until then. The tile is in the hub's public grid and `BREW = false` in
+`server/api.js`: anyone can open a room or play solo, a guest types a name, signed-in players play
+as their lab name.
 
 ## How it plays (JC's decisions, Nov 8 2026)
 

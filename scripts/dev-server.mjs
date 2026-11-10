@@ -26,6 +26,8 @@ import { memoryStore as noCapMemory } from '../games/no-cap/server/store.js';
 import { loadDecks as noCapDecks } from '../games/no-cap/server/load.mjs';
 import { createApi as screensaverApi } from '../games/screensaver/server/api.js';
 import { memoryStore as screensaverMemory } from '../games/screensaver/server/store.js';
+import { createApi as parTeeApi } from '../games/par-tee-time/server/api.js';
+import { memoryStore as parTeeMemory } from '../games/par-tee-time/server/store.js';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'public');
 const PORT = Number(process.env.PORT) || 8790;
@@ -64,6 +66,9 @@ const noCap = noCapApi({ store: noCapMemory(), decks: noCapDecks(path.join(ROOT,
 
 const screensaver = screensaverApi({ store: screensaverMemory(), role: (handle) => crew.role(handle),
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
+
+// Par-Tee Time's online rooms
+const parTee = parTeeApi({ store: parTeeMemory() });
 
 // Mind Heist's handler speaks Request/Response (Netlify Functions v2)
 async function toFunction(req, res, handler) {
@@ -125,6 +130,7 @@ http.createServer(async (req, res) => {
   if (url.pathname.startsWith('/classified/api/')) return toFunction(req, res, (r) => classified.handle(r));
   if (url.pathname.startsWith('/no-cap/api/')) return toFunction(req, res, (r) => noCap.handle(r));
   if (url.pathname.startsWith('/screensaver/api/')) return toFunction(req, res, (r) => screensaver.handle(r));
+  if (url.pathname.startsWith('/par-tee-time/api/')) return toFunction(req, res, (r) => parTee.handle(r));
   if (url.pathname === '/no-cap/__clock') {
     noCapOffset += Number(url.searchParams.get('add') || 0);
     res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: noCapOffset }));

@@ -22,7 +22,7 @@ import { mutate, SKIP } from './store.js';
 
 // No Cap is a JJ Brew (JC, Nov 8 2026): only Capra's Lab can open a room or play solo. Room links
 // and challenge links still work for anyone a member sends them to. Set false when JC says live.
-export const BREW = true;
+export const BREW = false;   // live for everyone since Nov 9 2026 (a JJ Brew before that)
 
 const ROOM_HOURS = 12;
 const fail = (status, error) => { const e = new Error(error); e.status = status; throw e; };

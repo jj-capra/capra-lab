@@ -12,7 +12,7 @@ import { mutate, SKIP } from './store.js';
 
 // Screensaver is a JJ Brew (JC, Nov 8 2026): only Capra's Lab plays and posts. Set false when JC
 // says it goes live (and take brew.js out of the page and the tile out of #clGames).
-export const BREW = true;
+export const BREW = false;   // live for everyone since Nov 9 2026 (a JJ Brew before that)
 
 const fail = (status, error) => { const e = new Error(error); e.status = status; throw e; };
 export const dayOf = (ms) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date(ms));
