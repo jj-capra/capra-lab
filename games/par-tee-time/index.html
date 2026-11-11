@@ -2879,6 +2879,10 @@ function resolveShot() {
 }
 function holeOver() {
   G.state = 'holeover';
+  // The card is the hole's card now, even if it was open as the menu's scorecard: online the game
+  // plays on behind the menu, and a hole that ended under the scorecard used to leave "Next hole"
+  // just closing it, stuck on a finished hole (JC, Nov 10 2026: froze "when opening the score card").
+  G.cardFromMenu = false;
   updateHUD();
   const last = G.hi === G.holes.length - 1;
   $('#cardKicker').textContent = `HOLE ${G.hi + 1} OF ${G.holes.length} IN THE BOOKS`;
@@ -2900,6 +2904,7 @@ function buildCard(tbl) {
   tbl.innerHTML = html;
 }
 function advanceHole() {
+  G.cardFromMenu = false;
   show($('#mdCard'), false);
   if (G.hi >= G.holes.length - 1) return finalCard();
   G.hi++; startHole();
@@ -3427,6 +3432,7 @@ function bindUI() {
   });
   $('#cardNext').addEventListener('click', () => {
     au(); sfx.ui();
+    if (G.state === 'holeover') return advanceHole();   // a finished hole always moves on
     if (G.cardFromMenu) { G.cardFromMenu = false; show($('#mdCard'), false); G.paused = false; if (G.mode === 'online') tryRemoteShot(); return; }
     advanceHole();
   });
@@ -3453,8 +3459,18 @@ function noZoom() {
   document.addEventListener('touchmove', (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
   document.addEventListener('dblclick', (e) => { if (e.target.closest && !e.target.closest('input, textarea')) e.preventDefault(); }, { passive: false });
 }
+// A safety net for online games: a phone sitting on a finished hole always has its card up, and a
+// friend's shot that's waiting gets another try.
+function unstick() {
+  setInterval(() => {
+    if (!G.mode || G.state === 'final') return;
+    if (G.state === 'holeover' && $('#mdCard').hidden && $('#mdFinal').hidden) holeOver();
+    if (G.mode === 'online' && NET.pend && (G.state === 'remote' || G.state === 'holeover')) tryRemoteShot();
+  }, 2000);
+}
 function boot() {
   noZoom();
+  unstick();
   setBackdropHole();
   rdResize($('#cv'));
   initSpin(); initInput(); initChat(); initMic(); bindUI();
