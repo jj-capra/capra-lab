@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Par-Tee Time</title>
 <meta name="theme-color" content="#141126">
 <link rel="icon" type="image/png" href="/favicon.png">
@@ -23,7 +23,7 @@
   --ui: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
 }
 [hidden] { display: none !important; }
-html { height: 100%; box-sizing: border-box; }
+html { height: 100%; box-sizing: border-box; touch-action: manipulation; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }   /* no double-tap zoom */
 *, *::before, *::after { box-sizing: inherit; }
 body {
   height: 100%; margin: 0; overflow: hidden; color: var(--cream); font-family: var(--ui); font-size: 15px;
@@ -258,7 +258,7 @@ table.card td.tot { font-weight: 700; }
     <div id="toast" hidden role="status"></div>
     <div id="chatbar" hidden>
       <form id="chatForm" autocomplete="off">
-        <input id="chatIn" maxlength="140" placeholder="Talk smack or tell them about your day" aria-label="Message">
+        <input id="chatIn" maxlength="140" placeholder="Talk smack or tell them about your day" aria-label="Message" enterkeyhint="send">
         <button class="btn gold" type="submit" style="padding:8px 14px;font-size:15px">Say it</button>
       </form>
       <div class="chips" id="chips"></div>
@@ -293,7 +293,7 @@ table.card td.tot { font-weight: 700; }
       <span class="row"><span class="w a">PAR-<span class="t">T<svg class="hat" viewBox="0 0 40 48" aria-hidden="true"><path d="M20 2 L36 44 Q20 50 4 44 Z" fill="#8dbb93" stroke="#0b0916" stroke-width="3" stroke-linejoin="round"/><path d="M12 22 L28 22 M8 33 L32 33" stroke="#e8877a" stroke-width="5"/><path d="M20 2 L36 44 Q20 50 4 44 Z" fill="none" stroke="#0b0916" stroke-width="3" stroke-linejoin="round"/><circle cx="20" cy="4" r="5" fill="#d4af37" stroke="#0b0916" stroke-width="2.5"/></svg></span>EE</span></span>
       <span class="row"><span class="w b">TIME</span></span>
     </h1>
-    <p class="tag">Comic-book mini golf with pool-table geometry. Nine wild holes. Talk smack between shots.</p>
+    <p class="tag">Comic-book mini golf with pool-table geometry. Nine wild holes. Talk smack with a friend online.</p>
     <div class="menu">
       <button class="btn big coral" id="goNpc">Play a hustler<small>Rookie, Hustler or Shark NPC</small></button>
       <button class="btn big sky" id="goLocal">Pass &amp; play<small>A friend on this device</small></button>
@@ -2567,15 +2567,9 @@ function speak(text, voice) {
   try { const u = new SpeechSynthesisUtterance(text); u.pitch = voice ? voice.pitch : 1; u.rate = voice ? voice.rate : 1; u.volume = 0.95; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); } catch (e) { /* no speech */ }
 }
 function npcSeat() { return G.players.findIndex(p => p.isNPC); }
-function npcSay(text) {
-  const s = npcSeat(); if (s < 0) return;
-  bubble(s, text); G.chatLog.push({ who: 'npc', text }); if (G.chatLog.length > 10) G.chatLog.shift();
-  if (PREF.voice) speak(text, G.players[s].npc.voice);
-}
-function npcLine(kind, prob = 1) {
-  const s = npcSeat(); if (s < 0 || Math.random() > prob) return;
-  const L = G.players[s].npc.lines[kind]; if (L) npcSay(pick(L));
-}
+// JC, Nov 10 2026: "remove the npc and bot smack talk. This is only smack talk between friends when
+// playing online." The hustlers play in silence (their old lines and replies stay in NPCS, unused);
+// talk and chat show only in online games.
 
 /* ---------------- spin dial ---------------- */
 const SPIN = { cv: null, size: 62 };
@@ -2631,11 +2625,12 @@ function startMatch(cfg) {
   ['#scrTitle', '#scrSetup', '#scrOnline', '#mdFinal', '#mdCard', '#mdMenu'].forEach(s => show($(s), false));
   show($('#hud')); show($('#controls')); show($('#chatbar'), false);
   $('#bcol0').innerHTML = ''; $('#bcol1').innerHTML = '';
-  $('#voiceRow').hidden = G.mode !== 'npc'; $('#readRow').hidden = G.mode !== 'online';
+  $('#voiceRow').hidden = true; $('#readRow').hidden = G.mode !== 'online';
+  $('#btnMic').hidden = $('#btnChat').hidden = G.mode !== 'online';
+  if (G.mode !== 'online') hideChat();
   requestAnimationFrame(() => { rdResize($('#cv')); });
   startHole();
   const tok = G.token;
-  if (G.mode === 'npc') setTimeout(() => { if (tok === G.token || G.hi === 0) npcLine('start'); }, 3300);
 }
 function startHole() {
   const tok = ++G.token;
@@ -2875,24 +2870,12 @@ function resolveShot() {
     G.balls = G.balls.filter(b => b.id !== 'p' + o);
     toast(`${G.players[o].name} picks up at ${h.maxStrokes}.`);
   }
-  reactToShot(info, happened);
   updateHUD();
   if (G.done.every(Boolean)) { G.state = 'between'; setTimeout(() => { if (G.state === 'between') holeOver(); }, 1500); return; }
   const tok = G.token;
   G.state = 'between';
   G.cur = G.done[1 - s] ? s : 1 - s;
   setTimeout(() => { if (tok === G.token && G.state === 'between') beginTurn(); }, 650);
-}
-function reactToShot(info, happened) {
-  if (G.mode !== 'npc') return;
-  const ns = npcSeat(), s = info.s, mine = s === ns;
-  const holed = happened.find(e => e.t === 'holed' && e.o === s), hazard = happened.find(e => e.t === 'hazard');
-  const b = ballOf(s), endNav = b ? G.nav.at(b.x, b.y) : 0, start = info.startNav;
-  const good = b && (endNav < 40 || endNav < start * 0.35), bad = b && endNav > start * 0.8;
-  if (holed) npcLine(mine ? (G.strokes[s] === 1 ? 'ownAce' : 'ownHole') : (G.strokes[s] === 1 ? 'oppAce' : 'oppHole'), mine ? 0.8 : 0.7);
-  else if (hazard) npcLine(mine ? 'ownHazard' : 'oppHazard', 0.85);
-  else if (good) npcLine(mine ? 'ownGood' : 'oppGood', mine ? 0.45 : 0.35);
-  else if (bad) npcLine(mine ? 'ownBad' : 'oppBad', mine ? 0.5 : 0.4);
 }
 function holeOver() {
   G.state = 'holeover';
@@ -2902,11 +2885,7 @@ function holeOver() {
   $('#cardTitle').textContent = G.hole.name;
   buildCard($('#cardTable'));
   const q = $('#cardQuip');
-  if (G.mode === 'npc') {
-    const ns = npcSeat(), hs = 1 - ns, a = G.players[ns].scores[G.hi], b = G.players[hs].scores[G.hi];
-    const L = G.players[ns].npc.lines, line = a < b ? pick(L.ownGood) : a > b ? pick(L.oppGood) : pick(L.think);
-    q.innerHTML = `<div class="pt">${PORTRAITS[G.players[ns].npc.id]}</div><span></span>`; q.querySelector('span').textContent = '“' + line + '”'; show(q);
-  } else show(q, false);
+  show(q, false);
   $('#cardNext').innerHTML = last ? 'Final card' : `Next hole<small>${esc(HOLE_DEFS[G.holes[G.hi + 1]].name)}</small>`;
   show($('#mdCard'));
 }
@@ -2936,9 +2915,8 @@ function finalCard() {
   buildCard($('#finalTable'));
   const q = $('#finalQuip');
   if (G.mode === 'npc') {
-    const ns = npcSeat(), L = G.players[ns].npc.lines, line = win === ns ? pick(L.win) : pick(L.lose);
-    q.innerHTML = `<div class="pt">${PORTRAITS[G.players[ns].npc.id]}</div><span></span>`; q.querySelector('span').textContent = '“' + line + '”'; show(q);
-    if (PREF.voice) speak(line, G.players[ns].npc.voice);
+    const ns = npcSeat();
+    show(q, false);
     const key = (G.cfg.courseKey || 'custom') + ':' + G.players[ns].npc.id, mine = a.sc;
     if (G.holes.length > 1 && (!PREF.best[key] || mine < PREF.best[key])) { PREF.best[key] = mine; savePrefs(); toast('New personal best on this course!'); }
   } else show(q, false);
@@ -2966,7 +2944,6 @@ function startNPC(s) {
   G.planner = makePlanner(G.hole, G.nav, bs, si, G.npcT0, p.npc.skill);
   G.planStart = performance.now(); G.npcShot = null;
   setHint(`<b>${esc(p.name)}</b> is reading the green…`);
-  if (Math.random() < 0.35) setTimeout(() => { if (G.state === 'npc') npcLine('think'); }, 300);
 }
 function npcTick() {
   const s = G.cur, p = G.players[s];
@@ -3044,62 +3021,16 @@ function initChat() {
   $('#chatForm').addEventListener('submit', e => { e.preventDefault(); const v = $('#chatIn').value; $('#chatIn').value = ''; sendChat(v); hideChat(); });
   $('#btnChat').addEventListener('click', () => { au(); if ($('#chatbar').hidden) openChat(); else hideChat(); });
 }
-function openChat(focus = true) { show($('#chatbar')); if (focus) setTimeout(() => $('#chatIn').focus(), 30); }
+function openChat(focus = true) { show($('#chatbar')); if (focus) { $('#chatIn').focus(); setTimeout(() => $('#chatIn').focus(), 30); } }
 function hideChat() { show($('#chatbar'), false); }
 function speakerSeat() { return G.mode === 'online' ? NET.seat : G.mode === 'npc' ? 0 : G.cur; }
 function sendChat(raw) {
   const text = String(raw || '').replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, 140);
-  if (!text || !G.mode) return;
+  if (!text || G.mode !== 'online') return;
   const seat = speakerSeat();
   bubble(seat, text);
-  if (G.mode === 'npc') { G.chatLog.push({ who: 'player', text }); if (G.chatLog.length > 10) G.chatLog.shift(); npcRespond(text); }
-  else if (G.mode === 'online') netSay(text);
+  if (G.mode === 'online') netSay(text);
 }
-function classify(t) {
-  if (/^\s*(hi|hey|hello|yo|sup|what'?s up|howdy)\b/i.test(t)) return 'greeting';
-  if (/\b(day|work|school|tired|job|boss|class|homework|lunch|practice|week|morning|tonight|dinner|kids|meeting)\b/i.test(t)) return 'day';
-  if (/\b(nice|good shot|great|awesome|wow|respect|gg|good game|well played)\b/i.test(t)) return 'compliment';
-  if (/\b(suck|trash|lose|loser|choke|weak|easy|scrub|noob|cry|laughing|watch and learn|eyes closed|all you got|bring it|going down|swimming|ez)\b/i.test(t)) return 'smack';
-  if (/\b(spin|bank|angle|putt|hole|windmill|aim|shot|english|draw|follow)\b/i.test(t)) return 'golf';
-  return 'generic';
-}
-let SAMPLE = null, sampleOff = false, npcBusy = false;
-async function npcRespond(text) {
-  const ns = npcSeat(); if (ns < 0 || npcBusy) return;
-  const npc = G.players[ns].npc;
-  npcBusy = true;
-  const typing = bubble(ns, '', 'typing', 0); typing.querySelector('.tx').innerHTML = '<span class="dots">•••</span>';
-  let reply = null;
-  if (SAMPLE && !sampleOff) {
-    const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 9000);
-    try {
-      const r = await SAMPLE(npcPrompt(npc, text), { modelTier: 'quick', cache: false, signal: ctl.signal });
-      reply = cleanReply(r && r.text);
-    } catch (e) { if (e && e.code === 'not_granted') sampleOff = true; }
-    clearTimeout(timer);
-  } else await new Promise(r => setTimeout(r, 700 + Math.random() * 500));
-  if (!reply) reply = pick(npc.replies[classify(text)]);
-  typing.remove(); npcBusy = false;
-  if (G.mode === 'npc') npcSay(reply);
-}
-function npcPrompt(npc, text) {
-  const ns = npcSeat(), hs = 1 - ns, me = relPar(ns), them = relPar(hs);
-  const recent = G.chatLog.slice(-6).map(l => (l.who === 'npc' ? npc.name : 'Player') + ': ' + l.text).join('\n');
-  return [
-    `You are ${npc.name}, an NPC opponent in "Par-Tee Time", a comic-book mini golf game with pool-table geometry. You are ${npc.persona}`,
-    `Right now: hole ${G.hi + 1} of ${G.holes.length}, "${G.hole.name}" (par ${G.hole.par}). You are ${relTxt(me.rel)} and the player (${G.players[hs].name}) is ${relTxt(them.rel)} relative to par.`,
-    recent ? `Recent chat:\n${recent}` : '',
-    `The player just said to you: "${text}"`,
-    'Reply in character with one or two short sentences, at most 30 words. Playful trash talk is welcome, but keep it friendly and family-safe because kids play this game: no profanity, nothing about appearance, identity or real-world politics. If they tell you about their day, respond warmly in character first, then you may rib them about the game. Reply with the spoken line only, no quotes or name tag.',
-  ].filter(Boolean).join('\n\n');
-}
-function cleanReply(t) {
-  if (!t) return null;
-  let s = String(t).replace(/^\s*["“]|["”]\s*$/g, '').replace(/^[^:\n]{1,20}:\s+/, '').replace(/\s+/g, ' ').trim();
-  if (s.length > 220) s = s.slice(0, 217).replace(/\s+\S*$/, '') + '…';
-  return s || null;
-}
-
 /* ---------------- mic ---------------- */
 const MIC = { rec: null, on: false, blocked: false, listenB: null };
 function micBlockedHelp(msg) {
@@ -3107,18 +3038,32 @@ function micBlockedHelp(msg) {
   $('#chatNote').textContent = 'The mic is blocked in this view. Tap the box, then use your keyboard’s mic button to dictate.';
   openChat(true);
 }
+// iPhone and iPad: Safari's speech-to-text froze the game (JC, Nov 10 2026: "It says listening but
+// completely froze the game"), most of all from the home screen. There the mic button opens the
+// message box with the keyboard up, and the keyboard's own mic does the talking.
+const IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+function micStop(rec) { try { rec && rec.abort(); } catch (e) { /* already stopped */ } }
 function initMic() {
   $('#btnMic').addEventListener('click', () => {
     au();
     if (!G.mode) return;
+    if (G.mode !== 'online') return;
     if (MIC.on) { try { MIC.rec && MIC.rec.stop(); } catch (e) { /* already stopped */ } return; }
+    if (IOS) { $('#chatNote').textContent = 'Tap the mic on your keyboard and talk, then tap Send.'; openChat(true); return; }
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR || MIC.blocked) return micBlockedHelp(SR ? 'Mic is blocked here. Use your keyboard’s dictation instead.' : 'This browser can’t turn speech into text here. Use your keyboard’s dictation instead.');
     let rec; try { rec = new SR(); } catch (e) { return micBlockedHelp('The mic couldn’t start here. Use your keyboard’s dictation instead.'); }
     MIC.rec = rec; rec.lang = navigator.language || 'en-US'; rec.interimResults = true; rec.maxAlternatives = 1; rec.continuous = false;
-    let finalText = '';
+    let finalText = '', heard = false;
     const seat = speakerSeat();
+    // never let a stuck recognizer hold the mic: no start in 4 s, or 12 s in all, and it's stopped
+    const t0 = setTimeout(() => { if (!heard) { micStop(rec); toast('The mic didn’t start. Type it instead.'); openChat(true); } }, 4000);
+    const t1 = setTimeout(() => { try { rec.stop(); } catch (e) { /* stopped */ } setTimeout(() => micStop(rec), 1500); }, 12000);
+    const hide = () => { if (document.hidden) micStop(rec); };
+    document.addEventListener('visibilitychange', hide);
+    rec.onstart = () => { heard = true; };
     rec.onresult = (e) => {
+      heard = true;
       let interim = '';
       for (let k = e.resultIndex; k < e.results.length; k++) { const r = e.results[k]; if (r.isFinal) finalText += r[0].transcript; else interim += r[0].transcript; }
       if (!MIC.listenB || !MIC.listenB.isConnected) MIC.listenB = bubble(seat, '', 'listen', 0);
@@ -3129,12 +3074,14 @@ function initMic() {
       else if (e.error === 'no-speech') toast('Didn’t catch that. Tap the mic and talk.');
     };
     rec.onend = () => {
+      clearTimeout(t0); clearTimeout(t1); document.removeEventListener('visibilitychange', hide);
+      if (MIC.rec === rec) MIC.rec = null;
       MIC.on = false; $('#btnMic').classList.remove('live'); $('#btnMic').setAttribute('aria-label', 'Talk');
       if (MIC.listenB) { MIC.listenB.remove(); MIC.listenB = null; }
       if (finalText.trim()) sendChat(finalText);
     };
     try { rec.start(); MIC.on = true; $('#btnMic').classList.add('live'); $('#btnMic').setAttribute('aria-label', 'Stop talking'); MIC.listenB = bubble(seat, 'Listening…', 'listen', 0); }
-    catch (e) { micBlockedHelp('The mic couldn’t start here. Use your keyboard’s dictation instead.'); }
+    catch (e) { clearTimeout(t0); clearTimeout(t1); document.removeEventListener('visibilitychange', hide); micBlockedHelp('The mic couldn’t start here. Use your keyboard’s dictation instead.'); }
   });
 }
 
@@ -3498,14 +3445,22 @@ function bindUI() {
   if (window.ResizeObserver) new ResizeObserver(() => rdResize($('#cv'))).observe($('#stage'));
 }
 function setBackdropHole() { const d = HOLE_DEFS.find(x => x.id === 'windmill') || HOLE_DEFS[0]; G.hole = compileHole(d); G.hole.num = d.pos + 1; }
+// Zoom stays off (JC, Nov 10 2026): Safari on iPhone ignores user-scalable=no, so pinches are stopped
+// here and double-tap zoom by touch-action in the CSS.
+function noZoom() {
+  const stop = (e) => e.preventDefault();
+  for (const ev of ['gesturestart', 'gesturechange', 'gestureend']) document.addEventListener(ev, stop, { passive: false });
+  document.addEventListener('touchmove', (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+  document.addEventListener('dblclick', (e) => { if (e.target.closest && !e.target.closest('input, textarea')) e.preventDefault(); }, { passive: false });
+}
 function boot() {
+  noZoom();
   setBackdropHole();
   rdResize($('#cv'));
   initSpin(); initInput(); initChat(); initMic(); bindUI();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { RD.statKey = ''; thumbsFor = ''; });
   requestAnimationFrame(frame);
   netInit();
-  (async () => { try { if (window.claude && typeof window.claude.use === 'function') SAMPLE = await window.claude.use('sample'); } catch (e) { SAMPLE = null; } })();
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 
