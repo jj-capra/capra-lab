@@ -407,6 +407,18 @@ function finish(title) {
     li.setAttribute('aria-label', `${x.word}: ${x.kind === 'got' ? 'got it' : x.kind === 'pass' ? 'passed' : 'time ran out'}`);
     list.appendChild(li);
   }
+  // The results text (the same card in every Capra Lab game: /lab/share.js): a mark a word,
+  // 🟩 got it, 🟥 passed, ⬛ time ran out.
+  const box = $('resShare');
+  box.innerHTML = '';
+  if (window.CapraShare && r.results.length) {
+    const passed = r.results.filter((x) => x.kind === 'pass').length;
+    const text = CapraShare.text({ emoji: '🙈', game: 'Don’t Look!', sub: `${r.deck.name} · ${lvl.name}`,
+      lines: [`${got} ${got === 1 ? 'word guessed' : 'words guessed'}${passed ? ` · ${passed} passed` : ''}`],
+      grid: [r.results.map((x) => (x.kind === 'got' ? '🟩' : x.kind === 'pass' ? '🟥' : '⬛')).join('')] });
+    box.innerHTML = '<lab-text-share></lab-text-share>';
+    box.firstChild.set({ emoji: '🙈', title: 'Don’t Look!', text, url: `${location.origin}/dont-look/` });
+  }
   show('results');
 }
 

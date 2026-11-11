@@ -568,6 +568,7 @@
     border:3px dashed rgba(255,248,238,.28);
     font-size:12.5px;color:var(--ash);white-space:pre-wrap;font-weight:600;line-height:1.5;
   }
+  .sharebox{margin-top:16px}
   .foot{
     margin-top:22px;padding-top:13px;border-top:3px solid rgba(255,248,238,.12);
     color:var(--ash);font-size:11.5px;max-width:70ch;
@@ -824,8 +825,7 @@
     <div class="verifyline" id="verifyLine"></div>
   </div>
   <div class="leaderboard" id="leaderBoard"></div>
-  <div class="share" id="shareText"></div>
-  <button class="btn ghost" id="copyBtn">Copy result</button>
+  <div id="shareText"></div>
   <button class="btn ghost" id="againBtn">Draft again</button>
   <div class="foot" id="leaderFoot"></div>
 </section>
@@ -844,5 +844,6 @@
 
 <script type="module" src="./app.js"></script>
 <script src="/lab/chip.js" defer></script>
+<script src="/lab/share.js" defer></script>
 </body>
 </html>

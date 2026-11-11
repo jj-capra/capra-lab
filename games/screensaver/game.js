@@ -343,11 +343,22 @@ async function finish() {
   const el = $('overBody');
   el.innerHTML = `<div class="card" style="text-align:center"><h2>${ended ? 'RUN ENDED' : 'RUN OVER'}</h2><div class="big">${G.score}</div>
       <p class="note">Level ${played} · ${right} perfect corner${right === 1 ? '' : 's'}${ended ? ` · ${G.lives} ♥ left` : ''}${G.mode === 'practice' ? ' · practice' : G.mode === 'replay' ? ' · not counted' : ''}</p><p class="note" id="postLine"></p></div>
+    <div id="shareBox"></div>
     <section class="card" id="overBoard" ${G.mode === 'practice' ? 'hidden' : ''}><h2>TODAY’S BOARD</h2><ul class="board" id="board2"></ul></section>
     <button class="btn wide" type="button" id="againBtn">Practice run</button>
     <button class="btn alt wide" type="button" id="homeBtn">Home</button>`;
   $('againBtn').onclick = () => start('practice');
   $('homeBtn').onclick = () => home();
+  // The results text (the same card in every Capra Lab game: /lab/share.js): a mark a board,
+  // 🟩 the right corner, 🟥 a wrong one, ⬛ the clock ran out.
+  if (window.CapraShare) {
+    const marks = G.picks.map((p, i) => (p.c === level(G.seed, i + 1).answer ? '🟩' : p.c < 0 ? '⬛' : '🟥')).join('');
+    const day = hello && hello.date ? new Date(hello.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+    const text = CapraShare.text({ emoji: '📺', game: 'Screensaver', sub: G.mode === 'practice' ? 'practice' : day,
+      lines: [`${CapraShare.num(G.score)} pts · Level ${played} · ${right} perfect corner${right === 1 ? '' : 's'}`], grid: [marks] });
+    $('shareBox').innerHTML = '<lab-text-share></lab-text-share>';
+    $('shareBox').firstChild.set({ emoji: '📺', title: 'Screensaver', text, url: `${location.origin}/screensaver/` });
+  }
   if (G.mode === 'daily') {
     if (!lab()) { $('postLine').textContent = 'Sign in to Capra Lab to put your runs on the board.'; }
     else {

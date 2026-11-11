@@ -207,10 +207,11 @@ h2.scr { font-family: var(--title); font-weight: 400; font-size: 34px; margin: 6
 .rowbtns .btn { flex: 1 1 140px; }
 
 /* ---------- modals ---------- */
-.modal { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; overflow-y: auto; background: rgba(8,6,18,.62);
+.modal { position: fixed; inset: 0; z-index: 30; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; overflow-y: auto; background: rgba(8,6,18,.62);
   padding-top: calc(env(safe-area-inset-top, 0px) + 16px); padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .modal .panel { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 14px; animation: pop .25s ease-out; }
+#mdFinal .panel { margin-block: auto; }   /* taller with the results text: starts at the top and scrolls, never clipped */
 .modal h3 { font-family: var(--title); font-weight: 400; font-size: 30px; line-height: 1; margin: 0; text-wrap: balance; }
 .tablewrap { overflow-x: auto; }
 table.card { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: 14px; }
@@ -424,6 +425,7 @@ table.card td.tot { font-weight: 700; }
       <button class="btn coral" id="finalAgain">Run it back</button>
       <button class="btn" id="finalHome">Home</button>
     </div>
+    <div id="finalShare"></div>
   </div>
 </div>
 
@@ -2929,7 +2931,22 @@ function finalCard() {
   const again = $('#finalAgain');
   if (G.mode === 'online' && NET.seat !== 0) { again.disabled = true; again.textContent = 'Host starts the rematch'; }
   else { again.disabled = false; again.textContent = 'Run it back'; }
+  finalShare(win);
   show($('#mdFinal'));
+}
+// The results text (the same card in every Capra Lab game: /lab/share.js): both totals and
+// to-par, then a row a player with a mark a hole: ⚡ hole in one, 🟩 under par, 🟨 par, 🟥 over.
+function finalShare(win) {
+  const box = $('#finalShare');
+  box.innerHTML = '';
+  if (!window.CapraShare) return;
+  const hs = G.holes, order = win === 1 ? [1, 0] : [0, 1];
+  const row = s => hs.map((h, k) => { const v = G.players[s].scores[k]; if (v == null) return '⬛'; const d = v - HOLE_DEFS[h].par; return v === 1 ? '⚡' : d < 0 ? '🟩' : d > 0 ? '🟥' : '🟨'; }).join('');
+  const text = CapraShare.text({ emoji: '⛳', game: 'Par-Tee Time', sub: hs.length === 1 ? HOLE_DEFS[hs[0]].name : hs.length + ' holes',
+    lines: order.map(s => { const r = relPar(s); return `${s === win ? '👑 ' : ''}${G.players[s].name} ${r.sc} (${relTxt(r.rel)})`; }),
+    grid: order.map(s => `${row(s)} ${G.players[s].name}`) });
+  box.innerHTML = '<lab-text-share></lab-text-share>';
+  box.firstChild.set({ emoji: '⛳', title: 'Par-Tee Time', text, url: location.origin + '/par-tee-time/' });
 }
 function quitToTitle() {
   G.token++; G.state = 'title'; G.mode = null; G.sim = null; G.planner = null; G.paused = false;
@@ -3486,4 +3503,5 @@ window.__partee = { G, RD, NET, PREF, HOLE_DEFS, compileHole, buildNav, makePlan
 </script>
 
 <script src="/lab/chip.js" defer></script>
+<script src="/lab/share.js" defer></script>
 </body></html>

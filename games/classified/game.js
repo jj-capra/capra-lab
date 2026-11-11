@@ -530,10 +530,10 @@ function renderReveal(v) {
       <div class="podium">${step(sc[1], 1)}${step(sc[0], 0)}${step(sc[2], 2)}</div>
       <ol class="scores">${sc.map((s, k) => { const p = players[s.id]; return p ? `<li class="${p.me ? 'me' : ''}"><span>${k + 1}</span>${av(p, 36)}<span class="cn">${esc(p.codename)}<small>${esc(p.name)} · ${plural(s.done, 'mission')}${s.burns ? ` · burns ${s.burns > 0 ? '+' : ''}${s.burns}` : ''}${s.guesses ? ` · guesses +${s.guesses}` : ''}${s.fooled ? ` · fooled +${s.fooled}` : ''}</small></span><b>${s.total}</b></li>` : ''; }).join('')}</ol>
       <div class="folder" data-tab="THE FILE"><h2>SHARE THE FILE</h2><p class="note">The highlights page: missions pulled off, the awards and the answers the room fired up. Codenames only, no real names.</p>
-      <button class="btn red" type="button" id="shareFile">Share the file</button><a class="btn alt" href="${esc(url)}" target="_blank" rel="noopener">Open the share page</a></div>
+      <div id="shareFile"></div><a class="btn alt" href="${esc(url)}" target="_blank" rel="noopener">Open the share page</a></div>
       <button class="link" type="button" id="doneBtn">Leave the operation</button>`;
     sfx('fanfare'); confetti();
-    $('shareFile').addEventListener('click', () => share(`Operation ${v.op}: DECLASSIFIED`, url));
+    shareCard($('shareFile'), v.op, sc.map((s) => { const p = players[s.id]; return p && { codename: p.codename, score: s.total, done: s.done }; }).filter(Boolean), url);
     $('doneBtn').addEventListener('click', leave);
   }
 }
@@ -546,6 +546,18 @@ function fuseLoop() {
   if (!f) return;
   const total = v.step.type === 'guess' ? 20000 : 7000;
   f.firstChild.style.transform = `scaleX(${clamp((v.step.endsAt - srvNow()) / total, 0, 1)})`;
+}
+
+// The results text (the same card in every Capra Lab game: /lab/share.js). Codenames only, like
+// the share page it links to; a 🟩 for every mission an agent pulled off.
+function shareCard(box, op, agents, url) {
+  if (!box || !window.CapraShare || !agents.length) return;
+  const tie = agents.length > 1 && agents[1].score === agents[0].score;
+  const text = CapraShare.text({ emoji: '🕵️', game: 'Classified', sub: `Operation ${op}`,
+    lines: agents.map((a, k) => `${k === 0 && !tie ? '👑 ' : ''}${a.codename} ${a.score}`),
+    grid: agents.map((a) => `${'🟩'.repeat(Math.min(8, a.done || 0)) || '⬛'} ${a.codename}`) });
+  box.innerHTML = '<lab-text-share></lab-text-share>';
+  box.firstChild.set({ emoji: '🕵️', title: 'Classified', text, url });
 }
 
 /* ================= THE SHARE PAGE ================= */
@@ -561,12 +573,14 @@ async function loadFileView(id) {
   body.innerHTML = `<div class="file-head"><span class="stamp">DECLASSIFIED</span><h1>${esc(f.op)}</h1><p class="note">${esc(date)} · ${plural(f.agents.length, 'agent')}</p></div>
     ${top ? `<div class="folder" data-tab="TOP AGENT" style="justify-items:center;text-align:center">${avatar(top.avatar, 120, 'Agent ' + top.codename)}<h2>AGENT ${esc(top.codename)}</h2><p class="note">${top.score} points · ${plural(top.done, 'mission')} pulled off</p></div>` : ''}
     <div class="folder" data-tab="PERSONNEL"><h2>THE TEAM</h2><ul class="agents">${f.agents.map((a) => `<li>${avatar(a.avatar, 64, 'Agent ' + a.codename)}<span class="cn">${esc(a.codename)}</span><span class="nm">${a.score} pts</span></li>`).join('')}</ul></div>
+    <div class="folder" data-tab="THE FILE"><h2>SEND THE RESULTS</h2><div id="fileCard"></div></div>
     ${f.awards.length ? `<div class="folder" data-tab="YEARBOOK"><h2>THE AWARDS</h2><ul class="mlist">${f.awards.map((a) => `<li><b>${esc(a.text.toUpperCase())}</b>AGENT ${a.winners.map(esc).join(' & AGENT ')}</li>`).join('')}</ul></div>` : ''}
     ${f.highlights.length ? `<div class="folder" data-tab="WHO SAID IT"><h2>THE ROOM’S FAVORITES</h2>${f.highlights.map((h) => `<div class="hl"><small>${esc(h.prompt)}</small><b>“${esc(h.text)}”</b><small>AGENT ${esc(h.codename)} · ${'🔥'.repeat(Math.min(5, h.fire))}</small></div>`).join('')}</div>` : ''}
     <div class="folder" data-tab="MISSIONS"><h2>MISSIONS PULLED OFF</h2>${f.missions.length ? `<ul class="mlist">${f.missions.map((m) => `<li><b>AGENT ${esc(m.codename)}${m.confirmed ? ' · CONFIRMED' : ''}</b>${esc(m.text)}</li>`).join('')}</ul>` : '<p class="note">Not one. Tough crowd.</p>'}
       <p class="note">${plural(f.redacted, 'mission')} never pulled off: <span class="redact">redacted forever</span>. ${plural(f.burns, 'mission')} burned by counter-intel.</p></div>
     <div class="card" style="text-align:center"><h2>RUN YOUR OWN OPERATION</h2><p class="note">Classified is a sleepover game on Capra Lab.</p><a class="btn red" href="/">Go to Capra Lab</a></div>`;
-  $('fileShare').onclick = () => share(`Operation ${f.op}: DECLASSIFIED`, location.href);
+  shareCard($('fileCard'), f.op, f.agents, location.href);
+  $('fileShare').onclick = () => $('fileCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 /* ================= wiring ================= */

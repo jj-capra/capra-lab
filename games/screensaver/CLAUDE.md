@@ -52,6 +52,9 @@ Lab.
 
 ## Page rules
 
+- **The results text** (JC, Nov 11 2026: the same share card in every lab game): `/lab/share.js`'s
+  `<lab-text-share>` on the run-over screen: "📺 Screensaver · date" (or practice), "pts · Level N ·
+  perfect corners", a mark a board (🟩 right corner, 🟥 wrong, ⬛ the clock ran out).
 - A 90s screensaver look: black CRT screens in a bezel, scanlines, VT323 for the readouts, Bangers
   buttons, the Capra Lab mark as the box.
 - The home screen's top bar starts with the Capra Lab button (`<capra-lab-chip>`).

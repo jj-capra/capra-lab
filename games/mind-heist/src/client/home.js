@@ -195,7 +195,7 @@ export function Home({ me, setMe, nav, home, reloadHome }) {
             <div class="daily-line">
               ${daily
                 ? html`<div><span class="muted">Your daily</span><div class="score">${money(daily.score)}</div></div>
-                    <div class="row"><button class="btn sm" onClick=${async () => { const t = `Mind Heist No. ${today.no} · ${today.title}\n${money(daily.score)}\n${gridEmoji(daily.grid)}`; const r = await shareOrCopy({ title: 'Mind Heist', text: t, url: link('/') }); if (r === 'copied') toast('Copied. Paste it in the chat.'); }}>Share</button>
+                    <div class="row"><button class="btn sm" onClick=${async () => { const t = `🧠 Mind Heist No. ${today.no} · ${today.title}\n${money(daily.score)}\n${gridEmoji(daily.grid)}`; const r = await shareOrCopy({ title: 'Mind Heist', text: t, url: link('/') }); if (r === 'copied') toast('Copied. Paste it in the chat.'); }}>Share</button>
                     <button class="btn sm" onClick=${() => setSheet('board')}>Leaderboard</button></div>`
                 : html`<span>One official run per day. Your score goes on the friends board.</span>
                     <button class="btn hi" onClick=${() => startSolo(nav, today.id)}>Play your daily</button>`}

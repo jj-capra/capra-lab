@@ -63,6 +63,10 @@ content that fails `problems()` in `server/content.mjs`.
 
 ## Page rules
 
+- **The results text** (JC, Nov 11 2026: the same share card in every lab game): `/lab/share.js`'s
+  `<lab-text-share>` on the final reveal step and on the share page, linking the share page:
+  "🕵️ Classified · Operation X", the scores (👑 on the top agent), a 🟩 a mission pulled off.
+  **Codenames only**, like the share page.
 - Capra Lab's comic look as a spy dossier: Bangers + Inter + Special Elite (typewriter), manila
   folders, red stamps, redaction bars.
 - The home screen's top bar starts with the Capra Lab button (`<capra-lab-chip>`); so does the

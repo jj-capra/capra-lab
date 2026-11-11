@@ -87,6 +87,10 @@ answer really reads that way, clip art from the kit, and so on).
 
 ## Page rules
 
+- **The results text** (JC, Nov 11 2026: the same share card in every lab game): `/lab/share.js`'s
+  `<lab-text-share>` on the final screen and on the home card once today's drop is played. Solo:
+  "🎤 Punchline No. N · deck", "pts · right/10", the 🟩🟥⬛ marks. A party: the ranks (👑 on the
+  winner) and your own row (⚡ where you got it first). "Invite more friends" stays the room link.
 - Capra Lab's comic look: Bangers + Inter (+ Permanent Marker for chalkboards and yard signs), ink
   outlines, hard shadows, halftone dots.
 - The home screen's top bar starts with the Capra Lab button (`<capra-lab-chip>`).

@@ -493,14 +493,17 @@ function finish(loss) {
       '</span></div>';
   }).join('');
 
-  $('shareText').textContent =
-    'Primal Survival — ' + g.letter + ' · ' + g.rank + '\n' +
-    days + ' days · ' + feats.kills + ' kills · ' + feats.stuns + ' stuns\n' +
-    ROLES.map(r => {
+  /* the results text: 🟩 survived, 🟥 killed, one line an animal */
+  shareCard($('shareText'), {
+    sub: g.letter + ' · ' + g.rank,
+    lines: [days + ' days · ' + feats.kills + ' kills · ' + feats.stuns + ' stuns'],
+    grid: ROLES.map(r => {
       const d = res.duels.find(x => x.myRole === r);
-      return ROLE_LABEL[r] + ': ' + squad[r].name +
-        (!perfect && !d.won ? ' — killed by ' + d.theirs : ' — survived');
-    }).join('\n');
+      const died = !perfect && !d.won;
+      return (died ? '🟥 ' : '🟩 ') + ROLE_LABEL[r] + ': ' + squad[r].name +
+        (died ? ' — killed by ' + d.theirs : ' — survived');
+    }),
+  });
   $('leaderFoot').textContent = 'Best run this session: ' + best + ' days.';
   $('submitBtn').disabled = false;
   $('playerName').classList.toggle('hidden', !!me);
@@ -511,11 +514,23 @@ function finish(loss) {
 }
 
 $('submitBtn').onclick = submitRun;
-$('copyBtn').onclick = () => {
-  navigator.clipboard && navigator.clipboard.writeText($('shareText').textContent);
-  $('copyBtn').textContent = 'Copied';
-  setTimeout(() => $('copyBtn').textContent = 'Copy result', 1400);
-};
+
+/* The results text, the same card in every Capra Lab game (/lab/share.js). A card
+ * already showing the same text is left alone, so a poll doesn't wipe "Copied". */
+const SHARE_EMOJI = '🐾';
+function shareCard(box, { sub, lines, grid }) {
+  if (!box) return;
+  const head = SHARE_EMOJI + ' Primal Survival' + (sub ? ' · ' + sub : '');
+  const text = [head].concat(lines || [], grid || []).filter(Boolean).join('\n');
+  if (!window.customElements || !customElements.get('lab-text-share')) {   // the offline single file
+    box.className = 'share'; box.textContent = text; return;
+  }
+  const old = box.firstElementChild;
+  if (old && old._d && old._d.text === text) return;
+  box.className = 'sharebox';
+  box.innerHTML = '<lab-text-share></lab-text-share>';
+  box.firstChild.set({ emoji: SHARE_EMOJI, title: 'Primal Survival', text, url: new URL('./', location.href).href.split('#')[0] });
+}
 function resetDraft() {
   squad = {}; respins = { era: 1, biome: 1 }; spun = 0; current = null; season = null; fast = false;
   $('spinZone').classList.remove('hidden');
@@ -646,7 +661,8 @@ function renderVs() {
     '<span class="sub">' + r.days[mine] + ' days to ' + r.days[them] + '</span></span>' +
     '<b>' + (r.winner === mine ? 'W' : r.winner === them ? 'L' : '=') + '</b></div>').join('') + '</div>' : '';
 
-  let main = '';
+  let main = '', shareData = null;
+  const keep = $('vsShareBox');   // the card on screen, carried over a poll's redraw
   if (!m.players[1]) {
     main = '<div class="panel"><h3>Send this to your rival</h3>' +
       '<p>They open the link, or type the code under Head to head, and round one starts.</p>' +
@@ -660,6 +676,14 @@ function renderVs() {
       ' &middot; best of ' + m.bestOf + '</span></div>' +
       '<button class="btn" id="vsAgain">' + (m.next ? esc(vsName(them)) + ' wants a rematch: join it' : 'Rematch') + '</button>' +
       '<button class="btn ghost" id="vsNewMatch">New match</button>';
+    /* the results text: who took the match, then a row a player, one mark a round */
+    const row = k => done.map(r => r.winner === k ? '🟩' : r.winner === 1 - k ? '🟥' : '🟨').join('') + ' ' + vsName(k);
+    const order = m.winner === them ? [them, mine] : [mine, them];
+    shareData = {
+      sub: 'Head to head, best of ' + m.bestOf,
+      lines: order.map(k => (m.winner === k ? '👑 ' : '') + vsName(k) + ' ' + m.score[k]),
+      grid: order.map(row),
+    };
   } else {
     const cur = m.rounds[m.round - 1];
     const locked = cur ? cur.locked : [false, false];
@@ -670,7 +694,11 @@ function renderVs() {
       : '<div class="h2h-status"><b>Locked in</b>Waiting for ' + esc(vsName(them)) + ' to draft their five&hellip;</div>';
   }
   $('vsBody').innerHTML = '<h2 class="h2h-title">Head to head</h2>' + board + main + rounds +
-    (m.winner == null ? '<button class="btn ghost" id="vsQuit">Leave this match</button>' : '');
+    (m.winner == null ? '<button class="btn ghost" id="vsQuit">Leave this match</button>' : '<div id="vsShareBox"></div>');
+  if (shareData) {
+    if (keep) $('vsShareBox').replaceWith(keep);
+    shareCard($('vsShareBox'), shareData);
+  }
 
   if ($('vsShare')) $('vsShare').onclick = async () => {
     const url = vsLink(m.code);
