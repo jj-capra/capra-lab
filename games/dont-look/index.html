@@ -303,11 +303,14 @@
   .res-list li.pass, .res-list li.none { color: rgba(255, 248, 236, 0.55); font-weight: 700; }
   .res-list li.pass i { background: var(--pass); }
   .res-list li.none i { background: rgba(255, 248, 236, 0.35); }
+  .res-side { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-content: start; min-width: 0; }
   .res-empty { margin: 0; text-align: center; color: rgba(255, 248, 236, 0.7); font-weight: 700; }
   @media (orientation: landscape) {
     .results { height: 100vh; height: 100dvh; }
     .res-body { grid-template-columns: minmax(220px, 0.8fr) 1.3fr; }
-    .res-list { align-self: center; max-height: 100%; }
+    /* the words and the results text scroll together beside the score */
+    .res-side { min-height: 0; overflow-y: auto; padding: 0 6px 8px 0; }
+    .res-list { overflow-y: visible; }
   }
 
   /* ---------- help and settings ---------- */
@@ -460,7 +463,10 @@
         <button class="btn alt" id="decksBtn" type="button">New deck</button>
       </div>
     </div>
-    <ul class="res-list" id="resList"></ul>
+    <div class="res-side">
+      <ul class="res-list" id="resList"></ul>
+      <div id="resShare"></div>
+    </div>
   </div>
 </section>
 
@@ -511,6 +517,7 @@
 </div>
 
 <script src="/lab/chip.js" defer></script>
+<script src="/lab/share.js" defer></script>
 <script type="module" src="./game.js"></script>
 </body>
 </html>

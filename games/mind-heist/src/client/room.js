@@ -1184,7 +1184,7 @@ function boardText(room, res) {
     if (!t.res.right || t.res.both) return '✖️';
     return HEART[t.res.crew] || '🟩';
   }).join(''));
-  const head = `Mind Heist${room.deck.no ? ' No. ' + room.deck.no : ''} · ${room.deck.title}`;
+  const head = `🧠 Mind Heist${room.deck.no ? ' No. ' + room.deck.no : ''} · ${room.deck.title}`;
   const lines = [head];
   if (solo) lines.push(`${money(room.crews[0].haul)} · ${room.crews[0].right}/12${res && res.streak ? ` 🔥${res.streak}` : ''}`);
   else room.crews.forEach((c, k) => lines.push(`${HEART[k]} ${crewLabel(room, k)} ${money(c.haul)}${room.winner === k ? ' 👑' : ''}`));

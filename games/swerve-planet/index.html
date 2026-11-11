@@ -272,6 +272,9 @@ body.touch .hud-bc .cap{display:none}
 /* The Capra Lab button: 10px below the clock, 16px in, the same spot as in every lab game */
 .labchip{position:absolute;z-index:3;top:calc(env(safe-area-inset-top,0px) + 10px);left:max(16px, env(safe-area-inset-left,0px))}
 #title{padding-top:calc(env(safe-area-inset-top,0px) + 66px)}
+/* the end card is taller with the results text: when it outgrows the screen it starts at the top and scrolls, never clipped */
+#over{grid-template-columns:minmax(0,1fr);overflow-x:hidden}
+#over .cover{margin-block:auto;box-sizing:border-box}
 .cover{position:relative;width:min(600px,100%);--accent:var(--hero);background:var(--paper);color:var(--ink);border:5px solid var(--ink);box-shadow:10px 10px 0 var(--ink);
   padding:18px 22px 20px;display:flex;flex-direction:column;gap:14px;transform:rotate(-1deg)}
 .masthead{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:3px solid var(--ink);padding-bottom:8px}
@@ -354,7 +357,7 @@ body.touch .hud-bc .cap{display:none}
 body:not(.touch) .lefty{display:none}
 @media (max-height:620px) and (orientation:landscape){
   .cover{width:min(920px,100%);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:10px 18px;padding:12px 18px 14px}
-  .cover > .masthead{grid-column:1 / -1}
+  .cover > .masthead,.cover > #overShare{grid-column:1 / -1}
   .logo{flex-direction:row;flex-wrap:wrap;gap:0 12px;align-items:baseline}
   .logo{flex-wrap:nowrap}
   .logo span{font-size:clamp(28px,5vw,50px);-webkit-text-stroke:2px var(--ink)}
@@ -524,6 +527,7 @@ body:not(.touch) .lefty{display:none}
         <p class="lbmsg" id="lbMsg" aria-live="polite"></p>
       </div>
       <div class="row"><button class="go" id="btnAgain" type="button">DRIVE AGAIN</button><button class="ghost" id="btnPlanets" type="button">PLANETS</button><button class="ghost" id="btnOverBoards" type="button">BOARDS</button><span class="cap" id="overBest">Best 0</span></div>
+      <div id="overShare"></div>
     </div>
   </section>
   <section id="boards" class="overlay" hidden aria-label="Leaderboards">
@@ -544,6 +548,7 @@ body:not(.touch) .lefty{display:none}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="/lab/chip.js" defer></script>
+<script src="/lab/share.js" defer></script>
 <script>
 // Path generator for Swerve Planet — tested in Node, then inlined into the game.
 // Road = sequence of frames every DS units. Each frame: position p, orientation q.
@@ -2673,6 +2678,15 @@ function endRun() {
   $('#btnAgain').textContent = pl.again;
   $('#overBest').textContent = 'Best ' + fmt(bests[mode]) + ' \u00b7 Shards found ' + fmt(shardTotal);
   $('#newBestRow').hidden = !isBest;
+  // The results text (the same card in every Capra Lab game: /lab/share.js).
+  if (window.CapraShare) {
+    const line = mode === 'car'
+      ? fmt(p.score) + ' pts \u00b7 ' + (p.dist / 1609.34).toFixed(2) + ' mi \u00b7 ' + fmt(p.near) + ' close swerves'
+      : fmt(p.score) + ' pts \u00b7 ' + fmt(A.finishes) + ' ' + ARENA[mode].unit.toLowerCase() + ' \u00b7 ' + fmt(p.near) + ' defenders down';
+    const text = CapraShare.text({ emoji: '\ud83e\ude90', game: 'Swerve Planet', sub: pl.name, lines: [line, isBest ? '\ud83d\udc51 New best score!' : ''] });
+    $('#overShare').innerHTML = '<lab-text-share></lab-text-share>';
+    $('#overShare').firstChild.set({ emoji: '\ud83e\ude90', title: 'Swerve Planet', text, url: location.origin + '/swerve-planet/' });
+  }
   ui.over.hidden = false;
   lbAfterRun(Math.floor(p.score));
   Sound.drive(0, 0, false, 0);

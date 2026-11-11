@@ -61,18 +61,6 @@ function confetti(colors = ['#FFD23F', '#FF3D8B', '#29D3F0', '#5BE38A', '#FFF8EC
   setTimeout(() => box.remove(), 3800);
 }
 
-async function shareOrCopy(text) {
-  try {
-    if (navigator.share) { await navigator.share({ text }); return 'shared'; }
-  } catch (e) { if (e && e.name === 'AbortError') return 'cancelled'; }
-  try { await navigator.clipboard.writeText(text); return 'copied'; } catch (e) { /* fall through */ }
-  const ta = document.createElement('textarea');
-  ta.value = text; document.body.appendChild(ta); ta.select();
-  try { document.execCommand('copy'); } catch (e) { /* nothing */ }
-  ta.remove();
-  return 'copied';
-}
-
 /* ---------- sound (made on the fly, nothing to download) ---------- */
 let ac = null;
 function audio() {
@@ -533,20 +521,27 @@ const Today = {
       if (race && race.rank) rank = `<p>You’re <b>#${race.rank}</b> of ${race.solvers} today${race.leading ? ', the fastest so far' : ''}.</p>`;
     }
     el.innerHTML = `<h2>${esc(head)}</h2><p>${esc(line)}</p>${gems}${rank}
+      <div id="shareBox"></div>
       <div class="row">
-        <button class="btn" type="button" id="shareBtn">Share</button>
         ${out ? '<button class="btn alt" type="button" id="againBtn">Play again</button>' : ''}
         ${me ? '<a class="btn alt" href="/mind-heist/">Mind Heist 💎</a>' : ''}
       </div>`;
-    $('shareBtn').addEventListener('click', () => this.share());
+    this.share();
     if (out) $('againBtn').addEventListener('click', () => { this.res = null; this.pen.reset(); this.set(this.data, false); });
   },
-  async share() {
-    const t = this.data.pen, me = this.data.me, r = this.res;
+  // The results text (the same card in every Capra Lab game: /lab/share.js): 🟩 out at par,
+  // 🟨 over it, ⚡ the fastest so far today.
+  share() {
+    const box = $('shareBox');
+    if (!box || !window.CapraShare) return;
+    const t = this.data.pen, me = this.data.me, r = this.res, race = this.data.race;
     const ms = me ? me.ms : this.elapsed();
     const moves = me ? me.moves : r ? r.moves : this.pen.moves.length;
-    const text = `🐐 Goat Getaway No. ${t.no} · ${t.tierName}\nOut in ${fmtTime(ms)} · ${plural(moves, 'move')} (par ${t.par})${me && me.parGem ? ' 💎' : ''}\n${SHARE_URL}`;
-    if ((await shareOrCopy(text)) === 'copied') toast('Copied. Paste it in the chat.');
+    const text = CapraShare.text({ emoji: '🐐', game: 'Goat Getaway', no: t.no, sub: t.tierName,
+      lines: [`Out in ${fmtTime(ms)} · ${plural(moves, 'move')} (par ${t.par})${me && me.parGem ? ' 💎' : ''}`],
+      grid: [(moves <= t.par ? '🟩' : '🟨') + (me && race && race.leading ? '⚡' : '')] });
+    box.innerHTML = '<lab-text-share></lab-text-share>';
+    box.firstChild.set({ emoji: '🐐', title: 'Goat Getaway', text, url: SHARE_URL });
   },
   race() {
     const el = $('race'), race = this.data.race;

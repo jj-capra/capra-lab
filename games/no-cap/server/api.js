@@ -2,12 +2,13 @@
 // rides in the body (`lab: { name, code }`). Every room call carries the player's seat { pid, tok }.
 //
 //   POST /hello                              who's asking, and the decks: { brew, role, canHost, decks }
-//   POST /rooms   { kind, deckId, name? }    open a room: 'live' (friends, a reader) or 'solo'
+//   POST /rooms   { kind, deckId, name? }    open a room: 'live' (friends, a topic draft) or 'solo'
 //   POST /rooms/:code                        the room as this player sees it
 //   POST /rooms/:code/join   { name? }       join a live room with the code or the link
 //   POST /rooms/:code/deck   { deckId }      host, in the lobby or after a game: the deck
-//   POST /rooms/:code/start                  host: deal and go (live, 2+ players)
-//   POST /rooms/:code/read   { i }           the reader (or the host) is done reading card i
+//   POST /rooms/:code/start                  host: lay out the pile and start the draft (live, 2+ players)
+//   POST /rooms/:code/pick   { k, c }        the draft: pick k takes pile card c
+//   POST /rooms/:code/play   { i, c }        turn i: play card c from your hand at everyone else
 //   POST /rooms/:code/tap    { i, k }        tap claim k of card i: a fact, or the cap (busted)
 //   POST /rooms/:code/go     { i }           solo: show card i
 //   POST /rooms/:code/again  { deckId? }     host, after a game: deal again
@@ -17,7 +18,7 @@
 //   POST /challenges/:id/play { name? }      take it: a solo room with the same cards
 //
 // Store `no-cap`: r/<CODE> rooms (12 hours), c/<id> challenges.
-import { MAX_PLAYERS, MIN_LIVE, CARDS_PER_GAME, FIND_MS, REVEAL_MS, READ_MS, POINTS, NAME_MAX, claims, cardPoints } from '../shared/rules.mjs';
+import { MAX_PLAYERS, MIN_LIVE, CARDS_PER_GAME, FIND_MS, REVEAL_MS, PICK_MS, CHOOSE_MS, POINTS, NAME_MAX, handSize, claims, cardPoints } from '../shared/rules.mjs';
 import { mutate, SKIP } from './store.js';
 
 // No Cap is a JJ Brew (JC, Nov 8 2026): only Capra's Lab can open a room or play solo. Room links
@@ -67,23 +68,41 @@ export function createApi({ store, decks, verify, role = async () => null, clock
     room.order.push(pid);
     return { pid, tok };
   }
-  // A live game deals enough cards that everyone reads about the same number of times.
+  // Solo: ten cards from the deck (or a challenge's cards).
   function deal(room, now) {
     const d = deckOf(room.deckId);
-    const n = room.kind === 'solo' ? 1 : room.order.length;
-    const want = room.kind === 'solo' ? CARDS_PER_GAME : n * Math.max(1, Math.ceil(8 / n));
-    room.cards = room.fixed ? room.fixed.slice() : shuffle(d.cards.map((_, i) => i)).slice(0, Math.min(d.cards.length, want));
-    room.readers = room.kind === 'solo' ? [] : room.cards.map((_, k) => room.order[k % n]);
-    room.readDone = {}; room.goAt = {}; room.taps = {};
+    room.cards = room.fixed ? room.fixed.slice() : shuffle(d.cards.map((_, i) => i)).slice(0, Math.min(d.cards.length, CARDS_PER_GAME));
+    room.goAt = {}; room.taps = {};
     room.startedAt = now; room.phase = 'play'; room.game = (room.game || 0) + 1;
   }
-  const card = (room, i) => byId[room.deckId].cards[room.cards[i]];
+  // With friends (JC, Nov 11 2026): "a pile of enough topic cards for all players to have two topic
+  // cards... Allow as little as two players with four cards each." The pile comes from the room's
+  // deck, topped up from the same shelf when a big room needs more; the pick order is random.
+  function dealDraft(room, now) {
+    const d = deckOf(room.deckId);
+    const n = room.order.length, want = n * handSize(n);
+    let pool = shuffle(d.cards.map((_, c) => ({ d: d.id, c })));
+    if (pool.length < want) {
+      const more = decks.filter((x) => x.shelf === d.shelf && x.id !== d.id && !x.brew).flatMap((x) => x.cards.map((_, c) => ({ d: x.id, c })));
+      pool = pool.concat(shuffle(more));
+    }
+    room.pile = pool.slice(0, Math.floor(Math.min(pool.length, want) / n) * n);   // the same number each
+    room.draftOrder = shuffle(room.order);
+    room.picks = {}; room.plays = {}; room.taps = {}; room.cards = null;
+    room.startedAt = now; room.phase = 'play'; room.game = (room.game || 0) + 1;
+  }
+  const card = (room, i, tl) => {
+    if (room.kind === 'solo') return byId[room.deckId].cards[room.cards[i]];
+    const x = room.pile[tl.times[i] ? tl.times[i].c : tl.c];
+    return byId[x.d].cards[x.c];
+  };
+  const pileCard = (room, c) => byId[room.pile[c].d].cards[room.pile[c].c];
 
-  // Who hunts on card i: everyone still in the game but its reader.
-  const listeners = (room, i) => room.order.filter((p) => room.players[p] && p !== room.readers[i]);
+  // Who hunts on a card: everyone still in the game but whoever played it.
+  const listeners = (room, by) => room.order.filter((p) => room.players[p] && p !== by);
   // When everyone hunting card i was done (found all three or got busted), or null.
-  function allDoneAt(room, i, from) {
-    const ls = listeners(room, i);
+  function allDoneAt(room, i, by, from) {
+    const ls = listeners(room, by);
     if (!ls.length) return from;
     const t = room.taps[i] || {};
     let last = from;
@@ -91,37 +110,58 @@ export function createApi({ store, decks, verify, role = async () => null, clock
     return last;
   }
 
-  // Where the game is right now, worked out from what's been stored: live cards go read → find →
-  // reveal on the clock (the reader starts each find); solo cards wait for the player's Go.
-  // `times` holds every card reached so far ({ start, findStart, findEnd, revealEnd }).
+  // Where the game is right now, worked out from what's been stored. Solo cards wait for the
+  // player's Go, then find → reveal. `times` holds every card reached so far.
   function timeline(room, now) {
     if (room.phase !== 'play') return { over: room.phase === 'over', lobby: room.phase === 'lobby', times: [] };
+    if (room.kind !== 'solo') return draftLine(room, now);
     const n = room.cards.length, times = [];
-    if (room.kind === 'solo') {
-      for (let i = 0; i < n; i++) {
-        const go = room.goAt[i];
-        if (go == null) return { i, stage: 'ready', times };
-        const done = allDoneAt(room, i, go);
-        const findEnd = Math.min(go + FIND_MS, done == null ? Infinity : done);
-        times.push({ start: go, findStart: go, findEnd });
-        if (now < findEnd) return { i, stage: 'find', findStart: go, findEnd: go + FIND_MS, times };
-        if (i === n - 1 || room.goAt[i + 1] == null) return { i, stage: 'reveal', findStart: go, findEnd, last: i === n - 1, over: i === n - 1, times };
-      }
-    }
-    let t = room.startedAt;
     for (let i = 0; i < n; i++) {
-      const start = t, rd = room.readDone[i];
-      if (rd == null && now < start + READ_MS) return { i, stage: 'read', start, times };
-      const findStart = rd != null ? rd : start + READ_MS;
-      const done = allDoneAt(room, i, findStart);
+      const go = room.goAt[i];
+      if (go == null) return { i, stage: 'ready', times };
+      const done = allDoneAt(room, i, null, go);
+      const findEnd = Math.min(go + FIND_MS, done == null ? Infinity : done);
+      times.push({ start: go, findStart: go, findEnd, by: null });
+      if (now < findEnd) return { i, stage: 'find', findStart: go, findEnd: go + FIND_MS, times };
+      if (i === n - 1 || room.goAt[i + 1] == null) return { i, stage: 'reveal', findStart: go, findEnd, last: i === n - 1, over: i === n - 1, times };
+    }
+    return { over: true, times };
+  }
+  // With friends: the draft (snake picks on a clock), then one card a turn in pick order:
+  // choose → find → reveal. Only what players did is stored (picks, plays, taps, each with its
+  // time); a pick or a play that runs out its clock is the lowest card left, worked out the same
+  // way every time it's asked, so nothing has to be written when a clock runs out.
+  function draftLine(room, now) {
+    const order = room.draftOrder, n = order.length, total = room.pile.length;
+    const owner = Array(total).fill(null), hands = {};
+    for (const p of order) hands[p] = [];
+    const pickerAt = (k) => { const j = k % n; return order[Math.floor(k / n) % 2 ? n - 1 - j : j]; };
+    let t = room.startedAt;
+    for (let k = 0; k < total; k++) {
+      const p = pickerAt(k), deadline = room.players[p] ? t + PICK_MS : t, pk = room.picks[k];
+      let c;
+      if (pk) { c = pk.c; t = pk.at; }
+      else if (now >= deadline) { c = owner.indexOf(null); t = deadline; }
+      else return { stage: 'draft', k, picker: p, start: t, deadline, owner, hands, order, total, times: [] };
+      owner[c] = p; hands[p].push(c);
+    }
+    const used = new Set(), times = [], base = { owner, hands, order, total, times, used };
+    for (let i = 0; i < total; i++) {
+      const by = order[i % n], start = t, deadline = room.players[by] ? t + CHOOSE_MS : t, pl = room.plays[i];
+      let c, findStart;
+      if (pl) { c = pl.c; findStart = pl.at; }
+      else if (now >= deadline) { c = hands[by].find((x) => !used.has(x)); findStart = deadline; }
+      else return { ...base, i, stage: 'choose', by, start, deadline };
+      used.add(c);
+      const done = allDoneAt(room, i, by, findStart);
       const findEnd = Math.min(findStart + FIND_MS, done == null ? Infinity : done);
       const revealEnd = findEnd + REVEAL_MS;
-      times.push({ start, findStart, findEnd, revealEnd });
-      if (now < findEnd) return { i, stage: 'find', start, findStart, findEnd: findStart + FIND_MS, times };
-      if (now < revealEnd) return { i, stage: 'reveal', start, findStart, findEnd, revealEnd, last: i === n - 1, times };
+      times.push({ by, c, start, findStart, findEnd, revealEnd });
+      if (now < findEnd) return { ...base, i, stage: 'find', by, c, findStart, findEnd: findStart + FIND_MS };
+      if (now < revealEnd) return { ...base, i, stage: 'reveal', by, c, findStart, findEnd, revealEnd, last: i === total - 1 };
       t = revealEnd;
     }
-    return { over: true, end: t, times };
+    return { ...base, over: true, end: t };
   }
   // A live game that has run to its end is over for good (so it can be dealt again).
   function settle(room, now) {
@@ -129,68 +169,85 @@ export function createApi({ store, decks, verify, role = async () => null, clock
   }
 
   /* ---------- scores ---------- */
-  // Points per player per finished card, and the totals.
-  function results(room, now) {
-    const tl = timeline(room, now);
-    const upto = tl.over ? room.cards.length : tl.stage === 'reveal' ? tl.i + 1 : tl.i;
-    const total = {}, per = [];
-    for (const p of room.order) total[p] = 0;
+  // Points per player per finished card, the totals, and each player's marks card by card
+  // (for the results text): all | first | part | none | bust | own (the card they played).
+  function results(room, now, line) {
+    const tl = line || (room.phase === 'over' && room.kind === 'live' ? draftLine(room, Infinity) : timeline(room, now));
+    const n = room.kind === 'solo' ? room.cards.length : (room.pile || []).length;
+    const upto = tl.over ? Math.min(n, tl.times.length || n) : tl.stage === 'reveal' ? tl.i + 1 : tl.stage === 'draft' ? 0 : tl.i;
+    const total = {}, per = [], marks = {};
+    for (const p of room.order) { total[p] = 0; marks[p] = []; }
     for (let i = 0; i < upto; i++) {
       const t = room.taps[i] || {}, row = {};
-      const from = tl.times[i] ? tl.times[i].findStart : null;
+      const at = tl.times[i], from = at ? at.findStart : null, by = at ? at.by : null;
       let fooled = 0;
-      // live: the first to find all three on this card gets a bonus on top of the speed points
-      const finishers = listeners(room, i).filter((p) => t[p] && t[p].found.length === 3 && !t[p].busted);
-      const firstAt = room.kind === 'live' && finishers.length ? Math.min(...finishers.map((p) => t[p].doneAt)) : null;
-      for (const p of listeners(room, i)) {
+      const ls = listeners(room, by);
+      // with friends: the first to find all three on this card gets a bonus on top of the speed points
+      const finishers = ls.filter((p) => t[p] && t[p].found.length === 3 && !t[p].busted);
+      const firstAt = room.kind === 'live' && ls.length > 1 && finishers.length ? Math.min(...finishers.map((p) => t[p].doneAt)) : null;
+      for (const p of ls) {
         const x = t[p] || { found: [], busted: false };
         let pts = cardPoints(x.found.length, x.busted, x.doneAt != null && from != null ? x.doneAt - from : FIND_MS);
         const first = firstAt != null && x.found.length === 3 && !x.busted && x.doneAt === firstAt;
         if (first) pts += POINTS.first;
         row[p] = { pts, found: x.found.length, busted: !!x.busted, first };
         if (x.busted) fooled++;
-        if (total[p] != null) total[p] += pts;
+        total[p] += pts;
+        marks[p].push(x.busted ? 'bust' : x.found.length === 3 ? (first ? 'first' : 'all') : x.found.length ? 'part' : 'none');
       }
-      const r = room.readers[i];
-      if (r) { const pts = fooled * POINTS.fooled; row[r] = { pts, reader: true, fooled }; if (total[r] != null) total[r] += pts; }
+      if (by && total[by] != null) { const pts = fooled * POINTS.fooled; row[by] = { pts, reader: true, fooled }; total[by] += pts; marks[by].push('own'); }
       per.push(row);
     }
-    return { total, per };
+    return { total, per, marks };
   }
 
   /* ---------- what a player sees ---------- */
   function view(room, me, now) {
-    const tl = timeline(room, now);
-    const res = results(room, now);
+    const tl = room.phase === 'over' && room.kind === 'live' ? draftLine(room, Infinity) : timeline(room, now);
+    const res = results(room, now, tl);
+    const live = room.kind === 'live';
+    const nameOf = (p) => (room.players[p] ? room.players[p].name : 'Someone');
     const out = {
       now, code: room.code, kind: room.kind, phase: tl.over ? 'over' : room.phase, game: room.game || 0,
       deck: room.deckId ? { id: room.deckId, title: byId[room.deckId].title, shelf: byId[room.deckId].shelf } : null,
       host: me === room.host, me, hostName: room.players[room.host] ? room.players[room.host].name : 'The host',
       players: room.order.filter((p) => room.players[p]).map((p) => ({ pid: p, name: room.players[p].name, score: res.total[p] || 0, host: p === room.host })),
-      n: room.cards ? room.cards.length : 0, challenge: room.challenge || null, made: room.made || null,
+      n: live ? (room.pile || []).length : room.cards ? room.cards.length : 0, challenge: room.challenge || null, made: room.made || null,
+      hand: handSize(room.order.filter((p) => room.players[p]).length),
     };
-    if (room.phase === 'lobby' || !room.cards) return out;
-    if (tl.over && room.kind === 'live') {
-      out.final = out.players.slice().sort((a, b) => b.score - a.score);
+    if (room.phase === 'lobby' || (!room.cards && !room.pile)) return out;
+    if (tl.over && live) {
+      out.final = out.players.slice().sort((a, b) => b.score - a.score).map((p) => ({ ...p, marks: res.marks[p.pid] || [] }));
       return out;
     }
-    const i = tl.i, c = card(room, i), reader = room.readers[i] || null;
-    out.i = i; out.stage = tl.stage; out.reader = reader;
-    out.readerName = reader && room.players[reader] ? room.players[reader].name : null;
-    out.t = { start: tl.start || null, findStart: tl.findStart || null, findEnd: tl.findEnd || null, revealEnd: tl.revealEnd || null, read: READ_MS, find: FIND_MS, reveal: REVEAL_MS };
+    if (live) {
+      out.order = tl.order.map((p) => ({ pid: p, name: nameOf(p), left: tl.hands[p].filter((c) => !(tl.used && tl.used.has(c))).length }));
+      out.myHand = (tl.hands[me] || []).map((c) => ({ c, about: pileCard(room, c).about, used: !!(tl.used && tl.used.has(c)) }));
+    }
+    if (tl.stage === 'draft') {
+      out.stage = 'draft';
+      out.draft = { k: tl.k, total: tl.total, picker: tl.picker, pickerName: nameOf(tl.picker),
+        pile: room.pile.map((x, c) => ({ c, about: pileCard(room, c).about, by: tl.owner[c] })) };
+      out.t = { start: tl.start, end: tl.deadline, pick: PICK_MS };
+      return out;
+    }
+    const i = tl.i, by = tl.by || null;
+    out.i = i; out.stage = tl.stage; out.reader = by; out.readerName = by ? nameOf(by) : null;
+    if (tl.stage === 'choose') { out.t = { start: tl.start, end: tl.deadline, choose: CHOOSE_MS }; return out; }
+    const c = card(room, i, tl);
+    out.t = { findStart: tl.findStart || null, findEnd: tl.findEnd || null, revealEnd: tl.revealEnd || null, find: FIND_MS, reveal: REVEAL_MS };
     const mine = (room.taps[i] || {})[me];
     out.mine = mine ? { found: mine.found, busted: !!mine.busted, done: mine.doneAt != null, pick: mine.busted ? mine.pick : null } : { found: [], busted: false, done: false };
-    const ls = listeners(room, i);
+    const ls = listeners(room, by);
     out.hunting = ls.length;
     out.doneCount = ls.filter((p) => ((room.taps[i] || {})[p] || {}).doneAt != null).length;
-    const showText = tl.stage === 'find' || tl.stage === 'reveal' || me === reader;
     out.about = c.about || null;
-    if (showText) out.card = { say: c.say, about: c.about || null, claims: claims(c.say) };
-    if (out.card && (me === reader || tl.stage === 'reveal')) out.card.cap = c.cap;
+    if (tl.stage !== 'ready') out.card = { say: c.say, about: c.about || null, claims: claims(c.say) };
+    if (out.card && (me === by || tl.stage === 'reveal')) out.card.cap = c.cap;
     if (tl.stage === 'reveal') {
       out.card.real = c.real;
       out.round = res.per[i] || {};
-      if (tl.last && room.kind === 'solo') out.final = out.players;
+      if (tl.last && room.kind === 'solo') out.final = out.players.map((p) => ({ ...p, marks: res.marks[p.pid] || [] }));
     }
     return out;
   }
@@ -292,13 +349,23 @@ export function createApi({ store, decks, verify, role = async () => null, clock
         if (body.deckId) room.deckId = deckOf(String(body.deckId)).id;
         if (room.order.filter((p) => room.players[p]).length < MIN_LIVE) fail(409, `You need at least ${MIN_LIVE} players.`);
         room.order = room.order.filter((p) => room.players[p]);
-        deal(room, now);
+        dealDraft(room, now);
         return;
       }
-      if (op === '/read') {
-        if (tl.stage !== 'read' || Number(body.i) !== tl.i) return SKIP;   // already going
-        if (me !== room.readers[tl.i] && me !== room.host) fail(403, 'Only the reader can start the clock.');
-        room.readDone[tl.i] = now;
+      if (op === '/pick') {
+        const c = Number(body.c);
+        if (tl.stage !== 'draft' || Number(body.k) !== tl.k) return SKIP;   // the clock already moved it on
+        if (me !== tl.picker) fail(403, 'It’s not your pick.');
+        if (!Number.isInteger(c) || c < 0 || c >= tl.total || tl.owner[c] != null) fail(409, 'That card is taken. Pick another.');
+        room.picks[tl.k] = { c, at: now };
+        return;
+      }
+      if (op === '/play') {
+        const c = Number(body.c);
+        if (tl.stage !== 'choose' || Number(body.i) !== tl.i) return SKIP;
+        if (me !== tl.by) fail(403, 'It’s not your turn.');
+        if (!tl.hands[me].includes(c) || tl.used.has(c)) fail(409, 'Play a card from your hand.');
+        room.plays[tl.i] = { c, at: now };
         return;
       }
       if (op === '/go') {
@@ -311,9 +378,9 @@ export function createApi({ store, decks, verify, role = async () => null, clock
       if (op === '/tap') {
         const i = Number(body.i), k = Number(body.k);
         if (tl.stage !== 'find' || i !== tl.i) fail(409, 'Time’s up on that card.');
-        if (me === room.readers[i]) fail(403, 'You’re the reader on this one.');
+        if (me === tl.by) fail(403, 'That’s your card. They’re the ones hunting.');
         if (!(k >= 0 && k < 4)) fail(400, 'Pick one of the four.');
-        const c = card(room, i);
+        const c = card(room, i, tl);
         const t = (room.taps[i] ||= {});
         const x = (t[me] ||= { found: [], busted: false, doneAt: null });
         if (x.doneAt != null || x.found.includes(k)) return SKIP;

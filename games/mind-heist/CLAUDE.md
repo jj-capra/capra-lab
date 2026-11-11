@@ -377,7 +377,9 @@ once; each room is its own blob.
 - **The board as a text** (JC: "text message format, a Gen Z and millennial mashup"): the final
   screen shows the board as an emoji grid laid out like the board (a row per dollar value; solo
   🟩🟥⚡💀💎, crews 💗/💙 for who banked it, ✖️ nobody) inside a Messages-style blue bubble,
-  with Text it / Share / Copy. Run it back and the other buttons sit above it.
+  with Text it / Share / Copy. Run it back and the other buttons sit above it. The head line is
+  "🧠 Mind Heist No. N · title", the format every lab game's results text uses (`/lab/share.js`
+  is this card as a web component for the other games).
 - **Nothing hangs** (JC: the other player stayed on the final screen after Run it back): every
   API call times out (10 s GET, 15 s POST) so a stalled request on a phone can't freeze a room's
   updates. Invite rooms stay remembered after the final; home checks that room every 5 s and

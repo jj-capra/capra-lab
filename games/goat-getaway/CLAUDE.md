@@ -53,6 +53,9 @@ on from Vault Jam (2026-11-02 = No. 1), on the same puzzles.
 
 ## Page rules
 
+- **The results text** (JC, Nov 11 2026: the same share card in every lab game): `/lab/share.js`'s
+  `<lab-text-share>` in the result card: "🐐 Goat Getaway No. N · tier", "Out in time · moves (par)"
+  (💎 with the par diamond), then 🟩 at par or 🟨 over it, ⚡ when it's today's fastest.
 - Capra Lab's comic look: Bangers + Inter, ink outlines, hard shadows, halftone dots.
 - The top bar starts with the Capra Lab button (`<capra-lab-chip>`, the lab's logo and the player's
   name), then sound and help on the right.

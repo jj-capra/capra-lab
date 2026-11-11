@@ -397,7 +397,7 @@
         <div class="score-line"><span id="doneScore"></span> PTS</div>
         <div class="marks" id="doneMarks" aria-hidden="true"></div>
         <p class="note">A new drop lands at midnight (Pacific).</p>
-        <button class="btn alt" id="doneShare" type="button">Share your score</button>
+        <div id="doneShare"></div>
       </div>
     </section>
 
@@ -493,6 +493,7 @@
       <div class="marks" id="soloMarks" aria-hidden="true"></div>
       <p class="note" id="soloLine"></p>
     </section>
+    <div id="finalShare" class="share-box"></div>
     <div class="btnrow">
       <button class="btn big pink" id="againBtn" type="button" hidden>Deal again</button>
       <p class="note" id="againWait" style="text-align:center" hidden>The host can deal another round. Stay here and you’re in.</p>
@@ -539,6 +540,7 @@
 </div>
 
 <script src="/lab/chip.js" defer></script>
+<script src="/lab/share.js" defer></script>
 <script type="module" src="/punchline/game.js"></script>
 </body>
 </html>
