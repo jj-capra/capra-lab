@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>No Cap · Capra Lab</title>
-<meta name="description" content="Three facts. One cap. Someone reads it with a straight face; you find the facts. A Capra Lab party game.">
+<meta name="description" content="Three facts. One cap. Draft the topics your friends know least, then find the facts in theirs. A Capra Lab party game.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#14122A">
 <meta name="mobile-web-app-capable" content="yes">
@@ -209,6 +209,27 @@
   .toast.show { transform: translate(-50%, 0); }
   .toast.err { background: #FFD3DA; }
   @media (prefers-reduced-motion: reduce) { .banner .mic, .claim.cap .stamp { animation: none; } }
+
+  /* the draft: a pile of topic cards, your hand, the order */
+  .order { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .order li { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--panel2); border: 2.5px solid var(--ink); font-weight: 800; font-size: 13px; max-width: 100%; }
+  .order li span { min-width: 0; overflow-wrap: anywhere; }
+  .order li.on { background: var(--yellow); color: var(--ink); }
+  .order li.me { box-shadow: 0 0 0 2px var(--paper); }
+  .order li small { font-weight: 900; opacity: 0.75; }
+  .pile { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .topic { position: relative; display: grid; align-content: center; justify-items: center; gap: 4px; min-height: 84px; padding: 10px 8px; text-align: center; border-radius: 14px; border: 3px solid var(--ink);
+    background: var(--paper); color: var(--ink); box-shadow: 4px 5px 0 var(--shadow); font-weight: 900; font-size: 16px; line-height: 1.15; overflow-wrap: anywhere; }
+  .topic small { font-size: 10px; font-weight: 900; letter-spacing: 0.1em; color: var(--blue); }
+  .topic:disabled { cursor: default; }
+  .topic.wait { background: #d9d3c4; box-shadow: 2px 3px 0 var(--shadow); }
+  .topic.taken { background: var(--panel2); color: var(--dim); box-shadow: none; border-style: dashed; font-size: 14px; }
+  .topic.taken small { color: var(--dim); }
+  .topic.mine { background: var(--yellow); box-shadow: none; }
+  .topic.mine small { color: var(--ink); }
+  .topic.pickable:active { transform: translate(2px, 3px); box-shadow: 2px 2px 0 var(--shadow); }
+  .topic.used { background: var(--panel2); color: var(--dim); box-shadow: none; border-style: dashed; text-decoration: line-through; }
+  .handlab { margin: 4px 0 -4px; font-weight: 900; font-size: 12px; letter-spacing: 0.1em; color: var(--dim); text-align: center; }
 </style>
 </head>
 <body>
@@ -221,7 +242,7 @@
   <main class="wrap">
     <div class="hero">
       <h1 class="logo" aria-label="No Cap"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 40c0-16 10-26 24-26s22 9 23 22l7 2c2 1 1 4-1 4H10c-1 0-2-1-2-2z" fill="#3D7BFF" stroke="#0E0C1C" stroke-width="4" stroke-linejoin="round"/><path d="M30 14c-6 6-8 15-8 26" fill="none" stroke="#0E0C1C" stroke-width="3"/><circle cx="32" cy="32" r="28" fill="none" stroke="#FF3B5C" stroke-width="6"/><path d="M12 52L52 12" stroke="#FF3B5C" stroke-width="6" stroke-linecap="round"/></svg>NO CAP</h1>
-      <p class="tagline">Three facts. One cap. Someone reads it with a straight face; you find the facts.</p>
+      <p class="tagline">Three facts. One cap. Draft the topics your friends know least, then find the facts in theirs.</p>
       <p class="brewnote" id="brewNote" hidden>🧪 Brewing in Capra’s Lab</p>
     </div>
     <section class="card" id="startCard" hidden>
@@ -230,7 +251,7 @@
       <label class="field" id="nameField"><span>YOUR NAME</span><input id="nameIn" maxlength="17" autocomplete="off" placeholder="Name"></label>
       <button class="btn big wide" type="button" id="hostBtn">Host a game</button>
       <button class="btn big wide cyan" type="button" id="soloBtn">Play solo</button>
-      <p class="note">Host for friends in the same room: everyone takes turns reading. Solo plays ten cards on your own; then send a friend the same ten.</p>
+      <p class="note">Host for friends, in the room or online: draft topic cards, then play them at each other. Solo plays ten cards on your own; then send a friend the same ten.</p>
     </section>
     <section class="card" id="joinCard">
       <h2>Join a game</h2>
@@ -259,5 +280,6 @@
 <div class="toast" id="toast" role="status"></div>
 <script type="module" src="/no-cap/game.js"></script>
 <script src="/lab/chip.js" defer></script>
+<script src="/lab/share.js" defer></script>
 </body>
 </html>

@@ -1,11 +1,11 @@
-// No Cap: rules, decks, a live game with a reader, a solo run and a challenge.   node games/no-cap/test/no-cap.test.mjs
+// No Cap: rules, decks, a topic draft with friends, a solo run and a challenge.   node games/no-cap/test/no-cap.test.mjs
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createApi } from '../server/api.js';
 import { memoryStore } from '../server/store.js';
 import { loadDecks, problems } from '../server/load.mjs';
-import { claims, pieces, plain, cardPoints, FIND_MS, READ_MS, REVEAL_MS, POINTS } from '../shared/rules.mjs';
+import { claims, pieces, plain, cardPoints, FIND_MS, PICK_MS, CHOOSE_MS, REVEAL_MS, POINTS } from '../shared/rules.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 let passed = 0;
@@ -68,87 +68,107 @@ await test('live for everyone: a guest with a name opens a room, a friend joins 
   assert.ok(s.code, 'signed-in players play as their lab name');
 });
 
-await test('a live game: the reader reads, everyone else finds the facts, busted on the cap', async () => {
+await test('with friends: a snake draft of topic cards, then everyone plays their cards in pick order', async () => {
   const g = setup();
   const h = await g.call('/rooms', { kind: 'live', deckId: 'alpha', ...JJ });
-  const a = await g.call(`/rooms/${h.code}/join`, { name: 'DA_ROMAN_EMPIRE' });
+  const a = await g.call(`/rooms/${h.code}/join`, { name: 'Ana' });
   const b = await g.call(`/rooms/${h.code}/join`, { name: 'Bee' });
+  const as = (s, x = {}) => ({ pid: s.pid, tok: s.tok, ...x });
   const seat = { [h.pid]: h, [a.pid]: a, [b.pid]: b };
-  const as = (s, extra = {}) => ({ pid: s.pid, tok: s.tok, ...extra });
-  await assert.rejects(g.call(`/rooms/${h.code}/start`, as(a)), /Only the host/);
+  await assert.rejects(g.call(`/rooms/${h.code}/start`, as(a)), /host/);
   let v = (await g.call(`/rooms/${h.code}/start`, as(h))).room;
-  assert.equal(v.n, 9, 'three players read three cards each');
-  assert.equal(v.stage, 'read');
-  const reader = seat[v.reader];
-  const others = [h, a, b].filter((s) => s !== reader);
-  const rv = (await g.call(`/rooms/${h.code}`, as(reader))).room;
-  assert.ok(rv.card && rv.card.say && rv.card.cap != null, 'the reader sees the card and the cap');
-  const lv = (await g.call(`/rooms/${h.code}`, as(others[0]))).room;
-  assert.equal(lv.card, undefined, 'listeners hear it, they don’t read it');
-  assert.match(lv.about, /^Thing number \d+$/, 'everyone sees what the card is about');
-  assert.equal(lv.about, rv.card.about);
-  await assert.rejects(g.call(`/rooms/${h.code}/tap`, as(others[0], { i: 0, k: 0 })), /Time’s up/);
-  g.tick(4000);
-  v = (await g.call(`/rooms/${h.code}/read`, as(reader, { i: 0 }))).room;
+  assert.equal(v.stage, 'draft');
+  assert.equal(v.draft.total, 6, 'three players: two topic cards each');
+  assert.equal(v.draft.pile.length, 6);
+  assert.ok(v.draft.pile.every((x) => /^Thing number/.test(x.about) && x.by == null), 'the pile shows topics only');
+  assert.equal(JSON.stringify(v).includes('claim one'), false, 'no card text during the draft');
+  const order = v.order.map((p) => p.pid), pile = v.draft.pile;
+  const capOf = (c) => [2, 0, 3, 1][Number(pile[c].about.split(' ').pop()) % 4];
+  assert.deepEqual(order.slice().sort(), [h.pid, a.pid, b.pid].sort(), 'a random order of everyone');
+  // snake: 1 2 3 3 2 1
+  const snake = [0, 1, 2, 2, 1, 0].map((k) => order[k]);
+  await assert.rejects(g.call(`/rooms/${h.code}/pick`, as(seat[snake[1]], { k: 0, c: 0 })), /not your pick/);
+  for (let k = 0; k < 4; k++) {
+    assert.equal(v.draft.picker, snake[k], 'pick ' + k);
+    g.tick(2000);
+    v = (await g.call(`/rooms/${h.code}/pick`, as(seat[snake[k]], { k, c: 5 - k }))).room;
+  }
+  await assert.rejects(g.call(`/rooms/${h.code}/pick`, as(seat[snake[4]], { k: 4, c: 5 })), /taken/);
+  // pick 4 runs out its clock: the next card on the pile (card 0) is theirs; then the last pick
+  g.tick(PICK_MS + 10);
+  v = (await g.call(`/rooms/${h.code}`, as(h))).room;
+  assert.equal(v.draft.k, 5);
+  assert.equal(v.draft.pile[0].by, snake[4], 'a missed pick takes the next card on the pile');
+  v = (await g.call(`/rooms/${h.code}/pick`, as(seat[snake[5]], { k: 5, c: 1 }))).room;
+
+  // the play: the same order as the draft, one card each, around twice
+  assert.equal(v.stage, 'choose');
+  assert.equal(v.reader, order[0]);
+  assert.equal(v.n, 6);
+  const first = seat[order[0]], others = [order[1], order[2]].map((p) => seat[p]);
+  let mine = (await g.call(`/rooms/${h.code}`, as(first))).room;
+  assert.deepEqual(mine.myHand.map((x) => x.c).sort(), [1, 5], 'your hand is what you drafted');
+  assert.equal(mine.card, undefined, 'you only know your topics until the card is played');
+  await assert.rejects(g.call(`/rooms/${h.code}/play`, as(others[0], { i: 0, c: 4 })), /not your turn/);
+  await assert.rejects(g.call(`/rooms/${h.code}/play`, as(first, { i: 0, c: 4 })), /from your hand/);
+  g.tick(3000);
+  v = (await g.call(`/rooms/${h.code}/play`, as(first, { i: 0, c: 5 }))).room;
   assert.equal(v.stage, 'find');
-  const fv = (await g.call(`/rooms/${h.code}`, as(others[0]))).room;
-  assert.equal(fv.card.claims.length, 4);
-  assert.equal(fv.card.cap, undefined, 'nobody hunting sees the cap');
-  await assert.rejects(g.call(`/rooms/${h.code}/tap`, as(reader, { i: 0, k: 0 })), /reader/);
-  const cap = rv.card.cap, facts = [0, 1, 2, 3].filter((k) => k !== cap);
-  // one finds all three fast; the other gets busted on the cap after one fact
+  assert.equal(v.about, pile[5].about);
+  const cap = capOf(5), facts = [0, 1, 2, 3].filter((k) => k !== cap);
+  assert.equal(v.card.cap, cap, 'whoever played it sees the cap');
+  const ov = (await g.call(`/rooms/${h.code}`, as(others[0]))).room;
+  assert.equal(ov.card.claims.length, 4);
+  assert.equal(ov.card.cap, undefined, 'hunters don’t');
+  await assert.rejects(g.call(`/rooms/${h.code}/tap`, as(first, { i: 0, k: facts[0] })), /your card/);
+  // one finds all three, the quicker; the other taps the cap
   g.tick(2000);
   for (const k of facts) await g.call(`/rooms/${h.code}/tap`, as(others[0], { i: 0, k }));
-  await g.call(`/rooms/${h.code}/tap`, as(others[1], { i: 0, k: facts[0] }));
+  g.tick(1000);
   v = (await g.call(`/rooms/${h.code}/tap`, as(others[1], { i: 0, k: cap }))).room;
-  assert.equal(v.stage, 'reveal', 'everyone done: the reveal comes early');
-  assert.equal(v.card.cap, cap);
-  assert.ok(v.card.real);
-  assert.equal(v.round[others[1].pid].busted, true);
+  assert.equal(v.stage, 'reveal', 'everyone done: straight to the reveal');
+  assert.equal(v.round[others[0].pid].pts, cardPoints(3, false, 2000) + POINTS.first);
   assert.equal(v.round[others[1].pid].pts, 0);
-  assert.equal(v.round[others[0].pid].pts, cardPoints(3, false, 2000) + POINTS.first, 'first to find all three gets the bonus');
-  assert.equal(v.round[others[0].pid].first, true);
-  assert.equal(v.round[reader.pid].pts, POINTS.fooled, 'the reader scores for fooling one');
+  assert.equal(v.round[first.pid].pts, POINTS.fooled, 'the one who played it scores for fooling a friend');
+  assert.equal(v.card.real, 'What really happened.');
+  // the next turn belongs to the second in the order; a turn left alone plays their next card
   g.tick(REVEAL_MS);
   v = (await g.call(`/rooms/${h.code}`, as(h))).room;
-  assert.equal(v.i, 1);
-  assert.equal(v.stage, 'read');
-  assert.notEqual(v.reader, reader.pid, 'the next card has the next reader');
-  // a reader who never taps Done: the clock starts on its own
-  g.tick(READ_MS);
+  assert.equal(v.stage, 'choose'); assert.equal(v.reader, order[1]); assert.equal(v.i, 1);
+  g.tick(CHOOSE_MS + 10);
   v = (await g.call(`/rooms/${h.code}`, as(h))).room;
-  assert.equal(v.stage, 'find');
-  // both find all three: the quicker one scores more and gets "first"
-  const reader2 = seat[v.reader], others2 = [h, a, b].filter((s) => s !== reader2);
-  const cap2 = (await g.call(`/rooms/${h.code}`, as(reader2))).room.card.cap, facts2 = [0, 1, 2, 3].filter((k) => k !== cap2);
-  g.tick(3000);
-  for (const k of facts2) await g.call(`/rooms/${h.code}/tap`, as(others2[0], { i: 1, k }));
-  g.tick(9000);
-  for (const k of facts2) v = (await g.call(`/rooms/${h.code}/tap`, as(others2[1], { i: 1, k }))).room;
-  assert.equal(v.stage, 'reveal');
-  const quick = v.round[others2[0].pid], slow = v.round[others2[1].pid];
-  assert.equal(quick.first, true);
-  assert.equal(slow.first, false);
-  assert.equal(quick.pts, cardPoints(3, false, 3000) + POINTS.first);
-  assert.equal(slow.pts, cardPoints(3, false, 12000));
-  assert.ok(quick.pts > slow.pts, 'the quicker to answer gets more points');
-  g.tick(REVEAL_MS);
-  // nobody taps: time runs out, reveal, next
-  g.tick(READ_MS);
-  v = (await g.call(`/rooms/${h.code}`, as(h))).room;
-  assert.equal(v.stage, 'find');
-  g.tick(FIND_MS);
-  v = (await g.call(`/rooms/${h.code}`, as(h))).room;
-  assert.equal(v.stage, 'reveal');
-  // play it out
-  for (let i = 0; i < 40 && v.phase !== 'over'; i++) { g.tick(READ_MS + FIND_MS + REVEAL_MS); v = (await g.call(`/rooms/${h.code}`, as(h))).room; }
+  assert.equal(v.stage, 'find', 'the clock played it for them');
+  // run it out
+  for (let i = 0; i < 40 && v.phase !== 'over'; i++) { g.tick(CHOOSE_MS + FIND_MS + REVEAL_MS); v = (await g.call(`/rooms/${h.code}`, as(h))).room; }
   assert.equal(v.phase, 'over');
   assert.equal(v.final.length, 3);
-  assert.ok(v.final[0].score >= v.final[2].score);
+  assert.ok(v.final[0].score >= v.final[1].score);
+  for (const p of v.final) { assert.equal(p.marks.length, 6); assert.equal(p.marks.filter((m) => m === 'own').length, 2, 'two of the six were their own cards'); }
+  assert.equal(v.final.find((p) => p.pid === others[0].pid).marks[0], 'first');
+  assert.equal(v.final.find((p) => p.pid === others[1].pid).marks[0], 'bust');
+  // deal again: a new draft
   v = (await g.call(`/rooms/${h.code}/again`, as(h, { deckId: 'beta' }))).room;
-  assert.equal(v.phase, 'play');
-  assert.equal(v.deck.id, 'beta');
-  assert.equal(v.players.every((p) => p.score === 0), true, 'a fresh game');
+  assert.equal(v.stage, 'draft'); assert.equal(v.deck.id, 'beta'); assert.equal(v.players[0].score, 0);
+});
+
+await test('two players get four cards each; a big room tops the pile up from the shelf', async () => {
+  const g = setup();
+  const h = await g.call('/rooms', { kind: 'live', deckId: 'alpha', ...JJ });
+  const a = await g.call(`/rooms/${h.code}/join`, { name: 'Ana' });
+  const as = (s, x = {}) => ({ pid: s.pid, tok: s.tok, ...x });
+  let v = (await g.call(`/rooms/${h.code}/start`, as(h))).room;
+  assert.equal(v.draft.total, 8);
+  // nobody picks: the clock drafts all eight, four each
+  g.tick(8 * PICK_MS + 10);
+  v = (await g.call(`/rooms/${h.code}`, as(a))).room;
+  assert.equal(v.stage, 'choose');
+  assert.equal(v.myHand.length, 4);
+  // 8 players need 16 cards: a 12-card deck is topped up from its shelf
+  const big = createApi({ store: memoryStore(), decks: [fake('alpha'), fake('gamma'), fake('beta', 'adult')], verify: async () => null, clock: () => g.now });
+  const bh = await big.route('POST', '/rooms', { kind: 'live', deckId: 'alpha', name: 'P0' });
+  for (let k = 1; k < 8; k++) await big.route('POST', `/rooms/${bh.code}/join`, { name: 'P' + k });
+  const bv = (await big.route('POST', `/rooms/${bh.code}/start`, { pid: bh.pid, tok: bh.tok })).room;
+  assert.equal(bv.draft.total, 16);
 });
 
 await test('solo run, then a challenge with a board', async () => {

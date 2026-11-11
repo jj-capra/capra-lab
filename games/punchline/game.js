@@ -204,7 +204,7 @@ function renderDrop() {
   const done = savedDrop();
   $('dropPlay').hidden = !!done;
   $('dropDone').hidden = !done;
-  if (done) { $('doneScore').textContent = fmt(done.score); $('doneMarks').textContent = done.marks; }
+  if (done) { $('doneScore').textContent = fmt(done.score); $('doneMarks').textContent = done.marks; shareCard($('doneShare'), dropText({ title: d.deck.title, ...done })); }
 }
 
 function hostDecks() { return (S.today && S.today.decks) || []; }
@@ -698,7 +698,13 @@ function renderFinal() {
   $('ranks').innerHTML = ps.slice(3).map((p, k) => `<li class="${p.me ? 'me' : ''}"><span>${k + 4}</span><span>${esc(p.name)}</span><b>${fmt(p.score)}</b></li>`).join('');
   $('againBtn').hidden = !v.host;
   $('againWait').hidden = v.host;
+  $('shareBtn').hidden = false;
   $('shareBtn').textContent = 'Invite more friends';
+  // the results text: the ranks, then my own row of marks (⚡ where I got it first)
+  const g = S.game, mine = ps[me], tie = ps.length > 1 && ps[1].score === ps[0].score;
+  const row = g && mine ? (g.results || []).map((r) => (r && r.mine && r.mine.ok ? (r.first === mine.name ? '⚡' : '🟩') : r && r.mine && r.mine.pick != null ? '🟥' : '⬛')).join('') : '';
+  shareCard($('finalShare'), resultsText({ sub: v.deck.title,
+    lines: ps.map((p, k) => `${k === 0 && !tie ? '👑 ' : ''}${p.name} ${fmt(p.score)}`), grid: [row ? `${row} ${mine.name}` : ''] }));
   $('homeBtn').textContent = 'Leave the game';
 }
 function renderSoloFinal() {
@@ -714,17 +720,29 @@ function renderSoloFinal() {
   $('soloScore').textContent = fmt(score);
   $('soloMarks').textContent = marks;
   $('soloLine').textContent = `${right} of ${g.results.length} right. A new drop lands at midnight (Pacific).`;
-  $('shareBtn').textContent = 'Share your score';
+  $('shareBtn').hidden = true;   // the results card is the share here; the button is the party's invite
   $('homeBtn').textContent = 'Back to Punchline';
-  store.set('punchline.daily', { date: g.date, no: g.no, score, marks });
+  const d = { date: g.date, no: g.no, score, marks, title: g.title };
+  store.set('punchline.daily', d);
+  shareCard($('finalShare'), dropText(d));
 }
 function shareFinal() {
-  if (S.game && S.game.mode === 'solo') { const d = store.get('punchline.daily', {}); shareDrop(d); return; }
   if (S.seat) share(`Get in here: Punchline, game ${S.seat.code}`, location.origin + BASE + S.seat.code);
 }
-function shareDrop(d) {
-  if (!d || d.score == null) return;
-  share(`PUNCHLINE No. ${d.no} · ${fmt(d.score)} pts\n${d.marks}`, location.origin + BASE);
+// The results text (the same card in every Capra Lab game: /lab/share.js).
+function resultsText({ no, sub, lines, grid }) {
+  if (window.CapraShare) return CapraShare.text({ emoji: '🎤', game: 'Punchline', no, sub, lines, grid });
+  return [`🎤 Punchline${no ? ' No. ' + no : ''}${sub ? ' · ' + sub : ''}`, ...(lines || []), ...(grid || [])].filter(Boolean).join('\n');
+}
+function dropText(d) {
+  const all = Array.from(d.marks || ''), right = all.filter((m) => m === '🟩').length;
+  return resultsText({ no: d.no, sub: d.title, lines: [`${fmt(d.score)} pts · ${right}/${all.length} right`], grid: [d.marks] });
+}
+function shareCard(box, text) {
+  if (!box) return;
+  if (!text || !customElements.get('lab-text-share')) { box.innerHTML = ''; return; }
+  box.innerHTML = '<lab-text-share></lab-text-share>';
+  box.firstChild.set({ emoji: '🎤', title: 'Punchline', text, url: location.origin + BASE });
 }
 
 /* ================= wiring ================= */
@@ -748,7 +766,6 @@ function wire() {
 
   // home
   $('dropPlay').addEventListener('click', playDrop);
-  $('doneShare').addEventListener('click', () => shareDrop(savedDrop()));
   $('deckBtn').addEventListener('click', () => openDecks('host'));
   $('lateSw').addEventListener('change', (e) => setLate(e.target.checked));
   $('lateSw2').addEventListener('change', (e) => setLate(e.target.checked));

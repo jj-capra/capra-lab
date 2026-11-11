@@ -1,6 +1,6 @@
-// No Cap's page (JC, Nov 8 2026): home, the deck picker, the lobby, a card (read → find → reveal),
-// the final, and challenge links. The server holds every answer; a phone only learns the cap at
-// the reveal (or when it's the reader's turn).
+// No Cap's page (JC, Nov 8 2026): home, the deck picker, the lobby, the topic draft with friends
+// (Nov 11 2026), a card (find → reveal), the final with its results text, and challenge links.
+// The server holds every answer; a phone only learns the cap at the reveal (or on a card it played).
 import { SHELVES, pieces, POINTS } from './shared/rules.mjs';
 
 const API = '/no-cap/api';
@@ -72,10 +72,11 @@ const typedName = (input) => { const n = (input.value || '').trim(); if (n) stor
 function help() {
   sheet(`<h2>How No Cap works</h2><ul>
     <li><b>Every card is one sentence with four claims about the same thing.</b> Three are facts. One is cap: made up.</li>
-    <li><b>Live with friends:</b> everyone takes turns reading. The reader’s phone shows which part is cap; they read it out loud with a straight face.</li>
-    <li><b>Find the three facts.</b> When the reader is done, the four claims pop up on your phone. Tap the facts one at a time. Tap the cap and you’re busted for that card.</li>
-    <li><b>Every card is about one thing</b> (a president, a place, an invention…), so all four claims sound like they could be true.</li>
-    <li><b>Points:</b> 50 a fact, 100 more for all three, and up to 150 more the faster you find them (45 seconds on the clock). In a live game the first to find all three gets 50 more. Busted keeps nothing. The reader gets 50 for every friend they bust.</li>
+    <li><b>Every card is about one topic</b> (a president, a place, an invention…), so all four claims sound like they could be true.</li>
+    <li><b>Find the three facts.</b> Tap the facts one at a time. Tap the cap and you’re busted for that card.</li>
+    <li><b>With friends, you draft first.</b> A pile of topic cards goes down: two each (four each with two players). You only see the topics. The order is random and the picks snake: 1, 2, 3, then 3, 2, 1. Grab the topics your friends know least.</li>
+    <li><b>Then you play them.</b> In the same order, each player plays one card from their hand at everyone else, until every card is played.</li>
+    <li><b>Points:</b> 50 a fact, 100 more for all three, and up to 150 more the faster you find them (45 seconds on the clock). The first to find all three gets 50 more. Busted keeps nothing. Your own card earns you 100 for every friend it busts.</li>
     <li><b>Solo and challenges:</b> play ten cards on your own, then send a friend the same ten and see who scores higher.</li>
   </ul>`);
 }
@@ -186,7 +187,7 @@ function schedule(force) {
     if (room.phase === 'lobby') ms = 2500;
     else if (room.phase === 'over') ms = room.kind === 'live' ? 3000 : null;
     else if (room.kind === 'solo') ms = room.stage === 'find' ? Math.max(200, t.findEnd - now + 150) : null;
-    else if (room.stage === 'read') ms = 1500;
+    else if (room.stage === 'draft' || room.stage === 'choose') ms = Math.min(1500, Math.max(200, t.end - now + 150));
     else if (room.stage === 'find') ms = Math.min(2000, Math.max(200, t.findEnd - now + 150));
     else if (room.stage === 'reveal') ms = Math.max(200, t.revealEnd - now + 150);
   }
@@ -215,7 +216,7 @@ function renderLobby() {
     <section class="card codebox"><span class="muted" style="font-weight:900;font-size:12px;letter-spacing:.1em">ROOM CODE</span><b>${esc(r.code)}</b>
       <button class="btn wide" type="button" id="shareBtn">Send the link</button></section>
     <section class="card"><h2>${r.players.length} in the room</h2><ul class="people">${people}</ul>
-      <p class="note">Everyone takes turns reading. The reader sees which part is cap and reads it out loud with a straight face; everyone else finds the three facts on their phone.</p></section>
+      <p class="note">First you draft: ${r.hand} topic cards each, picked one at a time in a random order. Then everyone plays their cards at the rest of the room, one at a time.</p></section>
     <section class="card"><h2>${esc(r.deck.title)}</h2>
       ${r.host ? `<button class="btn alt wide" type="button" id="deckBtn">Change the deck</button>
         <button class="btn big wide" type="button" id="startBtn" ${r.players.length < 2 ? 'disabled' : ''}>${r.players.length < 2 ? 'Waiting for friends' : 'Start'}</button>`
@@ -234,30 +235,54 @@ function sentence(c, markCap) {
 }
 const nameOf = (pid) => { const p = room.players.find((x) => x.pid === pid); return p ? p.name : 'Someone'; };
 
+// The pick order as chips; `on` is whose turn it is.
+function orderStrip(r, on) {
+  return `<ol class="order" aria-label="The order">${(r.order || []).map((p, k) => `<li class="${p.pid === on ? 'on' : ''} ${p.pid === r.me ? 'me' : ''}"><small>${k + 1}</small><span>${esc(p.name)}</span>${r.stage === 'draft' ? '' : `<small>${p.left} left</small>`}</li>`).join('')}</ol>`;
+}
+function renderDraft() {
+  const r = room, d = r.draft, el = $('playBody'), mine = d.picker === r.me;
+  const round = Math.floor(d.k / r.order.length) + 1, rounds = d.total / r.order.length;
+  el.innerHTML = `<div class="hud"><span>PICK <b>${d.k + 1}</b> OF ${d.total}</span><span>ROUND ${round} OF ${rounds}</span></div>
+    <div class="clock" id="clock"><i></i></div>
+    <div class="banner"><div class="big">${mine ? 'Your pick' : `${esc(d.pickerName)} is picking`}</div>
+      <p class="note">${mine ? 'Take the topic your friends know least. You’ll play it at them.' : 'You only see the topics. The picks snake back and forth.'}</p></div>
+    ${orderStrip(r, d.picker)}
+    <div class="pile">${d.pile.map((x) => x.by
+      ? `<button class="topic taken ${x.by === r.me ? 'mine' : ''}" type="button" disabled><small>${x.by === r.me ? 'YOURS' : esc(nameOf(x.by)).toUpperCase()}</small>${esc(x.about)}</button>`
+      : `<button class="topic ${mine ? 'pickable' : 'wait'}${pending.has('p' + x.c) ? ' wait' : ''}" type="button" data-c="${x.c}" ${mine ? '' : 'disabled'}><small>TOPIC</small>${esc(x.about)}</button>`).join('')}</div>`;
+  for (const b of el.querySelectorAll('[data-c]:not(:disabled)')) b.onclick = () => once('p' + b.dataset.c, () => act('pick', { k: d.k, c: Number(b.dataset.c) }));
+  tickClock();
+}
+function renderChoose() {
+  const r = room, el = $('playBody'), mine = r.reader === r.me;
+  const hand = r.myHand || [];
+  el.innerHTML = `<div class="hud"><span>CARD <b>${r.i + 1}</b> OF ${r.n}</span><span>${esc(r.deck.title)}</span></div>
+    <div class="clock" id="clock"><i></i></div>
+    <div class="banner"><div class="big">${mine ? 'Your turn' : `${esc(r.readerName)} is choosing`}</div>
+      <p class="note">${mine ? 'Pick a card to play at everyone else.' : 'Their card lands here in a moment. Find the three facts, fast.'}</p></div>
+    ${orderStrip(r, r.reader)}
+    <p class="handlab">${mine ? 'YOUR HAND' : 'YOUR HAND · WAITING FOR YOUR TURN'}</p>
+    <div class="pile">${hand.map((x) => `<button class="topic ${x.used ? 'used' : mine ? 'pickable' : 'wait'}" type="button" data-c="${x.c}" ${mine && !x.used ? '' : 'disabled'}><small>${x.used ? 'PLAYED' : 'TOPIC'}</small>${esc(x.about)}</button>`).join('')}</div>`;
+  for (const b of el.querySelectorAll('[data-c]:not(:disabled)')) b.onclick = () => once('c' + b.dataset.c, () => act('play', { i: r.i, c: Number(b.dataset.c) }));
+  tickClock();
+}
+async function once(key, fn) {
+  if (pending.has(key)) return;
+  pending.add(key);
+  try { await fn(); } finally { pending.delete(key); }
+}
+
 function renderPlay() {
   const r = room, el = $('playBody'), mineIsReader = r.reader && r.reader === r.me;
-  const hud = `<div class="hud"><span>CARD <b>${r.i + 1}</b> OF ${r.n}</span><span>${r.kind === 'live' && r.readerName ? `🎤 ${esc(r.readerName)}` : esc(r.deck.title)}</span></div>`
-    + (r.about && r.stage !== 'ready' ? `<p class="about"><small>THIS ONE’S ABOUT</small><b>${esc(r.about)}</b></p>` : '');
   cancelAnimationFrame(raf);
+  if (r.stage === 'draft') return renderDraft();
+  if (r.stage === 'choose') return renderChoose();
+  const hud = `<div class="hud"><span>CARD <b>${r.i + 1}</b> OF ${r.n}</span><span>${r.kind === 'live' && r.readerName ? `🃏 ${esc(r.readerName)}` : esc(r.deck.title)}</span></div>`
+    + (r.about && r.stage !== 'ready' ? `<p class="about"><small>${r.kind === 'live' ? (mineIsReader ? 'YOUR CARD' : `${esc(r.readerName).toUpperCase()}’S CARD`) : 'THIS ONE’S ABOUT'}</small><b>${esc(r.about)}</b></p>` : '');
   if (r.stage === 'ready') {
     el.innerHTML = `${hud}<div class="banner"><div class="big">Card ${r.i + 1}</div><p class="note">Four claims. Three are facts, one is cap. Tap the facts one at a time; tap the cap and you’re busted.</p></div>
       <button class="btn big wide" type="button" id="goBtn">Go</button>`;
     $('goBtn').onclick = () => act('go', { i: r.i });
-    return;
-  }
-  if (r.stage === 'read') {
-    if (mineIsReader) {
-      el.innerHTML = `${hud}<div class="banner"><div class="mic">🎤</div><div class="big">You’re reading</div>
-        <p class="note">Read it out loud, slow and steady. The cap is marked: keep a straight face.</p></div>
-        ${sentence(r.card, true)}
-        <button class="btn big wide" type="button" id="readBtn">Done reading: start the clock</button>`;
-      $('readBtn').onclick = () => act('read', { i: r.i });
-    } else {
-      el.innerHTML = `${hud}<div class="banner"><div class="mic">🎤</div><div class="big">${esc(r.readerName || 'The reader')} is reading</div>
-        <p class="note">Listen close and watch their face. The four claims pop up here when they’re done.</p></div>
-        ${r.host ? '<button class="btn alt sm" type="button" id="nudgeBtn" style="justify-self:center">Reader stuck? Start the clock</button>' : ''}`;
-      if ($('nudgeBtn')) $('nudgeBtn').onclick = () => act('read', { i: r.i });
-    }
     return;
   }
   if (r.stage === 'find' && mineIsReader) {
@@ -288,7 +313,7 @@ function renderPlay() {
   const verdict = mineIsReader ? `You fooled ${mine ? mine.fooled : 0}` : m.busted ? 'Busted' : m.found.length === 3 ? 'No cap!' : 'Time’s up';
   const pts = mine ? mine.pts : 0;
   const rows = Object.entries(r.round || {}).sort((a, b) => b[1].pts - a[1].pts).map(([pid, x]) => {
-    const how = x.reader ? `🎤 fooled ${x.fooled}` : x.busted ? '💥 busted' : x.found === 3 ? (x.first ? '⚡ first!' : '⭐ all three') : `${x.found} of 3`;
+    const how = x.reader ? `🃏 fooled ${x.fooled}` : x.busted ? '💥 busted' : x.found === 3 ? (x.first ? '⚡ first!' : '⭐ all three') : `${x.found} of 3`;
     return `<li class="${pid === r.me ? 'me' : ''}"><span class="nm">${esc(nameOf(pid))}</span><span class="how">${how}</span><b>+${x.pts}</b></li>`;
   }).join('');
   el.innerHTML = `${hud}<div class="banner"><div class="big">${esc(verdict)}</div>${pts ? `<p class="status good">+${pts}</p>` : ''}</div>
@@ -309,9 +334,10 @@ function renderPlay() {
 }
 function tickClock() {
   const t = room.t;
+  const end = t.findEnd || t.end, span = t.findEnd ? (t.find || 45000) : (t.pick || t.choose || 25000);
   const step = () => {
-    const c = $('clock'); if (!c || !t.findEnd) return;
-    const left = Math.max(0, t.findEnd - srvNow()), frac = left / (t.find || 45000);
+    const c = $('clock'); if (!c || !end) return;
+    const left = Math.max(0, end - srvNow()), frac = Math.min(1, left / span);
     c.firstElementChild.style.transform = `scaleX(${frac})`;
     c.classList.toggle('low', left < 5000);
     if (left > 0) raf = requestAnimationFrame(step);
@@ -332,27 +358,47 @@ async function tap(k) {
   render();
 }
 
+// The results text (the same card in every Capra Lab game: /lab/share.js).
+const MARK = { all: '🟩', first: '⚡', part: '🟨', none: '⬛', bust: '🟥', own: '🃏' };
+const marksRow = (m) => (m || []).map((x) => MARK[x] || '⬛').join('');
+function shareCard(box, text, url) {
+  if (!box || !window.CapraShare) return;
+  box.innerHTML = '<lab-text-share></lab-text-share>';
+  box.firstChild.set({ emoji: '🧢', title: 'No Cap', text, url });
+}
 function renderFinal() {
   const r = room, f = r.final || r.players;
-  const top = f[0];
-  $('playBody').innerHTML = `<div class="banner"><div class="mic">🏆</div><div class="big">${esc(top ? top.name : '')} wins</div><p class="note">${esc(r.deck.title)} · ${r.n} cards</p></div>
-    <ul class="scores">${f.map((p, i) => `<li class="${i === 0 ? 'top' : ''} ${p.pid === r.me ? 'me' : ''}"><span class="nm">${i + 1}. ${esc(p.name)}</span><span class="how"></span><b>${p.score}</b></li>`).join('')}</ul>
-    ${r.host ? `<button class="btn big wide" type="button" id="againBtn">Deal again</button><button class="btn alt wide" type="button" id="newDeckBtn">Pick another deck</button>`
+  const top = f[0], tie = f.length > 1 && f[1].score === top.score;
+  const num = (n) => Number(n).toLocaleString('en-US');
+  $('playBody').innerHTML = `<div class="banner"><div class="mic">🏆</div><div class="big">${tie ? 'It’s a tie' : `${esc(top ? top.name : '')} wins`}</div><p class="note">${esc(r.deck.title)} · ${r.n} cards</p></div>
+    <ul class="scores">${f.map((p, i) => `<li class="${i === 0 ? 'top' : ''} ${p.pid === r.me ? 'me' : ''}"><span class="nm">${i + 1}. ${esc(p.name)}</span><span class="how">${r.n <= 8 ? marksRow(p.marks) : ""}</span><b>${num(p.score)}</b></li>`).join('')}</ul>
+    <div id="shareBox"></div>
+    ${r.host ? `<button class="btn big wide" type="button" id="againBtn">Draft again</button><button class="btn alt wide" type="button" id="newDeckBtn">Pick another deck</button>`
       : `<p class="note" style="text-align:center">Waiting for ${esc(r.hostName)} to deal again.</p>`}`;
   if ($('againBtn')) $('againBtn').onclick = () => act('again');
   if ($('newDeckBtn')) $('newDeckBtn').onclick = () => pickDeck('Pick the next deck', (d) => act('again', { deckId: d.id }));
+  const text = window.CapraShare && CapraShare.text({ emoji: '🧢', game: 'No Cap', sub: r.deck.title,
+    lines: f.map((p, i) => `${i === 0 && !tie ? '👑 ' : ''}${p.name} ${num(p.score)}`),
+    grid: f.map((p) => `${marksRow(p.marks)} ${p.name}`) });
+  shareCard($('shareBox'), text, `${location.origin}/no-cap/`);
 }
 
 function renderSoloFinal() {
   stop();
-  const r = room, me = r.players[0];
+  const r = room, me = (r.final || r.players)[0];
   const url = r.made ? `${location.origin}/no-cap/c/${r.made}` : null;
-  const text = `I scored ${me.score} on No Cap: ${r.deck.title}. Beat it.`;
-  $('playBody').innerHTML = `<div class="banner"><div class="big">Your score</div></div><div class="bigscore">${me.score}</div>
+  const num = (n) => Number(n).toLocaleString('en-US');
+  const right = (me.marks || []).filter((m) => m === 'all').length;
+  const text = window.CapraShare ? CapraShare.text({ emoji: '🧢', game: 'No Cap', sub: r.deck.title,
+    lines: [`${num(me.score)} pts · ${right}/${r.n} no cap`], grid: [marksRow(me.marks), url || r.challenge ? 'Same ten cards. Beat it.' : ''] })
+    : `I scored ${me.score} on No Cap: ${r.deck.title}. Beat it.`;
+  $('playBody').innerHTML = `<div class="banner"><div class="big">Your score</div></div><div class="bigscore">${num(me.score)}</div>
     <p class="note" style="text-align:center">${esc(r.deck.title)} · ${r.n} cards</p>
+    <div id="shareBox"></div>
     <div id="boardBox"></div>
     ${r.challenge ? '' : `<button class="btn big wide" type="button" id="challBtn">${url ? 'Send the challenge again' : 'Challenge a friend'}</button>`}
     <button class="btn alt wide" type="button" id="againSolo">Play another deck</button>`;
+  shareCard($('shareBox'), text, url || (r.challenge ? `${location.origin}/no-cap/c/${r.challenge}` : `${location.origin}/no-cap/`));
   $('againSolo').onclick = () => { seat = null; room = null; home().then(() => open('solo')); };
   if ($('challBtn')) $('challBtn').onclick = async () => {
     if (url) return share(text, url);
