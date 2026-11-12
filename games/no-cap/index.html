@@ -174,6 +174,9 @@
   .claim.cap .stamp { background: var(--yellow); color: var(--ink); animation: slam 0.35s cubic-bezier(.2, 1.6, .4, 1); }
   @keyframes slam { from { transform: scale(2) rotate(-12deg); opacity: 0; } }
   .status { text-align: center; font-weight: 900; font-size: 16px; min-height: 22px; }
+  /* a Cap Shield from the lab's daily Card Draw */
+  .shieldbar { max-width: 560px; margin: 0 auto; padding: 6px calc(var(--sr) + var(--gut)) 4px calc(var(--sl) + var(--gut)); }
+  .shield-up { margin: 0; padding: 10px 12px; border-radius: 14px; border: 3px solid var(--ink); box-shadow: 3px 4px 0 var(--ink); background: var(--fact); color: var(--ink); font-weight: 900; font-size: 14px; line-height: 1.3; text-align: center; }
   .status.bad { color: var(--cap); }
   .status.good { color: var(--fact); }
   .real { background: var(--panel2); border: 3px solid var(--ink); border-radius: 14px; padding: 12px 14px; display: grid; gap: 4px; }
@@ -265,11 +268,13 @@
 
 <section class="screen" id="lobby" hidden>
   <header class="bar"><button class="round-btn" type="button" data-leave aria-label="Leave">✕</button><span class="bar-title" id="lobbyDeck"></span><button class="round-btn" type="button" data-help aria-label="How to play">?</button></header>
+  <div class="shieldbar" id="lobbyShield" hidden><lab-card-offer k="nc-shield" for="game"></lab-card-offer><p class="shield-up" hidden></p></div>
   <main class="wrap" id="lobbyBody"></main>
 </section>
 
 <section class="screen" id="play" hidden>
   <header class="bar"><button class="round-btn" type="button" data-leave aria-label="Leave">✕</button><span class="bar-title" id="playDeck"></span><span class="round-btn" id="myScore" aria-label="Your score">0</span></header>
+  <div class="shieldbar" id="playShield" hidden><lab-card-offer k="nc-shield" for="game"></lab-card-offer><p class="shield-up" hidden></p></div>
   <main class="wrap" id="playBody" aria-live="polite"></main>
 </section>
 
@@ -282,5 +287,6 @@
 <script type="module" src="/no-cap/game.js"></script>
 <script src="/lab/chip.js" defer></script>
 <script src="/lab/share.js" defer></script>
+<script src="/lab/card-offer.js" type="module"></script>
 </body>
 </html>

@@ -10,6 +10,9 @@
 //   POST /rooms/:code/pick   { k, c }        the draft: pick k takes pile card c
 //   POST /rooms/:code/play   { i, c }        turn i: play card c from your hand at everyone else
 //   POST /rooms/:code/tap    { i, k }        tap claim k of card i: a fact, or the cap (busted)
+//   POST /rooms/:code/shield                 raise a Cap Shield (a card from the lab's daily draw,
+//                                            lab/cards.js `nc-shield`): the first cap you tap in
+//                                            this game doesn't bust you. One a player a game.
 //   POST /rooms/:code/go     { i }           solo: show card i
 //   POST /rooms/:code/again  { deckId? }     host, after a game: deal again
 //   POST /rooms/:code/remove { who }         host: take someone out
@@ -31,7 +34,7 @@ const ABC = 'abcdefghijkmnpqrstuvwxyz23456789';
 const ROOM_ABC = 'BCDFGHJKLMNPQRSTVWXZ';
 const cleanName = (s) => String(s || '').replace(/[^\p{L}\p{N} ._'!?-]/gu, '').replace(/\s+/g, ' ').trim().slice(0, NAME_MAX);
 
-export function createApi({ store, decks, verify, role = async () => null, clock = () => Date.now(), rand = Math.random }) {
+export function createApi({ store, decks, verify, role = async () => null, clock = () => Date.now(), rand = Math.random, cards = null }) {
   const rid = (n, abc = ABC) => Array.from({ length: n }, () => abc[Math.floor(rand() * abc.length)]).join('');
   const shuffle = (list) => { const a = list.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const byId = Object.fromEntries(decks.map((d) => [d.id, d]));
@@ -214,6 +217,9 @@ export function createApi({ store, decks, verify, role = async () => null, clock
       players: room.order.filter((p) => room.players[p]).map((p) => ({ pid: p, name: room.players[p].name, score: res.total[p] || 0, host: p === room.host })),
       n: live ? (room.pile || []).length : room.cards ? room.cards.length : 0, challenge: room.challenge || null, made: room.made || null,
       hand: handSize(room.order.filter((p) => room.players[p]).length),
+      // your Cap Shield this game (lab players only): up until the first cap you tap, then used
+      shield: me && room.players[me] && room.players[me].lab
+        ? { up: room.players[me].shield === (room.game || 0) && room.players[me].shieldUsed !== (room.game || 0), used: room.players[me].shieldUsed === (room.game || 0) } : null,
     };
     if (room.phase === 'lobby' || (!room.cards && !room.pile)) return out;
     if (tl.over && live) {
@@ -237,7 +243,7 @@ export function createApi({ store, decks, verify, role = async () => null, clock
     const c = card(room, i, tl);
     out.t = { findStart: tl.findStart || null, findEnd: tl.findEnd || null, revealEnd: tl.revealEnd || null, find: FIND_MS, reveal: REVEAL_MS };
     const mine = (room.taps[i] || {})[me];
-    out.mine = mine ? { found: mine.found, busted: !!mine.busted, done: mine.doneAt != null, pick: mine.busted ? mine.pick : null } : { found: [], busted: false, done: false };
+    out.mine = mine ? { found: mine.found, busted: !!mine.busted, done: mine.doneAt != null, pick: mine.busted ? mine.pick : null, blocked: mine.blocked ?? null } : { found: [], busted: false, done: false, blocked: null };
     const ls = listeners(room, by);
     out.hunting = ls.length;
     out.doneCount = ls.filter((p) => ((room.taps[i] || {})[p] || {}).doneAt != null).length;
@@ -331,6 +337,24 @@ export function createApi({ store, decks, verify, role = async () => null, clock
       });
       return { ...s, code, room: view(room, s.pid, now) };
     }
+    if (op === '/shield') {
+      // the card comes out of the lab hand first, and goes back if the room refuses the shield
+      const r0 = await load(code, now), pid = seat(r0, body), p = r0.players[pid], g0 = r0.game || 0;
+      if (!cards || !p.lab) fail(401, 'Sign in to Capra Lab to play your cards.');
+      if (timeline(r0, now).over || r0.phase === 'over') fail(409, 'This game is over.');
+      if (p.shield === g0) fail(409, 'One shield a game. Yours is already up.');
+      const got = await cards.take(p.lab, 'nc-shield');
+      if (!got) fail(409, 'You’re out of Cap Shields. Win them in the daily Card Draw.');
+      let room;
+      try {
+        room = await change(code, now, (room) => {
+          const me = seat(room, body), q = room.players[me], g = room.game || 0;
+          if (q.shield === g) fail(409, 'One shield a game. Yours is already up.');
+          q.shield = g;
+        });
+      } catch (e) { await cards.give(p.lab, got); throw e; }
+      return { room: view(room, pid, now) };
+    }
     let me = null, room;
     room = await change(code, now, (room) => {
       me = seat(room, body);
@@ -383,8 +407,10 @@ export function createApi({ store, decks, verify, role = async () => null, clock
         const c = card(room, i, tl);
         const t = (room.taps[i] ||= {});
         const x = (t[me] ||= { found: [], busted: false, doneAt: null });
-        if (x.doneAt != null || x.found.includes(k)) return SKIP;
-        if (k === c.cap) { x.busted = true; x.pick = k; x.doneAt = now; }
+        if (x.doneAt != null || x.found.includes(k) || x.blocked === k) return SKIP;
+        const p = room.players[me], g = room.game || 0;
+        if (k === c.cap && p.shield === g && p.shieldUsed !== g) { p.shieldUsed = g; x.blocked = k; }   // the Cap Shield takes it
+        else if (k === c.cap) { x.busted = true; x.pick = k; x.doneAt = now; }
         else { x.found.push(k); if (x.found.length === 3) x.doneAt = now; }
         return;
       }

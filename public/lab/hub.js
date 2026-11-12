@@ -11,6 +11,7 @@
  */
 import { keyCardBlob, readKeyCardFile } from './keycard.js';
 import './capras-lab.js';   /* Capra's Lab: the owner's and crew's private panel */
+import './card-draw.js';    /* the daily Card Draw: four cards a day */
 
 const ME_KEY = 'capra-lab.profile';      /* { name, handle, created, code } */
 const SAVED_KEY = 'capra-lab.key-saved'; /* handle whose card was saved */

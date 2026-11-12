@@ -65,7 +65,10 @@ const DECK_CFG = new Map();   // store -> { at, v }: the owner's deck switches, 
 
 // `labRole(handle)`: Capra's Lab membership ('owner', 'crew' or null) for a verified lab handle
 // (lab/crew.js); without it nobody is a member.
-export function makeHandler(store, { clock = () => Date.now(), labCheck = askCapraLab, labRole = null } = {}) {
+// `cards`: the lab's daily Card Draw (lab/cards.js; JC, Nov 2026: "Let's bring Draw a Card out from Mind
+// Heist and for all Capra lab games"). Moles and Hidden 50/50s are won there now and wait in the lab hand
+// of the profile's lab player; without it only the cards already on a profile can be played.
+export function makeHandler(store, { clock = () => Date.now(), labCheck = askCapraLab, labRole = null, cards = null } = {}) {
   /* ---------- storage helpers ---------- */
   async function mutate(key, fn, { create = null } = {}) {
     for (let attempt = 0; attempt < 8; attempt++) {
@@ -117,6 +120,19 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
   }
 
   const roomKey = (code) => 'r/' + String(code).toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+  // A player's hand: the cards still on the profile from Mind Heist's old draw, then the lab's.
+  const LAB_KINDS = { 'mh-mole': 'mole', 'mh-hfifty': 'hfifty' };
+  async function labHand(profile) {
+    if (!cards || !profile || !profile.lab) return [];
+    try { return (await cards.hand(profile.lab)).cards.filter(c => LAB_KINDS[c.k]).map(c => ({ id: c.id, k: LAB_KINDS[c.k], lab: true })); }
+    catch { return []; }
+  }
+  async function meOut(profile, date) {
+    const out = P.privateProfile(profile, date);
+    out.hand = [...out.hand, ...(await labHand(profile))];
+    return out;
+  }
 
   // Vault Jam trophies (from before it became Goat Getaway): each day you solved is checked once
   // the day is over. The day's fastest solve anywhere wins it. Returns the profile and the days won.
@@ -248,7 +264,7 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
         now, date: cal.today, encore: cal.encore, nextExists: cal.nextExists,
         today: summary(cal.featured, { encore: cal.encore }),
         vault: cal.vault.map(d => summary(d)),
-        me: me ? P.privateProfile(tr.profile, cal.today) : null,
+        me: me ? await meOut(tr.profile, cal.today) : null,
         trophyNews: tr ? tr.won : [],
         goatGems,
         ...(lab ? { lab, brews: hiddenDecks().map(d => summary(d)) } : {}),
@@ -257,11 +273,11 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
 
     if (path === '/me' && method === 'POST') {
       const { pid, token, p } = await makeProfile(cleanName(body.name), cleanAvatar(body.avatar), body.theme, now);
-      return json(200, { pid, token, me: P.privateProfile(p, pacificDate(now)) });
+      return json(200, { pid, token, me: await meOut(p, pacificDate(now)) });
     }
     if (path === '/me' && method === 'GET') {
       const me = await auth(req);
-      return json(200, { me: P.privateProfile(me.profile, pacificDate(now)) });
+      return json(200, { me: await meOut(me.profile, pacificDate(now)) });
     }
     if (path === '/me/update' && method === 'POST') {
       const me = await auth(req);
@@ -271,14 +287,14 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
         if (body.theme != null) p.theme = cleanTheme(body.theme);
         if (body.emo != null) p.emo = emoRow(body.emo);
       });
-      return json(200, { me: P.privateProfile(data, pacificDate(now)) });
+      return json(200, { me: await meOut(data, pacificDate(now)) });
     }
     if (path === '/me/restore' && method === 'POST') {
       const k = await byKey(body.key);
       const token = randomHex(24);
       const hash = await sha256(token);
       const { data } = await mutate('p/' + k.pid, (p) => { p.tokens = [...p.tokens.slice(-5), hash]; });
-      return json(200, { pid: k.pid, token, me: P.privateProfile(data, pacificDate(now)) });
+      return json(200, { pid: k.pid, token, me: await meOut(data, pacificDate(now)) });
     }
 
     // Inside Capra Lab: sign in as the lab player's Mind Heist profile, linking one the first time.
@@ -313,11 +329,13 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
         p.tokens = [...p.tokens.slice(-5), hash]; p.lab = who.handle; p.name = labName(who.name);
         if (goatGems) p.gems = (p.gems || 0) + goatGems;
       });
-      return json(200, { pid, token, goatGems, me: P.privateProfile(data, pacificDate(now)) });
+      return json(200, { pid, token, goatGems, me: await meOut(data, pacificDate(now)) });
     }
 
     /* ---- diamonds (earned in Goat Getaway) and the daily draw ---- */
     if (path === '/draw' && method === 'POST') {
+      // The daily draw moved to Capra Lab's home page: four cards a day for every lab game (JC, Nov 2026).
+      if (cards) bad('The daily draw moved to Capra Lab: four cards a day on the lab’s home page.', 410);
       const today = pacificDate(now);
       const me = await auth(req);
       let card = null;
@@ -470,14 +488,20 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
       const lookup = (id) => (isOpen(id, now, crew) ? getDeck(id) : null);
       // Power cards live on the profile: take one from the hand, play it, and hand it
       // back if the game refuses the play.
-      let card = null, hand;
+      let card = null, labCard = null, hand;
       if (CARD_ACTS[body.type]) {
-        const { data } = await mutate('p/' + me.pid, (p) => {
-          const i = (p.hand || []).findIndex(c => c.k === body.type);
-          if (i < 0) bad(CARD_ACTS[body.type], 409);
-          card = p.hand.splice(i, 1)[0];
-        });
-        hand = data.hand;
+        if ((me.profile.hand || []).some(c => c.k === body.type)) {
+          const { data } = await mutate('p/' + me.pid, (p) => {
+            const i = (p.hand || []).findIndex(c => c.k === body.type);
+            if (i < 0) bad(CARD_ACTS[body.type], 409);
+            card = p.hand.splice(i, 1)[0];
+          });
+          hand = data.hand;
+        } else {
+          labCard = cards && me.profile.lab ? await cards.take(me.profile.lab, 'mh-' + body.type) : null;
+          if (!labCard) bad(CARD_ACTS[body.type], 409);
+          hand = me.profile.hand || [];
+        }
       }
       let room;
       try {
@@ -490,6 +514,7 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
         }, now));
       } catch (e) {
         if (card) await mutate('p/' + me.pid, (p) => { (p.hand ||= []).push(card); }).catch(() => null);
+        if (labCard) await cards.give(me.profile.lab, labCard).catch(() => null);
         throw e;
       }
       let out = room;
@@ -497,7 +522,7 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
         await bankResults(code, now);
         out = (await store.get(roomKey(code))).data;
       }
-      return json(200, { room: E.view(out, me.pid, now), ...(hand ? { hand: hand.map(c => ({ id: c.id, k: c.k })) } : {}) });
+      return json(200, { room: E.view(out, me.pid, now), ...(hand ? { hand: [...hand.map(c => ({ id: c.id, k: c.k })), ...(await labHand(me.profile))] } : {}) });
     }
 
     if (path === '/challenges' && method === 'POST') {

@@ -172,9 +172,10 @@ export function points(n, ms) {
   const left = Math.max(0, GUESS_MS - Math.max(0, ms));
   return 100 + 20 * (n - 1) + Math.round(100 * left / GUESS_MS);
 }
-// A whole run from its guesses: [{ c: pocket id or -1, ms }]. Stops at the third miss.
-export function score(seed, picks) {
-  let total = 0, lives = LIVES, n = 0, right = 0;
+// A whole run from its guesses: [{ c: pocket id or -1, ms }]. Stops at the third miss (the fourth
+// with an Extra Life card from the lab's daily draw).
+export function score(seed, picks, startLives = LIVES) {
+  let total = 0, lives = startLives, n = 0, right = 0;
   for (const g of picks.slice(0, MAX_LEVEL)) {
     n++;
     const lv = level(seed, n);

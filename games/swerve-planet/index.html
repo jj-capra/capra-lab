@@ -272,6 +272,7 @@ body.touch .hud-bc .cap{display:none}
   background:radial-gradient(circle at 3px 3px, rgba(20,13,36,.55) 1.6px, transparent 1.9px) 0 0/7px 7px, rgba(20,13,36,.28)}
 /* The Capra Lab button: 10px below the clock, 16px in, the same spot as in every lab game */
 .labchip{position:absolute;z-index:3;top:calc(env(safe-area-inset-top,0px) + 10px);left:max(16px, env(safe-area-inset-left,0px))}
+.cardoffer{display:block;margin:12px 0 0;max-width:440px}
 #title{padding-top:calc(env(safe-area-inset-top,0px) + 66px)}
 /* the end card is taller with the results text: when it outgrows the screen it starts at the top and scrolls, never clipped */
 #over{grid-template-columns:minmax(0,1fr);overflow-x:hidden}
@@ -490,6 +491,7 @@ body:not(.touch) .lefty{display:none}
           <button class="ghost" id="btnCamp" type="button">Training camp</button>
           <button class="lefty" id="swapToggle" type="button" aria-pressed="false" title="Swap thumbs">Lefty mode</button>
         </div>
+        <lab-card-offer class="cardoffer" k="sp-life" for="run"></lab-card-offer>
       </div>
       <div class="colB">
         <p class="blurb" id="planetBlurb"></p>
@@ -527,6 +529,7 @@ body:not(.touch) .lefty{display:none}
         <div class="lbname"><label class="cap" for="lbName">Your name</label><input id="lbName" maxlength="17" autocomplete="nickname" autocapitalize="characters" spellcheck="false" enterkeyhint="send"><button class="go small" id="lbSend" type="button">POST</button></div>
         <p class="lbmsg" id="lbMsg" aria-live="polite"></p>
       </div>
+      <lab-card-offer class="cardoffer" k="sp-life" for="run"></lab-card-offer>
       <div class="row"><button class="go" id="btnAgain" type="button">DRIVE AGAIN</button><button class="ghost" id="btnPlanets" type="button">PLANETS</button><button class="ghost" id="btnOverBoards" type="button">BOARDS</button><span class="cap" id="overBest">Best 0</span></div>
       <div id="overShare"></div>
     </div>
@@ -550,6 +553,7 @@ body:not(.touch) .lefty{display:none}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="/lab/chip.js" defer></script>
 <script src="/lab/share.js" defer></script>
+<script src="/lab/card-offer.js" type="module"></script>
 <script>
 // Path generator for Swerve Planet — tested in Node, then inlined into the game.
 // Road = sequence of frames every DS units. Each frame: position p, orientation q.
@@ -2607,7 +2611,7 @@ $('#btnPlanets').addEventListener('click', () => toTitle());
 const HEART_SVG = '<svg viewBox="0 0 26 24" aria-hidden="true"><path d="M13 22 C9 18 2 14 2 8 C2 4 5 2 8 2 C10.5 2 12 3.5 13 5 C14 3.5 15.5 2 18 2 C21 2 24 4 24 8 C24 14 17 18 13 22Z" fill="#ff2a4f" stroke="#140d24" stroke-width="2.5" stroke-linejoin="round"/></svg>';
 function drawHearts() {
   ui.hearts.innerHTML = '';
-  for (let i = 0; i < 3; i++) { const s = document.createElement('span'); s.innerHTML = HEART_SVG; if (i >= player.hearts) s.className = 'lost'; ui.hearts.appendChild(s); }
+  for (let i = 0; i < Math.max(3, player.hearts); i++) { const s = document.createElement('span'); s.innerHTML = HEART_SVG; if (i >= player.hearts) s.className = 'lost'; ui.hearts.appendChild(s); }
 }
 function setBestLine() { $('#bestLine').textContent = 'Planet shards found ' + fmt(shardTotal) + ' \u00b7 all planets'; }
 function syncToggles() { ui.btnView.setAttribute('aria-pressed', String(view === 'cockpit')); ui.btnMute.setAttribute('aria-pressed', String(Sound.muted)); ui.btnMute.textContent = Sound.muted ? 'MUTE' : 'SND'; }
@@ -2645,10 +2649,22 @@ function startRun(opts) {
   syncPlanetUi();
   if (camp) campStart(mode);
   drawHearts(); for (const k in lastHud) lastHud[k] = k === 'boosting' || k === 'stealthOn' || k === 'magOn' ? null : -1;
+  if (!camp) extraLife();
   lastLad.tier = -1; lastLad.pct = -1; lastLad.next = ''; lastLad.streak = '';
   touchEl.classList.add('fresh'); clearTimeout(startRun.t); startRun.t = setTimeout(() => touchEl.classList.remove('fresh'), 7000);
   pop(camp ? 'TRAINING CAMP' : mode === 'car' ? 'GO!' : mode === 'hoops' ? 'BALL OUT!' : 'HIKE!', 'stunt');
   if (mode === 'football') Sound.whistle();
+}
+// A card from the lab's daily Card Draw (JC, Nov 2026): an armed Extra Life starts the run with a
+// fourth heart. It's spent when the run starts (/lab/card-offer.js), so arming it costs nothing.
+function extraLife() {
+  const offers = [...document.querySelectorAll('lab-card-offer[k="sp-life"]')], armed = offers.find((o) => o.armed);
+  if (!armed) return;
+  armed.spend().then((ok) => {
+    offers.forEach((o) => o.disarm());
+    if (!ok || game.state !== 'play') return;
+    player.hearts += 1; drawHearts(); pop('EXTRA LIFE!', 'small'); Sound.heart();
+  });
 }
 function toTitle() {
   game.state = 'title'; game.timeScale = 1; clearFx(); releaseTouches();

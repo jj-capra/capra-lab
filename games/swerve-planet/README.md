@@ -56,3 +56,10 @@ GET  /api/scores?mode=car|hoops|football&period=day|week|all
 POST /api/scores   { mode, score, name, pid, dur }
      -> { ok, name, h, ranks: { day, week, all } }   (a rank is null when the score missed the top 100)
 ```
+
+## Extra Life card (Capra Lab's daily Card Draw, Nov 2026)
+
+A signed-in lab player holding an Extra Life (`sp-life` in `/lab/cards-catalog.mjs`) sees it on the
+title and game-over screens (`<lab-card-offer>` from `/lab/card-offer.js`) and can switch it on.
+The next run (not Training camp) spends it when it starts (`extraLife()`): a fourth heart. Heart
+pickups still top up to three.

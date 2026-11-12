@@ -139,6 +139,7 @@ async function home() {
     $('brewNote').hidden = !hello.brew;
     const d = new Date(hello.date + 'T12:00:00');
     $('todayTitle').textContent = 'TODAY’S RUN · ' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
+    $('lifeBox').hidden = !(lab() && !hello.mine);         // the Extra Life is for the run that counts
     if (hello.mine) {
       $('todayNote').textContent = `You scored ${hello.mine.score} today: level ${hello.mine.level}, #${hello.mine.rank} of ${hello.mine.of}. Play it again for fun; only your first run counts.`;
       $('dailyBtn').textContent = 'Play today’s boards again';
@@ -160,14 +161,18 @@ $('dailyBtn').onclick = () => start(hello && !hello.mine ? 'daily' : 'replay');
 $('practiceBtn').onclick = () => start('practice');
 
 /* ---------- a run ---------- */
-const G = { mode: null, seed: null, n: 0, lives: LIVES, score: 0, picks: [], lv: null, view: null, g: null, raf: null, timer: null, cd: null, phase: null, pick: null, pausedAt: 0, ended: false };
+const G = { mode: null, seed: null, n: 0, lives: LIVES, extra: 0, score: 0, picks: [], lv: null, view: null, g: null, raf: null, timer: null, cd: null, phase: null, pick: null, pausedAt: 0, ended: false };
 function stopGame() { cancelAnimationFrame(G.raf); clearTimeout(G.timer); clearInterval(G.cd); G.raf = null; G.cd = null; G.phase = null; }
 // Boards roll on by themselves (JC, Nov 9 2026); this is how long the result stays up.
 const NEXT_MS = 3000, OVER_MS = 2600;
 const PROMPT_H = 132;   // the result line, the countdown and the End Run button
+// An Extra Life card from the lab's daily Card Draw (JC, Nov 2026): today's counted run gets a
+// fourth heart. The server spends the card only if the run goes on past the third miss.
+const MISSES = ['NO', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE'];
 function start(mode) {
   cancelAnimationFrame(demoRaf);
-  Object.assign(G, { mode, seed: mode === 'practice' ? 'p:' + Math.random().toString(36).slice(2) : 'ss:' + hello.date, n: 0, lives: LIVES, score: 0, picks: [], ended: false });
+  const offer = $('lifeOffer'), extra = mode === 'daily' && offer && offer.armed ? 1 : 0;
+  Object.assign(G, { mode, seed: mode === 'practice' ? 'p:' + Math.random().toString(36).slice(2) : 'ss:' + hello.date, n: 0, lives: LIVES + extra, extra, score: 0, picks: [], ended: false });
   show('game');
   next();
 }
@@ -183,7 +188,7 @@ $('quitBtn').onclick = endRun;
 function hud() {
   $('lvl').textContent = 'LEVEL ' + G.n;
   $('pts').textContent = G.score;
-  $('lives').innerHTML = Array.from({ length: LIVES }, (_, i) => (i < G.lives ? '♥' : '<i>♥</i>')).join('');
+  $('lives').innerHTML = Array.from({ length: LIVES + G.extra }, (_, i) => (i < G.lives ? '♥' : '<i>♥</i>')).join('');
 }
 function osd(text, pause = false) { const o = $('osd'); o.textContent = text; o.className = 'osd' + (pause ? ' pause' : ''); }
 
@@ -319,7 +324,7 @@ function land(ms) {
     : `<p class="say bad">${G.pick < 0 ? 'Time!' : 'Nope.'} It hit ${ans}.</p>`;
   const wait = over ? OVER_MS : NEXT_MS, until = performance.now() + wait;
   $('prompt').insertAdjacentHTML('beforeend', over
-    ? `<p class="soon" id="soon">${G.lives <= 0 ? 'THREE MISSES. RUN OVER.' : 'THAT’S EVERY BOARD!'}</p><button class="btn wide" type="button" id="nextBtn">See your run</button>`
+    ? `<p class="soon" id="soon">${G.lives <= 0 ? `${MISSES[LIVES + G.extra]} MISSES. RUN OVER.` : 'THAT’S EVERY BOARD!'}</p><button class="btn wide" type="button" id="nextBtn">See your run</button>`
     : `<p class="soon" id="soon">NEXT BOARD IN ${Math.ceil(wait / 1000)}</p><button class="btn alt wide" type="button" id="endBtn">End Run · bank ${G.score}</button>`);
   if (over) $('nextBtn').onclick = () => finish();
   else $('endBtn').onclick = endRun;
@@ -363,9 +368,15 @@ async function finish() {
     if (!lab()) { $('postLine').textContent = 'Sign in to Capra Lab to put your runs on the board.'; }
     else {
       try {
-        const r = await api('/run', { date: hello.date, picks: G.picks });
-        $('postLine').textContent = r.counted ? `#${r.rank} of ${r.of} today.` : 'Your first run today is the one on the board.';
+        const needed = G.extra > 0 && played - right >= LIVES;      // it went on past the third miss
+        const r = await api('/run', { date: hello.date, picks: G.picks, life: needed });
+        let line = r.counted ? `#${r.rank} of ${r.of} today.` : 'Your first run today is the one on the board.';
+        if (r.life) line += ' Your Extra Life card kept the run going.';
+        else if (needed && r.counted) line += ` Your Extra Life card was gone, so the board counts up to your third miss: ${r.score} points.`;
+        else if (G.extra) line += ' You didn’t need your Extra Life. It’s still in your hand.';
+        $('postLine').textContent = line;
         hello.mine = { score: r.score, level: r.level, rank: r.rank, of: r.of };
+        if (G.extra) { const o = $('lifeOffer'); if (o) o.disarm(); if (window.CapraCards) CapraCards.changed(); }
       } catch (e) { $('postLine').textContent = e.message; }
     }
   }

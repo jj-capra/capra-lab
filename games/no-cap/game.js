@@ -196,8 +196,38 @@ function schedule(force) {
 document.addEventListener('visibilitychange', () => { if (!document.hidden && seat) refresh(); });
 document.addEventListener('click', (e) => { if (e.target.closest('[data-leave]')) { seat = null; room = null; home(); } });
 
+// A Cap Shield from the lab's daily Card Draw (JC, Nov 2026): raise it before or during a game and
+// the first cap you tap in that game doesn't bust you (the server takes the card: POST .../shield).
+function paintShield() {
+  const s = room && room.shield;
+  const gone = !room || room.phase === 'over' || (room.kind === 'solo' && room.final && soloDone);
+  for (const id of ['lobbyShield', 'playShield']) {
+    const box = $(id);
+    if (!box) continue;
+    box.hidden = !s || gone || s.used;
+    if (box.hidden) continue;
+    box.querySelector('lab-card-offer').hidden = s.up;
+    const up = box.querySelector('.shield-up');
+    up.hidden = !s.up;
+    up.textContent = '🛡 SHIELD UP · the first cap you tap this game won’t bust you';
+  }
+}
+for (const o of document.querySelectorAll('lab-card-offer[k="nc-shield"]')) {
+  o.addEventListener('change', async () => {
+    if (!o.armed || !seat) return;
+    busy = true;
+    try { room = (await api(`/rooms/${seat.code}/shield`, body())).room; toast('🛡 Shield up. The first cap you tap won’t bust you.'); }
+    catch (e) { toast(e.message, true); }
+    finally { busy = false; }
+    o.disarm();
+    if (window.CapraCards) CapraCards.changed();
+    render();
+  });
+}
+
 function render() {
   if (!room) return;
+  paintShield();
   $('lobbyDeck').textContent = $('playDeck').textContent = room.deck ? room.deck.title : 'No Cap';
   const me = room.players.find((p) => p.pid === room.me);
   $('myScore').textContent = me ? me.score : 0;
@@ -295,12 +325,13 @@ function renderPlay() {
     const m = r.mine, done = m.done;
     const status = m.busted ? '<p class="status bad">CAP! You’re busted on this one.</p>'
       : m.found.length === 3 ? '<p class="status good">All three. No cap.</p>'
+      : m.blocked != null ? `<p class="status good">🛡 Your shield took the cap. ${m.found.length} of 3 facts.</p>`
       : `<p class="status">${m.found.length} of 3 facts</p>`;
     el.innerHTML = `${hud}<div class="clock" id="clock"><i></i></div>
       <h2 style="text-align:center;font-size:30px;color:var(--yellow)">Find the three facts</h2>
       <div class="claims">${r.card.claims.map((t, k) => {
-        const cls = m.found.includes(k) ? ' fact' : m.busted && m.pick === k ? ' cap' : '';
-        const stamp = m.found.includes(k) ? '<span class="stamp">NO CAP</span>' : m.busted && m.pick === k ? '<span class="stamp">CAP!</span>' : '';
+        const cls = m.found.includes(k) ? ' fact' : (m.busted && m.pick === k) || m.blocked === k ? ' cap' : '';
+        const stamp = m.found.includes(k) ? '<span class="stamp">NO CAP</span>' : m.busted && m.pick === k ? '<span class="stamp">CAP!</span>' : m.blocked === k ? '<span class="stamp">🛡 CAP</span>' : '';
         return `<button class="claim${cls}${done ? ' done' : ''}${pending.has(k) ? ' wait' : ''}" type="button" data-k="${k}" ${done || cls ? 'disabled' : ''}>${esc(t)}${stamp}</button>`;
       }).join('')}</div>${status}
       <p class="note" style="text-align:center">${r.kind === 'live' ? `${r.doneCount} of ${r.hunting} done · first to all three: ⚡ +${POINTS.first}` : 'Faster finds score more'}</p>`;
@@ -349,9 +380,10 @@ async function tap(k) {
   pending.add(k);
   renderPlay();
   try {
-    const before = room.mine.found.length;
+    const before = room.mine.found.length, wasBlocked = room.mine.blocked != null;
     room = (await api(`/rooms/${seat.code}/tap`, body({ i: room.i, k }))).room;
     if (room.mine && room.mine.busted && navigator.vibrate) navigator.vibrate(160);
+    if (room.mine && room.mine.blocked != null && !wasBlocked) { toast('🛡 Shield! That was the cap. You’re still in.'); if (navigator.vibrate) navigator.vibrate([40, 30, 40]); }
     if (room.mine && room.mine.found.length > before && room.mine.found.length === 3) toast('All three. No cap!');
   } catch (e) { toast(e.message, true); }
   finally { pending.delete(k); }

@@ -9,6 +9,8 @@ import { DECKS } from '../../games/no-cap/server/decks.gen.mjs';
 import { createProfiles } from '../../lab/profiles.js';
 import { createCrew } from '../../lab/crew.js';
 import { blobStore, PROFILE_STORE } from '../../lab/stores.js';
+import { createCards, STORE as CARD_STORE } from '../../lab/cards.js';
+import { blobsStore as casBlobs } from '../../lab/casstore.js';
 
 export default async function (req) {
   // Blobs context is per invocation, so bind the stores per request.
@@ -19,6 +21,7 @@ export default async function (req) {
     decks: DECKS,
     verify: (name, code) => profiles.verify(name, code),
     role: (handle) => crew.role(handle),
+    cards: createCards({ store: casBlobs(getStore, CARD_STORE) }),   // Cap Shields from the daily draw
   }).handle(req);
 }
 

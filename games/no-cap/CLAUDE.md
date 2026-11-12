@@ -44,6 +44,11 @@ as their lab name.
   (JC: "In head-to-head, the quicker to answer gets more points"), and in a live game 50 more for
   the first to find all three on the card (⚡ first! at the reveal, when two or more hunt); busted
   keeps nothing for that card; whoever played the card gets 100 for every friend busted on it.
+- **Cap Shield card** (Capra Lab's daily Card Draw, Nov 2026; `nc-shield`): a signed-in player
+  raises it in the lobby or any time before the game ends (the bar above the room,
+  `<lab-card-offer>`; `POST /rooms/:code/shield` takes the card from the lab hand). The first cap
+  they tap in that game doesn't bust them: the claim shows "🛡 CAP" and they keep hunting the
+  facts. One a player a game (`players[pid].shield` / `shieldUsed` hold the game number).
 - 2 to 12 players. The host can draft again with any deck.
 - **The results text** (JC, Nov 11 2026: "All results can be shared via text in the fun format I
   have in other games. I want this results text share consistent for all Capra lab games"): the

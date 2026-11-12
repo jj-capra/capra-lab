@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createApi } from '../server/api.js';
 import { memoryStore } from '../server/store.js';
+import { createCards } from '../../../lab/cards.js';
 import { loadDecks, problems } from '../server/load.mjs';
 import { claims, pieces, plain, cardPoints, FIND_MS, PICK_MS, CHOOSE_MS, REVEAL_MS, POINTS } from '../shared/rules.mjs';
 
@@ -23,11 +24,11 @@ const fake = (id, shelf = 'kids', n = 12) => ({
   })),
 });
 
-function setup({ crew = ['jj-capra'] } = {}) {
+function setup({ crew = ['jj-capra'], cards = null } = {}) {
   let now = 1_800_000_000_000;
   const store = memoryStore();
   const api = createApi({
-    store, decks: [fake('alpha'), fake('beta', 'adult')],
+    store, decks: [fake('alpha'), fake('beta', 'adult')], cards,
     verify: async (name, code) => (code === '123456' ? { name, handle: name.toLowerCase() } : null),
     role: async (h) => (crew.includes(h) ? (h === 'jj-capra' ? 'owner' : 'crew') : null),
     clock: () => now,
@@ -169,6 +170,42 @@ await test('two players get four cards each; a big room tops the pile up from th
   for (let k = 1; k < 8; k++) await big.route('POST', `/rooms/${bh.code}/join`, { name: 'P' + k });
   const bv = (await big.route('POST', `/rooms/${bh.code}/start`, { pid: bh.pid, tok: bh.tok })).room;
   assert.equal(bv.draft.total, 16);
+});
+
+await test('a Cap Shield from the daily draw: the first cap you tap doesn’t bust you', async () => {
+  const cards = createCards({ store: memoryStore() });
+  const g = setup({ cards });
+  await cards.give('jj-capra', { id: 's1', k: 'nc-shield', at: 0 });
+  const s = await g.call('/rooms', { kind: 'solo', deckId: 'beta', ...JJ });
+  const as = (x, extra = {}) => ({ pid: x.pid, tok: x.tok, ...extra });
+  assert.deepEqual(s.room.shield, { up: false, used: false });
+  let v = (await g.call(`/rooms/${s.code}/shield`, as(s))).room;
+  assert.deepEqual(v.shield, { up: true, used: false });
+  assert.equal(await cards.count('jj-capra', 'nc-shield'), 0, 'the card left the hand');
+  await cards.give('jj-capra', { id: 's2', k: 'nc-shield', at: 0 });
+  await assert.rejects(g.call(`/rooms/${s.code}/shield`, as(s)), /One shield a game/);
+  assert.equal(await cards.count('jj-capra', 'nc-shield'), 1, 'a refused shield goes back in the hand');
+  // card 1: tap all four; the cap is blocked and the three facts still count
+  v = (await g.call(`/rooms/${s.code}/go`, as(s, { i: 0 }))).room;
+  const cap0 = [2, 0, 3, 1][Number(v.about.match(/\d+/)[0]) % 4];     // the fake decks' caps go 2, 0, 3, 1
+  v = (await g.call(`/rooms/${s.code}/tap`, as(s, { i: 0, k: cap0 }))).room;
+  assert.equal(v.mine.blocked, cap0, 'the shield took the cap');
+  assert.equal(v.mine.busted, false);
+  for (let k = 0; k < 4; k++) if (k !== cap0) v = (await g.call(`/rooms/${s.code}/tap`, as(s, { i: 0, k }))).room;
+  assert.equal(v.mine.busted, false);
+  assert.equal(v.mine.found.length, 3);
+  assert.deepEqual(v.shield, { up: false, used: true });
+  assert.ok(v.players[0].score > 0, 'all three facts scored');
+  // card 2: the shield is used up, so the cap busts
+  g.tick(1000);
+  v = (await g.call(`/rooms/${s.code}/go`, as(s, { i: 1 }))).room;
+  const capK = [2, 0, 3, 1][Number(v.about.match(/\d+/)[0]) % 4];     // the fake decks' caps go 2, 0, 3, 1
+  v = (await g.call(`/rooms/${s.code}/tap`, as(s, { i: 1, k: capK }))).room;
+  assert.equal(v.mine.busted, true);
+  // a guest has no lab hand
+  const guest = await g.call('/rooms', { kind: 'live', deckId: 'alpha', name: 'Guest' });
+  assert.equal(guest.room.shield, null);
+  await assert.rejects(g.call(`/rooms/${guest.code}/shield`, as(guest)), /Sign in to Capra Lab/);
 });
 
 await test('solo run, then a challenge with a board', async () => {

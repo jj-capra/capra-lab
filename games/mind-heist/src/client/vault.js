@@ -72,19 +72,26 @@ export function DrawSheet({ me, setMe, onClose }) {
 }
 
 /* ---------- home card ---------- */
+// The daily draw moved to Capra Lab (JC, Nov 2026: "Let's bring Draw a Card out from Mind Heist and
+// for all Capra lab games... and it is four cards"): four cards a day on the lab's home page, and the
+// Moles and Hidden 50/50s from it wait in your hand here. The old DrawSheet above stays for a Mind
+// Heist running on its own, outside the lab.
+export const LAB_DRAW = '/';
 export function VaultCard({ me, setMe }) {
   const [draw, setDraw] = useState(false);
   const trophies = (me.trophyList || []).length;
-  return html`<section class="vault-card stk" aria-label="Diamonds and your cards">
+  return html`<section class="vault-card stk" aria-label="Your cards">
     <div class="vc-top">
-      <div class="vc-title"><b>Today’s card</b><span class="muted">One draw a day · your hand holds 3</span></div>
+      <div class="vc-title"><b>Your cards</b><span class="muted">${IN_LAB ? 'From Capra Lab’s daily Card Draw' : 'One draw a day · your hand holds 3'}</span></div>
       <span class="gems" title="Diamonds">💎 ${me.gems || 0}</span>
     </div>
-    <p class="vc-line">${me.drew ? 'You drew today. A new card waits after midnight.' : 'Draw a card for your next game. Spend a 💎 and the odds double.'}
-      ${IN_LAB ? html` Earn diamonds by getting the goat out in <b>Goat Getaway</b>.` : ''}</p>
+    <p class="vc-line">${IN_LAB
+      ? 'Four cards a day on Capra Lab’s home page. Moles and Hidden 50/50s you win there land in your hand here, ready for your next invite game.'
+      : me.drew ? 'You drew today. A new card waits after midnight.' : 'Draw a card for your next game. Spend a 💎 and the odds double.'}</p>
     <div class="row wrap-row">
-      <button class=${'btn' + (me.drew ? '' : ' hi glow')} onClick=${() => setDraw(true)}>${me.drew ? 'Today’s card' : 'Draw a card'}</button>
-      ${IN_LAB && html`<a class="btn" href=${GOAT_GETAWAY}>Earn 💎 in Goat Getaway</a>`}
+      ${IN_LAB
+        ? html`<a class="btn hi glow" href=${LAB_DRAW}>Draw today’s cards</a><a class="btn" href=${GOAT_GETAWAY}>Earn 💎 in Goat Getaway</a>`
+        : html`<button class=${'btn' + (me.drew ? '' : ' hi glow')} onClick=${() => setDraw(true)}>${me.drew ? 'Today’s card' : 'Draw a card'}</button>`}
     </div>
     <div class="vc-hand"><span class="muted">Hand</span><${HandChips} hand=${me.hand} />${trophies ? html`<span class="trophies" title="Vault Jam trophies">🏆 ${trophies}</span>` : ''}</div>
     ${draw && html`<${DrawSheet} me=${me} setMe=${setMe} onClose=${() => setDraw(false)} />`}

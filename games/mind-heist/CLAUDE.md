@@ -65,7 +65,7 @@ on purpose; do not bring any of them back unless JC asks.
     Ties go to sudden death (both captains answer at once).
 12. Multiple choice only, four options, exactly one right answer.
 13. **Power cards** (invite games with two crews; host switch "Power cards", **on by default**;
-    `settings.cards`, always off in party and solo). Players win cards in the daily draw and
+    `settings.cards`, always off in party and solo). Players win cards in Capra Lab's daily draw and
     play them from their own phone. The card leaves the hand when played; a refused play
     hands it back.
     - **Mole**: play it while the *other* crew is answering. Tap an option; their phones show
@@ -103,10 +103,16 @@ on purpose; do not bring any of them back unless JC asks.
   (`l/<handle>` → `p/<pid>.gems`), or leaves them in `gg/<handle>` (`{ gems }`) until the player
   links a profile here. `/me/lab` and `/home` claim `gg/<handle>` with a compare-and-swap
   (`claimGoatGems` in `api.mjs`) and say how many arrived (`goatGems`; home shows a toast).
-- **Daily draw** (`POST /draw`): one card a day. 1 in 4 is a prize (Mole or Hidden 50/50, even
-  split); spend a diamond and it's 1 in 2. The rest are duds named per look. The hand holds 3; a
-  full hand can't draw. Constants in `src/server/cards.mjs`. The home card ("Today's card") has
-  the draw and a link to Goat Getaway (inside the lab only).
+- **The daily draw moved to Capra Lab** (JC, Nov 11 2026: "Let's bring Draw a Card out from Mind
+  Heist and for all Capra lab games... and it is four cards"). Four cards a day on the lab's home
+  page (`lab/cards.js`, `public/lab/cards-catalog.mjs`); Moles (`mh-mole`) and Hidden 50/50s
+  (`mh-hfifty`) won there wait in the lab player's hand. The function gets `cards` (the lab's card
+  store): a linked profile's hand is the cards still on the profile from the old draw plus the lab's
+  (`meOut`, `labHand` in `api.mjs`); playing one takes the profile's own first, then the lab's, and
+  hands it back if the game refuses. `POST /draw` answers 410 inside the lab. The home card ("Your
+  cards") links to the lab's draw. Without `cards` (this folder's own dev server and its tests) the
+  old one-a-day draw still runs: 1 in 4 a prize, a diamond makes it 1 in 2, the hand holds 3
+  (`src/server/cards.mjs`).
 - **Trophies**: Vault Jam's (the day's fastest solve, Nov 2–7 2026) stay on profiles as history
   (🏆 count and shelf, shown only when there are any). Days still pending at the move
   (`jamPend`) are settled from the old race boards (`j/<date>`) the first time the player loads

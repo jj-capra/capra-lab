@@ -4,10 +4,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { makeHandler } from '../src/server/api.mjs';
 import { memoryStore } from '../src/server/store.mjs';
+import { createCards } from '../../../lab/cards.js';
+import { memoryStore as casMemory } from '../../../lab/casstore.js';
 
 const LAB = { 'jj capra': { code: '123456', handle: 'jj-capra', name: 'JJ Capra' }, 'kit': { code: '654321', handle: 'kit', name: 'Kit' } };
 
-function rig() {
+function rig({ cards = null } = {}) {
   const store = memoryStore();
   const asked = [];
   const labCheck = async (name, code) => {
@@ -15,7 +17,7 @@ function rig() {
     const p = LAB[String(name).toLowerCase()];
     return p && p.code === code ? { name: p.name, handle: p.handle } : null;
   };
-  const h = makeHandler(store, { clock: () => Date.parse('2026-11-06T17:00:00Z'), labCheck });
+  const h = makeHandler(store, { clock: () => Date.parse('2026-11-06T17:00:00Z'), labCheck, cards });
   const call = async (method, path, body, who) => {
     const headers = { 'content-type': 'application/json' };
     if (who) headers.authorization = `Bearer ${who.pid}.${who.token}`;
@@ -217,4 +219,23 @@ test('Goat Getaway diamonds waiting for a lab player arrive when they link, and 
   assert.equal(home.goatGems, 2);
   assert.equal(home.me.gems, 5);
   assert.equal((await R.call('GET', '/home', null, again)).goatGems, 0);
+});
+
+test('the lab’s daily Card Draw: Moles and Hidden 50/50s wait in the lab hand; the old draw points there', async () => {
+  const cards = createCards({ store: casMemory() });
+  const R = rig({ cards });
+  const made = await R.call('POST', '/me/lab', { ...jj, create: true, avatar: '🦊' });
+  await cards.give('jj-capra', { id: 'L1', k: 'mh-mole', at: 0 });
+  await cards.give('jj-capra', { id: 'L2', k: 'sp-life', at: 0 });     // another game's card stays out of Mind Heist
+  const me = await R.call('GET', '/me', null, made);
+  assert.deepEqual(me.me.hand.map((c) => c.k), ['mole'], 'the lab’s Mole shows in the hand');
+  const draw = await R.call('POST', '/draw', {}, made);
+  assert.equal(draw.status, 410);
+  assert.match(draw.error, /moved to Capra Lab/);
+  // a refused play (no such room) hands the lab card back
+  const act = await R.call('POST', '/rooms/ZZZZ/act', { type: 'mole', i: 0 }, made);
+  assert.notEqual(act.status, 200);
+  assert.equal(await cards.count('jj-capra', 'mh-mole'), 1, 'the Mole went back in the lab hand');
+  const none = await R.call('POST', '/rooms/ZZZZ/act', { type: 'hfifty' }, made);
+  assert.equal(none.status, 409, 'no Hidden 50/50 anywhere');
 });

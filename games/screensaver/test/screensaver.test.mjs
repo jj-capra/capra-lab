@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { field, pockets, step, run, level, score, points, plan, LIVES, GUESS_MS } from '../shared/board.mjs';
 import { createApi, daySeed, dayOf } from '../server/api.js';
 import { memoryStore } from '../server/store.js';
+import { createCards } from '../../../lab/cards.js';
 
 let passed = 0;
 const test = async (name, fn) => {
@@ -89,6 +90,41 @@ await test('the daily board: one counted run a day, scored by the server, open t
   assert.equal(b.top[0].score, r.score);
   assert.equal((await call('/hello', JJ)).mine.rank, 1);
   await assert.rejects(call('/run', { date: '2026-11-08', picks, ...JJ }), /yesterday/);
+});
+
+await test('an Extra Life card: a fourth heart, spent only when the run needed it', async () => {
+  let now = Date.parse('2026-11-12T18:00:00Z');
+  const cardStore = memoryStore();
+  const cards = createCards({ store: cardStore, clock: () => now });
+  const api = createApi({ store: memoryStore(), clock: () => now, cards,
+    verify: async (name, code) => (code === '123456' ? { name, handle: name.toLowerCase() } : null) });
+  const call = (p, b = {}) => api.route('POST', p, b);
+  const lab = (name) => ({ lab: { name, code: '123456' } });
+  const date = (await call('/hello', {})).date, seed = daySeed(date);
+  const wrong = (n) => ({ c: -1, ms: 25000 }), right = (n) => ({ c: level(seed, n).answer, ms: 1000 });
+  // three misses, then two more right corners on the fourth heart
+  const picks = [right(1), wrong(2), wrong(3), wrong(4), right(5), right(6)];
+  await cards.give('roman', { id: 'c1', k: 'ss-life', at: now });
+  const r = await call('/run', { date, picks, life: true, ...lab('Roman') });
+  assert.equal(r.life, true);
+  assert.equal(r.right, 3, 'the boards after the third miss count');
+  assert.equal(r.score, score(seed, picks, LIVES + 1).score);
+  assert.equal(await cards.count('roman', 'ss-life'), 0, 'the card is spent');
+  // no card: the server counts the run up to the third miss
+  const s = await call('/run', { date, picks, life: true, ...lab('Sam') });
+  assert.equal(s.life, false);
+  assert.equal(s.score, score(seed, picks).score);
+  // armed but not needed: the card stays in the hand
+  await cards.give('kit', { id: 'c2', k: 'ss-life', at: now });
+  const k = await call('/run', { date, picks: [right(1), wrong(2)], life: true, ...lab('Kit') });
+  assert.equal(k.life, false);
+  assert.equal(await cards.count('kit', 'ss-life'), 1, 'not needed, not spent');
+  // a second run the same day doesn't count, so it never spends a card
+  await cards.give('roman', { id: 'c3', k: 'ss-life', at: now });
+  const again = await call('/run', { date, picks, life: true, ...lab('Roman') });
+  assert.equal(again.counted, false);
+  assert.equal(again.life, false);
+  assert.equal(await cards.count('roman', 'ss-life'), 1);
 });
 
 console.log(`\nScreensaver: ${passed} tests passed`);

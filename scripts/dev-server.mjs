@@ -28,12 +28,19 @@ import { createApi as screensaverApi } from '../games/screensaver/server/api.js'
 import { memoryStore as screensaverMemory } from '../games/screensaver/server/store.js';
 import { createApi as parTeeApi } from '../games/par-tee-time/server/api.js';
 import { memoryStore as parTeeMemory } from '../games/par-tee-time/server/store.js';
+import { createCards } from '../lab/cards.js';
+import { memoryStore as casMemory } from '../lab/casstore.js';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'public');
 const PORT = Number(process.env.PORT) || 8790;
 const labStore = memoryStore();
 const profiles = createProfiles(labStore);
 const crew = createCrew(labStore);   // Capra's Lab: make JJ-Capra / DA_ROMAN_EMPIRE locally to try it
+// The lab's daily Card Draw (/api/cards/*); games that check their own cards get it too.
+// /api/cards/__clock?add=ms moves its day (local only) so a test can draw again tomorrow
+let cardsOffset = 0;
+const cards = createCards({ store: casMemory(), clock: () => Date.now() + cardsOffset,
+  verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 const primal = createApi(memoryStore(), profiles);
 // Mind Heist checks lab keys against the same profiles, as its function does on Netlify
 const mhStore = mhMemory();
@@ -41,7 +48,7 @@ let mhOffset = 0; // moved by /mind-heist/__clock, so Mind Heist's browser tests
 const mh = mindHeist(mhStore, { clock: () => Date.now() + mhOffset, labCheck: async (name, code) => {
   const p = await profiles.verify(name, code);
   return p ? { name: p.name, handle: p.handle } : null;
-}, labRole: (handle) => crew.role(handle) });
+}, labRole: (handle) => crew.role(handle), cards });
 
 // Goat Getaway pays its diamonds into the same Mind Heist store; /goat-getaway/__clock?add=ms
 // moves its clock (local only) so a test can reach tomorrow's ribbon
@@ -61,10 +68,10 @@ const classified = classifiedApi({ store: classifiedMemory(), content: classifie
 
 // No Cap reads its decks straight from games/no-cap/decks/; /no-cap/__clock?add=ms moves its clock
 let noCapOffset = 0;
-const noCap = noCapApi({ store: noCapMemory(), decks: noCapDecks(path.join(ROOT, '..', 'games', 'no-cap')), role: (handle) => crew.role(handle), clock: () => Date.now() + noCapOffset,
+const noCap = noCapApi({ store: noCapMemory(), decks: noCapDecks(path.join(ROOT, '..', 'games', 'no-cap')), role: (handle) => crew.role(handle), clock: () => Date.now() + noCapOffset, cards,
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 
-const screensaver = screensaverApi({ store: screensaverMemory(), role: (handle) => crew.role(handle),
+const screensaver = screensaverApi({ store: screensaverMemory(), role: (handle) => crew.role(handle), cards,
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 
 // Par-Tee Time's online rooms and Masters Course; /par-tee-time/__clock?add=ms moves its clock
@@ -134,6 +141,16 @@ http.createServer(async (req, res) => {
   if (url.pathname.startsWith('/no-cap/api/')) return toFunction(req, res, (r) => noCap.handle(r));
   if (url.pathname.startsWith('/screensaver/api/')) return toFunction(req, res, (r) => screensaver.handle(r));
   if (url.pathname.startsWith('/par-tee-time/api/')) return toFunction(req, res, (r) => parTee.handle(r));
+  if (url.pathname === '/api/cards/__clock') {
+    cardsOffset += Number(url.searchParams.get('add') || 0);
+    res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: cardsOffset }));
+  }
+  if (url.pathname === '/api/cards/__give') {        // local only: ?handle=jj-capra&k=sp-life,nc-shield puts cards in a hand
+    const handle = url.searchParams.get('handle') || '';
+    for (const k of (url.searchParams.get('k') || '').split(',').filter(Boolean)) await cards.give(handle, { id: 'dev' + Math.random().toString(36).slice(2, 10), k, at: Date.now() });
+    res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify(await cards.hand(handle)));
+  }
+  if (url.pathname.startsWith('/api/cards/')) return toFunction(req, res, (r) => cards.handle(r));
   if (url.pathname === '/par-tee-time/__clock') {
     parTeeOffset += Number(url.searchParams.get('add') || 0);
     res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: parTeeOffset }));

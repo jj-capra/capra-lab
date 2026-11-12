@@ -4,10 +4,14 @@
 //
 //   POST /hello  { lab? }                 { now, date, brew, canPlay, mine }
 //   POST /board  { date? }                today's top runs
-//   POST /run    { date, picks, lab }     post the day's run: picks = [{ c, ms }]
+//   POST /run    { date, picks, lab, life? }  post the day's run: picks = [{ c, ms }]
+//
+// An Extra Life card from the lab's daily Card Draw (JC, Nov 2026; lab/cards.js, kind `ss-life`)
+// gives today's counted run a fourth heart. The page sends `life` and the card is spent only when
+// the run needed it (it went on past the third miss); the server then scores it with four lives.
 //
 // Store `screensaver`: d/<date> = { runs: { <handle>: { name, score, level, right, at } } }.
-import { score, MAX_LEVEL } from '../shared/board.mjs';
+import { score, MAX_LEVEL, LIVES } from '../shared/board.mjs';
 import { mutate, SKIP } from './store.js';
 
 // Screensaver is a JJ Brew (JC, Nov 8 2026): only Capra's Lab plays and posts. Set false when JC
@@ -18,7 +22,7 @@ const fail = (status, error) => { const e = new Error(error); e.status = status;
 export const dayOf = (ms) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date(ms));
 export const daySeed = (date) => 'ss:' + date;
 
-export function createApi({ store, verify, role = async () => null, clock = () => Date.now() }) {
+export function createApi({ store, verify, role = async () => null, clock = () => Date.now(), cards = null }) {
   async function who(body) {
     const lab = body && body.lab;
     if (!lab || !lab.name || !lab.code) return null;
@@ -61,16 +65,27 @@ export function createApi({ store, verify, role = async () => null, clock = () =
       if (!canPlay(me)) fail(403, 'Screensaver is still being tested in Capra’s Lab.');
       if (body.date !== today) fail(409, 'That was yesterday’s run. Today’s boards are new.');
       const picks = Array.isArray(body.picks) ? body.picks.slice(0, MAX_LEVEL).map((p) => ({ c: Number.isInteger(p && p.c) ? p.c : -1, ms: Math.min(25000, Math.max(0, Number(p && p.ms) || 0)) })) : [];
-      const res = score(daySeed(today), picks);
+      let res = score(daySeed(today), picks);
+      // the Extra Life: only for the run that counts, and only if it went on past the third miss
+      let card = null;
+      if (body.life && cards && res.over && picks.length > res.level) {
+        const g = await store.get('d/' + today);
+        if (!(g && g.data && g.data.runs && g.data.runs[me.handle])) {
+          card = await cards.take(me.handle, 'ss-life');
+          if (card) res = score(daySeed(today), picks, LIVES + 1);
+        }
+      }
       let counted = false;
       const out = await mutate(store, 'd/' + today, (doc) => {
         doc.runs ||= {};
+        counted = false;
         if (doc.runs[me.handle]) return SKIP;               // the first run of the day counts
-        doc.runs[me.handle] = { name: me.name, score: res.score, level: res.level, right: res.right, at: now };
+        doc.runs[me.handle] = { name: me.name, score: res.score, level: res.level, right: res.right, at: now, ...(card ? { life: 1 } : {}) };
         counted = true;
       }, () => ({ runs: {} }));
+      if (card && !counted) { await cards.give(me.handle, card); card = null; }
       const list = top(out.data);
-      return { now, ...res, counted, rank: rankOf(list, me.handle), of: list.length, top: list.slice(0, 25).map(publicRow) };
+      return { now, ...res, counted, life: !!card, rank: rankOf(list, me.handle), of: list.length, top: list.slice(0, 25).map(publicRow) };
     }
     fail(404, 'Not found.');
   }

@@ -6,6 +6,8 @@ import { blobsStore } from '../../games/screensaver/server/store.js';
 import { createProfiles } from '../../lab/profiles.js';
 import { createCrew } from '../../lab/crew.js';
 import { blobStore, PROFILE_STORE } from '../../lab/stores.js';
+import { createCards, STORE as CARD_STORE } from '../../lab/cards.js';
+import { blobsStore as casBlobs } from '../../lab/casstore.js';
 
 export default async function (req) {
   const labStore = await blobStore(PROFILE_STORE);
@@ -14,6 +16,7 @@ export default async function (req) {
     store: blobsStore(getStore, 'screensaver'),
     verify: (name, code) => profiles.verify(name, code),
     role: (handle) => crew.role(handle),
+    cards: createCards({ store: casBlobs(getStore, CARD_STORE) }),   // Extra Life cards from the daily draw
   }).handle(req);
 }
 

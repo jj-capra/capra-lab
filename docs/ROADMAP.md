@@ -30,11 +30,12 @@ JC's words, kept whole so later work starts from them:
 
 ## The order
 
-1. **Par-Tee Time: eight courses and the Masters Course** (in progress, Nov 11 2026). Trophies and
-   loot earned here are kept per player so the trophy room can show them later.
-2. **Card Draw for the whole lab**: a daily draw of four cards on the hub (out of Mind Heist); some
-   blanks, some perks per game (extra lives in Swerve Planet and Screensaver, Mind Heist's hidden
-   50/50, and the like).
+1. **Par-Tee Time: eight courses and the Masters Course** (live Nov 12 2026). Trophies and loot
+   earned here are kept per player so the trophy room can show them later.
+2. **Card Draw for the whole lab** (built Nov 12 2026): a daily draw of four cards on the hub (out of
+   Mind Heist); some duds, some perks per game. JC's picks: flip all four every day; first games
+   Mind Heist (Mole, Hidden 50/50), Swerve Planet and Screensaver (Extra Life), No Cap (Cap
+   Shield), Par-Tee Time (Mulligan). Goat Getaway (a free hint) and the rest can follow.
 3. **Diamonds, amber and shards in Capra Lab** (out of Glacial Maw): one wallet per profile.
 4. **Avatars**: bought and dressed with the wallet; the profile picture everywhere, a 3D hologram in
    the trophy room.

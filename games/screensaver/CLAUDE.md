@@ -35,6 +35,12 @@ Lab.
   ends the run and counts everything banked: on today's run it posts to the board. Ending mid-board
   drops that board; ending before the first guess just goes home. The board is sized so the
   result, the countdown and End Run always fit above the home bar (`PROMPT_H`).
+- **Extra Life card** (Capra Lab's daily Card Draw, Nov 2026; `ss-life` in
+  `public/lab/cards-catalog.mjs`): a signed-in player who holds one sees it in Today's Run
+  (`<lab-card-offer>`) and can switch it on; the counted run then has four hearts. It's insurance:
+  the page sends `life` only if the run went on past the third miss, and the server spends the
+  card then (`cards.take`) and scores the run with four lives (`score(seed, picks, lives)`). No
+  card left, or a second run that day: the board counts the run up to the third miss.
 - Solo for now (JC: "Solo first"); a party room can come later.
 
 ## Files

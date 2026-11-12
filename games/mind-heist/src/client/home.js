@@ -130,7 +130,7 @@ export function Home({ me, setMe, nav, home, reloadHome }) {
   useEffect(() => {
     let n = (home && home.goatGems) || 0;
     try { n += Number(sessionStorage.getItem('mh.goatGems') || 0); sessionStorage.removeItem('mh.goatGems'); } catch (e) {}
-    if (n > 0) toast(`💎 +${n} from Goat Getaway. Spend them in today’s card draw.`);
+    if (n > 0) toast(`💎 +${n} from Goat Getaway.`);
   }, [home]);
   useEffect(() => {
     api('GET', '/friends').then(setFriends).catch(() => setFriends({ me: null, friends: [] }));
