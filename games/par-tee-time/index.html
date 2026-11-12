@@ -192,6 +192,7 @@ h2.scr { font-family: var(--title); font-weight: 400; font-size: 34px; margin: 6
 .ccard:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 .ccard .tag { font-family: var(--sfx); font-size: 13px; letter-spacing: .08em; padding: 0 7px; border: 2px solid var(--ink); border-radius: 6px; background: var(--green); color: var(--ink); }
 .ccard.t-medium .tag { background: var(--sky); } .ccard.t-hard .tag { background: var(--coral); } .ccard.t-expert .tag { background: var(--oxblood); color: var(--cream); }
+.ccard.t-easy\+ .tag { background: var(--pale); } .ccard.t-medium\+ .tag { background: var(--gold); } .ccard.t-hard\+ .tag { background: var(--magenta); } .ccard.t-legend .tag { background: var(--ink); color: var(--gold); }
 .ccard .cn { font-family: var(--title); font-size: 19px; line-height: 1.05; text-wrap: balance; }
 .ccard .cb { font-size: 12px; line-height: 1.3; color: #3b3650; }
 .ccard .cp { font-family: var(--sfx); font-size: 13px; letter-spacing: .05em; color: var(--oxblood); }
@@ -1028,7 +1029,7 @@ function aimTrace(h, balls, me, angle, total, maxBounce, t, spin) {
 
 'use strict';
 /* =====================================================================
-   PAR-TEE TIME · four courses × nine holes
+   PAR-TEE TIME · eight courses × nine holes
    World is 360 × 640. Tee near the bottom, cup near the top.
    Each course holds every concept once; holes are listed in their
    measured order, easiest first.
@@ -1088,6 +1089,13 @@ function highway(x, w, lanes, h = 55) {
 }
 const hand = (cx, cy, r1, omega, phase, w, kind) => ({ type: 'spinner', cx, cy, r0: 20, r1, arms: 1, omega, phase, w, kind });
 const defender = (y, ax, freq, phase, num, c, r = 17) => ({ type: 'slider', x: 180, y, ax, freq, phase, r, kind: 'defender', num, c });
+// A defender anywhere on the floor: ax/ay is how far it slides each way (ay alone steps up and back).
+const guard = (x, y, ax, ay, freq, phase, num, c, r = 17) => ({ type: 'slider', x, y, ax, ay, freq, phase, r, kind: 'defender', num, c });
+// Extra stone walls on a hole that millHole built (millHole sets solids from the mills).
+const addSolids = (h, ...polys) => { h.solids.push(...polys.map(poly => ({ poly, kind: 'stone' }))); return h; };
+const ball = (x, y, n) => ({ x, y, n, c: POOL_C[n] });
+// Studs in a ring around (cx, cy), every `step` radians, leaving out the angles listed in skip (indices).
+const studRing = (cx, cy, rad, n, skip, r = 6) => Array.from({ length: n }, (_, i) => i).filter(i => !skip.includes(i)).map(i => ({ x: cx + rad * Math.cos(i * TAU / n), y: cy + rad * Math.sin(i * TAU / n), r, kind: 'stud' }));
 
 /* =====================================================================
    COURSE 1 · SUNSET BOARDWALK (easy)
@@ -1448,6 +1456,376 @@ const C4 = [
   })(),
 ];
 
+/* =====================================================================
+   COURSE 5 · PIER PRESSURE (easy+): one step up from the Boardwalk
+   ===================================================================== */
+const C5 = [
+  millHole({
+    id: 'e-windmill', name: 'Crosswind', par: 2, theme: 'windmill', surface: 'green',
+    blurb: 'The mill sits off to the left. Ride the tunnel or bank past the sails.',
+    fairway: rrectP(44, 56, 272, 560, 22),
+    bumpers: [{ x: 252, y: 252, r: 8, kind: 'post' }],
+    sands: [ellP(282, 112, 20, 13, 18)],
+    tee: { x: 110, y: 585 }, cup: { x: 236, y: 132 },
+  }, [mill(126, 360, 88, 48, 38, { omega: 0.9, w: 4, phase: 1.1 })]),
+  Object.assign({
+    id: 'e-pool', name: 'Two Rail', par: 2, theme: 'pool', surface: 'felt',
+    blurb: 'A cushion parks right in the straight line. Two rails and you’re home.',
+    solids: [{ poly: rectP(98, 250, 96, 14), kind: 'cushion' }],
+    objects: [ball(236, 300, 8), ball(150, 400, 3)],
+    tee: { x: 240, y: 530 }, cup: { x: 122, y: 168 },
+  }, table(46, 70, 268, 530)),
+  {
+    id: 'e-lagoon', name: 'Lily Pad Slalom', par: 2, theme: 'lagoon', surface: 'green',
+    blurb: 'Two ponds and one sleepy octopus. Weave left, then right.',
+    fairway: rrectP(36, 54, 288, 560, 26),
+    hazards: [{ type: 'water', poly: ellP(112, 420, 72, 44, 26) }, { type: 'water', poly: ellP(250, 250, 70, 44, 26) }],
+    movers: [{ type: 'spinner', cx: 250, cy: 250, r0: 40, r1: 112, arms: 2, omega: 0.5, phase: 0.6, w: 6, kind: 'tentacle' }],
+    sands: [ellP(96, 200, 20, 13, 18)],
+    tee: { x: 250, y: 584 }, cup: { x: 120, y: 122 },
+  },
+  Object.assign({
+    id: 'e-highway', name: 'Merge Lane', par: 2, theme: 'highway', surface: 'green',
+    blurb: 'Three lanes of easy traffic and a cup on the far shoulder.',
+    fairway: rrectP(56, 50, 248, 570, 22),
+    bumpers: [{ x: 212, y: 160, r: 6, kind: 'cone' }, { x: 282, y: 196, r: 6, kind: 'cone' }],
+    tee: { x: 110, y: 586 }, cup: { x: 252, y: 124 },
+  }, highway(56, 248, [[250, 60, 110, 1], [305, -70, -125, 1], [360, 65, 115, 2]])),
+  {
+    id: 'e-vault', name: 'Safe Cracker', par: 2, theme: 'vault', surface: 'green',
+    blurb: 'The safe is tucked in the corner and its door swings slow. One laser on the way in.',
+    fairway: rrectP(50, 52, 260, 566, 18),
+    movers: [{ type: 'ring', cx: 130, cy: 168, rad: 52, gap: 1.5, omega: 0.7, phase: 0, w: 5, segs: 18, kind: 'vault' }],
+    lasers: [{ ax: 180, ay: 430, bx: 310, by: 430, on: 0.8, off: 1.8, ph: 0.4 }],
+    caps: [{ ax: 214, ay: 300, bx: 262, by: 300, r: 8, kind: 'gold' }],
+    tee: { x: 240, y: 586 }, cup: { x: 130, y: 168 },
+  },
+  {
+    id: 'e-hardwood', name: 'Pick and Roll', par: 2, theme: 'hardwood', surface: 'wood',
+    blurb: 'One defender slides, one steps up and back. Go on the switch.',
+    fairway: rrectP(44, 50, 272, 570, 14),
+    caps: [{ ax: 152, ay: 96, bx: 208, by: 96, r: 4, kind: 'board', e: 0.7 }],
+    movers: [defender(440, 84, 0.2, 0.4, 5, '#7f9fc6'), guard(222, 270, 0, 56, 0.24, 1.2, 14, '#d4af37')],
+    tee: { x: 130, y: 586 }, cup: { x: 180, y: 128 },
+  },
+  {
+    id: 'e-moon', name: 'Gravity Assist', par: 2, theme: 'moon', surface: 'moon',
+    blurb: 'A big planet blocks the straight line. Let the little black hole bend you round it.',
+    fairway: rrectP(36, 48, 288, 575, 80, 6),
+    wells: [{ x: 264, y: 300, G: 0.5e6, max: 600, core: 10 }],
+    bumpers: [{ x: 172, y: 330, r: 30, kind: 'planet', c: '#8dbb93' }, { x: 96, y: 200, r: 14, kind: 'planet', c: '#e8877a' }],
+    tee: { x: 180, y: 582 }, cup: { x: 160, y: 118 },
+  },
+  {
+    id: 'e-pinball', name: 'Extra Ball', par: 2, theme: 'pinball', surface: 'green',
+    blurb: 'Three pop bumpers in a triangle and a ramp up the right side.',
+    fairway: [[36, 620], [324, 620], [324, 150], [262, 56], [98, 56], [36, 150]],
+    bumpers: [
+      { x: 180, y: 250, r: 15, kind: 'kicker', kick: true }, { x: 128, y: 330, r: 15, kind: 'kicker', kick: true }, { x: 232, y: 330, r: 15, kind: 'kicker', kick: true },
+      { x: 84, y: 460, r: 9, kind: 'palm' }, { x: 276, y: 540, r: 9, kind: 'palm' },
+    ],
+    zones: [{ type: 'slope', x: 250, y: 360, w: 66, h: 120, ax: 0, ay: -150 }],
+    sands: [ellP(220, 120, 24, 14, 18)],
+    tee: { x: 160, y: 586 }, cup: { x: 120, y: 118 },
+  },
+  {
+    id: 'e-clock', name: 'Quarter Past', par: 2, theme: 'clock', surface: 'green',
+    blurb: 'Come in at five o’clock. Only the minute hand is awake.',
+    fairway: bowlLane(214, 274, 616, 180, 236, 120),
+    clock: { x: 180, y: 236, r: 120, skip: [5] },
+    movers: [hand(180, 236, 100, 0.55, 0.4, 4, 'minute')],
+    bumpers: [{ x: 112, y: 236, r: 7, kind: 'stud' }],
+    tee: { x: 244, y: 588 }, cup: { x: 180, y: 236 },
+  },
+];
+
+/* =====================================================================
+   COURSE 6 · NEON ALLEY (medium+)
+   ===================================================================== */
+const C6 = [
+  addSolids(millHole({
+    id: 'm-windmill', name: 'Mill Run', par: 3, theme: 'windmill', surface: 'green',
+    blurb: 'A stone wall with three ways through: a skinny lane each side, or the tunnel under fast sails.',
+    fairway: rrectP(40, 56, 280, 560, 22),
+    sands: [ellP(196, 120, 22, 14, 18)],
+    tee: { x: 250, y: 585 }, cup: { x: 250, y: 140 },
+  }, [mill(124, 340, 84, 48, 34, { r1: 58, omega: 1.4, phase: 0.6 })]), rectP(166, 331, 114, 18)),
+  Object.assign({
+    id: 'm-pool', name: 'Kiss Shot', par: 3, theme: 'pool', surface: 'felt',
+    blurb: 'The cup sits in a cushion box with a slot in one corner. Bank it through the slot or drop in over the top.',
+    solids: [
+      { poly: rectP(126, 140, 14, 104), kind: 'cushion' }, { poly: rectP(220, 140, 14, 104), kind: 'cushion' },
+      { poly: rectP(140, 230, 58, 14), kind: 'cushion' },
+    ],
+    objects: rack(196, 360, [[3], [8, 5]]),
+    tee: { x: 180, y: 540 }, cup: { x: 180, y: 180 },
+  }, table(46, 70, 268, 530)),
+  {
+    id: 'm-lagoon', name: 'The Narrows', par: 3, theme: 'lagoon', surface: 'green',
+    blurb: 'A river cuts the green in two. One bridge over, and the octopus keeps sweeping it.',
+    fairway: rrectP(36, 54, 288, 560, 26),
+    hazards: [{ type: 'water', poly: rectP(36, 300, 160, 64) }, { type: 'water', poly: rectP(256, 300, 68, 64) }],
+    movers: [{ type: 'spinner', cx: 112, cy: 332, r0: 34, r1: 116, arms: 2, omega: 0.55, phase: 0.2, w: 6, kind: 'tentacle' }],
+    sands: [ellP(250, 150, 24, 15, 18)],
+    tee: { x: 250, y: 586 }, cup: { x: 110, y: 124 },
+  },
+  Object.assign({
+    id: 'm-highway', name: 'Median Strip', par: 3, theme: 'highway', surface: 'green',
+    blurb: 'The cup sits on the median. Cross three lanes, stop on a dime, don’t drift into the far side.',
+    fairway: rrectP(52, 50, 256, 572, 22),
+    bumpers: [{ x: 72, y: 325, r: 6, kind: 'cone' }, { x: 288, y: 325, r: 6, kind: 'cone' }],
+    tee: { x: 250, y: 590 }, cup: { x: 120, y: 325 },
+  }, highway(52, 256, [[160, 110, 190], [215, -120, -210], [380, 100, 180], [435, -130, -220], [490, 115, 200]])),
+  {
+    id: 'm-vault', name: 'Inside Job', par: 3, theme: 'vault', surface: 'green',
+    blurb: 'The vault door is jammed open at the top. Go past it and bank back down in.',
+    fairway: rrectP(50, 52, 260, 566, 18),
+    movers: [{ type: 'ring', cx: 180, cy: 290, rad: 50, gap: 1.0, omega: 0, phase: -Math.PI / 2, w: 5, segs: 20, kind: 'vault' }],
+    lasers: [{ ax: 50, ay: 470, bx: 196, by: 470, on: 0.9, off: 1.3, ph: 0 }, { ax: 164, ay: 410, bx: 310, by: 410, on: 0.9, off: 1.3, ph: 1.1 }],
+    caps: [{ ax: 92, ay: 180, bx: 132, by: 180, r: 8, kind: 'gold' }, { ax: 228, ay: 180, bx: 268, by: 180, r: 8, kind: 'gold' }],
+    tee: { x: 180, y: 588 }, cup: { x: 180, y: 290 },
+  },
+  {
+    id: 'm-hardwood', name: 'Corner Three', par: 3, theme: 'hardwood', surface: 'wood',
+    blurb: 'Start in the corner. One defender cuts on the diagonal, and the rim only opens to the left.',
+    fairway: rrectP(40, 50, 280, 570, 14),
+    caps: [{ ax: 150, ay: 96, bx: 210, by: 96, r: 4, kind: 'board', e: 0.7 }, ...arcCaps(180, 150, 24, -Math.PI + 0.6, Math.PI - 0.6, 10, 3, 'rim', 0.6)],
+    movers: [defender(470, 90, 0.24, 0, 10, '#e8877a'), guard(180, 330, 84, 44, 0.3, 0.8, 24, '#7f9fc6'), defender(236, 60, 0.42, 2.0, 6, '#d4af37')],
+    tee: { x: 76, y: 590 }, cup: { x: 180, y: 150 },
+  },
+  {
+    id: 'm-moon', name: 'Asteroid Belt', par: 3, theme: 'moon', surface: 'moon',
+    blurb: 'A belt of moonlets with two gaps, and a black hole waiting under the wide one.',
+    fairway: rrectP(30, 48, 300, 575, 90, 6),
+    wells: [{ x: 120, y: 410, G: 0.8e6, max: 800, core: 11 }],
+    bumpers: [
+      { x: 56, y: 300, r: 16, kind: 'planet', c: '#e8877a' }, { x: 96, y: 306, r: 13, kind: 'planet', c: '#7f9fc6' },
+      { x: 182, y: 298, r: 13, kind: 'planet', c: '#d4af37' }, { x: 216, y: 304, r: 12, kind: 'planet', c: '#8dbb93' },
+      { x: 250, y: 298, r: 13, kind: 'planet', c: '#e8877a' }, { x: 300, y: 302, r: 13, kind: 'planet', c: '#7f9fc6' },
+      { x: 268, y: 150, r: 10, kind: 'planet', c: '#d4af37' },
+    ],
+    tee: { x: 180, y: 582 }, cup: { x: 216, y: 120 },
+  },
+  {
+    id: 'm-pinball', name: 'Skill Shot', par: 3, theme: 'pinball', surface: 'green',
+    blurb: 'Launch up the plunger lane, bank the top corner and drop in through the bumpers.',
+    fairway: [[36, 620], [324, 620], [324, 124], [262, 56], [98, 56], [36, 118]],
+    solids: [{ poly: rectP(282, 170, 8, 450), kind: 'stone' }],
+    bumpers: [
+      { x: 160, y: 250, r: 15, kind: 'kicker', kick: true }, { x: 226, y: 300, r: 15, kind: 'kicker', kick: true }, { x: 150, y: 350, r: 15, kind: 'kicker', kick: true },
+      { x: 84, y: 300, r: 9, kind: 'palm' }, { x: 240, y: 530, r: 9, kind: 'palm' },
+    ],
+    zones: [{ type: 'slope', x: 40, y: 400, w: 90, h: 70, ax: 120, ay: 0 }],
+    tee: { x: 306, y: 590 }, cup: { x: 120, y: 530 },
+  },
+  {
+    id: 'm-clock', name: 'High Noon', par: 3, theme: 'clock', surface: 'green',
+    blurb: 'The cup sits at twelve, right under the hands, and they sweep it in opposite directions.',
+    fairway: bowlLane(150, 210, 616, 180, 250, 122),
+    clock: { x: 180, y: 250, r: 122, skip: [0, 6] },
+    movers: [hand(180, 250, 60, 0.25, 2.0, 6, 'hour'), hand(180, 250, 112, 0.8, 0.5, 4, 'minute'), hand(180, 250, 112, -1.3, 2.5, 2.5, 'second')],
+    bumpers: [{ x: 96, y: 250, r: 7, kind: 'stud' }, { x: 264, y: 250, r: 7, kind: 'stud' }],
+    tee: { x: 180, y: 590 }, cup: { x: 180, y: 152 },
+  },
+];
+
+/* =====================================================================
+   COURSE 7 · GRAVEYARD SHIFT (hard+)
+   ===================================================================== */
+const C7 = [
+  addSolids(millHole({
+    id: 'h-windmill', name: 'Mill Row', par: 3, theme: 'windmill', surface: 'green',
+    blurb: 'Two mills, two stone walls, no side lanes, and the tunnels don’t quite line up.',
+    fairway: rrectP(40, 56, 280, 560, 22),
+    tee: { x: 120, y: 590 }, cup: { x: 236, y: 130 },
+  }, [mill(220, 450, 96, 38, 40, { r1: 60, omega: 1.5, phase: 0.4 }), mill(140, 280, 96, 38, 40, { r1: 60, omega: -1.6, phase: 1.0 })]),
+  rectP(40, 441, 132, 18), rectP(268, 441, 52, 18), rectP(40, 271, 52, 18), rectP(188, 271, 132, 18)),
+  Object.assign({
+    id: 'h-pool', name: 'Snookered', par: 3, theme: 'pool', surface: 'felt',
+    blurb: 'The cup hides in the top corner behind a cushion and a picket fence of balls. The 8 is in the fence.',
+    solids: [{ poly: rectP(196, 290, 118, 14), kind: 'cushion' }],
+    objects: [ball(196, 150, 1), ball(196, 180, 2), ball(196, 210, 8), ball(196, 240, 4), ball(196, 270, 5)],
+    tee: { x: 120, y: 540 }, cup: { x: 262, y: 200 },
+  }, table(46, 70, 268, 530)),
+  {
+    id: 'h-lagoon', name: 'Twin Krakens', par: 3, theme: 'lagoon', surface: 'green',
+    blurb: 'Two lagoons, one diagonal channel, and a kraken in each swinging the other way.',
+    fairway: rrectP(36, 54, 288, 560, 26),
+    hazards: [{ type: 'water', poly: ellP(110, 262, 66, 104, 30) }, { type: 'water', poly: ellP(250, 420, 66, 104, 30) }],
+    movers: [
+      { type: 'spinner', cx: 110, cy: 262, r0: 40, r1: 124, arms: 2, omega: 0.6, phase: 0.3, w: 7, kind: 'tentacle' },
+      { type: 'spinner', cx: 250, cy: 420, r0: 40, r1: 124, arms: 2, omega: -0.55, phase: 1.4, w: 7, kind: 'tentacle' },
+    ],
+    tee: { x: 90, y: 586 }, cup: { x: 268, y: 120 },
+  },
+  (() => {
+    const hw = highway(52, 256, [[318, 120, 210], [373, -140, -240, 3], [428, 150, 250], [483, -130, -220]]);
+    hw.zones.push({ type: 'boost', x: 244, y: 236, w: 40, h: 26, dx: 0, dy: -1, add: 220 });
+    return Object.assign({
+      id: 'h-highway', name: 'Off-Ramp', par: 3, theme: 'highway', surface: 'green',
+      blurb: 'Four lanes, then a skinny exit up the right. Miss the ramp and you’re back in traffic.',
+      fairway: [[52, 620], [308, 620], [308, 70], [220, 70], [220, 300], [52, 300]],
+      bumpers: [{ x: 238, y: 300, r: 6, kind: 'cone' }],
+      tee: { x: 96, y: 592 }, cup: { x: 264, y: 112 },
+    }, hw);
+  })(),
+  {
+    id: 'h-vault', name: 'Bank Vault', par: 3, theme: 'vault', surface: 'green',
+    blurb: 'The vault hides in the top corner with its door turning backwards. Three lasers ripple up the floor.',
+    fairway: rrectP(50, 52, 260, 566, 18),
+    movers: [{ type: 'ring', cx: 128, cy: 150, rad: 50, gap: 0.85, omega: -1.1, phase: 0, w: 5, segs: 20, kind: 'vault' }],
+    lasers: [
+      { ax: 50, ay: 500, bx: 230, by: 500, on: 0.8, off: 1.2, ph: 0 }, { ax: 130, ay: 420, bx: 310, by: 420, on: 0.8, off: 1.2, ph: 0.4 },
+      { ax: 50, ay: 340, bx: 230, by: 340, on: 0.8, off: 1.2, ph: 0.8 },
+    ],
+    caps: [{ ax: 200, ay: 250, bx: 250, by: 250, r: 8, kind: 'gold' }, { ax: 84, ay: 262, bx: 124, by: 262, r: 8, kind: 'gold' }],
+    tee: { x: 270, y: 588 }, cup: { x: 128, y: 150 },
+  },
+  {
+    id: 'h-hardwood', name: 'Zone Defense', par: 3, theme: 'hardwood', surface: 'wood',
+    blurb: 'Two slide side to side, two step up and back, and the rim only opens on the right.',
+    fairway: rrectP(40, 50, 280, 570, 14),
+    caps: [{ ax: 150, ay: 96, bx: 210, by: 96, r: 4, kind: 'board', e: 0.7 }, ...arcCaps(180, 152, 24, 0.6, TAU - 0.6, 10, 3, 'rim', 0.6)],
+    movers: [
+      defender(480, 96, 0.26, 0, 3, '#e8877a'), defender(400, 96, 0.3, 1.8, 13, '#7f9fc6'),
+      guard(110, 290, 0, 50, 0.32, 0.6, 30, '#d4af37'), guard(250, 290, 0, 50, 0.32, 2.2, 35, '#b59ad6'),
+    ],
+    tee: { x: 180, y: 590 }, cup: { x: 180, y: 152 },
+  },
+  {
+    id: 'h-moon', name: 'Lagrange Point', par: 3, theme: 'moon', surface: 'moon',
+    blurb: 'Three black holes and one sweet spot. The cup sits right where their pulls cancel out.',
+    fairway: rrectP(30, 48, 300, 575, 90, 6),
+    wells: [{ x: 180, y: 130, G: 0.7e6, max: 700, core: 11 }, { x: 88, y: 310, G: 0.7e6, max: 700, core: 11 }, { x: 272, y: 310, G: 0.7e6, max: 700, core: 11 }],
+    bumpers: [{ x: 180, y: 420, r: 16, kind: 'planet', c: '#e8877a' }],
+    tee: { x: 180, y: 582 }, cup: { x: 180, y: 250 },
+  },
+  {
+    id: 'h-pinball', name: 'Down the Drain', par: 3, theme: 'pinball', surface: 'green',
+    blurb: 'Tee off at the top of the table and sink it between the flippers. The ramps shove you off to the sides.',
+    fairway: [[36, 56], [324, 56], [324, 480], [220, 600], [140, 600], [36, 480]],
+    caps: [{ ax: 52, ay: 492, bx: 158, by: 548, r: 7, kind: 'flipper' }, { ax: 308, ay: 492, bx: 202, by: 548, r: 7, kind: 'flipper' }],
+    bumpers: [
+      { x: 120, y: 220, r: 15, kind: 'kicker', kick: true }, { x: 240, y: 220, r: 15, kind: 'kicker', kick: true }, { x: 180, y: 300, r: 15, kind: 'kicker', kick: true },
+      { x: 110, y: 380, r: 14, kind: 'kicker', kick: true }, { x: 250, y: 380, r: 14, kind: 'kicker', kick: true },
+      { x: 70, y: 130, r: 9, kind: 'palm' }, { x: 290, y: 130, r: 9, kind: 'palm' },
+    ],
+    zones: [{ type: 'slope', x: 40, y: 400, w: 70, h: 70, ax: -120, ay: 60 }, { type: 'slope', x: 250, y: 400, w: 70, h: 70, ax: 120, ay: 60 }],
+    tee: { x: 180, y: 90 }, cup: { x: 180, y: 572 },
+  },
+  (() => {
+    const cx = 180, cy = 410, rad = 125, dy = Math.sqrt(rad * rad - 30 * 30), a0 = Math.atan2(-dy, 30), a1 = Math.atan2(-dy, -30) + TAU;
+    return {
+      id: 'h-clock', name: 'Upside Down', par: 3, theme: 'clock', surface: 'green',
+      blurb: 'Somebody hung the clock upside down. Drop in at twelve, slip the studs and beat three hands to the middle.',
+      fairway: [[150, 50], [210, 50], ...arcP(cx, cy, rad, a0, a1, 44)],
+      clock: { x: cx, y: cy, r: rad, skip: [0] },
+      movers: [hand(cx, cy, 36, -0.45, 1.0, 6, 'hour'), hand(cx, cy, 112, 1.1, -Math.PI / 2, 4, 'minute'), hand(cx, cy, 118, 2.0, 2.0, 2.5, 'second')],
+      bumpers: studRing(cx, cy, 64, 8, [6]),
+      tee: { x: 180, y: 80 }, cup: { x: cx, y: cy },
+    };
+  })(),
+];
+
+/* =====================================================================
+   COURSE 8 · BOSS LEVEL (legend): above The Gauntlet
+   ===================================================================== */
+const C8 = [
+  addSolids(millHole({
+    id: 'l-windmill', name: 'Three-Mill Shuffle', par: 4, theme: 'windmill', surface: 'green',
+    blurb: 'Three mills, three walls, and every tunnel is somewhere else. Bank between them.',
+    fairway: rrectP(40, 46, 280, 578, 22),
+    tee: { x: 240, y: 596 }, cup: { x: 240, y: 96 },
+  }, [
+    mill(140, 480, 88, 38, 36, { r1: 54, omega: 1.6, phase: 0.2 }),
+    mill(220, 340, 88, 38, 36, { r1: 54, omega: -1.8, phase: 1.1 }),
+    mill(140, 200, 88, 38, 36, { r1: 54, omega: 2.0, phase: 2.0 }),
+  ]),
+  rectP(40, 471, 56, 18), rectP(184, 471, 136, 18), rectP(40, 331, 136, 18), rectP(264, 331, 56, 18), rectP(40, 191, 56, 18), rectP(184, 191, 136, 18)),
+  Object.assign({
+    id: 'l-pool', name: 'The Back Room', par: 4, theme: 'pool', surface: 'felt',
+    blurb: 'The cup hides in a cushion box with one door up by the top rail, and the corner pocket is right inside.',
+    solids: [{ poly: rectP(46, 214, 118, 14), kind: 'cushion' }, { poly: rectP(150, 124, 14, 90), kind: 'cushion' }],
+    objects: [ball(206, 96, 8), ...rack(200, 400, [[1], [2, 3], [4, 5, 6]])],
+    tee: { x: 180, y: 540 }, cup: { x: 100, y: 156 },
+  }, table(46, 70, 268, 530)),
+  {
+    id: 'l-lagoon', name: 'Leviathan Bridge', par: 4, theme: 'lagoon', surface: 'green',
+    blurb: 'One skinny bridge slants across the lagoon, and the leviathan sweeps it with three arms.',
+    fairway: rrectP(36, 54, 288, 560, 26),
+    hazards: [{ type: 'water', poly: [[36, 250], [246, 250], [74, 410], [36, 410]] }, { type: 'water', poly: [[290, 250], [324, 250], [324, 410], [118, 410]] }],
+    movers: [{ type: 'spinner', cx: 92, cy: 332, r0: 36, r1: 150, arms: 3, omega: 0.8, phase: 0.5, w: 7, kind: 'tentacle' }],
+    sands: [ellP(150, 140, 24, 15, 18)],
+    tee: { x: 100, y: 588 }, cup: { x: 268, y: 140 },
+  },
+  Object.assign({
+    id: 'l-highway', name: 'Interchange', par: 4, theme: 'highway', surface: 'green',
+    blurb: 'Eight lanes at full speed, corner to corner. Nobody’s letting you merge.',
+    fairway: rrectP(52, 46, 256, 578, 22),
+    bumpers: [{ x: 230, y: 74, r: 6, kind: 'cone' }, { x: 230, y: 104, r: 6, kind: 'cone' }],
+    tee: { x: 90, y: 596 }, cup: { x: 270, y: 86 },
+  }, highway(52, 256, [[120, 120, 210], [175, -150, -250, 3], [230, 170, 280], [285, -140, -240], [340, 190, 300, 3], [395, -160, -260], [450, 150, 250], [505, -130, -220]])),
+  {
+    id: 'l-vault', name: 'Fort Knox', par: 4, theme: 'vault', surface: 'green',
+    blurb: 'Three doors, three speeds, two directions, and a laser ladder to climb before you get there.',
+    fairway: rrectP(50, 52, 260, 566, 18),
+    movers: [
+      { type: 'ring', cx: 180, cy: 190, rad: 88, gap: 1.0, omega: 0.8, phase: Math.PI / 2, w: 5, segs: 30, kind: 'vault' },
+      { type: 'ring', cx: 180, cy: 190, rad: 58, gap: 1.1, omega: -1.1, phase: 0, w: 5, segs: 22, kind: 'vault' },
+      { type: 'ring', cx: 180, cy: 190, rad: 30, gap: 1.3, omega: 0, phase: Math.PI / 2, w: 4, segs: 12, kind: 'vault' },
+    ],
+    lasers: [
+      { ax: 50, ay: 540, bx: 196, by: 540, on: 0.8, off: 1.2, ph: 0 }, { ax: 164, ay: 480, bx: 310, by: 480, on: 0.8, off: 1.2, ph: 0.5 },
+      { ax: 50, ay: 420, bx: 196, by: 420, on: 0.8, off: 1.2, ph: 1.0 }, { ax: 164, ay: 360, bx: 310, by: 360, on: 0.8, off: 1.2, ph: 1.5 },
+    ],
+    tee: { x: 180, y: 594 }, cup: { x: 180, y: 190 },
+  },
+  {
+    id: 'l-hardwood', name: 'Buzzer Beater', par: 4, theme: 'hardwood', surface: 'wood',
+    blurb: 'The hoop hangs in the corner, the rim only opens toward the floor, and six defenders are pressing.',
+    fairway: rrectP(40, 50, 280, 570, 14),
+    caps: [{ ax: 82, ay: 88, bx: 138, by: 88, r: 4, kind: 'board', e: 0.7 }, ...arcCaps(110, 142, 24, Math.PI / 4 + 0.6, Math.PI / 4 - 0.6 + TAU, 10, 3, 'rim', 0.6)],
+    movers: [
+      defender(500, 96, 0.3, 0, 1, '#e8877a'), defender(430, 100, 0.36, 1.4, 22, '#7f9fc6'), defender(360, 96, 0.42, 2.6, 44, '#d4af37'),
+      guard(90, 270, 0, 56, 0.34, 0.4, 8, '#b59ad6'), guard(270, 250, 0, 70, 0.3, 1.9, 32, '#8dbb93'), guard(200, 190, 40, 0, 0.5, 0.7, 0, '#e8877a', 15),
+    ],
+    tee: { x: 250, y: 592 }, cup: { x: 110, y: 142 },
+  },
+  {
+    id: 'l-moon', name: 'Dark Side', par: 4, theme: 'moon', surface: 'moon',
+    blurb: 'Two heavy black holes stand between you and a cup tucked behind a planet. Slingshot one, then the other.',
+    fairway: rrectP(30, 48, 300, 575, 90, 6),
+    wells: [{ x: 120, y: 400, G: 1.1e6, max: 950, core: 12 }, { x: 236, y: 250, G: 1.1e6, max: 950, core: 12 }],
+    bumpers: [{ x: 124, y: 176, r: 20, kind: 'planet', c: '#7f9fc6' }, { x: 262, y: 470, r: 16, kind: 'planet', c: '#e8877a' }, { x: 68, y: 280, r: 11, kind: 'planet', c: '#d4af37' }],
+    tee: { x: 250, y: 584 }, cup: { x: 92, y: 122 },
+  },
+  {
+    id: 'l-pinball', name: 'Jackpot', par: 4, theme: 'pinball', surface: 'green',
+    blurb: 'The jackpot lane only opens at the top, and its ramp tilts back at you. Light it up.',
+    fairway: [[36, 620], [324, 620], [324, 110], [270, 56], [90, 56], [36, 110]],
+    solids: [{ poly: rectP(96, 150, 14, 244), kind: 'stone' }, { poly: rectP(36, 380, 60, 14), kind: 'stone' }],
+    bumpers: [
+      { x: 200, y: 200, r: 15, kind: 'kicker', kick: true }, { x: 260, y: 290, r: 15, kind: 'kicker', kick: true }, { x: 170, y: 330, r: 15, kind: 'kicker', kick: true },
+      { x: 236, y: 420, r: 14, kind: 'kicker', kick: true }, { x: 150, y: 470, r: 14, kind: 'kicker', kick: true },
+      { x: 290, y: 530, r: 9, kind: 'palm' }, { x: 140, y: 120, r: 9, kind: 'palm' },
+    ],
+    zones: [{ type: 'slope', x: 40, y: 190, w: 54, h: 110, ax: 0, ay: -140 }],
+    tee: { x: 240, y: 592 }, cup: { x: 66, y: 346 },
+  },
+  {
+    id: 'l-clock', name: 'Doomsday Clock', par: 4, theme: 'clock', surface: 'green',
+    blurb: 'A pendulum guards the hall, a ring of studs guards the center with one door, and every hand is racing.',
+    fairway: bowlLane(140, 220, 616, 180, 236, 124),
+    clock: { x: 180, y: 236, r: 124, skip: [6] },
+    movers: [
+      { type: 'pendulum', px: 180, py: 362, r0: 14, r1: 150, amp: 0.16, freq: 0.6, phase: 0, base: Math.PI / 2, w: 3.5, bob: 13, kind: 'pendulum' },
+      hand(180, 236, 36, 0.5, 0.4, 6, 'hour'), hand(180, 236, 114, 1.3, -Math.PI / 2, 4, 'minute'), hand(180, 236, 118, -2.4, 2.0, 2.5, 'second'),
+    ],
+    bumpers: studRing(180, 236, 64, 18, [1]),
+    tee: { x: 180, y: 594 }, cup: { x: 180, y: 236 },
+  },
+];
+
 // Measured by simulated NPC play: [par, Rookie average strokes, Hustler average strokes].
 // Par is the Hustler average rounded; each course is played in order of difficulty.
 const TUNE = {
@@ -1487,22 +1865,40 @@ const TUNE = {
   'g-hardwood': [3, 7.60, 2.80],
   'g-moon': [3, 7.83, 2.67],
   'g-lagoon': [5, 5.40, 5.20],
+  // Pier Pressure (Nov 2026)
+  'e-windmill': [2, 2.00, 1.88],
+  'e-pool': [2, 2.75, 2.13],
+  'e-lagoon': [2, 4.00, 2.38],
+  'e-highway': [2, 2.38, 1.88],
+  'e-vault': [2, 4.25, 2.00],
+  'e-hardwood': [2, 3.00, 1.75],
+  'e-moon': [2, 2.38, 2.00],
+  'e-pinball': [2, 2.38, 2.00],
+  'e-clock': [2, 2.25, 1.63],
 };
 function byDifficulty(list) {
   list.forEach(d => { const t = TUNE[d.id]; if (t) { d.par = t[0]; d.diff = (t[1] + t[2]) / 2; } else d.diff = d.par * 1.4; });
   return list.slice().sort((a, b) => a.diff - b.diff || a.par - b.par);
 }
+// Listed easiest to hardest (the menu shows them in this order). `slot` fixes each hole's number in
+// HOLE_DEFS, which saved settings and online matches use: the first four courses keep 0–35 and the
+// courses added in Nov 2026 follow, so adding a course never renumbers an old hole.
 const COURSE_SETS = [
-  { id: 'boardwalk', name: 'Sunset Boardwalk', tag: 'Easy', blurb: 'Wide lanes, lazy sails, friendly bumpers.', holes: byDifficulty(C1) },
-  { id: 'party', name: 'Party Time', tag: 'Medium', blurb: 'The original nine, reshuffled easiest to hardest.', holes: byDifficulty(C2) },
-  { id: 'afterhours', name: 'After Hours', tag: 'Hard', blurb: 'Doglegs, laser grids and a binary star.', holes: byDifficulty(C3) },
-  { id: 'gauntlet', name: 'The Gauntlet', tag: 'Expert', blurb: 'Twin mills, double vaults, bank it off the glass.', holes: byDifficulty(C4) },
+  { id: 'boardwalk', slot: 0, name: 'Sunset Boardwalk', tag: 'Easy', blurb: 'Wide lanes, lazy sails, friendly bumpers.', holes: byDifficulty(C1) },
+  { id: 'pier', slot: 4, name: 'Pier Pressure', tag: 'Easy+', blurb: 'Your first bank shots: one cushion, one laser, one sleepy octopus.', holes: byDifficulty(C5) },
+  { id: 'party', slot: 1, name: 'Party Time', tag: 'Medium', blurb: 'The original nine, reshuffled easiest to hardest.', holes: byDifficulty(C2) },
+  { id: 'neon', slot: 5, name: 'Neon Alley', tag: 'Medium+', blurb: 'Plunger lanes, a jammed vault and a cup on the median.', holes: byDifficulty(C6) },
+  { id: 'afterhours', slot: 2, name: 'After Hours', tag: 'Hard', blurb: 'Doglegs, laser grids and a binary star.', holes: byDifficulty(C3) },
+  { id: 'graveyard', slot: 6, name: 'Graveyard Shift', tag: 'Hard+', blurb: 'Twin krakens, an upside-down clock, three black holes.', holes: byDifficulty(C7) },
+  { id: 'gauntlet', slot: 3, name: 'The Gauntlet', tag: 'Expert', blurb: 'Twin mills, double vaults, bank it off the glass.', holes: byDifficulty(C4) },
+  { id: 'boss', slot: 7, name: 'Boss Level', tag: 'Legend', blurb: 'Three mills, eight lanes, Fort Knox. Good luck.', holes: byDifficulty(C8) },
 ];
 const HOLE_DEFS = [];
 COURSE_SETS.forEach((c, ci) => {
   c.idx = [];
-  c.holes.forEach((d, k) => { d.course = c.id; d.courseIdx = ci; d.pos = k; c.idx.push(HOLE_DEFS.length); HOLE_DEFS.push(d); });
+  c.holes.forEach((d, k) => { d.course = c.id; d.courseIdx = ci; d.pos = k; });
 });
+COURSE_SETS.slice().sort((a, b) => a.slot - b.slot).forEach(c => c.holes.forEach(d => { c.idx.push(HOLE_DEFS.length); HOLE_DEFS.push(d); }));
 
 'use strict';
 /* =====================================================================

@@ -90,3 +90,5 @@ await test('the function answers over HTTP', async () => {
 });
 
 console.log(`\nPar-Tee Time: ${passed} tests passed`);
+
+await import('./holes.test.mjs');
