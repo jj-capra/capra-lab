@@ -67,8 +67,11 @@ const noCap = noCapApi({ store: noCapMemory(), decks: noCapDecks(path.join(ROOT,
 const screensaver = screensaverApi({ store: screensaverMemory(), role: (handle) => crew.role(handle),
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 
-// Par-Tee Time's online rooms
-const parTee = parTeeApi({ store: parTeeMemory() });
+// Par-Tee Time's online rooms and Masters Course; /par-tee-time/__clock?add=ms moves its clock
+// (local only) so a test can reach a 7-day trophy
+let parTeeOffset = 0;
+const parTee = parTeeApi({ store: parTeeMemory(), clock: () => Date.now() + parTeeOffset,
+  verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 
 // Mind Heist's handler speaks Request/Response (Netlify Functions v2)
 async function toFunction(req, res, handler) {
@@ -131,6 +134,10 @@ http.createServer(async (req, res) => {
   if (url.pathname.startsWith('/no-cap/api/')) return toFunction(req, res, (r) => noCap.handle(r));
   if (url.pathname.startsWith('/screensaver/api/')) return toFunction(req, res, (r) => screensaver.handle(r));
   if (url.pathname.startsWith('/par-tee-time/api/')) return toFunction(req, res, (r) => parTee.handle(r));
+  if (url.pathname === '/par-tee-time/__clock') {
+    parTeeOffset += Number(url.searchParams.get('add') || 0);
+    res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: parTeeOffset }));
+  }
   if (url.pathname === '/no-cap/__clock') {
     noCapOffset += Number(url.searchParams.get('add') || 0);
     res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: noCapOffset }));
