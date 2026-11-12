@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="/lab/fill.js"></script>
 <title>Capra Lab</title>
 <meta name="description" content="Capra Lab: fresh games, straight from the lab.">
 <meta name="theme-color" content="#16141F">
@@ -248,7 +249,7 @@
   /* ---------- the walkthrough ---------- */
   body.locked { overflow: hidden; }
   .onboard {
-    position: fixed; inset: 0; z-index: 50; overflow-y: auto;
+    position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 50; overflow-y: auto;
     background-color: rgba(10, 8, 16, 0.94);
     background-image: radial-gradient(rgba(255, 248, 236, 0.06) 1px, transparent 1.6px);
     background-size: 9px 9px;

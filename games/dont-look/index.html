@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="/lab/fill.js"></script>
 <title>Don't Look! · Capra Lab</title>
 <meta name="description" content="Phone on your forehead, friends give clues, guess the word. A Capra Lab original.">
 <meta name="theme-color" content="#16141F">
@@ -139,7 +140,7 @@
   .deck.mix strong { background: var(--paper); padding: 4px 7px 2px; border-radius: 8px; border: 2px solid var(--ink); text-shadow: none; }
 
   @media (orientation: landscape) and (min-width: 560px) {
-    .home { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+    .home { display: flex; flex-direction: column; height: 100vh; height: var(--lab-h, 100dvh); }
     .home-body { flex: 1; min-height: 0; grid-template-columns: minmax(250px, 0.85fr) 1.6fr; padding-bottom: calc(var(--sb) + 10px); }
     .intro { overflow-y: auto; padding-bottom: 8px; }
     .decks-wrap { overflow-y: auto; min-height: 0; padding: 2px 8px 12px 2px; }
@@ -183,7 +184,7 @@
   .rule.down i { background: var(--pass); }
   .ready-note { margin: 0; font-size: 12.5px; font-weight: 700; line-height: 1.35; text-align: center; color: rgba(255, 248, 236, 0.7); }
   @media (orientation: landscape) {
-    .ready { height: 100vh; height: 100dvh; }
+    .ready { height: 100vh; height: var(--lab-h, 100dvh); }
     .ready-body { min-height: 0; grid-template-columns: minmax(200px, 0.8fr) 1.2fr; }
     .ready-deck { height: 100%; max-height: 300px; }
   }
@@ -200,7 +201,7 @@
 
   /* ---------- the stage: forehead, countdown, the round ---------- */
   .stage {
-    position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column;
+    position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 10; display: flex; flex-direction: column;
     background-color: var(--deck); color: var(--ink);
     background-image: radial-gradient(rgba(18, 14, 24, 0.13) 1.4px, transparent 1.9px);
     background-size: 12px 12px;
@@ -263,7 +264,7 @@
 
   /* turn sideways */
   .rotate {
-    position: fixed; inset: 0; z-index: 30; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 30; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
     padding: 24px; text-align: center; background: var(--night);
     background-image: radial-gradient(rgba(255, 248, 236, 0.07) 1px, transparent 1.6px); background-size: 9px 9px;
   }
@@ -306,7 +307,7 @@
   .res-side { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-content: start; min-width: 0; }
   .res-empty { margin: 0; text-align: center; color: rgba(255, 248, 236, 0.7); font-weight: 700; }
   @media (orientation: landscape) {
-    .results { height: 100vh; height: 100dvh; }
+    .results { height: 100vh; height: var(--lab-h, 100dvh); }
     .res-body { grid-template-columns: minmax(220px, 0.8fr) 1.3fr; }
     /* the words and the results text scroll together beside the score */
     .res-side { min-height: 0; overflow-y: auto; padding: 0 6px 8px 0; }
@@ -315,7 +316,7 @@
 
   /* ---------- help and settings ---------- */
   .sheet {
-    position: fixed; inset: 0; z-index: 40; overflow-y: auto; display: flex; align-items: flex-start; justify-content: center;
+    position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 40; overflow-y: auto; display: flex; align-items: flex-start; justify-content: center;
     padding: calc(var(--st) + 14px) calc(var(--sr) + 14px) calc(var(--sb) + 14px) calc(var(--sl) + 14px);
     background: rgba(10, 8, 16, 0.92);
   }

@@ -69,7 +69,7 @@
      under both, so everything starts below --safe-t and screen-fitting sizes use --vh, the height left between them. */
   --safe-t: env(safe-area-inset-top, 0px);
   --safe-b: env(safe-area-inset-bottom, 0px);
-  --vh: calc(100dvh - var(--safe-t) - var(--safe-b));
+  --vh: calc(var(--lab-h, 100dvh) - var(--safe-t) - var(--safe-b));
   --gut: max(16px, env(safe-area-inset-left, 0px));
   --gut-r: max(16px, env(safe-area-inset-right, 0px));
   --t-xs: 13px;
@@ -109,7 +109,7 @@ h1, h2, h3, p { margin: 0; }
 h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: -0.01em; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .num { font-variant-numeric: tabular-nums lining-nums; }
-#app { min-height: 100dvh; display: flex; flex-direction: column; padding-top: var(--safe-t); }
+#app { min-height: var(--lab-h, 100dvh); display: flex; flex-direction: column; padding-top: var(--safe-t); }
 
 /* ---------- shell ---------- */
 .wrap { width: 100%; max-width: 1240px; margin: 0 auto; padding-left: var(--gut); padding-right: var(--gut-r); }
@@ -173,7 +173,7 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
 .code-in { text-transform: uppercase; letter-spacing: .3em; font-family: var(--f-display); font-weight: 800; text-align: center; }
 
 /* ---------- onboarding ---------- */
-.onb { min-height: calc(100dvh - var(--safe-t)); display: grid; place-items: center; padding: 24px var(--gut-r) 40px var(--gut); }
+.onb { min-height: calc(var(--lab-h, 100dvh) - var(--safe-t)); display: grid; place-items: center; padding: 24px var(--gut-r) 40px var(--gut); }
 .onb-card { width: min(100%, 520px); padding: 28px 24px 26px; display: flex; flex-direction: column; gap: 18px; }
 .onb-card h1 { font-size: var(--t-2xl); line-height: .95; }
 .onb-mark { width: 92px; height: 92px; border-radius: 24px; box-shadow: 5px 5px 0 var(--cobalt); }
@@ -219,7 +219,7 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
 .badge-strip { display: flex; gap: 8px; flex-wrap: wrap; }
 
 /* ---------- sheets ---------- */
-.veil { position: fixed; inset: 0; z-index: 60; background: var(--veil); display: grid; place-items: end center; padding: calc(16px + var(--safe-t)) var(--gut-r) calc(16px + env(safe-area-inset-bottom, 0px)) var(--gut); animation: fade .15s ease; }
+.veil { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 60; background: var(--veil); display: grid; place-items: end center; padding: calc(16px + var(--safe-t)) var(--gut-r) calc(16px + env(safe-area-inset-bottom, 0px)) var(--gut); animation: fade .15s ease; }
 @media (min-width: 700px) { .veil { place-items: center; } }
 .sheet { width: min(100%, 640px); max-height: calc(var(--vh) - 32px); overflow: auto; padding: 22px; display: grid; gap: 16px; animation: rise .22s cubic-bezier(.2, .9, .3, 1.2); }
 .sheet h2 { font-size: var(--t-xl); line-height: 1; }
@@ -250,7 +250,7 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
 .tab[aria-selected="true"] { background: var(--chalk); color: var(--ink); border-color: var(--chalk); }
 
 /* ---------- room chrome ---------- */
-.room { display: flex; flex-direction: column; min-height: calc(100dvh - var(--safe-t)); padding-bottom: 96px; }
+.room { display: flex; flex-direction: column; min-height: calc(var(--lab-h, 100dvh) - var(--safe-t)); padding-bottom: 96px; }
 .room-top { display: flex; align-items: center; gap: 10px; padding-block: 12px 10px; }
 .code-chip { font-family: var(--f-display); font-weight: 800; letter-spacing: .14em; }
 .deck-name { font-weight: 700; color: var(--chalk-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
@@ -438,7 +438,7 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
 [data-theme] .q-card.hack .next-bar i { background: var(--term); }
 
 /* Pause overlay */
-.paused { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; background: var(--veil); padding: calc(20px + var(--safe-t)) 20px calc(20px + var(--safe-b)); animation: fade .2s; }
+.paused { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 40; display: grid; place-items: center; background: var(--veil); padding: calc(20px + var(--safe-t)) 20px calc(20px + var(--safe-b)); animation: fade .2s; }
 .paused .card { padding: 26px; text-align: center; display: grid; gap: 14px; justify-items: center; max-width: 440px; }
 .paused .card h2 { font-size: var(--t-2xl); line-height: .95; }
 @keyframes fade { from { opacity: 0; } }
@@ -535,24 +535,24 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
 .sd-pick.c1 { --c: var(--aqua); }
 
 /* ---------- reactions, toasts, sound ---------- */
-.dock { position: fixed; right: var(--gut-r); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 30; display: flex; justify-content: flex-end; pointer-events: none; }
+.dock { position: fixed; right: var(--gut-r); bottom: calc(14px + env(safe-area-inset-bottom, 0px) - var(--lab-gap, 0px)); z-index: 30; display: flex; justify-content: flex-end; pointer-events: none; }
 .reacts { pointer-events: auto; display: flex; gap: 2px; padding: 5px; border-radius: 999px; background: var(--deep-2); border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--cobalt); }
 .reacts button { width: 42px; height: 42px; border-radius: 50%; border: 0; background: transparent; font-size: 23px; display: grid; place-items: center; transition: transform .1s; }
 .reacts button:hover { transform: scale(1.2) rotate(-8deg); }
 .reacts button:active { transform: scale(.9); }
 .reacts .toggle { font-size: 24px; }
-.floaters { position: fixed; inset: 0; pointer-events: none; z-index: 35; overflow: hidden; }
+.floaters { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); pointer-events: none; z-index: 35; overflow: hidden; }
 .floater { position: absolute; bottom: 70px; font-size: 42px; animation: floatup 2.6s cubic-bezier(.2, .6, .4, 1) forwards; display: grid; justify-items: center; }
 .floater small { font-family: var(--f-display); font-weight: 800; font-size: 12px; background: var(--chalk); color: var(--ink); padding: 1px 7px; border-radius: 99px; margin-top: -4px; }
 @keyframes floatup { 0% { transform: translateY(0) scale(.6); opacity: 0; } 12% { opacity: 1; transform: translateY(-20px) scale(1.15); } 100% { transform: translateY(-62vh) translateX(var(--dx)) scale(1); opacity: 0; } }
-.sound { position: fixed; left: var(--gut); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 45; width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--edge); background: var(--deep-2); color: var(--chalk); display: grid; place-items: center; box-shadow: 3px 3px 0 var(--cobalt); }
+.sound { position: fixed; left: var(--gut); bottom: calc(14px + env(safe-area-inset-bottom, 0px) - var(--lab-gap, 0px)); z-index: 45; width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--edge); background: var(--deep-2); color: var(--chalk); display: grid; place-items: center; box-shadow: 3px 3px 0 var(--cobalt); }
 .sound svg { width: 26px; height: 26px; }
 .toasts { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); z-index: 80; display: grid; gap: 8px; width: min(92vw, 440px); pointer-events: none; }
 .toast { pointer-events: auto; padding: 12px 16px; border-radius: 16px; border: 2px solid var(--edge); background: var(--deep-2); color: var(--chalk); font-weight: 700; box-shadow: 4px 4px 0 var(--cobalt); animation: drop .3s cubic-bezier(.2, 1.4, .4, 1); display: flex; gap: 10px; align-items: center; }
 .toast.err { background: var(--wrong); color: var(--ink); border-color: var(--ink); }
 .toast.win { background: var(--hi); color: var(--ink); border-color: var(--ink); }
 @keyframes drop { from { transform: translateY(-20px); opacity: 0; } }
-.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 70; overflow: hidden; }
+.confetti { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); pointer-events: none; z-index: 70; overflow: hidden; }
 .confetti i { position: absolute; top: -20px; width: 12px; height: 18px; border: 2px solid var(--ink); animation: fall linear forwards; }
 @keyframes fall { to { transform: translateY(110vh) rotate(var(--r)); } }
 
@@ -597,7 +597,7 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
 .link-chip i { width: 9px; height: 9px; border-radius: 50%; background: var(--chalk-dim); }
 .link-chip.some i { background: var(--hi); }
 .link-chip.all i { background: var(--right); box-shadow: 0 0 0 3px color-mix(in srgb, var(--right) 30%, transparent); }
-.mic-btn { --c: var(--gum); position: fixed; left: var(--gut); bottom: calc(76px + env(safe-area-inset-bottom, 0px)); z-index: 45; display: inline-flex; align-items: center; gap: 8px; max-width: min(320px, calc(100vw - 2 * var(--gut) - 70px));
+.mic-btn { --c: var(--gum); position: fixed; left: var(--gut); bottom: calc(76px + env(safe-area-inset-bottom, 0px) - var(--lab-gap, 0px)); z-index: 45; display: inline-flex; align-items: center; gap: 8px; max-width: min(320px, calc(100vw - 2 * var(--gut) - 70px));
   min-height: 52px; padding: 6px 16px 6px 12px; border-radius: 999px; border: 2px solid var(--edge); background: var(--deep-2); color: var(--chalk); font-family: var(--f-display); font-weight: 800; font-size: 15px; box-shadow: 3px 3px 0 var(--cobalt); }
 .mic-btn.c1 { --c: var(--aqua); }
 .mic-btn svg { width: 24px; height: 24px; flex: none; }
@@ -616,7 +616,7 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
   .room:has(.mic-btn) { padding-bottom: 150px; }
   .room-top:has(.link-chip) .deck-name { display: none; }
 }
-@media (min-width: 641px) { .mic-btn { bottom: calc(14px + env(safe-area-inset-bottom, 0px)); left: calc(var(--gut) + 64px); } }
+@media (min-width: 641px) { .mic-btn { bottom: calc(14px + env(safe-area-inset-bottom, 0px) - var(--lab-gap, 0px)); left: calc(var(--gut) + 64px); } }
 [data-theme="office"] .mic-btn { background: #fff; border-color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
 [data-theme="office"] .mic-btn.on { background: var(--c); }
 [data-theme="bar"] .mic-btn { background: #170d0a; border-color: var(--edge); box-shadow: 3px 3px 0 #000; }
@@ -1074,7 +1074,7 @@ html[data-theme="bar"] body::before {
 }
 @media (max-width: 640px) {
   /* The lock button floats in the thumb zone between the sound and reaction buttons. */
-  .lock-btn { position: fixed; z-index: 46; left: calc(var(--gut) + 64px); right: calc(var(--gut-r) + 64px); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); width: auto; min-height: 58px; animation: rise .18s ease; }
+  .lock-btn { position: fixed; z-index: 46; left: calc(var(--gut) + 64px); right: calc(var(--gut-r) + 64px); bottom: calc(12px + env(safe-area-inset-bottom, 0px) - var(--lab-gap, 0px)); width: auto; min-height: 58px; animation: rise .18s ease; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
@@ -1171,7 +1171,7 @@ html[data-theme="bar"] body::before {
    ===================================================================== */
 .floater { animation-fill-mode: both; }
 .floater.mine { font-size: 48px; }
-.emo-row { position: fixed; right: var(--gut-r); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 46;
+.emo-row { position: fixed; right: var(--gut-r); bottom: calc(14px + env(safe-area-inset-bottom, 0px) - var(--lab-gap, 0px)); z-index: 46;
   display: flex; gap: 2px; padding: 4px; border-radius: 999px; background: var(--deep-2); border: 2px solid var(--edge); box-shadow: 3px 3px 0 var(--cobalt); }
 .emo-b { width: 52px; height: 52px; padding: 0; border: 0; border-radius: 50%; background: transparent; font-size: 30px; line-height: 1; display: grid; place-items: center;
   touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; transition: transform .06s, background .06s; }
@@ -1210,21 +1210,21 @@ html[data-theme="bar"] body::before {
   .room { padding-bottom: var(--dock); }
   .room:has(.mic-btn) { padding-bottom: var(--dock); }
   /* A soft band behind the dock buttons so they never look pasted over content. */
-  .room::after { content: ""; position: fixed; left: 0; right: 0; bottom: 0; height: var(--dock); z-index: 29; pointer-events: none;
+  .room::after { content: ""; position: fixed; left: 0; right: 0; bottom: calc(0px - var(--lab-gap, 0px)); height: var(--dock); z-index: 29; pointer-events: none;
     background: linear-gradient(to bottom, transparent, var(--night) 42%); }
 
   /* Dock: sound | mic | lock | the four emoji. While this phone has Lock (or Next) up, the
      emoji shrink to make room for it, and fold into a square when Open mic is on too. */
-  .mic-btn { bottom: calc(14px + env(safe-area-inset-bottom, 0px)); left: calc(var(--gut) + 60px); width: 52px; padding: 0; justify-content: center; }
+  .mic-btn { bottom: calc(14px + env(safe-area-inset-bottom, 0px) - var(--lab-gap, 0px)); left: calc(var(--gut) + 60px); width: 52px; padding: 0; justify-content: center; }
   .room { --emo-w: 0px; }
   .room:has(.emo-row) { --emo-w: 168px; }
-  .emo-row { bottom: calc(12px + env(safe-area-inset-bottom, 0px)); padding: 3px; }
+  .emo-row { bottom: calc(12px + env(safe-area-inset-bottom, 0px) - var(--lab-gap, 0px)); padding: 3px; }
   .emo-b { width: 38px; height: 38px; font-size: 24px; }
   .room:has(.emo-row):is(:has(.lock-btn), :has(.next-row .btn)) { --emo-w: 136px; }
   .room:has(.lock-btn) .emo-b, .room:has(.next-row .btn) .emo-b { width: 30px; height: 30px; font-size: 19px; }
   .room:has(.emo-row):has(.mic-btn):is(:has(.lock-btn), :has(.next-row .btn)) { --emo-w: 72px; }
-  .room:has(.mic-btn):has(.lock-btn) .emo-row, .room:has(.mic-btn):has(.next-row .btn) .emo-row { display: grid; grid-template-columns: repeat(2, 30px); border-radius: 16px; bottom: calc(6px + env(safe-area-inset-bottom, 0px)); }
-  .lock-btn { left: calc(var(--gut) + 62px); right: calc(var(--gut-r) + var(--emo-w, 0px) + 8px); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); min-height: 56px; font-size: 19px; padding-inline: 8px; white-space: nowrap; }
+  .room:has(.mic-btn):has(.lock-btn) .emo-row, .room:has(.mic-btn):has(.next-row .btn) .emo-row { display: grid; grid-template-columns: repeat(2, 30px); border-radius: 16px; bottom: calc(6px + env(safe-area-inset-bottom, 0px) - var(--lab-gap, 0px)); }
+  .lock-btn { left: calc(var(--gut) + 62px); right: calc(var(--gut-r) + var(--emo-w, 0px) + 8px); bottom: calc(12px + env(safe-area-inset-bottom, 0px) - var(--lab-gap, 0px)); min-height: 56px; font-size: 19px; padding-inline: 8px; white-space: nowrap; }
   .room:has(.mic-btn) .lock-btn { left: calc(var(--gut) + 120px); }
 
   /* Header: slimmer everywhere; hidden while a question owns the screen. */
@@ -1367,7 +1367,7 @@ html[data-theme="bar"] body::before {
 }
 @media (max-width: 640px) {
   /* Next lives in the dock on the reveal, like Lock does on the question. */
-  .next-row .btn { position: fixed; z-index: 46; left: calc(var(--gut) + 62px); right: calc(var(--gut-r) + var(--emo-w, 0px) + 8px); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); min-height: 56px; font-size: 19px; padding-inline: 8px; white-space: nowrap; animation: rise .18s ease; }
+  .next-row .btn { position: fixed; z-index: 46; left: calc(var(--gut) + 62px); right: calc(var(--gut-r) + var(--emo-w, 0px) + 8px); bottom: calc(12px + env(safe-area-inset-bottom, 0px) - var(--lab-gap, 0px)); min-height: 56px; font-size: 19px; padding-inline: 8px; white-space: nowrap; animation: rise .18s ease; }
   .room:has(.mic-btn) .next-row .btn { left: calc(var(--gut) + 120px); }
   .room[data-phase="reveal"] .opt { min-height: clamp(34px, 5.4dvh, 48px); }
   .room[data-phase="reveal"] .q-card { gap: 7px; }
@@ -1708,6 +1708,6 @@ button.code-chip { cursor: pointer; }
    button keeps its whole label. */
 @media (max-width: 370px) {
   .room:has(.emo-row):is(:has(.lock-btn), :has(.next-row .btn)) { --emo-w: 72px; }
-  .room:has(.lock-btn) .emo-row, .room:has(.next-row .btn) .emo-row { display: grid; grid-template-columns: repeat(2, 30px); border-radius: 16px; bottom: calc(6px + env(safe-area-inset-bottom, 0px)); }
+  .room:has(.lock-btn) .emo-row, .room:has(.next-row .btn) .emo-row { display: grid; grid-template-columns: repeat(2, 30px); border-radius: 16px; bottom: calc(6px + env(safe-area-inset-bottom, 0px) - var(--lab-gap, 0px)); }
   .room:has(.mic-btn) .lock-btn, .room:has(.mic-btn) .next-row .btn { font-size: 16px; padding-inline: 4px; }
 }

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<script src="/lab/fill.js"></script>
 <title>Screensaver · Capra Lab</title>
 <meta name="description" content="It bounces. It pauses. Call the corner it hits dead on. A Capra Lab daily game.">
 <meta name="robots" content="noindex">
@@ -43,7 +44,7 @@
     font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
   }
   /* scanlines over everything, like an old monitor */
-  body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 30;
+  body::after { content: ""; position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); pointer-events: none; z-index: 30;
     background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px); }
   /* an opaque strip behind the iPhone clock, so nothing scrolls into it */
   body::before { content: ""; position: fixed; left: 0; right: 0; top: 0; height: var(--st); background: var(--night); z-index: 35; pointer-events: none; }
@@ -111,7 +112,7 @@
   .big { text-align: center; font: 400 clamp(80px, 26vw, 128px)/0.85 var(--vt); color: var(--osd); text-shadow: 4px 0 var(--pink), -4px 0 var(--cyan); }
 
   /* ---------- sheet, toast ---------- */
-  .veil { position: fixed; inset: 0; z-index: 40; background: rgba(0, 0, 0, 0.72); display: grid; align-items: end; justify-items: center; }
+  .veil { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 40; background: rgba(0, 0, 0, 0.72); display: grid; align-items: end; justify-items: center; }
   .sheet { position: relative; width: 100%; max-width: 560px; max-height: calc(100dvh - var(--st) - 24px); overflow-y: auto; background: var(--night); border: 3px solid var(--ink); border-bottom: 0;
     border-radius: 22px 22px 0 0; padding: 18px calc(var(--sr) + 18px) calc(var(--sb) + 22px) calc(var(--sl) + 18px); display: grid; gap: 12px; }
   @media (min-width: 700px) { .veil { align-items: center; } .sheet { border-radius: 22px; border-bottom: 3px solid var(--ink); } }

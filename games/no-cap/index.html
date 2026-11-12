@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<script src="/lab/fill.js"></script>
 <title>No Cap · Capra Lab</title>
 <meta name="description" content="Three facts. One cap. Draft the topics your friends know least, then find the facts in theirs. A Capra Lab party game.">
 <meta name="robots" content="noindex">
@@ -189,7 +190,7 @@
   .bigscore { text-align: center; font-family: var(--display); font-size: clamp(64px, 22vw, 110px); line-height: 0.9; color: var(--yellow); text-shadow: 4px 4px 0 var(--cap), 7px 7px 0 var(--shadow); }
 
   /* ---------- sheets, toast ---------- */
-  .veil { position: fixed; inset: 0; z-index: 40; background: rgba(5, 3, 14, 0.72); display: grid; align-items: end; justify-items: center; }
+  .veil { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 40; background: rgba(5, 3, 14, 0.72); display: grid; align-items: end; justify-items: center; }
   .sheet {
     position: relative; width: 100%; max-width: 560px; max-height: calc(100dvh - var(--st) - 24px); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
     background: var(--night); border: 3px solid var(--ink); border-bottom: 0; border-radius: 22px 22px 0 0; grid-template-columns: minmax(0, 1fr);

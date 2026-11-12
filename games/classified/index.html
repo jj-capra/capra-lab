@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<script src="/lab/fill.js"></script>
 <title>Classified · Capra Lab</title>
 <meta name="description" content="Secret missions all night. Who said it? Yearbook awards. Everything comes out when the file is declassified. A sleepover game from Capra Lab.">
 <meta name="robots" content="noindex">
@@ -205,7 +206,7 @@
   .hostbar .btn { flex: 1; }
 
   /* ---------- Declassified ---------- */
-  #reveal .wrap { min-height: calc(100dvh - var(--st) - 70px); align-content: start; }
+  #reveal .wrap { min-height: calc(var(--lab-h, 100dvh) - var(--st) - 70px); align-content: start; }
   .rv-title { text-align: center; display: grid; gap: 14px; justify-items: center; padding-top: 18px; }
   .rv-title .stamp { font-size: clamp(28px, 9vw, 56px); border-width: 5px; padding: 4px 14px 0; max-width: 92%; }
   .rv-title h2 { font-size: clamp(30px, 8vw, 40px); color: var(--paper); }
@@ -273,7 +274,7 @@
   .mlist li b { font-family: Inter, sans-serif; font-size: 12px; font-weight: 900; letter-spacing: 0.04em; display: block; color: var(--red); }
 
   /* ---------- sheets, toast ---------- */
-  .veil { position: fixed; inset: 0; z-index: 40; background: rgba(5, 3, 10, 0.72); display: grid; align-items: end; justify-items: center; }
+  .veil { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 40; background: rgba(5, 3, 10, 0.72); display: grid; align-items: end; justify-items: center; }
   .sheet {
     position: relative; width: 100%; max-width: 560px; max-height: calc(100dvh - var(--st) - 24px); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
     background: var(--night); border: 3px solid var(--ink); border-bottom: 0; border-radius: 22px 22px 0 0; grid-template-columns: minmax(0, 1fr);
@@ -294,7 +295,7 @@
   }
   .toast.show { transform: translate(-50%, 0); }
   .toast.err { background: #FFD9D3; }
-  .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 25; overflow: hidden; }
+  .confetti { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); pointer-events: none; z-index: 25; overflow: hidden; }
   .confetti i { position: absolute; top: -20px; width: 12px; height: 9px; border: 2px solid var(--ink); animation: fall linear forwards; }
   @keyframes fall { to { transform: translate3d(var(--dx), 110vh, 0) rotate(var(--r)); } }
   @media (prefers-reduced-motion: reduce) {
