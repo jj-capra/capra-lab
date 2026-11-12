@@ -1,8 +1,9 @@
-// Goat Getaway: the daily pen, the clock, the race board, Blue Ribbons and the diamonds it pays
-// into Mind Heist.  node games/goat-getaway/test/goat.test.mjs
+// Goat Getaway: the daily pen, the clock, the race board, Blue Ribbons and what it pays into the
+// lab wallet.  node games/goat-getaway/test/goat.test.mjs
 import assert from 'node:assert/strict';
 import { createApi, HINT_MS } from '../server/api.js';
 import { memoryStore } from '../server/store.js';
+import { createWallet } from '../../../lab/wallet.js';
 import { daily, raceView, practicePens, TIER_NAMES } from '../server/daily.js';
 import { solve, replay, isValid } from '../shared/puzzle.mjs';
 
@@ -16,17 +17,18 @@ const LAB = {
 };
 function rig(start) {
   let t = start;
-  const store = memoryStore(), mh = memoryStore();
+  const store = memoryStore(), walletStore = memoryStore();
+  const wallet = createWallet({ store: walletStore, clock: () => t });
   const verify = async (name, code) => {
     const p = Object.entries(LAB).find(([, v]) => v.name.toLowerCase() === name.toLowerCase() && v.code === code);
     return p ? { name: p[1].name, handle: p[0] } : null;
   };
-  const api = createApi({ store, mh, verify, clock: () => t });
+  const api = createApi({ store, wallet, verify, clock: () => t });
   const call = async (path, body = {}) => {
     const res = await api.handle(new Request('https://capra-lab.netlify.app/goat-getaway/api' + path, { method: 'POST', body: JSON.stringify(body) }));
     return { status: res.status, ...(await res.json()) };
   };
-  return { store, mh, call, tick: (ms) => { t += ms; } };
+  return { store, wallet, walletStore, call, tick: (ms) => { t += ms; } };
 }
 const as = (who, extra = {}) => ({ lab: LAB[who], ...extra });
 
@@ -120,22 +122,38 @@ test('top five by lab name, fastest first, and a Blue Ribbon for the day’s fas
   assert.equal((await R.call('/solve', as('cy', { moves: best.path, date: '2026-11-03' }))).status, 409, 'yesterday’s pen is closed');
 });
 
-test('diamonds land on the linked Mind Heist profile, or wait there until one is linked', async () => {
+test('the lab wallet: amber for getting out, a diamond at par, each once a day', async () => {
   const R = rig(Date.parse('2026-11-03T18:00:00Z'));
   const t = daily('2026-11-03'), best = solve(t.board);
-  // Ann has a Mind Heist profile linked to her lab name; Bo doesn't yet.
-  await R.mh.set('l/ann', { pid: 'PANN000001' });
-  await R.mh.set('p/PANN000001', { pid: 'PANN000001', name: 'Ann', gems: 3 });
-  assert.equal((await R.call('/today', as('ann'))).me.mindHeist, true);
-  assert.equal((await R.call('/today', as('bo'))).me.mindHeist, false);
   await R.call('/open', as('ann'));
   let s = await R.call('/solve', as('ann', { moves: best.path }));
-  assert.equal(s.paid, 'mind-heist');
-  assert.equal((await R.mh.get('p/PANN000001')).data.gems, 5);
+  assert.deepEqual(s.paid, { amber: 30, diamonds: 1 }, 'out at par: amber and a diamond');
+  let w = await R.wallet.wallet('ann');
+  assert.deepEqual([w.amber, w.diamonds], [30, 1]);
+  s = await R.call('/solve', as('ann', { moves: best.path }));
+  assert.equal(s.paid, null, 'again pays nothing');
+  // Bo gets out the long way first (amber), then at par later (the diamond)
   await R.call('/open', as('bo'));
-  s = await R.call('/solve', as('bo', { moves: best.path }));
-  assert.equal(s.paid, 'waiting');
-  assert.deepEqual((await R.mh.get('gg/bo')).data, { gems: 2 });
+  const long = [...best.path];
+  const r0 = replay(t.board, long);
+  assert.ok(r0.ok && r0.out);
+  const extra = (() => {   // a getaway over par: wiggle a piece there and back first
+    for (const id of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') for (const d of [1, -1, 2, -2]) {
+      const m = [[id, d], [id, -d]];
+      const r = replay(t.board, [...m, ...best.path]);
+      if (r.ok && r.out && r.n > t.par) return [...m, ...best.path];
+    }
+    return null;
+  })();
+  assert.ok(extra, 'found a getaway over par');
+  {
+    s = await R.call('/solve', as('bo', { moves: extra }));
+    assert.deepEqual(s.paid, { amber: 30 }, 'over par: amber only');
+    s = await R.call('/solve', as('bo', { moves: best.path }));
+    assert.deepEqual(s.paid, { diamonds: 1 }, 'par later: the diamond');
+    w = await R.wallet.wallet('bo');
+    assert.deepEqual([w.amber, w.diamonds], [30, 1]);
+  }
 });
 
 test('guests can open and solve the pen, but nothing is recorded or paid', async () => {
@@ -149,7 +167,7 @@ test('guests can open and solve the pen, but nothing is recorded or paid', async
   assert.equal(s.guest, true);
   assert.equal(s.moves, t.par);
   assert.equal((await R.call('/today')).race.solvers, 0);
-  assert.equal(R.mh.map.size, 0);
+  assert.equal(R.walletStore.map.size, 0, 'a guest gets nothing paid');
 });
 
 test('a hint is the best next move from where you are; on today’s pen it costs time and the par diamond', async () => {

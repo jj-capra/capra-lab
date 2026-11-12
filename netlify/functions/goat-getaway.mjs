@@ -1,9 +1,10 @@
 // Goat Getaway's server at /goat-getaway/api/* (path set below, so netlify.toml has no rule for it).
-// Its own store holds the pens' race boards and ribbons; diamonds go into Mind Heist's store.
+// Its own store holds the pens' race boards and ribbons; amber and diamonds go into the lab wallet.
 import { getStore } from '@netlify/blobs';
 import { createApi } from '../../games/goat-getaway/server/api.js';
 import { blobsStore } from '../../games/goat-getaway/server/store.js';
-import { netlifyStore } from '../../games/mind-heist/src/server/store.mjs';
+import { createWallet, STORE as WALLET_STORE } from '../../lab/wallet.js';
+import { blobsStore as casBlobs } from '../../lab/casstore.js';
 import { createProfiles } from '../../lab/profiles.js';
 import { blobStore, PROFILE_STORE } from '../../lab/stores.js';
 
@@ -12,7 +13,7 @@ export default async function (req) {
   const profiles = createProfiles(await blobStore(PROFILE_STORE));
   return createApi({
     store: blobsStore(getStore, 'goat-getaway'),
-    mh: netlifyStore(getStore),
+    wallet: createWallet({ store: casBlobs(getStore, WALLET_STORE) }),
     verify: (name, code) => profiles.verify(name, code),
   }).handle(req);
 }

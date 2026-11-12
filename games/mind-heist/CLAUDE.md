@@ -113,6 +113,11 @@ on purpose; do not bring any of them back unless JC asks.
   cards") links to the lab's draw. Without `cards` (this folder's own dev server and its tests) the
   old one-a-day draw still runs: 1 in 4 a prize, a diamond makes it 1 in 2, the hand holds 3
   (`src/server/cards.mjs`).
+- **Diamonds are the lab's** (Nov 12 2026: Capra Lab's wallet, `lab/wallet.js`). The function gets
+  `wallet`: a linked profile's `gems` (and Goat Getaway's still waiting in `gg/<handle>`) move into
+  the lab wallet on `/home` or `/me/lab` (`moveGems`, once: the profile goes to zero in the same
+  compare-and-swap), and `me.gems` shows the lab's diamonds. A finished board pays amber and a crew
+  win a shard through Capra Lab's `/lab/wallet.js` (`room.js`, on the final).
 - **Trophies**: Vault Jam's (the day's fastest solve, Nov 2–7 2026) stay on profiles as history
   (🏆 count and shelf, shown only when there are any). Days still pending at the move
   (`jamPend`) are settled from the old race boards (`j/<date>`) the first time the player loads

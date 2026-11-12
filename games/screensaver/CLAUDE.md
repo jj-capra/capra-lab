@@ -41,6 +41,9 @@ Lab.
   the page sends `life` only if the run went on past the third miss, and the server spends the
   card then (`cards.take`) and scores the run with four lives (`score(seed, picks, lives)`). No
   card left, or a second run that day: the board counts the run up to the third miss.
+- **The lab wallet** (Nov 12 2026): today's counted run pays 30 amber (`RUN_PAY`, in `/run`'s
+  `paid`); the day's #1 gets a diamond (`DAY_TOP_PAY`), settled the first time anyone says hello after
+  that day ends (`paid` on the day's board, so once).
 - Solo for now (JC: "Solo first"); a party room can come later.
 
 ## Files

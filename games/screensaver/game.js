@@ -376,6 +376,7 @@ async function finish() {
         else if (G.extra) line += ' You didn’t need your Extra Life. It’s still in your hand.';
         $('postLine').textContent = line;
         hello.mine = { score: r.score, level: r.level, rank: r.rank, of: r.of };
+        if (r.paid && window.CapraWallet) CapraWallet.paid(r.paid);   // the lab wallet: amber for today's run
         if (G.extra) { const o = $('lifeOffer'); if (o) o.disarm(); if (window.CapraCards) CapraCards.changed(); }
       } catch (e) { $('postLine').textContent = e.message; }
     }

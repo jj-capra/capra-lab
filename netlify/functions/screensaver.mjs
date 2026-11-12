@@ -8,6 +8,7 @@ import { createCrew } from '../../lab/crew.js';
 import { blobStore, PROFILE_STORE } from '../../lab/stores.js';
 import { createCards, STORE as CARD_STORE } from '../../lab/cards.js';
 import { blobsStore as casBlobs } from '../../lab/casstore.js';
+import { createWallet, STORE as WALLET_STORE } from '../../lab/wallet.js';
 
 export default async function (req) {
   const labStore = await blobStore(PROFILE_STORE);
@@ -17,6 +18,7 @@ export default async function (req) {
     verify: (name, code) => profiles.verify(name, code),
     role: (handle) => crew.role(handle),
     cards: createCards({ store: casBlobs(getStore, CARD_STORE) }),   // Extra Life cards from the daily draw
+    wallet: createWallet({ store: casBlobs(getStore, WALLET_STORE) }), // amber for today's run, a diamond for the day's #1
   }).handle(req);
 }
 

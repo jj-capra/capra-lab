@@ -398,9 +398,18 @@ function shareCard(box, text, url) {
   box.innerHTML = '<lab-text-share></lab-text-share>';
   box.firstChild.set({ emoji: '🧢', title: 'No Cap', text, url });
 }
+// The lab wallet (/lab/wallet.js; JC, Nov 2026): amber for a finished game, a shard for winning one with
+// friends. The final redraws on every check-in, so each game asks once (the server pays a ref once too).
+let walletAsked = '';
+function walletPay(ref, won) {
+  if (!window.CapraWallet || walletAsked === ref) return;
+  walletAsked = ref;
+  CapraWallet.earn('no-cap', 'game', ref).then(() => { if (won) CapraWallet.earn('no-cap', 'win', ref); });
+}
 function renderFinal() {
   const r = room, f = r.final || r.players;
   const top = f[0], tie = f.length > 1 && f[1].score === top.score;
+  if (seat) walletPay(`${seat.code}:${r.game || 0}`, f.length >= 2 && !tie && top && top.pid === r.me);
   const num = (n) => Number(n).toLocaleString('en-US');
   $('playBody').innerHTML = `<div class="banner"><div class="mic">🏆</div><div class="big">${tie ? 'It’s a tie' : `${esc(top ? top.name : '')} wins`}</div><p class="note">${esc(r.deck.title)} · ${r.n} cards</p></div>
     <ul class="scores">${f.map((p, i) => `<li class="${i === 0 ? 'top' : ''} ${p.pid === r.me ? 'me' : ''}"><span class="nm">${i + 1}. ${esc(p.name)}</span><span class="how">${r.n <= 8 ? marksRow(p.marks) : ""}</span><b>${num(p.score)}</b></li>`).join('')}</ul>
@@ -418,6 +427,7 @@ function renderFinal() {
 function renderSoloFinal() {
   stop();
   const r = room, me = (r.final || r.players)[0];
+  if (seat) walletPay(`${seat.code}:solo`, false);
   const url = r.made ? `${location.origin}/no-cap/c/${r.made}` : null;
   const num = (n) => Number(n).toLocaleString('en-US');
   const right = (me.marks || []).filter((m) => m === 'all').length;

@@ -4,6 +4,7 @@ import { field, pockets, step, run, level, score, points, plan, LIVES, GUESS_MS 
 import { createApi, daySeed, dayOf } from '../server/api.js';
 import { memoryStore } from '../server/store.js';
 import { createCards } from '../../../lab/cards.js';
+import { createWallet } from '../../../lab/wallet.js';
 
 let passed = 0;
 const test = async (name, fn) => {
@@ -125,6 +126,31 @@ await test('an Extra Life card: a fourth heart, spent only when the run needed i
   assert.equal(again.counted, false);
   assert.equal(again.life, false);
   assert.equal(await cards.count('roman', 'ss-life'), 1);
+});
+
+await test('the lab wallet: amber for today’s counted run, a diamond for the day’s #1 after midnight', async () => {
+  let now = Date.parse('2026-11-12T18:00:00Z');
+  const wallet = createWallet({ store: memoryStore(), clock: () => now });
+  const api = createApi({ store: memoryStore(), clock: () => now, wallet,
+    verify: async (name, code) => (code === '123456' ? { name, handle: name.toLowerCase() } : null) });
+  const call = (p, b = {}) => api.route('POST', p, b);
+  const lab = (name) => ({ lab: { name, code: '123456' } });
+  const date = (await call('/hello', {})).date, seed = daySeed(date);
+  const right = (n) => ({ c: level(seed, n).answer, ms: 1000 }), wrong = () => ({ c: -1, ms: 25000 });
+  const a = await call('/run', { date, picks: [right(1), right(2), wrong(), wrong(), wrong()], ...lab('Ace') });
+  assert.deepEqual(a.paid, { amber: 30 });
+  const b = await call('/run', { date, picks: [right(1), wrong(), wrong(), wrong()], ...lab('Bea') });
+  assert.deepEqual(b.paid, { amber: 30 });
+  const again = await call('/run', { date, picks: [right(1)], ...lab('Ace') });
+  assert.equal(again.paid, null, 'a second run pays nothing');
+  await call('/hello', lab('Ace'));
+  assert.equal((await wallet.wallet('ace')).diamonds, 0, 'not until the day is over');
+  now += 24 * 3600e3;
+  await call('/hello', lab('Bea'));
+  await call('/hello', {});
+  assert.equal((await wallet.wallet('ace')).diamonds, 1, 'yesterday’s #1 gets a diamond');
+  assert.equal((await wallet.wallet('bea')).diamonds, 0);
+  assert.equal((await wallet.wallet('ace')).amber, 30);
 });
 
 console.log(`\nScreensaver: ${passed} tests passed`);

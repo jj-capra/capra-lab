@@ -56,6 +56,23 @@
 
   /* header */
 
+  /* The wallet (public/lab/wallet-panel.js): diamonds, amber and shards for the whole lab */
+  .wallet { margin: 0 0 22px; padding: 14px 14px 16px; border: 3px solid var(--ink); border-radius: 20px; background: #221B33; box-shadow: 5px 6px 0 #05030A; }
+  .wallet h2 { margin: 0 0 12px; font-family: var(--display); font-weight: 400; font-size: 26px; letter-spacing: 0.06em; line-height: 1; color: var(--yellow); }
+  .wl-coins { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .wl-coin { display: grid; justify-items: center; gap: 4px; padding: 10px 6px; border-radius: 14px; background: #2A2238; border: 2px solid #05030A; }
+  .wl-coin b { font: 800 clamp(20px, 6vw, 26px)/1 Inter, system-ui, sans-serif; font-variant-numeric: tabular-nums; color: var(--paper); }
+  .wl-coin small { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 248, 236, 0.72); }
+  .wl-line { margin: 10px 0 0; font-size: 14px; line-height: 1.4; color: rgba(255, 248, 236, 0.86); }
+  .wl-gm a { color: var(--cyan); font-weight: 700; }
+  .wl-how { margin-top: 12px; }
+  .wl-how summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 800; font-size: 14px; color: var(--yellow); }
+  .wl-how ul { margin: 4px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+  .wl-how li { display: grid; gap: 2px; padding: 8px 10px; border-radius: 12px; background: #2A2238; font-size: 13px; line-height: 1.35; }
+  .wl-how li b { font-size: 13px; }
+  .wl-how li span { color: rgba(255, 248, 236, 0.78); }
+  .wl-how p { margin: 8px 0 0; font-size: 12px; line-height: 1.4; color: rgba(255, 248, 236, 0.72); }
+
   /* The daily Card Draw (public/lab/card-draw.js): four cards a day for every lab player */
   .cdraw { margin: 0 0 22px; padding: 14px 14px 16px; border: 3px solid var(--ink); border-radius: 20px; background: #221B33; box-shadow: 5px 6px 0 #05030A; }
   .cd-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 10px; margin-bottom: 12px; }
@@ -392,6 +409,13 @@
   <button class="who-btn" id="whoBtn" type="button">
     <span class="who-text"><small>One profile, every game</small><b>Make your Capra Lab profile</b></span><span class="who-cta">Start</span>
   </button>
+
+  <!-- The wallet (public/lab/wallet-panel.js, lab/wallet.js): diamonds, amber and shards, one per
+       lab player, paid by every game and shared with Glacial Maw. -->
+  <section class="wallet" id="walletPanel" aria-label="Your wallet">
+    <h2>YOUR WALLET</h2>
+    <div id="wlBody"></div>
+  </section>
 
   <!-- The daily Card Draw (public/lab/card-draw.js, lab/cards.js): four cards a day for every lab
        player; prizes wait in the hand until a game plays them. -->

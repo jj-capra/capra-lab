@@ -68,7 +68,9 @@ const DECK_CFG = new Map();   // store -> { at, v }: the owner's deck switches, 
 // `cards`: the lab's daily Card Draw (lab/cards.js; JC, Nov 2026: "Let's bring Draw a Card out from Mind
 // Heist and for all Capra lab games"). Moles and Hidden 50/50s are won there now and wait in the lab hand
 // of the profile's lab player; without it only the cards already on a profile can be played.
-export function makeHandler(store, { clock = () => Date.now(), labCheck = askCapraLab, labRole = null, cards = null } = {}) {
+// `wallet`: the lab wallet (lab/wallet.js; JC, Nov 12 2026: "diamonds amber and shards in Capra Lab"). A linked
+// profile's diamonds move into it, and the home card shows the lab's diamonds.
+export function makeHandler(store, { clock = () => Date.now(), labCheck = askCapraLab, labRole = null, cards = null, wallet = null } = {}) {
   /* ---------- storage helpers ---------- */
   async function mutate(key, fn, { create = null } = {}) {
     for (let attempt = 0; attempt < 8; attempt++) {
@@ -131,7 +133,20 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
   async function meOut(profile, date) {
     const out = P.privateProfile(profile, date);
     out.hand = [...out.hand, ...(await labHand(profile))];
+    if (wallet && profile && profile.lab) {
+      try { out.gems = (await wallet.wallet(profile.lab)).diamonds + (out.gems || 0); out.labWallet = true; } catch { /* keep the profile's */ }
+    }
     return out;
+  }
+  // Diamonds are the lab's now: a linked profile's move into the lab wallet (once; the profile's count
+  // goes to zero in the same compare-and-swap, and comes back if the wallet doesn't answer).
+  async function moveGems(pid, handle) {
+    if (!wallet || !handle) return 0;
+    let n = 0;
+    const r = await mutate('p/' + pid, (p) => { n = Math.max(0, Math.floor(Number(p.gems) || 0)); if (!n) return SKIP; p.gems = 0; });
+    if (!n || r.skipped) return 0;
+    try { await wallet.pay(handle, { diamonds: n }, { game: 'mind-heist', why: 'Mind Heist diamonds moved to the lab' }); return n; }
+    catch (e) { await mutate('p/' + pid, (p) => { p.gems = (p.gems || 0) + n; }).catch(() => null); return 0; }
   }
 
   // Vault Jam trophies (from before it became Goat Getaway): each day you solved is checked once
@@ -259,6 +274,7 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
       if (me && tr.profile.lab) {
         goatGems = await claimGoatGems(tr.profile.lab);
         if (goatGems) tr.profile = (await mutate('p/' + me.pid, (p) => { p.gems = (p.gems || 0) + goatGems; })).data;
+        if (await moveGems(me.pid, tr.profile.lab)) tr.profile = (await getJSON('p/' + me.pid)) || tr.profile;
       }
       return json(200, {
         now, date: cal.today, encore: cal.encore, nextExists: cal.nextExists,
@@ -329,7 +345,8 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
         p.tokens = [...p.tokens.slice(-5), hash]; p.lab = who.handle; p.name = labName(who.name);
         if (goatGems) p.gems = (p.gems || 0) + goatGems;
       });
-      return json(200, { pid, token, goatGems, me: await meOut(data, pacificDate(now)) });
+      const moved = await moveGems(pid, who.handle);
+      return json(200, { pid, token, goatGems, me: await meOut(moved ? ((await getJSON('p/' + pid)) || data) : data, pacificDate(now)) });
     }
 
     /* ---- diamonds (earned in Goat Getaway) and the daily draw ---- */

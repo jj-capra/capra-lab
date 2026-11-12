@@ -5,7 +5,7 @@
   "description": "Capra Lab: the hub, lab-wide profiles, and the native games.",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node lab/test/profiles.test.mjs && node lab/test/cards.test.mjs && node games/primal-survival/test/engine.test.mjs && node games/primal-survival/test/api.test.mjs && node games/swerve-planet/tests/scores.test.mjs && node games/dont-look/test/dont-look.test.mjs && node games/goat-getaway/test/goat.test.mjs && node games/punchline/test/punchline.test.mjs && node games/classified/test/classified.test.mjs && node games/no-cap/test/no-cap.test.mjs && node games/screensaver/test/screensaver.test.mjs && node games/par-tee-time/test/par-tee-time.test.mjs && node --test games/mind-heist/tests/*.test.mjs",
+    "test": "node lab/test/profiles.test.mjs && node lab/test/cards.test.mjs && node lab/test/wallet.test.mjs && node games/primal-survival/test/engine.test.mjs && node games/primal-survival/test/api.test.mjs && node games/swerve-planet/tests/scores.test.mjs && node games/dont-look/test/dont-look.test.mjs && node games/goat-getaway/test/goat.test.mjs && node games/punchline/test/punchline.test.mjs && node games/classified/test/classified.test.mjs && node games/no-cap/test/no-cap.test.mjs && node games/screensaver/test/screensaver.test.mjs && node games/par-tee-time/test/par-tee-time.test.mjs && node --test games/mind-heist/tests/*.test.mjs",
     "pretest": "node scripts/build.mjs"
   },
   "engines": {

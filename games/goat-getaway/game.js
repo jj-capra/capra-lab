@@ -1,5 +1,5 @@
 // Goat Getaway: the page. Today's pen (one a day, the same for everyone, timed by the server,
-// diamonds to Mind Heist, a Blue Ribbon for the fastest) and endless practice pens.
+// amber and a par diamond for the lab wallet, a Blue Ribbon for the fastest) and endless practice pens.
 // The rules live in shared/puzzle.mjs, the same file the server checks solves with.
 import { pieces, slide, solved, reach, solve } from './shared/puzzle.mjs';
 import { pieceArt, postArt, pieceName, GOAT_HEAD, RIBBON } from './art.js';
@@ -384,11 +384,11 @@ const Today = {
   opener() {
     const t = this.data.pen, me = this.data.me;
     $('openWhat').innerHTML = me
-      ? `<b>The clock starts when you open the pen.</b> Your first getaway is your time. Get the goat out: <b>+1 💎</b>. Do it in ${t.par} moves: <b>+1 more</b>.`
+      ? `<b>The clock starts when you open the pen.</b> Your first getaway is your time. Get the goat out: <b>+30 amber</b>. Do it in ${t.par} moves with no hints: <b>+1 💎</b>.`
       : `One pen a day, the same for everyone. Today’s is <b>${esc(t.tierName)}</b> level: the goat can get out in ${t.par} moves.`;
     $('openNote').innerHTML = me
-      ? (me.mindHeist ? 'Diamonds go straight to your Mind Heist vault for its daily card draw.' : 'Diamonds wait for you in Mind Heist (for its daily card draw) until you open it with your Capra Lab name.')
-      : `Playing as a guest: nothing’s timed against anyone or saved. <a href="/#profile">Make your Capra Lab key card</a> to race the clock, win Blue Ribbons and earn diamonds for Mind Heist.`;
+      ? 'Amber and diamonds go into your Capra Lab wallet, the same one in every lab game.'
+      : `Playing as a guest: nothing’s timed against anyone or saved. <a href="/#profile">Make your Capra Lab key card</a> to race the clock, win Blue Ribbons and fill your Capra Lab wallet.`;
   },
   async open() {
     if (this.busy) return;
@@ -479,6 +479,7 @@ const Today = {
     try {
       const r = await call('/solve', { moves, date: this.data.pen.date });
       this.res = r;
+      if (r.paid && window.CapraWallet) CapraWallet.paid(r.paid);   // the server paid the lab wallet
       const d = { ...this.data };
       if (r.me) d.me = { ...d.me, ...r.me };
       if (r.race) d.race = r.race;
@@ -507,16 +508,15 @@ const Today = {
     if (!me) {
       head = `Out in ${fmtTime(this.elapsed())}!`;
       line = `${plural(r ? r.moves : this.pen.moves.length, 'move')} · par ${t.par}${(r ? r.moves : 99) <= t.par ? '. Perfect!' : ''}`;
-      gems = `<p class="note"><a href="/#profile">Sign in to Capra Lab</a> and your time races everyone’s, with diamonds for Mind Heist.</p>`;
+      gems = `<p class="note"><a href="/#profile">Sign in to Capra Lab</a> and your time races everyone’s, with amber and diamonds for your lab wallet.</p>`;
     } else {
       head = r && !r.first ? `Out in ${plural(r.moves, 'move')}!` : `Out in ${fmtTime(me.ms)}!`;
       line = r && !r.first ? `Par is ${t.par}. Your time today stays ${fmtTime(me.ms)}.` : `${plural(me.moves, 'move')} · par ${t.par}${me.moves <= t.par && !me.hints ? '. Perfect!' : ''}${me.hints ? ` · ${plural(me.hints, 'hint')} (+${me.hints * 15}s)` : ''}`;
-      if (r && r.gained) {
-        const where = r.paid === 'mind-heist' ? 'sent to your Mind Heist vault'
-          : r.paid === 'waiting' ? 'waiting for you in Mind Heist'
-            : 'didn’t reach Mind Heist this time';
-        gems = `<p class="gems"><b>+${r.gained} 💎</b><span>${where}</span></p>`;
-      } else if (me.parGem) gems = `<p class="note">Both of today’s diamonds are yours.</p>`;
+      if (r && r.paid && (r.paid.amber || r.paid.diamonds)) {
+        const got = [r.paid.amber ? `+${r.paid.amber} amber` : '', r.paid.diamonds ? `+${r.paid.diamonds} 💎` : ''].filter(Boolean).join(' · ');
+        gems = `<p class="gems"><b>${got}</b><span>in your Capra Lab wallet</span></p>`;
+      } else if (r && r.gained) gems = `<p class="note">The wallet didn’t answer just then; your pen still counts.</p>`;
+      else if (me.parGem) gems = `<p class="note">Today’s amber and par diamond are yours.</p>`;
       const race = this.data.race;
       if (race && race.rank) rank = `<p>You’re <b>#${race.rank}</b> of ${race.solvers} today${race.leading ? ', the fastest so far' : ''}.</p>`;
     }

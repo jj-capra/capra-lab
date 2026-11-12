@@ -6,10 +6,11 @@ import { makeHandler } from '../src/server/api.mjs';
 import { memoryStore } from '../src/server/store.mjs';
 import { createCards } from '../../../lab/cards.js';
 import { memoryStore as casMemory } from '../../../lab/casstore.js';
+import { createWallet } from '../../../lab/wallet.js';
 
 const LAB = { 'jj capra': { code: '123456', handle: 'jj-capra', name: 'JJ Capra' }, 'kit': { code: '654321', handle: 'kit', name: 'Kit' } };
 
-function rig({ cards = null } = {}) {
+function rig({ cards = null, wallet = null } = {}) {
   const store = memoryStore();
   const asked = [];
   const labCheck = async (name, code) => {
@@ -17,7 +18,7 @@ function rig({ cards = null } = {}) {
     const p = LAB[String(name).toLowerCase()];
     return p && p.code === code ? { name: p.name, handle: p.handle } : null;
   };
-  const h = makeHandler(store, { clock: () => Date.parse('2026-11-06T17:00:00Z'), labCheck, cards });
+  const h = makeHandler(store, { clock: () => Date.parse('2026-11-06T17:00:00Z'), labCheck, cards, wallet });
   const call = async (method, path, body, who) => {
     const headers = { 'content-type': 'application/json' };
     if (who) headers.authorization = `Bearer ${who.pid}.${who.token}`;
@@ -238,4 +239,21 @@ test('the lab’s daily Card Draw: Moles and Hidden 50/50s wait in the lab hand;
   assert.equal(await cards.count('jj-capra', 'mh-mole'), 1, 'the Mole went back in the lab hand');
   const none = await R.call('POST', '/rooms/ZZZZ/act', { type: 'hfifty' }, made);
   assert.equal(none.status, 409, 'no Hidden 50/50 anywhere');
+});
+
+test('the lab wallet: a linked profile’s diamonds (and Goat Getaway’s waiting ones) move in once', async () => {
+  const wallet = createWallet({ store: casMemory() });
+  const R = rig({ wallet });
+  const made = await R.call('POST', '/me/lab', { ...jj, create: true, avatar: '🦊' });
+  assert.equal(made.me.gems, 0);
+  await R.store.set('p/' + made.pid, { ...(await R.store.get('p/' + made.pid)).data, gems: 4 });
+  await R.store.set('gg/jj-capra', { gems: 2 });
+  const home = await R.call('GET', '/home', null, made);
+  assert.equal(home.goatGems, 2);
+  assert.equal(home.me.gems, 6, 'the home card shows the lab’s diamonds');
+  assert.equal((await wallet.wallet('jj-capra')).diamonds, 6);
+  assert.equal((await R.store.get('p/' + made.pid)).data.gems, 0, 'none left on the Mind Heist profile');
+  const again = await R.call('GET', '/home', null, made);
+  assert.equal(again.me.gems, 6, 'moved once, not twice');
+  assert.equal((await wallet.wallet('jj-capra')).diamonds, 6);
 });

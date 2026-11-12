@@ -16,10 +16,11 @@ on from Vault Jam (2026-11-02 = No. 1), on the same puzzles.
   Yearling, Nanny, Billy, Mountain Goat, Old Ram, and Sunday is the G.O.A.T.
 - The board stays hidden until **Open the pen**; the server starts the clock then. The **first**
   getaway is your time. The server replays the moves before believing anything.
-- **Diamonds for Mind Heist**: getting out +1 💎, at par +1 more (also on a later try that day).
-  They're written into Mind Heist's store: onto the Mind Heist profile linked to the lab player
-  (`l/<handle>` → `p/<pid>.gems`), or into `gg/<handle>` until they link one (Mind Heist claims
-  it in `/me/lab` and `/home`). They're spent in Mind Heist's daily card draw.
+- **The lab wallet** (JC, Nov 12 2026: diamonds, amber and shards for the whole lab, paid by how
+  rare): getting out of today's pen +30 amber (`PAY_OUT`), at par with no hints +1 💎 (`PAY_PAR`,
+  also on a later try that day). The server pays them into the lab wallet (`wallet.pay`, lab/wallet.js)
+  and `/solve` says what it paid (`paid`); the page shows it. Until Nov 12 2026 it was two diamonds
+  into Mind Heist's store, which moves what's left there into the wallet.
 - **Today's fastest**: the lab's top five **by Capra Lab name** (JC's choice; lab names are public
   on every lab board), plus your rank among everyone.
 - **Blue Ribbon**: the day's fastest getaway anywhere (ties: fewer moves, then earlier), granted

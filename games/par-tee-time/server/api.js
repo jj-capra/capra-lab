@@ -29,8 +29,8 @@ export const MAX_PRESENCE = 8000;     // characters of JSON per phone
 const fail = (status, error, code) => { const e = new Error(error); e.status = status; e.code = code; throw e; };
 const CODE = /^[A-Z0-9]{4}$/, PEER = /^[a-z0-9]{8,32}$/;
 
-export function createApi({ store, verify = null, clock = () => Date.now() }) {
-  const masters = createMasters({ store, verify, clock });
+export function createApi({ store, verify = null, clock = () => Date.now(), wallet = null }) {
+  const masters = createMasters({ store, verify, clock, wallet });
   const active = (room, now) => Object.entries(room.peers || {}).filter(([, p]) => now - p.seen < ACTIVE_MS);
   const view = (room, now) => ({ peers: active(room, now).map(([peer, p]) => ({ peer, role: p.role, presence: p.presence })) });
   const fresh = (now) => ({ at: now, peers: {} });

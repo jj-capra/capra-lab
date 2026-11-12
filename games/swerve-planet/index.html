@@ -554,6 +554,7 @@ body:not(.touch) .lefty{display:none}
 <script src="/lab/chip.js" defer></script>
 <script src="/lab/share.js" defer></script>
 <script src="/lab/card-offer.js" type="module"></script>
+<script src="/lab/wallet.js" type="module"></script>
 <script>
 // Path generator for Swerve Planet — tested in Node, then inlined into the game.
 // Road = sequence of frames every DS units. Each frame: position p, orientation q.
@@ -2650,6 +2651,7 @@ function startRun(opts) {
   if (camp) campStart(mode);
   drawHearts(); for (const k in lastHud) lastHud[k] = k === 'boosting' || k === 'stealthOn' || k === 'magOn' ? null : -1;
   if (!camp) extraLife();
+  game.runAt = Date.now();
   lastLad.tier = -1; lastLad.pct = -1; lastLad.next = ''; lastLad.streak = '';
   touchEl.classList.add('fresh'); clearTimeout(startRun.t); startRun.t = setTimeout(() => touchEl.classList.remove('fresh'), 7000);
   pop(camp ? 'TRAINING CAMP' : mode === 'car' ? 'GO!' : mode === 'hoops' ? 'BALL OUT!' : 'HIKE!', 'stunt');
@@ -2681,6 +2683,12 @@ function endRun() {
   const isBest = p.score > bests[mode];
   if (isBest) { bests[mode] = Math.floor(p.score); store.set(pl.bestKey, bests[mode]); if (mode === 'car') best = bests.car; }
   shardTotal += p.shards; store.set('shards', shardTotal);
+  // The lab wallet (JC, Nov 2026; /lab/wallet.js): amber for a run, a shard for a new best. The server
+  // pays each run once and caps Swerve Planet a day.
+  if (window.CapraWallet && !game.camp && p.score >= 100) {
+    const ref = mode + ':' + (game.runAt || 0);
+    CapraWallet.earn('swerve-planet', 'run', ref).then(() => { if (isBest) CapraWallet.earn('swerve-planet', 'best', ref); });
+  }
   let rows;
   if (mode === 'car') rows = [['Score', fmt(p.score)], ['Distance', (p.dist / 1609.34).toFixed(2) + ' mi'], ['Top speed', fmt(p.top * 2.237) + ' mph'],
     ['Stars', fmt(p.stars)], ['Close swerves', fmt(p.near)], ['Shards', fmt(p.shards)]];

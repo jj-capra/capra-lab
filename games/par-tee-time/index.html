@@ -3232,6 +3232,7 @@ function startMatch(cfg) {
   $('#btnMic').hidden = $('#btnChat').hidden = G.mode !== 'online';
   if (G.mode !== 'online') hideChat();
   mullCount();
+  G.roundAt = Date.now();
   requestAnimationFrame(() => { rdResize($('#cv')); });
   startHole();
   const tok = G.token;
@@ -3575,6 +3576,12 @@ function finalCard() {
   const a = relPar(0), b = relPar(1);
   const win = a.sc < b.sc ? 0 : b.sc < a.sc ? 1 : -1;
   const wn = win < 0 ? '' : G.players[win].name, youWin = /^you$/i.test(wn);
+  // The lab wallet (/lab/wallet.js; JC, Nov 2026): amber for a round of three holes or more, a shard for
+  // beating the hustler or a friend online. The server pays a round once and caps Par-Tee Time a day.
+  if (window.CapraWallet && G.holes.length >= 3) {
+    const ref = (G.mode || '') + ':' + (G.roundAt || 0), mine = G.mode === 'npc' ? 1 - npcSeat() : G.mode === 'online' ? NET.seat : -1;
+    CapraWallet.earn('par-tee-time', 'round', ref).then(() => { if (mine >= 0 && win === mine) CapraWallet.earn('par-tee-time', 'win', ref); });
+  }
   $('#finalWin').textContent = win < 0 ? 'DEAD HEAT!' : youWin ? 'YOU WIN!' : `${wn.toUpperCase()} WINS!`;
   $('#finalSub').textContent = win < 0 ? `Tied at ${a.sc}. Somebody call a rematch.` : `By ${Math.abs(a.sc - b.sc)} stroke${Math.abs(a.sc - b.sc) === 1 ? '' : 's'} · ${relTxt(win ? b.rel : a.rel)} on the card`;
   buildCard($('#finalTable'));
@@ -4411,6 +4418,7 @@ function buildSoloCard(tbl) {
 }
 function mastersFinal() {
   G.state = 'final'; G.token++;
+  if (window.CapraWallet) CapraWallet.earn('par-tee-time', 'round', 'masters:' + (G.roundAt || 0));   // loot and trophies pay on the server
   show($('#mdCard'), false);
   const m = G.cfg.masters, p = G.players[0], r = relPar(0), practice = m.kind === 'practice';
   buildCard($('#finalTable'));
@@ -4644,4 +4652,5 @@ window.__partee = { G, RD, NET, PREF, HOLE_DEFS, compileHole, buildNav, makePlan
 <script src="/lab/chip.js" defer></script>
 <script src="/lab/share.js" defer></script>
 <script src="/lab/card-offer.js" type="module"></script>
+<script src="/lab/wallet.js" type="module"></script>
 </body></html>

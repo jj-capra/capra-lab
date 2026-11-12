@@ -122,6 +122,8 @@ async function submitRun() {
       me.rank = out.career.rank;
       saveMe(me);
     }
+    /* the lab wallet (/lab/wallet.js, Nov 2026): amber for a year on the board */
+    if (me && window.CapraWallet) window.CapraWallet.earn('primal-survival', 'match', 'run:' + NET.seed + ':' + squadIds(squad).join(','));
     /* the server's number is the real one — if it disagrees, say so plainly.
        Compare with the run's own count, not the number on screen: that one is
        still counting up for a moment after the result appears. */
@@ -676,6 +678,11 @@ function renderVs() {
       ' &middot; best of ' + m.bestOf + '</span></div>' +
       '<button class="btn" id="vsAgain">' + (m.next ? esc(vsName(them)) + ' wants a rematch: join it' : 'Rematch') + '</button>' +
       '<button class="btn ghost" id="vsNewMatch">New match</button>';
+    /* the lab wallet (/lab/wallet.js, Nov 2026): amber for a finished match, a shard for winning it */
+    if (window.CapraWallet && VS.code && window.__psPaid !== 'vs:' + VS.code) {
+      const ref = window.__psPaid = 'vs:' + VS.code;
+      window.CapraWallet.earn('primal-survival', 'match', ref).then(() => { if (m.winner === mine) window.CapraWallet.earn('primal-survival', 'win', ref); });
+    }
     /* the results text: who took the match, then a row a player, one mark a round */
     const row = k => done.map(r => r.winner === k ? '🟩' : r.winner === 1 - k ? '🟥' : '🟨').join('') + ' ' + vsName(k);
     const order = m.winner === them ? [them, mine] : [mine, them];

@@ -533,6 +533,8 @@ function renderReveal(v) {
       <div id="shareFile"></div><a class="btn alt" href="${esc(url)}" target="_blank" rel="noopener">Open the share page</a></div>
       <button class="link" type="button" id="doneBtn">Leave the operation</button>`;
     sfx('fanfare'); confetti();
+    // The lab wallet (/lab/wallet.js; JC, Nov 2026): amber for a finished operation (paid once per file)
+    if (window.CapraWallet && window.__clPaid !== `${v.code}:${st.file}`) { window.__clPaid = `${v.code}:${st.file}`; CapraWallet.earn('classified', 'game', window.__clPaid); }
     shareCard($('shareFile'), v.op, sc.map((s) => { const p = players[s.id]; return p && { codename: p.codename, score: s.total, done: s.done }; }).filter(Boolean), url);
     $('doneBtn').addEventListener('click', leave);
   }

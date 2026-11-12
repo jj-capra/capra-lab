@@ -29,6 +29,7 @@ import { memoryStore as screensaverMemory } from '../games/screensaver/server/st
 import { createApi as parTeeApi } from '../games/par-tee-time/server/api.js';
 import { memoryStore as parTeeMemory } from '../games/par-tee-time/server/store.js';
 import { createCards } from '../lab/cards.js';
+import { createWallet } from '../lab/wallet.js';
 import { memoryStore as casMemory } from '../lab/casstore.js';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'public');
@@ -41,6 +42,11 @@ const crew = createCrew(labStore);   // Capra's Lab: make JJ-Capra / DA_ROMAN_EM
 let cardsOffset = 0;
 const cards = createCards({ store: casMemory(), clock: () => Date.now() + cardsOffset,
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
+// The lab wallet (/api/wallet/*): diamonds, amber, shards. Games with a server pay into it directly.
+// /api/wallet/__clock?add=ms moves its day (local only)
+let walletOffset = 0;
+const wallet = createWallet({ store: casMemory(), clock: () => Date.now() + walletOffset,
+  verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 const primal = createApi(memoryStore(), profiles);
 // Mind Heist checks lab keys against the same profiles, as its function does on Netlify
 const mhStore = mhMemory();
@@ -48,12 +54,12 @@ let mhOffset = 0; // moved by /mind-heist/__clock, so Mind Heist's browser tests
 const mh = mindHeist(mhStore, { clock: () => Date.now() + mhOffset, labCheck: async (name, code) => {
   const p = await profiles.verify(name, code);
   return p ? { name: p.name, handle: p.handle } : null;
-}, labRole: (handle) => crew.role(handle), cards });
+}, labRole: (handle) => crew.role(handle), cards, wallet });
 
-// Goat Getaway pays its diamonds into the same Mind Heist store; /goat-getaway/__clock?add=ms
+// Goat Getaway pays amber and diamonds into the lab wallet; /goat-getaway/__clock?add=ms
 // moves its clock (local only) so a test can reach tomorrow's ribbon
 let goatOffset = 0;
-const goat = goatApi({ store: goatMemory(), mh: mhStore, clock: () => Date.now() + goatOffset,
+const goat = goatApi({ store: goatMemory(), wallet, clock: () => Date.now() + goatOffset,
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 
 // Punchline reads its decks straight from games/punchline/decks/ (Netlify uses the built copy)
@@ -71,13 +77,13 @@ let noCapOffset = 0;
 const noCap = noCapApi({ store: noCapMemory(), decks: noCapDecks(path.join(ROOT, '..', 'games', 'no-cap')), role: (handle) => crew.role(handle), clock: () => Date.now() + noCapOffset, cards,
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 
-const screensaver = screensaverApi({ store: screensaverMemory(), role: (handle) => crew.role(handle), cards,
+const screensaver = screensaverApi({ store: screensaverMemory(), role: (handle) => crew.role(handle), cards, wallet,
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 
 // Par-Tee Time's online rooms and Masters Course; /par-tee-time/__clock?add=ms moves its clock
 // (local only) so a test can reach a 7-day trophy
 let parTeeOffset = 0;
-const parTee = parTeeApi({ store: parTeeMemory(), clock: () => Date.now() + parTeeOffset,
+const parTee = parTeeApi({ store: parTeeMemory(), clock: () => Date.now() + parTeeOffset, wallet,
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 
 // Mind Heist's handler speaks Request/Response (Netlify Functions v2)
@@ -151,6 +157,11 @@ http.createServer(async (req, res) => {
     res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify(await cards.hand(handle)));
   }
   if (url.pathname.startsWith('/api/cards/')) return toFunction(req, res, (r) => cards.handle(r));
+  if (url.pathname === '/api/wallet/__clock') {
+    walletOffset += Number(url.searchParams.get('add') || 0);
+    res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: walletOffset }));
+  }
+  if (url.pathname.startsWith('/api/wallet/')) return toFunction(req, res, (r) => wallet.handle(r));
   if (url.pathname === '/par-tee-time/__clock') {
     parTeeOffset += Number(url.searchParams.get('add') || 0);
     res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: parTeeOffset }));

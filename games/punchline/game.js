@@ -684,6 +684,14 @@ function finish() {
   sfx('fanfare');
   confetti();
 }
+// The lab wallet (/lab/wallet.js; JC, Nov 2026): amber for a finished game, a shard for winning a party
+// game. The final can draw more than once, so each game asks once (the server pays a ref once too).
+let walletAsked = '';
+function walletPay(ref, won) {
+  if (!window.CapraWallet || walletAsked === ref) return;
+  walletAsked = ref;
+  CapraWallet.earn('punchline', 'game', ref).then(() => { if (won) CapraWallet.earn('punchline', 'win', ref); });
+}
 function renderFinal() {
   const v = S.room;
   if (!v) return;
@@ -702,6 +710,7 @@ function renderFinal() {
   $('shareBtn').textContent = 'Invite more friends';
   // the results text: the ranks, then my own row of marks (⚡ where I got it first)
   const g = S.game, mine = ps[me], tie = ps.length > 1 && ps[1].score === ps[0].score;
+  walletPay(`${v.code}:${v.game || 1}`, me === 0 && ps.length > 1 && !tie);
   const row = g && mine ? (g.results || []).map((r) => (r && r.mine && r.mine.ok ? (r.first === mine.name ? '⚡' : '🟩') : r && r.mine && r.mine.pick != null ? '🟥' : '⬛')).join('') : '';
   shareCard($('finalShare'), resultsText({ sub: v.deck.title,
     lines: ps.map((p, k) => `${k === 0 && !tie ? '👑 ' : ''}${p.name} ${fmt(p.score)}`), grid: [row ? `${row} ${mine.name}` : ''] }));
@@ -724,6 +733,7 @@ function renderSoloFinal() {
   $('homeBtn').textContent = 'Back to Punchline';
   const d = { date: g.date, no: g.no, score, marks, title: g.title };
   store.set('punchline.daily', d);
+  walletPay('drop:' + g.date, false);
   shareCard($('finalShare'), dropText(d));
 }
 function shareFinal() {

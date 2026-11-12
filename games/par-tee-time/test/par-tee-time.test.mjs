@@ -2,6 +2,7 @@
 import assert from 'node:assert/strict';
 import { createApi, ACTIVE_MS, SEEN_EVERY } from '../server/api.js';
 import { memoryStore } from '../server/store.js';
+import { createWallet } from '../../../lab/wallet.js';
 
 let passed = 0;
 async function test(name, fn) {
@@ -91,12 +92,13 @@ await test('the function answers over HTTP', async () => {
 
 /* ---------------- the Masters Course ---------------- */
 const KEYS = { 'JJ-Capra': '111111', Roman: '222222', Kade: '333333', DA_ROMAN_EMPIRE: '444444' };
-function msetup() {
+function msetup({ wallet: withWallet = false } = {}) {
   let now = Date.parse('2026-11-12T18:00:00Z');
   const store = memoryStore();
+  const wallet = withWallet ? createWallet({ store: memoryStore(), clock: () => now }) : null;
   const handleOf = (n) => n.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   const verify = async (name, code) => (KEYS[name] && KEYS[name] === code ? { name, handle: handleOf(name), salt: 'never-sent' } : null);
-  const api = createApi({ store, verify, clock: () => now });
+  const api = createApi({ store, verify, clock: () => now, wallet });
   const lab = (name) => ({ name, code: KEYS[name] });
   const call = (what, body) => api.route('POST', '/masters/' + what, body);
   const card = (total) => { const s = Array(18).fill(Math.floor(total / 18)); for (let i = 0, r = total - s[0] * 18; r > 0; i++, r--) s[i]++; return s; };
@@ -106,7 +108,7 @@ function msetup() {
   const view = async (id, who) => (await call('course', { id, lab: who ? lab(who) : undefined })).course;
   const loot = async (who) => (await call('player', { handle: handleOf(who) })).loot;
   const make = async (by = 'JJ-Capra', extra = {}) => (await call('create', { lab: lab(by), name: 'JJ’s Masters', courses: ['boardwalk', 'gauntlet'], order: 'alternate', holes: HOLE_IDS, ...extra })).course;
-  return { call, store, lab, card, start, post, round, view, loot, make, tick: (ms) => { now += ms; } };
+  return { call, store, lab, card, start, post, round, view, loot, make, wallet, tick: (ms) => { now += ms; } };
 }
 const HOLE_IDS = ['b-clock', 'g-pinball', 'b-highway', 'g-pool', 'b-moon', 'g-clock', 'b-lagoon', 'g-windmill', 'b-hardwood', 'g-highway', 'b-windmill', 'g-vault', 'b-pool', 'g-hardwood', 'b-vault', 'g-moon', 'b-pinball', 'g-lagoon'];
 const code = (c) => (e) => e.code === c;
@@ -266,6 +268,22 @@ await test('masters: quitting burns a try; starting again burns the open one; a 
   assert.equal((await g.view(c2.id, 'Kade')).me.left, 3, 'no best yet: the designer is never stuck');
   const t = await g.start(c2.id, 'Kade');
   assert.equal(t.left, 2);
+});
+
+await test('masters: the lab wallet gets a shard for every loot and a diamond for every trophy', async () => {
+  const g = msetup({ wallet: true });
+  const { id } = await g.make();
+  await g.round(id, 'JJ-Capra', 52);
+  await g.round(id, 'Roman', 50);                                  // Roman takes the best: one loot
+  let r = await g.wallet.wallet('roman');
+  assert.deepEqual([r.shards, r.diamonds], [1, 0]);
+  g.tick(7 * 24 * 3600e3 + 1000);
+  await g.view(id);                                                // seven days: Roman's trophy
+  await g.view(id); await g.call('me', { lab: g.lab('Roman') });   // reads again pay nothing more
+  r = await g.wallet.wallet('roman');
+  assert.deepEqual([r.shards, r.diamonds], [1, 1]);
+  assert.match(r.log[0].why, /Masters trophy/);
+  assert.equal((await g.wallet.wallet('jj-capra')).shards, 0, 'setting a best pays nothing');
 });
 
 await test('masters: holding the best seven days straight earns one trophy per holder per era', async () => {

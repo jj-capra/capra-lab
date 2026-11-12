@@ -10,7 +10,11 @@
 // gives today's counted run a fourth heart. The page sends `life` and the card is spent only when
 // the run needed it (it went on past the third miss); the server then scores it with four lives.
 //
-// Store `screensaver`: d/<date> = { runs: { <handle>: { name, score, level, right, at } } }.
+// Store `screensaver`: d/<date> = { runs: { <handle>: { name, score, level, right, at } }, paid? }.
+//
+// The lab wallet (lab/wallet.js; JC, Nov 12 2026: pay by how rare): today's counted run pays RUN_PAY;
+// the day's #1 gets DAY_TOP_PAY, settled the first time anyone says hello after that day ends
+// (`paid` on the day's board holds who got it, so it's paid once).
 import { score, MAX_LEVEL, LIVES } from '../shared/board.mjs';
 import { mutate, SKIP } from './store.js';
 
@@ -21,8 +25,9 @@ export const BREW = false;   // live for everyone since Nov 9 2026 (a JJ Brew be
 const fail = (status, error) => { const e = new Error(error); e.status = status; throw e; };
 export const dayOf = (ms) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date(ms));
 export const daySeed = (date) => 'ss:' + date;
+export const RUN_PAY = { amber: 30 }, DAY_TOP_PAY = { diamonds: 1 };
 
-export function createApi({ store, verify, role = async () => null, clock = () => Date.now(), cards = null }) {
+export function createApi({ store, verify, role = async () => null, clock = () => Date.now(), cards = null, wallet = null }) {
   async function who(body) {
     const lab = body && body.lab;
     if (!lab || !lab.name || !lab.code) return null;
@@ -40,11 +45,28 @@ export function createApi({ store, verify, role = async () => null, clock = () =
   const rankOf = (list, handle) => { const i = list.findIndex((r) => r.handle === handle); return i < 0 ? null : i + 1; };
   const publicRow = (r) => ({ name: r.name, score: r.score, level: r.level, right: r.right });
 
+  // The last two days' #1s get their diamond (once: `paid` is set in the same compare-and-swap).
+  async function settle(now) {
+    if (!wallet) return;
+    for (const back of [1, 2]) {
+      const date = dayOf(now - back * 86400000);
+      if (date === dayOf(now)) continue;
+      const g = await store.get('d/' + date);
+      if (!g || !g.data || g.data.paid) continue;
+      const first = top(g.data)[0];
+      if (!first) continue;
+      let won = false;
+      await mutate(store, 'd/' + date, (doc) => { won = false; if (doc.paid) return SKIP; doc.paid = first.handle; won = true; });
+      if (won) await wallet.pay(first.handle, DAY_TOP_PAY, { game: 'screensaver', why: `#1 on Screensaver, ${date}` }).catch((e) => console.error('screensaver: wallet pay failed', e.message));
+    }
+  }
+
   async function route(method, path, body) {
     const now = clock(), today = dayOf(now);
     if (method !== 'POST') fail(405, 'Use POST.');
     if (path === '/hello') {
       const me = await who(body);
+      await settle(now).catch((e) => console.error('screensaver: settle failed', e.message));
       let mine = null;
       if (me) {
         const g = await store.get('d/' + today);
@@ -84,8 +106,10 @@ export function createApi({ store, verify, role = async () => null, clock = () =
         counted = true;
       }, () => ({ runs: {} }));
       if (card && !counted) { await cards.give(me.handle, card); card = null; }
+      let paid = null;
+      if (counted && wallet) paid = (await wallet.pay(me.handle, RUN_PAY, { game: 'screensaver', why: 'today’s run' }).catch(() => ({ paid: null }))).paid;
       const list = top(out.data);
-      return { now, ...res, counted, life: !!card, rank: rankOf(list, me.handle), of: list.length, top: list.slice(0, 25).map(publicRow) };
+      return { now, ...res, counted, life: !!card, paid, rank: rankOf(list, me.handle), of: list.length, top: list.slice(0, 25).map(publicRow) };
     }
     fail(404, 'Not found.');
   }

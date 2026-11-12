@@ -59,7 +59,10 @@ export function cleanCourseName(s) { return String(s || '').replace(/[\u0000-\u0
 const mKey = (id) => 'm/' + id, pKey = (h) => 'mp/' + h;
 const freshPlayer = (me) => ({ handle: me.handle, name: me.name, loot: 0, trophies: [], courses: [], played: [], keys: [] });
 
-export function createMasters({ store, verify, clock = () => Date.now() }) {
+// The lab wallet (lab/wallet.js; JC, Nov 12 2026: pay by how rare) gets a shard for every loot and a
+// diamond for every trophy, once each (the same `key` that stops a double credit).
+export const LOOT_PAY = { shards: 1 }, TROPHY_PAY = { diamonds: 1 };
+export function createMasters({ store, verify, clock = () => Date.now(), wallet = null }) {
   async function who(body, required = true) {
     const lab = body && body.lab;
     if (!lab || typeof lab !== 'object' || !lab.name || !lab.code) {
@@ -140,7 +143,7 @@ export function createMasters({ store, verify, clock = () => Date.now() }) {
 
   /* ---------- storage ---------- */
   async function credit(o) {
-    await mutate(store, pKey(o.handle), (p) => {
+    const r = await mutate(store, pKey(o.handle), (p) => {
       p.keys ||= [];
       if (p.keys.includes(o.key)) return SKIP;
       p.keys.push(o.key);
@@ -148,6 +151,10 @@ export function createMasters({ store, verify, clock = () => Date.now() }) {
       if (o.kind === 'loot') p.loot = (p.loot || 0) + 1;
       else (p.trophies ||= []).push({ course: o.course, name: o.courseName, at: o.at });
     }, () => freshPlayer(o));
+    if (wallet && r && !r.skipped) {
+      await wallet.pay(o.handle, o.kind === 'loot' ? LOOT_PAY : TROPHY_PAY,
+        { game: 'par-tee-time', why: o.kind === 'loot' ? `Masters loot on ${o.courseName}` : `Masters trophy on ${o.courseName}` }).catch((e) => console.error('masters: wallet pay failed', e.message));
+    }
   }
   async function flush(c) {
     const owed = (c && c.owed) || [];

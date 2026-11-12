@@ -346,6 +346,13 @@ function useTransitions(room) {
       if (room.phase === 'final') {
         if (lostIt(room)) Sound.fx('lose');
         else { Sound.fx('win'); confetti(); }
+        // The lab wallet (Capra Lab's /lab/wallet.js, Nov 2026): amber for a finished board, a shard
+        // when your crew wins an invite or party game. The server pays a game once and caps a day.
+        if (room.me && window.CapraWallet) {
+          const ref = room.code + ':' + (room.game || 0);
+          const won = room.kind !== 'solo' && room.myCrew >= 0 && room.winner === room.myCrew;
+          window.CapraWallet.earn('mind-heist', 'game', ref).then(() => { if (won) window.CapraWallet.earn('mind-heist', 'win', ref); });
+        }
       }
     }
     // A face-off's sounds play along with its replay instead (FaceoffReplay).

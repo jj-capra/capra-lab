@@ -8,6 +8,7 @@ import { createCrew } from '../../../lab/crew.js';
 import { blobStore, PROFILE_STORE } from '../../../lab/stores.js';
 import { createCards, STORE as CARD_STORE } from '../../../lab/cards.js';
 import { blobsStore as casBlobs } from '../../../lab/casstore.js';
+import { createWallet, STORE as WALLET_STORE } from '../../../lab/wallet.js';
 
 export default async function (req) {
   // getStore reads the Blobs context injected for this invocation, so bind it per request.
@@ -21,7 +22,9 @@ export default async function (req) {
   };
   // Moles and Hidden 50/50s come from the lab's daily Card Draw (lab/cards.js)
   const cards = createCards({ store: casBlobs(getStore, CARD_STORE) });
-  return makeHandler(netlifyStore(getStore), { labCheck, labRole: (handle) => crew.role(handle), cards })(req);
+  // Diamonds live in the lab wallet now (lab/wallet.js)
+  const wallet = createWallet({ store: casBlobs(getStore, WALLET_STORE) });
+  return makeHandler(netlifyStore(getStore), { labCheck, labRole: (handle) => crew.role(handle), cards, wallet })(req);
 }
 
 // Route the function straight to /mind-heist/api/*. A path-configured function runs before

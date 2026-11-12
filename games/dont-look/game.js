@@ -407,6 +407,8 @@ function finish(title) {
     li.setAttribute('aria-label', `${x.word}: ${x.kind === 'got' ? 'got it' : x.kind === 'pass' ? 'passed' : 'time ran out'}`);
     list.appendChild(li);
   }
+  // The lab wallet (/lab/wallet.js; JC, Nov 2026): amber for a round that guessed at least one word.
+  if (window.CapraWallet && got > 0) CapraWallet.earn('dont-look', 'round', String(r.startedAt || r.at || Date.now()));
   // The results text (the same card in every Capra Lab game: /lab/share.js): a mark a word,
   // 🟩 got it, 🟥 passed, ⬛ time ran out.
   const box = $('resShare');

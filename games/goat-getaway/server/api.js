@@ -1,13 +1,12 @@
 // Goat Getaway's server. Every call is a POST with an optional Capra Lab sign-in in the body
 // (`lab: { name, code }`), never in the address. Without one you can still play the pen; with
-// one the clock runs, the race board takes your time, ribbons are yours and diamonds go to
-// your Mind Heist profile.
+// one the clock runs, the race board takes your time, ribbons are yours and the lab wallet pays.
 //
 //   POST /today  { lab? }                -> today's pen (the board only once you've opened it),
 //                                           your day, your ribbons, the top five
 //   POST /open   { lab? }                -> the board; with a sign-in, the clock starts now
 //   POST /solve  { lab?, date, moves }   -> replays the moves; first getaway is your time,
-//                                           +1 diamond, +1 more at par
+//                                           +30 amber, and a diamond at par
 //   POST /hint   { lab?, date, moves }   -> the best next move from where you are (Nov 8 2026: JC
 //                                           couldn't crack a Sunday pen). With a sign-in it's
 //                                           counted: each hint adds HINT_MS to your first
@@ -15,8 +14,9 @@
 //                                           diamond, so the race board stays fair.
 //
 // Store `goat-getaway`: p/<handle> { day, pend, ribbons }, j/<date> the day's race board.
-// Diamonds are written to Mind Heist's store: straight onto the linked profile (l/<handle> ->
-// p/<pid>), or into gg/<handle> until that player links one in Mind Heist, which claims them.
+// The pay goes into the lab wallet (lab/wallet.js; JC, Nov 12 2026: diamonds, amber and shards for
+// the whole lab, by how rare: amber for getting out, a diamond at par). Until Nov 12 it was two
+// diamonds into Mind Heist's store, which moved them into the wallet.
 import { replay, solve } from '../shared/puzzle.mjs';
 import { daily, raceView, leader, pacificDate } from './daily.js';
 import { mutate, SKIP } from './store.js';
@@ -25,7 +25,8 @@ export const HINT_MS = 15000;
 const fail = (status, error) => { const e = new Error(error); e.status = status; throw e; };
 const getJSON = async (s, k) => { const g = await s.get(k); return g ? g.data : null; };
 
-export function createApi({ store, mh = null, verify, clock = () => Date.now() }) {
+export const PAY_OUT = { amber: 30 }, PAY_PAR = { diamonds: 1 };
+export function createApi({ store, wallet = null, verify, clock = () => Date.now() }) {
   async function who(body) {
     const lab = body && body.lab;
     if (!lab || !lab.name || !lab.code) return null;
@@ -50,17 +51,13 @@ export function createApi({ store, mh = null, verify, clock = () => Date.now() }
     return { rec: data, won };
   }
 
-  const linked = async (handle) => !!(mh && ((await getJSON(mh, 'l/' + handle)) || {}).pid);
-
-  async function payMindHeist(handle, n) {
-    if (!mh || n <= 0) return null;
+  async function payWallet(handle, out, par) {
+    if (!wallet || (!out && !par)) return null;
     try {
-      const link = await getJSON(mh, 'l/' + handle);
-      if (link && link.pid && (await mutate(mh, 'p/' + link.pid, (p) => { p.gems = (p.gems || 0) + n; }))) return 'mind-heist';
-      await mutate(mh, 'gg/' + handle, (o) => { o.gems = (o.gems || 0) + n; }, () => ({ gems: 0 }));
-      return 'waiting';
+      const r = await wallet.pay(handle, { ...(out ? PAY_OUT : {}), ...(par ? PAY_PAR : {}) }, { game: 'goat-getaway', why: par ? 'out at par' : 'got the goat out' });
+      return r.paid;
     } catch (e) {
-      console.error('goat-getaway: diamonds for', handle, 'not paid:', e.message);
+      console.error('goat-getaway: wallet pay for', handle, 'failed:', e.message);
       return null;
     }
   }
@@ -81,7 +78,7 @@ export function createApi({ store, mh = null, verify, clock = () => Date.now() }
       if (!me) return { now, pen: penOut(t, false), me: null, race: raceView(race, null) };
       const { rec, won } = await settle(me, today);
       const m = mine(rec, today);
-      return { now, pen: penOut(t, m.open != null), me: { name: me.name, ...m, ribbonNews: won, mindHeist: await linked(me.handle) }, race: raceView(race, me.handle) };
+      return { now, pen: penOut(t, m.open != null), me: { name: me.name, ...m, ribbonNews: won }, race: raceView(race, me.handle) };
     }
     if (path === '/open') {
       const me = await who(body);
@@ -98,10 +95,11 @@ export function createApi({ store, mh = null, verify, clock = () => Date.now() }
       if (!r.ok || !r.out) fail(400, 'That doesn’t get the goat out. Try again.');
       const me = await who(body);
       if (!me) return { now, guest: true, moves: r.n, par: t.par };
-      let first = false, gained = 0, ms = null;
+      let first = false, gained = 0, parNow = false, ms = null;
       const res = await mutate(store, 'p/' + me.handle, (rec) => {
         if (!rec.day || rec.day.date !== today) fail(409, 'Open today’s pen first.');
         first = rec.day.ms == null;
+        gained = 0; parNow = false;
         let changed = first;
         if (first) {
           rec.day.ms = Math.max(0, now - rec.day.open) + (rec.day.hints || 0) * HINT_MS;
@@ -110,7 +108,7 @@ export function createApi({ store, mh = null, verify, clock = () => Date.now() }
           rec.pend = [...(rec.pend || []).filter((d) => d !== today), today].slice(-10);
         }
         if (rec.day.best == null || r.n < rec.day.best) { rec.day.best = r.n; changed = true; }
-        if (r.n <= t.par && !rec.day.parGem && !rec.day.hints) { rec.day.parGem = true; gained += 1; changed = true; }
+        if (r.n <= t.par && !rec.day.parGem && !rec.day.hints) { rec.day.parGem = true; parNow = true; gained += 1; changed = true; }
         ms = rec.day.ms;
         if (!changed) return SKIP;
       });
@@ -123,7 +121,7 @@ export function createApi({ store, mh = null, verify, clock = () => Date.now() }
           b.e[me.handle] = [ms, r.n, now, me.name];
         }, () => ({ d: today, e: {} }))).data;
       } else board = await getJSON(store, 'j/' + today);
-      const paid = gained ? await payMindHeist(me.handle, gained) : null;
+      const paid = await payWallet(me.handle, first, parNow);
       return { now, first, gained, paid, ms, moves: r.n, par: t.par, me: { name: me.name, ...mine(res.data, today) }, race: raceView(board, me.handle) };
     }
     if (path === '/hint') {

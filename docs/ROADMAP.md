@@ -36,7 +36,10 @@ JC's words, kept whole so later work starts from them:
    Mind Heist); some duds, some perks per game. JC's picks: flip all four every day; first games
    Mind Heist (Mole, Hidden 50/50), Swerve Planet and Screensaver (Extra Life), No Cap (Cap
    Shield), Par-Tee Time (Mulligan). Goat Getaway (a free hint) and the rest can follow.
-3. **Diamonds, amber and shards in Capra Lab** (out of Glacial Maw): one wallet per profile.
+3. **Diamonds, amber and shards in Capra Lab** (built Nov 12 2026): one wallet per profile. JC's picks:
+   Glacial Maw linked now (Settings → Capra Lab wallet; its amber, Rift Shards and diamond gems are the
+   wallet), pay by how rare (amber for finishing, shards for wins and bests, diamonds for rare feats),
+   nothing to buy until the avatar shop.
 4. **Avatars**: bought and dressed with the wallet; the profile picture everywhere, a 3D hologram in
    the trophy room.
 5. **Lab levels**: entry-level scientist up to beautiful mind; levels unlock more traps.
