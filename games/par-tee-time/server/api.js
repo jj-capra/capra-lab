@@ -15,7 +15,11 @@
 // Store `par-tee-time`: r/<CODE> = { at, peers: { <peer>: { role, presence, seen } } }.
 // A phone that hasn't checked in for ACTIVE_MS has left; a room nobody has touched for ROOM_MS is
 // free for a new game.
+//
+// The Masters Course (two courses mixed into 18 holes, three tries to beat the course best, loot and
+// trophies) lives in masters.js under /masters/*; it needs `verify` (Capra Lab profiles).
 import { mutate, SKIP } from './store.js';
+import { createMasters } from './masters.js';
 
 export const ACTIVE_MS = 30000;       // gone after 30 s without a check-in (a locked phone comes back)
 export const SEEN_EVERY = 8000;       // a poll only writes when the last check-in is this old
@@ -25,7 +29,8 @@ export const MAX_PRESENCE = 8000;     // characters of JSON per phone
 const fail = (status, error, code) => { const e = new Error(error); e.status = status; e.code = code; throw e; };
 const CODE = /^[A-Z0-9]{4}$/, PEER = /^[a-z0-9]{8,32}$/;
 
-export function createApi({ store, clock = () => Date.now() }) {
+export function createApi({ store, verify = null, clock = () => Date.now() }) {
+  const masters = createMasters({ store, verify, clock });
   const active = (room, now) => Object.entries(room.peers || {}).filter(([, p]) => now - p.seen < ACTIVE_MS);
   const view = (room, now) => ({ peers: active(room, now).map(([peer, p]) => ({ peer, role: p.role, presence: p.presence })) });
   const fresh = (now) => ({ at: now, peers: {} });
@@ -40,6 +45,7 @@ export function createApi({ store, clock = () => Date.now() }) {
   async function route(method, path, body) {
     const now = clock();
     if (method !== 'POST') fail(405, 'Use POST.');
+    if (path.startsWith('/masters/')) return masters.route(path, body);
     const m = path.match(/^\/rooms\/([A-Za-z0-9]{4})\/(join|presence|peers|leave)$/);
     if (!m) fail(404, 'Not found.');
     const code = m[1].toUpperCase(), what = m[2], key = 'r/' + code, peer = String(body.peer || '');
