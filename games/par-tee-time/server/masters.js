@@ -135,7 +135,7 @@ export function createMasters({ store, verify, clock = () => Date.now() }) {
     };
   }
   function summary(c, me, now) {
-    return { id: c.id, name: c.name, by: c.by, courses: c.courses, era: c.era, retired: !!c.retired, best: bestView(c, now), me: meView(c, me) };
+    return { id: c.id, name: c.name, by: c.by, courses: c.courses, holes: c.holes, era: c.era, retired: !!c.retired, best: bestView(c, now), me: meView(c, me) };
   }
 
   /* ---------- storage ---------- */
