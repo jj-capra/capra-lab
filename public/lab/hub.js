@@ -13,6 +13,7 @@ import { keyCardBlob, readKeyCardFile } from './keycard.js';
 import './capras-lab.js';   /* Capra's Lab: the owner's and crew's private panel */
 import './card-draw.js';    /* the daily Card Draw: four cards a day */
 import './wallet-panel.js';  /* the wallet: diamonds, amber and shards */
+import { drawAvatar, lookFor } from './avatar.mjs';  /* the player's comic avatar (the Avatar Studio) */
 
 const ME_KEY = 'capra-lab.profile';      /* { name, handle, created, code } */
 const SAVED_KEY = 'capra-lab.key-saved'; /* handle whose card was saved */
@@ -130,12 +131,28 @@ async function showKeyStep(me) {
 }
 
 /* ---------------- who's playing ---------------- */
+// The look comes with the wallet (/api/wallet/me); until it arrives, the one the last page kept.
+let lookNow = null;
+function savedLook(me) {
+  if (lookNow && lookNow.handle === me.handle) return lookNow.look;
+  try { const c = JSON.parse(sessionStorage.getItem('capra-lab.wallet') || 'null'); return c && c.who === me.handle && c.w ? c.w.look || null : null; } catch { return null; }
+}
+function newLook(handle, look) {
+  const me = loadMe();
+  if (!me || me.handle !== handle) return;
+  lookNow = { handle, look };
+  paintWho();
+}
+window.addEventListener('capra-lab:look', (e) => { if (e.detail) newLook(e.detail.handle, e.detail.look); });
+window.addEventListener('capra-wallet:changed', (e) => { const me = loadMe(); if (me && e.detail && 'look' in e.detail) newLook(me.handle, e.detail.look); });
 function paintWho() {
   const me = loadMe();
   const btn = $('whoBtn');
   if (me) {
     btn.innerHTML = '<span class="who-mark" aria-hidden="true"></span><span class="who-text"><small>Playing as</small><b></b></span><span class="who-cta">My key</span>';
-    btn.querySelector('.who-mark').textContent = me.name.slice(0, 1).toUpperCase();
+    const mark = btn.querySelector('.who-mark');
+    mark.classList.add('av');
+    mark.innerHTML = drawAvatar(lookFor(me.handle, savedLook(me)), { tight: true });
     btn.querySelector('b').textContent = me.name;
     btn.setAttribute('aria-label', 'Playing as ' + me.name + '. Open my key');
   } else {

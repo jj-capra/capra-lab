@@ -93,4 +93,52 @@ await test('sign-in, bad routes, and two pages paying at once', async () => {
   assert.equal((await res.json()).day, walletDay(g.now()));
 });
 
+await test('the avatar shop: coins come off and the item goes on the shelf together', async () => {
+  const g = setup();
+  await assert.rejects(g.call('buy', { ...JJ, item: 'hat.beanie' }), (e) => e.status === 402 && e.code === 'short' && /60 more amber/.test(e.message));
+  await g.w.pay('jj-capra', { amber: 100, shards: 3, diamonds: 1 }, { game: 'goat-getaway' });
+  let r = await g.call('buy', { ...JJ, item: 'hat.beanie' });
+  assert.equal(r.bought, true);
+  assert.equal(r.amber, 40);
+  assert.deepEqual(r.items, ['hat.beanie']);
+  assert.deepEqual(r.log[0], { at: g.now(), game: 'avatar', why: 'bought the Beanie', amber: -60 });
+  r = await g.call('buy', { ...JJ, item: 'hat.beanie' });
+  assert.equal(r.bought, false, 'buying what you own costs nothing');
+  assert.equal(r.amber, 40);
+  r = await g.call('buy', { ...JJ, item: 'hat.wizard' });
+  assert.equal(r.shards, 0, 'rare items cost shards');
+  await assert.rejects(g.call('buy', { ...JJ, item: 'hat.crown' }), /1 more diamond/);
+  await assert.rejects(g.call('buy', { ...JJ, item: 'hat.nope' }), (e) => e.status === 400);
+  // two items at once with money for one: only one goes through
+  await g.w.pay('jj-capra', { amber: 40 }, { game: 'goat-getaway' });                       // 80 amber
+  const both = await Promise.allSettled([g.call('buy', { ...JJ, item: 'glasses.shades' }), g.call('buy', { ...JJ, item: 'outfit.hoodie' })]);
+  assert.equal(both.filter((x) => x.status === 'fulfilled').length, 1);
+  r = await g.call('me', JJ);
+  assert.equal(r.amber, 0);
+  assert.equal(r.items.length, 3);
+});
+
+await test('dressing keeps only what you own; anyone can see a saved look', async () => {
+  const g = setup();
+  let r = await g.call('me', JJ);
+  assert.equal(r.look, null, 'no look until one is saved');
+  await g.w.pay('jj-capra', { amber: 200 }, { game: 'goat-getaway' });
+  await g.call('buy', { ...JJ, item: 'glasses.specs' });
+  r = await g.call('dress', { ...JJ, look: { base: 'animal', species: 'goat', fur: 3, eyes: 'wink', glasses: 'glasses.specs', hat: 'hat.crown', outfit: 'not-a-thing', skin: 99 } });
+  assert.equal(r.look.base, 'animal');
+  assert.equal(r.look.species, 'goat');
+  assert.equal(r.look.glasses, 'glasses.specs');
+  assert.equal(r.look.hat, null, 'a crown you don’t own comes off');
+  assert.equal(r.look.outfit, null);
+  assert.equal(r.look.skin, 2, 'nonsense goes back to the default');
+  const pub = await g.w.route('GET', '/api/wallet/looks', null, new URLSearchParams('h=jj-capra,roman,BAD!,jj-capra'));
+  assert.deepEqual(Object.keys(pub.looks).sort(), ['jj-capra', 'roman']);
+  assert.equal(pub.looks['jj-capra'].glasses, 'glasses.specs');
+  assert.equal(pub.looks.roman, null);
+  assert.equal(pub.looks['jj-capra'].amber, undefined, 'no balances in a public look');
+  const res = await g.w.handle(new Request('http://x/api/wallet/looks?h=jj-capra'));
+  assert.equal(res.status, 200);
+  assert.equal((await res.json()).looks['jj-capra'].eyes, 'wink');
+});
+
 console.log(`\nWallet: ${passed} tests passed`);

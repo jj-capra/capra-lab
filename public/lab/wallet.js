@@ -48,7 +48,7 @@ function toast(pay, note = '') {
 }
 
 function changed(w) {
-  try { if (w) sessionStorage.setItem('capra-lab.wallet', JSON.stringify({ at: Date.now(), who: (me() || {}).handle, w: { diamonds: w.diamonds, amber: w.amber, shards: w.shards } })); }
+  try { if (w) sessionStorage.setItem('capra-lab.wallet', JSON.stringify({ at: Date.now(), who: (me() || {}).handle, w: { diamonds: w.diamonds, amber: w.amber, shards: w.shards, look: w.look || null } })); }
   catch { /* private mode */ }
   window.dispatchEvent(new CustomEvent('capra-wallet:changed', { detail: w || null }));
 }

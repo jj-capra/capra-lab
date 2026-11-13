@@ -39,9 +39,11 @@ JC's words, kept whole so later work starts from them:
 3. **Diamonds, amber and shards in Capra Lab** (built Nov 12 2026): one wallet per profile. JC's picks:
    Glacial Maw linked now (Settings → Capra Lab wallet; its amber, Rift Shards and diamond gems are the
    wallet), pay by how rare (amber for finishing, shards for wins and bests, diamonds for rare feats),
-   nothing to buy until the avatar shop.
-4. **Avatars**: bought and dressed with the wallet; the profile picture everywhere, a 3D hologram in
-   the trophy room.
+   nothing to buy until the avatar shop (open since Nov 13 2026).
+4. **Avatars** (built Nov 13 2026): bought and dressed with the wallet; the profile picture everywhere, a 3D hologram in
+   the trophy room. JC's picks: a comic character, person or animal; basics free, extras cost; prices
+   by rarity like earning (amber, shards, diamonds); 2D now, the hologram later (the drawing is in
+   named layers for it). The Avatar Studio is `/avatar/`; README, Avatars.
 5. **Lab levels**: entry-level scientist up to beautiful mind; levels unlock more traps.
 6. **Trophy rooms and trap houses**: each player's trophy room sits on a trap house they build from
    a library (hard trivia, tough golf holes, an impossible Goat Getaway...), four traps to start.

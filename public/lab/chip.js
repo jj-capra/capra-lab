@@ -14,7 +14,12 @@
    The wallet (JC, Nov 12 2026: diamonds, amber and shards for the whole lab, shown "on the hub and in
    each game"): under a signed-in player's name, their three balances, from /api/wallet/me (kept a
    minute in sessionStorage so moving between games doesn't ask again; `capra-wallet:changed`, fired by
-   /lab/wallet.js when a game pays, updates it). */
+   /lab/wallet.js when a game pays, updates it).
+
+   The avatar (JC, Nov 13 2026: "accessorize and individualize their avatar"): the pill starts with the
+   player's comic avatar and opens the Avatar Studio (/avatar/). The look rides along with the balances
+   (null until saved: then the starter look seeded from the handle, the same one the studio shows); it
+   is drawn by /lab/avatar.mjs, loaded only when there is a player. */
 (() => {
   if (!window.customElements || customElements.get('capra-lab-chip')) return;
 
@@ -37,6 +42,13 @@
     .name.w { display: inline-flex; flex-direction: column; justify-content: center; height: 40px; padding: 0 12px; border-radius: 14px; }
     .name.w b { font: 800 13px/15px Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; overflow: hidden; text-overflow: ellipsis; }
     .name.w.long b { font-size: 11.5px; letter-spacing: 0; }
+    a.name.w { color: #FFF8EC; }
+    .name.av { flex-direction: row; align-items: center; gap: 7px; padding-left: 4px; }   /* no wider than before: the name shrinks to make room */
+    @media (max-width: 359px) { .name.av { padding-left: 12px; } .name.av .face { display: none; } }   /* the tiniest phones keep all 17 characters instead */
+    .name.av .txt { display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+    .face { flex: none; width: 30px; height: 30px; border-radius: 50%; overflow: hidden; border: 2px solid #120E18; background: #2C2340; box-sizing: border-box; }
+    .face svg { display: block; width: 100%; height: 100%; }
+    a.name:active { transform: translate(1px, 2px); }
     .wal { display: flex; align-items: center; gap: 4px; font: 700 11px/14px Inter, system-ui, -apple-system, sans-serif; color: rgba(255, 248, 236, 0.86); font-variant-numeric: tabular-nums; }
     .wal i { display: inline-block; flex: none; width: 9px; height: 10px; }
     .wal i + span { margin-right: 4px; }
@@ -61,7 +73,7 @@
       .then((r) => (r.ok ? r.json() : null))
       .then((w) => {
         if (!w) return null;
-        const v = { diamonds: w.diamonds || 0, amber: w.amber || 0, shards: w.shards || 0 };
+        const v = { diamonds: w.diamonds || 0, amber: w.amber || 0, shards: w.shards || 0, look: w.look || null };
         try { sessionStorage.setItem(WKEY, JSON.stringify({ at: Date.now(), who: p.handle, w: v })); } catch (e) {}
         return v;
       })
@@ -69,6 +81,9 @@
       .finally(() => { setTimeout(() => { asking = null; }, 0); });
     return asking;
   }
+  // The avatar drawer, fetched once a page and only for a signed-in player.
+  let drawer = null;
+  const avatarKit = () => drawer || (drawer = import('/lab/avatar.mjs').catch(() => { drawer = null; return null; }));
   const short = (n) => { n = Math.max(0, Math.floor(Number(n) || 0)); return n < 10000 ? n.toLocaleString('en-US') : n < 1e6 ? (Math.floor(n / 100) / 10).toString().replace(/\.0$/, '') + 'k' : (Math.floor(n / 1e5) / 10).toString().replace(/\.0$/, '') + 'M'; };
 
   class CapraLabChip extends HTMLElement {
@@ -79,10 +94,14 @@
       this.onStorage = (e) => { if (!e.key || e.key === 'capra-lab.profile') { this.w = null; this.render(); this.loadWallet(); } };
       this.onWallet = (e) => {
         const d = e && e.detail;
-        if (d && typeof d.amber === 'number') { this.w = { diamonds: d.diamonds || 0, amber: d.amber || 0, shards: d.shards || 0 }; this.render(); }
+        if (d && typeof d.amber === 'number') {
+          this.w = { diamonds: d.diamonds || 0, amber: d.amber || 0, shards: d.shards || 0, look: 'look' in d ? d.look : (this.w && this.w.look) || null };
+          this.render();
+        }
         else this.loadWallet(true);
       };
       this.w = null;
+      this.kit = null;
     }
     connectedCallback() {
       this.render(); this.loadWallet();
@@ -94,17 +113,23 @@
       const p = player();
       if (!p || this.hasAttribute('noname')) return;
       const c = fresh ? null : cached(p);
+      if (!this.kit) avatarKit().then((k) => { if (k) { this.kit = k; if (this.w) this.render(); } });
       if (c) { this.w = c; this.render(); return; }
       const w = await fetchWallet(p);
       if (w && player() && player().handle === p.handle) { this.w = w; this.render(); }
+    }
+    face(p) {
+      if (!this.kit) return '<span class="face"></span>';
+      try { return `<span class="face">${this.kit.drawAvatar(this.kit.lookFor(p.handle, this.w && this.w.look), { tight: true })}</span>`; }
+      catch (e) { return '<span class="face"></span>'; }
     }
     attributeChangedCallback() { if (this.shadowRoot.childNodes.length) this.render(); }
     render() {
       const p = player();
       const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
       const name = this.hasAttribute('noname') ? ''
-        : p && this.w ? `<span class="name w${p.name.length > 12 ? ' long' : ''}" part="name" aria-label="${esc(p.name)}: ${this.w.diamonds} diamonds, ${this.w.amber} amber, ${this.w.shards} shards"><b>${esc(p.name)}</b>`
-            + `<span class="wal" aria-hidden="true"><i class="d"></i><span>${short(this.w.diamonds)}</span><i class="a"></i><span>${short(this.w.amber)}</span><i class="s"></i><span>${short(this.w.shards)}</span></span></span>`
+        : p && this.w ? `<a class="name w av${p.name.length > 12 ? ' long' : ''}" part="name" href="/avatar/" title="Avatar Studio" aria-label="${esc(p.name)}: ${this.w.diamonds} diamonds, ${this.w.amber} amber, ${this.w.shards} shards. Open the Avatar Studio">${this.face(p)}<span class="txt"><b>${esc(p.name)}</b>`
+            + `<span class="wal" aria-hidden="true"><i class="d"></i><span>${short(this.w.diamonds)}</span><i class="a"></i><span>${short(this.w.amber)}</span><i class="s"></i><span>${short(this.w.shards)}</span></span></span></a>`
         : p ? `<span class="name${p.name.length > 12 ? ' long' : ''}" part="name">${esc(p.name)}</span>`
           : '<a class="name" part="name" href="/#profile">Sign in</a>';
       this.shadowRoot.innerHTML = `<style>${CSS}</style>`

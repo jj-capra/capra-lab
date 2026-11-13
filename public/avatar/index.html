@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="/lab/fill.js"></script>
+<title>Avatar Studio · Capra Lab</title>
+<meta name="description" content="Dress up your Capra Lab avatar: a comic person or animal, with hats, glasses, outfits and more bought with diamonds, amber and shards.">
+<meta name="theme-color" content="#16141F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Capra Lab">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #120E18; --night: #16141F; --panel: #221B2E; --panel-2: #2C2340; --paper: #FFF8EC;
+    --yellow: #FFD23F; --magenta: #FF3D8B; --cyan: #29D3F0; --green: #5BE38A; --red: #FF5A5A; --violet: #8C6CFF; --shadow: #05030A;
+    --display: Bangers, Impact, "Arial Narrow Bold", system-ui, sans-serif;
+    --sl: env(safe-area-inset-left); --sr: env(safe-area-inset-right); --st: env(safe-area-inset-top); --sb: env(safe-area-inset-bottom);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  html, body { min-height: 100%; }
+  body {
+    margin: 0; min-height: var(--lab-h, 100dvh);
+    background-color: var(--night);
+    background-image: radial-gradient(rgba(255, 248, 236, 0.07) 1px, transparent 1.6px);
+    background-size: 9px 9px;
+    color: var(--paper);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible, a:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .wrap { width: 100%; max-width: 640px; margin: 0 auto; }
+
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: calc(var(--st) + 10px) max(16px, var(--sr)) 4px max(16px, var(--sl)); }
+  .title { margin: 0; font-family: var(--display); font-weight: 400; font-size: 26px; letter-spacing: 0.05em; line-height: 1; text-align: right; text-shadow: 2px 0 var(--magenta), -2px 0 var(--cyan); }
+
+  /* the stage: the avatar stays in view while you pick */
+  .top { position: sticky; top: 0; z-index: 10; background: linear-gradient(var(--night) 90%, rgba(22, 20, 31, 0)); }
+  .stage { display: flex; align-items: center; gap: 16px; padding: 4px max(16px, var(--sr)) 10px max(16px, var(--sl)); }
+  .frame { position: relative; flex: none; width: min(36vw, 160px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 4px solid var(--ink); box-shadow: 0 0 0 3px var(--paper), 6px 7px 0 3px var(--shadow); background: var(--panel); }
+  .frame svg { display: block; width: 100%; height: 100%; }
+  .frame.pop { animation: pop 0.35s cubic-bezier(0.3, 1.6, 0.5, 1); }
+  @keyframes pop { 50% { transform: scale(1.06) rotate(-3deg); } }
+  .side { flex: 1; min-width: 0; display: grid; gap: 8px; align-content: center; }
+  .who { margin: 0; font-family: var(--display); font-size: 30px; letter-spacing: 0.04em; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: clip; }
+  .coins { display: flex; flex-wrap: wrap; gap: 6px 12px; font-weight: 800; font-size: 15px; font-variant-numeric: tabular-nums; }
+  .coins span { display: inline-flex; align-items: center; gap: 5px; }
+  .status { margin: 0; min-height: 18px; font-size: 13px; font-weight: 700; color: rgba(255, 248, 236, 0.72); }
+  .status.good { color: var(--green); }
+  .status.bad { color: var(--red); }
+  .mini-btn { justify-self: start; min-height: 40px; padding: 6px 14px; border-radius: 999px; background: var(--panel); border: 2px solid var(--shadow); font-size: 13px; font-weight: 800; letter-spacing: 0.06em; }
+  .tabs { display: flex; gap: 6px; overflow-x: auto; padding: 4px max(16px, var(--sr)) 10px max(16px, var(--sl)); scrollbar-width: none; scroll-snap-type: x proximity; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs button { flex: none; scroll-snap-align: start; min-height: 40px; padding: 6px 13px; border-radius: 999px; background: var(--panel); border: 2px solid var(--shadow); font-size: 13px; font-weight: 800; letter-spacing: 0.04em; white-space: nowrap; }
+  .tabs button.shop { color: var(--yellow); }
+  .tabs button[aria-selected="true"] { background: var(--yellow); color: var(--ink); border-color: var(--ink); box-shadow: 2px 3px 0 var(--shadow); }
+  .tabs .gap { flex: none; width: 2px; margin: 6px 4px; background: rgba(255, 248, 236, 0.2); border-radius: 2px; }
+
+  .guest { margin: 6px max(16px, var(--sr)) 10px max(16px, var(--sl)); padding: 12px 14px; border-radius: 14px; background: var(--panel); border: 2px solid var(--yellow); font-size: 14px; font-weight: 700; line-height: 1.4; }
+  .guest a { color: var(--yellow); }
+
+  .body { padding: 2px max(16px, var(--sr)) calc(var(--sb) + 110px + var(--lab-gap, 0px)) max(16px, var(--sl)); display: grid; gap: 16px; }
+  .group h3 { margin: 0 0 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; color: rgba(255, 248, 236, 0.7); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 10px; }
+  .opt { position: relative; display: grid; justify-items: center; gap: 4px; padding: 8px 6px 7px; border-radius: 16px; background: var(--panel); border: 3px solid var(--shadow); text-align: center; }
+  .opt .pic { width: 100%; aspect-ratio: 1; max-width: 86px; border-radius: 50%; overflow: hidden; border: 2px solid var(--ink); background: var(--panel-2); }
+  .opt .pic svg { width: 100%; height: 100%; display: block; }
+  .opt b { font-size: 12px; font-weight: 800; line-height: 1.15; }
+  .opt small { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 800; color: rgba(255, 248, 236, 0.85); }
+  .opt small.owned { color: var(--green); }
+  .opt[aria-pressed="true"] { border-color: var(--yellow); box-shadow: 0 0 0 2px var(--yellow), 3px 4px 0 var(--shadow); }
+  .opt .tag { position: absolute; top: 6px; left: 6px; padding: 1px 6px; border-radius: 999px; font-size: 9px; font-weight: 800; letter-spacing: 0.08em; color: var(--ink); border: 2px solid var(--ink); }
+  .opt .tag.rare { background: var(--cyan); }
+  .opt .tag.legendary { background: var(--yellow); }
+  .swatches { display: flex; flex-wrap: wrap; gap: 10px; }
+  .sw { width: 44px; height: 44px; border-radius: 50%; border: 3px solid var(--ink); box-shadow: 2px 3px 0 var(--shadow); padding: 0; }
+  .sw[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--yellow), 2px 3px 0 var(--shadow); }
+  .note { margin: 0; font-size: 13px; line-height: 1.4; color: rgba(255, 248, 236, 0.75); }
+
+  /* buying: a bar at the bottom while you try something on */
+  .buybar { position: fixed; z-index: 20; left: 0; right: 0; bottom: calc(0px - var(--lab-gap, 0px)); padding: 10px max(16px, var(--sr)) calc(var(--sb) + 12px + var(--lab-gap, 0px)) max(16px, var(--sl)); background: var(--paper); color: var(--ink); border-top: 4px solid var(--ink); box-shadow: 0 -6px 0 rgba(5, 3, 10, 0.5); }
+  .buybar .in { display: flex; align-items: center; gap: 12px; }
+  .buybar .what { flex: 1; min-width: 0; }
+  .buybar .what b { display: block; font-family: var(--display); font-weight: 400; font-size: 24px; letter-spacing: 0.04em; line-height: 1; }
+  .buybar .what span { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 800; white-space: nowrap; }
+  @media (max-width: 479px) {   /* phones: the name and price on top, the two buttons under them */
+    .buybar .in { flex-wrap: wrap; gap: 8px 10px; }
+    .buybar .what { flex: 1 1 100%; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+    .buybar .btn { flex: 1 1 0; min-height: 48px; }
+    #buyBtn { flex-grow: 1.6; }
+  }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 52px; padding: 8px 18px; border-radius: 16px; background: var(--yellow); color: var(--ink); border: 3px solid var(--ink); box-shadow: 3px 4px 0 var(--shadow); font-size: 17px; font-weight: 800; white-space: nowrap; }
+  .btn:active { transform: translate(2px, 3px); box-shadow: 1px 1px 0 var(--shadow); }
+  .btn[disabled] { background: #E7E1D3; color: rgba(18, 14, 24, 0.55); box-shadow: none; transform: none; }
+  .btn.alt { background: var(--panel); color: var(--paper); }
+  .buybar .why { margin: 6px 0 0; font-size: 12px; font-weight: 700; }
+  .buybar .why a { color: #5B3CC4; }
+  @media (max-height: 700px) { .frame { width: min(28vw, 112px); } .title { font-size: 20px; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="top">
+  <header class="bar wrap">
+    <capra-lab-chip noname></capra-lab-chip>
+    <h1 class="title">AVATAR<br>STUDIO</h1>
+  </header>
+  <div class="stage wrap">
+    <div class="frame" id="frame"></div>
+    <div class="side">
+      <p class="who" id="who">YOU</p>
+      <div class="coins" id="coins" aria-label="Your wallet"></div>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+      <button class="mini-btn" id="randomBtn" type="button">🎲 Surprise me</button>
+    </div>
+  </div>
+  <nav class="tabs wrap" id="tabs" role="tablist" aria-label="Avatar parts"></nav>
+</div>
+<p class="guest wrap" id="guest" hidden>Try anything on! To save your look and shop, <a href="/#profile">make your Capra Lab profile</a> first. It's free and takes a minute.</p>
+<main class="body wrap" id="body"></main>
+<div class="buybar" id="buybar" hidden>
+  <div class="in wrap">
+    <div class="what"><b id="buyName"></b><span id="buyPrice"></span></div>
+    <button class="btn alt" id="buyCancel" type="button">Take off</button>
+    <button class="btn" id="buyBtn" type="button">Buy</button>
+  </div>
+  <p class="why wrap" id="buyWhy" hidden></p>
+</div>
+<script src="/lab/chip.js" defer></script>
+<script type="module" src="./studio.js"></script>
+</body>
+</html>

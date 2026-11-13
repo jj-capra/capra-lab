@@ -11,17 +11,25 @@
  *   /api/wallet/sync   { game: 'glacial-maw', d: { amber, shards, diamonds }, link?, hunter? }
  *                      Glacial Maw's difference since it last synced; it gets the totals back.
  *                      The first sync (`link`) brings the hunter's whole balance in.
+ *   /api/wallet/buy    { item }  buys an avatar item (public/lab/avatar-catalog.mjs ITEMS) at its price:
+ *                      the coins come off and the item goes on the shelf in one write
+ *   /api/wallet/dress  { look }  saves the avatar; shop items only if they're on the shelf
+ *   GET /api/wallet/looks?h=a,b,c  anyone's saved avatar looks (no balances), for showing other players
+ *
+ * The avatar (JC, Nov 13 2026) lives in the wallet record too: `items` (what they own) and `look`.
  *
  * Games with their own server pay with pay(handle, { diamonds, amber, shards }, { game, why }):
  * they checked the feat, so no cap. */
 import { COINS, ORDER, DAY_CAP, EARN, SYNC_MAX, walletDay } from '../public/lab/wallet-catalog.mjs';
 import { mutate, SKIP } from './casstore.js';
+import { ITEM, clean } from '../public/lab/avatar-catalog.mjs';
 
 export const STORE = 'capra-lab-wallet';
 const keyOf = (handle) => 'w/' + handle;
 const HANDLE = /^[a-z0-9-]{2,24}$/;
 const LOG_KEEP = 40, REFS_KEEP = 60, HUNTERS_KEEP = 8;
-const blank = () => ({ diamonds: 0, amber: 0, shards: 0, day: null, today: {}, gm: null, log: [] });
+const blank = () => ({ diamonds: 0, amber: 0, shards: 0, day: null, today: {}, gm: null, log: [], items: [], look: null });
+const LOOKS_MAX = 40;
 
 function fail(status, error, code) {
   const e = new Error(error);
@@ -43,6 +51,8 @@ export function createWallet({ store, clock = () => Date.now(), verify = null })
       day, today: earned,
       gm: r.gm && r.gm.hunters && r.gm.hunters.length ? { linked: true, at: r.gm.at || null } : { linked: false },
       log: (r.log || []).slice(-10).reverse(),
+      items: (r.items || []).slice(),
+      look: r.look ? clean(r.look, r.items || []) : null,
     };
   }
   async function read(handle) {
@@ -143,18 +153,58 @@ export function createWallet({ store, clock = () => Date.now(), verify = null })
     return { moved, ...view(data, now) };
   }
 
+  // The avatar shop: the price comes off and the item goes on the shelf together, or neither does.
+  async function buy(handle, id) {
+    check(handle);
+    const item = ITEM[String(id || '')];
+    if (!item) throw fail(400, 'The shop doesn’t have that.');
+    const now = clock(), day = walletDay(now);
+    let bought = false;
+    const { data } = await mutate(store, keyOf(handle), (w) => {
+      roll(w, day);
+      bought = false;
+      w.items ||= [];
+      if (w.items.includes(item.id)) return SKIP;
+      for (const k of Object.keys(item.price)) {
+        const short = item.price[k] - (w[k] || 0);
+        if (short > 0) throw fail(402, `You need ${short} more ${short === 1 ? COINS[k].one : COINS[k].many} for the ${item.name}.`, 'short');
+      }
+      for (const k of Object.keys(item.price)) w[k] -= item.price[k];
+      w.items.push(item.id);
+      bought = true;
+      const spent = {};
+      for (const k of Object.keys(item.price)) spent[k] = -item.price[k];
+      note(w, now, 'avatar', `bought the ${item.name}`, spent);
+    }, blank);
+    return { bought, item: item.id, ...view(data, now) };
+  }
+  async function dress(handle, look) {
+    check(handle);
+    const { data } = await mutate(store, keyOf(handle), (w) => { w.look = clean(look, w.items || []); }, blank);
+    return view(data);
+  }
+  async function looks(handles) {
+    const list = [...new Set(String(handles || '').split(',').map((h) => h.trim().toLowerCase()).filter((h) => HANDLE.test(h)))].slice(0, LOOKS_MAX);
+    const out = {};
+    await Promise.all(list.map(async (h) => { const got = await store.get(keyOf(h)); const r = got && got.data; out[h] = r && r.look ? clean(r.look, r.items || []) : null; }));
+    return { looks: out };
+  }
+
   async function wallet(handle) { return view(await read(handle)); }
 
-  async function route(method, path, body) {
-    if (method !== 'POST') throw fail(405, 'Use POST.');
+  async function route(method, path, body, query = null) {
     const action = path.replace(/^.*\/api\/wallet\/?/, '').replace(/\/$/, '');
-    if (!['me', 'earn', 'sync'].includes(action)) throw fail(404, 'Not found.');
+    if (action === 'looks' && method === 'GET') return looks(query ? query.get('h') : '');
+    if (method !== 'POST') throw fail(405, 'Use POST.');
+    if (!['me', 'earn', 'sync', 'buy', 'dress'].includes(action)) throw fail(404, 'Not found.');
     if (!verify) throw fail(500, 'The wallet can’t check sign-ins here.');
     const name = String((body && body.name) || ''), code = String((body && body.code) || '');
     const who = name && code ? await verify(name, code) : null;
     if (!who) throw fail(401, 'Sign in to Capra Lab to keep a wallet.', 'signin');
     if (action === 'me') return wallet(who.handle);
     if (action === 'earn') return earn(who.handle, String(body.game || ''), String(body.event || ''), body.ref);
+    if (action === 'buy') return buy(who.handle, body.item);
+    if (action === 'dress') return dress(who.handle, body.look);
     if (String(body.game || '') !== 'glacial-maw') throw fail(400, 'Only Glacial Maw syncs.');
     return sync(who.handle, body.d || {}, { link: !!body.link, hunter: body.hunter });
   }
@@ -167,7 +217,7 @@ export function createWallet({ store, clock = () => Date.now(), verify = null })
       try { body = await req.json(); } catch { return new Response(JSON.stringify({ error: 'Bad request.' }), { status: 400, headers }); }
     }
     try {
-      return new Response(JSON.stringify(await route(req.method, url.pathname, body)), { status: 200, headers });
+      return new Response(JSON.stringify(await route(req.method, url.pathname, body, url.searchParams)), { status: 200, headers });
     } catch (e) {
       const status = e.status || 500;
       const error = status === 500 && /blob/i.test(e.message) ? 'The wallet didn’t answer just then. Try again in a moment.' : e.message;
@@ -175,5 +225,5 @@ export function createWallet({ store, clock = () => Date.now(), verify = null })
     }
   }
 
-  return { pay, earn, sync, wallet, view, route, handle: handleRequest };
+  return { pay, earn, sync, buy, dress, looks, wallet, view, route, handle: handleRequest };
 }

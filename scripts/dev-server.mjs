@@ -161,6 +161,11 @@ http.createServer(async (req, res) => {
     walletOffset += Number(url.searchParams.get('add') || 0);
     res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: walletOffset }));
   }
+  if (url.pathname === '/api/wallet/__give') {       // local only: ?handle=jj-capra&amber=300&shards=4&diamonds=1 fills a wallet
+    const q = (k) => Number(url.searchParams.get(k) || 0);
+    const r = await wallet.pay(url.searchParams.get('handle') || '', { amber: q('amber'), shards: q('shards'), diamonds: q('diamonds') }, { game: 'dev', why: 'local test' });
+    res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify(r));
+  }
   if (url.pathname.startsWith('/api/wallet/')) return toFunction(req, res, (r) => wallet.handle(r));
   if (url.pathname === '/par-tee-time/__clock') {
     parTeeOffset += Number(url.searchParams.get('add') || 0);

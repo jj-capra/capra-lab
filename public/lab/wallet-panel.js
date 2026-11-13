@@ -1,8 +1,10 @@
 /* The hub's wallet panel (JC, Nov 12 2026: "diamonds amber and shards in Capra Lab... this opens a way to
  * accessorize and individualize their avatar"): the three balances, today's earnings, Glacial Maw's link
- * and how every game pays (public/lab/wallet-catalog.mjs). Nothing to buy yet: the avatar shop is next. */
+ * and how every game pays (public/lab/wallet-catalog.mjs), and the way into the Avatar Studio (/avatar/),
+ * where the coins buy hats, glasses, outfits and more (JC, Nov 13 2026). */
 import { COINS, ORDER, EARN, FEATS, DAY_CAP, short, words } from './wallet-catalog.mjs';
 import { coin } from './wallet.js';
+import { drawAvatar, lookFor } from './avatar.mjs';
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -38,7 +40,8 @@ function paint(w) {
     ? 'Glacial Maw is linked: your hunter’s amber, Rift Shards and diamond gems are this wallet.'
     : 'Hunting in Glacial Maw? Open it from the lab and link your hunter (its menu, Capra Lab wallet).';
   $('wlBody').innerHTML = `<div class="wl-coins">${ORDER.map((k) => `<div class="wl-coin">${coin(k, 22)}<b>${short(w[k])}</b><small>${COINS[k].short}</small></div>`).join('')}</div>
-    <p class="wl-line">${esc(todayLine)} Avatars to spend them on are next.</p>
+    <p class="wl-line">${esc(todayLine)}</p>
+    <a class="wl-avatar" href="/avatar/"><span class="wl-face">${drawAvatar(lookFor(p.handle, w.look), { tight: true })}</span><span class="t"><b>AVATAR STUDIO</b><small>${w.look ? 'Spend it on hats, glasses, outfits, gadgets and more.' : 'Make your comic avatar: a person or an animal. Spend coins on hats, glasses and more.'}</small></span><span class="go">Open</span></a>
     <p class="wl-line wl-gm"><a href="/glacial-maw/">${esc(gm)}</a></p>${howToEarn()}`;
 }
 
@@ -48,9 +51,13 @@ async function refresh() {
   if (!p) return;
   try {
     const r = await fetch('/api/wallet/me', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: p.name, code: p.code }) });
-    paint(r.ok ? await r.json() : null);
+    const w = r.ok ? await r.json() : null;
+    last = w;
+    paint(w);
+    if (w) window.dispatchEvent(new CustomEvent('capra-lab:look', { detail: { handle: p.handle, look: w.look || null } }));
   } catch { paint(null); }
 }
 window.addEventListener('capra-lab:profile', refresh);
-window.addEventListener('capra-wallet:changed', (e) => { if (e.detail && typeof e.detail.amber === 'number') paint(e.detail); });
+let last = null;
+window.addEventListener('capra-wallet:changed', (e) => { if (e.detail && typeof e.detail.amber === 'number') { last = { ...(last || {}), ...e.detail }; paint(last); } });
 refresh();
