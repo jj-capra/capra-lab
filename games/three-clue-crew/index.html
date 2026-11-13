@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="/lab/fill.js"></script>
+<title>Three Clue Crew · Capra Lab</title>
+<meta name="description" content="Three one-word clues, four answers, one big brain. A Capra Lab original game show, from kindergarten to high school.">
+<meta name="theme-color" content="#16141F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Capra Lab">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #120E18;
+    --night: #16141F;
+    --panel: #221B2E;
+    --panel-2: #2C2340;
+    --paper: #FFF8EC;
+    --yellow: #FFD23F;
+    --magenta: #FF3D8B;
+    --cyan: #29D3F0;
+    --violet: #8C6CFF;
+    --right: #5BE38A;
+    --wrong: #FF5A5A;
+    --shadow: #05030A;
+    --display: Bangers, Impact, "Arial Narrow Bold", system-ui, sans-serif;
+    --sl: env(safe-area-inset-left);
+    --sr: env(safe-area-inset-right);
+    --st: env(safe-area-inset-top);
+    --sb: env(safe-area-inset-bottom);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background-color: var(--night);
+    background-image: radial-gradient(rgba(255, 248, 236, 0.07) 1px, transparent 1.6px);
+    background-size: 9px 9px;
+    color: var(--paper);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible, a:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .screen { min-height: 100vh; min-height: var(--lab-h, 100dvh); display: flex; flex-direction: column; }
+  .wrap { width: 100%; max-width: 620px; margin: 0 auto; }
+
+  /* ---------- shared ---------- */
+  .bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: calc(var(--st) + 10px) max(16px, var(--sr)) 6px max(16px, var(--sl));
+  }
+  .bar-right { display: flex; align-items: center; gap: 8px; flex: none; }
+  .back {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px 0 8px;
+    border-radius: 999px; background: var(--panel); border: 2px solid var(--shadow);
+    color: var(--paper); text-decoration: none; font-size: 12px; font-weight: 800; letter-spacing: 0.1em;
+  }
+  .back svg, .round-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .round-btn {
+    flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--panel); border: 2px solid var(--shadow); padding: 0;
+    font-family: var(--display); font-size: 22px; line-height: 1;
+  }
+  .round-btn[aria-pressed="true"] { background: var(--yellow); color: var(--ink); border-color: var(--ink); }
+  .label { margin: 0 0 7px; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; color: rgba(255, 248, 236, 0.7); }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 54px; padding: 10px 22px; border-radius: 16px;
+    background: var(--yellow); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 5px 0 var(--shadow);
+    font-size: 18px; font-weight: 800; letter-spacing: 0.02em; text-decoration: none;
+  }
+  .btn:active { transform: translate(3px, 4px); box-shadow: 1px 1px 0 var(--shadow); }
+  .btn.alt { background: var(--panel); color: var(--paper); border-color: var(--shadow); }
+  .btn.big { min-height: 64px; font-family: var(--display); font-weight: 400; font-size: 28px; letter-spacing: 0.05em; padding: 8px 24px; }
+  .btn small { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; opacity: 0.75; }
+
+  /* the host: a mic avatar and a speech bubble */
+  .host { display: flex; align-items: flex-start; gap: 10px; }
+  .host .mic {
+    flex: none; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--violet); border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--shadow);
+  }
+  .host .mic svg { width: 30px; height: 30px; }
+  .bubble {
+    position: relative; flex: 1; min-width: 0; padding: 12px 14px; border-radius: 18px 18px 18px 6px;
+    background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 3px 4px 0 var(--shadow);
+    font-size: 16px; font-weight: 700; line-height: 1.35;
+  }
+  .bubble b.say { display: block; font-family: var(--display); font-weight: 400; font-size: 24px; letter-spacing: 0.04em; line-height: 1; margin-bottom: 4px; }
+  .bubble.right b.say { color: #1E9E4E; }
+  .bubble.wrong b.say { color: #D12F4A; }
+
+  /* ---------- home ---------- */
+  .home-body { flex: 1; display: grid; align-content: start; gap: 18px; padding: 8px max(16px, var(--sr)) calc(var(--sb) + 22px) max(16px, var(--sl)); }
+  .logo { margin: 4px 0 0; display: flex; align-items: center; gap: 12px; }
+  .logo .cards { position: relative; flex: none; width: 66px; height: 56px; }
+  .logo .cards i {
+    position: absolute; top: 6px; width: 30px; height: 40px; border-radius: 6px; border: 3px solid var(--ink); box-shadow: 2px 3px 0 var(--shadow);
+    font-family: var(--display); font-style: normal; font-size: 20px; color: var(--ink); display: grid; place-items: center;
+  }
+  .logo .cards i:nth-child(1) { left: 0; background: var(--yellow); transform: rotate(-12deg); }
+  .logo .cards i:nth-child(2) { left: 18px; top: 0; background: var(--magenta); z-index: 1; }
+  .logo .cards i:nth-child(3) { left: 36px; background: var(--cyan); transform: rotate(12deg); z-index: 2; }
+  .logo h1 {
+    margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(40px, 10vw, 60px); line-height: 0.88; letter-spacing: 0.04em;
+    text-shadow: 3px 0 var(--magenta), -3px 0 var(--cyan);
+  }
+  .logo h1 em { font-style: normal; color: var(--yellow); }
+  .seg { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; }
+  .seg button {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    min-height: 56px; padding: 6px 4px; border-radius: 12px;
+    background: var(--panel); border: 2px solid var(--shadow); color: var(--paper);
+  }
+  .seg button b { font-family: var(--display); font-weight: 400; font-size: 22px; line-height: 1; letter-spacing: 0.04em; }
+  .seg button small { font-size: 10px; font-weight: 800; letter-spacing: 0.02em; line-height: 1.1; text-align: center; color: rgba(255, 248, 236, 0.72); }
+  .seg button[aria-checked="true"] { background: var(--yellow); color: var(--ink); border-color: var(--ink); box-shadow: 2px 3px 0 var(--shadow); }
+  .seg button[aria-checked="true"] small { color: var(--ink); }
+  .play-btns { display: grid; gap: 12px; }
+  .play-btns .btn { width: 100%; justify-content: space-between; text-align: left; }
+  .play-btns .btn span { display: grid; gap: 2px; }
+  .daily-note { margin: -4px 2px 0; font-size: 13px; font-weight: 700; color: rgba(255, 248, 236, 0.75); }
+
+  /* ---------- a round ---------- */
+  .play-top { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; justify-content: flex-end; }
+  .dots { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+  .dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--panel-2); border: 2px solid var(--shadow); }
+  .dots i.now { background: var(--paper); }
+  .dots i.r { background: var(--right); }
+  .dots i.w { background: var(--wrong); }
+  .count { font-family: var(--display); font-size: 22px; letter-spacing: 0.04em; white-space: nowrap; }
+  .play-body { flex: 1; display: grid; align-content: start; gap: 16px; padding: 6px max(16px, var(--sr)) calc(var(--sb) + 18px) max(16px, var(--sl)); }
+  .clues { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .clue {
+    min-height: 92px; display: grid; place-items: center; padding: 8px 6px; border-radius: 14px; text-align: center;
+    border: 3px solid var(--ink); box-shadow: 4px 5px 0 var(--shadow); color: var(--ink);
+    font-family: var(--display); font-weight: 400; letter-spacing: 0.03em; line-height: 0.95; overflow: hidden;
+    font-size: clamp(20px, 6.2vw, 32px);
+    opacity: 0; transform: rotateY(90deg) scale(0.9);
+  }
+  .clue .w { display: block; white-space: nowrap; }
+  .clue:nth-child(1) { background: var(--yellow); }
+  .clue:nth-child(2) { background: var(--magenta); }
+  .clue:nth-child(3) { background: var(--cyan); }
+  .clue.in { opacity: 1; transform: none; transition: transform 0.38s cubic-bezier(0.3, 1.5, 0.5, 1), opacity 0.2s; }
+  .clue small { display: block; font-family: Inter, system-ui, sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.14em; opacity: 0.6; margin-bottom: 4px; }
+  .choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .choice {
+    display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 10px 12px; border-radius: 16px; text-align: left;
+    background: var(--panel); border: 3px solid var(--shadow); box-shadow: 3px 4px 0 var(--shadow); color: var(--paper);
+    font-size: 17px; font-weight: 800; line-height: 1.15; overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto;
+    opacity: 0; transform: translateY(8px);
+  }
+  .choice.in { opacity: 1; transform: none; transition: opacity 0.25s, transform 0.25s; }
+  .choice i {
+    flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--paper); color: var(--ink); border: 2px solid var(--ink); font-style: normal; font-family: var(--display); font-size: 18px;
+  }
+  .choice:not([disabled]):active { transform: translate(2px, 3px); box-shadow: 1px 1px 0 var(--shadow); }
+  .choice[disabled] { cursor: default; }
+  .choice.right { background: var(--right); color: var(--ink); border-color: var(--ink); }
+  .choice.wrong { background: var(--wrong); color: var(--ink); border-color: var(--ink); }
+  .choice.dim { opacity: 0.45; }
+  .next { width: 100%; }
+
+  /* ---------- results ---------- */
+  .res-body { flex: 1; display: grid; align-content: start; gap: 16px; padding: 6px max(16px, var(--sr)) calc(var(--sb) + 22px) max(16px, var(--sl)); }
+  .res-score { text-align: center; padding: 16px 12px 18px; border-radius: 20px; background: var(--panel); border: 3px solid var(--shadow); box-shadow: 4px 5px 0 var(--shadow); }
+  .res-score small { display: block; font-size: 12px; font-weight: 800; letter-spacing: 0.16em; color: rgba(255, 248, 236, 0.7); }
+  .res-score .num { font-family: var(--display); font-size: 84px; line-height: 0.95; letter-spacing: 0.03em; text-shadow: 3px 0 var(--magenta), -3px 0 var(--cyan); }
+  .res-score .num span { font-size: 40px; color: rgba(255, 248, 236, 0.6); text-shadow: none; }
+  .res-score .rank { font-family: var(--display); font-size: 30px; letter-spacing: 0.05em; color: var(--yellow); }
+  .res-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .res-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .res-list li { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 14px; background: var(--panel); border: 2px solid var(--shadow); }
+  .res-list li > i { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-weight: 800; color: var(--ink); background: var(--right); border: 2px solid var(--ink); }
+  .res-list li.w > i { background: var(--wrong); }
+  .res-list b { display: block; font-size: 15px; }
+  .res-list span { display: block; font-size: 13px; font-weight: 600; color: rgba(255, 248, 236, 0.72); }
+  @media (max-width: 370px) {
+    .choices { grid-template-columns: 1fr; gap: 8px; }
+    .choice { min-height: 50px; }
+  }
+  @media (min-width: 760px) {
+    .clue { min-height: 120px; }
+    .choice { min-height: 72px; font-size: 19px; }
+  }
+
+  /* ---------- how to play ---------- */
+  .sheet { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 40; display: grid; place-items: center; padding: calc(var(--st) + 16px) max(16px, var(--sr)) calc(var(--sb) + 16px) max(16px, var(--sl)); background: rgba(5, 3, 10, 0.72); }
+  .sheet-card { width: 100%; max-width: 460px; max-height: 100%; overflow: auto; padding: 20px 18px; border-radius: 20px; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 5px 6px 0 var(--shadow); }
+  .sheet-card h2 { margin: 0 0 10px; font-family: var(--display); font-weight: 400; font-size: 32px; letter-spacing: 0.04em; }
+  .sheet-card ol { margin: 0 0 14px; padding-left: 22px; display: grid; gap: 8px; font-size: 15px; font-weight: 600; line-height: 1.4; }
+  .sheet-card .btn { width: 100%; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .clue, .choice { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HOME: the host, the grade level, today's ten ============ -->
+<section class="screen" data-screen="home">
+  <header class="bar wrap">
+    <capra-lab-chip></capra-lab-chip>
+    <div class="bar-right">
+      <button class="round-btn" id="helpBtn" type="button" aria-label="How to play">?</button>
+    </div>
+  </header>
+  <div class="home-body wrap">
+    <div class="logo">
+      <div class="cards" aria-hidden="true"><i>1</i><i>2</i><i>3</i></div>
+      <h1>THREE CLUE <em>CREW</em></h1>
+    </div>
+    <div class="host">
+      <div class="mic" aria-hidden="true"><svg viewBox="0 0 32 32"><g stroke="#120E18" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="4" width="10" height="15" rx="5" fill="#FFF8EC"/><path d="M7.5 14.5a8.5 8.5 0 0 0 17 0" fill="none"/><path d="M16 23v4.5M11.5 27.5h9" fill="none"/></g></svg></div>
+      <div class="bubble" id="homeHost" aria-live="polite"></div>
+    </div>
+    <div>
+      <p class="label" id="tierLabel">PICK YOUR GRADE LEVEL</p>
+      <div class="seg" id="tiers" role="radiogroup" aria-labelledby="tierLabel"></div>
+    </div>
+    <div class="play-btns">
+      <button class="btn big" id="dailyBtn" type="button"><span>TODAY'S 10<small id="dailySub"></small></span><b aria-hidden="true">▸</b></button>
+      <button class="btn alt" id="quickBtn" type="button"><span>Quick 10<small>Ten more rounds, any time</small></span><b aria-hidden="true">▸</b></button>
+    </div>
+    <p class="daily-note" id="dailyNote"></p>
+  </div>
+</section>
+
+<!-- ============ A ROUND: three clues, four choices ============ -->
+<section class="screen" data-screen="play" hidden>
+  <header class="bar wrap">
+    <button class="back" id="playBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>MENU</button>
+    <div class="play-top">
+      <div class="dots" id="dots" aria-hidden="true"></div>
+      <div class="count" id="count" aria-live="off">1/10</div>
+      <button class="round-btn" id="readBtn" type="button" aria-label="Read the clues out loud" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg></button>
+    </div>
+  </header>
+  <div class="play-body wrap">
+    <div class="host">
+      <div class="mic" aria-hidden="true"><svg viewBox="0 0 32 32"><g stroke="#120E18" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="4" width="10" height="15" rx="5" fill="#FFF8EC"/><path d="M7.5 14.5a8.5 8.5 0 0 0 17 0" fill="none"/><path d="M16 23v4.5M11.5 27.5h9" fill="none"/></g></svg></div>
+      <div class="bubble" id="playHost" aria-live="polite"></div>
+    </div>
+    <div class="clues" id="clues" aria-label="The three clues"></div>
+    <div class="choices" id="choices"></div>
+    <button class="btn big next" id="nextBtn" type="button" hidden>NEXT ROUND ▸</button>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="screen" data-screen="results" hidden>
+  <header class="bar wrap">
+    <button class="back" id="resBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>MENU</button>
+  </header>
+  <div class="res-body wrap">
+    <div class="res-score">
+      <small id="resTitle"></small>
+      <div class="num" id="resNum">0<span>/10</span></div>
+      <div class="rank" id="resRank"></div>
+    </div>
+    <div class="host">
+      <div class="mic" aria-hidden="true"><svg viewBox="0 0 32 32"><g stroke="#120E18" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="4" width="10" height="15" rx="5" fill="#FFF8EC"/><path d="M7.5 14.5a8.5 8.5 0 0 0 17 0" fill="none"/><path d="M16 23v4.5M11.5 27.5h9" fill="none"/></g></svg></div>
+      <div class="bubble" id="resHost"></div>
+    </div>
+    <div id="resShare"></div>
+    <div class="res-actions">
+      <button class="btn" id="moreBtn" type="button">Quick 10</button>
+      <button class="btn alt" id="levelBtn" type="button">Change level</button>
+    </div>
+    <p class="label">THE ROUNDS</p>
+    <ul class="res-list" id="resList"></ul>
+  </div>
+</section>
+
+<!-- ============ HOW TO PLAY ============ -->
+<div class="sheet" id="help" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden>
+  <div class="sheet-card">
+    <h2 id="helpTitle">HOW TO PLAY</h2>
+    <ol>
+      <li>Pick your grade level: K–1, 2nd–3rd, middle school or high school.</li>
+      <li>Every round shows three one-word clues. Figure out what connects all three.</li>
+      <li>Tap one of the four answers. The host tells you if you got it and why the clues fit.</li>
+      <li>Ten rounds a game. Today's 10 is the same for everyone at your level, so you can compare scores with friends. Quick 10 is extra practice.</li>
+      <li>Tap the speaker to have the clues read out loud (it's on for K–1).</li>
+    </ol>
+    <button class="btn" id="helpClose" type="button">Let's play!</button>
+  </div>
+</div>
+
+<script src="/lab/chip.js" defer></script>
+<script src="/lab/share.js" defer></script>
+<script src="/lab/wallet.js" type="module"></script>
+<script type="module" src="./game.js"></script>
+</body>
+</html>

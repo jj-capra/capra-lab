@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="/lab/fill.js"></script>
+<title>Puzzled Spin · Capra Lab</title>
+<meta name="description" content="Spin the tiles until every edge matches, before the clock runs out. A Capra Lab original, from kindergarten to high school.">
+<meta name="theme-color" content="#16141F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Capra Lab">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #120E18;
+    --night: #16141F;
+    --panel: #221B2E;
+    --panel-2: #2C2340;
+    --paper: #FFF8EC;
+    --yellow: #FFD23F;
+    --magenta: #FF3D8B;
+    --cyan: #29D3F0;
+    --green: #5BE38A;
+    --red: #FF5A5A;
+    --shadow: #05030A;
+    --display: Bangers, Impact, "Arial Narrow Bold", system-ui, sans-serif;
+    --sl: env(safe-area-inset-left);
+    --sr: env(safe-area-inset-right);
+    --st: env(safe-area-inset-top);
+    --sb: env(safe-area-inset-bottom);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background-color: var(--night);
+    background-image: radial-gradient(rgba(255, 248, 236, 0.07) 1px, transparent 1.6px);
+    background-size: 9px 9px;
+    color: var(--paper);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible, a:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .screen { min-height: 100vh; min-height: var(--lab-h, 100dvh); display: flex; flex-direction: column; }
+  .wrap { width: 100%; max-width: 640px; margin: 0 auto; }
+
+  /* ---------- shared ---------- */
+  .bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: calc(var(--st) + 10px) max(16px, var(--sr)) 6px max(16px, var(--sl));
+  }
+  .bar-right { display: flex; align-items: center; gap: 8px; flex: none; }
+  .back {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px 0 8px;
+    border-radius: 999px; background: var(--panel); border: 2px solid var(--shadow);
+    color: var(--paper); font-size: 12px; font-weight: 800; letter-spacing: 0.1em; white-space: nowrap;
+  }
+  .back.arm { background: var(--red); color: var(--ink); border-color: var(--ink); }
+  .back svg, .round-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .round-btn {
+    flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--panel); border: 2px solid var(--shadow); padding: 0;
+    font-family: var(--display); font-size: 22px; line-height: 1;
+  }
+  .label { margin: 0 0 7px; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; color: rgba(255, 248, 236, 0.7); }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 54px; padding: 10px 22px; border-radius: 16px;
+    background: var(--yellow); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 5px 0 var(--shadow);
+    font-size: 18px; font-weight: 800; letter-spacing: 0.02em;
+  }
+  .btn:active { transform: translate(3px, 4px); box-shadow: 1px 1px 0 var(--shadow); }
+  .btn.alt { background: var(--panel); color: var(--paper); border-color: var(--shadow); }
+  .btn.big { min-height: 64px; font-family: var(--display); font-weight: 400; font-size: 28px; letter-spacing: 0.05em; padding: 8px 24px; }
+  .btn small { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; opacity: 0.75; }
+
+  /* ---------- home ---------- */
+  .home-body { flex: 1; display: grid; align-content: start; gap: 18px; padding: 8px max(16px, var(--sr)) calc(var(--sb) + 22px) max(16px, var(--sl)); }
+  .logo { margin: 4px 0 0; display: flex; align-items: center; gap: 12px; }
+  .logo .spin { flex: none; width: 60px; height: 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 3px; padding: 3px; border-radius: 12px; background: var(--ink); box-shadow: 3px 3px 0 var(--shadow); animation: logo 5s ease-in-out infinite; }
+  .logo .spin svg { width: 100%; height: 100%; display: block; border-radius: 4px; }
+  @keyframes logo { 0%, 70% { transform: rotate(0); } 85%, 100% { transform: rotate(90deg); } }
+  .logo h1 {
+    margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(42px, 10.5vw, 64px); line-height: 0.88; letter-spacing: 0.04em;
+    text-shadow: 3px 0 var(--magenta), -3px 0 var(--cyan);
+  }
+  .logo h1 em { font-style: normal; color: var(--yellow); }
+  .tag { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.4; color: rgba(255, 248, 236, 0.85); }
+  .seg { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; }
+  .seg button {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    min-height: 56px; padding: 6px 4px; border-radius: 12px;
+    background: var(--panel); border: 2px solid var(--shadow); color: var(--paper);
+  }
+  .seg button b { font-family: var(--display); font-weight: 400; font-size: 22px; line-height: 1; letter-spacing: 0.04em; }
+  .seg button small { font-size: 10px; font-weight: 800; letter-spacing: 0.02em; line-height: 1.1; text-align: center; color: rgba(255, 248, 236, 0.72); }
+  .seg button[aria-checked="true"] { background: var(--yellow); color: var(--ink); border-color: var(--ink); box-shadow: 2px 3px 0 var(--shadow); }
+  .seg button[aria-checked="true"] small { color: var(--ink); }
+  .tier-info { margin: 8px 2px 0; font-size: 13px; font-weight: 700; line-height: 1.4; color: rgba(255, 248, 236, 0.78); }
+  .play-btns { display: grid; gap: 12px; }
+  .play-btns .btn { width: 100%; justify-content: space-between; text-align: left; }
+  .play-btns .btn span { display: grid; gap: 2px; }
+  .best { margin: -4px 2px 0; font-size: 13px; font-weight: 700; color: rgba(255, 248, 236, 0.75); }
+
+  /* ---------- playing ---------- */
+  .hud { display: flex; align-items: center; justify-content: center; gap: 8px; flex: 1; min-width: 0; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 2px 14px; border-radius: 999px;
+    background: var(--panel); border: 2px solid var(--shadow); font-family: var(--display); font-size: 26px; letter-spacing: 0.04em; line-height: 1;
+  }
+  .pill.time { min-width: 76px; justify-content: center; background: var(--paper); color: var(--ink); border-color: var(--ink); }
+  .pill.time.low { background: var(--red); animation: pulse 0.5s ease-in-out infinite alternate; }
+  @keyframes pulse { to { transform: scale(1.06); } }
+  .pill.score small { font-family: Inter, system-ui, sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; opacity: 0.7; }
+  .play-body { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 4px max(16px, var(--sr)) calc(var(--sb) + 14px) max(16px, var(--sl)); }
+  .status { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 30px; }
+  .status .which { font-family: var(--display); font-size: 22px; letter-spacing: 0.05em; }
+  .status .which { white-space: nowrap; }
+  .badges { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .badge {
+    display: none; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 999px; border: 2px solid var(--ink);
+    background: var(--magenta); color: var(--ink); font-family: var(--display); font-size: 18px; letter-spacing: 0.05em; white-space: nowrap;
+  }
+  .badge.on { display: inline-flex; animation: badge 0.22s cubic-bezier(0.3, 1.6, 0.5, 1); }
+  @keyframes badge { from { transform: scale(0); } }
+  .badge.combo { background: var(--cyan); }
+  .board-wrap { position: relative; width: min(100%, 560px, calc(var(--lab-h, 100dvh) - var(--st) - var(--sb) - 200px)); min-width: 220px; aspect-ratio: 1; }
+  .board { position: absolute; inset: 0; display: grid; gap: var(--gap, 6px); padding: var(--gap, 6px); border-radius: 18px; background: var(--ink); border: 3px solid var(--ink); box-shadow: 5px 6px 0 var(--shadow); }
+  .cell {
+    position: relative; padding: 0; border: 0; border-radius: 8px; overflow: hidden; background: var(--panel-2);
+    transition: box-shadow 0.2s, transform 0.15s; touch-action: none;
+  }
+  .cell svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; transition: transform 0.16s ease-out; }
+  .cell .side { position: absolute; background: #fff; opacity: 0; transition: opacity 0.15s; pointer-events: none; box-shadow: 0 0 8px 2px var(--yellow); border-radius: 3px; }
+  .cell .side.s0 { top: 0; left: 18%; right: 18%; height: 4px; }
+  .cell .side.s1 { right: 0; top: 18%; bottom: 18%; width: 4px; }
+  .cell .side.s2 { bottom: 0; left: 18%; right: 18%; height: 4px; }
+  .cell .side.s3 { left: 0; top: 18%; bottom: 18%; width: 4px; }
+  .cell .side.on { opacity: 1; }
+  .cell.locked { box-shadow: 0 0 0 3px var(--yellow), 0 0 16px 2px rgba(255, 210, 63, 0.6); }
+  .cell.pop { animation: pop 0.3s cubic-bezier(0.3, 1.6, 0.5, 1); }
+  @keyframes pop { 50% { transform: scale(1.08); } }
+  .board.done .cell { animation: win 0.6s ease-in-out; }
+  @keyframes win { 50% { transform: scale(0.92) rotate(-4deg); } }
+  .hint { margin: 0; font-size: 13px; font-weight: 700; color: rgba(255, 248, 236, 0.72); text-align: center; }
+  .marks { display: flex; gap: 6px; }
+  .marks i { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; font-style: normal; font-size: 14px; background: var(--panel); border: 2px solid var(--shadow); }
+  .marks i.now { border-color: var(--yellow); }
+  .marks i.ok { background: var(--green); border-color: var(--ink); }
+  .marks i.fast { background: var(--yellow); border-color: var(--ink); }
+  .marks i.miss { background: var(--red); border-color: var(--ink); }
+  .float { position: fixed; z-index: 30; pointer-events: none; font-family: var(--display); font-size: 24px; letter-spacing: 0.04em; color: var(--yellow); text-shadow: 2px 2px 0 var(--ink); transform: translate(-50%, -50%); animation: float 0.9s ease-out forwards; }
+  @keyframes float { to { transform: translate(-50%, -150%); opacity: 0; } }
+  .overlay { position: absolute; inset: 0; z-index: 5; display: grid; place-items: center; border-radius: 18px; background: rgba(18, 14, 24, 0.72); }
+  .overlay .card { display: grid; justify-items: center; gap: 8px; padding: 18px 20px; max-width: 90%; text-align: center; border-radius: 18px; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 5px 6px 0 var(--shadow); }
+  .overlay h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 46px; letter-spacing: 0.05em; line-height: 0.95; }
+  .overlay p { margin: 0; font-size: 15px; font-weight: 700; }
+  .overlay .pts { font-family: var(--display); font-size: 30px; letter-spacing: 0.04em; color: #7A3DFF; }
+  .overlay.go { background: transparent; pointer-events: none; }
+  .overlay.go h2 { font-size: 72px; color: var(--yellow); text-shadow: 3px 0 var(--magenta), -3px 0 var(--cyan), 4px 5px 0 var(--ink); animation: go 0.8s ease-out forwards; }
+  @keyframes go { 0% { transform: scale(0.4); opacity: 0; } 30% { transform: scale(1.1); opacity: 1; } 80% { opacity: 1; } 100% { transform: scale(1.3); opacity: 0; } }
+
+  /* ---------- results ---------- */
+  .res-body { flex: 1; display: grid; align-content: start; gap: 16px; padding: 6px max(16px, var(--sr)) calc(var(--sb) + 22px) max(16px, var(--sl)); }
+  .res-score { text-align: center; padding: 16px 12px 18px; border-radius: 20px; background: var(--panel); border: 3px solid var(--shadow); box-shadow: 4px 5px 0 var(--shadow); }
+  .res-score small { display: block; font-size: 12px; font-weight: 800; letter-spacing: 0.16em; color: rgba(255, 248, 236, 0.7); }
+  .res-score .num { font-family: var(--display); font-size: 76px; line-height: 0.95; letter-spacing: 0.03em; text-shadow: 3px 0 var(--magenta), -3px 0 var(--cyan); }
+  .res-score .of { font-family: var(--display); font-size: 28px; letter-spacing: 0.05em; color: var(--yellow); }
+  .res-score .marks { justify-content: center; margin-top: 10px; }
+  .res-score .best { margin: 8px 0 0; }
+  .res-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* ---------- how to play ---------- */
+  .sheet { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 40; display: grid; place-items: center; padding: calc(var(--st) + 16px) max(16px, var(--sr)) calc(var(--sb) + 16px) max(16px, var(--sl)); background: rgba(5, 3, 10, 0.72); }
+  .sheet-card { width: 100%; max-width: 460px; max-height: 100%; overflow: auto; padding: 20px 18px; border-radius: 20px; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 5px 6px 0 var(--shadow); }
+  .sheet-card h2 { margin: 0 0 10px; font-family: var(--display); font-weight: 400; font-size: 32px; letter-spacing: 0.04em; }
+  .sheet-card ol { margin: 0 0 14px; padding-left: 22px; display: grid; gap: 8px; font-size: 15px; font-weight: 600; line-height: 1.4; }
+  .sheet-card .btn { width: 100%; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="defs"></defs></svg>
+
+<!-- ============ HOME ============ -->
+<section class="screen" data-screen="home">
+  <header class="bar wrap">
+    <capra-lab-chip></capra-lab-chip>
+    <div class="bar-right">
+      <button class="round-btn" id="soundBtn" type="button" aria-label="Sound" aria-pressed="true"></button>
+      <button class="round-btn" id="helpBtn" type="button" aria-label="How to play">?</button>
+    </div>
+  </header>
+  <div class="home-body wrap">
+    <div class="logo">
+      <div class="spin" id="logoTiles" aria-hidden="true"></div>
+      <h1>PUZZLED <em>SPIN</em></h1>
+    </div>
+    <p class="tag">Every tile is turned the wrong way. Spin them until every edge matches its neighbor, before the clock runs out!</p>
+    <div>
+      <p class="label" id="tierLabel">PICK YOUR GRADE LEVEL</p>
+      <div class="seg" id="tiers" role="radiogroup" aria-labelledby="tierLabel"></div>
+      <p class="tier-info" id="tierInfo"></p>
+    </div>
+    <div class="play-btns">
+      <button class="btn big" id="dailyBtn" type="button"><span>TODAY'S SPIN<small id="dailySub"></small></span><b aria-hidden="true">▸</b></button>
+      <button class="btn alt" id="practiceBtn" type="button"><span>Practice run<small>Five fresh puzzles, any time</small></span><b aria-hidden="true">▸</b></button>
+    </div>
+    <p class="best" id="bestLine"></p>
+  </div>
+</section>
+
+<!-- ============ PLAYING ============ -->
+<section class="screen" data-screen="play" hidden>
+  <header class="bar wrap">
+    <button class="back" id="playBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span id="backText">MENU</span></button>
+    <div class="hud">
+      <div class="pill time" id="timePill" role="timer" aria-live="off">60</div>
+    </div>
+    <div class="pill score" aria-label="Score"><b id="score">0</b><small>PTS</small></div>
+  </header>
+  <div class="play-body wrap">
+    <div class="status">
+      <span class="which" id="which">PUZZLE 1/5</span>
+      <span class="badges"><span class="badge" id="streak">SPIN STREAK x2</span><span class="badge combo" id="combo">COMBO x1.5</span></span>
+    </div>
+    <div class="board-wrap" id="boardWrap">
+      <div class="board" id="board" role="grid" aria-label="Tiles"></div>
+      <div class="overlay" id="overlay" hidden></div>
+    </div>
+    <p class="hint" id="hint">Tap a tile to spin it ↻ · swipe left to spin it back ↺</p>
+    <div class="marks" id="marks" aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="screen" data-screen="results" hidden>
+  <header class="bar wrap">
+    <button class="back" id="resBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>MENU</button>
+  </header>
+  <div class="res-body wrap">
+    <div class="res-score">
+      <small id="resTitle"></small>
+      <div class="num" id="resNum">0</div>
+      <div class="of" id="resOf"></div>
+      <div class="marks" id="resMarks" aria-hidden="true"></div>
+      <p class="best" id="resBest"></p>
+    </div>
+    <div id="resShare"></div>
+    <div class="res-actions">
+      <button class="btn" id="againBtn" type="button">Practice run</button>
+      <button class="btn alt" id="levelBtn" type="button">Change level</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW TO PLAY ============ -->
+<div class="sheet" id="help" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden>
+  <div class="sheet-card">
+    <h2 id="helpTitle">HOW TO PLAY</h2>
+    <ol>
+      <li>Every tile has a pattern on each of its four edges. Where two tiles touch, their edges have to match.</li>
+      <li>The tiles are in the right spots but turned the wrong way. Tap a tile to spin it clockwise, or swipe left on it to spin it back.</li>
+      <li>A glowing seam means two edges match. When every edge in the grid matches, the grid locks and you score: the faster, the more points.</li>
+      <li>Five puzzles a run, each against the clock. Fast solves build a combo; in middle school and up, quick locks build a Spin Streak.</li>
+      <li>Watch out for look-alikes: stripes vs. dots, and in high school, mirror-image twins. Today's Spin is the same five puzzles for everyone at your level.</li>
+    </ol>
+    <button class="btn" id="helpClose" type="button">Let's spin!</button>
+  </div>
+</div>
+
+<script src="/lab/chip.js" defer></script>
+<script src="/lab/share.js" defer></script>
+<script src="/lab/wallet.js" type="module"></script>
+<script type="module" src="./game.js"></script>
+</body>
+</html>

@@ -31,6 +31,8 @@ export const EARN = {
   'classified':      { name: 'Classified', game: { amber: 25, why: 'a game' } },
   'dont-look':       { name: 'Don’t Look!', round: { amber: 15, why: 'a round' } },
   'primal-survival': { name: 'Primal Survival', match: { amber: 25, why: 'a match' }, win: { shards: 1, why: 'a win' } },
+  'three-clue-crew': { name: 'Three Clue Crew', game: { amber: 20, why: 'a game of ten' }, perfect: { shards: 1, why: 'a perfect ten' } },
+  'puzzled-spin':    { name: 'Puzzled Spin', run: { amber: 20, why: 'a run of five' }, clear: { shards: 1, why: 'all five solved' } },
 };
 
 // What the games' servers pay, for the hub's "how to earn" list (they pay it themselves).

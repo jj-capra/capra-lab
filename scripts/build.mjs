@@ -158,6 +158,24 @@ async function buildMindHeist() {
   console.log('built public/mind-heist/');
 }
 
+/* Three Clue Crew: a page, the rounds and the daily logic, no server (Nov 12 2026) */
+async function buildThreeClueCrew() {
+  const game = path.join(ROOT, 'games', 'three-clue-crew'), out = path.join(ROOT, 'public', 'three-clue-crew');
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(out, { recursive: true });
+  for (const f of ['index.html', 'game.js', 'logic.mjs', 'rounds.js']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  console.log('built public/three-clue-crew/');
+}
+
+/* Puzzled Spin: a page and the puzzle maker, no server (Nov 12 2026) */
+async function buildPuzzledSpin() {
+  const game = path.join(ROOT, 'games', 'puzzled-spin'), out = path.join(ROOT, 'public', 'puzzled-spin');
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(out, { recursive: true });
+  for (const f of ['index.html', 'game.js', 'logic.mjs']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  console.log('built public/puzzled-spin/');
+}
+
 await buildPrimalSurvival();
 await buildMindHeist();
 await buildParTeeTime();
@@ -168,3 +186,5 @@ await buildPunchline();
 await buildClassified();
 await buildNoCap();
 await buildScreensaver();
+await buildThreeClueCrew();
+await buildPuzzledSpin();

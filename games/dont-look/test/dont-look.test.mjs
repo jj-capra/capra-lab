@@ -14,7 +14,7 @@ test('every deck has a name, an emoji, a color and decent lists', () => {
     assert.ok(d.name && d.emoji && /^#[0-9A-F]{6}$/i.test(d.color), d.id);
     for (const [lvl, words] of Object.entries(d.words)) {
       assert.ok(LEVELS.some((l) => String(l.id) === lvl), `${d.id}: level ${lvl}`);
-      assert.ok(words.length >= 30, `${d.id} level ${lvl} has only ${words.length} words`);
+      assert.ok(words.length >= 90, `${d.id} level ${lvl} has only ${words.length} words`);
       for (const w of words) {
         assert.ok(w.length >= 2 && w.length <= 34, `${d.id} ${lvl}: length of "${w}"`);
         assert.ok(!/[?<>{}\\]/.test(w), `${d.id} ${lvl}: odd character in "${w}"`);
@@ -38,7 +38,7 @@ test('a word shows up once per level, across every deck (so Mix It Up never repe
 test('every level has plenty of decks', () => {
   for (const l of LEVELS) assert.ok(decksAt(DECKS, l.id).length >= 12, `level ${l.id}`);
   assert.equal(wordsFor(DECKS, 'mix', 1).length, DECKS.reduce((n, d) => n + (d.words[1] || []).length, 0));
-  assert.equal(wordsFor(DECKS, 'holidays', 4).length, 0);
+  for (const d of DECKS) for (const l of LEVELS) assert.ok((d.words[l.id] || []).length >= 90, `${d.id} has a full deck at level ${l.id}`);
 });
 
 test('faceUp: flat is 1, upright on a forehead is 0 either way round, face down is -1', () => {
