@@ -1,119 +1,126 @@
-// Puzzled Spin: the puzzle maker and the rules.  node games/puzzled-spin/test/puzzled-spin.test.mjs
+// Puzzled Spin: the art, the puzzles and the rules.  node games/puzzled-spin/test/puzzled-spin.test.mjs
 import assert from 'node:assert/strict';
-import { TIERS, puzzle, solved, check, shown, fits, mirror, looksSame, falseFriends, rng, dayNumber, labDay, dailySeed, solvePoints, streakMult, isFast, PER_RUN } from '../logic.mjs';
+import { TIERS, LEVELS, PER_RUN, makeArt, colorAt, sameTurns, puzzle, check, stageOf, artSvg, halftoneStep, rng, hash,
+  dayNumber, labDay, dailySeed, solvePoints, isFast } from '../logic.mjs';
 
 let passed = 0;
 const test = (name, fn) => { fn(); passed++; };
-const zero = (p) => p.tiles.map((row) => row.map(() => 0));
+const zero = (p) => p.start.map((row) => row.map(() => 0));
 
-test('edges: a pattern fits itself, a dual-tone pair fits its mirror image', () => {
-  assert.ok(fits(3, 3));
-  assert.ok(!fits(3, 4));
-  assert.equal(mirror('1.4'), '4.1');
-  assert.ok(fits('1.4', '4.1'));
-  assert.ok(!fits('1.4', '1.4'), 'the same pair the same way round is a mirror twin, not a match');
-  const tile = ['a', 'b', 'c', 'd'];
-  assert.equal(shown(tile, 1, 1), 'a', 'one turn clockwise brings the top edge to the right');
-  assert.equal(shown(tile, 3, 0), 'b', 'three turns bring the right edge to the top');
-  assert.ok(looksSame([7, 7, 7, 7], 1));
-  assert.ok(looksSame([1, 2, 1, 2], 2));
-  assert.ok(!looksSame([1, 2, 1, 2], 1));
+// every color index that shows anywhere on the board
+function colorsOn(art) {
+  const seen = new Set();
+  const k = 60;
+  for (let i = 0; i < k; i++) for (let j = 0; j < k; j++) seen.add(colorAt(art, ((i + 0.5) / k) * art.n, ((j + 0.5) / k) * art.n));
+  return seen;
+}
+
+test('the ladder climbs: two colors, then three, up to a six-color masterpiece', () => {
+  for (let level = 1; level <= 11; level++) {
+    for (let s = 1; s <= 12; s++) {
+      const n = level <= 4 ? 2 : level <= 8 ? 4 : 5;
+      const art = makeArt(level, n, rng(level * 1000 + s));
+      const used = colorsOn(art);
+      assert.equal(art.colors.length, LEVELS[level].colors, `level ${level}: palette size`);
+      assert.equal(used.size, LEVELS[level].colors, `level ${level} seed ${s}: ${used.size} colors show, wanted ${LEVELS[level].colors}`);
+      assert.equal(new Set(art.colors).size, art.colors.length, `level ${level}: colors are all different`);
+    }
+  }
 });
 
-test('every tier makes solvable grids of the right size and pattern count', () => {
+test('every picture is mirrored left to right and top to bottom', () => {
+  for (let level = 1; level <= 11; level++) {
+    const n = 4, art = makeArt(level, n, rng(77 + level));
+    let off = 0, total = 0;
+    for (let i = 0; i < 40; i++) for (let j = 0; j < 40; j++) {
+      const x = ((i + 0.5) / 40) * n, y = ((j + 0.5) / 40) * n;
+      total++;
+      if (colorAt(art, x, y) !== colorAt(art, n - x, y)) off++;
+      // hearts and five-point stars only mirror left to right
+      if (![1, 2, 4].includes(level) && colorAt(art, x, y) !== colorAt(art, x, n - y)) off++;
+    }
+    assert.ok(off / total < 0.02, `level ${level}: ${off} of ${total} points break the mirror`);
+  }
+});
+
+test('each tier runs five pictures that climb the ladder, and K–1 starts with a 2×2 two-tone', () => {
   for (const t of TIERS) {
-    for (let s = 1; s <= 40; s++) {
-      const p = puzzle(t.id, s * 7919);
-      assert.equal(p.n, t.n);
-      assert.equal(p.tiles.length, t.n);
-      assert.ok(p.types.length >= t.types[0] && p.types.length <= t.types[1], `tier ${t.id}: ${p.types.length} patterns`);
-      assert.ok(check(p, zero(p)).done, `tier ${t.id} seed ${s}: solved grid locks`);
-      assert.ok(!check(p, p.start).done, `tier ${t.id} seed ${s}: starts scrambled`);
-      assert.equal(p.time, t.time);
-      // every pattern shows up where tiles meet (the grid has enough inner edges for all of them)
-      const inner = new Set();
-      for (let r = 0; r < p.n; r++) for (let c = 0; c < p.n; c++) {
-        if (c + 1 < p.n) inner.add(String(p.tiles[r][c][1]));
-        if (r + 1 < p.n) inner.add(String(mirror(p.tiles[r][c][2])));
-      }
-      const innerCount = 2 * p.n * (p.n - 1);
-      if (innerCount >= p.types.length) for (const ty of p.types) assert.ok(inner.has(String(ty)), `tier ${t.id} seed ${s}: pattern ${ty} sits on an inner edge`);
-    }
+    assert.equal(t.stages.length, PER_RUN);
+    const levels = t.stages.map((s) => s[0]);
+    for (let i = 1; i < levels.length; i++) assert.ok(levels[i] > levels[i - 1], `tier ${t.id} climbs`);
+    const sizes = t.stages.map((s) => s[1]);
+    for (let i = 1; i < sizes.length; i++) assert.ok(sizes[i] >= sizes[i - 1], `tier ${t.id} grids never shrink`);
+  }
+  assert.deepEqual(stageOf(1, 0), { level: 1, n: 2, turn: 1 });
+  assert.equal(LEVELS[stageOf(4, 4).level].name, 'Masterpiece');
+});
+
+test('puzzles start broken, turn the right number of tiles and put back together', () => {
+  for (const t of TIERS) for (let i = 0; i < PER_RUN; i++) for (let s = 1; s <= 8; s++) {
+    const p = puzzle(t.id, i, hash(`${t.id}:${i}:${s}`));
+    const { n, turn } = stageOf(t.id, i);
+    assert.equal(p.n, n);
+    assert.ok(check(p, zero(p)).done, `tier ${t.id} stage ${i} seed ${s}: the picture is whole unturned`);
+    const st = check(p, p.start);
+    assert.ok(!st.done, `tier ${t.id} stage ${i} seed ${s}: starts broken`);
+    const wrong = st.ok.flat().filter((x) => !x).length;
+    if (turn === 'all') {
+      const movable = p.same.flat().filter((x) => x.length < 4).length;
+      assert.equal(wrong, movable, `tier ${t.id} stage ${i}: every tile that can look wrong does`);
+      assert.ok(movable >= (n * n) / 2);
+    } else assert.equal(wrong, turn, `tier ${t.id} stage ${i} seed ${s}: ${wrong} wrong, wanted ${turn}`);
+    assert.ok(p.time >= t.baseTime);
   }
 });
 
-test('K–1 turns only one or two tiles; the other tiers turn every tile that can look different', () => {
-  for (let s = 1; s <= 30; s++) {
-    const p = puzzle(1, s);
-    const turned = p.start.flat().filter((q) => q !== 0).length;
-    assert.ok(turned >= 1 && turned <= 2, `K–1 seed ${s}: ${turned} tiles turned`);
-  }
-  for (const id of [2, 3, 4]) for (let s = 1; s <= 20; s++) {
-    const p = puzzle(id, s);
-    for (let r = 0; r < p.n; r++) for (let c = 0; c < p.n; c++) {
-      const tile = p.tiles[r][c];
-      if ([1, 2, 3].some((t) => !looksSame(tile, t))) assert.notEqual(p.start[r][c], 0, `tier ${id} seed ${s}: tile ${r},${c} starts turned`);
-    }
-  }
+test('a tile is right at any turn that looks the same, and only those', () => {
+  // a 3×3 kaleidoscope: the center tile looks the same every way round
+  const p = puzzle(1, 4, 99);
+  assert.equal(p.n, 3);
+  assert.deepEqual(p.same[1][1], [0, 1, 2, 3], 'the center of a kaleidoscope can face any way');
+  const q = zero(p);
+  q[1][1] = 2;
+  assert.ok(check(p, q).done);
+  // a corner of a 2×2 two-tone has one right way
+  const k = puzzle(1, 0, 5);
+  assert.deepEqual(k.same[0][0], [0]);
+  const q2 = zero(k);
+  q2[0][0] = 1;
+  const st = check(k, q2);
+  assert.ok(!st.done && !st.ok[0][0] && st.ok[1][1]);
+  assert.equal(st.rows[0], false);
+  assert.equal(st.rows[1], true);
+  assert.equal(st.cols[1], true);
+  // sameTurns agrees with itself
+  for (let r = 0; r < p.n; r++) for (let c = 0; c < p.n; c++) assert.deepEqual(sameTurns(p.art, r, c), p.same[r][c]);
 });
 
 test('the same seed makes the same puzzle, and a day has its own five', () => {
-  assert.deepEqual(puzzle(3, 42), puzzle(3, 42));
-  assert.notDeepEqual(puzzle(3, 42).tiles, puzzle(3, 43).tiles);
+  assert.deepEqual(puzzle(3, 2, 42).start, puzzle(3, 2, 42).start);
+  assert.deepEqual(puzzle(3, 2, 42).art.colors, puzzle(3, 2, 42).art.colors);
   const a = dailySeed(2, 5, 0), b = dailySeed(2, 5, 1), c = dailySeed(3, 5, 0);
   assert.ok(a !== b && a !== c);
   assert.equal(dayNumber('2026-11-12'), 1);
-  assert.equal(dayNumber('2026-12-12'), 31);
   assert.equal(labDay(Date.parse('2026-11-13T07:59:00Z')), '2026-11-12');
-  assert.equal(PER_RUN, 5);
 });
 
-test('check: locked tiles, rows and columns', () => {
-  const p = puzzle(2, 99);
-  const q = zero(p);
-  q[0][0] = [1, 2, 3].find((t) => !looksSame(p.tiles[0][0], t));
-  const st = check(p, q);
-  assert.ok(!st.done);
-  assert.equal(st.locked[0][0], false, 'the turned corner no longer fits');
-  assert.equal(st.locked[2][2], true, 'the far corner still does');
-  assert.equal(st.rows[2], true);
-  assert.equal(st.cols[2], true);
-  assert.equal(st.side[0][0][3], null, 'a side on the board edge never counts');
-});
-
-test('middle school and high school grids have false friends, and high school has mirror twins', () => {
-  let friends = 0;
-  for (let s = 1; s <= 10; s++) friends += falseFriends(puzzle(3, s));
-  assert.ok(friends >= 10, `false friends in 10 middle school grids: ${friends}`);
-  for (let s = 1; s <= 10; s++) {
-    const p = puzzle(4, s);
-    const twins = p.types.filter((ty) => p.types.includes(mirror(ty))).length / 2;
-    assert.ok(twins >= 3, `high school seed ${s}: ${twins} mirror twins`);
+test('the drawing: one pattern and one group per piece, halftone dots that line up with the tiles', () => {
+  const p = puzzle(4, 4, 7);
+  const svg = artSvg(p.art, 'art-x');
+  assert.ok(svg.startsWith('<pattern id="art-x-ht"'));
+  assert.ok(svg.includes('<g id="art-x">'));
+  assert.ok(!/NaN|undefined/.test(svg));
+  for (const n of [2, 3, 4, 5, 6]) {
+    const step = halftoneStep(n);
+    assert.ok(Math.abs(1 / step - Math.round(1 / step)) < 1e-9, `n ${n}: a whole number of dots a tile`);
   }
 });
 
-test('points: time bonus, combo and Spin Streak', () => {
+test('points: time bonus and Spin Streak', () => {
   assert.equal(solvePoints(20, 0), 200);
   assert.equal(solvePoints(20, 1), 300);
-  assert.equal(solvePoints(20, 9), 600, 'combo stops at x3');
-  assert.equal(solvePoints(0, 0), 100);
-  assert.equal(streakMult(1, 4), 1, 'no streak for K–1');
-  assert.equal(streakMult(3, 4), 4);
-  assert.equal(streakMult(4, 9), 5);
+  assert.equal(solvePoints(20, 9), 600, 'the streak stops at x3');
   assert.ok(isFast(20, 40) && !isFast(19.9, 40));
-});
-
-test('a scrambled grid can always be put back', () => {
-  for (const t of TIERS) {
-    const p = puzzle(t.id, 1234);
-    assert.ok(check(p, zero(p)).done);
-    // any tile that looks the same turned can't break it
-    const q = zero(p);
-    for (let r = 0; r < p.n; r++) for (let c = 0; c < p.n; c++) if (looksSame(p.tiles[r][c], 2)) q[r][c] = 2;
-    assert.ok(check(p, q).done);
-  }
-  const s = solved(TIERS[3], rng(5));
-  assert.equal(s.tiles.flat().length, 25);
 });
 
 console.log(`Puzzled Spin: ${passed} tests passed`);

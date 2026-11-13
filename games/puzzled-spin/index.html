@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script src="/lab/fill.js"></script>
 <title>Puzzled Spin · Capra Lab</title>
-<meta name="description" content="Spin the tiles until every edge matches, before the clock runs out. A Capra Lab original, from kindergarten to high school.">
+<meta name="description" content="Spin the tiles to finish each comic art piece, from two-tone mirrors to kaleidoscope masterpieces. A Capra Lab original, from kindergarten to high school.">
 <meta name="theme-color" content="#16141F">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -89,9 +89,11 @@
   /* ---------- home ---------- */
   .home-body { flex: 1; display: grid; align-content: start; gap: 18px; padding: 8px max(16px, var(--sr)) calc(var(--sb) + 22px) max(16px, var(--sl)); }
   .logo { margin: 4px 0 0; display: flex; align-items: center; gap: 12px; }
-  .logo .spin { flex: none; width: 60px; height: 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 3px; padding: 3px; border-radius: 12px; background: var(--ink); box-shadow: 3px 3px 0 var(--shadow); animation: logo 5s ease-in-out infinite; }
-  .logo .spin svg { width: 100%; height: 100%; display: block; border-radius: 4px; }
-  @keyframes logo { 0%, 70% { transform: rotate(0); } 85%, 100% { transform: rotate(90deg); } }
+  .logo .spin { flex: none; width: 64px; height: 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 3px; padding: 3px; border-radius: 12px; background: var(--ink); box-shadow: 3px 3px 0 var(--shadow); }
+  .logo .spin i { display: block; overflow: hidden; border-radius: 4px; }
+  .logo .spin svg { width: 100%; height: 100%; display: block; }
+  .logo .spin i:nth-child(4) svg { animation: logo 4s ease-in-out infinite; }
+  @keyframes logo { 0%, 45% { transform: rotate(-90deg); } 60%, 100% { transform: rotate(0); } }
   .logo h1 {
     margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(42px, 10.5vw, 64px); line-height: 0.88; letter-spacing: 0.04em;
     text-shadow: 3px 0 var(--magenta), -3px 0 var(--cyan);
@@ -126,9 +128,20 @@
   .pill.score small { font-family: Inter, system-ui, sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; opacity: 0.7; }
   .play-body { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 4px max(16px, var(--sr)) calc(var(--sb) + 14px) max(16px, var(--sl)); }
   .status { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 30px; }
-  .status .which { font-family: var(--display); font-size: 22px; letter-spacing: 0.05em; }
-  .status .which { white-space: nowrap; }
-  .badges { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .status .which { display: block; font-family: var(--display); font-size: 24px; letter-spacing: 0.05em; line-height: 0.95; }
+  .status .which small { display: block; margin-bottom: 3px; font-family: Inter, system-ui, sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.16em; color: rgba(255, 248, 236, 0.7); }
+  .status .left { flex: 1; display: grid; gap: 6px; min-width: 0; }
+  .goal { flex: none; display: grid; justify-items: center; gap: 2px; }
+  .goal .pic { width: 66px; height: 66px; border-radius: 8px; overflow: hidden; border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--shadow); background: var(--paper); }
+  .goal .pic svg { width: 100%; height: 100%; display: block; }
+  .goal small { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: var(--yellow); }
+  .peek-btn { flex: none; min-height: 44px; padding: 6px 14px; border-radius: 999px; background: var(--cyan); color: var(--ink); border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--shadow); font-family: var(--display); font-size: 20px; letter-spacing: 0.05em; touch-action: none; }
+  .peek-btn small { font-family: Inter, system-ui, sans-serif; font-size: 11px; font-weight: 800; }
+  @media (max-width: 360px) { .peek-btn { font-size: 17px; padding: 5px 10px; } .status .which { font-size: 21px; } }
+  .peek { position: absolute; inset: 0; z-index: 4; border-radius: 18px; overflow: hidden; border: 3px solid var(--ink); pointer-events: none; }
+  .peek svg { width: 100%; height: 100%; display: block; }
+
+  .badges { display: flex; gap: 6px; flex-wrap: wrap; }
   .badge {
     display: none; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 999px; border: 2px solid var(--ink);
     background: var(--magenta); color: var(--ink); font-family: var(--display); font-size: 18px; letter-spacing: 0.05em; white-space: nowrap;
@@ -137,23 +150,26 @@
   @keyframes badge { from { transform: scale(0); } }
   .badge.combo { background: var(--cyan); }
   .board-wrap { position: relative; width: min(100%, 560px, calc(var(--lab-h, 100dvh) - var(--st) - var(--sb) - 200px)); min-width: 220px; aspect-ratio: 1; }
-  .board { position: absolute; inset: 0; display: grid; gap: var(--gap, 6px); padding: var(--gap, 6px); border-radius: 18px; background: var(--ink); border: 3px solid var(--ink); box-shadow: 5px 6px 0 var(--shadow); }
+  .board { position: absolute; inset: 0; display: grid; gap: var(--gap, 6px); padding: var(--gap, 6px); border-radius: 18px; background: var(--ink); border: 3px solid var(--ink); box-shadow: 6px 7px 0 var(--shadow); overflow: hidden; transition: gap 0.5s ease, padding 0.5s ease; }
   .cell {
-    position: relative; padding: 0; border: 0; border-radius: 8px; overflow: hidden; background: var(--panel-2);
-    transition: box-shadow 0.2s, transform 0.15s; touch-action: none;
+    position: relative; padding: 0; border: 0; border-radius: 6px; overflow: hidden; background: var(--paper);
+    transition: transform 0.12s, border-radius 0.5s; touch-action: none;
   }
-  .cell svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; transition: transform 0.16s ease-out; }
-  .cell .side { position: absolute; background: #fff; opacity: 0; transition: opacity 0.15s; pointer-events: none; box-shadow: 0 0 8px 2px var(--yellow); border-radius: 3px; }
-  .cell .side.s0 { top: 0; left: 18%; right: 18%; height: 4px; }
-  .cell .side.s1 { right: 0; top: 18%; bottom: 18%; width: 4px; }
-  .cell .side.s2 { bottom: 0; left: 18%; right: 18%; height: 4px; }
-  .cell .side.s3 { left: 0; top: 18%; bottom: 18%; width: 4px; }
-  .cell .side.on { opacity: 1; }
-  .cell.locked { box-shadow: 0 0 0 3px var(--yellow), 0 0 16px 2px rgba(255, 210, 63, 0.6); }
+  .cell svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; transition: transform 0.18s ease-out; }
+  .cell.press { transform: scale(0.94); }
+  .cell::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; transition: box-shadow 0.2s; }
+  .cell.ok::after { box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 6px var(--green); }
+  .cell.ok::before {
+    content: "✓"; position: absolute; z-index: 2; top: 4px; right: 4px; width: var(--badge, 22px); height: var(--badge, 22px); border-radius: 50%;
+    display: grid; place-items: center; background: var(--green); color: var(--ink); border: 2px solid var(--ink);
+    font: 800 calc(var(--badge, 22px) * 0.58)/1 Inter, system-ui, sans-serif; animation: badge 0.22s cubic-bezier(0.3, 1.6, 0.5, 1);
+  }
+  .board.done .cell::before { display: none; }
   .cell.pop { animation: pop 0.3s cubic-bezier(0.3, 1.6, 0.5, 1); }
-  @keyframes pop { 50% { transform: scale(1.08); } }
-  .board.done .cell { animation: win 0.6s ease-in-out; }
-  @keyframes win { 50% { transform: scale(0.92) rotate(-4deg); } }
+  @keyframes pop { 50% { transform: scale(1.07); } }
+  .board.done { gap: 0; padding: 0; }
+  .board.done .cell { border-radius: 0; }
+  .board.done .cell::after { box-shadow: none; }
   .hint { margin: 0; font-size: 13px; font-weight: 700; color: rgba(255, 248, 236, 0.72); text-align: center; }
   .marks { display: flex; gap: 6px; }
   .marks i { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; font-style: normal; font-size: 14px; background: var(--panel); border: 2px solid var(--shadow); }
@@ -164,8 +180,19 @@
   .float { position: fixed; z-index: 30; pointer-events: none; font-family: var(--display); font-size: 24px; letter-spacing: 0.04em; color: var(--yellow); text-shadow: 2px 2px 0 var(--ink); transform: translate(-50%, -50%); animation: float 0.9s ease-out forwards; }
   @keyframes float { to { transform: translate(-50%, -150%); opacity: 0; } }
   .overlay { position: absolute; inset: 0; z-index: 5; display: grid; place-items: center; border-radius: 18px; background: rgba(18, 14, 24, 0.72); }
-  .overlay .card { display: grid; justify-items: center; gap: 8px; padding: 18px 20px; max-width: 90%; text-align: center; border-radius: 18px; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 5px 6px 0 var(--shadow); }
+  .overlay .card { display: grid; justify-items: center; gap: 6px; padding: 12px 18px 16px; max-width: 92%; text-align: center; border-radius: 18px; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 5px 6px 0 var(--shadow); }
   .overlay h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 46px; letter-spacing: 0.05em; line-height: 0.95; }
+  .overlay.end { align-items: end; background: transparent; padding-bottom: 8px; }
+  .overlay.end .card { width: 94%; max-width: 94%; grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 2px; padding: 0 12px 12px; }
+  .overlay.end .burst { margin-top: -24px; padding: 10px 22px; }
+  .overlay.end .burst h2 { font-size: 30px; }
+  .overlay.end p { font-size: 13px; line-height: 1.3; }
+  .overlay.end p .pts { font-size: 24px; margin-right: 6px; vertical-align: -2px; }
+  .overlay.end .btn { justify-self: stretch; min-height: 50px; font-size: 22px; margin-top: 6px; }
+  .burst { position: relative; padding: 14px 26px; margin-top: -40px; }
+  .burst::before { content: ""; position: absolute; inset: 0; z-index: 0; background: var(--yellow); border: 0;
+    clip-path: polygon(50% 0, 60% 22%, 84% 6%, 76% 32%, 100% 34%, 80% 52%, 98% 72%, 72% 70%, 74% 98%, 54% 80%, 38% 100%, 34% 76%, 8% 90%, 20% 64%, 0 50%, 22% 38%, 6% 14%, 32% 22%); }
+  .burst h2 { position: relative; z-index: 1; color: var(--magenta); text-shadow: 2px 2px 0 var(--ink); -webkit-text-stroke: 1.5px var(--ink); }
   .overlay p { margin: 0; font-size: 15px; font-weight: 700; }
   .overlay .pts { font-family: var(--display); font-size: 30px; letter-spacing: 0.04em; color: #7A3DFF; }
   .overlay.go { background: transparent; pointer-events: none; }
@@ -181,6 +208,13 @@
   .res-score .marks { justify-content: center; margin-top: 10px; }
   .res-score .best { margin: 8px 0 0; }
   .res-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; border-radius: 16px; background: var(--paper); border: 3px solid var(--ink); box-shadow: 5px 6px 0 var(--shadow); }
+  .panel { position: relative; margin: 0; aspect-ratio: 1; border: 3px solid var(--ink); background: var(--ink); overflow: hidden; }
+  .panel svg { width: 100%; height: 100%; display: block; }
+  .panel.wide { grid-column: 1 / -1; aspect-ratio: auto; }
+  .panel.wide svg { aspect-ratio: 1; max-height: 340px; margin: 0 auto; width: auto; }
+  .panel figcaption { position: absolute; left: 0; top: 0; padding: 3px 8px; background: var(--yellow); color: var(--ink); border: 0 solid var(--ink); border-right-width: 3px; border-bottom-width: 3px; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+  .panel.miss svg { filter: grayscale(1) contrast(0.7); opacity: 0.55; }
 
   /* ---------- how to play ---------- */
   .sheet { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 40; display: grid; place-items: center; padding: calc(var(--st) + 16px) max(16px, var(--sr)) calc(var(--sb) + 16px) max(16px, var(--sl)); background: rgba(5, 3, 10, 0.72); }
@@ -210,7 +244,7 @@
       <div class="spin" id="logoTiles" aria-hidden="true"></div>
       <h1>PUZZLED <em>SPIN</em></h1>
     </div>
-    <p class="tag">Every tile is turned the wrong way. Spin them until every edge matches its neighbor, before the clock runs out!</p>
+    <p class="tag">Each picture is a comic art piece cut into tiles, and some tiles are turned the wrong way. Tap to spin them until the picture is whole, from simple two-tone mirrors all the way to a kaleidoscope masterpiece!</p>
     <div>
       <p class="label" id="tierLabel">PICK YOUR GRADE LEVEL</p>
       <div class="seg" id="tiers" role="radiogroup" aria-labelledby="tierLabel"></div>
@@ -235,11 +269,16 @@
   </header>
   <div class="play-body wrap">
     <div class="status">
-      <span class="which" id="which">PUZZLE 1/5</span>
-      <span class="badges"><span class="badge" id="streak">SPIN STREAK x2</span><span class="badge combo" id="combo">COMBO x1.5</span></span>
+      <div class="left">
+        <span class="which" id="which">1/5</span>
+        <span class="badges"><span class="badge" id="streak">SPIN STREAK x1.5</span></span>
+      </div>
+      <div class="goal" id="goal" hidden><div class="pic" id="goalArt"></div><small>GOAL</small></div>
+      <button class="peek-btn" id="peekBtn" type="button" hidden aria-label="Hold to peek at the finished picture, costs 3 seconds">👀 PEEK <small>−3s</small></button>
     </div>
     <div class="board-wrap" id="boardWrap">
       <div class="board" id="board" role="grid" aria-label="Tiles"></div>
+      <div class="peek" id="peek" hidden><div id="peekArt" style="width:100%;height:100%"></div></div>
       <div class="overlay" id="overlay" hidden></div>
     </div>
     <p class="hint" id="hint">Tap a tile to spin it ↻ · swipe left to spin it back ↺</p>
@@ -260,6 +299,8 @@
       <div class="marks" id="resMarks" aria-hidden="true"></div>
       <p class="best" id="resBest"></p>
     </div>
+    <p class="label">YOUR GALLERY</p>
+    <div class="gallery" id="gallery"></div>
     <div id="resShare"></div>
     <div class="res-actions">
       <button class="btn" id="againBtn" type="button">Practice run</button>
@@ -273,11 +314,11 @@
   <div class="sheet-card">
     <h2 id="helpTitle">HOW TO PLAY</h2>
     <ol>
-      <li>Every tile has a pattern on each of its four edges. Where two tiles touch, their edges have to match.</li>
-      <li>The tiles are in the right spots but turned the wrong way. Tap a tile to spin it clockwise, or swipe left on it to spin it back.</li>
-      <li>A glowing seam means two edges match. When every edge in the grid matches, the grid locks and you score: the faster, the more points.</li>
-      <li>Five puzzles a run, each against the clock. Fast solves build a combo; in middle school and up, quick locks build a Spin Streak.</li>
-      <li>Watch out for look-alikes: stripes vs. dots, and in high school, mirror-image twins. Today's Spin is the same five puzzles for everyone at your level.</li>
+      <li>Every picture is a comic art piece cut into square tiles. Some tiles are turned the wrong way.</li>
+      <li>Tap a tile to spin it clockwise. Swipe left on it to spin it back.</li>
+      <li>Keep spinning until the whole picture looks right. Every piece is mirrored, so the left side matches the right and the top matches the bottom.</li>
+      <li>K–1 and 2nd–3rd: the finished picture shows in the corner, and tiles get a ✓ when they're right. Middle and high school: hold PEEK to see it (costs 3 seconds).</li>
+      <li>Five pictures a run, from two-tone shapes up to a masterpiece. Fast pictures build a Spin Streak. Today's Spin is the same five for everyone at your level.</li>
     </ol>
     <button class="btn" id="helpClose" type="button">Let's spin!</button>
   </div>

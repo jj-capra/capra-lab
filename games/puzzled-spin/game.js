@@ -1,7 +1,8 @@
-// Puzzled Spin: the page. The puzzle maker and the rules are in logic.mjs.
-// A run is five puzzles at one grade level, each against its own clock (JC's spec, Nov 12 2026).
-import { TIERS, tierOf, PER_RUN, puzzle, check, looksSame, hash, labDay, dayNumber, dailySeed,
-  STREAK_GAP, streakMult, solvePoints, isFast } from './logic.mjs';
+// Puzzled Spin: the page. The art, the puzzles and the rules are in logic.mjs.
+// A run is five comic art pieces that climb from two-tone mirrors to a kaleidoscope masterpiece; each is
+// cut into tiles, some turned the wrong way. Tap a tile to spin it until the picture is whole.
+import { TIERS, tierOf, PER_RUN, puzzle, check, artSvg, hash, labDay, dayNumber, dailySeed, stageOf, LEVELS,
+  solvePoints, isFast, PEEK_COST } from './logic.mjs';
 
 const $ = (id) => document.getElementById(id);
 const store = {
@@ -13,65 +14,16 @@ if (!TIERS.some((t) => t.id === prefs.tier)) prefs.tier = 1;
 const savePrefs = () => store.set('ps.prefs', prefs);
 const num = (n) => Number(n).toLocaleString('en-US');
 
-/* ---------- how the patterns look ---------- */
-const SOLID = [
-  { color: '#FF4D4D', shape: 'circle' }, { color: '#3D7BFF', shape: 'square' },
-  { color: '#FFD23F', shape: 'star' }, { color: '#3DDC84', shape: 'triangle' },
-];
-const PATTERN_COLORS = ['#3D7BFF', '#FF5A5A', '#FFD23F', '#3DDC84'];
-const STYLES = ['stripes', 'zigzag', 'dots', 'solid'];
-const patternStyle = (i) => STYLES[(Math.floor(i / 2) + (i % 2) * 2) % 4];
-const HALF_COLORS = ['#FFD23F', '#FF3D8B', '#29D3F0', '#5BE38A', '#FF9A4D', '#8C6CFF'];
-
-(function defs() {
-  const d = $('defs');
-  let out = '';
-  for (let i = 0; i < 8; i++) {
-    const c = PATTERN_COLORS[Math.floor(i / 2)], st = patternStyle(i);
-    let mark = '';
-    if (st === 'stripes') mark = '<path d="M-2 2l4-4M0 12L12 0M10 14l4-4" stroke="#120E18" stroke-width="2.4"/>';
-    if (st === 'zigzag') mark = '<path d="M0 8l3-5 3 5 3-5 3 5" fill="none" stroke="#120E18" stroke-width="1.9" stroke-linejoin="round"/>';
-    if (st === 'dots') mark = '<circle cx="3" cy="3" r="1.9" fill="#120E18"/><circle cx="9" cy="9" r="1.9" fill="#120E18"/>';
-    out += `<pattern id="pt${i}" patternUnits="userSpaceOnUse" width="12" height="12"><rect width="12" height="12" fill="${c}"/>${mark}</pattern>`;
-  }
-  d.innerHTML = out;
-})();
-
-// Triangles from the center to each edge (whole, or split in two halves listed clockwise).
-const TRI = ['0,0 100,0 50,50', '100,0 100,100 50,50', '100,100 0,100 50,50', '0,100 0,0 50,50'];
-const HALF = [
-  ['0,0 50,0 50,50', '50,0 100,0 50,50'],
-  ['100,0 100,50 50,50', '100,50 100,100 50,50'],
-  ['100,100 50,100 50,50', '50,100 0,100 50,50'],
-  ['0,100 0,50 50,50', '0,50 0,0 50,50'],
-];
-const CENTROID = [[50, 17], [83, 50], [50, 83], [17, 50]];
-function symbol(shape, x, y) {
-  const s = 'fill="#FFF8EC" stroke="#120E18" stroke-width="2"';
-  if (shape === 'circle') return `<circle cx="${x}" cy="${y}" r="7" ${s}/>`;
-  if (shape === 'square') return `<rect x="${x - 6.5}" y="${y - 6.5}" width="13" height="13" rx="1.5" ${s}/>`;
-  if (shape === 'triangle') return `<path d="M${x} ${y - 8}L${x + 8} ${y + 6}H${x - 8}z" ${s} stroke-linejoin="round"/>`;
-  const pts = [];
-  for (let k = 0; k < 10; k++) { const r = k % 2 ? 4 : 9, a = Math.PI / 5 * k - Math.PI / 2; pts.push(`${(x + r * Math.cos(a)).toFixed(1)},${(y + r * Math.sin(a)).toFixed(1)}`); }
-  return `<polygon points="${pts.join(' ')}" ${s} stroke-linejoin="round"/>`;
+/* ---------- art in the page: every piece is drawn once and tiles show slices of it ---------- */
+const defs = $('defs');
+const drawn = new Set();
+function addArt(art, id) {
+  if (drawn.has(id)) return;
+  drawn.add(id);
+  defs.insertAdjacentHTML('beforeend', artSvg(art, id));
 }
-function tileSvg(kind, edges) {
-  let body = '';
-  edges.forEach((e, s) => {
-    if (kind === 'solid') {
-      body += `<polygon points="${TRI[s]}" fill="${SOLID[e].color}"/>`;
-      body += symbol(SOLID[e].shape, ...CENTROID[s]);
-    } else if (kind === 'pattern') {
-      body += `<polygon points="${TRI[s]}" fill="url(#pt${e})"/>`;
-    } else {
-      const [a, b] = String(e).split('.').map(Number);
-      body += `<polygon points="${HALF[s][0]}" fill="${HALF_COLORS[a]}"/><polygon points="${HALF[s][1]}" fill="${HALF_COLORS[b]}"/>`;
-    }
-  });
-  const lines = '<path d="M0 0L100 100M100 0L0 100" stroke="#120E18" stroke-width="2.5"/>'
-    + (kind === 'duo' || kind === 'twin' ? '<path d="M50 0V100M0 50H100" stroke="#120E18" stroke-width="1.2" opacity="0.55"/>' : '');
-  return `<svg viewBox="0 0 100 100" aria-hidden="true">${body}${lines}</svg>`;
-}
+const slice = (id, r, c) => `<svg viewBox="${c} ${r} 1 1" preserveAspectRatio="none" aria-hidden="true"><use href="#${id}"/></svg>`;
+const whole = (id, n) => `<svg viewBox="0 0 ${n} ${n}" aria-hidden="true"><use href="#${id}"/></svg>`;
 
 /* ---------- sound: tiny blips, made on the spot ---------- */
 let ac = null;
@@ -87,8 +39,8 @@ function tone(freq, dur = 0.08, type = 'triangle', vol = 0.05, at = 0) {
 }
 const sfx = {
   spin: () => tone(520, 0.04, 'square', 0.025),
-  lock: (k = 0) => { tone(660 + k * 60, 0.09); tone(990 + k * 60, 0.12, 'triangle', 0.05, 0.07); },
-  win: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.16, 'triangle', 0.06, i * 0.09)),
+  click: () => { tone(660, 0.08); tone(990, 0.12, 'triangle', 0.05, 0.06); },
+  win: () => [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, 0.18, 'triangle', 0.06, i * 0.09)),
   miss: () => { tone(300, 0.2, 'sawtooth', 0.04); tone(200, 0.3, 'sawtooth', 0.04, 0.15); },
   tick: () => tone(880, 0.03, 'sine', 0.03),
 };
@@ -107,17 +59,18 @@ function show(name) {
 
 /* ---------- home ---------- */
 function tierBlurb(t) {
-  const bits = [`${t.n}×${t.n} grid`, `${t.types[0]}–${t.types[1]} patterns`, `${t.time} seconds a puzzle`];
-  if (t.id === 1) bits.push('only one or two tiles start turned');
-  if (t.lineBonus) bits.push(`+${t.lineBonus}s for every row or column you lock`);
-  if (t.streak) bits.push('Spin Streak points for quick locks');
-  if (t.kind === 'duo') bits.push('two-tone edges where direction matters');
-  if (t.kind === 'twin') bits.push('mirror-image twins');
+  const first = stageOf(t.id, 0), last = stageOf(t.id, PER_RUN - 1);
+  const bits = [`${LEVELS[first.level].name} (${first.n}×${first.n}) up to ${LEVELS[last.level].name} (${last.n}×${last.n})`];
+  if (t.goal) bits.push('the finished picture shows the whole time');
+  if (t.glow) bits.push('tiles get a ✓ when they\'re right');
+  if (t.peek) bits.push('only the picture\'s symmetry to go on, plus a peek that costs 3 seconds');
+  if (t.lineBonus) bits.push(`+${t.lineBonus}s for every row or column you finish`);
+  bits.push(t.perTile ? 'more time for bigger pictures' : `${t.baseTime} seconds a picture`);
   return bits.join(' · ');
 }
 function dailyState() {
   const day = labDay();
-  const st = store.get('ps.daily', {});
+  const st = store.get('ps.daily2', {});
   return st.day === day ? st : { day, tiers: {} };
 }
 function paintHome() {
@@ -137,12 +90,13 @@ function paintHome() {
   $('tierInfo').textContent = tierBlurb(t);
   const no = dayNumber();
   const d = dailyState().tiers[t.id];
-  $('dailySub').textContent = d ? `No. ${no} · done: ${num(d.score)} pts, ${d.solved}/${PER_RUN} locked` : `No. ${no} · the same five for everyone`;
-  const best = store.get('ps.best', {})[t.id];
+  $('dailySub').textContent = d ? `No. ${no} · done: ${num(d.score)} pts, ${d.solved}/${PER_RUN} pictures` : `No. ${no} · the same five for everyone`;
+  const best = store.get('ps.best2', {})[t.id];
   $('bestLine').textContent = best ? `Your best ${t.name} run: ${num(best)} points.` : '';
-  // the logo: four little K–1 tiles
-  const p = puzzle(1, hash(labDay()));
-  $('logoTiles').innerHTML = p.tiles.flat().map((e) => tileSvg('solid', e)).join('');
+  // the logo: a little kaleidoscope cut in four, one tile always spinning home
+  const lp = puzzle(1, 4, hash('logo:' + labDay()));
+  addArt(lp.art, 'logo-art');
+  $('logoTiles').innerHTML = [0, 1, 2, 3].map((k) => `<i><svg viewBox="${(k % 2) * 1.5} ${Math.floor(k / 2) * 1.5} 1.5 1.5" aria-hidden="true"><use href="#logo-art"/></svg></i>`).join('');
   paintSound();
 }
 
@@ -157,87 +111,97 @@ function startRun(kind) {
     if (d) { showResults({ ...d, kind: 'daily', tier, no, replay: true }); return; }
   }
   const base = (Math.random() * 2 ** 32) >>> 0;
-  run = { kind, tier, no, at: Date.now(), i: 0, score: 0, combo: 0, marks: [], solved: 0,
-    seed: (i) => (kind === 'daily' ? dailySeed(tier, no, i) : hash(`${base}:${i}`)) };
+  run = { kind, tier, no, base, at: Date.now(), i: 0, score: 0, streak: 0, marks: [], solved: 0, pieces: [] };
   if (kind === 'daily') {
     // a daily run counts once started: leaving it ends it
     const st = dailyState();
-    st.tiers[tier] = { score: 0, solved: 0, marks: [], started: true };
-    store.set('ps.daily', st);
+    st.tiers[tier] = { score: 0, solved: 0, marks: [] };
+    store.set('ps.daily2', st);
   }
   show('play');
   $('backText').textContent = 'MENU';
   $('playBack').classList.remove('arm');
   startPuzzle();
 }
+const seedFor = (r, i) => (r.kind === 'daily' ? dailySeed(r.tier, r.no, i) : hash(`${r.base}:${i}`));
 
 function startPuzzle() {
   const t = tierOf(run.tier);
-  const p = puzzle(run.tier, run.seed(run.i));
+  const p = puzzle(run.tier, run.i, seedFor(run, run.i));
+  const id = `art-${run.kind}-${run.tier}-${run.no}-${run.base}-${run.i}`;
+  addArt(p.art, id);
   run.p = p;
+  run.id = id;
   run.q = p.start.map((row) => row.slice());
   run.deg = p.start.map((row) => row.map((q) => q * 90));
   run.ever = new Set();
   run.lines = new Set();
-  run.streak = 0;
-  run.lastLock = 0;
   run.over = false;
-  run.timeLeft = t.time;
+  run.timeLeft = p.time;
   run.endsAt = 0;
   const board = $('board');
   board.className = 'board';
   board.style.gridTemplateColumns = `repeat(${p.n}, 1fr)`;
-  board.style.setProperty('--gap', p.n >= 5 ? '4px' : '6px');
+  board.style.setProperty('--gap', p.n >= 5 ? '3px' : p.n >= 4 ? '4px' : '6px');
+  board.style.setProperty('--badge', p.n >= 4 ? '16px' : '22px');
   board.innerHTML = '';
   for (let r = 0; r < p.n; r++) for (let c = 0; c < p.n; c++) {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'cell';
-    b.dataset.r = r; b.dataset.c = c;
     b.setAttribute('aria-label', `Tile, row ${r + 1}, column ${c + 1}`);
-    b.innerHTML = tileSvg(t.kind, p.tiles[r][c]) + '<i class="side s0"></i><i class="side s1"></i><i class="side s2"></i><i class="side s3"></i>';
+    b.innerHTML = slice(id, r, c);
     b.querySelector('svg').style.transform = `rotate(${run.deg[r][c]}deg)`;
     wire(b, r, c);
     board.appendChild(b);
   }
-  $('which').textContent = `PUZZLE ${run.i + 1}/${PER_RUN}`;
+  $('which').innerHTML = `<small>PICTURE ${run.i + 1} OF ${PER_RUN}</small>${p.name.toUpperCase()}`;
   $('score').textContent = num(run.score);
-  $('hint').textContent = t.id === 1 ? 'Find the tile that\'s turned wrong and tap it to spin it ↻' : 'Tap a tile to spin it ↻ · swipe left to spin it back ↺';
+  // the goal picture (younger tiers) or the peek button (older)
+  $('goal').hidden = !t.goal;
+  $('peekBtn').hidden = !t.peek;
+  if (t.goal) $('goalArt').innerHTML = whole(id, p.n);
+  $('peekArt').innerHTML = whole(id, p.n);
+  $('peek').hidden = true;
+  $('hint').textContent = t.id === 1
+    ? 'Make it look like the goal picture! Tap a tile to spin it. Tiles with a ✓ are already right.'
+    : t.glow ? 'Tap a tile to spin it ↻ · swipe left to spin it back ↺ · ✓ tiles are right'
+      : 'Tap to spin ↻ · swipe left to spin back ↺ · use the symmetry: every piece mirrors';
   paintMarks();
-  paintCombo();
-  $('streak').classList.remove('on');
+  paintStreak();
   paintTime();
   refresh(false);
   // a quick GO! then the clock starts
   const ov = $('overlay');
   ov.className = 'overlay go';
-  ov.innerHTML = `<h2>${run.i === 0 ? 'SPIN!' : 'GO!'}</h2>`;
+  ov.innerHTML = `<h2>${run.i === 0 ? 'SPIN!' : run.i === PER_RUN - 1 ? 'MASTERPIECE!' : 'GO!'}</h2>`;
   ov.hidden = false;
   run.ready = false;
   setTimeout(() => {
     if (!run || run.over) return;
     ov.hidden = true;
     run.ready = true;
-    run.endsAt = performance.now() + t.time * 1000;
+    run.endsAt = performance.now() + p.time * 1000;
     loop();
-  }, 650);
+  }, run.i === PER_RUN - 1 ? 900 : 650);
 }
 
 function wire(b, r, c) {
   let x0 = 0, y0 = 0, down = false;
-  b.addEventListener('pointerdown', (e) => { down = true; x0 = e.clientX; y0 = e.clientY; });
+  b.addEventListener('pointerdown', (e) => { down = true; x0 = e.clientX; y0 = e.clientY; b.classList.add('press'); });
   b.addEventListener('pointerup', (e) => {
+    b.classList.remove('press');
     if (!down) return;
     down = false;
     const dx = e.clientX - x0, dy = e.clientY - y0;
     turn(r, c, Math.abs(dx) > 22 && Math.abs(dx) > Math.abs(dy) && dx < 0 ? -1 : 1);
   });
-  b.addEventListener('pointercancel', () => { down = false; });
+  b.addEventListener('pointercancel', () => { down = false; b.classList.remove('press'); });
+  b.addEventListener('pointerleave', () => b.classList.remove('press'));
   // keyboard: Enter or Space spins clockwise, Shift spins back
   b.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); turn(r, c, e.shiftKey ? -1 : 1); }
   });
-  b.addEventListener('click', (e) => { if (e.detail === 0) e.preventDefault(); });
 }
 
 function turn(r, c, dir) {
@@ -250,42 +214,29 @@ function turn(r, c, dir) {
   refresh(true);
 }
 
-// Paint the seams and locks, pay for new locks and lines, and finish when the grid locks.
+// Glow the tiles that are right (younger tiers), pay for new ones and for whole rows and columns, and
+// finish when the picture is whole.
 function refresh(live) {
   const p = run.p, t = tierOf(run.tier);
   const st = check(p, run.q);
   const cells = $('board').children;
-  let newLocks = [];
+  const fresh = [];
   for (let r = 0; r < p.n; r++) for (let c = 0; c < p.n; c++) {
     const cell = cells[r * p.n + c];
-    const sides = cell.querySelectorAll('.side');
-    st.side[r][c].forEach((ok, s) => sides[s].classList.toggle('on', ok === true));
-    const was = cell.classList.contains('locked');
-    cell.classList.toggle('locked', st.locked[r][c]);
-    if (!live && st.locked[r][c]) run.ever.add(`${r},${c}`); // tiles that start locked pay nothing
-    if (live && st.locked[r][c] && !was) {
-      cell.classList.remove('pop'); void cell.offsetWidth; cell.classList.add('pop');
-      const k = `${r},${c}`;
-      if (!run.ever.has(k)) { run.ever.add(k); newLocks.push(cell); }
-    }
+    const k = `${r},${c}`;
+    const right = st.ok[r][c];
+    if (t.glow) cell.classList.toggle('ok', right);
+    if (!live && right) run.ever.add(k); // tiles that start right pay nothing
+    if (live && right && !run.ever.has(k)) { run.ever.add(k); fresh.push(cell); }
   }
   if (!live) return;
-  if (newLocks.length) {
-    const now = performance.now();
-    run.streak = now - run.lastLock <= STREAK_GAP ? run.streak + newLocks.length : newLocks.length;
-    run.lastLock = now;
-    const mult = streakMult(run.tier, run.streak);
-    for (const cell of newLocks) {
-      const pts = 10 * mult;
-      run.score += pts;
-      floatAt(cell, `+${pts}${mult > 1 ? ` x${mult}` : ''}`);
+  if (fresh.length) {
+    sfx.click();
+    if (t.glow) {
+      for (const cell of fresh) { run.score += 10; floatAt(cell, '+10'); cell.classList.remove('pop'); void cell.offsetWidth; cell.classList.add('pop'); }
+      $('score').textContent = num(run.score);
     }
-    sfx.lock(Math.min(4, run.streak));
-    const sb = $('streak');
-    if (t.streak && mult > 1) { sb.textContent = `SPIN STREAK x${mult}`; sb.classList.add('on'); clearTimeout(run.streakT); run.streakT = setTimeout(() => sb.classList.remove('on'), STREAK_GAP); }
-    $('score').textContent = num(run.score);
   }
-  // rows and columns that lock for the first time buy time
   if (t.lineBonus && !st.done) {
     let gained = 0;
     st.rows.forEach((ok, i) => { if (ok && !run.lines.has('r' + i)) { run.lines.add('r' + i); gained += t.lineBonus; } });
@@ -336,62 +287,94 @@ function paintMarks() {
   for (let i = 0; i < PER_RUN; i++) {
     const m = run.marks[i];
     const el = document.createElement('i');
-    el.className = m === 'fast' ? 'fast' : m === 'ok' ? 'ok' : m === 'miss' ? 'miss' : i === run.i ? 'now' : '';
+    el.className = m || (i === run.i ? 'now' : '');
     el.textContent = m === 'fast' ? '⚡' : m === 'ok' ? '✓' : m === 'miss' ? '✗' : '';
     box.appendChild(el);
   }
 }
-function paintCombo() {
-  const cb = $('combo');
-  const m = Math.min(3, 1 + 0.5 * run.combo);
-  cb.textContent = `COMBO x${m}`;
-  cb.classList.toggle('on', run.combo > 0);
+function paintStreak() {
+  const b = $('streak');
+  const m = Math.min(3, 1 + 0.5 * run.streak);
+  b.textContent = `SPIN STREAK x${m}`;
+  b.classList.toggle('on', run.streak > 0);
+}
+
+// Peek (middle and high school): hold to see the finished piece; each peek costs 3 seconds.
+function peekOn(e) {
+  if (e) e.preventDefault();
+  if (!run || run.over || !run.ready || !$('peek').hidden) return;
+  $('peek').hidden = false;
+  run.endsAt -= PEEK_COST * 1000;
+  floatAt($('timePill'), `−${PEEK_COST}s`);
+}
+function peekOff() { $('peek').hidden = true; }
+$('peekBtn').addEventListener('pointerdown', peekOn);
+$('peekBtn').addEventListener('pointerup', peekOff);
+$('peekBtn').addEventListener('pointerleave', peekOff);
+$('peekBtn').addEventListener('pointercancel', peekOff);
+$('peekBtn').addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') peekOn(e); });
+$('peekBtn').addEventListener('keyup', peekOff);
+
+// The picture comes together: the gaps close and it's one piece of art.
+function reveal() {
+  $('board').classList.add('done');
+  for (const cell of $('board').children) cell.classList.remove('ok');
+  peekOff();
 }
 
 function solvedPuzzle() {
-  const t = tierOf(run.tier);
+  const p = run.p;
   run.over = true;
   cancelAnimationFrame(raf);
   const left = Math.max(0, run.timeLeft);
-  const pts = solvePoints(left, run.combo);
-  const fast = isFast(left, t.time);
+  const pts = solvePoints(left, run.streak);
+  const fast = isFast(left, p.time);
   run.score += pts;
   run.solved++;
   run.marks[run.i] = fast ? 'fast' : 'ok';
-  run.combo = fast ? run.combo + 1 : 0;
-  $('board').classList.add('done');
+  run.streak = fast ? run.streak + 1 : 0;
+  run.pieces[run.i] = { id: run.id, n: p.n, name: p.name, done: true };
+  reveal();
   sfx.win();
   $('score').textContent = num(run.score);
   $('timePill').classList.remove('low');
   paintMarks();
-  between(fast ? 'LIGHTNING!' : 'LOCKED!', `+${num(pts)}`, `${Math.ceil(left)} seconds left${fast ? ' · fast solve, combo up!' : ''}`);
+  const title = run.i === PER_RUN - 1 ? 'MASTERPIECE!' : fast ? 'LIGHTNING!' : pickCheer();
+  setTimeout(() => between(title, `+${num(pts)}`, `${Math.ceil(left)} seconds left${fast ? ' · fast! Spin Streak up' : ''}`), 1400);
 }
+const CHEERS = ['WHAM!', 'KA-POW!', 'BEAUTIFUL!', 'NAILED IT!', 'ZAP!', 'BOOM!'];
+const pickCheer = () => CHEERS[Math.floor(Math.random() * CHEERS.length)];
+
 function timeUp() {
+  const p = run.p;
   run.over = true;
   run.timeLeft = 0;
   paintTime();
   run.marks[run.i] = 'miss';
-  run.combo = 0;
+  run.streak = 0;
+  run.pieces[run.i] = { id: run.id, n: p.n, name: p.name, done: false };
   sfx.miss();
   paintMarks();
-  // show the answer: every tile spins home
-  const p = run.p, cells = $('board').children;
+  paintStreak();
+  // show the answer: every wrong tile spins home, then the picture comes together
+  const cells = $('board').children;
   for (let r = 0; r < p.n; r++) for (let c = 0; c < p.n; c++) {
     const q = run.q[r][c];
-    if (q !== 0 && !looksSame(p.tiles[r][c], q)) {
-      run.deg[r][c] += (4 - q) * 90 > 180 ? -q * 90 : (4 - q) * 90;
+    if (!p.same[r][c].includes(q)) {
+      run.deg[r][c] += q === 3 ? 90 : q === 1 ? -90 : 180;
       run.q[r][c] = 0;
       cells[r * p.n + c].querySelector('svg').style.transform = `rotate(${run.deg[r][c]}deg)`;
     }
   }
-  setTimeout(() => { refresh(false); between('TIME!', '', 'Here\'s how it locks. Combo reset.'); }, 450);
+  setTimeout(reveal, 450);
+  setTimeout(() => between('TIME!', '', 'Here\'s the finished piece. Spin Streak reset.'), 1300);
 }
 function between(title, pts, line) {
   saveDailyProgress();
   const last = run.i >= PER_RUN - 1;
   const ov = $('overlay');
-  ov.className = 'overlay';
-  ov.innerHTML = `<div class="card"><h2>${title}</h2>${pts ? `<div class="pts">${pts}</div>` : ''}<p>${line}</p><button class="btn big" type="button" id="nextBtn">${last ? 'RESULTS ▸' : 'NEXT PUZZLE ▸'}</button></div>`;
+  ov.className = 'overlay end';
+  ov.innerHTML = `<div class="card"><div class="burst"><h2>${title}</h2></div><p>${pts ? `<b class="pts">${pts}</b>` : ''}${line}</p><button class="btn big" type="button" id="nextBtn">${last ? 'SEE YOUR GALLERY ▸' : 'NEXT PICTURE ▸'}</button></div>`;
   ov.hidden = false;
   const btn = $('nextBtn');
   btn.onclick = () => { ov.hidden = true; if (last) finish(); else { run.i++; startPuzzle(); } };
@@ -400,8 +383,8 @@ function between(title, pts, line) {
 function saveDailyProgress() {
   if (run.kind !== 'daily') return;
   const st = dailyState();
-  st.tiers[run.tier] = { score: run.score, solved: run.solved, marks: run.marks.slice(), started: true };
-  store.set('ps.daily', st);
+  st.tiers[run.tier] = { score: run.score, solved: run.solved, marks: run.marks.slice() };
+  store.set('ps.daily2', st);
 }
 
 function finish() {
@@ -410,25 +393,38 @@ function finish() {
   saveDailyProgress();
   const r = run;
   run = null;
-  showResults({ kind: r.kind, tier: r.tier, no: r.no, score: r.score, solved: r.solved, marks: r.marks, at: r.at });
+  showResults({ kind: r.kind, tier: r.tier, no: r.no, base: r.base, score: r.score, solved: r.solved, marks: r.marks, at: r.at });
 }
 
-/* ---------- results ---------- */
+/* ---------- results: the run as a comic page ---------- */
 const MARK = { fast: '⚡', ok: '🟩', miss: '🟥' };
 function showResults(res) {
   const t = tierOf(res.tier);
-  $('resTitle').textContent = res.kind === 'daily' ? `TODAY'S SPIN · NO. ${res.no} · ${t.name.toUpperCase()}` : `PRACTICE RUN · ${t.name.toUpperCase()}`;
-  $('resNum').textContent = num(res.score);
-  $('resOf').textContent = `${res.solved}/${PER_RUN} LOCKED`;
   res.marks = res.marks.slice();
   while (res.marks.length < PER_RUN) res.marks.push('miss');
-  $('resMarks').innerHTML = res.marks.map((m) => `<i class="${m}">${m === 'fast' ? '⚡' : m === 'ok' ? '✓' : '✗'}</i>`).join('');
-  const bests = store.get('ps.best', {});
+  $('resTitle').textContent = res.kind === 'daily' ? `TODAY'S SPIN · NO. ${res.no} · ${t.name.toUpperCase()}` : `PRACTICE RUN · ${t.name.toUpperCase()}`;
+  $('resNum').textContent = num(res.score);
+  $('resOf').textContent = `${res.solved}/${PER_RUN} PICTURES`;
+  // the gallery: each piece redrawn from its seed, unfinished ones faded
+  const page = $('gallery');
+  page.innerHTML = '';
+  for (let i = 0; i < PER_RUN; i++) {
+    const seed = res.kind === 'daily' ? dailySeed(res.tier, res.no, i) : hash(`${res.base}:${i}`);
+    const p = puzzle(res.tier, i, seed);
+    const id = `art-${res.kind}-${res.tier}-${res.no}-${res.base}-${i}`;
+    addArt(p.art, id);
+    const m = res.marks[i];
+    const el = document.createElement('figure');
+    el.className = `panel${m === 'miss' ? ' miss' : ''}${i === PER_RUN - 1 ? ' wide' : ''}`;
+    el.innerHTML = `${whole(id, p.n)}<figcaption>${i + 1}. ${p.name}${m === 'fast' ? ' ⚡' : m === 'miss' ? ' · unfinished' : ''}</figcaption>`;
+    page.appendChild(el);
+  }
+  const bests = store.get('ps.best2', {});
   let bestLine = '';
   if (!res.replay) {
-    if (!bests[t.id] || res.score > bests[t.id]) { if (bests[t.id]) bestLine = `New best! (was ${num(bests[t.id])})`; bests[t.id] = res.score; store.set('ps.best', bests); }
+    if (!bests[t.id] || res.score > bests[t.id]) { if (bests[t.id]) bestLine = `New best! (was ${num(bests[t.id])})`; bests[t.id] = res.score; store.set('ps.best2', bests); }
     else bestLine = `Your best: ${num(bests[t.id])}`;
-    // The lab wallet: amber for a finished run, a shard for locking all five (once per run).
+    // The lab wallet: amber for a finished run, a shard for finishing all five (once per run).
     const ref = res.kind === 'daily' ? `daily:${res.tier}:${res.no}` : `practice:${res.tier}:${res.at}`;
     if (window.CapraWallet) {
       CapraWallet.earn('puzzled-spin', 'run', ref);
@@ -436,13 +432,13 @@ function showResults(res) {
     }
   } else if (bests[t.id]) bestLine = `Your best: ${num(bests[t.id])}`;
   $('resBest').textContent = bestLine;
-  // The results text, the same card in every Capra Lab game: ⚡ fast solve, 🟩 locked, 🟥 time ran out.
+  // The results text, the same card in every Capra Lab game: ⚡ fast, 🟩 finished, 🟥 time ran out.
   const box = $('resShare');
   box.innerHTML = '';
   if (window.CapraShare) {
     const text = CapraShare.text({ emoji: '🌀', game: 'Puzzled Spin', no: res.kind === 'daily' ? res.no : undefined,
       sub: res.kind === 'daily' ? t.name : `Practice · ${t.name}`,
-      lines: [`${res.solved}/${PER_RUN} locked · ${num(res.score)} pts`],
+      lines: [`${res.solved}/${PER_RUN} pictures · ${num(res.score)} pts`],
       grid: [res.marks.map((m) => MARK[m] || '⬛').join('')] });
     box.innerHTML = '<lab-text-share></lab-text-share>';
     box.firstChild.set({ emoji: '🌀', title: 'Puzzled Spin', text, url: `${location.origin}/puzzled-spin/` });
@@ -456,7 +452,7 @@ $('practiceBtn').onclick = () => startRun('practice');
 $('againBtn').onclick = () => startRun('practice');
 $('levelBtn').onclick = () => { paintHome(); show('home'); };
 $('resBack').onclick = () => { paintHome(); show('home'); };
-$('soundBtn').onclick = () => { prefs.sound = !prefs.sound; savePrefs(); paintSound(); if (prefs.sound) sfx.lock(); };
+$('soundBtn').onclick = () => { prefs.sound = !prefs.sound; savePrefs(); paintSound(); if (prefs.sound) sfx.click(); };
 let armT = 0;
 $('playBack').onclick = () => {
   if (!run) { paintHome(); show('home'); return; }
