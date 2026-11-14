@@ -154,7 +154,7 @@ export function createWallet({ store, clock = () => Date.now(), verify = null })
   // A game page claims what a finished game pays; capped a game a day, a ref pays once.
   async function earn(handle, game, event, ref = '') {
     check(handle);
-    const g = EARN[game], rule = g && event !== 'name' ? g[event] : null;
+    const g = EARN[game], rule = g && event !== 'name' && event !== 'cap' ? g[event] : null;
     if (!rule) throw fail(400, 'That game doesn’t pay for that.');
     const now = clock(), day = walletDay(now);
     ref = String(ref || '').slice(0, 80);
@@ -167,7 +167,8 @@ export function createWallet({ store, clock = () => Date.now(), verify = null })
       const tag = ref ? event + ':' + ref : '';
       if (tag && t.refs.includes(tag)) return SKIP;
       for (const k of ['amber', 'shards']) {
-        const room = Math.max(0, DAY_CAP[k] - (t[k] || 0));
+        const cap = g.cap && g.cap[k] != null ? g.cap[k] : DAY_CAP[k];
+        const room = Math.max(0, cap - (t[k] || 0));
         const n = Math.min(int(rule[k]), room);
         if (n > 0) { paid[k] = n; t[k] = (t[k] || 0) + n; w[k] = (w[k] || 0) + n; }
       }

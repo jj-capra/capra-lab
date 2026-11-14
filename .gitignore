@@ -14,6 +14,7 @@ public/no-cap/
 public/screensaver/
 public/three-clue-crew/
 public/puzzled-spin/
+public/irl/
 netlify/functions/mind-heist.mjs
 games/mind-heist/src/server/decks.gen.json
 games/punchline/server/decks.gen.mjs

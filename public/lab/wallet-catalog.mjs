@@ -19,7 +19,7 @@ export const COINS = {
 export const ORDER = ['diamonds', 'amber', 'shards'];
 
 // What a game page can claim when a game ends (POST /api/wallet/earn { game, event, ref }). The page
-// can't prove it, so each game pays at most DAY_CAP a day and the same `ref` pays once. Diamonds are
+// can't prove it, so each game pays at most DAY_CAP a day (or its own `cap`) and the same `ref` pays once. Diamonds are
 // never claimed this way: only a game's own server pays them, for a feat it checked (FEATS).
 export const DAY_CAP = { amber: 150, shards: 3 };
 export const EARN = {
@@ -33,6 +33,8 @@ export const EARN = {
   'primal-survival': { name: 'Primal Survival', match: { amber: 25, why: 'a match' }, win: { shards: 1, why: 'a win' } },
   'three-clue-crew': { name: 'Three Clue Crew', game: { amber: 20, why: 'a game of ten' }, perfect: { shards: 1, why: 'a perfect ten' } },
   'puzzled-spin':    { name: 'Puzzled Spin', run: { amber: 20, why: 'a run of five' }, clear: { shards: 1, why: 'all five solved' } },
+  // IRL pays more (JC, Nov 14 2026: "this earns more Amber and other loot"), with its own daily cap
+  'irl':             { name: 'IRL', cap: { amber: 300, shards: 6 }, set: { amber: 40, why: 'a challenge' }, goal: { shards: 1, why: 'beat the goal' }, best: { shards: 1, why: 'a new personal best' } },
 };
 
 // What the games' servers pay, for the hub's "how to earn" list (they pay it themselves).

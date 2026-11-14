@@ -102,6 +102,23 @@
     Content-Type = "text/javascript; charset=utf-8"
     Cache-Control = "public, max-age=300"
 
+# IRL's motion tracker: about 20 MB the phone should only fetch once a week
+[[headers]]
+  for = "/irl/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/irl/vendor/wasm/*.wasm"
+  [headers.values]
+    Content-Type = "application/wasm"
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/irl/models/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
 [[headers]]
   for = "/*.html"
   [headers.values]

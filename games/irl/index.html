@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="/lab/fill.js"></script>
+<title>IRL · Capra Lab</title>
+<meta name="description" content="Real moves, real loot. Squats, push-ups, wall sits, target smashing and dribbling, counted by your phone's camera. A Capra Lab original.">
+<meta name="theme-color" content="#16141F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Capra Lab">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #120E18; --night: #16141F; --panel: #221B2E; --panel-2: #2C2340; --paper: #FFF8EC;
+    --yellow: #FFD23F; --magenta: #FF3D8B; --cyan: #29D3F0; --green: #5BE38A; --red: #FF5A5A; --orange: #FF7A59; --shadow: #05030A;
+    --display: Bangers, Impact, "Arial Narrow Bold", system-ui, sans-serif;
+    --st: env(safe-area-inset-top); --sb: env(safe-area-inset-bottom); --sl: env(safe-area-inset-left); --sr: env(safe-area-inset-right);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  html, body { min-height: 100%; }
+  body { margin: 0; min-height: var(--lab-h, 100dvh); background-color: var(--night); color: var(--paper);
+    background-image: radial-gradient(rgba(255, 248, 236, 0.07) 1px, transparent 1.6px); background-size: 9px 9px;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible, a:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .wrap { width: 100%; max-width: 600px; margin: 0 auto; padding-left: max(16px, var(--sl)); padding-right: max(16px, var(--sr)); }
+  .screen { min-height: var(--lab-h, 100dvh); padding-bottom: calc(var(--sb) + 24px); }
+
+  .bar { display: flex; align-items: center; gap: 10px; padding-top: calc(var(--st) + 10px); padding-bottom: 6px; }
+  .bar-right { margin-left: auto; display: flex; gap: 8px; }
+  .round-btn { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--panel); border: 2px solid var(--shadow); padding: 0; font-weight: 800; font-size: 18px; }
+  .round-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* home */
+  .logo { display: flex; align-items: center; gap: 14px; margin: 10px 0 6px; }
+  .logo h1 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 72px; letter-spacing: 0.04em; line-height: 0.9; text-shadow: 4px 0 var(--magenta), -4px 0 var(--cyan), 5px 6px 0 var(--shadow); }
+  .logo .badge { width: 66px; height: 66px; border-radius: 18px; display: grid; place-items: center; font-size: 38px; background: var(--yellow); border: 3px solid var(--ink); box-shadow: 4px 5px 0 var(--shadow); transform: rotate(-6deg); }
+  .logo p { margin: 4px 0 0; font-family: var(--display); font-size: 22px; letter-spacing: 0.06em; color: var(--yellow); }
+  .tag { margin: 6px 0 14px; font-size: 15px; font-weight: 600; line-height: 1.5; color: rgba(255, 248, 236, 0.85); }
+  .cards { display: grid; gap: 12px; }
+  .ch { display: grid; grid-template-columns: 58px 1fr auto; gap: 12px; align-items: center; width: 100%; padding: 12px 14px; border-radius: 20px; text-align: left;
+    background: var(--panel); border: 3px solid var(--shadow); box-shadow: 5px 6px 0 var(--shadow); position: relative; overflow: hidden; }
+  .ch::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 6px; background: var(--c); }
+  .ch:active { transform: translate(2px, 3px); box-shadow: 2px 2px 0 var(--shadow); }
+  .ch .em { width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center; font-size: 32px; background: var(--ink); border: 3px solid var(--c); }
+  .ch b { display: block; font-family: var(--display); font-weight: 400; font-size: 27px; letter-spacing: 0.05em; color: var(--c); line-height: 1; }
+  .ch small { display: block; margin-top: 3px; font-size: 13px; font-weight: 700; color: rgba(255, 248, 236, 0.78); line-height: 1.35; }
+  .ch .best { text-align: right; font-family: var(--display); font-size: 26px; line-height: 1; }
+  .ch .best span { display: block; font: 800 10px/1.2 Inter, system-ui, sans-serif; letter-spacing: 0.12em; color: rgba(255, 248, 236, 0.6); }
+  .note { margin: 16px 0 0; padding: 12px 14px; border-radius: 16px; background: rgba(255, 248, 236, 0.06); border: 2px dashed rgba(255, 248, 236, 0.18); font-size: 13.5px; font-weight: 600; line-height: 1.5; color: rgba(255, 248, 236, 0.82); }
+  .note b { color: var(--paper); }
+
+  /* the camera stage */
+  .stage { padding: 0; }
+  .cam { position: fixed; left: 0; right: 0; top: var(--st); height: calc(var(--lab-h, 100dvh) - var(--st)); background: #000; overflow: hidden; }
+  .cam video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  .cam video.mirror { transform: scaleX(-1); }
+  .cam canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .cam::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.45) 100%); }
+  .sbar { position: fixed; z-index: 5; left: 0; right: 0; top: calc(var(--st) + 10px); display: flex; align-items: center; gap: 10px; padding: 0 max(14px, var(--sr)) 0 max(14px, var(--sl)); }
+  .sbar .ttl { flex: 1; min-width: 0; text-align: center; font-family: var(--display); font-size: 24px; letter-spacing: 0.06em; text-shadow: 2px 2px 0 var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sbar .round-btn { background: rgba(18, 14, 24, 0.8); border-color: rgba(255, 248, 236, 0.25); }
+  .hud { position: fixed; z-index: 4; left: 0; right: 0; top: calc(var(--st) + 60px); display: flex; justify-content: space-between; align-items: flex-start; padding: 0 max(14px, var(--sr)) 0 max(14px, var(--sl)); pointer-events: none; }
+  .count, .clock { padding: 6px 14px 8px; border-radius: 18px; background: rgba(18, 14, 24, 0.82); border: 3px solid var(--ink); box-shadow: 4px 5px 0 rgba(5, 3, 10, 0.6); text-align: center; }
+  .count b { display: block; font-family: var(--display); font-weight: 400; font-size: 64px; line-height: 0.95; color: var(--yellow); text-shadow: 3px 3px 0 var(--ink); }
+  .count small, .clock small { display: block; font: 800 11px/1.2 Inter, system-ui, sans-serif; letter-spacing: 0.14em; color: rgba(255, 248, 236, 0.7); text-transform: uppercase; }
+  .clock b { display: block; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .clock.low b { color: var(--red); }
+  .meter { position: fixed; z-index: 4; right: max(14px, var(--sr)); top: calc(var(--st) + 168px); width: 18px; height: 34vh; border-radius: 999px; background: rgba(18, 14, 24, 0.75); border: 3px solid var(--ink); overflow: hidden; }
+  .meter i { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: linear-gradient(0deg, var(--green), var(--yellow)); transition: height 0.12s; }
+  .coach { position: fixed; z-index: 4; left: 50%; bottom: calc(var(--sb) + 24px - var(--lab-gap, 0px)); transform: translateX(-50%); max-width: calc(100% - 32px); padding: 10px 18px; border-radius: 16px;
+    background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 5px 0 var(--shadow); font-family: var(--display); font-size: 28px; letter-spacing: 0.05em; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .coach.ok { background: var(--green); }
+  .coach.warn { background: var(--yellow); }
+  .setup { position: fixed; z-index: 6; left: 0; right: 0; bottom: 0; max-height: calc(var(--lab-h, 100dvh) - var(--st) - 70px); overflow: auto;
+    padding: 18px max(18px, var(--sr)) calc(var(--sb) + 18px - var(--lab-gap, 0px)) max(18px, var(--sl)); border-radius: 26px 26px 0 0; background: var(--panel); border: 3px solid var(--shadow); border-bottom: 0; }
+  .setup .top { display: flex; align-items: center; gap: 12px; }
+  .setup .em { font-size: 40px; line-height: 1; }
+  .setup h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 34px; letter-spacing: 0.05em; color: var(--c, var(--yellow)); line-height: 1; }
+  .setup h2 small { display: block; font: 800 12px/1.3 Inter, system-ui, sans-serif; letter-spacing: 0.1em; color: rgba(255, 248, 236, 0.7); margin-top: 4px; }
+  .steps { margin: 12px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; counter-reset: s; }
+  .steps li { position: relative; padding-left: 34px; font-size: 14.5px; font-weight: 600; line-height: 1.45; }
+  .steps li::before { counter-increment: s; content: counter(s); position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--yellow); color: var(--ink); font-weight: 800; font-size: 13px; }
+  .status { display: flex; align-items: center; gap: 8px; margin: 12px 0 0; padding: 8px 12px; border-radius: 12px; background: var(--ink); font-size: 13.5px; font-weight: 800; }
+  .status i { width: 10px; height: 10px; border-radius: 50%; background: var(--yellow); flex: none; }
+  .status.ok i { background: var(--green); } .status.bad i { background: var(--red); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 56px; padding: 10px 18px; border-radius: 16px; border: 3px solid var(--ink); background: var(--yellow); color: var(--ink); box-shadow: 4px 5px 0 var(--shadow);
+    font-family: var(--display); font-size: 26px; letter-spacing: 0.06em; text-decoration: none; line-height: 1; }
+  .btn:active { transform: translate(2px, 3px); box-shadow: 2px 2px 0 var(--shadow); }
+  .btn:disabled { opacity: 0.55; transform: none; }
+  .btn.alt { background: var(--paper); }
+  .btn.dark { background: var(--panel-2); color: var(--paper); border-color: var(--shadow); }
+  .row { display: flex; gap: 10px; margin-top: 14px; }
+  .row > * { flex: 1 1 0; min-width: 0; }
+  .fine { margin: 10px 0 0; font-size: 12.5px; font-weight: 600; line-height: 1.45; color: rgba(255, 248, 236, 0.7); }
+  .countdown { position: fixed; z-index: 7; inset: 0 0 auto; height: var(--lab-h, 100%); display: grid; place-items: center; pointer-events: none; }
+  .countdown b { font-family: var(--display); font-weight: 400; font-size: 46vmin; line-height: 1; color: var(--yellow); -webkit-text-stroke: 6px var(--ink); text-shadow: 10px 12px 0 var(--shadow); animation: cd 0.9s ease-out both; }
+  @keyframes cd { 0% { transform: scale(1.8) rotate(-8deg); opacity: 0; } 25% { transform: scale(1) rotate(0); opacity: 1; } 100% { transform: scale(0.85); opacity: 0.9; } }
+  .pop { position: fixed; z-index: 6; left: 50%; top: 46%; pointer-events: none; font-family: var(--display); font-size: 64px; letter-spacing: 0.04em; color: var(--paper); -webkit-text-stroke: 3px var(--ink); text-shadow: 5px 6px 0 var(--shadow); white-space: nowrap; animation: pop 0.7s ease-out forwards; }
+  @keyframes pop { 0% { transform: translate(-50%, -50%) scale(0.4) rotate(-10deg); opacity: 0; } 25% { transform: translate(-50%, -50%) scale(1.15) rotate(3deg); opacity: 1; } 100% { transform: translate(-50%, -120%) scale(1); opacity: 0; } }
+  .alert { position: fixed; z-index: 8; left: 0; right: 0; top: calc(var(--st) + 70px); margin: 0 auto; width: min(92vw, 520px); padding: 16px; border-radius: 20px; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 5px 6px 0 var(--shadow); }
+  .alert h3 { margin: 0 0 6px; font-family: var(--display); font-weight: 400; font-size: 28px; letter-spacing: 0.05em; }
+  .alert p { margin: 0 0 8px; font-size: 14.5px; font-weight: 600; line-height: 1.45; }
+
+  /* results */
+  .res { padding-top: calc(var(--st) + 10px); }
+  .res-card { margin: 12px 0 0; padding: 20px 16px; border-radius: 24px; background: var(--panel); border: 3px solid var(--shadow); box-shadow: 6px 7px 0 var(--shadow); text-align: center; }
+  .res-card .kick { margin: 0; font: 800 12px/1.2 Inter, system-ui, sans-serif; letter-spacing: 0.16em; color: rgba(255, 248, 236, 0.7); text-transform: uppercase; }
+  .big { margin: 4px 0 0; font-family: var(--display); font-weight: 400; font-size: 120px; line-height: 0.9; color: var(--yellow); text-shadow: 5px 6px 0 var(--shadow); }
+  .big small { display: block; font-size: 28px; color: var(--paper); text-shadow: none; letter-spacing: 0.06em; }
+  .burst { display: inline-block; margin-top: 12px; padding: 6px 18px; font-family: var(--display); font-size: 26px; letter-spacing: 0.06em; background: var(--magenta); color: #fff; border: 3px solid var(--ink); box-shadow: 4px 5px 0 var(--shadow); transform: rotate(-3deg); }
+  .burst.gold { background: var(--yellow); color: var(--ink); }
+  .stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 18px; margin: 14px 0 0; font-size: 14px; font-weight: 800; color: rgba(255, 248, 236, 0.85); }
+  .paid { margin: 12px 0 0; font-size: 15px; font-weight: 800; color: var(--green); }
+  .share { margin-top: 16px; text-align: left; }
+
+  /* help */
+  .veil { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 40; background: rgba(5, 3, 10, 0.72); display: flex; align-items: flex-end; justify-content: center; }
+  .sheet { position: relative; width: min(100%, 560px); max-height: calc(var(--lab-h, 100dvh) - var(--st) - 20px); overflow: auto; padding: 20px max(18px, var(--sr)) calc(var(--sb) + 20px - var(--lab-gap, 0px)) max(18px, var(--sl)); border-radius: 24px 24px 0 0; background: var(--panel); border: 3px solid var(--shadow); border-bottom: 0; }
+  .sheet h2 { margin: 0 40px 8px 0; font-family: var(--display); font-weight: 400; font-size: 32px; letter-spacing: 0.05em; }
+  .sheet ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+  .sheet li { font-size: 14.5px; font-weight: 600; line-height: 1.45; }
+  .sheet .x { position: absolute; top: 14px; right: max(14px, var(--sr)); }
+  @media (prefers-reduced-motion: reduce) { .countdown b, .pop { animation-duration: 0.01s; } }
+</style>
+</head>
+<body>
+
+<!-- ============ HOME ============ -->
+<section class="screen" data-screen="home">
+  <header class="bar wrap">
+    <capra-lab-chip></capra-lab-chip>
+    <div class="bar-right">
+      <button class="round-btn" id="soundBtn" type="button" aria-label="Sound" aria-pressed="true"></button>
+      <button class="round-btn" id="helpBtn" type="button" aria-label="How it works">?</button>
+    </div>
+  </header>
+  <div class="wrap">
+    <div class="logo"><div class="badge" aria-hidden="true">💪</div><div><h1>IRL</h1><p>REAL MOVES. REAL LOOT.</p></div></div>
+    <p class="tag">Prop your phone up, step back and move. The camera counts your reps, times your holds and watches your hands hit the targets. Every finished challenge pays amber, and beating the goal or your best pays shards.</p>
+    <div class="cards" id="cards"></div>
+    <p class="note">🔒 <b>The camera picture never leaves your phone.</b> The motion tracker runs right on it: nothing is recorded, saved or sent anywhere. Only your score goes to your Capra Lab wallet.</p>
+  </div>
+</section>
+
+<!-- ============ THE CAMERA ============ -->
+<section class="screen stage" data-screen="stage" hidden>
+  <div class="cam" id="cam"><video id="video" playsinline muted autoplay></video><canvas id="overlay"></canvas></div>
+  <header class="sbar">
+    <button class="round-btn" id="backBtn" type="button" aria-label="Back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="ttl" id="stTitle"></div>
+    <button class="round-btn" id="flipBtn" type="button" aria-label="Switch camera"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><path d="M9 13a3 3 0 0 0 5.5 1.5M15 12a3 3 0 0 0-5.5-1.5M14.5 16.5v-2h-2M9.5 8.5v2h2"/></svg></button>
+  </header>
+  <div class="hud" id="hud" hidden>
+    <div class="count"><b id="count">0</b><small id="countUnit">reps</small></div>
+    <div class="clock" id="clockBox"><b id="clock">1:00</b><small id="clockLbl">left</small></div>
+  </div>
+  <div class="meter" id="meter" hidden aria-hidden="true"><i id="meterFill"></i></div>
+  <div class="coach" id="coach" hidden role="status" aria-live="polite"></div>
+  <div class="setup" id="setup"></div>
+  <div class="countdown" id="countdown" aria-live="assertive"></div>
+  <div class="alert" id="camAlert" hidden role="alert"></div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="screen" data-screen="results" hidden>
+  <div class="wrap res">
+    <header class="bar" style="padding-top:0"><capra-lab-chip></capra-lab-chip></header>
+    <div class="res-card" id="resCard"></div>
+    <div class="share" id="resShare"></div>
+    <div class="row"><button class="btn dark" type="button" id="homeBtn">ALL CHALLENGES</button><button class="btn" type="button" id="againBtn">AGAIN</button></div>
+  </div>
+</section>
+
+<div class="veil" id="veil" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+  <button class="round-btn x" type="button" id="helpX" aria-label="Close">✕</button>
+  <h2 id="helpTitle">HOW IRL WORKS</h2>
+  <ul>
+    <li><b>Pick a challenge</b>, then follow the setup: where to put your phone and how far to stand.</li>
+    <li><b>Step into your spot.</b> When the camera sees what it needs, a 3-2-1 countdown starts on its own, so you never have to run back to tap the screen.</li>
+    <li><b>Move.</b> The stick figure over the camera shows what it sees. A voice counts your reps so you can hear it from across the room.</li>
+    <li><b>Pay:</b> +40 amber for each finished challenge, +1 shard for beating its goal (once a day each), +1 shard for a new personal best. IRL pays up to 300 amber and 6 shards a day.</li>
+    <li><b>Private:</b> the camera picture is read right on your phone and never recorded or sent.</li>
+    <li><b>Camera blocked?</b> On iPhone: Settings → Apps → Safari → Camera → Ask or Allow, then reopen IRL.</li>
+  </ul>
+</div></div>
+
+<script src="/lab/chip.js" defer></script>
+<script src="/lab/share.js" defer></script>
+<script src="/lab/wallet.js" type="module"></script>
+<script type="module" src="./game.js"></script>
+</body>
+</html>

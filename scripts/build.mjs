@@ -176,6 +176,22 @@ async function buildPuzzledSpin() {
   console.log('built public/puzzled-spin/');
 }
 
+/* IRL: real moves in front of the camera (Nov 14 2026). The pose model runs on the phone: MediaPipe's
+   tasks-vision bundle and wasm (from node_modules) and the lite pose model (games/irl/models) are
+   served from the lab itself, next to the page. */
+async function buildIrl() {
+  const game = path.join(ROOT, 'games', 'irl'), out = path.join(ROOT, 'public', 'irl');
+  const tv = path.join(ROOT, 'node_modules', '@mediapipe', 'tasks-vision');
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(path.join(out, 'vendor', 'wasm'), { recursive: true });
+  await fs.mkdir(path.join(out, 'models'), { recursive: true });
+  for (const f of ['index.html', 'game.js', 'logic.mjs']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  await fs.copyFile(path.join(tv, 'vision_bundle.mjs'), path.join(out, 'vendor', 'vision_bundle.mjs'));
+  for (const f of ['vision_wasm_internal.js', 'vision_wasm_internal.wasm']) await fs.copyFile(path.join(tv, 'wasm', f), path.join(out, 'vendor', 'wasm', f));
+  await fs.copyFile(path.join(game, 'models', 'pose_landmarker_lite.task'), path.join(out, 'models', 'pose_landmarker_lite.task'));
+  console.log('built public/irl/');
+}
+
 await buildPrimalSurvival();
 await buildMindHeist();
 await buildParTeeTime();
@@ -188,3 +204,4 @@ await buildNoCap();
 await buildScreensaver();
 await buildThreeClueCrew();
 await buildPuzzledSpin();
+await buildIrl();

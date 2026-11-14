@@ -14,12 +14,13 @@ function howToEarn() {
   const rows = [];
   for (const g of Object.values(EARN)) {
     const parts = [];
-    for (const [ev, r] of Object.entries(g)) if (ev !== 'name') parts.push(`${words(r)} for ${esc(r.why)}`);
+    for (const [ev, r] of Object.entries(g)) if (ev !== 'name' && ev !== 'cap') parts.push(`${words(r)} for ${esc(r.why)}`);
+    if (g.cap) parts.push(`up to ${words(g.cap).replace(/\+/g, '')} a day`);
     rows.push(`<li><b>${esc(g.name)}</b><span>${parts.join(' · ')}</span></li>`);
   }
   for (const f of FEATS) rows.push(`<li><b>${esc(f.game)}</b><span>${esc(f.what)}${Object.keys(f.pay).length ? `: ${words(f.pay)}` : ''}</span></li>`);
   return `<details class="wl-how"><summary>How to earn</summary><ul>${rows.join('')}</ul>
-    <p>Amber for finishing a game, shards for wins and bests, diamonds for the rare stuff. A game pays at most ${DAY_CAP.amber} amber and ${DAY_CAP.shards} shards a day; the feats each game checks itself have no cap.</p></details>`;
+    <p>Amber for finishing a game, shards for wins and bests, diamonds for the rare stuff. A game pays at most ${DAY_CAP.amber} amber and ${DAY_CAP.shards} shards a day (IRL more); the feats each game checks itself have no cap.</p></details>`;
 }
 
 function paint(w) {

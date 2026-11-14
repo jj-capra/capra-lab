@@ -52,4 +52,5 @@ JC's words, kept whole so later work starts from them:
    security cameras; all four kinds of trap (Mind Heist trivia, a Par-Tee Time hole, Puzzled Spin and
    Three Clue Crew, a Goat Getaway pen); the raider's pick of one trophy or the loot; caught means
    out of that room for the day and amber for the owner; trophies are Masters plus every diamond feat.
-   README has the details. Next: the IRL camera game (push-ups, squats, wall sits, dribbling, targets).
+   README has the details. The IRL camera game (squats, push-ups, wall sit, target smash, dribbles)
+   followed the same day: games/irl/.
