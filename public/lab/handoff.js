@@ -9,7 +9,7 @@
      lab is left on the server for 5 minutes, and a card says: if Capra Lab is on your Home Screen,
      switch to it, the invite is waiting there (or Play here; "No app" stops the card for good).
    - In the Home Screen app, each time it opens or comes back to the front, it asks for a waiting
-     invite and offers to open it: "Your invite is here" → Open it.
+     invite and offers to open it: "Your invite is here" → Show invite.
 
    /lab/fill.js loads this on iPhones and iPads only. */
 (function () {
@@ -118,7 +118,7 @@
       card({
         title: 'YOUR INVITE IS HERE',
         text: `You tapped a ${gameOf(url)} invite in Messages. Open it here in the app?`,
-        main: 'Open it', other: 'Not now',
+        main: 'Show invite', other: 'Not now',
         onMain: () => {
           const u = new URL(url, location.origin);
           if (u.pathname === location.pathname && u.search === location.search) { location.replace(u.href); location.reload(); }

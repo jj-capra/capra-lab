@@ -13,7 +13,7 @@ export default async function (req) {
   const profiles = createProfiles(await blobStore(PROFILE_STORE));
   return createApi({
     store: blobsStore(getStore, 'par-tee-time'),
-    verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; },
+    verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle, hcp: p.hcp || 0 } : null; },   // the handicap: Masters' net
     wallet: createWallet({ store: casBlobs(getStore, WALLET_STORE) }),   // Masters loot and trophies pay shards and diamonds
   }).handle(req);
 }

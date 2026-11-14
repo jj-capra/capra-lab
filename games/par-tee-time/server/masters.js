@@ -5,9 +5,26 @@
 // three challenges to best the course designer ... the designer can come back and best any new
 // records that best them in the same amount of tries (three).")
 //
+// Since Nov 13 2026 (JC: "master courses after today can no longer be 18 holes. They are only
+// eight holes. They pick any hole of any course. They can go by theme like the cars, clock and they
+// have one chance and must post it for anyone to try by invite."), a new course (`v: 2`) is:
+//   - 8 different holes, any hole of any course (the page offers a theme in one tap: the same kind
+//     of hole from every course, the eight highway holes, the eight clocks...). The page sends the
+//     hole ids, the courses they come from and the theme if they share one.
+//   - The designer has one chance: one counted try sets the course best, whatever it is, and the
+//     course is then live for anyone with the invite. If that one try burns before it's finished
+//     (quit, or left open), the course goes live with no best and the first to finish sets it.
+//   - Everything after that is as before: three tries a player an era, loot, trophies.
+// Handicaps (JC, Nov 13 2026: "Net decides, change weekly"): each player's golf handicap comes from
+// their Capra Lab profile (verify returns it; it changes at most once a week there). A try keeps the
+// handicap it started with, and the course best goes to the lowest net: the total less the
+// handicap's share of strokes for that many holes (a 6 takes 3 off 8 holes). Bests from before
+// handicaps count as net = total.
+// Courses built before (18 holes from two courses, `v` missing) keep their own rules below.
+//
 // The rules, as built:
-//   - A course is 18 holes from exactly two of the game's courses. The page sends the hole ids;
-//     the server checks their shape only (it doesn't know the hole data).
+//   - A course (before Nov 13 2026) is 18 holes from exactly two of the game's courses. The page
+//     sends the hole ids; the server checks their shape only (it doesn't know the hole data).
 //   - A counted round is a try. Starting one uses it up (quitting, or leaving it open TRY_MS, burns
 //     it). The page posts the 18 hole scores when the round is done. Practice is page-only.
 //   - The designer sets the first course best with up to three tries (and while no best exists, a
@@ -24,22 +41,25 @@
 //
 //   POST /masters/me      { lab }                                   your cabinet: loot, trophies, courses
 //   POST /masters/player  { handle }                                anyone's loot and trophies (trophy room)
-//   POST /masters/create  { lab, name, courses: [a, b], order, holes: [18 ids] }   -> { course }
+//   POST /masters/create  { lab, name, holes: [8 ids], courses: [ids], theme? }   -> { course }
 //   POST /masters/course  { id, lab? }                              the course page
 //   POST /masters/try     { id, lab }                               start a try: -> { try, left, course }
-//   POST /masters/score   { id, lab, try, scores: [18 ints] }       post a try -> { result, course }
+//   POST /masters/score   { id, lab, try, scores: [a score a hole] } post a try -> { result, course }
 //   POST /masters/quit    { id, lab, try }                          burn an unfinished try
 //   POST /masters/remove  { id, lab }                               the designer retires a course
 //
 // Store `par-tee-time` (beside the rooms' r/<CODE>):
-//   m/<id>       { id, name, by, at, courses, order, holes, era, best, players, log, trophies, owed, retired }
+//   m/<id>       { v, id, name, by, at, courses, order, theme, holes, era, best, players, log, trophies, owed, retired, live }
 //   mp/<handle>  { handle, name, loot, trophies: [{ course, name, at }], courses, played, keys }
 // Loot and trophies are decided inside the course's compare-and-swap (as `owed`), then credited to
 // each player's record idempotently (by key) and cleared from the course, so a retry can't pay twice.
 import { mutate, SKIP } from './store.js';
+import { cleanHcp, strokesFor } from '../../../public/lab/handicap-rules.mjs';
 
-export const HOLES = 18;
+export const HOLES = 8;                    // a course built since Nov 13 2026
+export const OLD_HOLES = 18;               // the ones built before still play as 18
 export const TRIES = 3;
+export const DESIGNER_TRIES = 1;           // the designer's one chance (8-hole courses)
 export const TROPHY_MS = 7 * 24 * 3600e3;
 export const TRY_MS = 4 * 3600e3;          // an unfinished try burns after four hours
 export const MAX_COURSES = 12;             // courses a player can have built at once
@@ -51,7 +71,7 @@ const LOG_KEEP = 20, LOG_SHOW = 8, KEYS_KEEP = 300;
 
 const fail = (status, error, code) => { const e = new Error(error); e.status = status; e.code = code || null; throw e; };
 const ID = /^[a-z0-9]{6}$/, TRY_ID = /^[a-z0-9]{10}$/, HANDLE = /^[a-z0-9-]{1,24}$/;
-const COURSE_ID = /^[a-z0-9][a-z0-9-]{0,23}$/, HOLE_ID = /^[a-z0-9][a-z0-9-]{0,31}$/;
+const COURSE_ID = /^[a-z0-9][a-z0-9-]{0,23}$/, HOLE_ID = /^[a-z0-9][a-z0-9-]{0,31}$/, THEME_ID = /^[a-z][a-z0-9-]{0,23}$/;
 const ABC = 'abcdefghijkmnpqrstuvwxyz23456789';   // 32 letters, so a byte maps evenly
 function rid(n) { const b = new Uint8Array(n); crypto.getRandomValues(b); return [...b].map((x) => ABC[x % 32]).join(''); }
 export function cleanCourseName(s) { return String(s || '').replace(/[\u0000-\u001f\u007f<>]/g, '').replace(/\s+/g, ' ').trim(); }
@@ -71,22 +91,30 @@ export function createMasters({ store, verify, clock = () => Date.now(), wallet 
     }
     const p = verify ? await verify(String(lab.name).slice(0, 40), String(lab.code).slice(0, 12)) : null;
     if (!p) fail(401, 'Your Capra Lab name and key don’t match. Sign in to Capra Lab again.', 'bad_key');
-    return { name: String(p.name), handle: String(p.handle) };
+    return { name: String(p.name), handle: String(p.handle), hcp: cleanHcp(p.hcp || 0) };
   }
   const idOf = (body) => { const id = String((body && body.id) || '').toLowerCase(); if (!ID.test(id)) fail(400, 'That isn’t a Masters course link.', 'bad_id'); return id; };
 
   /* ---------- course rules ---------- */
+  const isNew = (c) => (c.v || 1) >= 2;
+  const netOf = (b) => (b.net != null ? b.net : b.total);
+  // how many tries a player gets this era: the designer's one chance on a new course, three otherwise
+  const limitFor = (c, h) => (isNew(c) && c.by.handle === h && c.era === 0 ? DESIGNER_TRIES : TRIES);
+  // the designer's one chance is spent (posted or burned): the course is open to anyone with the invite
+  function goLive(c, h, now) { if (isNew(c) && h === c.by.handle && !c.live) c.live = now; }
+  const waiting = (c) => !c.best && !(isNew(c) && c.live);   // nobody but the designer can try yet
   function owe(c, o) { (c.owed ||= []).push(o); }
   function log(c, e) { (c.log ||= []).unshift(e); if (c.log.length > LOG_KEEP) c.log.length = LOG_KEEP; }
   // A try ended without taking the best: if it was this player's third in the era, the holder beat them.
   function missed(c, h, t, now) {
-    if (t.era === c.era && t.used >= TRIES && c.best && c.best.handle !== h) {
+    if (t.era === c.era && t.used >= limitFor(c, h) && c.best && c.best.handle !== h) {
       owe(c, { kind: 'loot', key: `l:${c.id}:${c.era}:held:${h}`, handle: c.best.handle, name: c.best.name, course: c.id, courseName: c.name, at: now, beat: t.name });
     }
   }
   function burn(c, h, t, now, kind) {
     t.open = null; t.openAt = 0;
     log(c, { handle: h, name: t.name, total: null, kind, at: now });
+    goLive(c, h, now);
     missed(c, h, t, now);
   }
   // Lazy upkeep on every touch: burn tries left open too long, and pay a 7-day hold its trophy.
@@ -106,39 +134,39 @@ export function createMasters({ store, verify, clock = () => Date.now(), wallet 
     return changed;
   }
   function triesFor(c, h) {
-    const t = c.players && c.players[h];
+    const t = c.players && c.players[h], limit = limitFor(c, h);
     let used = t && t.era === c.era ? t.used : 0;
-    if (!c.best && c.by.handle === h && used >= TRIES && !(t && t.open)) used = 0;   // a designer can't get stuck without a best
-    return { t, used, left: Math.max(0, TRIES - used) };
+    if (!isNew(c) && !c.best && c.by.handle === h && used >= TRIES && !(t && t.open)) used = 0;   // an 18-hole designer can't get stuck without a best
+    return { t, used, limit, left: Math.max(0, limit - used) };
   }
   function meView(c, me) {
     if (!me) return null;
     const designer = c.by.handle === me.handle, holder = !!(c.best && c.best.handle === me.handle);
-    const { t, left } = triesFor(c, me.handle);
+    const { t, left, limit } = triesFor(c, me.handle);
     let why = null;
     if (c.retired) why = 'retired';
-    else if (!c.best && !designer) why = 'no_best';
-    else if (holder && !(designer && c.era === 0)) why = 'holder';
+    else if (waiting(c) && !designer) why = 'no_best';
+    else if (holder && !(designer && c.era === 0 && !isNew(c))) why = 'holder';
     else if (!left) why = 'no_tries';
-    return { handle: me.handle, designer, holder, left, canTry: !why, why, open: !!(t && t.open), pb: t && t.pb != null ? t.pb : null,
+    return { handle: me.handle, hcp: me.hcp || 0, strokes: strokesFor(me.hcp || 0, c.holes.length), designer, holder, left, limit, oneChance: isNew(c) && designer && c.era === 0, canTry: !why, why, open: !!(t && t.open), pb: t && t.pb != null ? t.pb : null,
       takenFrom: !!(c.best && c.best.from && c.best.from.handle === me.handle) };
   }
   function bestView(c, now) {
     const b = c.best;
-    return b ? { handle: b.handle, name: b.name, total: b.total, scores: b.scores, at: b.at, since: b.since, held: now - b.since, trophy: !!b.trophy, from: b.from ? b.from.name : null } : null;
+    return b ? { handle: b.handle, name: b.name, total: b.total, net: netOf(b), strokes: b.strokes || 0, hcp: b.hcp || 0, scores: b.scores, at: b.at, since: b.since, held: now - b.since, trophy: !!b.trophy, from: b.from ? b.from.name : null } : null;
   }
   function view(c, me, now) {
     return {
-      id: c.id, name: c.name, by: c.by, at: c.at, courses: c.courses, order: c.order, holes: c.holes, era: c.era, retired: !!c.retired,
+      v: c.v || 1, id: c.id, name: c.name, by: c.by, at: c.at, courses: c.courses, order: c.order, theme: c.theme || null, holes: c.holes, era: c.era, retired: !!c.retired, live: !waiting(c),
       best: bestView(c, now),
-      log: (c.log || []).slice(0, LOG_SHOW).map((e) => ({ handle: e.handle, name: e.name, total: e.total, kind: e.kind, at: e.at })),
+      log: (c.log || []).slice(0, LOG_SHOW).map((e) => ({ handle: e.handle, name: e.name, total: e.total, net: e.net != null ? e.net : e.total, kind: e.kind, at: e.at })),
       trophies: (c.trophies || []).slice(-10).map((x) => ({ handle: x.handle, name: x.name, at: x.at })),
       challengers: Object.keys(c.players || {}).filter((h) => h !== c.by.handle).length,
       me: meView(c, me),
     };
   }
   function summary(c, me, now) {
-    return { id: c.id, name: c.name, by: c.by, courses: c.courses, holes: c.holes, era: c.era, retired: !!c.retired, best: bestView(c, now), me: meView(c, me) };
+    return { v: c.v || 1, id: c.id, name: c.name, by: c.by, courses: c.courses, order: c.order, theme: c.theme || null, holes: c.holes, era: c.era, retired: !!c.retired, live: !waiting(c), best: bestView(c, now), me: meView(c, me) };
   }
 
   /* ---------- storage ---------- */
@@ -223,12 +251,13 @@ export function createMasters({ store, verify, clock = () => Date.now(), wallet 
       const name = cleanCourseName(body.name);
       if (!name) fail(400, 'Give your course a name.', 'bad_name');
       if (name.length > NAME_LEN) fail(400, `Course names are up to ${NAME_LEN} characters.`, 'bad_name');
-      const courses = Array.isArray(body.courses) ? body.courses.map(String) : [];
-      if (courses.length !== 2 || courses[0] === courses[1] || !courses.every((x) => COURSE_ID.test(x))) fail(400, 'Pick two different courses.', 'bad_courses');
-      const order = String(body.order || '');
-      if (!ORDERS.includes(order)) fail(400, 'Pick an order for the holes.', 'bad_order');
       const holes = Array.isArray(body.holes) ? body.holes.map(String) : [];
-      if (holes.length !== HOLES || new Set(holes).size !== HOLES || !holes.every((x) => HOLE_ID.test(x))) fail(400, 'A Masters course is 18 different holes.', 'bad_holes');
+      if (holes.length !== HOLES || new Set(holes).size !== HOLES || !holes.every((x) => HOLE_ID.test(x))) fail(400, `A Masters course is ${HOLES} different holes.`, 'bad_holes');
+      const courses = Array.isArray(body.courses) ? [...new Set(body.courses.map(String))] : [];
+      if (!courses.length || courses.length > HOLES || !courses.every((x) => COURSE_ID.test(x))) fail(400, 'Those holes need the courses they come from.', 'bad_courses');
+      const theme = body.theme == null || body.theme === '' ? null : String(body.theme);
+      if (theme !== null && !THEME_ID.test(theme)) fail(400, 'That isn’t a theme.', 'bad_theme');
+      const order = theme ? 'theme' : 'pick';
       // claim a slot on the designer's shelf first, then write the course under a fresh id
       let id = '';
       for (let k = 0; k < 6 && !id; k++) { const x = rid(6); if (!(await store.get(mKey(x)))) id = x; }
@@ -239,7 +268,7 @@ export function createMasters({ store, verify, clock = () => Date.now(), wallet 
         if (p.courses.length >= MAX_COURSES) fail(409, `You have ${MAX_COURSES} courses. Remove one to build another.`, 'cap');
         p.courses.unshift(id);
       }, () => freshPlayer(me));
-      const c = { id, name, by: { handle: me.handle, name: me.name }, at: now, courses, order, holes, era: 0, best: null, players: {}, log: [], trophies: [], owed: [], retired: 0 };
+      const c = { v: 2, id, name, by: { handle: me.handle, name: me.name }, at: now, courses, order, theme, holes, era: 0, best: null, players: {}, log: [], trophies: [], owed: [], retired: 0, live: 0 };
       const made = await mutate(store, mKey(id), (x) => { if (x.id) fail(409, 'That link was just taken. Try again.'); Object.assign(x, c); }, () => ({}));
       return { now, course: view(made.data, me, now) };
     }
@@ -251,18 +280,20 @@ export function createMasters({ store, verify, clock = () => Date.now(), wallet 
         left = 0; noTries = false;                                     // mutate may run this again on a conflict
         const designer = c.by.handle === me.handle;
         if (c.retired) fail(409, 'The designer retired this course.', 'retired');
-        if (!c.best && !designer) fail(409, `${c.by.name} hasn’t set the course best yet. Practice it until they do.`, 'no_best');
-        if (c.best && c.best.handle === me.handle && !(designer && c.era === 0)) fail(409, 'You hold the course best. Send the link and let them come at you.', 'holder');
+        if (waiting(c) && !designer) fail(409, isNew(c) ? `${c.by.name} hasn’t played their one chance yet. Practice it until they do.` : `${c.by.name} hasn’t set the course best yet. Practice it until they do.`, 'no_best');
+        if (c.best && c.best.handle === me.handle && !(designer && c.era === 0 && !isNew(c))) fail(409, 'You hold the course best. Send the invite and let them come at you.', 'holder');
         c.players ||= {};
         const t = (c.players[me.handle] ||= { name: me.name, era: c.era, used: 0, open: null, openAt: 0, pb: null });
         t.name = me.name;
         if (t.open) burn(c, me.handle, t, now, 'quit');              // starting again burns the unfinished one
         if (t.era !== c.era) { t.era = c.era; t.used = 0; }
-        if (!c.best && designer && t.used >= TRIES) t.used = 0;
-        if (t.used >= TRIES) { noTries = true; return; }              // keep the burn, then say so
-        t.used++; t.open = tryId; t.openAt = now;
-        left = TRIES - t.used;
+        if (!isNew(c) && !c.best && designer && t.used >= TRIES) t.used = 0;
+        const limit = limitFor(c, me.handle);
+        if (t.used >= limit) { noTries = limit === DESIGNER_TRIES && designer ? 'one' : 'all'; return; }   // keep the burn, then say so
+        t.used++; t.open = tryId; t.openAt = now; t.openHcp = me.hcp || 0;
+        left = limit - t.used;
       });
+      if (noTries === 'one') fail(409, 'You used your one chance on this course. If someone takes the course best from its holder, you get three tries.', 'no_tries');
       if (noTries) fail(409, 'No tries left on this course. If someone else takes the course best, you get three fresh ones.', 'no_tries');
       if (c.by.handle !== me.handle) {
         await mutate(store, pKey(me.handle), (p) => {
@@ -281,29 +312,32 @@ export function createMasters({ store, verify, clock = () => Date.now(), wallet 
       const me = await who(body), id = idOf(body), tryId = String(body.try || '');
       if (!TRY_ID.test(tryId)) fail(400, 'Bad try.', 'bad_try');
       const scores = body.scores;
-      if (!Array.isArray(scores) || scores.length !== HOLES || !scores.every((s) => Number.isInteger(s) && s >= 1 && s <= MAX_SCORE)) fail(400, `Scores are ${HOLES} whole numbers from 1 to ${MAX_SCORE}.`, 'bad_scores');
+      if (!Array.isArray(scores) || !scores.every((s) => Number.isInteger(s) && s >= 1 && s <= MAX_SCORE)) fail(400, `Scores are whole numbers from 1 to ${MAX_SCORE}.`, 'bad_scores');
       const total = scores.reduce((a, b) => a + b, 0);
       let result = null;
       const c = await change(id, now, (c) => {
+        if (scores.length !== c.holes.length) fail(400, `Scores are ${c.holes.length} whole numbers from 1 to ${MAX_SCORE}.`, 'bad_scores');
         const t = c.players && c.players[me.handle];
         if (!t || t.open !== tryId) fail(409, 'That try already ended (a try left open four hours, or one you started again, is burned).', 'try_over');
-        t.open = null; t.openAt = 0; t.name = me.name;
-        t.pb = t.pb == null ? total : Math.min(t.pb, total);
-        const prev = c.best;
+        const hcp = cleanHcp(t.openHcp || 0), strokes = strokesFor(hcp, c.holes.length), net = total - strokes;
+        t.open = null; t.openAt = 0; t.openHcp = 0; t.name = me.name;
+        t.pb = t.pb == null ? net : Math.min(t.pb, net);
+        const prev = c.best, prevNet = prev ? netOf(prev) : null, mine = { total, net, hcp, strokes, scores };
         let kind;
-        if (!prev) { c.best = { handle: me.handle, name: me.name, total, scores, at: now, since: now, from: null, trophy: 0 }; kind = 'set'; }
+        if (!prev) { c.best = { handle: me.handle, name: me.name, ...mine, at: now, since: now, from: null, trophy: 0 }; kind = 'set'; }
         else if (prev.handle === me.handle) {
-          if (total < prev.total) { Object.assign(prev, { name: me.name, total, scores, at: now }); kind = 'lowered'; } else kind = 'missed';
-        } else if (total < prev.total) {
+          if (net < prevNet) { Object.assign(prev, { name: me.name, ...mine, at: now }); kind = 'lowered'; } else kind = 'missed';
+        } else if (net < prevNet) {
           owe(c, { kind: 'loot', key: `l:${c.id}:${c.era}:took:${me.handle}`, handle: me.handle, name: me.name, course: c.id, courseName: c.name, at: now, beat: prev.name });
           c.era += 1;
-          c.best = { handle: me.handle, name: me.name, total, scores, at: now, since: now, from: { handle: prev.handle, name: prev.name, total: prev.total }, trophy: 0 };
+          c.best = { handle: me.handle, name: me.name, ...mine, at: now, since: now, from: { handle: prev.handle, name: prev.name, total: prev.total, net: prevNet }, trophy: 0 };
           kind = 'took';
         } else kind = 'missed';
-        log(c, { handle: me.handle, name: me.name, total, kind, at: now });
+        log(c, { handle: me.handle, name: me.name, total, net, kind, at: now });
+        goLive(c, me.handle, now);
         if (kind === 'missed') missed(c, me.handle, t, now);
-        result = { total, kind, tie: !!(prev && prev.handle !== me.handle && total === prev.total), beat: kind === 'took' ? { name: prev.name, total: prev.total } : null,
-          holderGotLoot: kind === 'missed' && t.era === c.era && t.used >= TRIES && !!prev && prev.handle !== me.handle };
+        result = { total, net, strokes, hcp, kind, tie: !!(prev && prev.handle !== me.handle && net === prevNet), beat: kind === 'took' ? { name: prev.name, total: prev.total, net: prevNet } : null,
+          holderGotLoot: kind === 'missed' && t.era === c.era && t.used >= limitFor(c, me.handle) && !!prev && prev.handle !== me.handle };
       });
       return { now, result, course: view(c, me, now) };
     }

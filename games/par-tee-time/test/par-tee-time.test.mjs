@@ -97,46 +97,169 @@ function msetup({ wallet: withWallet = false } = {}) {
   const store = memoryStore();
   const wallet = withWallet ? createWallet({ store: memoryStore(), clock: () => now }) : null;
   const handleOf = (n) => n.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  const verify = async (name, code) => (KEYS[name] && KEYS[name] === code ? { name, handle: handleOf(name), salt: 'never-sent' } : null);
+  const HCP = {};
+  const verify = async (name, code) => (KEYS[name] && KEYS[name] === code ? { name, handle: handleOf(name), salt: 'never-sent', hcp: HCP[name] || 0 } : null);
   const api = createApi({ store, verify, clock: () => now, wallet });
   const lab = (name) => ({ name, code: KEYS[name] });
   const call = (what, body) => api.route('POST', '/masters/' + what, body);
-  const card = (total) => { const s = Array(18).fill(Math.floor(total / 18)); for (let i = 0, r = total - s[0] * 18; r > 0; i++, r--) s[i]++; return s; };
+  const card = (total, n = 18) => { const s = Array(n).fill(Math.floor(total / n)); for (let i = 0, r = total - s[0] * n; r > 0; i++, r--) s[i]++; return s; };
+  const holesOf = async (id) => (await store.get('m/' + id)).data.holes.length;
   const start = (id, who) => call('try', { id, lab: lab(who) });
-  const post = (id, who, t, total) => call('score', { id, lab: lab(who), try: t, scores: card(total) });
+  const post = async (id, who, t, total) => call('score', { id, lab: lab(who), try: t, scores: card(total, await holesOf(id)) });
   const round = async (id, who, total) => { const t = await start(id, who); return post(id, who, t.try, total); };
   const view = async (id, who) => (await call('course', { id, lab: who ? lab(who) : undefined })).course;
   const loot = async (who) => (await call('player', { handle: handleOf(who) })).loot;
-  const make = async (by = 'JJ-Capra', extra = {}) => (await call('create', { lab: lab(by), name: 'JJ’s Masters', courses: ['boardwalk', 'gauntlet'], order: 'alternate', holes: HOLE_IDS, ...extra })).course;
-  return { call, store, lab, card, start, post, round, view, loot, make, wallet, tick: (ms) => { now += ms; } };
+  // an 18-hole course from before Nov 13 2026 (they can't be built any more, but they still play)
+  let n = 0;
+  const make = async (by = 'JJ-Capra', extra = {}) => {
+    const id = 'old' + String(++n).padStart(3, '0'), h = handleOf(by);
+    await store.set('m/' + id, { id, name: 'JJ’s Masters', by: { handle: h, name: by }, at: now, courses: ['boardwalk', 'gauntlet'], order: 'alternate', holes: HOLE_IDS, era: 0, best: null, players: {}, log: [], trophies: [], owed: [], retired: 0, ...extra });
+    const p = (await store.get('mp/' + h))?.data || { handle: h, name: by, loot: 0, trophies: [], courses: [], played: [], keys: [] };
+    p.courses.unshift(id);
+    await store.set('mp/' + h, p);
+    return view(id, by);
+  };
+  // a course built now: 8 holes, any hole of any course
+  const make8 = async (by = 'JJ-Capra', extra = {}) => (await call('create', { lab: lab(by), name: 'JJ’s Clocks', holes: CLOCKS, courses: CLOCK_COURSES, theme: 'clock', ...extra })).course;
+  return { call, store, lab, card, start, post, round, view, loot, make, make8, wallet, HCP, tick: (ms) => { now += ms; } };
 }
 const HOLE_IDS = ['b-clock', 'g-pinball', 'b-highway', 'g-pool', 'b-moon', 'g-clock', 'b-lagoon', 'g-windmill', 'b-hardwood', 'g-highway', 'b-windmill', 'g-vault', 'b-pool', 'g-hardwood', 'b-vault', 'g-moon', 'b-pinball', 'g-lagoon'];
 const code = (c) => (e) => e.code === c;
+const CLOCKS = ['b-clock', 'e-clock', 'clock', 'm-clock', 'a-clock', 'h-clock', 'g-clock', 'l-clock'];
+const CLOCK_COURSES = ['boardwalk', 'pier', 'party', 'neon', 'afterhours', 'graveyard', 'gauntlet', 'boss'];
+const MIXED = ['b-highway', 'g-clock', 'pool', 'm-moon', 'a-vault', 'e-pinball', 'h-lagoon', 'g-windmill'];
 
-await test('masters: a signed-in player builds a course; guests and bad input are refused', async () => {
+await test('masters: new courses are 8 holes, any hole of any course, by theme or picked; bad input is refused', async () => {
   const g = msetup();
-  await assert.rejects(g.call('create', { name: 'x', courses: ['boardwalk', 'gauntlet'], order: 'alternate', holes: HOLE_IDS }), code('guest'));
-  await assert.rejects(g.call('create', { lab: { name: 'JJ-Capra', code: '999999' }, name: 'x', courses: ['boardwalk', 'gauntlet'], order: 'alternate', holes: HOLE_IDS }), code('bad_key'));
-  await assert.rejects(g.make('JJ-Capra', { name: 'x'.repeat(25) }), code('bad_name'));
-  await assert.rejects(g.make('JJ-Capra', { name: '  ' }), code('bad_name'));
-  await assert.rejects(g.make('JJ-Capra', { courses: ['boardwalk', 'boardwalk'] }), code('bad_courses'));
-  await assert.rejects(g.make('JJ-Capra', { courses: ['boardwalk'] }), code('bad_courses'));
-  await assert.rejects(g.make('JJ-Capra', { order: 'random' }), code('bad_order'));
-  await assert.rejects(g.make('JJ-Capra', { holes: HOLE_IDS.slice(0, 17) }), code('bad_holes'));
-  await assert.rejects(g.make('JJ-Capra', { holes: [...HOLE_IDS.slice(0, 17), HOLE_IDS[0]] }), code('bad_holes'), 'eighteen different holes');
-  await assert.rejects(g.make('JJ-Capra', { holes: [...HOLE_IDS.slice(0, 17), '<b>'] }), code('bad_holes'));
+  await assert.rejects(g.call('create', { name: 'x', holes: CLOCKS, courses: CLOCK_COURSES }), code('guest'));
+  await assert.rejects(g.call('create', { lab: { name: 'JJ-Capra', code: '999999' }, name: 'x', holes: CLOCKS, courses: CLOCK_COURSES }), code('bad_key'));
+  await assert.rejects(g.make8('JJ-Capra', { name: 'x'.repeat(25) }), code('bad_name'));
+  await assert.rejects(g.make8('JJ-Capra', { name: '  ' }), code('bad_name'));
+  await assert.rejects(g.make8('JJ-Capra', { holes: HOLE_IDS }), code('bad_holes'), 'no more 18-hole courses');
+  await assert.rejects(g.make8('JJ-Capra', { holes: CLOCKS.slice(0, 7) }), code('bad_holes'));
+  await assert.rejects(g.make8('JJ-Capra', { holes: [...CLOCKS.slice(0, 7), CLOCKS[0]] }), code('bad_holes'), 'eight different holes');
+  await assert.rejects(g.make8('JJ-Capra', { holes: [...CLOCKS.slice(0, 7), '<b>'] }), code('bad_holes'));
+  await assert.rejects(g.make8('JJ-Capra', { courses: [] }), code('bad_courses'));
+  await assert.rejects(g.make8('JJ-Capra', { theme: 'Clock!' }), code('bad_theme'));
+  const c = await g.make8();
+  assert.equal(c.v, 2);
+  assert.deepEqual(c.holes, CLOCKS);
+  assert.equal(c.theme, 'clock');
+  assert.equal(c.order, 'theme');
+  assert.equal(c.live, false, 'not live until the designer plays their one chance');
+  assert.equal(c.me.left, 1);
+  assert.equal(c.me.limit, 1);
+  assert.equal(c.me.oneChance, true);
+  const mix = await g.make8('JJ-Capra', { name: 'Grab Bag', holes: MIXED, courses: ['boardwalk', 'gauntlet', 'party', 'neon', 'afterhours', 'pier', 'graveyard'], theme: null });
+  assert.equal(mix.theme, null);
+  assert.equal(mix.order, 'pick');
+  assert.equal(mix.courses.length, 7);
+  const me = await g.call('me', { lab: g.lab('JJ-Capra') });
+  assert.deepEqual(me.courses.map((x) => x.id), [mix.id, c.id]);
+  assert.equal(me.courses[0].v, 2);
+  await assert.rejects(g.start(c.id, 'Roman'), (e) => e.code === 'no_best' && /one chance/.test(e.message), 'nobody else until the designer plays');
+});
+
+await test('masters: the designer has one chance; it sets the best, posts the course, and there is no second', async () => {
+  const g = msetup();
+  const { id } = await g.make8();
+  const t = await g.start(id, 'JJ-Capra');
+  assert.equal(t.left, 0);
+  await assert.rejects(g.call('score', { id, lab: g.lab('JJ-Capra'), try: t.try, scores: g.card(30, 18) }), code('bad_scores'), 'eight scores, not eighteen');
+  const r = await g.post(id, 'JJ-Capra', t.try, 31);
+  assert.equal(r.result.kind, 'set');
+  assert.equal(r.course.best.total, 31);
+  assert.equal(r.course.best.scores.length, 8);
+  assert.equal(r.course.live, true);
+  assert.equal(r.course.me.holder, true);
+  assert.equal(r.course.me.canTry, false);
+  await assert.rejects(g.start(id, 'JJ-Capra'), code('holder'), 'no lowering it: one chance');
+  // anyone with the invite: three tries, as before
+  const roman = await g.view(id, 'Roman');
+  assert.equal(roman.me.left, 3);
+  assert.equal(roman.me.limit, 3);
+  let x = await g.round(id, 'Roman', 31);
+  assert.equal(x.result.tie, true);
+  x = await g.round(id, 'Roman', 29);
+  assert.equal(x.result.kind, 'took');
+  assert.equal(await g.loot('Roman'), 1);
+  // the designer was dethroned: now three tries to take it back, like anyone
+  const jj = await g.view(id, 'JJ-Capra');
+  assert.equal(jj.me.left, 3);
+  assert.equal(jj.me.oneChance, false);
+  x = await g.round(id, 'JJ-Capra', 28);
+  assert.equal(x.result.kind, 'took');
+});
+
+await test('masters: a one chance that burns posts the course with no best; the first to finish sets it', async () => {
+  const g = msetup();
+  const { id } = await g.make8();
+  const t = await g.start(id, 'JJ-Capra');
+  let c = (await g.call('quit', { id, lab: g.lab('JJ-Capra'), try: t.try })).course;
+  assert.equal(c.live, true);
+  assert.equal(c.best, null);
+  assert.equal(c.me.left, 0);
+  await assert.rejects(g.start(id, 'JJ-Capra'), (e) => e.code === 'no_tries' && /one chance/.test(e.message), 'quitting doesn’t buy a second chance');
+  const r = await g.round(id, 'Roman', 34);
+  assert.equal(r.result.kind, 'set');
+  assert.equal(r.course.best.name, 'Roman');
+  // the same for a one chance left open four hours
+  const c2 = await g.make8('Kade', { name: 'Kade Cup' });
+  await g.start(c2.id, 'Kade');
+  g.tick(4 * 3600e3);
+  c = await g.view(c2.id, 'Roman');
+  assert.equal(c.live, true);
+  assert.equal(c.me.canTry, true);
+});
+
+await test('masters: handicaps: the net score takes the course best, and a try keeps the handicap it started with', async () => {
+  const g = msetup();
+  g.HCP['Roman'] = 6;                                   // 6 over 18 holes: 3 strokes off an 8-hole course
+  const { id } = await g.make8();
+  let r = await g.round(id, 'JJ-Capra', 26);           // scratch
+  assert.equal(r.course.best.net, 26);
+  assert.equal(r.course.best.strokes, 0);
+  const v = await g.view(id, 'Roman');
+  assert.equal(v.me.hcp, 6);
+  assert.equal(v.me.strokes, 3);
+  r = await g.round(id, 'Roman', 29);                   // net 26: a tie doesn't take it
+  assert.equal(r.result.net, 26);
+  assert.equal(r.result.strokes, 3);
+  assert.equal(r.result.tie, true);
+  assert.equal(r.result.kind, 'missed');
+  const t = await g.start(id, 'Roman');
+  g.HCP['Roman'] = 18;                                  // changing it mid-round changes nothing
+  r = await g.post(id, 'Roman', t.try, 28);             // net 25 on the handicap it started with
+  assert.equal(r.result.kind, 'took');
+  assert.equal(r.course.best.total, 28);
+  assert.equal(r.course.best.net, 25);
+  assert.equal(r.course.best.hcp, 6);
+  assert.deepEqual(r.result.beat, { name: 'JJ-Capra', total: 26, net: 26 });
+  assert.equal(r.course.log[0].net, 25);
+  // the scratch designer, three tries to take it back: 25 isn't enough, 24 is
+  r = await g.round(id, 'JJ-Capra', 25);
+  assert.equal(r.result.tie, true);
+  r = await g.round(id, 'JJ-Capra', 24);
+  assert.equal(r.result.kind, 'took');
+  // an old best (no net) counts as net = total
+  const old = await g.make();
+  await g.round(old.id, 'JJ-Capra', 54);
+  g.HCP['Roman'] = 4;                                   // 4 over 18 holes: 4 off an 18
+  r = await g.round(old.id, 'Roman', 57);
+  assert.equal(r.result.net, 53);
+  assert.equal(r.result.kind, 'took');
+});
+
+await test('masters: an 18-hole course from before Nov 13 2026 still opens and plays by its old rules', async () => {
+  const g = msetup();
   const c = await g.make();
-  assert.match(c.id, /^[a-z0-9]{6}$/);
-  assert.equal(c.name, 'JJ’s Masters');
+  assert.equal(c.v, 1);
   assert.deepEqual(c.holes, HOLE_IDS);
   assert.equal(c.best, null);
   assert.equal(c.me.designer, true);
-  assert.equal(c.me.left, 3);
+  assert.equal(c.me.left, 3, 'three tries for its designer, as it was');
   const me = await g.call('me', { lab: g.lab('JJ-Capra') });
   assert.deepEqual(me.courses.map((x) => x.id), [c.id], 'it shows under My courses');
-  assert.equal(me.loot, 0);
-  assert.deepEqual(me.trophies, []);
-  await assert.rejects(g.call('me', {}), code('guest'));
   const guest = await g.view(c.id);
   assert.equal(guest.me, null, 'anyone can read the course page');
   assert.equal(guest.holes.length, 18);
@@ -210,7 +333,7 @@ await test('masters: taking the best pays loot and gives the dethroned holder th
   await g.round(id, 'Roman', 54);
   let r = await g.round(id, 'Kade', 50);
   assert.equal(r.result.kind, 'took');
-  assert.deepEqual(r.result.beat, { name: 'JJ-Capra', total: 52 });
+  assert.deepEqual(r.result.beat, { name: 'JJ-Capra', total: 52, net: 52 });
   assert.equal(r.course.best.name, 'Kade');
   assert.equal(r.course.best.from, 'JJ-Capra');
   assert.equal(r.course.era, 1);
@@ -339,8 +462,8 @@ await test('masters: loot and trophies are paid once even if a payout is retried
 await test('masters: twelve courses a player; removing one frees a slot and retires its link', async () => {
   const g = msetup();
   const ids = [];
-  for (let k = 0; k < 12; k++) ids.push((await g.make('Roman', { name: 'Course ' + k })).id);
-  await assert.rejects(g.make('Roman', { name: 'One more' }), code('cap'));
+  for (let k = 0; k < 12; k++) ids.push((await g.make8('Roman', { name: 'Course ' + k })).id);
+  await assert.rejects(g.make8('Roman', { name: 'One more' }), code('cap'));
   await assert.rejects(g.call('remove', { id: ids[3], lab: g.lab('JJ-Capra') }), code('not_yours'));
   await g.call('remove', { id: ids[3], lab: g.lab('Roman') });
   const me = await g.call('me', { lab: g.lab('Roman') });
@@ -350,7 +473,7 @@ await test('masters: twelve courses a player; removing one frees a slot and reti
   assert.equal(v.retired, true, 'the link still opens');
   assert.equal(v.me.canTry, false);
   await assert.rejects(g.start(ids[3], 'Roman'), code('retired'));
-  await g.make('Roman', { name: 'One more' });
+  await g.make8('Roman', { name: 'One more' });
 });
 
 await test('masters: the function answers over HTTP', async () => {

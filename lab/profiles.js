@@ -11,7 +11,10 @@
  * this file: it calls verify() when a player submits something, and reads or
  * writes its own stats beside it.
  *
- * Key shape:   profile/<handle>   { name, handle, salt, codeHash, created, lastKeyAt }
+ * Key shape:   profile/<handle>   { name, handle, salt, codeHash, created, lastKeyAt, hcp, hcpAt }
+ *
+ * The one shared setting is the golf handicap (hcp, set at hcpAt; public/lab/handicap-rules.mjs),
+ * kept here because more than one place reads it and a weekly lock only works in one place.
  *
  * Keys are stored as a salted SHA-256. Six digits is not much entropy, but a
  * dump of the store should still not hand over every account.
@@ -23,6 +26,8 @@
  *
  *              fails/<handle>     { n, since }
  */
+
+import { HCP_MAX, cleanHcp, hcpNext } from '../public/lab/handicap-rules.mjs';
 
 /* Names are up to 17 characters (JC, Nov 2026), so every game can show the whole name. */
 export const NAME_MAX = 17;
@@ -58,8 +63,9 @@ function sameHash(a, b) {
   return diff === 0;
 }
 
-/* what a profile looks like to anyone: never the hash or the salt */
-export const publicIdentity = p => ({ name: p.name, handle: p.handle, created: p.created });
+/* what a profile looks like to anyone: never the hash or the salt (the golf handicap is public:
+ * it shows beside scores) */
+export const publicIdentity = p => ({ name: p.name, handle: p.handle, created: p.created, hcp: cleanHcp(p.hcp || 0), hcpAt: p.hcpAt || 0 });
 
 /* one message for a wrong name and a wrong key, so this cannot be used to discover names */
 const NO_MATCH = { status: 401, error: 'No profile with that name and key.' };
@@ -124,6 +130,22 @@ export function createProfiles(store, { now = () => Date.now() } = {}) {
       return { identity: publicIdentity(p), code };
     },
 
+    /* The golf handicap (public/lab/handicap-rules.mjs): 0 to HCP_MAX, changed at most once a week
+     * (the first time any time). Par-Tee Time's Masters reads it from the profile, so it can't be
+     * picked per round. */
+    async setHandicap(body) {
+      const p = await verify(body.name, body.code);
+      if (!p) return (await locked(handleOf(body.name))) ? LOCKED : NO_MATCH;
+      const n = Number(body.hcp);
+      if (!Number.isInteger(n) || n < 0 || n > HCP_MAX) return { status: 400, error: `A handicap is a whole number from 0 to ${HCP_MAX}.` };
+      if (n === cleanHcp(p.hcp || 0) && p.hcpAt) return { identity: publicIdentity(p) };
+      const next = hcpNext(p.hcpAt || 0);
+      if (next && now() < next) return { status: 429, error: 'You can change your handicap once a week.', next };
+      p.hcp = n; p.hcpAt = now();
+      await store.set(profileKey(p.handle), p);
+      return { identity: publicIdentity(p) };
+    },
+
     async get(name) {
       const p = await store.get(profileKey(handleOf(name)));
       return p ? { identity: publicIdentity(p) } : { status: 404, error: 'No profile by that name.' };
@@ -135,7 +157,8 @@ export function createProfiles(store, { now = () => Date.now() } = {}) {
  *   POST /api/profile/create   { name }         -> { name, handle, created, code }
  *   POST /api/profile/signin   { name, code }   -> { name, handle, created }
  *   POST /api/profile/key      { name, code }   -> { name, handle, created, code }
- *   GET  /api/profile?name=                     -> { name, handle, created }
+ *   POST /api/profile/handicap { name, code, hcp } -> { name, handle, created, hcp, hcpAt }
+ *   GET  /api/profile?name=                     -> { name, handle, created, hcp, hcpAt }
  * Like the games' routers it keys off the last path segment, so it works
  * behind any prefix. */
 export async function routeProfiles(profiles, method, pathname, query, body) {
@@ -144,6 +167,7 @@ export async function routeProfiles(profiles, method, pathname, query, body) {
   if (method === 'POST' && op === 'create') return flat(await profiles.create(body || {}));
   if (method === 'POST' && op === 'signin') return flat(await profiles.signIn(body || {}));
   if (method === 'POST' && op === 'key') return flat(await profiles.rotateKey(body || {}));
+  if (method === 'POST' && op === 'handicap') return flat(await profiles.setHandicap(body || {}));
   if (method === 'GET' && op === 'profile') return flat(await profiles.get(query.get('name')));
   return { status: 404, error: 'no such route: ' + method + ' /' + op };
 }

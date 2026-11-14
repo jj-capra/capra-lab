@@ -87,7 +87,7 @@ const screensaver = screensaverApi({ store: screensaverMemory(), role: (handle) 
 // (local only) so a test can reach a 7-day trophy
 let parTeeOffset = 0;
 const parTee = parTeeApi({ store: parTeeMemory(), clock: () => Date.now() + parTeeOffset, wallet,
-  verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
+  verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle, hcp: p.hcp || 0 } : null; } });
 
 // Mind Heist's handler speaks Request/Response (Netlify Functions v2)
 async function toFunction(req, res, handler) {

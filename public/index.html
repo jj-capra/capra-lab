@@ -351,6 +351,7 @@
     font: inherit; font-size: 17px; font-weight: 800; cursor: pointer;
   }
   .ob-btn:active { transform: translate(3px, 4px); box-shadow: 1px 1px 0 #05030A; }
+  .ob-hcp { margin: 14px 0 4px; }
   .ob-btn.alt { background: #221B2E; color: var(--paper); border-color: #05030A; }
   .ob-btn:disabled { background: #3A3446; color: rgba(255, 248, 236, 0.55); border-color: #05030A; box-shadow: none; cursor: not-allowed; transform: none; }
   .ob-btn:focus-visible, .ob-link:focus-visible, .ob-field input:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
@@ -673,6 +674,7 @@
       <img class="ob-card-img" id="profImg" alt="Your Capra Lab key card">
       <button class="ob-btn" id="profSave" type="button">Save to Photos</button>
       <p class="ob-status" id="profStatus" role="status" aria-live="polite"></p>
+      <lab-handicap class="ob-hcp"></lab-handicap>
       <button class="ob-btn alt" id="profClose" type="button">Back to the games</button>
       <button class="ob-link" id="profOut" type="button">Sign out of this device</button>
     </section>
@@ -687,5 +689,6 @@
 </div>
 
 <script type="module" src="/lab/hub.js"></script>
+<script type="module" src="/lab/handicap.js"></script>
 </body>
 </html>

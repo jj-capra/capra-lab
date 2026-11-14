@@ -231,6 +231,28 @@ h2.scr.mname { font-size: clamp(26px, 8.5vw, 34px); line-height: 1.05; overflow-
 .mholes { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-direction: column; }
 .mholes li { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 5px 2px; font-size: 14px; border-bottom: 1.5px dashed rgba(11,9,22,.18); }
 .mholes li:last-child { border-bottom: 0; }
+.mholes .rm { flex: none; margin-left: 2px; width: 34px; height: 34px; padding: 0; font-size: 15px; font-weight: 800; color: var(--ink); background: var(--cream); border: 2px solid var(--ink); border-radius: 50%; cursor: pointer; }
+.themes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.theme { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 8px 4px 7px; min-width: 0; cursor: pointer; color: var(--ink); background: var(--cream); border: 2.5px solid var(--ink); border-radius: 12px; box-shadow: 3px 3px 0 var(--ink); }
+.theme[aria-pressed="true"] { background: var(--gold-tint); box-shadow: 3px 3px 0 var(--ink), 0 0 0 3px var(--gold); }
+.theme:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.theme .te { font-size: 26px; line-height: 1.1; }
+.theme .tn { font-family: var(--title); font-size: clamp(13px, 4vw, 16px); line-height: 1.05; max-width: 100%; overflow-wrap: anywhere; }
+.theme .tp { font-family: var(--sfx); font-size: 12px; letter-spacing: .04em; color: var(--oxblood); }
+.bchips { display: flex; gap: 6px; overflow-x: auto; margin: 10px -2px 0; padding: 2px 2px 4px; scrollbar-width: none; }
+.bchips::-webkit-scrollbar { display: none; }
+.bchips button { flex: none; font-weight: 700; font-size: 13px; padding: 7px 11px; color: var(--ink); background: var(--cream); border: 2px solid var(--ink); border-radius: 999px; cursor: pointer; white-space: nowrap; }
+.bchips button[aria-pressed="true"] { background: var(--gold); }
+.bchips button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.holepick .pn { position: absolute; top: 5px; right: 5px; left: auto; bottom: auto; width: 26px; height: 26px; padding: 0; display: grid; place-items: center; font-family: var(--title); font-size: 15px; color: var(--ink); background: var(--gold); border: 2px solid var(--ink); border-radius: 50%; }
+.holepick.full { opacity: .55; }
+.hcpcard { margin-top: 12px; }
+.hstep { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 14px; font-weight: 700; }
+.hstep span { flex: 1; }
+.hstep button { width: 38px; height: 38px; padding: 0; border-radius: 50%; border: 2.5px solid var(--ink); background: var(--cream); font-size: 20px; font-weight: 800; color: var(--ink); cursor: pointer; }
+.hstep button:disabled { opacity: .35; }
+.hstep b { min-width: 72px; text-align: center; font-family: var(--title); font-size: 20px; }
+table.card td.nm small, table.card td.tot small.net { display: block; font-size: 10px; font-weight: 700; color: var(--oxblood); }
 .mholes .n { flex: none; width: 24px; text-align: right; font-family: var(--title); font-size: 16px; }
 .mholes .t { flex: none; font-family: var(--sfx); font-size: 12px; letter-spacing: .06em; padding: 0 6px; border: 2px solid var(--ink); border-radius: 6px; background: var(--green); color: var(--ink); }
 .mholes .t.medium { background: var(--sky); } .mholes .t.hard { background: var(--coral); } .mholes .t.expert { background: var(--oxblood); color: var(--cream); }
@@ -358,7 +380,7 @@ table.card td.tot { font-weight: 700; }
       <button class="btn big coral" id="goNpc">Play a hustler<small>Rookie, Hustler or Shark NPC</small></button>
       <button class="btn big sky" id="goLocal">Pass &amp; play<small>A friend on this device</small></button>
       <button class="btn big gold" id="goOnline">Online with a friend<small>Join each other by a four-letter code</small></button>
-      <button class="btn big green" id="goMasters">Masters Course<small>Mix two courses into 18, send it as a challenge</small></button>
+      <button class="btn big green" id="goMasters">Masters Course<small>Any 8 holes, by theme or your pick, sent as a challenge</small></button>
     </div>
     <div class="howto">
       <div class="panel"><b>AIM</b><p>Drag back from anywhere. The putter pulls like a pool cue.</p></div>
@@ -379,10 +401,12 @@ table.card td.tot { font-weight: 700; }
       <div class="prow">
         <div class="field"><label for="p1Name" id="p1Lbl">Your name</label><input class="txt" id="p1Name" maxlength="17"></div>
         <div class="swatches" id="p1Sw" style="margin-top:10px" role="group" aria-label="Your ball color"></div>
+        <lab-handicap compact class="hcpcard"></lab-handicap>
       </div>
       <div class="prow" id="p2Row">
         <div class="field"><label for="p2Name">Player two</label><input class="txt" id="p2Name" maxlength="17"></div>
         <div class="swatches" id="p2Sw" style="margin-top:10px" role="group" aria-label="Player two ball color"></div>
+        <div class="hstep" role="group" aria-label="Player two handicap"><span>⛳ Handicap</span><button type="button" id="p2HcpDn" aria-label="Lower">&minus;</button><b id="p2HcpV">Scratch</b><button type="button" id="p2HcpUp" aria-label="Higher">+</button></div>
       </div>
     </div>
     <div class="panel" id="oppPanel">
@@ -415,6 +439,7 @@ table.card td.tot { font-weight: 700; }
       <p class="kicker">YOUR BALL</p>
       <div class="field"><label for="onName">Your name</label><input class="txt" id="onName" maxlength="17"></div>
       <div class="swatches" id="onSw" style="margin-top:10px" role="group" aria-label="Your ball color"></div>
+      <lab-handicap compact class="hcpcard"></lab-handicap>
     </div>
     <div class="panel" id="onLobby">
       <p class="kicker" id="onKicker">START OR JOIN</p>
@@ -458,6 +483,7 @@ table.card td.tot { font-weight: 700; }
       <p class="mcab" id="msCabNums" aria-live="polite">🏆 0 · 💰 0</p>
       <p class="segnote">💰 Loot for every player you beat. 🏆 A trophy for holding a course best seven days straight.</p>
       <ul class="mlog" id="msTrophies" style="margin-top:8px"></ul>
+      <lab-handicap compact class="hcpcard"></lab-handicap>
     </div>
     <div class="panel" id="msMine" hidden>
       <p class="kicker" id="msMineK">MY COURSES</p>
@@ -471,11 +497,13 @@ table.card td.tot { font-weight: 700; }
     <div class="panel">
       <p class="kicker">HOW IT WORKS</p>
       <ul class="mrules">
-        <li>Mix two courses into 18 holes and set the course best with up to three tries.</li>
-        <li>Send the link. Anyone signed in gets three tries to beat it. Lower total wins; a tie doesn&rsquo;t.</li>
+        <li>Pick any 8 holes from any course, or go by theme: all eight highways, all eight clocks&hellip;</li>
+        <li>You get one chance to set the course best. Whatever you score is posted.</li>
+        <li>Send the invite. Anyone signed in gets three tries to beat it. Lower total wins; a tie doesn&rsquo;t.</li>
         <li>Take the best: 💰 1 loot, and whoever you took it from gets three fresh tries to take it back.</li>
         <li>Someone uses all three and misses: the holder gets 💰 1 loot.</li>
         <li>Hold the best seven days straight: 🏆 a trophy for that course.</li>
+        <li>Handicaps count: the net score (your score less your handicap&rsquo;s strokes) takes the course best.</li>
         <li>Practice is free and never counts. Quitting a try burns it.</li>
       </ul>
     </div>
@@ -488,23 +516,29 @@ table.card td.tot { font-weight: 700; }
     <button class="btn back" id="bdBack">&larr; Back</button>
     <h2 class="scr">Build a Masters</h2>
     <div class="panel">
-      <p class="kicker">PICK TWO COURSES</p>
-      <div class="courses" id="bdCourses" role="group" aria-label="Pick two courses"></div>
-      <p class="segnote" id="bdCourseNote">Tap two. Tap a third and the first one drops off.</p>
+      <p class="kicker">GO BY THEME</p>
+      <div class="themes" id="bdThemes" role="group" aria-label="Pick a theme"></div>
+      <p class="segnote">One tap: that hole from all eight courses, easiest course first.</p>
     </div>
     <div class="panel">
-      <p class="kicker">HOLE ORDER</p>
-      <div class="seg" id="bdOrder" role="group" aria-label="Hole order"></div>
-      <p class="segnote" id="bdOrderNote"></p>
-      <button class="btn sky" id="bdShuffle" hidden style="margin-top:10px;width:100%">Shuffle again</button>
-      <ol class="mholes" id="bdHoles" aria-label="The 18 holes in order"></ol>
+      <p class="kicker">OR PICK ANY 8</p>
+      <div class="seg" id="bdBrowse" role="group" aria-label="Browse the holes by"></div>
+      <div class="bchips" id="bdGroups" role="group" aria-label="Which holes to show"></div>
+      <div class="holegrid" id="bdGrid"></div>
+      <p class="segnote" id="bdGridNote">Tap a hole to add it, tap it again to take it off. They play in the order you pick them.</p>
+    </div>
+    <div class="panel">
+      <p class="kicker" id="bdHolesK">YOUR HOLES</p>
+      <ol class="mholes" id="bdHoles" aria-label="Your holes in order"></ol>
+      <p class="mempty" id="bdEmpty">Pick a theme or tap holes above.</p>
+      <div class="rowbtns" id="bdTools" style="margin-top:10px"><button class="btn" id="bdEasy" type="button">Easiest first</button><button class="btn" id="bdClear" type="button">Clear</button></div>
     </div>
     <div class="panel">
       <p class="kicker">NAME IT</p>
       <div class="field"><label for="bdName">Course name (up to 24 characters)</label><input class="txt" id="bdName" maxlength="24" autocomplete="off" enterkeyhint="done"></div>
     </div>
     <p class="mstatus warn" id="bdStatus" hidden role="status"></p>
-    <button class="btn big green" id="bdSave">Save course<small id="bdSaveSub">18 holes</small></button>
+    <button class="btn big green" id="bdSave">Save course<small id="bdSaveSub">Pick 8 holes</small></button>
   </div>
 </section>
 
@@ -526,7 +560,7 @@ table.card td.tot { font-weight: 700; }
       </div>
     </div>
     <div class="panel" id="mcSharePanel" hidden>
-      <p class="kicker">SEND THE CHALLENGE</p>
+      <p class="kicker">POST THE INVITE</p>
       <div id="mcShare"></div>
       <p class="segnote" id="mcShareNote"></p>
     </div>
@@ -535,7 +569,7 @@ table.card td.tot { font-weight: 700; }
       <ul class="mlog" id="mcLog"></ul>
     </div>
     <div class="panel" id="mcHolesPanel" hidden>
-      <p class="kicker">THE 18</p>
+      <p class="kicker" id="mcHolesK">THE HOLES</p>
       <ol class="mholes" id="mcHoles"></ol>
     </div>
     <div class="panel" id="mcTrophyPanel" hidden>
@@ -3118,6 +3152,29 @@ function relPar(s) {
   return { sc, par, rel: sc - par };
 }
 function relTxt(r) { return r === 0 ? 'E' : r > 0 ? '+' + r : '−' + Math.abs(r); }
+/* Handicaps (JC, Nov 13 2026: strokes off the score, kept on the Capra Lab profile; the numbers are
+   /lab/handicap-rules.mjs: strokes over 18 holes, a shorter round gets its share, rounded). Yours comes
+   from <lab-handicap> (it reads the profile and fires capra-lab:handicap); a friend on your phone picks
+   one in setup; online, each phone sends its own. When anyone in a match has one, the net decides. */
+const HCP_MAX = 18;
+const clampH = (h) => Math.max(0, Math.min(HCP_MAX, Math.round(Number(h) || 0)));
+const strokesFor = (h, n) => Math.round(clampH(h) * Math.max(0, n | 0) / 18);
+const hcpWord = (h) => (clampH(h) ? String(clampH(h)) : 'Scratch');
+const HCP = { me: 0 };
+(function () {
+  try {
+    const p = JSON.parse(localStorage.getItem('capra-lab.profile') || 'null'), c = JSON.parse(localStorage.getItem('capra-lab.hcp') || 'null');
+    if (p && p.code && c && c.handle === p.handle) HCP.me = clampH(c.hcp);
+  } catch (e) { /* storage blocked: scratch */ }
+  window.addEventListener('capra-lab:handicap', (e) => {
+    if (!e.detail) return;
+    HCP.me = clampH(e.detail.hcp);
+    if (NET.named) NET.named.presence({ hcp: HCP.me }).catch(() => {});
+  });
+})();
+const myHcp = () => (labMe() ? HCP.me : 0);
+const useNet = () => G.mode !== 'solo' && G.players.some(p => clampH(p.hcp) > 0);
+const netOf = (s) => relPar(s).sc - strokesFor(G.players[s].hcp, G.holes.length);
 
 /* ---------------- DOM helpers ---------------- */
 const show = (el, on = true) => { el.hidden = !on; };
@@ -3557,9 +3614,11 @@ function buildCard(tbl) {
   const hs = G.holes;
   let html = '<tr><th scope="col">HOLE</th>' + hs.map(h => `<th scope="col">${HOLE_DEFS[h].pos + 1}</th>`).join('') + '<th scope="col">TOT</th></tr>';
   html += '<tr class="par"><td class="nm">Par</td>' + hs.map(h => `<td>${HOLE_DEFS[h].par}</td>`).join('') + `<td>${hs.reduce((a, h) => a + HOLE_DEFS[h].par, 0)}</td></tr>`;
+  const net = useNet();
   G.players.forEach((p, s) => {
     const r = relPar(s);
-    html += `<tr><td class="nm">${esc(p.name)}</td>` + hs.map((h, k) => { const v = p.scores[k]; if (v == null) return '<td></td>'; const d = v - HOLE_DEFS[h].par; return `<td class="${d < 0 ? 'under' : d > 0 ? 'over' : ''}">${v}</td>`; }).join('') + `<td class="tot">${r.sc}<br><small>${relTxt(r.rel)}</small></td></tr>`;
+    html += `<tr><td class="nm">${esc(p.name)}${net ? `<small>hcp ${hcpWord(p.hcp)}</small>` : ''}</td>` + hs.map((h, k) => { const v = p.scores[k]; if (v == null) return '<td></td>'; const d = v - HOLE_DEFS[h].par; return `<td class="${d < 0 ? 'under' : d > 0 ? 'over' : ''}">${v}</td>`; }).join('')
+      + `<td class="tot">${r.sc}<br><small>${relTxt(r.rel)}</small>${net ? `<small class="net">net ${netOf(s)}</small>` : ''}</td></tr>`;
   });
   tbl.innerHTML = html;
 }
@@ -3573,8 +3632,9 @@ function finalCard() {
   if (G.mode === 'solo') return mastersFinal();
   G.state = 'final'; G.token++;
   show($('#mdCard'), false);
-  const a = relPar(0), b = relPar(1);
-  const win = a.sc < b.sc ? 0 : b.sc < a.sc ? 1 : -1;
+  const a = relPar(0), b = relPar(1), net = useNet();
+  const na = net ? netOf(0) : a.sc, nb = net ? netOf(1) : b.sc;   // with a handicap in the match, the net decides
+  const win = na < nb ? 0 : nb < na ? 1 : -1;
   const wn = win < 0 ? '' : G.players[win].name, youWin = /^you$/i.test(wn);
   // The lab wallet (/lab/wallet.js; JC, Nov 2026): amber for a round of three holes or more, a shard for
   // beating the hustler or a friend online. The server pays a round once and caps Par-Tee Time a day.
@@ -3583,7 +3643,9 @@ function finalCard() {
     CapraWallet.earn('par-tee-time', 'round', ref).then(() => { if (mine >= 0 && win === mine) CapraWallet.earn('par-tee-time', 'win', ref); });
   }
   $('#finalWin').textContent = win < 0 ? 'DEAD HEAT!' : youWin ? 'YOU WIN!' : `${wn.toUpperCase()} WINS!`;
-  $('#finalSub').textContent = win < 0 ? `Tied at ${a.sc}. Somebody call a rematch.` : `By ${Math.abs(a.sc - b.sc)} stroke${Math.abs(a.sc - b.sc) === 1 ? '' : 's'} · ${relTxt(win ? b.rel : a.rel)} on the card`;
+  $('#finalSub').textContent = net
+    ? (win < 0 ? `Tied at ${na} net (${a.sc}–${b.sc} on the card). Somebody call a rematch.` : `By ${Math.abs(na - nb)} on net · ${a.sc}–${b.sc} on the card`)
+    : (win < 0 ? `Tied at ${a.sc}. Somebody call a rematch.` : `By ${Math.abs(a.sc - b.sc)} stroke${Math.abs(a.sc - b.sc) === 1 ? '' : 's'} · ${relTxt(win ? b.rel : a.rel)} on the card`);
   buildCard($('#finalTable'));
   const q = $('#finalQuip');
   if (G.mode === 'npc') {
@@ -3609,7 +3671,7 @@ function finalShare(win) {
   const hs = G.holes, order = win === 1 ? [1, 0] : [0, 1];
   const row = s => hs.map((h, k) => { const v = G.players[s].scores[k]; if (v == null) return '⬛'; const d = v - HOLE_DEFS[h].par; return v === 1 ? '⚡' : d < 0 ? '🟩' : d > 0 ? '🟥' : '🟨'; }).join('');
   const text = CapraShare.text({ emoji: '⛳', game: 'Par-Tee Time', sub: hs.length === 1 ? HOLE_DEFS[hs[0]].name : hs.length + ' holes',
-    lines: order.map(s => { const r = relPar(s); return `${s === win ? '👑 ' : ''}${G.players[s].name} ${r.sc} (${relTxt(r.rel)})`; }),
+    lines: order.map(s => { const r = relPar(s); return `${s === win ? '👑 ' : ''}${G.players[s].name} ${r.sc} (${relTxt(r.rel)})${useNet() ? ` · net ${netOf(s)}` : ''}`; }),
     grid: order.map(s => `${row(s)} ${G.players[s].name}`) });
   box.innerHTML = '<lab-text-share></lab-text-share>';
   box.firstChild.set({ emoji: '⛳', title: 'Par-Tee Time', text, url: location.origin + '/par-tee-time/' });
@@ -3882,7 +3944,7 @@ async function netJoinRoom(code, role) {
     }
     Object.assign(NET, { named, code, role, seat: role === 'host' ? 0 : 1, matchId: '', lastShotN: 0, mySay: 0, lastSay: 0, opp: null, oppPeer: '', pend: null, queue: [], sent: [] });
     PREF.p1.name = cleanName($('#onName').value) || PREF.p1.name; savePrefs();
-    named.presence({ v: 1, role, name: PREF.p1.name, color: PREF.p1.color, match: null, shot: null, say: null }).catch(() => {});
+    named.presence({ v: 1, role, name: PREF.p1.name, color: PREF.p1.color, hcp: myHcp(), match: null, shot: null, say: null }).catch(() => {});
     NET.unsubs.push(named.onPeers(netPeers, () => { toast('The room connection dropped.'); }));
     $('#onCodeShow').textContent = code;
     renderOnline();
@@ -3936,7 +3998,7 @@ function netHostStart() {
   const holes = courseHoles(PREF.onCourseId, PREF.onCourse, 0), id = Math.random().toString(36).slice(2, 9);
   let c2 = BALL_COLORS.includes(NET.opp.color) ? NET.opp.color : BALL_COLORS[1];
   if (c2 === PREF.p1.color) c2 = BALL_COLORS.find(c => c !== PREF.p1.color && c !== '#f7f1e1') || BALL_COLORS[2];
-  const m = { id, holes, p: [{ n: PREF.p1.name, c: PREF.p1.color }, { n: cleanName(NET.opp.name) || 'Friend', c: c2 }] };
+  const m = { id, holes, p: [{ n: PREF.p1.name, c: PREF.p1.color, h: myHcp() }, { n: cleanName(NET.opp.name) || 'Friend', c: c2, h: clampH(NET.opp.hcp) }] };
   NET.named.presence({ match: m, shot: null, shots: [], say: null }).catch(() => {});
   startOnlineMatch(m);
 }
@@ -3944,7 +4006,7 @@ function startOnlineMatch(m) {
   const holes = (Array.isArray(m.holes) ? m.holes : []).map(n => n | 0).filter(n => n >= 0 && n < HOLE_DEFS.length).slice(0, 9);
   if (!holes.length || !Array.isArray(m.p) || m.p.length < 2) return;
   NET.matchId = String(m.id); NET.lastShotN = 0; NET.lastSay = 0; NET.mySay = 0; NET.pend = null; NET.queue = []; NET.sent = [];
-  const players = m.p.slice(0, 2).map(p => ({ name: cleanName(p.n) || 'Player', color: BALL_COLORS.includes(p.c) ? p.c : '#f7f1e1' }));
+  const players = m.p.slice(0, 2).map(p => ({ name: cleanName(p.n) || 'Player', color: BALL_COLORS.includes(p.c) ? p.c : '#f7f1e1', hcp: clampH(p.h) }));
   startMatch({ mode: 'online', id: NET.matchId, holes, players, courseKey: 'online' });
   if (NET.pend) tryRemoteShot();
 }
@@ -3991,6 +4053,13 @@ function segment(el, opts, cur, onPick) {
     el.appendChild(b);
   }
 }
+// Player two on your phone isn't signed in, so their handicap is picked here (kept on this phone).
+function paintP2Hcp() {
+  const h = clampH(PREF.p2.hcp);
+  $('#p2HcpV').textContent = hcpWord(h);
+  $('#p2HcpDn').disabled = h <= 0; $('#p2HcpUp').disabled = h >= HCP_MAX;
+}
+function bumpP2Hcp(d) { sfx.ui(); PREF.p2.hcp = clampH((PREF.p2.hcp || 0) + d); savePrefs(); paintP2Hcp(); }
 function courseCards(el, cur, onPick) {
   el.innerHTML = '';
   for (const c of COURSE_SETS) {
@@ -4038,6 +4107,7 @@ function openSetup(mode) {
   $('#p1Name').value = PREF.p1.name; $('#p2Name').value = PREF.p2.name;
   swatches($('#p1Sw'), PREF.p1.color, c => { PREF.p1.color = c; });
   swatches($('#p2Sw'), PREF.p2.color, c => { PREF.p2.color = c; });
+  paintP2Hcp();
   show($('#p2Row'), mode === 'local'); show($('#oppPanel'), mode === 'npc');
   const opps = $('#opps'); opps.innerHTML = '';
   for (const k of ['rookie', 'hustler', 'shark']) {
@@ -4063,10 +4133,10 @@ function teeOff() {
   if (SETUP.mode === 'npc') {
     const npc = NPCS[PREF.npc];
     let c = npc.ball; if (c === PREF.p1.color) c = BALL_COLORS.find(x => x !== PREF.p1.color && x !== '#f7f1e1');
-    players = [{ name: PREF.p1.name, color: PREF.p1.color }, { name: npc.name, color: c, isNPC: true, npc }];
+    players = [{ name: PREF.p1.name, color: PREF.p1.color, hcp: myHcp() }, { name: npc.name, color: c, isNPC: true, npc, hcp: 0 }];   // the hustler plays scratch
   } else {
     let c2 = PREF.p2.color; if (c2 === PREF.p1.color) c2 = BALL_COLORS.find(x => x !== PREF.p1.color);
-    players = [{ name: PREF.p1.name, color: PREF.p1.color }, { name: PREF.p2.name, color: c2 }];
+    players = [{ name: PREF.p1.name, color: PREF.p1.color, hcp: myHcp() }, { name: PREF.p2.name, color: c2, hcp: clampH(PREF.p2.hcp) }];
   }
   startMatch({ mode: SETUP.mode, holes, players, courseKey: PREF.course === 'one' ? 'h' + HOLE_DEFS[holes[0]].id : PREF.courseId + ':' + PREF.course });
 }
@@ -4087,16 +4157,27 @@ function openOnline() {
    the 18 alone (G.mode 'solo': the same turn, hole and scorecard machinery, one seat) and posts
    the hole scores at the end. Practice never touches the server. */
 const MS = { cab: null, course: null, now: 0, nowAt: 0, from: 'title', bad: false, tryId: '', pend: null, posting: false, busy: false,
-  build: { picks: [], order: 'alternate', seed: 1, holes: [] } };
+  build: { holes: [], by: 'theme', group: null, named: false } };
+/* Since Nov 13 2026 (JC: "They are only eight holes. They pick any hole of any course. They can go by
+   theme like the cars, clock and they have one chance and must post it for anyone to try by invite"):
+   a new course is any 8 holes (a theme fills the eight in one tap), the designer's one counted try is
+   the course best, and the course page puts the invite up front. Courses from before stay 18. */
+const M_PICK = 8;
+const M_THEMES = [['windmill', 'Windmill', '🌬️'], ['pool', 'Pool', '🎱'], ['lagoon', 'Lagoon', '🐙'], ['highway', 'Highway', '🚗'], ['vault', 'Vault', '🔐'],
+  ['hardwood', 'Hardwood', '🏀'], ['moon', 'Moon', '🌙'], ['pinball', 'Pinball', '🕹️'], ['clock', 'Clock', '🕰️']];
+const themeInfo = (id) => { const t = M_THEMES.find(x => x[0] === id); return t ? { id, name: t[1], emoji: t[2] } : { id, name: String(id || '').replace(/^./, ch => ch.toUpperCase()), emoji: '⛳' }; };
+// Every hole of a theme, easiest course first (COURSE_SETS is listed easiest to hardest)
+const themeAll = (t) => { const out = []; COURSE_SETS.forEach(c => c.idx.forEach(gi => { if (HOLE_DEFS[gi].theme === t) out.push(gi); })); return out; };
+// The theme's eight: one from each course (spread over the ladder if a theme ever has more than eight)
+function themeHoles(t) {
+  const all = themeAll(t);
+  if (all.length <= M_PICK) return all;
+  return Array.from({ length: M_PICK }, (_, k) => all[Math.round(k * (all.length - 1) / (M_PICK - 1))]);
+}
+const pickTheme = (idx) => { if (idx.length !== M_PICK) return null; const t = HOLE_DEFS[idx[0]].theme; return idx.every(i => HOLE_DEFS[i].theme === t) ? t : null; };
+const pickCourses = (idx) => [...new Set(idx.map(i => HOLE_DEFS[i].course))];
 const M_API = '/par-tee-time/api/masters/', M_PEND = 'partee.mpend', M_BACK = 'partee.mback', DAY = 864e5;
-const M_ORDERS = [['alternate', 'Alternate'], ['split', 'One then the other'], ['climb', 'Easiest to hardest'], ['shuffle', 'Shuffle']];
-const M_ORDER_SAY = { alternate: 'alternating', split: 'one then the other', climb: 'easiest to hardest', shuffle: 'shuffled' };
-const M_ORDER_NOTES = {
-  alternate: 'Hole 1 of each course, then hole 2 of each, and on up: the climb gets steeper as you swap courses.',
-  split: 'All nine of your first course, then all nine of the second.',
-  climb: 'All 18 by how hard they play: the easiest first, the hardest last.',
-  shuffle: 'A random mix. Shuffle again until you like it.',
-};
+const M_ORDER_SAY = { alternate: 'alternating', split: 'one then the other', climb: 'easiest to hardest', shuffle: 'shuffled' };   // courses from before Nov 13 2026
 function labMe() {
   try { const p = JSON.parse(localStorage.getItem('capra-lab.profile') || 'null'); return p && p.name && p.code ? { name: String(p.name), code: String(p.code) } : null; } catch (e) { return null; }
 }
@@ -4115,10 +4196,21 @@ async function mPost(what, body = {}) {
 const serverNow = () => (MS.now ? MS.now + (Date.now() - MS.nowAt) : Date.now());
 const holeIdx = (id) => HOLE_DEFS.findIndex(d => d.id === id);
 const mIdx = (c) => c.holes.map(holeIdx);
-const mPlayable = (c) => c.holes.length === 18 && c.holes.every(id => holeIdx(id) >= 0);
+const isNewM = (c) => (c.v || 1) >= 2;
+const mPlayable = (c) => c.holes.length === (isNewM(c) ? M_PICK : 18) && c.holes.every(id => holeIdx(id) >= 0);
 const mParOf = (c) => mIdx(c).reduce((a, i) => a + (i >= 0 ? HOLE_DEFS[i].par : 0), 0);
 const mCourseName = (id) => (COURSE_SETS.find(x => x.id === id) || { name: id }).name;
 const mPair = (c) => c.courses.map(mCourseName).join(' × ');
+// what a course is made of: a theme, a mix, or (from before) two courses
+// a score with its net, when a handicap took strokes off: "23 net (26)" or "26 (+3)"
+const netOfB = (b) => (b.net != null ? b.net : b.total);
+const bestTxt = (b, par) => (b.strokes ? `${netOfB(b)} net (${b.total})` : `${b.total} (${relTxt(b.total - par)})`);
+function mDesc(c) {
+  if (!isNewM(c)) return mPair(c);
+  if (c.theme) { const t = themeInfo(c.theme); return `${t.emoji} ${t.name} holes`; }
+  const n = (c.courses || []).length;
+  return n === 1 ? mCourseName(c.courses[0]) : `Mixed · ${n} courses`;
+}
 const mLink = (id) => location.origin + '/par-tee-time/#m=' + id;
 const triesTxt = (n) => (n === 1 ? '1 try' : n + ' tries');
 function spanTxt(ms) {
@@ -4142,7 +4234,7 @@ function mastersOrder(a, b, order, seed) {
   for (let k = 0; k < Math.max(A.length, B.length); k++) { if (A[k] != null) out.push(A[k]); if (B[k] != null) out.push(B[k]); }
   return out;
 }
-function mHoleList(ol, idx) {
+function mHoleList(ol, idx, onRemove) {
   ol.innerHTML = '';
   idx.forEach((gi, k) => {
     const li = document.createElement('li'), d = HOLE_DEFS[gi];
@@ -4152,6 +4244,12 @@ function mHoleList(ol, idx) {
     li.querySelector('.t').textContent = cs.tag.toUpperCase();
     li.querySelector('.hn').textContent = d.name;
     li.title = `${cs.name}, hole ${d.pos + 1}`;
+    if (onRemove) {
+      const x = document.createElement('button'); x.type = 'button'; x.className = 'rm'; x.textContent = '✕';
+      x.setAttribute('aria-label', `Take ${d.name} off`);
+      x.addEventListener('click', () => { sfx.ui(); onRemove(k); });
+      li.appendChild(x);
+    }
     ol.appendChild(li);
   });
 }
@@ -4175,7 +4273,9 @@ function mRowStatus(s) {
   const me = s.me || {};
   if (s.retired) return ['RETIRED', false];
   if (me.holder) return [me.canTry ? `YOU HOLD IT · ${triesTxt(me.left).toUpperCase()} TO LOWER IT` : 'YOU HOLD THE COURSE BEST', true];
-  if (!s.best) return me.designer ? [`SET THE BEST · ${triesTxt(me.left).toUpperCase()}`, true] : ['WAITING ON THE FIRST BEST', false];
+  if (!s.best && me.designer && me.oneChance) return me.left ? ['ONE CHANCE TO SET THE BEST', true] : ['POSTED · NO BEST YET', false];
+  if (!s.best && me.designer) return [`SET THE BEST · ${triesTxt(me.left).toUpperCase()}`, true];
+  if (!s.best) return s.live ? (me.left ? [`NO BEST YET · ${triesTxt(me.left).toUpperCase()}`, true] : ['OUT OF TRIES', false]) : ['WAITING ON THE FIRST BEST', false];
   if (me.takenFrom && me.left) return [`TAKEN FROM YOU · ${triesTxt(me.left).toUpperCase()} TO TAKE IT BACK`, true];
   if (me.left) return [`${triesTxt(me.left).toUpperCase()} LEFT`, true];
   return ['OUT OF TRIES', false];
@@ -4188,9 +4288,9 @@ function mRows(ul, list, mine) {
     b.innerHTML = '<span class="ms"></span><span class="mn"></span><span class="mc"></span><span class="mb"></span>';
     b.querySelector('.ms').textContent = st;
     b.querySelector('.mn').textContent = s.name;
-    b.querySelector('.mc').textContent = mPair(s) + (mine ? '' : ` · by ${s.by.name}`);
+    b.querySelector('.mc').textContent = mDesc(s) + (mine ? '' : ` · by ${s.by.name}`);
     const par = mParOf(s);
-    b.querySelector('.mb').textContent = s.best ? `Best: ${s.best.name} ${s.best.total} (${relTxt(s.best.total - par)}) · held ${spanTxt(s.best.held)}` : 'No course best yet';
+    b.querySelector('.mb').textContent = s.best ? `Best: ${s.best.name} ${bestTxt(s.best, par)} · held ${spanTxt(s.best.held)}` : 'No course best yet';
     b.addEventListener('click', () => { sfx.ui(); openCourse(s.id, 'masters'); });
     li.appendChild(b); ul.appendChild(li);
   }
@@ -4207,71 +4307,112 @@ function renderMasters() {
   });
   $('#msMineK').textContent = `MY COURSES · ${cab.courses.length} OF ${cab.max}`;
   mRows($('#msMineList'), cab.courses, true);
-  if (!cab.courses.length) $('#msMineList').innerHTML = '<li><p class="mempty">None yet. Build one, set the course best, then send it to anyone by text.</p></li>';
+  if (!cab.courses.length) $('#msMineList').innerHTML = '<li><p class="mempty">None yet. Build one, play your one chance, then post the invite.</p></li>';
   const full = cab.courses.length >= cab.max;
   $('#msBuild').disabled = full;
-  $('#msBuild').querySelector('small').textContent = full ? `You have ${cab.max}. Remove one to build another.` : 'Two courses, 18 holes, your order';
+  $('#msBuild').querySelector('small').textContent = full ? `You have ${cab.max}. Remove one to build another.` : 'Any 8 holes · by theme or your pick';
   show($('#msPlayed'), cab.played.length > 0);
   mRows($('#msPlayedList'), cab.played, false);
 }
 
 /* the builder */
-function defaultMName(n) { for (const s of [`${n}’s Masters`, `${n}’s Course`]) if (s.length <= 24) return s; return `${n.slice(0, 13)}’s Masters`; }
+function defaultMName(n, theme) {
+  const t = theme ? themeInfo(theme).name : '';
+  for (const x of t ? [`${n}’s ${t} Masters`, `${n}’s ${t}s`, `${t} Masters`] : [`${n}’s Masters`, `${n}’s Course`]) if (x.length <= 24) return x;
+  return `${n.slice(0, 13)}’s Masters`;
+}
 function openBuild() {
   const B = MS.build;
-  if (B.picks.length !== 2 || !B.picks.every(id => COURSE_SETS.some(c => c.id === id))) B.picks = [COURSE_SETS[0].id, COURSE_SETS[COURSE_SETS.length - 1].id];
-  B.seed = (Math.random() * 2147483647) | 0;
-  const lab = labMe();
-  $('#bdName').value = defaultMName(cleanName(lab ? lab.name : PREF.p1.name) || 'My');
+  B.holes = []; B.by = 'theme'; B.group = null; B.named = false;
+  $('#bdName').value = defaultMName(mBuilder());
   setMStatus($('#bdStatus'), '');
   mScreen('#scrBuild');
   renderBuild();
 }
+const mBuilder = () => { const lab = labMe(); return cleanName(lab ? lab.name : PREF.p1.name) || 'My'; };
+const thumbCache = new Map();
+function thumbOf(gi) {
+  if (!thumbCache.has(gi)) { const d = HOLE_DEFS[gi], h = compileHole(d); h.num = d.pos + 1; thumbCache.set(gi, holeThumb(h, 96, 139)); }
+  return thumbCache.get(gi);
+}
+function setPicks(idx) {
+  const B = MS.build;
+  B.holes = idx;
+  if (!B.named) $('#bdName').value = defaultMName(mBuilder(), pickTheme(idx));
+  setMStatus($('#bdStatus'), '');
+  renderBuild();
+}
 function renderBuild() {
-  const B = MS.build, el = $('#bdCourses');
-  el.innerHTML = '';
-  for (const c of COURSE_SETS) {
-    const k = B.picks.indexOf(c.id), b = document.createElement('button');
-    b.type = 'button'; b.className = 'ccard two t-' + c.tag.toLowerCase(); b.setAttribute('aria-pressed', String(k >= 0));
-    b.innerHTML = '<span class="tag"></span><span class="cn"></span><span class="cb"></span><span class="cp"></span>' + (k >= 0 ? `<span class="nth">${k ? '2ND' : '1ST'}</span>` : '');
-    b.querySelector('.tag').textContent = c.tag.toUpperCase(); b.querySelector('.cn').textContent = c.name; b.querySelector('.cb').textContent = c.blurb;
-    b.querySelector('.cp').textContent = 'Par ' + parOf(c.idx);
+  const B = MS.build, themes = M_THEMES.filter(([id]) => themeAll(id).length);
+  // go by theme: the eight of a kind in one tap
+  const th = $('#bdThemes'), cur = pickTheme(B.holes);
+  th.innerHTML = '';
+  for (const [id, name, emo] of themes) {
+    const idx = themeHoles(id), b = document.createElement('button');
+    b.type = 'button'; b.className = 'theme'; b.setAttribute('aria-pressed', String(cur === id));
+    b.innerHTML = '<span class="te" aria-hidden="true"></span><span class="tn"></span><span class="tp"></span>';
+    b.querySelector('.te').textContent = emo; b.querySelector('.tn').textContent = name;
+    b.querySelector('.tp').textContent = `par ${parOf(idx)}`;
+    b.setAttribute('aria-label', `${name}: ${idx.length} holes, par ${parOf(idx)}`);
+    b.addEventListener('click', () => { sfx.ui(); setPicks(idx.slice()); });
+    th.appendChild(b);
+  }
+  // or pick any 8: browse by theme or by course
+  segment($('#bdBrowse'), [['theme', 'By theme'], ['course', 'By course']], B.by, v => { B.by = v; B.group = null; renderBuild(); });
+  const groups = B.by === 'theme' ? themes.map(([id, name, emo]) => [id, `${emo} ${name}`]) : COURSE_SETS.map(c => [c.id, c.name]);
+  if (!groups.some(([id]) => id === B.group)) B.group = groups[0][0];
+  const gc = $('#bdGroups'); gc.innerHTML = '';
+  for (const [id, label] of groups) {
+    const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.setAttribute('aria-pressed', String(id === B.group));
+    b.addEventListener('click', () => { sfx.ui(); B.group = id; renderBuild(); });
+    gc.appendChild(b);
+  }
+  const grid = $('#bdGrid'), list = B.by === 'theme' ? themeAll(B.group) : courseById(B.group).idx, full = B.holes.length >= M_PICK;
+  grid.innerHTML = '';
+  for (const gi of list) {
+    const d = HOLE_DEFS[gi], k = B.holes.indexOf(gi), cs = courseById(d.course), b = document.createElement('button');
+    b.type = 'button'; b.className = 'holepick' + (full && k < 0 ? ' full' : ''); b.setAttribute('aria-pressed', String(k >= 0));
+    b.setAttribute('aria-label', `${d.name}, ${cs.name} hole ${d.pos + 1}, par ${d.par}${k >= 0 ? `, your hole ${k + 1}` : ''}`);
+    b.appendChild(thumbOf(gi));
+    const sp = document.createElement('span'); sp.textContent = B.by === 'theme' ? `${cs.tag} · ${d.name}` : `${d.pos + 1} · ${d.name}`; b.appendChild(sp);
+    if (k >= 0) { const n = document.createElement('span'); n.className = 'pn'; n.textContent = k + 1; b.appendChild(n); }
     b.addEventListener('click', () => {
       sfx.ui();
-      const i = B.picks.indexOf(c.id);
-      if (i >= 0) B.picks.splice(i, 1); else { B.picks.push(c.id); if (B.picks.length > 2) B.picks.shift(); }
-      renderBuild();
+      const at = B.holes.indexOf(gi);
+      if (at >= 0) return setPicks(B.holes.filter(x => x !== gi));
+      if (B.holes.length >= M_PICK) return setMStatus($('#bdStatus'), `That’s ${M_PICK}. Take one off to add another.`, true);
+      setPicks(B.holes.concat(gi));
     });
-    el.appendChild(b);
+    grid.appendChild(b);
   }
-  segment($('#bdOrder'), M_ORDERS, B.order, v => { B.order = v; renderBuild(); });
-  $('#bdOrderNote').textContent = M_ORDER_NOTES[B.order];
-  show($('#bdShuffle'), B.order === 'shuffle' && B.picks.length === 2);
-  B.holes = B.picks.length === 2 ? mastersOrder(B.picks[0], B.picks[1], B.order, B.seed) : [];
-  mHoleList($('#bdHoles'), B.holes);
-  show($('#bdHoles'), B.holes.length > 0);
-  $('#bdCourseNote').textContent = B.picks.length < 2 ? `Pick ${B.picks.length ? 'one more' : 'two'}.` : `${mCourseName(B.picks[0])} first, ${mCourseName(B.picks[1])} second. Tap a third and the first one drops off.`;
-  const ok = B.holes.length === 18;
+  // your holes, in the order they play
+  const n = B.holes.length;
+  $('#bdHolesK').textContent = `YOUR HOLES · ${n} OF ${M_PICK}`;
+  mHoleList($('#bdHoles'), B.holes, (k) => setPicks(B.holes.filter((_, i) => i !== k)));
+  show($('#bdHoles'), n > 0); show($('#bdEmpty'), !n); show($('#bdTools'), n > 0);
+  $('#bdEasy').disabled = n < 2;
+  const ok = n === M_PICK;
   $('#bdSave').disabled = !ok || MS.busy;
-  $('#bdSaveSub').textContent = ok ? `18 holes · par ${parOf(B.holes)} · three tries to set the best` : B.picks.length === 2 ? 'Those two don’t make 18 holes' : 'Pick two courses';
+  $('#bdSaveSub').textContent = ok ? `${M_PICK} holes · par ${parOf(B.holes)} · one chance to set the best` : `Pick ${M_PICK - n} more`;
 }
 async function saveBuild() {
   const B = MS.build, name = $('#bdName').value.replace(/[\u0000-\u001f\u007f<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 24);
   if (!name) return setMStatus($('#bdStatus'), 'Give your course a name.', true);
-  if (B.holes.length !== 18 || MS.busy) return;
+  if (B.holes.length !== M_PICK || MS.busy) return;
   MS.busy = true; $('#bdSave').disabled = true; setMStatus($('#bdStatus'), 'Saving…');
   try {
-    const j = await mPost('create', { name, courses: B.picks.slice(), order: B.order, holes: B.holes.map(i => HOLE_DEFS[i].id) });
+    const j = await mPost('create', { name, holes: B.holes.map(i => HOLE_DEFS[i].id), courses: pickCourses(B.holes), theme: pickTheme(B.holes) });
     MS.cab = null; sfx.cheer();
     openCourse(j.course.id, 'masters', j.course);
   } catch (e) { setMStatus($('#bdStatus'), e.message, true); }
-  finally { MS.busy = false; $('#bdSave').disabled = B.holes.length !== 18; }
+  finally { MS.busy = false; $('#bdSave').disabled = B.holes.length !== M_PICK; }
 }
 
 /* one course: the challenge link lands here */
 function challengeText(c) {
   const b = c.best, par = mParOf(c);
-  return CapraShare.text({ emoji: '⛳', game: 'Par-Tee Time', sub: c.name, lines: [`${mPair(c)} · 18 holes`, `Course best: ${b.name} ${b.total} (${relTxt(b.total - par)})`, 'Three tries to beat it.'] });
+  return CapraShare.text({ emoji: '⛳', game: 'Par-Tee Time', sub: c.name, lines: [`${mDesc(c)} · ${c.holes.length} holes`,
+    b ? `Course best: ${b.name} ${bestTxt(b, par)}` : 'No course best yet: the first to finish sets it.', b ? 'Three tries to beat it. Handicaps count.' : 'Three tries to set it. Handicaps count.'] });
 }
 async function openCourse(id, from, data) {
   if (from) MS.from = from;
@@ -4299,54 +4440,61 @@ function renderCourse() {
   setMStatus($('#mcStatus'), '');
   $('#mcName').textContent = c.name;
   ['#mcMain', '#mcLogPanel', '#mcHolesPanel'].forEach(s => show($(s)));
-  $('#mcKicker').textContent = mPair(c).toUpperCase();
-  $('#mcSub').textContent = `18 holes · par ${par} · ${M_ORDER_SAY[c.order] || c.order} · built by ${c.by.name}`;
+  $('#mcKicker').textContent = mDesc(c).toUpperCase();
+  $('#mcSub').textContent = isNewM(c) ? `${c.holes.length} holes · par ${par} · built by ${c.by.name}` : `18 holes · par ${par} · ${M_ORDER_SAY[c.order] || c.order} · built by ${c.by.name}`;
+  $('#mcHolesK').textContent = `THE ${c.holes.length}`;
   const bb = $('#mcBest');
   if (b) {
     const held = serverNow() - b.since;
     bb.innerHTML = '<span class="k">COURSE BEST</span><span class="v"></span><span class="w"></span><span class="h"></span>';
-    bb.querySelector('.v').innerHTML = `${b.total} <small>(${relTxt(b.total - par)})</small>`;
-    bb.querySelector('.w').textContent = b.name + (me && me.holder ? ' (you)' : '');
+    bb.querySelector('.v').innerHTML = b.strokes ? `${netOfB(b)} <small>net (${relTxt(netOfB(b) - par)})</small>` : `${b.total} <small>(${relTxt(b.total - par)})</small>`;
+    bb.querySelector('.w').textContent = b.name + (me && me.holder ? ' (you)' : '') + (b.strokes ? ` · shot ${b.total}, handicap ${b.hcp}` : '');
     bb.querySelector('.h').textContent = `Held ${spanTxt(held)}` + (b.trophy ? ' · 🏆 trophy earned' : ` · 🏆 in ${spanTxt(7 * DAY - held)}`) + (b.from ? ` · took it from ${b.from}` : '');
   } else {
     bb.innerHTML = '<span class="k">COURSE BEST</span><span class="v">&mdash;</span><span class="h"></span>';
-    bb.querySelector('.h').textContent = `Not set yet. ${c.by.name} sets it with up to three tries.`;
+    bb.querySelector('.h').textContent = !isNewM(c) ? `Not set yet. ${c.by.name} sets it with up to three tries.` : c.live ? 'Not set yet. The first to finish sets it.' : `Not set yet. ${c.by.name} gets one chance to set it.`;
   }
   let msg, warn = false;
   if (!playable) { msg = 'This course has a hole this version of Par-Tee Time doesn’t have. Reload the page to get the latest.'; warn = true; }
   else if (!signed) msg = MS.bad ? 'Your Capra Lab key didn’t match. Sign in again to take a try. You can practice now.' : 'Sign in to Capra Lab to take a try. You can practice it now.';
   else if (c.retired) msg = 'The designer retired this course. You can still practice it.';
-  else if (me.why === 'no_best') msg = `${c.by.name} hasn’t set the course best yet. Practice it until they do.`;
+  else if (me.why === 'no_best') msg = isNewM(c) ? `${c.by.name} hasn’t played their one chance yet. Practice it until they do.` : `${c.by.name} hasn’t set the course best yet. Practice it until they do.`;
+  else if (me.designer && !b && me.oneChance && me.left) msg = 'You get one chance to set the course best. Practice all you like first: whatever your one chance scores is the course best, posted for anyone to try by invite.';
+  else if (me.designer && !b && me.oneChance) msg = 'Your one chance burned before you finished. The course is posted anyway: the first to finish sets the best.';
   else if (me.designer && !b) msg = `Set the course best: you have ${triesTxt(me.left)}. Then send the challenge.`;
+  else if (!b && c.live && me.left) msg = `No course best yet: the first to finish sets it. You have ${triesTxt(me.left)}.`;
   else if (me.holder && me.canTry) msg = `You hold the course best. You have ${triesTxt(me.left)} left to lower it before anyone takes it.`;
-  else if (me.holder) msg = 'You hold the course best. Send the link and let them come at you.';
+  else if (me.holder) msg = 'You hold the course best. Post the invite and let them come at you.';
   else if (me.takenFrom && me.left) msg = `${b.name} took the course best from you. You have ${triesTxt(me.left)} to take it back.`;
   else if (me.left) msg = `You have ${triesTxt(me.left)} to beat it. Lower total wins; a tie doesn’t.`;
   else msg = 'No tries left. If someone else takes the course best, you get three fresh ones.';
-  if (signed && playable && me.pb != null && !me.holder) msg += ` Your best here: ${me.pb}.`;
+  if (signed && playable && me.pb != null && !me.holder) msg += ` Your best here: ${me.pb}${me.strokes ? ' net' : ''}.`;
+  if (signed && playable && me.strokes && !c.retired) msg += ` Your handicap ${me.hcp} takes ${me.strokes} stroke${me.strokes === 1 ? '' : 's'} off here.`;
   if (signed && me.open) msg += ' You have a try still open (a closed tab?): starting one now burns it.';
   $('#mcMe').textContent = msg; $('#mcMe').classList.toggle('warn', warn);
   const canTry = playable && signed && me.canTry;
   show($('#mcTry'), !!canTry);
-  if (canTry) $('#mcTrySub').textContent = `${me.left} of 3 left · starting uses one, quitting burns it`;
+  $('#mcTry').firstChild.nodeValue = canTry && me.oneChance ? 'Take your one chance' : 'Take a try';
+  if (canTry) $('#mcTrySub').textContent = me.oneChance ? 'It counts the moment you start · quitting burns it' : `${me.left} of ${me.limit || 3} left · starting uses one, quitting burns it`;
   show($('#mcSignIn'), playable && !signed && !c.retired);
   show($('#mcPractice'), playable);
   // the challenge: the lab's results card, ready to text
   const sh = $('#mcShare');
   sh.innerHTML = '';
-  show($('#mcSharePanel'), !!b || !!(me && me.designer));
-  if (b && !c.retired && window.CapraShare) {
+  const posted = !!b || (isNewM(c) && c.live);
+  show($('#mcSharePanel'), posted || !!(me && me.designer));
+  if (posted && !c.retired && window.CapraShare) {
     sh.innerHTML = '<lab-text-share></lab-text-share>';
     sh.firstChild.set({ emoji: '⛳', title: 'Par-Tee Time', text: challengeText(c), url: mLink(c.id) });
-    $('#mcShareNote').textContent = 'Anyone signed in to Capra Lab who opens the link gets three tries at it.';
-  } else $('#mcShareNote').textContent = c.retired ? 'Retired: no new tries.' : 'Set the course best first, then send the challenge.';
+    $('#mcShareNote').textContent = 'Anyone signed in to Capra Lab who opens the invite gets three tries at it.';
+  } else $('#mcShareNote').textContent = c.retired ? 'Retired: no new tries.' : isNewM(c) ? 'Take your one chance first. Then post the invite from here.' : 'Set the course best first, then send the challenge.';
   const say = { set: (t) => `set the course best · ${t}`, lowered: (t) => `lowered it to ${t}`, took: (t) => `took the course best · ${t}`, missed: (t) => `${t}`, quit: () => 'quit · try burned', timeout: () => 'left a try open · burned' };
   const lg = $('#mcLog'); lg.innerHTML = '';
   for (const e of c.log) {
     const li = document.createElement('li');
     li.innerHTML = '<span class="who"></span><span class="what"></span><span class="when"></span>';
     li.querySelector('.who').textContent = e.name + (me && e.handle === me.handle ? ' (you)' : '');
-    li.querySelector('.what').textContent = (say[e.kind] || say.missed)(e.total != null ? `${e.total} (${relTxt(e.total - par)})` : '');
+    li.querySelector('.what').textContent = (say[e.kind] || say.missed)(e.total == null ? '' : e.net != null && e.net !== e.total ? `${e.net} net (${e.total})` : `${e.total} (${relTxt(e.total - par)})`);
     li.querySelector('.when').textContent = agoTxt(e.at);
     lg.appendChild(li);
   }
@@ -4377,10 +4525,11 @@ async function takeTry() {
 function startSolo(kind, tryId) {
   const c = MS.course; if (!c || !mPlayable(c)) return;
   const lab = signedIn() ? labMe() : null, name = cleanName(lab ? lab.name : PREF.p1.name) || 'You';
-  const b = c.best ? { handle: c.best.handle, name: c.best.name, total: c.best.total, scores: c.best.scores } : null;
+  const b = c.best ? { handle: c.best.handle, name: c.best.name, total: c.best.total, net: netOfB(c.best), strokes: c.best.strokes || 0, scores: c.best.scores } : null;
+  const hcp = signedIn() && c.me ? clampH(c.me.hcp) : 0;
   MS.tryId = kind === 'try' ? tryId : '';
   au(); sfx.ui();
-  startMatch({ mode: 'solo', holes: mIdx(c), players: [{ name, color: PREF.p1.color }], courseKey: 'm:' + c.id, masters: { id: c.id, name: c.name, kind, tryId: MS.tryId, best: b } });
+  startMatch({ mode: 'solo', holes: mIdx(c), players: [{ name, color: PREF.p1.color, hcp }], courseKey: 'm:' + c.id, masters: { id: c.id, name: c.name, kind, tryId: MS.tryId, best: b, hcp } });
 }
 // Quit a Masters round to its course page; an unfinished try is burned on the server.
 function leaveSolo() {
@@ -4405,7 +4554,8 @@ function buildSoloCard(tbl) {
   const hs = G.holes, p = G.players[0], m = G.cfg.masters || {}, best = m.best && Array.isArray(m.best.scores) ? m.best : null;
   const r = relPar(0), thru = p.scores.filter(v => v != null).length;
   const cell = (v, k) => { if (v == null) return '<td></td>'; const d = v - HOLE_DEFS[hs[k]].par; return `<td class="${d < 0 ? 'under' : d > 0 ? 'over' : ''}">${v}</td>`; };
-  let html = `<caption>${esc(p.name)}: ${r.sc} (${relTxt(r.rel)})${thru && thru < hs.length ? ' thru ' + thru : ''}${best ? ` · course best ${esc(best.name)} ${best.total}` : ''}</caption>`;
+  const st = strokesFor(m.hcp, hs.length);
+  let html = `<caption>${esc(p.name)}: ${r.sc} (${relTxt(r.rel)})${st ? ` · net ${r.sc - st}` : ''}${thru && thru < hs.length ? ' thru ' + thru : ''}${best ? ` · course best ${esc(best.name)} ${best.strokes ? netOfB(best) + ' net' : best.total}` : ''}</caption>`;
   for (let from = 0; from < hs.length; from += 9) {
     const ks = hs.slice(from, from + 9).map((h, i) => from + i), sum = (f) => ks.reduce((a, k) => a + (f(k) || 0), 0);
     if (from) html += `<tr class="gap"><td colspan="${ks.length + 2}"></td></tr>`;
@@ -4428,8 +4578,9 @@ function mastersFinal() {
   $('#finalHome').textContent = practice ? 'Course page' : 'Home';
   if (practice) {
     const b = m.best;
-    $('#finalWin').textContent = b && r.sc < b.total ? 'UNDER THE BEST!' : 'PRACTICE DONE';
-    $('#finalSub').textContent = `${p.name} · ${r.sc} (${relTxt(r.rel)})${b ? ` · course best ${b.total}` : ''} · practice never counts`;
+    const st = strokesFor(m.hcp, G.holes.length), mine = r.sc - st;
+    $('#finalWin').textContent = b && mine < netOfB(b) ? 'UNDER THE BEST!' : 'PRACTICE DONE';
+    $('#finalSub').textContent = `${p.name} · ${r.sc} (${relTxt(r.rel)})${st ? ` · net ${mine}` : ''}${b ? ` · course best ${netOfB(b)}${b.strokes ? ' net' : ''}` : ''} · practice never counts`;
     mastersShare(null);
   } else {
     $('#finalWin').textContent = 'POSTING…';
@@ -4462,13 +4613,14 @@ async function postTry() {
 }
 function showTryResult(res, c) {
   const p = G.players[0], r = relPar(0), me = c.me || {}, b = c.best, left = me.left || 0, W = $('#finalWin'), S = $('#finalSub');
-  const score = `${r.sc} (${relTxt(r.rel)})`, leftTxt = left ? `${triesTxt(left)} left.` : 'No tries left.';
-  if (res.kind === 'took') { W.textContent = 'COURSE BEST!'; S.textContent = `${score} beats ${res.beat.name}’s ${res.beat.total} by ${res.beat.total - r.sc}. 💰 +1 loot. Now send it back.`; }
-  else if (res.kind === 'set') { W.textContent = 'BEST SET!'; S.textContent = `${p.name} ${score} is the course best. Send the challenge.`; }
+  const net = res.net != null ? res.net : r.sc, score = res.strokes ? `${net} net (${r.sc} less ${res.strokes})` : `${r.sc} (${relTxt(r.rel)})`, leftTxt = left ? `${triesTxt(left)} left.` : 'No tries left.';
+  const theirs = (x) => (x.net != null && x.net !== x.total ? `${x.net} net` : `${x.total}`);
+  if (res.kind === 'took') { W.textContent = 'COURSE BEST!'; S.textContent = `${score} beats ${res.beat.name}’s ${theirs(res.beat)} by ${(res.beat.net != null ? res.beat.net : res.beat.total) - net}. 💰 +1 loot. Now post the invite.`; }
+  else if (res.kind === 'set') { W.textContent = 'BEST SET!'; S.textContent = `${p.name} ${score} is the course best. Now post the invite: anyone who opens it gets three tries.`; }
   else if (res.kind === 'lowered') { W.textContent = 'LOWER BEST!'; S.textContent = `Your course best is down to ${score}.`; }
-  else if (b && b.handle === me.handle) { W.textContent = 'BEST STANDS'; S.textContent = `This try ${score}. Your course best is still ${b.total}. ${leftTxt}`; }
+  else if (b && b.handle === me.handle) { W.textContent = 'BEST STANDS'; S.textContent = `This try ${score}. Your course best is still ${theirs(b)}. ${leftTxt}`; }
   else if (res.tie) { W.textContent = 'TIED IT!'; S.textContent = `${score} ties ${b.name}. A tie doesn’t take it. ${leftTxt}${res.holderGotLoot ? ` ${b.name} gets 💰 1 loot.` : ''}`; }
-  else { W.textContent = left ? 'NOT YET' : 'OUT OF TRIES'; S.textContent = `${score} vs ${b.name}’s ${b.total}. ${leftTxt}${res.holderGotLoot ? ` ${b.name} gets 💰 1 loot for beating you.` : ''}`; }
+  else { W.textContent = left ? 'NOT YET' : 'OUT OF TRIES'; S.textContent = `${score} vs ${b.name}’s ${theirs(b)}. ${leftTxt}${res.holderGotLoot ? ` ${b.name} gets 💰 1 loot for beating you.` : ''}`; }
   if (['took', 'set', 'lowered'].includes(res.kind)) { impactFrame(res.kind === 'took' ? 'COURSE\nBEST!' : 'BEST\nSET!'); sfx.cheer(); }
   mastersShare(res);
 }
@@ -4478,16 +4630,18 @@ function mastersShare(res) {
   const box = $('#finalShare'); box.innerHTML = '';
   if (!window.CapraShare) return;
   const c = MS.course, m = G.cfg.masters, p = G.players[0], r = relPar(0), hs = G.holes;
-  const sc = (name, t) => `${name} ${t} (${relTxt(t - r.par)})`, mine = `${p.name} ${r.sc} (${relTxt(r.rel)})`;
+  const st = res ? res.strokes || 0 : strokesFor(m.hcp, hs.length), myNet = res && res.net != null ? res.net : r.sc - st;
+  const scB = (x) => (x.net != null && x.net !== x.total ? `${x.name} ${x.net} net (${x.total})` : `${x.name} ${x.total} (${relTxt(x.total - r.par)})`);
+  const mine = st ? `${p.name} ${myNet} net (${r.sc})` : `${p.name} ${r.sc} (${relTxt(r.rel)})`;
   const marks = (from) => hs.slice(from, from + 9).map((h, i) => { const v = p.scores[from + i]; if (v == null) return '⬛'; const d = v - HOLE_DEFS[h].par; return v === 1 ? '⚡' : d < 0 ? '🟩' : d > 0 ? '🟥' : '🟨'; }).join('');
   const me = res && c && c.me ? c.me : null, best = res ? c && c.best : m.best, left = me ? me.left : 0;
   let lines;
-  if (!res) lines = [`${mine} · practice`, best ? `Course best: ${sc(best.name, best.total)}` : null];
-  else if (res.kind === 'took') lines = [`👑 ${mine} took the course best`, sc(res.beat.name, res.beat.total), 'Three tries to beat it.'];
+  if (!res) lines = [`${mine} · practice`, best ? `Course best: ${scB(best)}` : null];
+  else if (res.kind === 'took') lines = [`👑 ${mine} took the course best`, scB(res.beat), 'Three tries to beat it.'];
   else if (res.kind === 'set') lines = [`👑 ${mine} set the course best`, 'Three tries to beat it.'];
   else if (res.kind === 'lowered') lines = [`👑 ${mine} lowered the course best`, 'Three tries to beat it.'];
-  else if (best && me && best.handle === me.handle) lines = [`👑 ${sc(best.name, best.total)} holds the course best`, `This try: ${r.sc} (${relTxt(r.rel)})`];
-  else lines = [`👑 ${sc(best.name, best.total)} holds the course best`, `${mine}${res.tie ? ' tied it' : ''} · ${left ? triesTxt(left) + ' left' : 'out of tries'}`];
+  else if (best && me && best.handle === me.handle) lines = [`👑 ${scB(best)} holds the course best`, `This try: ${st ? `${myNet} net (${r.sc})` : `${r.sc} (${relTxt(r.rel)})`}`];
+  else lines = [`👑 ${scB(best)} holds the course best`, `${mine}${res.tie ? ' tied it' : ''} · ${left ? triesTxt(left) + ' left' : 'out of tries'}`];
   const text = CapraShare.text({ emoji: '⛳', game: 'Par-Tee Time', sub: (c && c.name) || m.name, lines, grid: [marks(0), marks(9)].filter(Boolean) });
   box.innerHTML = '<lab-text-share></lab-text-share>';
   box.firstChild.set({ emoji: '⛳', title: 'Par-Tee Time', text, url: mLink(m.id) });
@@ -4512,10 +4666,13 @@ function bindMasters() {
   $('#msBuild').addEventListener('click', () => { au(); sfx.ui(); openBuild(); });
   $('#msSignIn').addEventListener('click', () => markBack(''));
   $('#bdBack').addEventListener('click', () => { sfx.ui(); openMasters(); });
-  $('#bdShuffle').addEventListener('click', () => { sfx.ui(); MS.build.seed = (Math.random() * 2147483647) | 0; renderBuild(); });
+  $('#p2HcpDn').addEventListener('click', () => bumpP2Hcp(-1));
+  $('#p2HcpUp').addEventListener('click', () => bumpP2Hcp(1));
+  $('#bdEasy').addEventListener('click', () => { sfx.ui(); setPicks(MS.build.holes.slice().sort((x, y) => HOLE_DEFS[x].diff - HOLE_DEFS[y].diff || HOLE_DEFS[x].par - HOLE_DEFS[y].par)); });
+  $('#bdClear').addEventListener('click', () => { sfx.ui(); setPicks([]); });
   $('#bdSave').addEventListener('click', () => { au(); saveBuild(); });
   $('#bdName').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('#bdName').blur(); } });
-  $('#bdName').addEventListener('input', () => { if (!MS.busy) setMStatus($('#bdStatus'), ''); });
+  $('#bdName').addEventListener('input', () => { MS.build.named = true; if (!MS.busy) setMStatus($('#bdStatus'), ''); });
   $('#mcBack').addEventListener('click', () => { sfx.ui(); if (MS.from === 'masters') openMasters(); else mScreen('#scrTitle'); });
   $('#mcTry').addEventListener('click', () => { au(); takeTry(); });
   $('#mcPractice').addEventListener('click', () => startSolo('practice'));
@@ -4653,4 +4810,5 @@ window.__partee = { G, RD, NET, PREF, HOLE_DEFS, compileHole, buildNav, makePlan
 <script src="/lab/share.js" defer></script>
 <script src="/lab/card-offer.js" type="module"></script>
 <script src="/lab/wallet.js" type="module"></script>
+<script src="/lab/handicap.js" type="module"></script>
 </body></html>

@@ -133,4 +133,28 @@ await test("Capra's Lab: the owner has master controls, the crew gets in, everyo
   assert.equal(await crew.role('jj-capra'), 'owner');
 });
 
+await test('the golf handicap: 0 to 18, public, set any time the first time, then once a week', async () => {
+  let t = Date.parse('2026-11-13T20:00:00Z');
+  const p = createProfiles(memoryStore(), { now: () => t });
+  const { code } = await p.create({ name: 'Kid Goat' });
+  const r = (body) => routeProfiles(p, 'POST', '/api/profile/handicap', q(), { name: 'Kid Goat', code, ...body });
+  assert.equal((await routeProfiles(p, 'GET', '/api/profile', q('name=kid goat'))).hcp, 0, 'scratch until set');
+  assert.equal((await r({ hcp: 19 })).status, 400);
+  assert.equal((await r({ hcp: 2.5 })).status, 400);
+  assert.equal((await r({ hcp: -1 })).status, 400);
+  assert.equal((await r({ hcp: 6, code: '000000' })).status, 401, 'never without the key');
+  const set = await r({ hcp: 12 });
+  assert.equal(set.hcp, 12);
+  assert.equal(set.hcpAt, t);
+  assert.ok(!('salt' in set) && !('codeHash' in set));
+  const pub = await routeProfiles(p, 'GET', '/api/profile', q('name=Kid Goat'));
+  assert.equal(pub.hcp, 12, 'anyone can see it: it shows beside scores');
+  t += 6 * 24 * 3600e3;
+  assert.equal((await r({ hcp: 8 })).status, 429, 'not again for a week');
+  assert.equal((await r({ hcp: 12 })).hcp, 12, 'the same number is fine');
+  t += 24 * 3600e3;
+  assert.equal((await r({ hcp: 8 })).hcp, 8);
+  assert.equal((await p.verify('Kid Goat', code)).hcp, 8, 'games read it from the profile');
+});
+
 console.log('\n' + passed + ' passed');
