@@ -169,9 +169,12 @@ class Pen {
     this.els = new Map();
     this.drag = null;
     this.locked = false;
+    // keep a finger on the pen from scrolling the page while it drags a piece
+    this.floor.addEventListener('touchmove', (e) => { if (this.drag) e.preventDefault(); }, { passive: false });
   }
   get board() { return this.boards[this.boards.length - 1]; }
   load(start) {
+    this.drop();
     this.start = start; this.boards = [start]; this.moves = []; this.locked = false;
     this.draw(true);
   }
@@ -192,8 +195,8 @@ class Pen {
     this.draw();
     return { board: this.board, moves };
   }
-  undo() { if (this.moves.length && !this.locked) { this.boards.pop(); this.moves.pop(); this.draw(); } }
-  reset() { this.boards = [this.start]; this.moves = []; this.locked = false; this.draw(true); }
+  undo() { if (this.moves.length && !this.locked) { this.drop(); this.boards.pop(); this.moves.pop(); this.draw(); } }
+  reset() { this.drop(); this.boards = [this.start]; this.moves = []; this.locked = false; this.draw(true); }
   // Point at the best next move: the piece pulses with an arrow, a dashed outline shows where it goes.
   showHint(id, d) {
     this.clearHint();
@@ -256,34 +259,67 @@ class Pen {
     if (won) { this.els.get('A').classList.add('out'); this.el.classList.add('won'); }
     else this.el.classList.remove('won');
   }
+  // A piece that can't go anywhere shakes, and the pieces that can move light up for a moment
+  // (JC, Nov 14 2026: on a crowded pen, "freeze when trying to move tiles").
   shake(id) {
     const el = this.els.get(id);
     el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
     sfx.bump();
+    const can = Object.keys(pieces(this.board)).filter((k) => { const r = reach(this.board, k); return r.min || r.max; });
+    for (const k of can) { const c = this.els.get(k); if (c) { c.classList.remove('can'); void c.offsetWidth; c.classList.add('can'); } }
+    clearTimeout(this.canT);
+    this.canT = setTimeout(() => { for (const c of this.els.values()) c.classList.remove('can'); }, 1300);
+    if (!Pen.told) { Pen.told = true; toast('That one’s boxed in. The glowing pieces can move: slide one out of the way first.'); }
   }
   down(e, id) {
-    if (this.locked || solved(this.board) || this.drag) return;
+    if (this.locked || solved(this.board)) return;
+    // A drag whose finger-up never arrived (a phone can swallow it) must not lock the pen.
+    if (this.drag) { if (e.pointerId === this.drag.pid || Date.now() - this.drag.last < 1500) return; this.drop(); }
     e.preventDefault();
     const p = pieces(this.board)[id];
     const { min, max } = reach(this.board, id);
     if (!min && !max) { this.shake(id); return; }
     const el = this.els.get(id);
     try { el.setPointerCapture(e.pointerId); } catch (err) { /* old browsers */ }
-    this.drag = { id, h: p.h, x0: e.clientX, y0: e.clientY, cell: this.floor.clientWidth / 6, min, max, off: 0, pid: e.pointerId, el };
+    this.drag = { id, h: p.h, x0: e.clientX, y0: e.clientY, cell: this.floor.clientWidth / 6, min, max, off: 0, pid: e.pointerId, el, last: Date.now() };
     el.classList.add('drag');
+    // the finger-up and moves count wherever they land, captured or not
+    this.onWinMove = (ev) => this.move(ev);
+    this.onWinUp = (ev) => this.up(ev);
+    window.addEventListener('pointermove', this.onWinMove);
+    window.addEventListener('pointerup', this.onWinUp);
+    window.addEventListener('pointercancel', this.onWinUp);
     sfx.pick();
   }
   move(e) {
     const g = this.drag;
     if (!g || e.pointerId !== g.pid) return;
+    g.last = Date.now();
     const raw = g.h ? e.clientX - g.x0 : e.clientY - g.y0;
+    if (!g.cell) g.cell = this.floor.clientWidth / 6 || 1;
     g.off = Math.max(g.min * g.cell, Math.min(g.max * g.cell, raw));
     g.el.style.transform = `translate${g.h ? 'X' : 'Y'}(${g.off}px)`;
+  }
+  // Let go of a drag without moving anything.
+  drop() {
+    const g = this.drag;
+    this.drag = null;
+    this.unlisten();
+    if (g) { g.el.classList.remove('drag'); g.el.style.transform = ''; }
+  }
+  unlisten() {
+    if (!this.onWinUp) return;
+    window.removeEventListener('pointermove', this.onWinMove);
+    window.removeEventListener('pointerup', this.onWinUp);
+    window.removeEventListener('pointercancel', this.onWinUp);
+    this.onWinMove = this.onWinUp = null;
   }
   up(e) {
     const g = this.drag;
     if (!g || e.pointerId !== g.pid) return;
     this.drag = null;
+    this.unlisten();
+    if (e.type === 'pointercancel' && !g.off) { g.el.classList.remove('drag'); g.el.style.transform = ''; return; }
     const d = Math.round(g.off / g.cell);
     // Hand the piece over from the finger to the grid without a jump: it lands on its new
     // square still offset by whatever the finger left over, then glides the rest of the way.
@@ -412,11 +448,12 @@ const Today = {
     return (this.guestDone || Date.now()) - this.guestStart;
   },
   clock() {
-    cancelAnimationFrame(this.tick);
+    // one clock loop at a time (each set() used to start another one alongside the last)
+    cancelAnimationFrame(this.tick); clearTimeout(this.tickT);
     const run = () => {
       const ms = this.elapsed();
       $('tTime').textContent = fmtTime(ms == null ? 0 : ms);
-      if (!this.done() && !$('play').hidden) this.tick = requestAnimationFrame(() => setTimeout(run, 90));
+      if (!this.done() && !$('play').hidden) this.tick = requestAnimationFrame(() => { this.tickT = setTimeout(run, 90); });
     };
     run();
   },
@@ -671,7 +708,7 @@ const Practice = {
 
 /* ---------- the trap house (Nov 14 2026) ----------
    A goat trap in someone's trophy room (/trophy-room/, lab/heist.js): the trophy room links here with
-   #trap=<raid>. The pen comes from the server (an Old Ram or G.O.A.T. pen), with no hints and no skip,
+   #trap=<raid>. The pen comes from the server (a Billy pen, about 15 moves), with no hints and no skip,
    a countdown and a move limit; the moves go to /api/heist/answer, which replays them, and the raider
    goes back to the trap house. The pen opens once: leaving part way and coming back trips the alarm. */
 const Trap = {

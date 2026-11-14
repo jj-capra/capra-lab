@@ -33,7 +33,8 @@ function rig(start) {
 const as = (who, extra = {}) => ({ lab: LAB[who], ...extra });
 
 test('every pen is a real puzzle, its par is exact, and each weekday has its tier', () => {
-  for (let i = 0; i < 14; i++) {
+  // the first two weeks climbed one tier a day, Kid to the G.O.A.T. (13 days: Nov 15 starts the easier week)
+  for (let i = 0; i < 13; i++) {
     const day = new Date(Date.UTC(2026, 10, 2 + i)).toISOString().slice(0, 10);
     const t = daily(day);
     assert.ok(isValid(t.board), day);
@@ -41,7 +42,21 @@ test('every pen is a real puzzle, its par is exact, and each weekday has its tie
     if (i < 7) assert.equal(solve(t.board).par, t.par, `${day} par`);
   }
   assert.equal(daily('2026-11-02').no, 1, 'pen numbers carry on from Vault Jam');
-  assert.equal(daily('2026-11-08').tierName, 'G.O.A.T.', 'Sunday is the hardest');
+  assert.equal(daily('2026-11-08').tierName, 'G.O.A.T.', 'Sunday was the hardest');
+  // from Nov 15 2026 the week tops out near 15 moves (JC: "too difficult"): Billy on the weekend
+  const week = ['Kid', 'Yearling', 'Yearling', 'Nanny', 'Nanny', 'Billy', 'Billy'];
+  const seen = new Set();
+  for (let i = 0; i < 28; i++) {
+    const day = new Date(Date.UTC(2026, 10, 16 + i)).toISOString().slice(0, 10);   // Mondays from Nov 16
+    const t = daily(day);
+    assert.equal(t.tierName, week[i % 7], day);
+    assert.equal(t.day, ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][i % 7]);
+    assert.ok(t.par <= 17, `${day} par ${t.par}`);
+    assert.ok(!seen.has(t.board), `${day}: a new pen, not the day before's`);
+    seen.add(t.board);
+  }
+  assert.equal(daily('2026-11-15').tierName, 'Billy', 'tomorrow is the first easier Sunday');
+  assert.equal(daily('2026-11-14').tierName, 'Old Ram', 'today keeps the pen people are playing');
   const pens = practicePens();
   assert.equal(pens.length, 200);
   assert.ok(pens[0][1] <= pens[199][1], 'practice pens go easiest first');

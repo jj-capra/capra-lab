@@ -16,15 +16,26 @@ export function dayDiff(a, b) {
 
 const split = (s) => ({ board: s.slice(0, 36), par: Number(s.slice(36)) });
 
-// Monday is the easiest tier, Sunday the hardest. Each tier cycles on its own.
+// The week's climb. Until Nov 14 2026 it went one tier a day, Kid on Monday to the G.O.A.T. on Sunday
+// (about 6 moves to about 32). JC, Nov 14 2026: "these daily challenges are too difficult"; his pick:
+// top out near 15 moves. From EASY_FROM: Monday Kid, Tuesday and Wednesday Yearling, Thursday and Friday
+// Nanny, Saturday and Sunday Billy. Old Ram and G.O.A.T. pens stay in practice and the trophy rooms.
+export const EASY_FROM = '2026-11-15';
+export const WEEK_TIERS = [0, 1, 1, 2, 2, 3, 3];
+const OLD_WEEK = [0, 1, 2, 3, 4, 5, 6];
+
+// Each tier cycles on its own; a tier on two days of the week takes two pens a week from its list.
 export function daily(today) {
   const n = dayDiff(EPOCH, today);
   const [y, m, d] = today.split('-').map(Number);
-  const tier = (new Date(Date.UTC(y, m - 1, d)).getUTCDay() + 6) % 7;
-  const list = DATA.tiers[tier];
+  const wd = (new Date(Date.UTC(y, m - 1, d)).getUTCDay() + 6) % 7;
   const week = Math.floor(n / 7);
-  const { board, par } = split(list[((week % list.length) + list.length) % list.length]);
-  return { no: n + 1, date: today, tier, day: DAY_NAMES[tier], tierName: TIER_NAMES[tier], board, par };
+  const ladder = dayDiff(EASY_FROM, today) >= 0 ? WEEK_TIERS : OLD_WEEK;
+  const tier = ladder[wd];
+  const slots = ladder.filter((t) => t === tier).length, slot = ladder.slice(0, wd).filter((t) => t === tier).length;
+  const list = DATA.tiers[tier], k = week * slots + slot;
+  const { board, par } = split(list[((k % list.length) + list.length) % list.length]);
+  return { no: n + 1, date: today, tier, day: DAY_NAMES[wd], tierName: TIER_NAMES[tier], board, par };
 }
 
 // Practice pens for the page: [board, par] pairs, easiest first.

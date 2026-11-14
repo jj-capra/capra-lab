@@ -20,8 +20,8 @@ export const TRAPS = {
     rule: 'Three high school Three Clue Crew rounds, 20 seconds each. Two wrong and the alarm goes.' },
   spin:   { name: 'Spin Vault', what: 'A Masterpiece puzzle', emoji: '🌀', game: 'Puzzled Spin', color: '#29D3F0',
     rule: 'Spin the tiles of a Puzzled Spin Masterpiece back into the picture before the clock runs out.' },
-  goat:   { name: 'Goat Pen', what: 'An impossible pen', emoji: '🐐', game: 'Goat Getaway', color: '#FFD23F',
-    rule: 'Get the goat out of an Old Ram or G.O.A.T. pen in 5 minutes, without going way over par. No hints.' },
+  goat:   { name: 'Goat Pen', what: 'A Billy pen', emoji: '🐐', game: 'Goat Getaway', color: '#FFD23F',
+    rule: 'Get the goat out of a Billy pen (about 15 moves) in 5 minutes, without going way over par. No hints.' },
   golf:   { name: 'Sand Trap', what: 'A tough hole', emoji: '⛳', game: 'Par-Tee Time', color: '#FF7A59',
     rule: 'Sink a hole from the Hard courses or tougher, at par or better.' },
 };
@@ -30,7 +30,9 @@ export const KINDS = Object.keys(TRAPS);
 // The numbers each trap plays by (the server checks every one).
 export const QUIZ = { n: 3, strikes: 2, secs: 20, grace: 4 };     // trivia and clues
 export const SPIN = { tier: 4, stage: 4, grace: 4 };              // Puzzled Spin: High School's last picture (a Masterpiece)
-export const GOAT = { tiers: [5, 6], secs: 300, over: 12, grace: 5 };  // Old Ram and G.O.A.T. pens; moves at most par + over
+// Billy pens (14 to 17 moves), the top of Goat Getaway's daily week since JC found the old top (Old Ram and
+// G.O.A.T., up to 36 moves) too hard, Nov 14 2026; moves at most par + over
+export const GOAT = { tiers: [3], secs: 300, over: 12, grace: 5 };
 export const GOLF = { secs: 900, perStroke: 2500 };               // a stroke takes at least this long, start to rest
 export const RAID_MS = 60 * 60e3;                                 // a break-in has an hour, all traps together
 export const PICK_MS = 15 * 60e3;                                 // and a quarter of an hour inside to choose

@@ -206,6 +206,8 @@
   .pc.h svg { inset: 5% 1.6%; width: 96.8%; height: 90%; }
   .pc.v svg { inset: 1.6% 5%; width: 90%; height: 96.8%; }
   .pc.drag { z-index: 5; transition: none; }
+  .pc.can svg { animation: canGo 1.3s ease-out; }
+  @keyframes canGo { 0%, 60% { filter: drop-shadow(0 0 0 #5BE38A) drop-shadow(0 0 7px #5BE38A) brightness(1.15); } 100% { filter: none; } }
   .pc.drag svg { filter: drop-shadow(6px 9px 0 rgba(5, 3, 10, 0.4)); transform: scale(1.03); }
   .pc.goat { z-index: 2; }
   .pc.goat.drag { z-index: 6; }
@@ -396,7 +398,7 @@
     <ul>
       <li>Drag anything along its length to clear a path, then get the goat out the red gate. Nothing turns or jumps.</li>
       <li>One slide, any distance, is one move. <b>Par</b> is the fewest moves it can be done in.</li>
-      <li><b>Today’s pen</b> is the same for everyone: a Kid’s pen on Monday, up to the G.O.A.T. on Sunday.</li>
+      <li><b>Today’s pen</b> is the same for everyone: a Kid’s pen on Monday, climbing to a Billy pen (about 15 moves) on the weekend. The really tough pens are in Practice on Hard.</li>
       <li>The clock starts when you open the pen. Your first getaway is your time.</li>
       <li>Get out: <b>+1 💎</b>. Do it in par: <b>+1 more</b>, even on another try. Diamonds go to Mind Heist, for its daily card draw.</li>
       <li>The fastest getaway of the day wins a <b>Blue Ribbon</b> at midnight (Pacific time).</li>

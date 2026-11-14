@@ -60,10 +60,10 @@ async function play(g, who, raid, right = true) {
   return (await g.call('answer', { ...who, raid: raid.id, strokes: right ? t.hole.par : t.hole.par + 2 })).raid;
 }
 
-await test('the library: hard questions, tough holes, impossible pens', () => {
+await test('the library: hard questions, tough holes, Billy pens', () => {
   assert.ok(TRIVIA.length >= 100 && TRIVIA.every((q) => q.v >= 400 && q.o.length === 4 && q.a >= 0 && q.a < 4));
   assert.ok(HOLES.length >= 10 && HOLES.every((h) => h.par >= 3));
-  assert.ok(GOAT_PENS.length >= 30 && GOAT_PENS.every((p) => p.board.length === 36 && p.par >= 15));
+  assert.ok(GOAT_PENS.length >= 40 && GOAT_PENS.every((p) => p.board.length === 36 && p.par >= 14 && p.par <= 17));
   assert.ok(ROUNDS[4].length >= 50);
   assert.deepEqual([...KINDS].sort(), ['clues', 'goat', 'golf', 'spin', 'trivia']);
   assert.deepEqual(cleanTraps(['golf', 'golf', 'nope']).map((t) => t.kind), ['golf', 'golf', 'goat', 'golf']);

@@ -12,8 +12,12 @@ on from Vault Jam (2026-11-02 = No. 1), on the same puzzles.
   slides only along its length; one slide of any distance is one move; slides of the same piece
   in a row merge into one move. **Par** is the fewest moves (from the solver). Don't call it
   Rush Hour (a trademark).
-- **Today's pen**: one a day, the same for everyone, Pacific time. Monday is Kid level, then
-  Yearling, Nanny, Billy, Mountain Goat, Old Ram, and Sunday is the G.O.A.T.
+- **Today's pen**: one a day, the same for everyone, Pacific time. Until Nov 14 2026 Monday was Kid
+  level, then Yearling, Nanny, Billy, Mountain Goat, Old Ram, and Sunday the G.O.A.T. (about 6 to 32
+  moves). JC, Nov 14 2026: "these daily challenges are too difficult"; his pick: top out near 15. From
+  Nov 15 (`EASY_FROM`, `WEEK_TIERS` in `server/daily.js`): Monday Kid, Tuesday and Wednesday Yearling,
+  Thursday and Friday Nanny, Saturday and Sunday Billy (a tier on two days takes two pens a week). The
+  tough pens stay in Practice (Hard). Older dates keep the old climb, so past pens don't change.
 - The board stays hidden until **Open the pen**; the server starts the clock then. The **first**
   getaway is your time. The server replays the moves before believing anything.
 - **The lab wallet** (JC, Nov 12 2026: diamonds, amber and shards for the whole lab, paid by how
@@ -36,7 +40,7 @@ on from Vault Jam (2026-11-02 = No. 1), on the same puzzles.
   are worked out on the phone and cost nothing.
 - **The trophy rooms' Goat Pen trap** (Nov 14 2026, lab/heist.js): `/goat-getaway/#trap=<raid>` skips today's
   pen and practice and shows the practice board without levels, hints or skip: the pen comes from
-  `/api/heist/raid` (an Old Ram or G.O.A.T. pen), the clock counts down, the move limit shows, and a
+  `/api/heist/raid` (a Billy pen, about 15 moves), the clock counts down, the move limit shows, and a
   getaway posts the moves to `/api/heist/answer`, which replays them. Then Back to the trap house.
 - **Practice**: endless pens (`practice.json`, written by the build), Easy / Medium / Hard, no
   rewards, a clock that starts on the first move.
@@ -68,7 +72,11 @@ on from Vault Jam (2026-11-02 = No. 1), on the same puzzles.
   `env(safe-area-inset-top)` plus a margin. While a board is up the title shrinks so the whole
   pen fits on a 393 × 659 Safari screen.
 - No `alert`/`confirm`/`prompt`. The pen is `touch-action: none` for dragging; pieces also move
-  with the arrow keys.
+  with the arrow keys. Dragging is built to survive a phone swallowing the finger-up (JC, Nov 14
+  2026: today's pen "will freeze when trying to move tiles"): the drag listens on the window too, a
+  drag with no news for 1.5 s gives way to a new touch, and a touchmove on the pen never scrolls the
+  page. A piece that can't move shakes and the pieces that can move glow for a moment (the first
+  time, a toast says so).
 
 ## Develop and test
 

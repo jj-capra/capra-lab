@@ -270,7 +270,7 @@ async function dare(handle) {
 function trapLabel(t, lib) {
   if (t.kind === 'golf' && t.pick) { const x = lib.holes.find((hh) => hh.id === t.pick); if (x) return `${x.name} · par ${x.par}`; }
   if (t.kind === 'goat' && t.pick != null && lib.pens[t.pick] != null) return `Pen ${t.pick + 1} · par ${lib.pens[t.pick]}`;
-  return t.kind === 'golf' ? 'A random tough hole' : t.kind === 'goat' ? 'A random impossible pen' : TRAPS[t.kind].what;
+  return t.kind === 'golf' ? 'A random tough hole' : t.kind === 'goat' ? 'A random Billy pen' : TRAPS[t.kind].what;
 }
 function renderEditor(room) {
   const lib = room.library || { holes: [], pens: [] };
@@ -300,7 +300,7 @@ function renderEditor(room) {
       const sub = cur.kind === 'golf'
         ? `<p class="kick" style="margin-top:6px">Which hole</p><div class="pick-list" role="radiogroup">${[['', 'A random tough hole every raid']].concat(lib.holes.map((x) => [x.id, `${x.name} · ${x.course} · par ${x.par}`])).map(([v, l]) => `<button type="button" role="radio" data-v="${esc(v)}" aria-checked="${(cur.pick || '') === v}">${esc(l)}</button>`).join('')}</div>`
         : cur.kind === 'goat'
-          ? `<p class="kick" style="margin-top:6px">Which pen</p><div class="pick-list" role="radiogroup">${[['', 'A random Old Ram or G.O.A.T. pen every raid']].concat(lib.pens.map((par, k) => [String(k), `Pen ${k + 1} · par ${par}${par >= 28 ? ' · brutal' : ''}`])).map(([v, l]) => `<button type="button" role="radio" data-v="${v}" aria-checked="${(cur.pick == null ? '' : String(cur.pick)) === v}">${esc(l)}</button>`).join('')}</div>`
+          ? `<p class="kick" style="margin-top:6px">Which pen</p><div class="pick-list" role="radiogroup">${[['', 'A random Billy pen every raid']].concat(lib.pens.map((par, k) => [String(k), `Pen ${k + 1} · par ${par}${par >= 17 ? ' · toughest' : ''}`])).map(([v, l]) => `<button type="button" role="radio" data-v="${v}" aria-checked="${(cur.pick == null ? '' : String(cur.pick)) === v}">${esc(l)}</button>`).join('')}</div>`
           : '';
       sheet(`<h3>TRAP ${i + 1}</h3>
         <div class="choices" role="radiogroup">${KINDS.map((k) => { const K = TRAPS[k]; return `<button type="button" class="choice" role="radio" data-k="${k}" aria-checked="${k === cur.kind}" style="--c:${K.color}"><span class="em">${K.emoji}</span><span><b>${esc(K.name)}</b><small>${esc(K.rule)}</small></span></button>`; }).join('')}</div>
