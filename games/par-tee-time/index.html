@@ -429,7 +429,7 @@ table.card td.tot { font-weight: 700; }
     <div class="panel">
       <p class="kicker">SHOT CAMERA</p>
       <div class="seg" id="camSeg" role="group" aria-label="Shot camera"></div>
-      <p class="segnote">Chase swoops down behind the ball once it&rsquo;s struck, its path glowing ahead and the flag flapping at the cup. Overhead keeps the whole hole in view.</p>
+      <p class="segnote">Chase swoops down behind the ball once it&rsquo;s struck, a glowing trail behind it and the flag flapping at the cup. Overhead keeps the whole hole in view.</p>
     </div>
     <button class="btn big green" id="teeOff">Tee off<small id="teeOffSub">Front three, Ollie Eight</small></button>
   </div>
@@ -3710,8 +3710,8 @@ function render(now) {
    epically flapping in the wind.")
    Once a putt is struck the view swoops from overhead down behind the ball and follows it: the hole
    becomes a ground plane in perspective (Mode 7: the overhead picture drawn in thin strips, each with
-   its own transform), the path the ball is about to roll glows ahead of it as a tube (the shot is
-   played out once, quietly, the moment it's struck), the balls are spheres with shadows and the flag
+   its own transform), the way the ball has come glows behind it as a fading trail (the shot is played out
+   once, quietly, the moment it's struck, but only what's already happened is shown), the balls are spheres with shadows and the flag
    stands up at the cup, flapping in the wind. When everything stops it holds a beat, rises back up
    and the overhead view (and the rest of the game) carries on. Overhead in the setup or the pause
    menu turns it off; a tap-in stays overhead anyway.
@@ -3812,15 +3812,11 @@ function camBall() {
 function camTick(dt) {
   if (!CAM.on) return;
   CAM.k += dt; CAM.flash = Math.max(0, CAM.flash - dt * 5);
-  // time: slow motion while it rolls, slower still near the cup; a tap speeds it up; a long one doesn't drag
+  // time: slow motion while it rolls (the same all the way, JC Nov 14: no extra crawl near the cup);
+  // a tap speeds it up; a long one doesn't drag
   let want = 1;
   if (CAM.phase === 'in') want = CAM.fast ? 2.4 : 0.55;
-  else if (CAM.phase === 'roll') {
-    CAM.real += dt;
-    const b = ballOf(CAM.s), dc = b && !b.out ? vlen(b.x - G.hole.cup.x, b.y - G.hole.cup.y) : 999;
-    const near = clamp((80 - dc) / 60, 0, 1);   // 0 at 80 units from the cup, 1 at 20 and closer
-    want = CAM.fast ? 2.4 : CAM.real > 9 ? 1.4 : 0.45 - 0.35 * near * near;   // down to 0.1x on the lip
-  }
+  else if (CAM.phase === 'roll') { CAM.real += dt; want = CAM.fast ? 2.4 : CAM.real > 9 ? 1.4 : 0.45; }
   CAM.ts += (want - CAM.ts) * (1 - Math.exp(-dt * 6));
   if (CAM.phase === 'in' || CAM.phase === 'roll') camNarrate();
   if ((CAM.phase === 'in' && CAM.k >= CAM_IN) || (CAM.phase === 'roll' && CAM.settled)) {
@@ -3837,12 +3833,11 @@ function camTick(dt) {
     if (G.state === 'roll' && G.sim) finishShot();
     return;
   }
-  // look where the ball is about to go: the path half a second ahead, smoothed so a bank swings the camera round
+  // look the way the ball is rolling right now (never ahead of it, so the camera gives nothing away),
+  // smoothed so a bank swings it round after the bounce
   if (CAM.phase === 'hold') return;
-  const P = CAM.path.pts, tA = (G.sim ? G.sim.t : G.clock) - CAM.t0 + 0.5, bp = camBall();
-  let j = 0; while (j < P.length - 1 && P[j].t < tA) j++;
-  const dx = P[j].x - bp.x, dy = P[j].y - bp.y;
-  if (dx * dx + dy * dy > 36) CAM.head += wrapA(Math.atan2(dy, dx) - CAM.head) * (1 - Math.exp(-dt * 3.2));
+  const b = ballOf(CAM.s);
+  if (b && !b.out && vlen(b.vx, b.vy) > 25) CAM.head += wrapA(Math.atan2(b.vy, b.vx) - CAM.head) * (1 - Math.exp(-dt * 3.2));
 }
 // how high and how far back: swoop down from above, follow low, rise back up
 function camLens(ch) {
@@ -4271,38 +4266,37 @@ function camDefender(ctx, d, p, proj, now) {
   if (nb && s > 1) { ctx.font = `${Math.round(9 * s)}px ${SFX_FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = Math.max(1.5, 1.2 * s); ctx.strokeStyle = INK; ctx.strokeText(String(d.num), nb.x, nb.y); ctx.fillStyle = CREAM; ctx.fillText(String(d.num), nb.x, nb.y); }
 }
 
-// The glowing tube as pieces that sort with everything else: where the ball is about to roll (bright
-// close up, fading with distance along it), a faint trail where it's been, beads of light running out
+// The glowing trail (JC, Nov 14 2026: "the path only glows as a trail of the previous path that fades and it
+// doesn't give away where it is going"): only where the ball has been, brightest right behind it and fading
+// away along the way it came, with beads of light drifting back down it. Pieces sort with everything else.
 function camTubeItems(items, ctx, proj, now, bp) {
-  const P = CAM.path.pts, tNow = (G.sim ? G.sim.t : G.clock) - CAM.t0, Z = R * 0.9, TR = 3.4;
+  const P = CAM.path.pts, tNow = (G.sim ? G.sim.t : G.clock) - CAM.t0, Z = 1.2, TR = 2.6, LEN = 190, GAP = R * 1.4;   // on the ground, starting just behind the ball
   let i0 = 0; while (i0 < P.length - 1 && P[i0 + 1].t <= tNow) i0++;
-  const ahead = [{ x: bp.x, y: bp.y }].concat(P.slice(i0 + 1)), trail = P.slice(Math.max(0, i0 - 60), i0 + 1).concat([{ x: bp.x, y: bp.y }]);
-  const fadeAhead = (run) => (run < 150 ? 1 : Math.max(0, 1 - (run - 150) / 170));
-  const push = (pts, fade, passes, glow) => {
-    let run = 0;
-    for (let i = 1; i < pts.length; i++) {
-      const A = pts[i - 1], B = pts[i], len = vlen(B.x - A.x, B.y - A.y); run += len;
-      if (len < 0.01) continue;
-      const fa = fade(run); if (fa <= 0.01) continue;
-      const pa = proj(A.x, A.y, Z), pb = proj(B.x, B.y, Z); if (!pa || !pb) continue;
-      const near = clamp((Math.min(pa.d, pb.d) - 25) / 40, 0, 1); if (near <= 0.02) continue;
-      items.push({ d: (pa.d + pb.d) / 2 + 0.01, draw: () => {
-        const sc = (pa.s + pb.s) / 2;
-        ctx.save(); ctx.lineCap = 'round'; if (glow) ctx.globalCompositeOperation = 'lighter';
-        for (const [w, col, al] of passes) { ctx.globalAlpha = al * fa * near; ctx.lineWidth = Math.max(1, TR * w * sc); ctx.strokeStyle = col; ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke(); }
-        ctx.restore();
-      } });
-    }
-  };
-  push(trail, () => 0.35, [[1.4, CYAN, 0.35]], false);
-  push(ahead, fadeAhead, [[4.2, CYAN, 0.16], [2.4, GOLD, 0.42], [1.1, CREAM, 0.9]], true);
-  let run = 0, next = (now * 90) % 22;
-  for (let i = 1; i < ahead.length; i++) {
-    const A = ahead[i - 1], B = ahead[i], len = vlen(B.x - A.x, B.y - A.y);
-    while (next <= run + len && len > 0) {
-      const u = (next - run) / len, p = proj(A.x + (B.x - A.x) * u, A.y + (B.y - A.y) * u, Z), fa = fadeAhead(next);
-      if (p && fa > 0.02) items.push({ d: p.d, draw: () => { ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.9 * fa; ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(1.2, TR * 0.8 * p.s), 0, TAU); ctx.fill(); ctx.restore(); } });
-      next += 22;
+  const back = [{ x: bp.x, y: bp.y }].concat(P.slice(0, i0 + 1).reverse());   // from the ball back to the tee
+  const fade = (run) => Math.max(0, 1 - run / LEN);
+  let run = 0;
+  for (let i = 1; i < back.length && run < LEN; i++) {
+    const A = back[i - 1], B = back[i], len = vlen(B.x - A.x, B.y - A.y);
+    if (len < 0.01) continue;
+    const fa = fade(run + len / 2); run += len;
+    if (run < GAP) continue;
+    const pa = proj(A.x, A.y, Z), pb = proj(B.x, B.y, Z); if (!pa || !pb) continue;
+    const near = clamp((Math.min(pa.d, pb.d) - 25) / 40, 0, 1); if (near <= 0.02 || fa <= 0.01) continue;
+    items.push({ d: (pa.d + pb.d) / 2 + 0.01, draw: () => {
+      const sc = (pa.s + pb.s) / 2;
+      ctx.save(); ctx.lineCap = 'round'; ctx.globalCompositeOperation = 'lighter';
+      for (const [w, col, al] of [[3.6, CYAN, 0.12], [2, GOLD, 0.28], [0.9, CREAM, 0.6]]) { ctx.globalAlpha = al * fa * near; ctx.lineWidth = Math.max(1, TR * w * sc * (0.55 + 0.45 * fa)); ctx.strokeStyle = col; ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke(); }
+      ctx.restore();
+    } });
+  }
+  // beads of light drifting back down the trail
+  run = 0; let next = (now * 60) % 24;
+  for (let i = 1; i < back.length && run < LEN; i++) {
+    const A = back[i - 1], B = back[i], len = vlen(B.x - A.x, B.y - A.y);
+    while (next <= run + len && len > 0 && next < LEN) {
+      const u = (next - run) / len, p = proj(A.x + (B.x - A.x) * u, A.y + (B.y - A.y) * u, Z), fa = fade(next);
+      if (p && fa > 0.02 && p.d > 30 && next > GAP) items.push({ d: p.d, draw: () => { ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.85 * fa; ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(1.2, TR * 0.75 * p.s), 0, TAU); ctx.fill(); ctx.restore(); } });
+      next += 24;
     }
     run += len;
   }
