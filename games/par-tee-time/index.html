@@ -426,6 +426,11 @@ table.card td.tot { font-weight: 700; }
       <div class="seg" id="guideSeg" role="group" aria-label="Aim guide"></div>
       <p class="segnote">Full shows two banks and the ghost-ball line on object balls. Short shows one bank. Off is for sharks.</p>
     </div>
+    <div class="panel">
+      <p class="kicker">SHOT CAMERA</p>
+      <div class="seg" id="camSeg" role="group" aria-label="Shot camera"></div>
+      <p class="segnote">Chase swoops down behind the ball once it&rsquo;s struck, its path glowing ahead and the flag flapping at the cup. Overhead keeps the whole hole in view.</p>
+    </div>
     <button class="btn big green" id="teeOff">Tee off<small id="teeOffSub">Front three, Ollie Eight</small></button>
   </div>
 </section>
@@ -606,6 +611,7 @@ table.card td.tot { font-weight: 700; }
     <div class="menurow" id="voiceRow">Read NPC lines aloud <button class="toggle" id="tgVoice" aria-pressed="true">On</button></div>
     <div class="menurow" id="readRow">Read your friend&rsquo;s messages aloud <button class="toggle" id="tgRead" aria-pressed="true">On</button></div>
     <div><p class="kicker" style="margin:0 0 6px">AIM GUIDE</p><div class="seg" id="menuGuideSeg" role="group" aria-label="Aim guide"></div></div>
+    <div><p class="kicker" style="margin:0 0 6px">SHOT CAMERA</p><div class="seg" id="menuCamSeg" role="group" aria-label="Shot camera"></div></div>
     <div class="rowbtns">
       <button class="btn" id="menuCard">Scorecard</button>
       <button class="btn green" id="menuResume">Resume</button>
@@ -2147,7 +2153,7 @@ const INK = '#0b0916', CREAM = '#f3e9d2', GOLD = '#d4af37', CORAL = '#e8877a', S
 const SFX_FONT = '"Bangers", "Impact", "Arial Black", sans-serif';
 const TITLE_FONT = '"Luckiest Guy", "Arial Black", sans-serif';
 
-const RD = { cv: null, ctx: null, dpr: 1, s: 1, ox: 0, oy: 0, cw: 0, ch: 0, stat: null, statKey: '', pat: {}, fx: [], parts: [], shake: 0, impact: 0, impactText: '' };
+const RD = { cv: null, ctx: null, dpr: 1, s: 1, ox: 0, oy: 0, cw: 0, ch: 0, stat: null, statKey: '', pat: {}, fx: [], parts: [], shake: 0, impact: 0, impactText: '', flash: 0 };
 
 function rng32(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
@@ -2875,11 +2881,15 @@ function drawFX(ctx, now) {
   }
   ctx.globalAlpha = 1;
   RD.fx = RD.fx.filter(f => now - f.t0 < f.dur);
-  for (const f of RD.fx) {
+  for (const f of RD.fx) drawBurst(ctx, f, now, f.x, f.y, 1);
+}
+// one comic word in its starburst, centred at x, y in the current transform
+function drawBurst(ctx, f, now, x, y, sc) {
+  {
     const k = (now - f.t0) / f.dur;
     const pop = k < 0.15 ? k / 0.15 * 1.18 : k < 0.3 ? 1.18 - (k - 0.15) / 0.15 * 0.18 : 1;
     const a = k > 0.75 ? 1 - (k - 0.75) / 0.25 : 1;
-    ctx.save(); ctx.globalAlpha = a; ctx.translate(f.x, f.y - k * 8); ctx.rotate(f.rot); ctx.scale(pop * f.size, pop * f.size);
+    ctx.save(); ctx.globalAlpha = a; ctx.translate(x, y - k * 8 * sc); ctx.rotate(f.rot); ctx.scale(pop * f.size * sc, pop * f.size * sc);
     ctx.font = `26px ${SFX_FONT}`; const tw = ctx.measureText(f.text).width;
     const rx = tw / 2 + 16, ry = 22;
     ctx.beginPath();
@@ -2942,7 +2952,7 @@ const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion:
 /* ---------------- prefs ---------------- */
 const STORE_KEY = 'partee.v1';
 function loadPrefs() { try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}') || {}; } catch (e) { return {}; } }
-const PREF = Object.assign({ sound: true, voice: true, readFriend: true, guide: 'full', p1: { name: 'You', color: '#f7f1e1' }, p2: { name: 'Friend', color: '#e8877a' }, npc: 'hustler', courseId: 'boardwalk', course: 'full', oneHole: 0, onCourseId: 'boardwalk', onCourse: 'full', best: {} }, loadPrefs());
+const PREF = Object.assign({ sound: true, voice: true, readFriend: true, guide: 'full', p1: { name: 'You', color: '#f7f1e1' }, p2: { name: 'Friend', color: '#e8877a' }, cam: REDUCED ? 'overhead' : 'chase', npc: 'hustler', courseId: 'boardwalk', course: 'full', oneHole: 0, onCourseId: 'boardwalk', onCourse: 'full', best: {} }, loadPrefs());
 function savePrefs() { try { localStorage.setItem(STORE_KEY, JSON.stringify(PREF)); } catch (e) { /* storage unavailable */ } }
 /* Capra Lab: until a name is chosen here, play under the lab profile's name */
 try {
@@ -3296,6 +3306,7 @@ function startMatch(cfg) {
 }
 function startHole() {
   const tok = ++G.token;
+  camOff();
   const hidx = G.holes[G.hi], def = HOLE_DEFS[hidx];
   const solo = G.players.length < 2;   // a Masters round numbers its holes 1 to 18
   G.hole = compileHole(def); G.hole.num = solo ? G.hi + 1 : def.pos + 1;
@@ -3407,6 +3418,7 @@ function doShot(s, a, p, sx, sy, t0, res) {
   const S = makeWorld(G.hole, G.balls, t0); S.t0 = t0;
   applyShot(b, a, p, sx, sy, S);
   G.sim = S; G.simAcc = 0; G.evIdx = 0; G.state = 'roll'; G.pendingRes = res || null; G.shotInfo = { s, a, p, sx, sy, startNav: G.nav.at(b.x, b.y) };
+  camStart(s, a, p, sx, sy, t0);
   paintMull();
   G.ankles = new Map();
   G.spinView = (G.players[s].isNPC || (G.mode === 'online' && s !== NET.seat)) ? { x: sx, y: sy } : null;
@@ -3494,14 +3506,16 @@ function tick(ts) {
       while (G.simAcc >= DT && steps < 40) { stepWorld(G.sim); G.simAcc -= DT; steps++; if (!anyAwake(G.sim)) break; }
       G.clock = G.sim.t;
       processEvents(now);
-      if (!anyAwake(G.sim) || G.sim.t - G.sim.t0 > 14) finishShot();
+      if (!anyAwake(G.sim) || G.sim.t - G.sim.t0 > 14) { if (CAM.on) camSettle(); else finishShot(); }   // the shot camera finishes the shot when it's back overhead
     } else G.clock += dt;
     if (G.state === 'npc') npcTick(now);
+    camTick(dt);
   }
   render(now);
 }
 function render(now) {
   const ctx = RD.ctx; if (!ctx || !G.hole) return;
+  if (CAM.on) return renderChase(now);
   buildStatic(G.hole);
   let shx = 0, shy = 0;
   if (RD.shake > 0) { shx = (Math.random() - 0.5) * RD.shake; shy = (Math.random() - 0.5) * RD.shake; RD.shake *= 0.86; if (RD.shake < 0.3) RD.shake = 0; }
@@ -3533,7 +3547,258 @@ function render(now) {
     drawPutter(ctx, active, G.npcShot.a, G.npcShot.p * k);
   }
   drawFX(ctx, now);
+  if (RD.flash > 0) {   // the cut back from the shot camera
+    ctx.save(); ctx.setTransform(RD.dpr, 0, 0, RD.dpr, 0, 0); ctx.globalAlpha = RD.flash * 0.7; ctx.fillStyle = CREAM; ctx.fillRect(0, 0, RD.cw, RD.ch); ctx.restore();
+    RD.flash = Math.max(0, RD.flash - 0.12);
+  }
   drawImpact(ctx, now);
+}
+
+/* =====================================================================
+   PAR-TEE TIME · the shot camera (JC, Nov 13 2026: "a more epic angle for once the shot goes. Like a
+   live camera follow behind to see where it is aiming with a glowing path tube and the hole flag
+   epically flapping in the wind.")
+   Once a putt is struck the view swoops from overhead down behind the ball and follows it: the hole
+   becomes a ground plane in perspective (Mode 7: the overhead picture drawn in thin strips, each with
+   its own transform), the path the ball is about to roll glows ahead of it as a tube (the shot is
+   played out once, quietly, the moment it's struck), the balls are spheres with shadows and the flag
+   stands up at the cup, flapping in the wind. When everything stops it holds a beat, rises back up
+   and the overhead view (and the rest of the game) carries on. Overhead in the setup or the pause
+   menu turns it off; a tap-in stays overhead anyway.
+   ===================================================================== */
+const CAM = { on: false, phase: '', k: 0, s: 0, t0: 0, path: null, head: 0, settled: false, holdFor: 0, flash: 0, wind: 0, statKey: '', stat: null, top: null };
+const CAM_TEX = 3, CAM_IN = 0.6, CAM_HOLD = 0.6, CAM_HOLD_CUP = 1.1, CAM_OUT = 0.42, CAM_MIN_PATH = 30;
+const camWanted = () => PREF.cam !== 'overhead';
+const CAM_OPTS = [['chase', 'Chase'], ['overhead', 'Overhead']];
+const wrapA = (x) => ((x + Math.PI) % TAU + TAU) % TAU - Math.PI;
+// Play the shot out once, quietly, to know where it goes (the same world the live roll uses)
+function camPredict(s, a, p, sx, sy, t0) {
+  const bs = G.balls.map(cloneBall), S = makeWorld(G.hole, bs, t0); S.quiet = true;
+  const me = bs.find(b => b.id === 'p' + s); if (!me) return null;
+  applyShot(me, a, p, sx, sy, S);
+  const pts = [{ x: me.x, y: me.y, t: 0 }];
+  let n = 0, len = 0;
+  while (anyAwake(S) && S.t - t0 < 14 && n < 3000) {
+    stepWorld(S); n++;
+    if (me.out) break;
+    if (n % 3 === 0) { const q = pts[pts.length - 1]; len += vlen(me.x - q.x, me.y - q.y); pts.push({ x: me.x, y: me.y, t: S.t - t0 }); }
+  }
+  if (me.out === 'cup') pts.push({ x: G.hole.cup.x, y: G.hole.cup.y, t: S.t - t0 });
+  else if (!me.out) pts.push({ x: me.x, y: me.y, t: S.t - t0 });
+  return { pts, len, out: me.out || null };
+}
+function camStart(s, a, p, sx, sy, t0) {
+  CAM.on = false;
+  if (!camWanted() || !RD.ctx || !G.hole) return;
+  let path = null;
+  try { path = camPredict(s, a, p, sx, sy, t0); } catch (e) { path = null; }
+  if (!path || path.len < CAM_MIN_PATH) return;
+  const h = G.hole;
+  Object.assign(CAM, { on: true, phase: 'in', k: 0, s, t0, path, head: a, settled: false, flash: 1,
+    wind: Math.atan2(h.cup.y - h.tee.y, h.cup.x - h.tee.x) + Math.PI / 2 + ((h.num || 1) % 3 - 1) * 0.5 });
+}
+const camOff = () => { CAM.on = false; CAM.phase = ''; };
+function camSettle() { if (CAM.on) CAM.settled = true; }
+function camBall() {
+  const b = ballOf(CAM.s);
+  if (b && !b.out) return b;
+  if (b && b.out === 'cup') return G.hole.cup;
+  const P = CAM.path.pts; return P[P.length - 1];
+}
+function camTick(dt) {
+  if (!CAM.on) return;
+  CAM.k += dt; CAM.flash = Math.max(0, CAM.flash - dt * 5);
+  if ((CAM.phase === 'in' && CAM.k >= CAM_IN) || (CAM.phase === 'roll' && CAM.settled)) {
+    if (CAM.settled) { const b = ballOf(CAM.s); CAM.phase = 'hold'; CAM.holdFor = b && b.out === 'cup' ? CAM_HOLD_CUP : CAM_HOLD; } else CAM.phase = 'roll';
+    CAM.k = 0;
+  } else if (CAM.phase === 'hold' && CAM.k >= CAM.holdFor) { CAM.phase = 'out'; CAM.k = 0; }
+  else if (CAM.phase === 'out' && CAM.k >= CAM_OUT) {
+    camOff(); RD.flash = 1;
+    if (G.state === 'roll' && G.sim) finishShot();
+    return;
+  }
+  // look where the ball is about to go: the path half a second ahead, smoothed so a bank swings the camera round
+  if (CAM.phase === 'hold') return;
+  const P = CAM.path.pts, tA = (G.sim ? G.sim.t : G.clock) - CAM.t0 + 0.5, bp = camBall();
+  let j = 0; while (j < P.length - 1 && P[j].t < tA) j++;
+  const dx = P[j].x - bp.x, dy = P[j].y - bp.y;
+  if (dx * dx + dy * dy > 36) CAM.head += wrapA(Math.atan2(dy, dx) - CAM.head) * (1 - Math.exp(-dt * 3.2));
+}
+// how high and how far back: swoop down from above, follow low, rise back up
+function camLens(ch) {
+  const chase = { hgt: 46, yh: ch * 0.3, back: 80 }, high = { hgt: 230, yh: -ch * 0.3, back: 210 };
+  let u = 1;
+  if (CAM.phase === 'in') { const x = clamp(CAM.k / CAM_IN, 0, 1); u = 1 - Math.pow(1 - x, 3); }
+  else if (CAM.phase === 'out') { const x = clamp(CAM.k / CAM_OUT, 0, 1); u = 1 - x * x * x; }
+  const L = (k) => high[k] + (chase[k] - high[k]) * u;
+  let back = L('back');
+  if (CAM.phase === 'hold') back *= 1 - 0.14 * clamp(CAM.k / CAM.holdFor, 0, 1);   // a slow push in
+  return { hgt: L('hgt'), yh: L('yh'), back };
+}
+// The overhead picture the ground is made of: the hole's static art once, the moving parts each frame
+function camTexture(h, t) {
+  const key = h.id;
+  if (CAM.statKey !== key || !CAM.stat) {
+    CAM.stat = CAM.stat || document.createElement('canvas'); CAM.top = CAM.top || document.createElement('canvas');
+    CAM.stat.width = CAM.top.width = W * CAM_TEX; CAM.stat.height = CAM.top.height = H * CAM_TEX;
+    const sx = CAM.stat.getContext('2d'); sx.setTransform(CAM_TEX, 0, 0, CAM_TEX, 0, 0); drawHoleStatic(sx, h);
+    CAM.statKey = key;
+  }
+  const tx = CAM.top.getContext('2d');
+  tx.setTransform(1, 0, 0, 1, 0, 0); tx.drawImage(CAM.stat, 0, 0);
+  tx.setTransform(CAM_TEX, 0, 0, CAM_TEX, 0, 0); drawMovers(tx, h, t, null);
+  return CAM.top;
+}
+function renderChase(now) {
+  const ctx = RD.ctx, h = G.hole, T = THEMES[h.theme] || {}, dpr = RD.dpr, cw = RD.cw, ch = RD.ch;
+  const tex = camTexture(h, G.clock);
+  const { hgt, yh, back } = camLens(ch);
+  const fx = Math.cos(CAM.head), fy = Math.sin(CAM.head), rx = -fy, ry = fx, bp = camBall();
+  const cx = bp.x - fx * back, cy = bp.y - fy * back, focal = 0.6 * Math.min(ch, cw * 1.6), cxs = cw / 2;
+  const proj = (x, y, z) => { const dx = x - cx, dy = y - cy, d = dx * fx + dy * fy; if (d < 3) return null; const l = dx * rx + dy * ry; return { x: cxs + l * focal / d, y: yh + (hgt - z) * focal / d, s: focal / d, d }; };
+  const back0 = T.back || '#2a2240', sky = shade(back0, -0.55), ground = shade(back0, -0.3);
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, RD.cv.width, RD.cv.height);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  // sky: deep night, halftone stars, an ink horizon
+  if (yh > 0) {
+    const g = ctx.createLinearGradient(0, 0, 0, yh); g.addColorStop(0, '#07061a'); g.addColorStop(1, sky);
+    ctx.fillStyle = g; ctx.fillRect(0, 0, cw, yh + 1);
+    const r = rng32(((h.num || 1) * 7919) | 0); ctx.fillStyle = CREAM;
+    for (let i = 0; i < 46; i++) { const x = ((r() * 2.4 - 0.7 + CAM.head * 0.35) % 1 + 1) % 1 * cw, y = r() * yh * 0.92, tw = 0.5 + 0.5 * Math.sin(now * 3 + i); ctx.globalAlpha = 0.35 + 0.5 * tw; ctx.fillRect(x, y, 1.6, 1.6); }
+    ctx.globalAlpha = 1;
+  }
+  ctx.fillStyle = ground; ctx.fillRect(0, Math.max(0, yh), cw, ch);
+  // the ground: the overhead picture laid down in perspective, a thin strip at a time
+  for (let y0 = Math.max(0, yh + 1.5); y0 < ch;) {
+    const y1 = Math.min(ch, y0 + clamp((y0 - yh) * 0.045, 1, 3)), ym = (y0 + y1) / 2, d = hgt * focal / (ym - yh);   // thin strips, so straight rails stay straight
+    if (d < 1500) {
+      const Px = cx + fx * d, Py = cy + fy * d, sc = focal / d, kk = -(ym - yh) / d;
+      const a = sc * rx, c = sc * ry, b = kk * fx, e = kk * fy;
+      ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.beginPath(); ctx.rect(0, Math.floor(y0 * dpr), cw * dpr, Math.ceil((y1 - y0) * dpr) + 1); ctx.clip();
+      ctx.setTransform(dpr * a / CAM_TEX, dpr * b / CAM_TEX, dpr * c / CAM_TEX, dpr * e / CAM_TEX, dpr * (cxs - a * Px - c * Py), dpr * (ym - b * Px - e * Py));
+      ctx.drawImage(tex, 0, 0);
+      ctx.restore();
+    }
+    y0 = y1;
+  }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  if (yh > 0) {   // haze into the distance, then the horizon line
+    const g = ctx.createLinearGradient(0, yh, 0, yh + ch * 0.14); g.addColorStop(0, sky); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, yh, cw, ch * 0.14);
+    ctx.beginPath(); ctx.moveTo(0, yh); ctx.lineTo(cw, yh); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke();
+  }
+  camTube(ctx, proj, now, bp);
+  // the balls and the flag, farthest first
+  const things = [];
+  for (const b of G.balls) if (!b.out) { const p = proj(b.x, b.y, R); if (p) things.push({ d: p.d, draw: () => camBallDraw(ctx, b, p, proj(b.x, b.y, 0)) }); }
+  const fp = proj(h.cup.x, h.cup.y, 0); if (fp) things.push({ d: fp.d + 0.5, draw: () => camFlag(ctx, proj, now, h) });
+  things.sort((x, y) => y.d - x.d).forEach(o => o.draw());
+  // the comic words, where they happened
+  RD.fx = RD.fx.filter(f => now - f.t0 < f.dur);
+  for (const f of RD.fx) { const p = proj(f.x, f.y, 30); if (p) drawBurst(ctx, f, now, p.x, p.y, clamp(p.s * 0.7, 0.45, 1.3)); }
+  // speed lines when it's flying
+  const lb = ballOf(CAM.s), sp = lb && !lb.out ? vlen(lb.vx, lb.vy) : 0;
+  if (sp > 140 && CAM.phase !== 'out') {
+    const k = clamp((sp - 140) / 420, 0, 1), r = rng32(Math.floor(now * 14));
+    ctx.save(); ctx.globalAlpha = 0.18 + 0.4 * k; ctx.strokeStyle = CREAM; ctx.lineWidth = 2; ctx.lineCap = 'round';
+    for (let i = 0; i < 16; i++) { const ang = r() * TAU, r0 = Math.max(cw, ch) * (0.42 + r() * 0.1), r1 = r0 + 40 + 90 * k; const vx = cxs, vy = Math.max(yh, ch * 0.2); ctx.beginPath(); ctx.moveTo(vx + Math.cos(ang) * r0, vy + Math.sin(ang) * r0); ctx.lineTo(vx + Math.cos(ang) * r1, vy + Math.sin(ang) * r1); ctx.stroke(); }
+    ctx.restore();
+  }
+  if (CAM.flash > 0) { ctx.fillStyle = CREAM; ctx.globalAlpha = CAM.flash * 0.8; ctx.fillRect(0, 0, cw, ch); ctx.globalAlpha = 1; }
+  drawImpact(ctx, now);
+}
+// The glowing tube: where the ball is about to roll (bright close up, fading with distance along it),
+// a faint trail where it's been, and beads of light running along it
+function camTube(ctx, proj, now, bp) {
+  const P = CAM.path.pts, tNow = (G.sim ? G.sim.t : G.clock) - CAM.t0, Z = R * 0.9, TR = 3.4;
+  let i0 = 0; while (i0 < P.length - 1 && P[i0 + 1].t <= tNow) i0++;
+  const ahead = [{ x: bp.x, y: bp.y }].concat(P.slice(i0 + 1)), trail = P.slice(Math.max(0, i0 - 60), i0 + 1).concat([{ x: bp.x, y: bp.y }]);
+  const seg = (pts, fade, passes) => {
+    let run = 0;
+    for (let i = 1; i < pts.length; i++) {
+      const A = pts[i - 1], B = pts[i], len = vlen(B.x - A.x, B.y - A.y); run += len;
+      if (len < 0.01) continue;
+      const pa = proj(A.x, A.y, Z), pb = proj(B.x, B.y, Z); if (!pa || !pb) continue;
+      const fa = fade(run), sc = (pa.s + pb.s) / 2;
+      if (fa <= 0.01) continue;
+      for (const [w, col, al] of passes) { ctx.globalAlpha = al * fa; ctx.lineWidth = Math.max(1, TR * w * sc); ctx.strokeStyle = col; ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke(); }
+    }
+  };
+  ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  seg(trail, () => 0.35, [[1.4, CYAN, 0.35]]);
+  ctx.globalCompositeOperation = 'lighter';
+  const fadeAhead = (run) => (run < 150 ? 1 : Math.max(0, 1 - (run - 150) / 170));
+  seg(ahead, fadeAhead, [[4.2, CYAN, 0.16], [2.4, GOLD, 0.42], [1.1, CREAM, 0.9]]);
+  // beads of light running out along the path
+  let run = 0, next = (now * 90) % 22;
+  for (let i = 1; i < ahead.length; i++) {
+    const A = ahead[i - 1], B = ahead[i], len = vlen(B.x - A.x, B.y - A.y);
+    while (next <= run + len && len > 0) {
+      const u = (next - run) / len, p = proj(A.x + (B.x - A.x) * u, A.y + (B.y - A.y) * u, Z), fa = fadeAhead(next);
+      if (p && fa > 0.02) { ctx.globalAlpha = 0.9 * fa; ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(1.2, TR * 0.8 * p.s), 0, TAU); ctx.fill(); }
+      next += 22;
+    }
+    run += len;
+  }
+  ctx.restore();
+}
+function camBallDraw(ctx, b, p, g) {
+  const rr = R * p.s;
+  if (g) { ctx.beginPath(); ctx.ellipse(g.x + rr * 0.25, g.y, rr * 1.15, rr * 0.42, 0, 0, TAU); ctx.fillStyle = 'rgba(5,4,12,.5)'; ctx.fill(); }
+  const sp = vlen(b.vx || 0, b.vy || 0);
+  if (sp > 200 && b.id === 'p' + CAM.s) {   // the comic misregistration on a fast ball
+    const k = clamp((sp - 200) / 400, 0, 1);
+    ctx.globalAlpha = 0.5 * k; ctx.fillStyle = CYAN; ctx.beginPath(); ctx.arc(p.x - rr * 0.25, p.y, rr, 0, TAU); ctx.fill();
+    ctx.fillStyle = MAGENTA; ctx.beginPath(); ctx.arc(p.x + rr * 0.25, p.y, rr, 0, TAU); ctx.fill(); ctx.globalAlpha = 1;
+  }
+  const grd = ctx.createRadialGradient(p.x - rr * 0.35, p.y - rr * 0.4, rr * 0.1, p.x, p.y, rr);
+  grd.addColorStop(0, '#ffffff'); grd.addColorStop(0.35, b.color || '#ffffff'); grd.addColorStop(1, shade(b.color || '#dddddd', -0.35));
+  ctx.beginPath(); ctx.arc(p.x, p.y, rr, 0, TAU); ctx.fillStyle = grd; ctx.fill();
+  ctx.lineWidth = Math.max(1.4, rr * 0.13); ctx.strokeStyle = INK; ctx.stroke();
+  if (b.kind === 'o' && rr > 5) {
+    ctx.beginPath(); ctx.arc(p.x, p.y, rr * 0.5, 0, TAU); ctx.fillStyle = CREAM; ctx.fill();
+    ctx.fillStyle = INK; ctx.font = `${Math.round(rr * 0.85)}px ${SFX_FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(String(b.n), p.x, p.y + rr * 0.05);
+  } else if (rr > 4) {
+    ctx.beginPath(); ctx.arc(p.x - rr * 0.32, p.y - rr * 0.34, rr * 0.22, 0, TAU); ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.fill();
+  }
+}
+// The flag: a tall pole and a cloth that flaps in the wind, shaded where it ripples, the hole number on it
+function camFlag(ctx, proj, now, h) {
+  const x = h.cup.x, y = h.cup.y, POLE = 66, L = 36, HC = 23, N = 12;
+  const base = proj(x, y, 0), top = proj(x, y, POLE); if (!base || !top) return;
+  const wx = Math.cos(CAM.wind), wy = Math.sin(CAM.wind), nx = -wy, ny = wx, gust = 0.75 + 0.25 * Math.sin(now * 1.3) + 0.12 * Math.sin(now * 3.7);
+  // wind streaks drifting past
+  ctx.save(); ctx.strokeStyle = 'rgba(243,233,210,.45)'; ctx.lineCap = 'round';
+  for (let i = 0; i < 4; i++) {
+    const ph = ((now * 0.9 + i * 0.27) % 1), zz = POLE - 6 - i * 9, off = (i % 2 ? 10 : -12);
+    const a1 = proj(x + wx * (-20 + ph * 90) + nx * off, y + wy * (-20 + ph * 90) + ny * off, zz), a2 = proj(x + wx * (-4 + ph * 90) + nx * off, y + wy * (-4 + ph * 90) + ny * off, zz + 2);
+    if (a1 && a2) { ctx.globalAlpha = Math.sin(ph * Math.PI); ctx.lineWidth = Math.max(1, 1.6 * a1.s); ctx.beginPath(); ctx.moveTo(a1.x, a1.y); ctx.quadraticCurveTo((a1.x + a2.x) / 2, (a1.y + a2.y) / 2 - 3 * a1.s, a2.x, a2.y); ctx.stroke(); }
+  }
+  ctx.restore();
+  // the pole
+  ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(base.x, base.y); ctx.lineTo(top.x, top.y); ctx.lineWidth = Math.max(3, 2.6 * top.s); ctx.strokeStyle = INK; ctx.stroke();
+  ctx.lineWidth = Math.max(1.4, 1.2 * top.s); ctx.strokeStyle = CREAM; ctx.stroke();
+  // the cloth
+  const col = (u) => {
+    const ph = now * 9.5 - u * 7, amp = (1.5 + 8 * u) * gust, off = amp * Math.sin(ph), sag = u * 2.5 + Math.abs(off) * 0.15;
+    const px = x + wx * L * u * (1 - 0.06 * Math.abs(Math.sin(ph))) + nx * off, py = y + wy * L * u * (1 - 0.06 * Math.abs(Math.sin(ph))) + ny * off;
+    return { t: proj(px, py, POLE - sag), b: proj(px, py, POLE - sag - HC * (1 - 0.15 * u)), lit: Math.cos(ph) };
+  };
+  const cols = []; for (let i = 0; i <= N; i++) cols.push(col(i / N));
+  if (cols.some(c => !c.t || !c.b)) return;
+  for (let i = 0; i < N; i++) {
+    const A = cols[i], B = cols[i + 1];
+    ctx.beginPath(); ctx.moveTo(A.t.x, A.t.y); ctx.lineTo(B.t.x, B.t.y); ctx.lineTo(B.b.x, B.b.y); ctx.lineTo(A.b.x, A.b.y); ctx.closePath();
+    ctx.fillStyle = shade(CORAL, A.lit * 0.22); ctx.fill(); ctx.lineWidth = 0.6; ctx.strokeStyle = shade(CORAL, A.lit * 0.22); ctx.stroke();
+  }
+  ctx.beginPath(); cols.forEach((c, i) => (i ? ctx.lineTo(c.t.x, c.t.y) : ctx.moveTo(c.t.x, c.t.y))); for (let i = N; i >= 0; i--) ctx.lineTo(cols[i].b.x, cols[i].b.y); ctx.closePath();
+  ctx.lineWidth = Math.max(1.5, 1.4 * top.s); ctx.strokeStyle = INK; ctx.lineJoin = 'round'; ctx.stroke();
+  const mid = cols[Math.round(N * 0.45)], fs = Math.max(8, 15 * top.s);
+  if (h.num && fs > 9) { ctx.font = `${fs}px ${SFX_FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; const tx = (mid.t.x + mid.b.x) / 2, ty = (mid.t.y + mid.b.y) / 2; ctx.lineWidth = Math.max(2, fs * 0.2); ctx.strokeStyle = INK; ctx.strokeText(String(h.num), tx, ty); ctx.fillStyle = CREAM; ctx.fillText(String(h.num), tx, ty); }
+  // a gold ball on top
+  ctx.beginPath(); ctx.arc(top.x, top.y, Math.max(2.5, 2.4 * top.s), 0, TAU); ctx.fillStyle = GOLD; ctx.fill(); ctx.lineWidth = Math.max(1, 0.8 * top.s); ctx.strokeStyle = INK; ctx.stroke();
 }
 
 /* ---------------- shot resolution ---------------- */
@@ -3677,7 +3942,7 @@ function finalShare(win) {
   box.firstChild.set({ emoji: '⛳', title: 'Par-Tee Time', text, url: location.origin + '/par-tee-time/' });
 }
 function quitToTitle() {
-  G.token++; G.state = 'title'; G.mode = null; G.sim = null; G.planner = null; G.paused = false;
+  G.token++; G.state = 'title'; G.mode = null; G.sim = null; G.planner = null; G.paused = false; camOff();
   if (NET.named) netLeave();
   ['#hud', '#controls', '#chatbar', '#mdCard', '#mdMenu', '#mdFinal', '#scrSetup', '#scrOnline', '#scrMasters', '#scrBuild', '#scrCourse', '#caption'].forEach(s => show($(s), false));
   $('#bcol0').innerHTML = ''; $('#bcol1').innerHTML = '';
@@ -4120,6 +4385,7 @@ function openSetup(mode) {
   courseCards($('#courseCards'), PREF.courseId, id => { PREF.courseId = id; updateTeeSub(); });
   segment($('#courseSeg'), Object.entries(LENGTHS).map(([k, v]) => [k, v.label]), PREF.course, v => { PREF.course = v; updateTeeSub(); });
   segment($('#guideSeg'), [['full', 'Full'], ['short', 'Short'], ['off', 'Off']], PREF.guide, v => { PREF.guide = v; savePrefs(); });
+  segment($('#camSeg'), CAM_OPTS, PREF.cam, v => { PREF.cam = v; savePrefs(); });
   updateTeeSub();
   $('#scrSetup').scrollTop = 0;
 }
@@ -4713,6 +4979,7 @@ function openMenu() {
   const tg = (id, on) => { const b = $(id); b.setAttribute('aria-pressed', String(on)); b.textContent = on ? 'On' : 'Off'; };
   tg('#tgSound', PREF.sound); tg('#tgVoice', PREF.voice); tg('#tgRead', PREF.readFriend);
   segment($('#menuGuideSeg'), [['full', 'Full'], ['short', 'Short'], ['off', 'Off']], PREF.guide, v => { PREF.guide = v; savePrefs(); });
+  segment($('#menuCamSeg'), CAM_OPTS, PREF.cam, v => { PREF.cam = v; savePrefs(); });
   const tryRound = G.mode === 'solo' && G.cfg.masters && G.cfg.masters.kind === 'try';
   $('#menuQuit').textContent = G.mode === 'solo' ? 'Quit to the course' : 'Quit to title';
   $('#quitTxt').textContent = tryRound ? 'Quit this try? It still counts as one of your three.' : G.mode === 'solo' ? 'Quit this practice round? Practice never counts.' : 'Quit this round? Scores for this round are lost.';
@@ -4801,7 +5068,7 @@ function boot() {
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 
-window.__partee = { G, RD, NET, PREF, HOLE_DEFS, compileHole, buildNav, makePlanner, pickShot, SKILLS, newBall, cloneBall, makeWorld, applyShot, runToRest, startMatch, advanceHole, doShot, resolveShot, humanShoot, sendChat, netHostStart, startOnlineMatch, quitToTitle, holeThumb, COURSE_SETS, NPCS, MS, mastersOrder, openCourse, openMasters, leaveSolo };
+window.__partee = { G, RD, NET, PREF, CAM, HOLE_DEFS, compileHole, buildNav, makePlanner, pickShot, SKILLS, newBall, cloneBall, makeWorld, applyShot, runToRest, startMatch, advanceHole, doShot, resolveShot, humanShoot, sendChat, netHostStart, startOnlineMatch, quitToTitle, holeThumb, COURSE_SETS, NPCS, MS, mastersOrder, openCourse, openMasters, leaveSolo };
 
 })();
 </script>
