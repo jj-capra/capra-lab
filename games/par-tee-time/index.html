@@ -2232,7 +2232,7 @@ function buildStatic(h) {
   RD.statKey = key;
 }
 
-function drawHoleStatic(ctx, h) {
+function drawHoleStatic(ctx, h, flat) {   // flat: leave out what the shot camera stands up in 3D
   const T = THEMES[h.theme];
   ctx.save();
   ctx.beginPath(); ctx.rect(0, 0, W, H); ctx.clip();
@@ -2318,18 +2318,20 @@ function drawHoleStatic(ctx, h) {
   }
   // rails: misregistered under-print, ink, wood, highlight
   railStroke(ctx, h.fairway, T.rail);
-  for (const s of h.solids) {
+  if (!flat) for (const s of h.solids) {
     ctx.save(); ctx.translate(3, 4); pathPoly(ctx, s.poly); ctx.fillStyle = 'rgba(5,4,12,.5)'; ctx.fill(); ctx.restore();
     pathPoly(ctx, s.poly); ctx.fillStyle = s.kind === 'cushion' ? T.rail : '#9a97a8'; ctx.fill();
     ctx.save(); ctx.clip(); dots(ctx, s.kind === 'cushion' ? 0.18 : 0.3, INK, 5, 1.1); ctx.restore();
     pathPoly(ctx, s.poly); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke();
     if (s.kind === 'cushion') { const b = polyBox(s.poly); ctx.beginPath(); ctx.moveTo(b.x0 + 3, b.y0 + 3); ctx.lineTo(b.x1 - 3, b.y0 + 3); ctx.lineWidth = 1.5; ctx.strokeStyle = 'rgba(255,240,210,.45)'; ctx.stroke(); }
   }
-  // static caps
-  for (const c of h.caps) drawCap(ctx, c);
-  // bumpers
-  for (const b of h.bumpers) drawBumper(ctx, b, 0);
-  T.overlay && T.overlay(ctx, h);
+  if (!flat) {
+    // static caps
+    for (const c of h.caps) drawCap(ctx, c);
+    // bumpers
+    for (const b of h.bumpers) drawBumper(ctx, b, 0);
+  }
+  T.overlay && T.overlay(ctx, h, flat);
   // cup
   drawCupHole(ctx, h.cup.x, h.cup.y);
   // tee pad
@@ -2466,7 +2468,7 @@ const THEMES = {
       ctx.save(); ctx.translate(40, 248); ctx.fillStyle = '#c3d6ea'; ctx.fillRect(-18, -10, 36, 26); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.strokeRect(-18, -10, 36, 26);
       ctx.beginPath(); ctx.moveTo(-22, -9); ctx.lineTo(0, -26); ctx.lineTo(22, -9); ctx.closePath(); ctx.fillStyle = '#5b5970'; ctx.fill(); ctx.stroke(); ctx.fillStyle = '#e9c446'; ctx.fillRect(-12, -2, 7, 7); ctx.fillRect(5, -2, 7, 7); ctx.restore();
     },
-    overlay(ctx, h) { for (const b of h.def.buildings || []) drawBuilding(ctx, b); },
+    overlay(ctx, h, flat) { if (!flat) for (const b of h.def.buildings || []) drawBuilding(ctx, b); },
   },
   pool: {
     back: '#3c2620', surf: '#4f9672', rail: '#6d3a2a',
@@ -2529,8 +2531,8 @@ const THEMES = {
       // columns
       for (const x of [22, 338]) { ctx.fillStyle = '#c9c2d8'; ctx.fillRect(x - 10, 40, 20, 560); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.strokeRect(x - 10, 40, 20, 560); ctx.fillStyle = 'rgba(11,9,22,.25)'; for (let k = -6; k <= 6; k += 4) ctx.fillRect(x + k, 44, 1.2, 552); }
     },
-    overlay(ctx, h) {
-      for (const L of h.lasers) for (const [x, y] of [[L.ax, L.ay], [L.bx, L.by]]) { roundRect(ctx, x - 6, y - 6, 12, 12, 3); ctx.fillStyle = '#3a3550'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke(); inkCircle(ctx, x, y, 2.5, '#ff4f5e', 1); }
+    overlay(ctx, h, flat) {
+      if (!flat) for (const L of h.lasers) for (const [x, y] of [[L.ax, L.ay], [L.bx, L.by]]) { roundRect(ctx, x - 6, y - 6, 12, 12, 3); ctx.fillStyle = '#3a3550'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke(); inkCircle(ctx, x, y, 2.5, '#ff4f5e', 1); }
       // vault floor plate under each door
       const seen = new Set();
       for (const m of h.movers) if (m.type === 'ring') {
@@ -2642,7 +2644,7 @@ function gear(ctx, x, y, r, teeth, fill) {
 }
 
 /* ---------------- dynamic layer ---------------- */
-function drawMovers(ctx, h, t, focus) {
+function drawMovers(ctx, h, t, focus, flat) {   // flat: only what lies on the ground (the shot camera draws the rest in 3D)
   const mg = moverGeom(h, t, null, null);
   // well (accretion disk)
   for (const w of h.wells) {
@@ -2682,6 +2684,7 @@ function drawMovers(ctx, h, t, focus) {
       ctx.save(); ctx.setLineDash([3, 7]); ctx.beginPath(); ctx.moveTo(L.ax + 6, L.ay); ctx.lineTo(L.bx - 6, L.by); ctx.lineWidth = 1.2; ctx.strokeStyle = warn ? 'rgba(255,79,94,.85)' : 'rgba(255,79,94,.3)'; ctx.stroke(); ctx.restore();
     }
   }
+  if (flat) return;
   // movers
   let ci = 0, si = 0;
   for (const m of h.movers) {
@@ -3426,7 +3429,7 @@ function doShot(s, a, p, sx, sy, t0, res) {
   sfx.putt(p);
   fxBurst(p > 0.82 ? 'THWACK!' : 'TOCK!', b.x, b.y - 22, 'cream', 0.75, 0.6);
   if (p > 0.9 && !REDUCED) RD.shake = 3;
-  setHint('Rolling…'); updateHUD();
+  setHint(CAM.on ? 'Slow-mo · tap to speed up' : 'Rolling…'); updateHUD();
 }
 function computeResult(s, a, p, sx, sy, t0) {
   const bs = G.balls.map(cloneBall), S = makeWorld(G.hole, bs, t0); S.quiet = true;
@@ -3501,7 +3504,7 @@ function tick(ts) {
   const now = ts / 1000, dt = Math.min(0.05, Math.max(0, now - (G.lastTs || now))); G.lastTs = now;
   if (!G.paused) {
     if (G.state === 'roll' && G.sim) {
-      G.simAcc += dt;
+      G.simAcc += dt * (CAM.on ? CAM.ts : 1);   // the shot camera plays it in slow motion
       let steps = 0;
       while (G.simAcc >= DT && steps < 40) { stepWorld(G.sim); G.simAcc -= DT; steps++; if (!anyAwake(G.sim)) break; }
       G.clock = G.sim.t;
@@ -3566,7 +3569,8 @@ function render(now) {
    and the overhead view (and the rest of the game) carries on. Overhead in the setup or the pause
    menu turns it off; a tap-in stays overhead anyway.
    ===================================================================== */
-const CAM = { on: false, phase: '', k: 0, s: 0, t0: 0, path: null, head: 0, settled: false, holdFor: 0, flash: 0, wind: 0, statKey: '', stat: null, top: null };
+const CAM = { on: false, phase: '', k: 0, s: 0, t0: 0, path: null, head: 0, settled: false, holdFor: 0, flash: 0, wind: 0, statKey: '', stat: null, top: null,
+  ts: 1, fast: false, real: 0, cap: null, evi: 0, said: {}, capTop: 12, capBottom: 0, solids: [], hatch: null };
 const CAM_TEX = 3, CAM_IN = 0.6, CAM_HOLD = 0.6, CAM_HOLD_CUP = 1.1, CAM_OUT = 0.42, CAM_MIN_PATH = 30;
 const camWanted = () => PREF.cam !== 'overhead';
 const CAM_OPTS = [['chase', 'Chase'], ['overhead', 'Overhead']];
@@ -3595,7 +3599,33 @@ function camStart(s, a, p, sx, sy, t0) {
   if (!path || path.len < CAM_MIN_PATH) return;
   const h = G.hole;
   Object.assign(CAM, { on: true, phase: 'in', k: 0, s, t0, path, head: a, settled: false, flash: 1,
-    wind: Math.atan2(h.cup.y - h.tee.y, h.cup.x - h.tee.x) + Math.PI / 2 + ((h.num || 1) % 3 - 1) * 0.5 });
+    wind: Math.atan2(h.cup.y - h.tee.y, h.cup.x - h.tee.x) + Math.PI / 2 + ((h.num || 1) % 3 - 1) * 0.5,
+    ts: 1, fast: false, real: 0, evi: 0, said: {} });
+  camSay(`HOLE ${h.num || ''}. ${(G.players[s].name || 'YOU').toUpperCase()} PUTTS…`);
+  try {   // where the narration box and the slow-motion tag go: clear of the HUD and the controls
+    const cv = RD.cv.getBoundingClientRect(), hud = $('#hud').getBoundingClientRect(), ctl = $('#controls').getBoundingClientRect();
+    CAM.capTop = Math.max(14, (hud.height ? hud.bottom : 0) - cv.top + 12);
+    CAM.capBottom = Math.min(RD.ch - 16, (ctl.height ? ctl.top : RD.ch) - cv.top - 12);
+  } catch (e) { CAM.capTop = 14; CAM.capBottom = RD.ch - 16; }
+}
+// the narration box: one line, like a graphic novel caption
+function camSay(text) { CAM.cap = { text, t0: performance.now() / 1000 }; }
+function camSayOnce(key, text) { if (CAM.said[key]) return; CAM.said[key] = 1; camSay(text); }
+function camNarrate() {
+  const E = G.sim ? G.sim.ev : [], me = 'p' + CAM.s;
+  while (CAM.evi < E.length) {
+    const e = E[CAM.evi++]; if (e.id !== me) continue;
+    if (e.type === 'hit') { CAM.said.hits = (CAM.said.hits || 0) + 1; if (CAM.said.hits === 1) camSay('OFF THE RAIL!'); else if (CAM.said.hits === 3) camSay('BANK… AND BANK AGAIN!'); }
+    else if (e.type === 'kick') camSayOnce('kick', 'KICKED BACK INTO PLAY!');
+    else if (e.type === 'laser') camSayOnce('laser', 'ZAPPED!');
+    else if (e.type === 'boost') camSayOnce('boost', 'BOOST!');
+    else if (e.type === 'lip') camSayOnce('lip', 'LIPPED OUT!');
+    else if (e.type === 'cup') camSayOnce('cup', 'IT DROPS!');
+    else if (e.type === 'pocket') camSayOnce('pocket', 'SIDE POCKET!');
+    else if (e.type === 'oob' || e.type === 'void') camSayOnce('oob', 'OUT OF BOUNDS!');
+  }
+  const b = ballOf(CAM.s), cup = G.hole.cup;
+  if (b && !b.out && vlen(b.x - cup.x, b.y - cup.y) < 60 && vlen(b.vx, b.vy) > 30) camSayOnce('near', 'WILL IT DROP…?');
 }
 const camOff = () => { CAM.on = false; CAM.phase = ''; };
 function camSettle() { if (CAM.on) CAM.settled = true; }
@@ -3608,8 +3638,23 @@ function camBall() {
 function camTick(dt) {
   if (!CAM.on) return;
   CAM.k += dt; CAM.flash = Math.max(0, CAM.flash - dt * 5);
+  // time: slow motion while it rolls, slower still near the cup; a tap speeds it up; a long one doesn't drag
+  let want = 1;
+  if (CAM.phase === 'in') want = CAM.fast ? 2.4 : 0.55;
+  else if (CAM.phase === 'roll') {
+    CAM.real += dt;
+    const b = ballOf(CAM.s), near = b && !b.out && vlen(b.x - G.hole.cup.x, b.y - G.hole.cup.y) < 60;
+    want = CAM.fast ? 2.4 : CAM.real > 8 ? 1.4 : near ? 0.28 : 0.45;
+  }
+  CAM.ts += (want - CAM.ts) * (1 - Math.exp(-dt * 6));
+  if (CAM.phase === 'in' || CAM.phase === 'roll') camNarrate();
   if ((CAM.phase === 'in' && CAM.k >= CAM_IN) || (CAM.phase === 'roll' && CAM.settled)) {
-    if (CAM.settled) { const b = ballOf(CAM.s); CAM.phase = 'hold'; CAM.holdFor = b && b.out === 'cup' ? CAM_HOLD_CUP : CAM_HOLD; } else CAM.phase = 'roll';
+    if (CAM.settled) {
+      const b = ballOf(CAM.s), cup = G.hole.cup;
+      CAM.phase = 'hold'; CAM.holdFor = b && b.out === 'cup' ? CAM_HOLD_CUP : CAM_HOLD;
+      camNarrate();
+      if (b && !b.out && !CAM.said.cup) camSay(vlen(b.x - cup.x, b.y - cup.y) < 28 ? 'SO CLOSE…' : 'IT STOPS HERE.');
+    } else CAM.phase = 'roll';
     CAM.k = 0;
   } else if (CAM.phase === 'hold' && CAM.k >= CAM.holdFor) { CAM.phase = 'out'; CAM.k = 0; }
   else if (CAM.phase === 'out' && CAM.k >= CAM_OUT) {
@@ -3635,37 +3680,200 @@ function camLens(ch) {
   if (CAM.phase === 'hold') back *= 1 - 0.14 * clamp(CAM.k / CAM.holdFor, 0, 1);   // a slow push in
   return { hgt: L('hgt'), yh: L('yh'), back };
 }
-// The overhead picture the ground is made of: the hole's static art once, the moving parts each frame
+// The overhead picture the ground is made of. Everything that stands up (rails, walls, bumpers,
+// windmills, cars, clock hands, the vault...) is left out of it and drawn in 3D on top.
 function camTexture(h, t) {
   const key = h.id;
   if (CAM.statKey !== key || !CAM.stat) {
     CAM.stat = CAM.stat || document.createElement('canvas'); CAM.top = CAM.top || document.createElement('canvas');
     CAM.stat.width = CAM.top.width = W * CAM_TEX; CAM.stat.height = CAM.top.height = H * CAM_TEX;
-    const sx = CAM.stat.getContext('2d'); sx.setTransform(CAM_TEX, 0, 0, CAM_TEX, 0, 0); drawHoleStatic(sx, h);
-    CAM.statKey = key;
+    const sx = CAM.stat.getContext('2d'); sx.setTransform(CAM_TEX, 0, 0, CAM_TEX, 0, 0); drawHoleStatic(sx, h, true);
+    CAM.statKey = key; CAM.solids = camStatic(h);
   }
   const tx = CAM.top.getContext('2d');
   tx.setTransform(1, 0, 0, 1, 0, 0); tx.drawImage(CAM.stat, 0, 0);
-  tx.setTransform(CAM_TEX, 0, 0, CAM_TEX, 0, 0); drawMovers(tx, h, t, null);
+  tx.setTransform(CAM_TEX, 0, 0, CAM_TEX, 0, 0); drawMovers(tx, h, t, null, true);
   return CAM.top;
 }
+
+/* ---------- 3D building blocks: prisms (any outline, pushed up), cylinders, spheres ---------- */
+const LTX = -0.54, LTY = -0.84;          // the light comes from up the screen and to the left, like the overhead shadows
+const SHX = 0.5, SHY = 0.78;             // so shadows fall the other way, longer for taller things
+function prism(poly, z0, z1, c, o) {
+  const faces = [], n = poly.length;
+  let a2 = 0; for (let i = 0; i < n; i++) { const p = poly[i], q = poly[(i + 1) % n]; a2 += p[0] * q[1] - q[0] * p[1]; }
+  const sg = a2 > 0 ? 1 : -1;
+  for (let i = 0; i < n; i++) {
+    const p = poly[i], q = poly[(i + 1) % n], dx = q[0] - p[0], dy = q[1] - p[1], L = Math.hypot(dx, dy);
+    if (L < 0.01) continue;
+    faces.push({ p: [[p[0], p[1], z0], [q[0], q[1], z0], [q[0], q[1], z1], [p[0], p[1], z1]], c, n: [sg * dy / L, -sg * dx / L], o });
+  }
+  faces.push({ p: poly.map(([x, y]) => [x, y, z1]), c: o && o.topC || c, top: true, o });
+  return faces;
+}
+function segPoly(ax, ay, bx, by, hw) {
+  const dx = bx - ax, dy = by - ay, L = Math.hypot(dx, dy) || 1, nx = -dy / L * hw, ny = dx / L * hw;
+  return [[ax + nx, ay + ny], [bx + nx, by + ny], [bx - nx, by - ny], [ax - nx, ay - ny]];
+}
+function capPoly(ax, ay, bx, by, r, k = 3) {
+  const a = Math.atan2(by - ay, bx - ax), out = [];
+  for (let i = 0; i <= k; i++) { const t = a - Math.PI / 2 + Math.PI * i / k; out.push([bx + Math.cos(t) * r, by + Math.sin(t) * r]); }
+  for (let i = 0; i <= k; i++) { const t = a + Math.PI / 2 + Math.PI * i / k; out.push([ax + Math.cos(t) * r, ay + Math.sin(t) * r]); }
+  return out;
+}
+const circPoly = (x, y, r, n = 12) => Array.from({ length: n }, (_, i) => [x + Math.cos(i * TAU / n) * r, y + Math.sin(i * TAU / n) * r]);
+const solid = (faces, foot, hgt, extra) => Object.assign({ faces, foot, hgt }, extra);
+const box = (poly, z0, z1, c, o) => solid(prism(poly, z0, z1, c, o), poly, z1, null);
+
+// Everything on the hole that doesn't move, built once a hole
+function camStatic(h) {
+  const T = THEMES[h.theme] || {}, out = [];
+  // rails: low wooden walls along the fairway's edge, in short pieces so they sort well
+  const fw = h.fairway;
+  for (let i = 0; i < fw.length; i++) {
+    const a = fw[i], b = fw[(i + 1) % fw.length], L = vlen(b[0] - a[0], b[1] - a[1]), n = Math.max(1, Math.ceil(L / 26));
+    for (let k = 0; k < n; k++) {
+      const x0 = a[0] + (b[0] - a[0]) * k / n, y0 = a[1] + (b[1] - a[1]) * k / n, x1 = a[0] + (b[0] - a[0]) * (k + 1) / n, y1 = a[1] + (b[1] - a[1]) * (k + 1) / n;
+      out.push(box(segPoly(x0, y0, x1, y1, 4.6), 0, 9, T.rail || DRIFT, { topC: shade(T.rail || DRIFT, 0.18), rail: 1 }));
+    }
+  }
+  for (const s of h.solids) out.push(box(s.poly, 0, s.kind === 'cushion' ? 9 : 15, s.kind === 'cushion' ? (T.rail || DRIFT) : '#9a97a8', { dots: s.kind !== 'cushion' }));
+  for (const c of h.caps) {
+    const k = c.kind, col = k === 'gold' ? '#e2bd4f' : k === 'rim' ? '#f0864f' : k === 'board' ? '#f3efe6' : k === 'flipper' ? CORAL : DRIFT;
+    const z1 = k === 'board' ? 44 : k === 'rim' ? 16 : k === 'gold' ? 11 : 10;
+    const z0 = k === 'rim' ? 12 : 0;
+    const s = box(capPoly(c.ax, c.ay, c.bx, c.by, Math.max(2.5, c.r)), z0, z1, col, { gold: k === 'gold' });
+    if (k === 'rim' || k === 'board') {   // the hoop stands on a post
+      const mx = (c.ax + c.bx) / 2, my = (c.ay + c.by) / 2;
+      if (k === 'board') s.faces.push(...prism(circPoly(mx, my + 5, 2.2, 6), 0, 30, '#5b5970'));
+    }
+    out.push(s);
+  }
+  for (const b of h.bumpers) out.push(...camBumper(b));
+  for (const b of h.def.buildings || []) {
+    const hw = b.w / 2 + 2, hh = b.h / 2;
+    const foot = [[b.cx - hw, b.cy - hh - 6], [b.cx + hw, b.cy - hh - 6], [b.cx + hw, b.cy + hh], [b.cx - hw, b.cy + hh]];
+    const s = box(foot, 0, 30, '#8f8ca0', { dots: true, tunnel: b });
+    // a gable roof
+    const y0 = b.cy - hh - 6, y1 = b.cy + hh, xL = b.cx - hw - 4, xR = b.cx + hw + 4;
+    s.faces.push({ p: [[xL, y0, 30], [b.cx, y0, 48], [b.cx, y1, 48], [xL, y1, 30]], c: '#5b5970', n: [-0.8, 0], roof: 1 });
+    s.faces.push({ p: [[b.cx, y0, 48], [xR, y0, 30], [xR, y1, 30], [b.cx, y1, 48]], c: '#5b5970', n: [0.8, 0], roof: 1 });
+    s.faces.push({ p: [[xL, y0, 30], [xR, y0, 30], [b.cx, y0, 48]], c: '#7d7a90', n: [0, -1] });
+    s.faces.push({ p: [[xR, y1, 30], [xL, y1, 30], [b.cx, y1, 48]], c: '#7d7a90', n: [0, 1] });
+    s.hgt = 48; s.bld = b;
+    out.push(s);
+  }
+  for (const L of h.lasers) for (const [x, y] of [[L.ax, L.ay], [L.bx, L.by]]) out.push(box([[x - 6, y - 6], [x + 6, y - 6], [x + 6, y + 6], [x - 6, y + 6]], 0, 18, '#3a3550', { topC: GOLD }));
+  return out;
+}
+function camBumper(b) {
+  const k = b.kind, x = b.x, y = b.y, r = b.r;
+  if (k === 'planet') return [solid([], circPoly(x, y, r, 10), r * 2, { sphere: { x, y, z: r, r, c: b.c || SKY, ring: true } })];
+  if (k === 'palm') { const s = box(circPoly(x, y, r * 0.75, 8), 0, 36, '#8a6a4f'); s.palm = { x, y, z: 36, r }; s.hgt = 40; return [s]; }
+  if (k === 'gem') {
+    const top = [x, y, r * 2.4], bot = [x, y, 0], mid = [[x, y - r, r * 1.2], [x + r, y, r * 1.2], [x, y + r, r * 1.2], [x - r, y, r * 1.2]], faces = [];
+    for (let i = 0; i < 4; i++) { const a = mid[i], c = mid[(i + 1) % 4], nx = (a[0] + c[0]) / 2 - x, ny = (a[1] + c[1]) / 2 - y, L = Math.hypot(nx, ny) || 1; faces.push({ p: [a, c, top], c: PALE, n: [nx / L, ny / L], tri: 1 }, { p: [c, a, bot], c: shade(PALE, -0.2), n: [nx / L, ny / L], tri: 1 }); }
+    return [solid(faces, circPoly(x, y, r, 4), r * 2.4)];
+  }
+  if (k === 'cone') {
+    const base = circPoly(x, y, r + 1.5, 8), apex = [x, y, (r + 1.5) * 2.8], faces = [];
+    for (let i = 0; i < 8; i++) { const a = base[i], c = base[(i + 1) % 8], nx = (a[0] + c[0]) / 2 - x, ny = (a[1] + c[1]) / 2 - y, L = Math.hypot(nx, ny) || 1; faces.push({ p: [[a[0], a[1], 0], [c[0], c[1], 0], apex], c: i % 2 ? '#f0864f' : '#f6a36f', n: [nx / L, ny / L], tri: 1 }); }
+    return [solid(faces, base, apex[2])];
+  }
+  if (k === 'kicker') { const s = box(circPoly(x, y, r, 12), 0, 11, CORAL, { topC: GOLD }); s.star = { x, y, z: 11, r }; return [s]; }
+  if (k === 'stud') return [box(circPoly(x, y, r, 10), 0, 6, GOLD, { topC: '#f6dc7c' })];
+  return [box(circPoly(x, y, r, 10), 0, 16, CREAM, { topC: '#ffffff' })];
+}
+// What moves this frame: windmill paddles, octopus arms, clock hands, vault doors, cars, defenders, pendulums
+function camMovers(h, t) {
+  const mg = moverGeom(h, t, null, null), out = [];
+  let ci = 0, si = 0;
+  for (const m of h.movers) {
+    if (m.type === 'spinner') {
+      const caps = mg.caps.slice(ci, ci + m.arms); ci += m.arms;
+      if (m.kind === 'sail') {
+        for (const c of caps) {
+          const ux = Math.cos(c.ang), uy = Math.sin(c.ang), hw = m.w + 5;
+          const p0x = m.cx + ux * (m.r0 - 2), p0y = m.cy + uy * (m.r0 - 2), p1x = m.cx + ux * (m.r1 + 2), p1y = m.cy + uy * (m.r1 + 2);
+          out.push(box(segPoly(p0x, p0y, p1x, p1y, hw), 2, 12, '#e9e1cb', { topC: '#f6f0de', slats: { ux, uy, r0: m.r0, r1: m.r1, cx: m.cx, cy: m.cy, hw } }));
+        }
+        out.push(box(circPoly(m.cx, m.cy, 7, 10), 0, 22, GOLD, { topC: '#f6dc7c' }));
+      } else if (m.kind === 'tentacle') {
+        for (const c of caps) {
+          const a = c.ang, nx = -Math.sin(a), ny = Math.cos(a), L = [], Rr = [];
+          for (let i = 0; i <= 10; i++) {
+            const r = 26 + (m.r1 - 26) * i / 10, wob = Math.sin(t * 3 + i * 0.95) * (i < 6 ? 4 : 2) * (i / 10), w = (m.w + 6) * (1 - i / 13);
+            const x = m.cx + Math.cos(a) * r + nx * wob, y = m.cy + Math.sin(a) * r + ny * wob;
+            L.push([x + nx * w, y + ny * w]); Rr.unshift([x - nx * w, y - ny * w]);
+          }
+          out.push(box([...L, ...Rr], 0, 7, CORAL, { topC: '#f2a090', suckers: 1 }));
+        }
+        out.push(solid([], circPoly(m.cx, m.cy, 30, 10), 50, { octo: { x: m.cx, y: m.cy, z: 24, r: 30 } }));
+      } else {
+        const c = caps[0], a = c.ang, ux = Math.cos(a), uy = Math.sin(a), nx = -uy, ny = ux, w = m.w + 2;
+        const poly = [[m.cx - ux * 14 + nx * w * 0.8, m.cy - uy * 14 + ny * w * 0.8], [c.bx - ux * 12 + nx * w, c.by - uy * 12 + ny * w], [c.bx + ux * 4, c.by + uy * 4], [c.bx - ux * 12 - nx * w, c.by - uy * 12 - ny * w], [m.cx - ux * 14 - nx * w * 0.8, m.cy - uy * 14 - ny * w * 0.8]];
+        const z = m.kind === 'hour' ? 2 : m.kind === 'minute' ? 6 : 10, col = m.kind === 'minute' ? '#1c1a2c' : m.kind === 'second' ? CORAL : '#3a3550';
+        out.push(box(poly, z, z + 4, col, { topC: shade(col, 0.25) }));
+        out.push(box(circPoly(m.cx, m.cy, m.kind === 'second' ? 3 : 6, 8), 0, z + 6, m.kind === 'second' ? CORAL : GOLD));
+      }
+    } else if (m.type === 'ring') {
+      const caps = mg.caps.slice(ci, ci + m.segs); ci += m.segs;
+      for (const c of caps) out.push(box(capPoly(c.ax, c.ay, c.bx, c.by, m.w, 2), 0, 18, '#a3aab9', { topC: '#cfd4de' }));
+      for (const c of [caps[0], caps[caps.length - 1]]) { const x = c === caps[0] ? c.ax : c.bx, y = c === caps[0] ? c.ay : c.by; out.push(box(circPoly(x, y, m.w + 2, 8), 0, 21, GOLD, { topC: '#f6dc7c' })); }
+    } else if (m.type === 'car') {
+      const c = mg.caps[ci++], x = c.x, y = m.y, dir = Math.sign(m.speed) || 1, hl = m.len / 2 + 2, hr = m.r + 2;
+      const body = box([[x - hl, y - hr], [x + hl, y - hr], [x + hl, y + hr], [x - hl, y + hr]], 1.5, 11, m.c, { topC: shade(m.c, 0.15) });
+      const c0 = x + dir * -6, c1 = x + dir * 8;
+      body.faces.push(...prism([[Math.min(c0, c1), y - hr + 2], [Math.max(c0, c1), y - hr + 2], [Math.max(c0, c1), y + hr - 2], [Math.min(c0, c1), y + hr - 2]], 11, 18, PALE, { glass: 1, topC: shade(m.c, 0.05) }));
+      body.hgt = 18; body.car = { x, y, dir, hl, hr };
+      out.push(body);
+    } else if (m.type === 'slider') {
+      const q = mg.circs[si++], s = box(circPoly(q.x, q.y, m.r, 10), 0, 18, m.c, { topC: shade(m.c, 0.2) });
+      s.defender = { x: q.x, y: q.y, r: m.r, num: m.num, c: m.c }; s.hgt = 32;
+      out.push(s);
+    } else if (m.type === 'pendulum') {
+      const c = mg.caps[ci++], q = mg.circs[si++];
+      out.push(box(circPoly(m.px, m.py, 6, 8), 0, 16, GOLD, { topC: '#f6dc7c' }));
+      out.push(box(segPoly(m.px, m.py, q.x, q.y, m.w), 6, 9, '#c9a54a'));
+      out.push(solid([], circPoly(q.x, q.y, m.bob, 8), m.bob * 2, { sphere: { x: q.x, y: q.y, z: m.bob, r: m.bob, c: GOLD } }));
+    }
+  }
+  for (const L of h.lasers) if (laserOn(L, t)) out.push({ faces: [], laser: L });
+  return out;
+}
+
+/* ---------- comic textures ---------- */
+function hatchPat() {
+  if (CAM.hatch) return CAM.hatch;
+  const c = document.createElement('canvas'); c.width = c.height = 6;
+  const x = c.getContext('2d'); x.strokeStyle = 'rgba(11,9,22,.55)'; x.lineWidth = 1;
+  x.beginPath(); x.moveTo(-1, 7); x.lineTo(7, -1); x.moveTo(5, 7); x.lineTo(7, 5); x.moveTo(-1, 1); x.lineTo(1, -1); x.stroke();
+  CAM.hatch = RD.ctx.createPattern(c, 'repeat');
+  return CAM.hatch;
+}
+
+/* ---------- the frame ---------- */
 function renderChase(now) {
   const ctx = RD.ctx, h = G.hole, T = THEMES[h.theme] || {}, dpr = RD.dpr, cw = RD.cw, ch = RD.ch;
   const tex = camTexture(h, G.clock);
   const { hgt, yh, back } = camLens(ch);
   const fx = Math.cos(CAM.head), fy = Math.sin(CAM.head), rx = -fy, ry = fx, bp = camBall();
-  const cx = bp.x - fx * back, cy = bp.y - fy * back, focal = 0.6 * Math.min(ch, cw * 1.6), cxs = cw / 2;
-  const proj = (x, y, z) => { const dx = x - cx, dy = y - cy, d = dx * fx + dy * fy; if (d < 3) return null; const l = dx * rx + dy * ry; return { x: cxs + l * focal / d, y: yh + (hgt - z) * focal / d, s: focal / d, d }; };
+  const cx = bp.x - fx * back, cy = bp.y - fy * back, focal = 0.6 * Math.min(ch, cw * 1.6), cxs = cw / 2, NEAR = 4;
+  const cam = (x, y, z) => { const dx = x - cx, dy = y - cy; return [dx * rx + dy * ry, dx * fx + dy * fy, z]; };
+  const scr = (q) => [cxs + q[0] * focal / q[1], yh + (hgt - q[2]) * focal / q[1]];
+  const proj = (x, y, z) => { const q = cam(x, y, z); if (q[1] < NEAR) return null; const s = scr(q); return { x: s[0], y: s[1], s: focal / q[1], d: q[1] }; };
   const back0 = T.back || '#2a2240', sky = shade(back0, -0.55), ground = shade(back0, -0.3);
   ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, RD.cv.width, RD.cv.height);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  // sky: deep night, halftone stars, an ink horizon
+  // the sky, the far horizon of this hole's world, Ben-Day dots
   if (yh > 0) {
     const g = ctx.createLinearGradient(0, 0, 0, yh); g.addColorStop(0, '#07061a'); g.addColorStop(1, sky);
     ctx.fillStyle = g; ctx.fillRect(0, 0, cw, yh + 1);
     const r = rng32(((h.num || 1) * 7919) | 0); ctx.fillStyle = CREAM;
-    for (let i = 0; i < 46; i++) { const x = ((r() * 2.4 - 0.7 + CAM.head * 0.35) % 1 + 1) % 1 * cw, y = r() * yh * 0.92, tw = 0.5 + 0.5 * Math.sin(now * 3 + i); ctx.globalAlpha = 0.35 + 0.5 * tw; ctx.fillRect(x, y, 1.6, 1.6); }
+    for (let i = 0; i < 60; i++) { const x = ((r() * 2.4 - 0.7 + CAM.head * 0.35) % 1 + 1) % 1 * cw, y = r() * yh * 0.9, tw = 0.5 + 0.5 * Math.sin(now * 3 + i); ctx.globalAlpha = 0.3 + 0.55 * tw; const s = r() < 0.12 ? 2.4 : 1.4; ctx.fillRect(x, y, s, s); }
     ctx.globalAlpha = 1;
+    camHorizon(ctx, h, T, cw, yh, now);
+    ctx.save(); ctx.globalAlpha = 0.16; ctx.fillStyle = halftone('#ffffff', 6, 1.1); ctx.fillRect(0, 0, cw, yh); ctx.restore();
   }
   ctx.fillStyle = ground; ctx.fillRect(0, Math.max(0, yh), cw, ch);
   // the ground: the overhead picture laid down in perspective, a thin strip at a time
@@ -3683,85 +3891,378 @@ function renderChase(now) {
     y0 = y1;
   }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  if (yh > 0) {   // haze into the distance, then the horizon line
-    const g = ctx.createLinearGradient(0, yh, 0, yh + ch * 0.14); g.addColorStop(0, sky); g.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = g; ctx.fillRect(0, yh, cw, ch * 0.14);
-    ctx.beginPath(); ctx.moveTo(0, yh); ctx.lineTo(cw, yh); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke();
+  if (yh > 0) {   // haze into the distance (dotted, like a printed page), then the horizon line
+    const g = ctx.createLinearGradient(0, yh, 0, yh + ch * 0.16); g.addColorStop(0, sky); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, yh, cw, ch * 0.16);
+    ctx.save(); ctx.beginPath(); ctx.rect(0, yh, cw, ch * 0.1); ctx.globalAlpha = 0.25; ctx.fillStyle = halftone(INK, 5, 1.3); ctx.fill(); ctx.restore();
+    ctx.beginPath(); ctx.moveTo(0, yh); ctx.lineTo(cw, yh); ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.stroke();
   }
-  camTube(ctx, proj, now, bp);
-  // the balls and the flag, farthest first
-  const things = [];
-  for (const b of G.balls) if (!b.out) { const p = proj(b.x, b.y, R); if (p) things.push({ d: p.d, draw: () => camBallDraw(ctx, b, p, proj(b.x, b.y, 0)) }); }
-  const fp = proj(h.cup.x, h.cup.y, 0); if (fp) things.push({ d: fp.d + 0.5, draw: () => camFlag(ctx, proj, now, h) });
-  things.sort((x, y) => y.d - x.d).forEach(o => o.draw());
+  // the world: what stands still and what moves, the balls, the flag, the glowing path
+  const objs = CAM.solids.concat(camMovers(h, G.clock));
+  const balls = G.balls.filter(b => !b.out);
+  // shadows first, all one shape, inked with dots
+  ctx.save(); ctx.beginPath();
+  const shadowPoly = (pts) => {
+    const qs = []; for (const [x, y] of pts) { const q = cam(x, y, 0.3); if (q[1] < NEAR) return; qs.push(scr(q)); }
+    qs.forEach((s, i) => (i ? ctx.lineTo(s[0], s[1]) : ctx.moveTo(s[0], s[1]))); ctx.closePath();
+  };
+  for (const o of objs) {
+    if (!o.foot || !o.hgt) continue;
+    const sh = o.hgt * 0.55, pts = o.foot.concat(o.foot.map(([x, y]) => [x + SHX * sh, y + SHY * sh]));
+    shadowPoly(hull(pts));
+  }
+  for (const b of balls) shadowPoly(circPoly(b.x + SHX * R * 0.9, b.y + SHY * R * 0.9, R * 1.05, 10));
+  ctx.fillStyle = 'rgba(5,4,12,.42)'; ctx.fill('nonzero');
+  ctx.globalAlpha = 0.35; ctx.fillStyle = halftone(INK, 4, 1.05); ctx.fill('nonzero');
+  ctx.restore();
+  // everything that stands up, farthest first
+  const items = [];
+  const camPos = { x: cx, y: cy, z: hgt };
+  for (const o of objs) {
+    const fade = o.bld && camInside(o.bld, bp) ? 0.38 : 1;
+    for (const f of o.faces) {
+      if (f.n) {   // facing away: skip
+        let mx = 0, my = 0; for (const p of f.p) { mx += p[0]; my += p[1]; } mx /= f.p.length; my /= f.p.length;
+        if ((mx - camPos.x) * f.n[0] + (my - camPos.y) * f.n[1] > 0) continue;
+      }
+      const qs = clipNear(f.p.map(p => cam(p[0], p[1], p[2])), NEAR); if (qs.length < 3) continue;
+      let d = 0, dn = Infinity; for (const q of qs) { d += q[1]; dn = Math.min(dn, q[1]); } d /= qs.length;
+      items.push({ d, f, qs, fade: Math.min(fade, clamp((dn - 6) / 34, 0.22, 1)), o });
+    }
+    if (o.sphere) { const p = proj(o.sphere.x, o.sphere.y, o.sphere.z); if (p) { const nf = clamp((p.d - o.sphere.r - 6) / 34, 0.22, 1); items.push({ d: p.d, draw: () => { ctx.globalAlpha = nf; camSphere(ctx, p, o.sphere.r * p.s, o.sphere.c, o.sphere.ring); ctx.globalAlpha = 1; } }); } }
+    if (o.octo) { const p = proj(o.octo.x, o.octo.y, o.octo.z); if (p) items.push({ d: p.d - 4, draw: () => camOcto(ctx, p, o.octo, bp, proj) }); }
+    if (o.palm) { const p = proj(o.palm.x, o.palm.y, o.palm.z); if (p) items.push({ d: p.d - 1, draw: () => camPalm(ctx, o.palm, proj, now) }); }
+    if (o.defender) { const p = proj(o.defender.x, o.defender.y, 26); if (p) items.push({ d: p.d - 1, draw: () => camDefender(ctx, o.defender, p, proj, now) }); }
+    if (o.laser) { const L = o.laser, q = [[L.ax, L.ay, 3], [L.bx, L.by, 3], [L.bx, L.by, 13], [L.ax, L.ay, 13]].map(v => proj(v[0], v[1], v[2])); if (q.every(Boolean)) items.push({ d: (q[0].d + q[1].d) / 2, draw: () => camLaser(ctx, q, now) }); }
+    if (o.star) { const p = proj(o.star.x, o.star.y, o.star.z + 0.2); if (p) items.push({ d: p.d - 0.5, draw: () => camStar(ctx, o.star, proj) }); }
+  }
+  for (const b of balls) { const p = proj(b.x, b.y, R); if (p) items.push({ d: p.d, draw: () => camBallDraw(ctx, b, p, proj) }); }
+  const fp = proj(h.cup.x, h.cup.y, 0); if (fp) items.push({ d: fp.d + 0.5, draw: () => camFlag(ctx, proj, now, h) });
+  camTubeItems(items, ctx, proj, now, bp);
+  items.sort((a, b) => b.d - a.d);
+  const hatch = hatchPat();
+  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  // anything between the camera and the ball that would hide it goes see-through
+  const bpp = proj(bp.x, bp.y, R), brr = bpp ? R * bpp.s * 1.6 : 0;
+  for (const it of items) {
+    if (it.draw) { it.draw(); continue; }
+    const f = it.f, pts = it.qs.map(scr), s = focal / it.d;
+    if (bpp && it.d < bpp.d) {
+      let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+      for (const p of pts) { x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); }
+      if (x1 > bpp.x - brr && x0 < bpp.x + brr && y1 > bpp.y - brr && y0 < bpp.y + brr) it.fade = Math.min(it.fade, 0.35);
+    }
+    ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]))); ctx.closePath();
+    const lit = f.n ? f.n[0] * LTX + f.n[1] * LTY : 1;
+    ctx.globalAlpha = it.fade;
+    ctx.fillStyle = f.top ? (f.c === (f.o && f.o.topC) ? f.c : shade(f.c, 0.12)) : lit > 0 ? shade(f.c, -0.04 + 0.12 * lit) : shade(f.c, -0.2 + 0.18 * lit);
+    ctx.fill();
+    if (f.o && f.o.glass) { ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.fill(); }
+    if (!f.top && lit < -0.05 && s > 1.2) { ctx.fillStyle = hatch; ctx.globalAlpha = it.fade * clamp(-lit * 1.2, 0.25, 0.85); ctx.fill(); ctx.globalAlpha = it.fade; }
+    if ((f.top && it.o.dots) || f.roof) { ctx.save(); ctx.clip(); ctx.globalAlpha = it.fade * 0.28; ctx.fillStyle = halftone(INK, 5, 1.2); ctx.fillRect(0, 0, cw, ch); ctx.restore(); }
+    ctx.lineWidth = clamp(0.34 * s, 0.6, 2.8); ctx.strokeStyle = INK; ctx.stroke();
+    if (f.top) camTopDetail(ctx, it.o, f, s, proj);
+    if (it.o.tunnel && f.n && Math.abs(f.n[1]) > 0.9 && s > 0.6) camTunnel(ctx, it.o.tunnel, f, proj);
+    ctx.globalAlpha = 1;
+  }
   // the comic words, where they happened
   RD.fx = RD.fx.filter(f => now - f.t0 < f.dur);
   for (const f of RD.fx) { const p = proj(f.x, f.y, 30); if (p) drawBurst(ctx, f, now, p.x, p.y, clamp(p.s * 0.7, 0.45, 1.3)); }
-  // speed lines when it's flying
-  const lb = ballOf(CAM.s), sp = lb && !lb.out ? vlen(lb.vx, lb.vy) : 0;
-  if (sp > 140 && CAM.phase !== 'out') {
-    const k = clamp((sp - 140) / 420, 0, 1), r = rng32(Math.floor(now * 14));
-    ctx.save(); ctx.globalAlpha = 0.18 + 0.4 * k; ctx.strokeStyle = CREAM; ctx.lineWidth = 2; ctx.lineCap = 'round';
-    for (let i = 0; i < 16; i++) { const ang = r() * TAU, r0 = Math.max(cw, ch) * (0.42 + r() * 0.1), r1 = r0 + 40 + 90 * k; const vx = cxs, vy = Math.max(yh, ch * 0.2); ctx.beginPath(); ctx.moveTo(vx + Math.cos(ang) * r0, vy + Math.sin(ang) * r0); ctx.lineTo(vx + Math.cos(ang) * r1, vy + Math.sin(ang) * r1); ctx.stroke(); }
-    ctx.restore();
-  }
+  camPage(ctx, now, cw, ch, yh, cxs, bp);
   if (CAM.flash > 0) { ctx.fillStyle = CREAM; ctx.globalAlpha = CAM.flash * 0.8; ctx.fillRect(0, 0, cw, ch); ctx.globalAlpha = 1; }
   drawImpact(ctx, now);
 }
-// The glowing tube: where the ball is about to roll (bright close up, fading with distance along it),
-// a faint trail where it's been, and beads of light running along it
-function camTube(ctx, proj, now, bp) {
+function hull(pts) {
+  const P = pts.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  if (P.length < 3) return P;
+  const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const lo = [], up = [];
+  for (const p of P) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop(); lo.push(p); }
+  for (let i = P.length - 1; i >= 0; i--) { const p = P[i]; while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop(); up.push(p); }
+  up.pop(); lo.pop(); return lo.concat(up);
+}
+function clipNear(qs, NEAR) {
+  if (qs.every(q => q[1] >= NEAR)) return qs;
+  const out = [];
+  for (let i = 0; i < qs.length; i++) {
+    const a = qs[i], b = qs[(i + 1) % qs.length], ia = a[1] >= NEAR, ib = b[1] >= NEAR;
+    if (ia) out.push(a);
+    if (ia !== ib) { const t = (NEAR - a[1]) / (b[1] - a[1]); out.push([a[0] + (b[0] - a[0]) * t, NEAR, a[2] + (b[2] - a[2]) * t]); }
+  }
+  return out;
+}
+const camInside = (b, p) => Math.abs(p.x - b.cx) < b.w / 2 + 14 && Math.abs(p.y - b.cy) < b.h / 2 + 16;
+// little extras printed on top faces: windmill slats, a sucker row, a gold bar's stamp
+function camTopDetail(ctx, o, f, s, proj) {
+  if (o.slats && s > 1.4) {
+    const m = o.slats; ctx.save(); ctx.lineWidth = Math.max(0.6, 0.12 * s); ctx.strokeStyle = 'rgba(11,9,22,.6)'; ctx.beginPath();
+    for (let r = m.r0 + 6; r < m.r1; r += 8) { const px = m.cx + m.ux * r, py = m.cy + m.uy * r, a = proj(px - m.uy * m.hw, py + m.ux * m.hw, 12), b = proj(px + m.uy * m.hw, py - m.ux * m.hw, 12); if (a && b) { ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); } }
+    const a = proj(m.cx + m.ux * m.r0, m.cy + m.uy * m.r0, 12.2), b = proj(m.cx + m.ux * m.r1, m.cy + m.uy * m.r1, 12.2);
+    ctx.stroke();
+    if (a && b) { ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.lineWidth = Math.max(1, 0.3 * s); ctx.strokeStyle = '#5b4a3d'; ctx.stroke(); }
+    ctx.restore();
+  }
+  if (o.rail && s > 2.5) { ctx.save(); ctx.clip(); ctx.globalAlpha = 0.4; ctx.strokeStyle = 'rgba(255,240,210,.7)'; ctx.lineWidth = Math.max(0.6, 0.1 * s); ctx.stroke(); ctx.restore(); }
+  if (o.gold && s > 1.5) { ctx.save(); ctx.clip(); const g = ctx.createLinearGradient(0, 0, RD.cw, 0); g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(0.5, 'rgba(255,255,255,.35)'); g.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, RD.cw, RD.ch); ctx.restore(); }
+}
+function camTunnel(ctx, b, f, proj) {
+  const y = f.n[1] < 0 ? b.cy - b.h / 2 - 6 : b.cy + b.h / 2, x0 = b.cx - b.tw / 2, x1 = b.cx + b.tw / 2;
+  const pts = [[x0, y, 0], [x1, y, 0], [x1, y, 14], [(x0 + x1) / 2, y, 19], [x0, y, 14]].map(p => proj(p[0], p[1], p[2]));
+  if (pts.some(p => !p)) return;
+  ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath();
+  ctx.fillStyle = '#120f22'; ctx.fill(); ctx.lineWidth = Math.max(1, 0.3 * pts[0].s); ctx.strokeStyle = INK; ctx.stroke();
+}
+// a shaded comic sphere: highlight, halftone on the dark side, a ring for the planets
+function camSphere(ctx, p, rr, c, ring) {
+  if (ring) { ctx.save(); ctx.beginPath(); ctx.ellipse(p.x, p.y, rr * 1.7, rr * 0.42, -0.25, Math.PI, TAU); ctx.lineWidth = Math.max(1.5, rr * 0.16); ctx.strokeStyle = INK; ctx.stroke(); ctx.lineWidth = Math.max(1, rr * 0.08); ctx.strokeStyle = CREAM; ctx.stroke(); ctx.restore(); }
+  const g = ctx.createRadialGradient(p.x - rr * 0.35, p.y - rr * 0.4, rr * 0.08, p.x, p.y, rr);
+  g.addColorStop(0, shade(c, 0.55)); g.addColorStop(0.45, c); g.addColorStop(1, shade(c, -0.4));
+  ctx.beginPath(); ctx.arc(p.x, p.y, rr, 0, TAU); ctx.fillStyle = g; ctx.fill();
+  if (rr > 6) { ctx.save(); ctx.clip(); ctx.beginPath(); ctx.arc(p.x + rr * 0.55, p.y + rr * 0.5, rr, 0, TAU); ctx.globalAlpha = 0.4; ctx.fillStyle = halftone(INK, Math.max(3, rr * 0.18), Math.max(0.8, rr * 0.05)); ctx.fill(); ctx.restore(); }
+  ctx.beginPath(); ctx.arc(p.x, p.y, rr, 0, TAU); ctx.lineWidth = Math.max(1.4, rr * 0.11); ctx.strokeStyle = INK; ctx.stroke();
+  if (ring) { ctx.save(); ctx.beginPath(); ctx.ellipse(p.x, p.y, rr * 1.7, rr * 0.42, -0.25, 0, Math.PI); ctx.lineWidth = Math.max(1.5, rr * 0.16); ctx.strokeStyle = INK; ctx.stroke(); ctx.lineWidth = Math.max(1, rr * 0.08); ctx.strokeStyle = CREAM; ctx.stroke(); ctx.restore(); }
+}
+function camBallDraw(ctx, b, p, proj) {
+  const rr = R * p.s, sp = vlen(b.vx || 0, b.vy || 0), mine = b.id === 'p' + CAM.s;
+  if (mine && sp > 110 && CAM.path) {   // motion echoes: the ball a moment ago, fading
+    const P = CAM.path.pts, tNow = (G.sim ? G.sim.t : G.clock) - CAM.t0;
+    for (const [dt, al] of [[0.04, 0.2], [0.08, 0.1]]) {
+      let j = 0; while (j < P.length - 1 && P[j + 1].t < tNow - dt) j++;
+      const q = proj(P[j].x, P[j].y, R); if (!q || q.d < p.d + 2) continue;
+      ctx.globalAlpha = al; ctx.beginPath(); ctx.arc(q.x, q.y, R * q.s * 0.92, 0, TAU); ctx.fillStyle = CREAM; ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+  if (sp > 200 && mine) {   // the comic misregistration on a fast ball
+    const k = clamp((sp - 200) / 400, 0, 1);
+    ctx.globalAlpha = 0.5 * k; ctx.fillStyle = CYAN; ctx.beginPath(); ctx.arc(p.x - rr * 0.25, p.y, rr, 0, TAU); ctx.fill();
+    ctx.fillStyle = MAGENTA; ctx.beginPath(); ctx.arc(p.x + rr * 0.25, p.y, rr, 0, TAU); ctx.fill(); ctx.globalAlpha = 1;
+  }
+  camSphere(ctx, p, rr, b.color || '#ffffff', false);
+  if (b.kind === 'o' && rr > 5) {
+    ctx.beginPath(); ctx.arc(p.x, p.y, rr * 0.5, 0, TAU); ctx.fillStyle = CREAM; ctx.fill(); ctx.lineWidth = Math.max(0.8, rr * 0.06); ctx.strokeStyle = INK; ctx.stroke();
+    ctx.fillStyle = INK; ctx.font = `${Math.round(rr * 0.85)}px ${SFX_FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(String(b.n), p.x, p.y + rr * 0.05);
+  } else if (rr > 4) {
+    // dimples, a few, in ink
+    ctx.save(); ctx.globalAlpha = 0.28; ctx.fillStyle = INK;
+    for (const [ox, oy] of [[0.25, 0.1], [-0.1, 0.35], [0.45, -0.2], [0.05, -0.45], [-0.4, 0.05], [0.3, 0.5]]) { ctx.beginPath(); ctx.arc(p.x + ox * rr, p.y + oy * rr, Math.max(0.6, rr * 0.06), 0, TAU); ctx.fill(); }
+    ctx.restore();
+    ctx.beginPath(); ctx.arc(p.x - rr * 0.34, p.y - rr * 0.36, rr * 0.2, 0, TAU); ctx.fillStyle = '#ffffff'; ctx.fill();
+  }
+}
+function camLaser(ctx, q, now) {
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  ctx.beginPath(); q.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath();
+  ctx.globalAlpha = 0.28 + 0.1 * Math.sin(now * 30); ctx.fillStyle = '#ff4f5e'; ctx.fill();
+  const m0 = { x: (q[0].x + q[3].x) / 2, y: (q[0].y + q[3].y) / 2 }, m1 = { x: (q[1].x + q[2].x) / 2, y: (q[1].y + q[2].y) / 2 };
+  ctx.globalAlpha = 1; ctx.lineCap = 'round';
+  for (const [w, c] of [[6, 'rgba(255,79,94,.5)'], [2.5, '#ff4f5e'], [1, '#ffe0e3']]) { ctx.lineWidth = w * Math.max(0.6, (q[0].s + q[1].s) / 4); ctx.strokeStyle = c; ctx.beginPath(); ctx.moveTo(m0.x, m0.y); ctx.lineTo(m1.x, m1.y); ctx.stroke(); }
+  ctx.restore();
+}
+function camStar(ctx, st, proj) {
+  const pts = [];
+  for (let i = 0; i < 10; i++) { const r = i % 2 ? st.r * 0.22 : st.r * 0.55, a = -Math.PI / 2 + i * Math.PI / 5, p = proj(st.x + Math.cos(a) * r, st.y + Math.sin(a) * r, st.z); if (!p) return; pts.push(p); }
+  ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath();
+  ctx.fillStyle = CREAM; ctx.fill(); ctx.lineWidth = Math.max(0.8, 0.2 * pts[0].s); ctx.strokeStyle = INK; ctx.stroke();
+}
+function camPalm(ctx, pm, proj, now) {
+  const top = proj(pm.x, pm.y, pm.z); if (!top) return;
+  for (let i = 0; i < 7; i++) {
+    const a = i * TAU / 7 + 0.3 + Math.sin(now * 1.4 + i) * 0.05, L = pm.r * 3.2;
+    const tip = proj(pm.x + Math.cos(a) * L, pm.y + Math.sin(a) * L, pm.z - 10), mid = proj(pm.x + Math.cos(a) * L * 0.55, pm.y + Math.sin(a) * L * 0.55, pm.z + 4);
+    const side = proj(pm.x + Math.cos(a + 0.35) * L * 0.5, pm.y + Math.sin(a + 0.35) * L * 0.5, pm.z + 1);
+    if (!tip || !mid || !side) continue;
+    ctx.beginPath(); ctx.moveTo(top.x, top.y); ctx.quadraticCurveTo(mid.x, mid.y, tip.x, tip.y); ctx.quadraticCurveTo(side.x, side.y, top.x, top.y);
+    ctx.fillStyle = i % 2 ? '#5e9e6f' : '#77b585'; ctx.fill(); ctx.lineWidth = Math.max(0.8, 0.25 * top.s); ctx.strokeStyle = INK; ctx.stroke();
+  }
+  ctx.beginPath(); ctx.arc(top.x, top.y, Math.max(1.5, 3 * top.s), 0, TAU); ctx.fillStyle = '#6b4f39'; ctx.fill(); ctx.stroke();
+}
+function camOcto(ctx, p, o, bp, proj) {
+  const rr = o.r * p.s;
+  camSphere(ctx, p, rr, CORAL, false);
+  // eyes that follow the ball, a grin, the fedora
+  const lp = proj(bp.x, bp.y, 0), lk = lp ? clamp((lp.x - p.x) / (rr * 3), -1, 1) : 0;
+  for (const ex of [-0.36, 0.36]) {
+    ctx.beginPath(); ctx.arc(p.x + ex * rr, p.y - rr * 0.12, rr * 0.24, 0, TAU); ctx.fillStyle = CREAM; ctx.fill(); ctx.lineWidth = Math.max(1, rr * 0.06); ctx.strokeStyle = INK; ctx.stroke();
+    ctx.beginPath(); ctx.arc(p.x + ex * rr + lk * rr * 0.1, p.y - rr * 0.1, rr * 0.11, 0, TAU); ctx.fillStyle = INK; ctx.fill();
+  }
+  ctx.beginPath(); ctx.moveTo(p.x - rr * 0.25, p.y + rr * 0.35); ctx.quadraticCurveTo(p.x, p.y + rr * 0.52, p.x + rr * 0.27, p.y + rr * 0.32); ctx.lineWidth = Math.max(1, rr * 0.07); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(p.x, p.y - rr * 0.82, rr * 0.7, rr * 0.18, 0, 0, TAU); ctx.fillStyle = '#2a2440'; ctx.fill(); ctx.stroke();
+  roundRect(ctx, p.x - rr * 0.38, p.y - rr * 1.25, rr * 0.76, rr * 0.45, rr * 0.12); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = GOLD; ctx.fillRect(p.x - rr * 0.38, p.y - rr * 0.92, rr * 0.76, rr * 0.1);
+}
+function camDefender(ctx, d, p, proj, now) {
+  // arms out wide, a head, the number facing us
+  const s = p.s, flap = Math.sin(now * 9) * 3;
+  const sh = proj(d.x, d.y, 16), aL = proj(d.x - d.r - 14, d.y, 18 + flap), aR = proj(d.x + d.r + 14, d.y, 18 - flap);
+  if (sh && aL && aR) { ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(aL.x, aL.y); ctx.lineTo(sh.x, sh.y); ctx.lineTo(aR.x, aR.y); ctx.lineWidth = Math.max(2, 2.6 * s); ctx.strokeStyle = INK; ctx.stroke(); ctx.lineWidth = Math.max(1, 1.6 * s); ctx.strokeStyle = '#7a5640'; ctx.stroke(); }
+  camSphere(ctx, p, 7 * s, '#6b4a36', false);
+  const nb = proj(d.x, d.y, 10);
+  if (nb && s > 1) { ctx.font = `${Math.round(9 * s)}px ${SFX_FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineWidth = Math.max(1.5, 1.2 * s); ctx.strokeStyle = INK; ctx.strokeText(String(d.num), nb.x, nb.y); ctx.fillStyle = CREAM; ctx.fillText(String(d.num), nb.x, nb.y); }
+}
+
+// The glowing tube as pieces that sort with everything else: where the ball is about to roll (bright
+// close up, fading with distance along it), a faint trail where it's been, beads of light running out
+function camTubeItems(items, ctx, proj, now, bp) {
   const P = CAM.path.pts, tNow = (G.sim ? G.sim.t : G.clock) - CAM.t0, Z = R * 0.9, TR = 3.4;
   let i0 = 0; while (i0 < P.length - 1 && P[i0 + 1].t <= tNow) i0++;
   const ahead = [{ x: bp.x, y: bp.y }].concat(P.slice(i0 + 1)), trail = P.slice(Math.max(0, i0 - 60), i0 + 1).concat([{ x: bp.x, y: bp.y }]);
-  const seg = (pts, fade, passes) => {
+  const fadeAhead = (run) => (run < 150 ? 1 : Math.max(0, 1 - (run - 150) / 170));
+  const push = (pts, fade, passes, glow) => {
     let run = 0;
     for (let i = 1; i < pts.length; i++) {
       const A = pts[i - 1], B = pts[i], len = vlen(B.x - A.x, B.y - A.y); run += len;
       if (len < 0.01) continue;
+      const fa = fade(run); if (fa <= 0.01) continue;
       const pa = proj(A.x, A.y, Z), pb = proj(B.x, B.y, Z); if (!pa || !pb) continue;
-      const fa = fade(run), sc = (pa.s + pb.s) / 2;
-      if (fa <= 0.01) continue;
-      for (const [w, col, al] of passes) { ctx.globalAlpha = al * fa; ctx.lineWidth = Math.max(1, TR * w * sc); ctx.strokeStyle = col; ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke(); }
+      const near = clamp((Math.min(pa.d, pb.d) - 25) / 40, 0, 1); if (near <= 0.02) continue;
+      items.push({ d: (pa.d + pb.d) / 2 + 0.01, draw: () => {
+        const sc = (pa.s + pb.s) / 2;
+        ctx.save(); ctx.lineCap = 'round'; if (glow) ctx.globalCompositeOperation = 'lighter';
+        for (const [w, col, al] of passes) { ctx.globalAlpha = al * fa * near; ctx.lineWidth = Math.max(1, TR * w * sc); ctx.strokeStyle = col; ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y); ctx.stroke(); }
+        ctx.restore();
+      } });
     }
   };
-  ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-  seg(trail, () => 0.35, [[1.4, CYAN, 0.35]]);
-  ctx.globalCompositeOperation = 'lighter';
-  const fadeAhead = (run) => (run < 150 ? 1 : Math.max(0, 1 - (run - 150) / 170));
-  seg(ahead, fadeAhead, [[4.2, CYAN, 0.16], [2.4, GOLD, 0.42], [1.1, CREAM, 0.9]]);
-  // beads of light running out along the path
+  push(trail, () => 0.35, [[1.4, CYAN, 0.35]], false);
+  push(ahead, fadeAhead, [[4.2, CYAN, 0.16], [2.4, GOLD, 0.42], [1.1, CREAM, 0.9]], true);
   let run = 0, next = (now * 90) % 22;
   for (let i = 1; i < ahead.length; i++) {
     const A = ahead[i - 1], B = ahead[i], len = vlen(B.x - A.x, B.y - A.y);
     while (next <= run + len && len > 0) {
       const u = (next - run) / len, p = proj(A.x + (B.x - A.x) * u, A.y + (B.y - A.y) * u, Z), fa = fadeAhead(next);
-      if (p && fa > 0.02) { ctx.globalAlpha = 0.9 * fa; ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(1.2, TR * 0.8 * p.s), 0, TAU); ctx.fill(); }
+      if (p && fa > 0.02) items.push({ d: p.d, draw: () => { ctx.save(); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = 0.9 * fa; ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(1.2, TR * 0.8 * p.s), 0, TAU); ctx.fill(); ctx.restore(); } });
       next += 22;
     }
     run += len;
   }
+}
+
+// The far horizon of each hole's world, in silhouette, sliding as the camera turns
+function camHorizon(ctx, h, T, cw, yh, now) {
+  const th = h.theme, shift = -CAM.head / TAU * cw * 2.2, r = rng32(((h.num || 3) * 104729) | 0);
+  const wrap = (x, w) => ((x % (cw + w)) + cw + w) % (cw + w) - w;
+  const sil = shade(T.back || '#2a2240', -0.62), sil2 = shade(T.back || '#2a2240', -0.45);
+  ctx.save(); ctx.lineJoin = 'round';
+  const skyline = (col, lit, hmin, hmax, par, seed) => {
+    const rr = rng32(seed); let x = 0;
+    while (x < cw * 2.6) {
+      const w = 16 + rr() * 30, hh = hmin + rr() * (hmax - hmin), sx = wrap(x + shift * par, w);
+      ctx.fillStyle = col; ctx.fillRect(sx, yh - hh, w, hh + 1);
+      ctx.lineWidth = 1.5; ctx.strokeStyle = INK; ctx.strokeRect(sx, yh - hh, w, hh + 1);
+      if (lit) { ctx.fillStyle = lit; for (let wy = yh - hh + 5; wy < yh - 4; wy += 7) for (let wx = sx + 3; wx < sx + w - 3; wx += 6) if (rr() < 0.3) ctx.fillRect(wx, wy, 2.4, 3); }
+      x += w + 3;
+    }
+  };
+  const hills = (col, amp, par, seed) => {
+    const rr = rng32(seed), ks = [rr() * 3, rr() * 3, rr() * 3];
+    ctx.beginPath(); ctx.moveTo(0, yh + 1);
+    for (let x = 0; x <= cw; x += 8) { const u = (x - shift * par) / cw; ctx.lineTo(x, yh - amp * (0.55 + 0.25 * Math.sin(u * 6.3 + ks[0]) + 0.2 * Math.sin(u * 13 + ks[1]))); }
+    ctx.lineTo(cw, yh + 1); ctx.closePath(); ctx.fillStyle = col; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke();
+  };
+  const moon = (x, y, rad, col) => { ctx.beginPath(); ctx.arc(x, y, rad, 0, TAU); ctx.fillStyle = col; ctx.fill(); ctx.save(); ctx.clip(); ctx.beginPath(); ctx.arc(x + rad * 0.45, y + rad * 0.3, rad, 0, TAU); ctx.globalAlpha = 0.45; ctx.fillStyle = halftone(INK, 4, 1.1); ctx.fill(); ctx.restore(); ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.stroke(); };
+  const mx = wrap(cw * 0.7 + shift * 0.15, 80);
+  if (th === 'moon') {
+    moon(mx, yh * 0.38, Math.min(70, yh * 0.32), '#7f9fc6');
+    ctx.beginPath(); ctx.ellipse(mx, yh * 0.38, Math.min(70, yh * 0.32) * 1.8, 10, -0.2, 0, TAU); ctx.lineWidth = 3; ctx.strokeStyle = CREAM; ctx.stroke();
+    hills('#3a3858', yh * 0.12, 0.6, 5);
+  } else if (th === 'highway' || th === 'vault') {
+    moon(mx, yh * 0.3, Math.min(34, yh * 0.18), CREAM);
+    skyline(sil2, null, yh * 0.18, yh * 0.42, 0.35, 11);
+    skyline(sil, 'rgba(255,220,120,.75)', yh * 0.1, yh * 0.3, 0.6, 12);
+    if (th === 'vault') { ctx.fillStyle = sil2; const bx = wrap(cw * 0.3 + shift * 0.6, 120); ctx.fillRect(bx, yh - yh * 0.34, 110, yh * 0.34); ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.strokeRect(bx, yh - yh * 0.34, 110, yh * 0.34); ctx.beginPath(); ctx.moveTo(bx - 8, yh - yh * 0.34); ctx.lineTo(bx + 55, yh - yh * 0.5); ctx.lineTo(bx + 118, yh - yh * 0.34); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.fillStyle = GOLD; ctx.font = `${Math.round(yh * 0.06)}px ${SFX_FONT}`; ctx.textAlign = 'center'; ctx.fillText('BANK', bx + 55, yh - yh * 0.38); for (let i = 0; i < 6; i++) { ctx.fillStyle = CREAM; ctx.fillRect(bx + 8 + i * 18, yh - yh * 0.3, 6, yh * 0.3); } }
+  } else if (th === 'hardwood') {
+    // arena stands: tiers of a crowd in halftone, a scoreboard, two spotlights
+    for (let tier = 0; tier < 3; tier++) {
+      const y0 = yh - yh * (0.12 + tier * 0.12);
+      ctx.fillStyle = shade('#3c2a55', -0.1 * tier); ctx.fillRect(0, y0, cw, yh * 0.12 + 1);
+      ctx.save(); ctx.beginPath(); ctx.rect(0, y0, cw, yh * 0.12); ctx.clip(); ctx.translate(shift * (0.3 + tier * 0.1) % 12, 0);
+      for (let x = -12; x < cw + 12; x += 7) for (let y = y0 + 4; y < y0 + yh * 0.12; y += 6) { ctx.fillStyle = ['#e8877a', '#f3e9d2', '#7f9fc6', '#d4af37'][((x / 7 + y) | 0) & 3]; ctx.beginPath(); ctx.arc(x + (y % 2) * 3, y, 2, 0, TAU); ctx.fill(); }
+      ctx.restore();
+      ctx.beginPath(); ctx.moveTo(0, y0); ctx.lineTo(cw, y0); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke();
+    }
+    const sx = wrap(cw * 0.5 + shift * 0.2, 120); roundRect(ctx, sx - 50, yh * 0.2, 100, yh * 0.18, 6); ctx.fillStyle = '#1b1830'; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.stroke();
+    ctx.fillStyle = '#ff5a5a'; ctx.font = `${Math.round(yh * 0.09)}px ${SFX_FONT}`; ctx.textAlign = 'center'; ctx.fillText('HOME 4  ·  6 AWAY', sx, yh * 0.33);
+    for (const k of [0.15, 0.85]) { const g = ctx.createRadialGradient(cw * k, 0, 4, cw * k, 0, yh * 0.9); g.addColorStop(0, 'rgba(255,250,220,.35)'); g.addColorStop(1, 'rgba(255,250,220,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, cw, yh); }
+  } else if (th === 'lagoon') {
+    moon(mx, yh * 0.32, Math.min(46, yh * 0.22), CREAM);
+    ctx.fillStyle = '#26406a'; ctx.fillRect(0, yh - yh * 0.14, cw, yh * 0.14);
+    ctx.strokeStyle = 'rgba(195,214,234,.6)'; ctx.lineWidth = 1.5; for (let i = 0; i < 14; i++) { const x = wrap(r() * cw * 2 + shift * 0.5, 30), y = yh - r() * yh * 0.12; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 14, y); ctx.stroke(); }
+    for (let k = 0; k < 3; k++) { const ix = wrap(cw * (0.2 + k * 0.4) + shift * 0.4, 140); ctx.beginPath(); ctx.ellipse(ix, yh - yh * 0.12, 60, yh * 0.06, 0, Math.PI, TAU); ctx.fillStyle = sil; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke(); camPalmSil(ctx, ix - 10, yh - yh * 0.16, yh * 0.22, sil); }
+  } else if (th === 'pinball') {
+    skyline(sil, null, yh * 0.1, yh * 0.32, 0.5, 21);
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    for (let k = 0; k < 3; k++) { const x = wrap(cw * (0.15 + k * 0.33) + shift * 0.5, 120); ctx.strokeStyle = k % 2 ? 'rgba(63,214,232,.8)' : 'rgba(255,79,154,.8)'; ctx.lineWidth = 3; roundRect(ctx, x, yh * 0.45, 90, yh * 0.16, 8); ctx.stroke(); ctx.fillStyle = ctx.strokeStyle; ctx.font = `${Math.round(yh * 0.09)}px ${SFX_FONT}`; ctx.textAlign = 'center'; ctx.fillText(['TILT', 'BONUS', 'JACKPOT'][k], x + 45, yh * 0.57); }
+    ctx.restore();
+    for (let k = 0; k < 4; k++) camPalmSil(ctx, wrap(cw * k / 4 + shift * 0.7, 60), yh, yh * 0.32, sil);
+  } else if (th === 'pool') {
+    // the back bar: wood panels, a neon sign, two hanging lamps
+    ctx.fillStyle = '#2a1712'; ctx.fillRect(0, yh * 0.25, cw, yh * 0.75);
+    ctx.strokeStyle = 'rgba(0,0,0,.45)'; ctx.lineWidth = 2; for (let x = wrap(shift * 0.6, 40); x < cw; x += 40) { ctx.beginPath(); ctx.moveTo(x, yh * 0.25); ctx.lineTo(x, yh); ctx.stroke(); }
+    ctx.beginPath(); ctx.moveTo(0, yh * 0.25); ctx.lineTo(cw, yh * 0.25); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.stroke();
+    ctx.save(); ctx.globalCompositeOperation = 'lighter'; const nx = wrap(cw * 0.5 + shift * 0.6, 130); ctx.strokeStyle = 'rgba(255,79,154,.9)'; ctx.lineWidth = 3; roundRect(ctx, nx - 55, yh * 0.38, 110, yh * 0.2, 10); ctx.stroke(); ctx.fillStyle = 'rgba(255,170,200,.95)'; ctx.font = `${Math.round(yh * 0.12)}px ${SFX_FONT}`; ctx.textAlign = 'center'; ctx.fillText('8 BALL', nx, yh * 0.54); ctx.restore();
+    for (const k of [0.25, 0.75]) { const lx = wrap(cw * k + shift * 0.3, 80); ctx.beginPath(); ctx.moveTo(lx, 0); ctx.lineTo(lx, yh * 0.18); ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.stroke(); ctx.beginPath(); ctx.moveTo(lx - 26, yh * 0.3); ctx.lineTo(lx - 10, yh * 0.18); ctx.lineTo(lx + 10, yh * 0.18); ctx.lineTo(lx + 26, yh * 0.3); ctx.closePath(); ctx.fillStyle = '#2f6b4a'; ctx.fill(); ctx.stroke(); const g = ctx.createLinearGradient(0, yh * 0.3, 0, yh); g.addColorStop(0, 'rgba(255,240,180,.3)'); g.addColorStop(1, 'rgba(255,240,180,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(lx - 26, yh * 0.3); ctx.lineTo(lx + 26, yh * 0.3); ctx.lineTo(lx + 70, yh); ctx.lineTo(lx - 70, yh); ctx.closePath(); ctx.fill(); }
+  } else if (th === 'clock') {
+    // a giant clock face on the horizon and cogs turning
+    const gx = wrap(cw * 0.5 + shift * 0.25, 260), gr = Math.min(yh * 0.6, 120);
+    ctx.beginPath(); ctx.arc(gx, yh, gr, Math.PI, TAU); ctx.fillStyle = '#d9cfb6'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke();
+    ctx.save(); ctx.beginPath(); ctx.arc(gx, yh, gr, Math.PI, TAU); ctx.clip(); ctx.globalAlpha = 0.25; ctx.fillStyle = halftone(INK, 5, 1.2); ctx.fillRect(gx - gr, yh - gr, gr * 2, gr); ctx.restore();
+    for (let i = 0; i < 12; i++) { const a = Math.PI + i * Math.PI / 11; ctx.beginPath(); ctx.moveTo(gx + Math.cos(a) * gr * 0.82, yh + Math.sin(a) * gr * 0.82); ctx.lineTo(gx + Math.cos(a) * gr * 0.94, yh + Math.sin(a) * gr * 0.94); ctx.lineWidth = 2.5; ctx.stroke(); }
+    const ha = Math.PI * 1.25 + now * 0.05, ma = Math.PI * 1.6 + now * 0.6;
+    ctx.beginPath(); ctx.moveTo(gx, yh); ctx.lineTo(gx + Math.cos(ha) * gr * 0.5, yh + Math.sin(ha) * gr * 0.5); ctx.lineWidth = 5; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx, yh); ctx.lineTo(gx + Math.cos(ma) * gr * 0.75, yh + Math.sin(ma) * gr * 0.75); ctx.lineWidth = 3; ctx.stroke();
+    for (const [k, rad] of [[0.12, 40], [0.88, 54]]) { const x = wrap(cw * k + shift * 0.45, 120); gear(ctx, x, yh - rad * 0.3, rad, 12, sil2); }
+  } else {
+    // windmill (and anything else): rolling hills, windmills turning in the distance
+    moon(mx, yh * 0.32, Math.min(40, yh * 0.2), CREAM);
+    hills(sil2, yh * 0.22, 0.25, 31);
+    for (let k = 0; k < 3; k++) { const x = wrap(cw * (0.15 + k * 0.35) + shift * 0.35, 80); windmillSprite(ctx, x, yh - yh * 0.18, yh / 260, now * (0.6 + k * 0.2)); }
+    hills(sil, yh * 0.12, 0.5, 32);
+  }
   ctx.restore();
 }
-function camBallDraw(ctx, b, p, g) {
-  const rr = R * p.s;
-  if (g) { ctx.beginPath(); ctx.ellipse(g.x + rr * 0.25, g.y, rr * 1.15, rr * 0.42, 0, 0, TAU); ctx.fillStyle = 'rgba(5,4,12,.5)'; ctx.fill(); }
-  const sp = vlen(b.vx || 0, b.vy || 0);
-  if (sp > 200 && b.id === 'p' + CAM.s) {   // the comic misregistration on a fast ball
-    const k = clamp((sp - 200) / 400, 0, 1);
-    ctx.globalAlpha = 0.5 * k; ctx.fillStyle = CYAN; ctx.beginPath(); ctx.arc(p.x - rr * 0.25, p.y, rr, 0, TAU); ctx.fill();
-    ctx.fillStyle = MAGENTA; ctx.beginPath(); ctx.arc(p.x + rr * 0.25, p.y, rr, 0, TAU); ctx.fill(); ctx.globalAlpha = 1;
+function camPalmSil(ctx, x, y, hgt, col) {
+  ctx.save(); ctx.fillStyle = col; ctx.strokeStyle = INK; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(x - 2, y); ctx.quadraticCurveTo(x + hgt * 0.12, y - hgt * 0.5, x + hgt * 0.08, y - hgt); ctx.lineTo(x + hgt * 0.08 + 4, y - hgt); ctx.quadraticCurveTo(x + hgt * 0.14, y - hgt * 0.5, x + 3, y); ctx.closePath(); ctx.fill(); ctx.stroke();
+  for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + (i - 2.5) * 0.55, tx = x + hgt * 0.1 + Math.cos(a) * hgt * 0.4, ty = y - hgt + Math.sin(a) * hgt * 0.25 + hgt * 0.12; ctx.beginPath(); ctx.moveTo(x + hgt * 0.1, y - hgt); ctx.quadraticCurveTo((x + hgt * 0.1 + tx) / 2, ty - hgt * 0.15, tx, ty); ctx.quadraticCurveTo((x + hgt * 0.1 + tx) / 2, ty - hgt * 0.04, x + hgt * 0.1, y - hgt); ctx.fill(); ctx.stroke(); }
+  ctx.restore();
+}
+
+// The page around the picture: speed lines, a narration caption, the vignette, the panel's ink border
+function camPage(ctx, now, cw, ch, yh, cxs, bp) {
+  const lb = ballOf(CAM.s), sp = lb && !lb.out ? vlen(lb.vx, lb.vy) : 0;
+  if (sp > 120 && CAM.phase !== 'out') {
+    const k = clamp((sp - 120) / 420, 0, 1), r = rng32(Math.floor(now * 14));
+    ctx.save(); ctx.globalAlpha = 0.2 + 0.45 * k; ctx.strokeStyle = CREAM; ctx.lineCap = 'round';
+    for (let i = 0; i < 22; i++) { const ang = r() * TAU, r0 = Math.max(cw, ch) * (0.4 + r() * 0.12), r1 = r0 + 40 + 110 * k, vx = cxs, vy = Math.max(yh, ch * 0.2); ctx.lineWidth = 1 + r() * 2.2; ctx.beginPath(); ctx.moveTo(vx + Math.cos(ang) * r0, vy + Math.sin(ang) * r0); ctx.lineTo(vx + Math.cos(ang) * r1, vy + Math.sin(ang) * r1); ctx.stroke(); }
+    ctx.restore();
   }
-  const grd = ctx.createRadialGradient(p.x - rr * 0.35, p.y - rr * 0.4, rr * 0.1, p.x, p.y, rr);
-  grd.addColorStop(0, '#ffffff'); grd.addColorStop(0.35, b.color || '#ffffff'); grd.addColorStop(1, shade(b.color || '#dddddd', -0.35));
-  ctx.beginPath(); ctx.arc(p.x, p.y, rr, 0, TAU); ctx.fillStyle = grd; ctx.fill();
-  ctx.lineWidth = Math.max(1.4, rr * 0.13); ctx.strokeStyle = INK; ctx.stroke();
-  if (b.kind === 'o' && rr > 5) {
-    ctx.beginPath(); ctx.arc(p.x, p.y, rr * 0.5, 0, TAU); ctx.fillStyle = CREAM; ctx.fill();
-    ctx.fillStyle = INK; ctx.font = `${Math.round(rr * 0.85)}px ${SFX_FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(String(b.n), p.x, p.y + rr * 0.05);
-  } else if (rr > 4) {
-    ctx.beginPath(); ctx.arc(p.x - rr * 0.32, p.y - rr * 0.34, rr * 0.22, 0, TAU); ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.fill();
+  // vignette in dots
+  const g = ctx.createRadialGradient(cw / 2, ch * 0.55, Math.min(cw, ch) * 0.35, cw / 2, ch * 0.55, Math.max(cw, ch) * 0.75);
+  g.addColorStop(0, 'rgba(5,4,12,0)'); g.addColorStop(1, 'rgba(5,4,12,.55)'); ctx.fillStyle = g; ctx.fillRect(0, 0, cw, ch);
+  // the narration box
+  const cap = CAM.cap;
+  if (cap && cap.text) {
+    const age = now - cap.t0, pop = age < 0.18 ? 0.6 + age / 0.18 * 0.4 : 1, top = CAM.capTop || 12;
+    ctx.save(); ctx.translate(14, top); ctx.rotate(-0.02); ctx.scale(pop, pop);
+    const fs = clamp(cw / 22, 14, 20); ctx.font = `${fs}px ${SFX_FONT}`;
+    const tw = ctx.measureText(cap.text).width + 20, th = fs + 12;
+    ctx.fillStyle = INK; ctx.fillRect(3, 4, tw, th);
+    ctx.fillStyle = '#f6d55c'; ctx.fillRect(0, 0, tw, th); ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.strokeRect(0, 0, tw, th);
+    ctx.save(); ctx.beginPath(); ctx.rect(0, 0, tw, th); ctx.clip(); ctx.globalAlpha = 0.18; ctx.fillStyle = halftone(INK, 4, 0.9); ctx.fillRect(0, 0, tw, th); ctx.restore();
+    ctx.fillStyle = INK; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(cap.text, 10, th / 2 + 1);
+    ctx.restore();
   }
+  // slow motion tag, bottom right
+  if (CAM.phase === 'roll' && CAM.ts < 0.8) {
+    ctx.save(); ctx.font = `${clamp(cw / 26, 12, 16)}px ${SFX_FONT}`; ctx.textAlign = 'right'; ctx.textBaseline = 'alphabetic';
+    const y = (CAM.capBottom || ch - 12), txt = CAM.fast ? 'FAST FORWARD ▶▶' : 'SLOW MOTION · TAP TO SPEED UP';
+    ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.strokeText(txt, cw - 14, y); ctx.fillStyle = CREAM; ctx.globalAlpha = 0.85; ctx.fillText(txt, cw - 14, y);
+    ctx.restore();
+  }
+  // the panel's border: thick ink with a cream keyline, like a printed page
+  ctx.lineWidth = 6; ctx.strokeStyle = INK; ctx.strokeRect(3, 3, cw - 6, ch - 6);
+  ctx.lineWidth = 1.5; ctx.strokeStyle = 'rgba(243,233,210,.55)'; ctx.strokeRect(7.5, 7.5, cw - 15, ch - 15);
 }
 // The flag: a tall pole and a cloth that flaps in the wind, shaded where it ripples, the hole number on it
 function camFlag(ctx, proj, now, h) {
@@ -3980,6 +4481,7 @@ function initInput() {
   $('#caption').addEventListener('pointerdown', () => show($('#caption'), false));
   cv.addEventListener('pointerdown', e => {
     au(); hideChat(); if (!$('#caption').classList.contains('pass')) show($('#caption'), false);
+    if (CAM.on && (CAM.phase === 'in' || CAM.phase === 'roll') && !G.paused) { CAM.fast = true; e.preventDefault(); return; }   // tap to speed up the slow motion
     if (G.state !== 'aim' || G.paused) return;
     e.preventDefault();
     G.aim.active = true; G.kb = false; G.aim.pid = e.pointerId; G.aim.sx = e.clientX; G.aim.sy = e.clientY; G.aim.p = 0;
