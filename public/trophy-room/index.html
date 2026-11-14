@@ -224,7 +224,10 @@
   .loot-pick .em { font-size: 40px; line-height: 1; text-align: center; }
   .loot-pick b { display: block; font-family: var(--display); font-weight: 400; font-size: 24px; letter-spacing: 0.05em; color: var(--yellow); }
   .loot-pick small { font-size: 13px; font-weight: 700; }
-  .selfie { display: block; width: 100%; height: auto; border-radius: 18px; border: 4px solid var(--ink); box-shadow: 6px 7px 0 var(--shadow); background: var(--panel); aspect-ratio: 4 / 5; }
+  .selfie { display: block; width: 100%; height: auto; border-radius: 18px; border: 4px solid var(--ink); box-shadow: 6px 7px 0 var(--shadow); background: var(--panel); aspect-ratio: 4 / 5; -webkit-touch-callout: default; }
+  .selfie-wait { display: grid; place-items: center; padding: 24px; text-align: center; font-family: var(--display); font-size: 26px; letter-spacing: 0.06em; color: rgba(255, 248, 236, 0.7);
+    background: repeating-linear-gradient(135deg, #221B2E 0 14px, #2A2238 14px 28px); }
+  .selfie-wait span { max-width: 18em; line-height: 1.2; }
   .shot-flash { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); background: #fff; z-index: 60; pointer-events: none; animation: flash 0.5s ease-out forwards; }
   @keyframes flash { to { opacity: 0; } }
 

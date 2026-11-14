@@ -538,8 +538,9 @@ async function done(x, st) {
   st.innerHTML = `<section class="card intro"><div class="burst win">HEIST!</div>
       <p>You took <b>${esc(took.name)}</b> from ${esc(possessive(owner))} trophy room${took.pick === 'trophy' ? '. It’s on your shelf now, marked stolen' : ''}. Plus ${esc(words(BREAK_PAY).replace('+', ''))} for the break-in.</p></section>
     <section class="card"><h3>THE SELFIE</h3><p class="muted" style="margin-bottom:12px">You, the loot and ${esc(possessive(owner))} hologram. Made for the group chat.</p>
-      <img class="selfie" id="selfie" alt="Selfie in ${esc(possessive(owner))} trophy room with their hologram behind">
+      <div class="selfie selfie-wait" id="selfieBox" role="img" aria-label="The selfie is developing"><span>📸 DEVELOPING…</span></div>
       <div class="row"><button class="btn" type="button" id="shareShot" disabled>📲 SHARE</button><a class="btn alt" id="saveShot" download="trophy-room-selfie.png" aria-disabled="true">SAVE</a></div>
+      <p class="fine center" id="selfieTip">Or press and hold the picture to save it to Photos.</p>
       <div class="share" id="share"></div></section>
     <div class="row"><a class="btn dark sm" href="#r=${esc(p.handle)}">MY ROOM</a><a class="btn dark sm" href="#rooms">MORE ROOMS</a></div>`;
   shareCard($('share'), CapraShareText('🏆', `broke into ${possessive(owner)}`, [`Took: ${took.name}`], shareRows(x)), '🏆', x.owner.handle);
@@ -547,14 +548,30 @@ async function done(x, st) {
   try { room = await getJSON('/api/heist/room?h=' + x.owner.handle); } catch { /* an empty room behind is fine */ }
   await loadLooks([x.owner.handle, p.handle]);
   if (my !== nav) return;
-  let shot;
+  let shot = null;
   try { shot = await makeSelfie({ owner, ownerLook: lookOf(x.owner.handle), raider: p.name, raiderLook: lookOf(p.handle), took, trophies: room.trophies || [] }); }
-  catch (e) { toast('The selfie didn’t come out. The text below still works.'); return; }
+  catch (e) { shot = null; }
   if (my !== nav) return;
+  const box = $('selfieBox');
+  if (!shot || (!shot.url && !shot.canvas)) {
+    box.innerHTML = '<span>The selfie didn’t come out on this phone. The text below still shares the heist.</span>';
+    $('selfieTip').hidden = true;
+    return;
+  }
   const fl = document.createElement('div'); fl.className = 'shot-flash'; document.body.appendChild(fl); later(() => fl.remove(), 600);
   sfx.shutter();
-  $('selfie').src = shot.url;
-  $('saveShot').href = shot.url; $('saveShot').removeAttribute('aria-disabled');
+  const alt = `Selfie in ${possessive(owner)} trophy room with their hologram behind`;
+  if (shot.url) {
+    const img = new Image(); img.className = 'selfie'; img.id = 'selfie'; img.alt = alt; img.src = shot.url;
+    box.replaceWith(img);
+    $('saveShot').href = shot.url; $('saveShot').removeAttribute('aria-disabled');
+  } else {
+    // the phone wouldn't turn the canvas into a picture file: show the canvas itself (a screenshot still works)
+    shot.canvas.className = 'selfie'; shot.canvas.id = 'selfie'; shot.canvas.setAttribute('role', 'img'); shot.canvas.setAttribute('aria-label', alt);
+    box.replaceWith(shot.canvas);
+    $('saveShot').hidden = true;
+    $('selfieTip').textContent = 'Take a screenshot to keep it.';
+  }
   const file = shot.blob ? new File([shot.blob], 'trophy-room-selfie.png', { type: 'image/png' }) : null;
   $('shareShot').disabled = false;
   $('shareShot').onclick = async () => {

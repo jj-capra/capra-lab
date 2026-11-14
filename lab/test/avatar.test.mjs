@@ -9,6 +9,12 @@ const sane = (svg, what) => {
   assert.ok(svg.startsWith('<svg') && svg.endsWith('</svg>'), `${what}: an svg`);
   assert.ok(!/NaN|undefined|null/.test(svg), `${what}: no NaN or undefined in the drawing`);
   assert.equal((svg.match(/<g/g) || []).length, (svg.match(/<\/g>/g) || []).length, `${what}: groups close`);
+  // as a picture (the trophy room's selfie, any <img>) an SVG is strict XML: one attribute twice on a tag
+  // and Safari draws nothing at all (Nov 14 2026: the selfie came out blank)
+  for (const tag of svg.match(/<[a-zA-Z][^>]*>/g) || []) {
+    const names = [...tag.matchAll(/\s([\w:-]+)=/g)].map((m) => m[1]);
+    assert.equal(new Set(names).size, names.length, `${what}: an attribute twice in ${tag.slice(0, 80)}`);
+  }
 };
 
 test('the shop: every item has a slot, a name and one coin that fits its rarity', () => {
@@ -39,9 +45,11 @@ test('every base, every free choice and every shop item draws', () => {
   for (const h of HAIRS) for (const e of EYES) sane(drawAvatar({ base: 'person', hair: h, eyes: e }), `person ${h} ${e}`);
   for (const sp of SPECIES) for (const m of MOUTHS) for (const b of BROWS) sane(drawAvatar({ base: 'animal', species: sp.id, fur: sp.fur, mouth: m, brows: b }), `${sp.id} ${m} ${b}`);
   for (const c of CHEEKS) for (let f = 0; f < FURS.length; f++) sane(drawAvatar({ base: 'animal', species: 'bear', fur: f, cheeks: c }), `bear fur ${f}`);
-  for (const it of ITEMS) for (const base of ['person', 'animal']) for (const sp of ['goat', 'frog', 'owl']) {
+  for (const sp of SPECIES) for (const m of MOUTHS) for (const e of EYES) sane(drawAvatar({ base: 'animal', species: sp.id, mouth: m, eyes: e }, { plain: true }), `${sp.id} ${m} ${e} plain`);
+  for (const it of ITEMS) for (const base of ['person', 'animal']) for (const sp of SPECIES.map((x) => x.id)) {
     const svg = drawAvatar({ base, species: sp, [it.slot]: it.id });
     sane(svg, `${it.id} on ${base} ${sp}`);
+    sane(drawAvatar({ base, species: sp, [it.slot]: it.id }, { plain: true }), `${it.id} on ${base} ${sp} plain`);
     assert.notEqual(svg, drawAvatar({ base, species: sp }).replace(/(id="|url\(#)[a-z]+\d+/g, '$1x'), `${it.id} shows`);
   }
   // the hologram later pulls these layers apart

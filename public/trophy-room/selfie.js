@@ -8,11 +8,15 @@ import { trophySvg } from './art.js';
 const W = 1080, H = 1350, INK = '#120E18';
 const FONT = 'Bangers, Impact, "Arial Narrow Bold", sans-serif';
 
+// One drawing as a picture for the canvas. A piece that won't load comes back null and is left out, so
+// one bad drawing can't spoil the whole selfie (Safari gives up on an SVG picture at its first XML slip).
 function load(svg, w, h) {
-  return new Promise((ok, bad) => {
+  return new Promise((ok) => {
     const img = new Image();
-    img.onload = () => ok(img);
-    img.onerror = () => bad(new Error('picture'));
+    const done = (v) => { clearTimeout(t); ok(v); };
+    const t = setTimeout(() => done(null), 6000);
+    img.onload = () => (img.decode ? img.decode().catch(() => {}) : Promise.resolve()).then(() => done(img));
+    img.onerror = () => done(null);
     img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg.replace('<svg ', `<svg width="${w}" height="${h}" `));
   });
 }
@@ -88,7 +92,8 @@ export async function makeSelfie({ owner, ownerLook, raider, raiderLook, took, t
     load(drawAvatar(raiderLook, { plain: true }), 1000, 1000),
     took && took.pick === 'trophy' ? load(trophySvg(took.kind, { stolen: true }), 300, 360) : Promise.resolve(null),
   ]);
-  g.drawImage(bg, 0, 0, W, H);
+  if (bg) g.drawImage(bg, 0, 0, W, H);
+  else { g.fillStyle = '#1B1528'; g.fillRect(0, 0, W, H); }
 
   // the owner's hologram, big and behind
   const hx = 360, hy = 130, hs = 760;
@@ -99,7 +104,7 @@ export async function makeSelfie({ owner, ownerLook, raider, raiderLook, took, t
   g.beginPath(); g.moveTo(hx + hs * 0.36, hy + hs + 30); g.lineTo(hx + hs * 0.64, hy + hs + 30); g.lineTo(hx + hs * 0.98, hy + 20); g.lineTo(hx + hs * 0.02, hy + 20); g.closePath(); g.fill();
   g.shadowColor = 'rgba(41, 211, 240, 0.95)'; g.shadowBlur = 46;
   g.globalAlpha = 0.9;
-  g.drawImage(hologram(holoImg, 900), hx, hy, hs, hs);
+  if (holoImg) g.drawImage(hologram(holoImg, 900), hx, hy, hs, hs);
   g.restore();
   g.save();
   g.fillStyle = '#0B4E5C'; g.strokeStyle = INK; g.lineWidth = 7;
@@ -110,7 +115,7 @@ export async function makeSelfie({ owner, ownerLook, raider, raiderLook, took, t
   // the raider up front, with the prize held up beside them
   g.save();
   g.shadowColor = 'rgba(5, 3, 10, 0.7)'; g.shadowBlur = 0; g.shadowOffsetX = 18; g.shadowOffsetY = 20;
-  g.drawImage(meImg, -110, 470, 940, 940);
+  if (meImg) g.drawImage(meImg, -110, 470, 940, 940);
   g.restore();
   if (prize) {
     burst(g, 820, 930, 230, '#FFD23F', 16);
@@ -160,6 +165,10 @@ export async function makeSelfie({ owner, ownerLook, raider, raiderLook, took, t
   g.restore();
   g.lineWidth = 24; g.strokeStyle = INK; g.strokeRect(12, 12, W - 24, H - 24);
 
-  const blob = await new Promise((ok) => c.toBlob(ok, 'image/png'));
-  return { blob, url: blob ? URL.createObjectURL(blob) : c.toDataURL('image/png') };
+  // The picture as a file to share and save; if the phone won't hand it over, the canvas itself is shown.
+  let blob = null;
+  try { blob = await new Promise((ok) => { const t = setTimeout(() => ok(null), 8000); c.toBlob((b) => { clearTimeout(t); ok(b); }, 'image/png'); }); } catch { blob = null; }
+  let url = blob ? URL.createObjectURL(blob) : null;
+  if (!url) { try { url = c.toDataURL('image/png'); } catch { url = null; } }
+  return { blob, url, canvas: c, missing: [bg, holoImg, meImg].filter((x) => !x).length };
 }

@@ -14,6 +14,17 @@ const O = (cx, cy, r, fill, more = '') => `<circle cx="${cx}" cy="${cy}" r="${r}
 const bare = (s) => s.replace(STROKE, '');               // the same shape without the ink line
 const line = (d, w = SW, color = INK, more = '') => `<path d="${d}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" ${more}/>`;
 const layer = (name, body) => (body ? `<g data-layer="${name}">${body}</g>` : '');
+// A shape helper given extra attributes can repeat one (stroke-width on top of the ink line). Inline in a
+// page the browser keeps the first and moves on, but as a picture (an <img>, an SVG <image>, a canvas)
+// an SVG is strict XML and one repeat breaks the whole picture, so every drawing keeps only the first.
+export function oneEach(svg) {
+  return svg.replace(/<([a-zA-Z][\w:-]*)((?:\s+[\w:-]+="[^"]*")+)\s*(\/?)>/g, (m, tag, attrs, close) => {
+    const seen = new Set();
+    let out = '';
+    for (const a of attrs.matchAll(/\s+([\w:-]+)="([^"]*)"/g)) { if (seen.has(a[1])) continue; seen.add(a[1]); out += ` ${a[1]}="${a[2]}"`; }
+    return `<${tag}${out}${close ? '/' : ''}>`;
+  });
+}
 const mirror = (s) => `<g transform="translate(100 0) scale(-1 1)">${s}</g>`;
 const both = (s) => s + mirror(s);
 
@@ -341,7 +352,7 @@ export function drawAvatar(look, { title = '', tight = false, plain = false } = 
     layer('sparkle', l.effect === 'effect.hologram' ? '' : auraFront(l.effect)),
   ].join('') + '</g>' + layer('scan', l.effect === 'effect.hologram' && !plain ? auraFront(l.effect) : '');
   const t = title ? `<title>${String(title).replace(/[<&]/g, '')}</title>` : '';
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${tight ? '12 12 76 76' : '0 0 100 100'}" role="img"${title ? '' : ' aria-hidden="true"'}>${t}${body}</svg>`;
+  return oneEach(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${tight ? '12 12 76 76' : '0 0 100 100'}" role="img"${title ? '' : ' aria-hidden="true"'}>${t}${body}</svg>`);
 }
 
 // A player who hasn't saved a look yet still gets their own: a free look picked from their handle,

@@ -8,7 +8,10 @@ const INK = '#120E18';
 let n = 0;
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export const svgUri = (svg) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-const avatarImg = (look, x, y, w, extra = '') => `<image href="${svgUri(drawAvatar(look, { plain: true }))}" x="${x}" y="${y}" width="${w}" height="${w}" ${extra}/>`;
+// Drawings go inside a scene as nested <svg> elements, not as <image> pictures: a picture that fails to
+// load shows a broken-image "?" in Safari, and an inline drawing can't fail that way.
+const place = (svg, x, y, w, h) => svg.replace('<svg ', `<svg x="${x}" y="${y}" width="${w}" height="${h}" `);
+const avatarImg = (look, x, y, w) => place(drawAvatar(look, { plain: true }), x, y, w, w);
 
 /* ---------- trophies (viewBox 0 0 100 120) ---------- */
 const GOLD = (id) => `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF4B0"/><stop offset=".35" stop-color="#FFD23F"/><stop offset=".7" stop-color="#E09A1C"/><stop offset="1" stop-color="#9C5A0E"/></linearGradient>`;
@@ -78,7 +81,7 @@ function lootPile(loot, x, y, s = 1) {
 function hologram(look, cx, base, w, id) {
   return `<g class="holo-rig">
     <polygon points="${cx - w * 0.16},${base} ${cx + w * 0.16},${base} ${cx + w * 0.46},${base - w * 1.02} ${cx - w * 0.46},${base - w * 1.02}" fill="url(#${id}-cone)"/>
-    <g class="holo" filter="url(#${id}-holo)">${avatarImg(look, cx - w / 2, base - w * 1.06, w, 'opacity=".92"')}</g>
+    <g class="holo" filter="url(#${id}-holo)" opacity=".92">${avatarImg(look, cx - w / 2, base - w * 1.06, w)}</g>
     <rect x="${cx - w / 2}" y="${base - w * 1.06}" width="${w}" height="${w}" fill="url(#${id}-scan)" class="holo-scan"/>
     <ellipse cx="${cx}" cy="${base + 2}" rx="${w * 0.3}" ry="${w * 0.07}" fill="#0B4E5C" stroke="${INK}" stroke-width="2.4"/>
     <ellipse cx="${cx}" cy="${base}" rx="${w * 0.22}" ry="${w * 0.045}" fill="#8CF5FF" class="holo-disc"/>
@@ -92,7 +95,7 @@ export function vaultSvg(room, { lock = false, pick = false, id = 'v' + (++n), h
   let items = '';
   trophies.slice(0, slots.length).forEach((t, i) => {
     const [x, row] = slots[i], w = 46, y = shelfY[row] - w * 1.2 + 2;
-    items += `<g class="${pick ? 'pickable' : ''}" data-tid="${esc(t.id)}"><image href="${svgUri(trophySvg(t.kind, { stolen: !!t.from }))}" x="${x - w / 2}" y="${y}" width="${w}" height="${w * 1.2}"/>${pick ? `<rect x="${x - w / 2 - 3}" y="${y - 3}" width="${w + 6}" height="${w * 1.2 + 6}" rx="6" fill="transparent" class="hit"/>` : ''}</g>`;
+    items += `<g class="${pick ? 'pickable' : ''}" data-tid="${esc(t.id)}">${place(trophySvg(t.kind, { stolen: !!t.from }), x - w / 2, y, w, w * 1.2)}${pick ? `<rect x="${x - w / 2 - 3}" y="${y - 3}" width="${w + 6}" height="${w * 1.2 + 6}" rx="6" fill="transparent" class="hit"/>` : ''}</g>`;
   });
   if (trophies.length > slots.length) items += `<text x="200" y="244" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="13" fill="#FFD23F">+${trophies.length - slots.length} MORE</text>`;
   if (!trophies.length) items += `<text x="72" y="84" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="12" fill="#8A7FA0" letter-spacing="1">NO TROPHIES YET</text>`;
