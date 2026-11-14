@@ -55,4 +55,16 @@
   addEventListener('load', fit);
   addEventListener('resize', fit);
   addEventListener('orientationchange', () => setTimeout(fit, 300));
+
+  // Invites tapped in Messages open in Safari, never in the Home Screen app: /lab/handoff.js passes
+  // them over (iPhones and iPads only, which includes an iPad asking for desktop sites).
+  // The link as it was tapped, kept now: games take the code off the address as soon as they read it.
+  const ua = navigator.userAgent;
+  if (/iP(hone|ad|od)/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) {
+    window.__labLanding = location.pathname + location.search + location.hash;
+    const s = document.createElement('script');
+    s.src = '/lab/handoff.js';
+    s.async = true;
+    (document.head || root).appendChild(s);
+  }
 })();
