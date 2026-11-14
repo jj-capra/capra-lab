@@ -232,9 +232,10 @@ function renderAct(room, p, own) {
     return;
   }
   if (m.tried) {
+    const back = m.raid ? `<div class="row"><a class="btn dark sm" href="#raid=${esc(m.raid)}">${m.tried === 'caught' ? 'SEE YOUR MUGSHOT' : '📸 SEE YOUR SELFIE'}</a></div>` : '';
     box.innerHTML = m.tried === 'caught'
-      ? `<h3>CAUGHT TODAY</h3><p>${esc(possessive(name))} traps got you today. You can try this room again tomorrow. Other rooms are fair game.</p>`
-      : `<h3>ALREADY IN</h3><p>You broke into this room today. One try a room a day.</p>`;
+      ? `<h3>CAUGHT TODAY</h3><p>${esc(possessive(name))} traps got you today. You can try this room again tomorrow. Other rooms are fair game.</p>${back}`
+      : `<h3>ALREADY IN</h3><p>You broke into this room today. One try a room a day.</p>${back}`;
     return;
   }
   if (room.lock) {
