@@ -19,16 +19,29 @@
  * The avatar (JC, Nov 13 2026) lives in the wallet record too: `items` (what they own) and `look`.
  *
  * Games with their own server pay with pay(handle, { diamonds, amber, shards }, { game, why }):
- * they checked the feat, so no cap. */
+ * they checked the feat, so no cap.
+ *
+ * Trophies (JC, Nov 14 2026: "Masters plus rare feats"): every payment with diamonds in it mints a
+ * trophy in `trophies` ({ id, at, game, why, orig, d }), unless the payer says `trophy: false` (moving
+ * Mind Heist's old diamonds over). A wallet from before keeps its trophies in the log until the first
+ * change (`shelf`). The trophy room (lab/heist.js) moves one with takeTrophy or the loot with takeLoot. */
 import { COINS, ORDER, DAY_CAP, EARN, SYNC_MAX, walletDay } from '../public/lab/wallet-catalog.mjs';
 import { mutate, SKIP } from './casstore.js';
 import { ITEM, clean } from '../public/lab/avatar-catalog.mjs';
+import { lootOf, trophyName } from '../public/lab/heist-rules.mjs';
 
 export const STORE = 'capra-lab-wallet';
 const keyOf = (handle) => 'w/' + handle;
 const HANDLE = /^[a-z0-9-]{2,24}$/;
-const LOG_KEEP = 40, REFS_KEEP = 60, HUNTERS_KEEP = 8;
-const blank = () => ({ diamonds: 0, amber: 0, shards: 0, day: null, today: {}, gm: null, log: [], items: [], look: null });
+const LOG_KEEP = 40, REFS_KEEP = 60, HUNTERS_KEEP = 8, TROPHIES_KEEP = 80;
+const blank = () => ({ diamonds: 0, amber: 0, shards: 0, day: null, today: {}, gm: null, log: [], items: [], look: null, trophies: [] });
+const NOT_TROPHY = /moved to the lab/i;
+// The trophy shelf; a wallet from before trophies finds its diamond feats in the log.
+export function shelf(w, handle) {
+  if (Array.isArray(w && w.trophies)) return w.trophies;
+  return ((w && w.log) || []).filter((e) => e.diamonds > 0 && e.game !== 'glacial-maw' && e.game !== 'avatar' && !NOT_TROPHY.test(e.why || ''))
+    .map((e) => ({ id: 't' + Number(e.at).toString(36), at: e.at, game: e.game, why: e.why || '', orig: handle, d: e.diamonds }));
+}
 const LOOKS_MAX = 40;
 
 function fail(status, error, code) {
@@ -53,6 +66,7 @@ export function createWallet({ store, clock = () => Date.now(), verify = null })
       log: (r.log || []).slice(-10).reverse(),
       items: (r.items || []).slice(),
       look: r.look ? clean(r.look, r.items || []) : null,
+      trophies: shelf(r, r.handle || '').length,
     };
   }
   async function read(handle) {
@@ -71,7 +85,7 @@ export function createWallet({ store, clock = () => Date.now(), verify = null })
   }
 
   // A game's server pays for something it checked.
-  async function pay(handle, amounts, { game = 'lab', why = '' } = {}) {
+  async function pay(handle, amounts, { game = 'lab', why = '', trophy = true } = {}) {
     check(handle);
     const now = clock(), day = walletDay(now);
     const add = {};
@@ -83,8 +97,58 @@ export function createWallet({ store, clock = () => Date.now(), verify = null })
       const t = (w.today[game] ||= {});
       for (const k of Object.keys(add)) t[k] = (t[k] || 0) + add[k];
       note(w, now, game, why, add);
+      if (add.diamonds && trophy) {
+        w.trophies = shelf(w, handle);
+        w.trophies.push({ id: 't' + now.toString(36) + Math.random().toString(36).slice(2, 5), at: now, game, why: String(why).slice(0, 80), orig: handle, d: add.diamonds });
+        if (w.trophies.length > TROPHIES_KEEP) w.trophies.splice(0, w.trophies.length - TROPHIES_KEEP);
+      }
     }, blank);
     return { paid: add, ...view(data, now) };
+  }
+
+  /* ---------- the trophy room ---------- */
+  // What a room shows: the trophies, the avatar and what the loot would be right now (no balances).
+  async function trophyCase(handle) {
+    const w = await read(handle);
+    return { trophies: shelf(w, handle).slice(), look: w.look ? clean(w.look, w.items || []) : null, loot: lootOf(w) };
+  }
+  // A raider takes one trophy off the owner's shelf onto theirs; `from` on it says whose room it came out of.
+  async function takeTrophy(from, to, id, { fromName = '', toName = '' } = {}) {
+    check(from); check(to);
+    if (from === to) throw fail(400, 'That’s your own trophy.');
+    const now = clock();
+    let got = null;
+    const r = await mutate(store, keyOf(from), (w) => {
+      w.trophies = shelf(w, from);
+      const i = w.trophies.findIndex((t) => t.id === id);
+      if (i < 0) throw fail(409, 'That trophy isn’t on the shelf any more.', 'gone');
+      got = w.trophies.splice(i, 1)[0];
+    });
+    if (!r || !got) throw fail(409, 'That trophy isn’t on the shelf any more.', 'gone');
+    const moved = { ...got, from, fromName: String(fromName || '').slice(0, 40), took: now, by: to };
+    await mutate(store, keyOf(to), (w) => {
+      w.trophies = shelf(w, to);
+      w.trophies.push(moved);
+      if (w.trophies.length > TROPHIES_KEEP) w.trophies.splice(0, w.trophies.length - TROPHIES_KEEP);
+    }, blank);
+    return { trophy: moved, name: trophyName(moved), toName };
+  }
+  // Or the loot: a share of the owner's amber and shards (heist-rules lootOf), worked out as it's taken.
+  async function takeLoot(from, to, { fromName = '', toName = '' } = {}) {
+    check(from); check(to);
+    if (from === to) throw fail(400, 'That’s your own loot.');
+    const now = clock(), day = walletDay(now);
+    let take = {};
+    await mutate(store, keyOf(from), (w) => {
+      take = lootOf(w);
+      if (!Object.keys(take).length) return SKIP;
+      roll(w, day);
+      const out = {};
+      for (const k of Object.keys(take)) { w[k] -= take[k]; out[k] = -take[k]; }
+      note(w, now, 'trophy-room', `${toName || to} looted your trophy room`, out);
+    });
+    if (Object.keys(take).length) await pay(to, take, { game: 'trophy-room', why: `loot from ${fromName || from}’s trophy room`, trophy: false });
+    return { loot: take };
   }
 
   // A game page claims what a finished game pays; capped a game a day, a ref pays once.
@@ -225,5 +289,5 @@ export function createWallet({ store, clock = () => Date.now(), verify = null })
     }
   }
 
-  return { pay, earn, sync, buy, dress, looks, wallet, view, route, handle: handleRequest };
+  return { pay, earn, sync, buy, dress, looks, wallet, view, route, handle: handleRequest, trophyCase, takeTrophy, takeLoot };
 }

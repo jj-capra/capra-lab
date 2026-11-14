@@ -3523,6 +3523,7 @@ function paintMull() {
 function mullCount() {
   MULL.n = 0; paintMull();
   if (!(G.mode === 'npc' || G.mode === 'solo') || !window.CapraCards) return;
+  if (G.cfg && G.cfg.masters && G.cfg.masters.kind === 'trap') return;   // no mulligans in someone's trap house
   CapraCards.myHand().then((h) => { MULL.n = (h && h.hand && h.hand['pt-mulligan']) || 0; paintMull(); });
 }
 async function mulligan() {
@@ -4523,6 +4524,7 @@ function resolveShot() {
   setTimeout(() => { if (tok === G.token && G.state === 'between') beginTurn(); }, 650);
 }
 function holeOver() {
+  if (G.mode === 'solo' && G.cfg.masters && G.cfg.masters.kind === 'trap') return trapHoleDone();
   G.state = 'holeover';
   // The card is the hole's card now, even if it was open as the menu's scorecard: online the game
   // plays on behind the menu, and a hole that ended under the scorecard used to leave "Next hole"
@@ -5466,6 +5468,7 @@ function startSolo(kind, tryId) {
 // Quit a Masters round to its course page; an unfinished try is burned on the server.
 function leaveSolo() {
   const m = G.cfg && G.cfg.masters; if (!m) return quitToTitle();
+  if (m.kind === 'trap') return trapWalkOut();
   const burn = m.kind === 'try' && G.state !== 'final' ? MS.tryId : '';
   MS.tryId = '';
   quitToTitle();
@@ -5618,7 +5621,72 @@ function bindMasters() {
   $('#finalRetry').addEventListener('click', () => { au(); $('#finalWin').textContent = 'POSTING…'; postTry(); });
 }
 // A challenge link (/par-tee-time/#m=<id>) opens its course page; so does coming back from signing in.
+/* ---------------- the trap house (Nov 14 2026) ----------------
+   A golf trap in someone's trophy room (/trophy-room/, lab/heist.js): the trophy room links here with
+   #trap=<raid>; the hole plays as a one-hole solo round, scratch, no mulligans; the strokes go to
+   /api/heist/answer (par or better clears it) and the raider goes back to the trap house. The hole opens
+   once: leaving part way and coming back trips the alarm, so a hole can't be started over. */
+const TRAP = { id: '', step: 0, owner: '', par: 0, over: false };
+async function trapPost(what, body) {
+  const lab = labMe();
+  const r = await fetch('/api/heist/' + what, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(Object.assign({}, body, { name: lab && lab.name, code: lab && lab.code })) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || 'The trap house didn’t answer. Check your signal.');
+  return j;
+}
+async function trapStart(id) {
+  TRAP.id = id; TRAP.over = false;
+  if (!labMe()) return trapOver(null, 'Sign in to Capra Lab to break in.');
+  toast('Opening the trap…', 1600);
+  let r;
+  try { r = await trapPost('raid', { raid: id, go: true }); } catch (e) { return trapOver(null, e.message); }
+  const x = r.raid, t = x.trap;
+  TRAP.step = x.step; TRAP.owner = x.owner.name;
+  if (r.left) return trapOver(x, 'You left this hole part way, so the alarm went off.');
+  if (x.state !== 'run' || !t || t.kind !== 'golf' || !t.hole) return trapOver(x, null);
+  const gi = HOLE_DEFS.findIndex(d => d.id === t.hole.id);
+  if (gi < 0) return trapPost('answer', { raid: id, give: true }).then(j => trapOver(j.raid, 'That hole isn’t in this version of the game.'), e => trapOver(null, e.message));
+  TRAP.par = t.hole.par;
+  const lab = labMe();
+  au();
+  startMatch({ mode: 'solo', holes: [gi], players: [{ name: cleanName(lab.name) || 'You', color: PREF.p1.color, hcp: 0 }], courseKey: 'trap', masters: { kind: 'trap', id: '', name: t.hole.name, raid: id, best: null, hcp: 0 } });
+  toast(`🚨 ${TRAP.owner}’s Sand Trap: par ${t.hole.par} or better, or the alarm goes off.`, 4500);
+}
+async function trapHoleDone() {
+  G.state = 'final'; G.token++;
+  const strokes = G.players[0].scores[0];
+  show($('#mdCard'), false);
+  $('#finalWin').textContent = 'CHECKING…'; $('#finalSub').textContent = `${strokes} on a par ${TRAP.par}`;
+  try { const r = await trapPost('answer', { raid: TRAP.id, strokes }); trapOver(r.raid, r.ok ? null : r.why, strokes); }
+  catch (e) { trapOver(null, e.message + ' Your break-in is still on: open it from the trophy room.', strokes); }
+}
+async function trapWalkOut() {
+  if (G.state === 'final') return;
+  G.state = 'final'; G.token++;
+  show($('#mdMenu'), false);
+  try { const r = await trapPost('answer', { raid: TRAP.id, give: true }); trapOver(r.raid, 'You walked out of the trap.'); }
+  catch (e) { trapOver(null, e.message); }
+}
+function trapOver(x, why, strokes) {
+  const ok = !!(x && x.traps && x.traps[TRAP.step] && x.traps[TRAP.step].res === 'ok'), caught = !!(x && x.state === 'caught');
+  TRAP.over = true;
+  ['#scrMasters', '#scrBuild', '#scrCourse', '#mdCard', '#mdMenu'].forEach(id => show($(id), false));
+  $('#finalTable').innerHTML = ''; show($('#finalQuip'), false); show($('#finalPost'), false); $('#finalShare').innerHTML = '';
+  $('#finalWin').textContent = ok ? 'TRAP CLEARED!' : caught ? 'CAUGHT!' : 'TRAP HOUSE';
+  $('#finalSub').textContent = ok
+    ? `${strokes} on a par ${TRAP.par}. Get back to ${TRAP.owner}’s trap house: ${x.state === 'inside' ? 'the vault is open.' : 'the next trap is waiting.'}`
+    : caught ? `${why || 'The alarm went off.'} ${TRAP.owner} gets the amber, and you’re out of that room until tomorrow.`
+    : (why || 'This break-in has moved on. The trap house has the latest.');
+  const again = $('#finalAgain'); again.disabled = false; again.textContent = 'Back to the trap house';
+  $('#finalHome').textContent = 'Par-Tee Time';
+  if (ok) { impactFrame('TRAP\nCLEARED!'); sfx.cheer(); }
+  else if (caught && sfx.gasp) sfx.gasp();
+  show($('#mdFinal'));
+}
+
 function mastersInit() {
+  const trapM = /^#trap=([a-z0-9]{12})$/.exec(location.hash || '');
+  if (trapM) { history.replaceState(null, '', location.pathname); trapStart(trapM[1]); return; }
   const fromHash = () => {
     const m = /^#m=([a-z0-9]{6})$/i.exec(location.hash || '');
     if (!m) return false;
@@ -5647,9 +5715,10 @@ function openMenu() {
   segment($('#menuGuideSeg'), [['full', 'Full'], ['short', 'Short'], ['off', 'Off']], PREF.guide, v => { PREF.guide = v; savePrefs(); });
   segment($('#menuCamSeg'), CAM_OPTS, PREF.cam, v => { PREF.cam = v; savePrefs(); });
   const tryRound = G.mode === 'solo' && G.cfg.masters && G.cfg.masters.kind === 'try';
-  $('#menuQuit').textContent = G.mode === 'solo' ? 'Quit to the course' : 'Quit to title';
-  $('#quitTxt').textContent = tryRound ? 'Quit this try? It still counts as one of your three.' : G.mode === 'solo' ? 'Quit this practice round? Practice never counts.' : 'Quit this round? Scores for this round are lost.';
-  $('#quitYes').textContent = tryRound ? 'Burn the try' : 'Quit round';
+  const trapRound = G.mode === 'solo' && G.cfg.masters && G.cfg.masters.kind === 'trap';
+  $('#menuQuit').textContent = trapRound ? 'Walk out of the trap' : G.mode === 'solo' ? 'Quit to the course' : 'Quit to title';
+  $('#quitTxt').textContent = trapRound ? 'Walk out? The alarm goes off and you’re caught.' : tryRound ? 'Quit this try? It still counts as one of your three.' : G.mode === 'solo' ? 'Quit this practice round? Practice never counts.' : 'Quit this round? Scores for this round are lost.';
+  $('#quitYes').textContent = trapRound ? 'Walk out' : tryRound ? 'Burn the try' : 'Quit round';
   show($('#mdMenu'));
   setTimeout(() => $('#menuResume').focus(), 30);
 }
@@ -5694,11 +5763,12 @@ function bindUI() {
   toggle('#tgSound', 'sound'); toggle('#tgVoice', 'voice'); toggle('#tgRead', 'readFriend');
   $('#finalAgain').addEventListener('click', () => {
     au();
+    if (TRAP.over) { location.href = '/trophy-room/#raid=' + TRAP.id; return; }   // a golf trap: back to the trap house
     if (G.mode === 'online') { if (NET.seat === 0) netHostStart(); return; }
     if (G.mode === 'solo' && G.cfg.masters.kind === 'try') return leaveSolo();   // a try: back to the course page
     startMatch(Object.assign({}, G.cfg, { players: G.cfg.players }));          // practice runs it back for free
   });
-  $('#finalHome').addEventListener('click', () => { if (G.mode === 'solo' && G.cfg.masters.kind === 'practice') leaveSolo(); else quitToTitle(); });
+  $('#finalHome').addEventListener('click', () => { if (TRAP.over) { TRAP.over = false; return quitToTitle(); } if (G.mode === 'solo' && G.cfg.masters.kind === 'practice') leaveSolo(); else quitToTitle(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && G.mode) { if (!$('#mdMenu').hidden) closeMenu(); else if ($('#mdCard').hidden && $('#mdFinal').hidden) openMenu(); } });
   window.addEventListener('resize', () => rdResize($('#cv')));
   if (window.ResizeObserver) new ResizeObserver(() => rdResize($('#cv'))).observe($('#stage'));
@@ -5734,7 +5804,7 @@ function boot() {
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 
-window.__partee = { G, RD, NET, PREF, CAM, ROT, camPredict, HOLE_DEFS, compileHole, buildNav, makePlanner, pickShot, SKILLS, newBall, cloneBall, makeWorld, applyShot, runToRest, startMatch, advanceHole, doShot, resolveShot, humanShoot, sendChat, netHostStart, startOnlineMatch, quitToTitle, holeThumb, COURSE_SETS, NPCS, MS, mastersOrder, openCourse, openMasters, leaveSolo };
+window.__partee = { G, RD, NET, PREF, CAM, ROT, camPredict, HOLE_DEFS, compileHole, buildNav, makePlanner, pickShot, SKILLS, newBall, cloneBall, makeWorld, applyShot, runToRest, startMatch, advanceHole, doShot, resolveShot, humanShoot, sendChat, netHostStart, startOnlineMatch, quitToTitle, holeThumb, COURSE_SETS, NPCS, MS, mastersOrder, openCourse, openMasters, leaveSolo, holeOver, TRAP };
 
 })();
 </script>

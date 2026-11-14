@@ -307,7 +307,8 @@ function auraFront(id) {
 
 /* ---------- the whole avatar ---------- */
 // tight: crop in on the face, for small spots like the Capra Lab button
-export function drawAvatar(look, { title = '', tight = false } = {}) {
+// plain: just the character, no backdrop (the trophy room's hologram and selfie)
+export function drawAvatar(look, { title = '', tight = false, plain = false } = {}) {
   const l = clean(look);
   const u = ++uid;
   const animal = l.base === 'animal';
@@ -324,7 +325,7 @@ export function drawAvatar(look, { title = '', tight = false } = {}) {
   const faceParts = (l.facewear === 'facewear.mask' ? mask(f) : '') + cheeks(l.cheeks, f.ey, f.dx)
     + eyes(l.eyes, f.ey, f.dx, face, animal && l.species === 'owl') + brows(l.brows, f.ey, f.dx, browColor) + nose + mouth(l.mouth, f.my, f.ms) + bunnyTeeth;
   // the character sits a little small in its frame so tall hats and gadgets stay inside a round crop
-  const body = layer('backdrop', backdrop(l.backdrop, BGS[l.bg], u)) + '<g transform="translate(5 10) scale(0.9)">' + [
+  const body = (plain ? '' : layer('backdrop', backdrop(l.backdrop, BGS[l.bg], u))) + '<g transform="translate(5 10) scale(0.9)">' + [
     layer('aura', auraBack(l.effect, u)),
     layer('hair-back', animal ? animalBack(l.species, fur) : hairBack(l.hair, hc)),
     layer('outfit-back', outfitBack(l.outfit, shirt)),
@@ -338,7 +339,7 @@ export function drawAvatar(look, { title = '', tight = false } = {}) {
     layer('hat', hat(l.hat, f.top)),
     layer('gadget', gadget(l.gadget) && `<g transform="translate(-6 -5)">${gadget(l.gadget)}</g>`),
     layer('sparkle', l.effect === 'effect.hologram' ? '' : auraFront(l.effect)),
-  ].join('') + '</g>' + layer('scan', l.effect === 'effect.hologram' ? auraFront(l.effect) : '');
+  ].join('') + '</g>' + layer('scan', l.effect === 'effect.hologram' && !plain ? auraFront(l.effect) : '');
   const t = title ? `<title>${String(title).replace(/[<&]/g, '')}</title>` : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${tight ? '12 12 76 76' : '0 0 100 100'}" role="img"${title ? '' : ' aria-hidden="true"'}>${t}${body}</svg>`;
 }

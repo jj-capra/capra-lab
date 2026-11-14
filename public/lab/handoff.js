@@ -34,7 +34,7 @@
   const GAMES = {
     'par-tee-time': 'Par-Tee Time', 'mind-heist': 'Mind Heist', 'no-cap': 'No Cap', punchline: 'Punchline', classified: 'Classified',
     'primal-survival': 'Primal Survival', 'swerve-planet': 'Swerve Planet', 'dont-look': 'Don’t Look!', 'goat-getaway': 'Goat Getaway',
-    screensaver: 'Screensaver', 'three-clue-crew': 'Three Clue Crew', 'puzzled-spin': 'Puzzled Spin', 'glacial-maw': 'Glacial Maw',
+    screensaver: 'Screensaver', 'three-clue-crew': 'Three Clue Crew', 'puzzled-spin': 'Puzzled Spin', 'glacial-maw': 'Glacial Maw', 'trophy-room': 'Trophy Room',
   };
   const gameOf = (path) => GAMES[(String(path).split(/[/?#]/).filter(Boolean)[0] || '')] || 'Capra Lab';
 

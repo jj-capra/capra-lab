@@ -669,6 +669,102 @@ const Practice = {
   },
 };
 
+/* ---------- the trap house (Nov 14 2026) ----------
+   A goat trap in someone's trophy room (/trophy-room/, lab/heist.js): the trophy room links here with
+   #trap=<raid>. The pen comes from the server (an Old Ram or G.O.A.T. pen), with no hints and no skip,
+   a countdown and a move limit; the moves go to /api/heist/answer, which replays them, and the raider
+   goes back to the trap house. The pen opens once: leaving part way and coming back trips the alarm. */
+const Trap = {
+  id: '', t: null, raid: null, pen: null, end: 0, done: false, step: 0,
+  async post(what, body) {
+    const r = await fetch('/api/heist/' + what, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...body, name: lab && lab.name, code: lab && lab.code }) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || 'The trap house didn’t answer. Check your signal.');
+    return j;
+  },
+  async start(id) {
+    this.id = id;
+    history.replaceState(null, '', location.pathname);
+    document.querySelector('.tabs').hidden = true;
+    $('today').hidden = true; $('practice').hidden = false;
+    $('levels').hidden = true; $('pHint').hidden = true; $('pSkip').hidden = true;
+    document.body.classList.add('playing');
+    $('pTime').previousElementSibling.textContent = 'LEFT';
+    $('pKicker').innerHTML = '<span class="tier">🚨 Trap house</span><span class="muted">Opening the pen…</span>';
+    this.pen = new Pen($('pBoard'), (pid, d) => this.moved(pid, d));
+    $('pUndo').addEventListener('click', () => { this.pen.undo(); this.hud(); });
+    $('pReset').addEventListener('click', () => { this.pen.reset(); this.hud(); });
+    if (!lab) return this.over(null, 'Sign in to Capra Lab to break in.');
+    let r;
+    try { r = await this.post('raid', { raid: id, go: true }); } catch (e) { return this.over(null, e.message); }
+    const x = r.raid, t = x.trap;
+    this.step = x.step; this.raid = x;
+    if (r.left) return this.over(x, 'You left this pen part way, so the alarm went off.');
+    if (x.state !== 'run' || !t || t.kind !== 'goat') return this.over(x, null);
+    this.t = t;
+    const owner = x.owner.name + (/s$/i.test(x.owner.name) ? '’' : '’s');
+    $('pKicker').innerHTML = `<span class="tier">🚨 Trap ${x.step + 1}</span><span>${esc(owner)} Goat Pen</span><span class="muted">most ${t.max} moves · no hints</span>`;
+    $('pPar').textContent = t.par;
+    this.pen.load(t.board);
+    this.end = Date.now() + t.left;
+    this.clock(); this.hud();
+  },
+  clock() {
+    const run = () => {
+      const left = Math.max(0, this.end - Date.now());
+      $('pTime').textContent = fmtTime(left);
+      if (this.done) return;
+      if (left <= 0) return this.timeout();
+      setTimeout(run, 100);
+    };
+    run();
+  },
+  hud() {
+    const n = this.pen.moves.length, max = this.t ? this.t.max : 0;
+    $('pMoves').textContent = n;
+    $('pMovesBox').classList.toggle('under', !!this.t && n > 0 && n <= this.t.par);
+    $('pUndo').disabled = !n || this.done;
+    $('pReset').disabled = !n || this.done;
+    if (max && n > max) $('pMoves').textContent = `${n}/${max}`;
+  },
+  moved(id, d) {
+    if (this.done || !this.t) return;
+    const r = this.pen.play(id, d);
+    if (!r) return;
+    sfx.slide();
+    if (solved(r.board)) {
+      if (r.moves.length > this.t.max) toast(`Out, but that’s ${r.moves.length} moves and the most is ${this.t.max}. Undo or reset.`);
+      else this.submit(r.moves);
+    } else if (r.moves.length === this.t.max + 1) toast(`That’s past ${this.t.max} moves. Undo or reset to get back under.`);
+    this.hud();
+  },
+  async submit(moves) {
+    this.done = true; this.pen.locked = true;
+    sfx.out();
+    try { const r = await this.post('answer', { raid: this.id, moves }); this.over(r.raid, r.ok ? null : r.why); }
+    catch (e) { this.over(null, e.message + ' Your break-in is still on: open it from the trophy room.'); }
+  },
+  async timeout() {
+    if (this.done) return;
+    this.done = true; this.pen.locked = true;
+    try { const r = await this.post('raid', { raid: this.id }); this.over(r.raid, 'Out of time.'); }
+    catch (e) { this.over(null, e.message); }
+  },
+  over(x, why) {
+    this.done = true;
+    if (this.pen) this.pen.locked = true;
+    const ok = !!(x && x.traps && x.traps[this.step] && x.traps[this.step].res === 'ok'), caught = !!(x && x.state === 'caught');
+    if (ok) setTimeout(() => confetti(), 300);
+    const el = $('pResult');
+    el.hidden = false;
+    el.innerHTML = `<h2>${ok ? 'The goat’s out!' : caught ? '🚨 Caught!' : 'Trap house'}</h2>
+      <p>${ok ? (x.state === 'inside' ? 'Trap cleared, and that was the last one. The vault is open.' : 'Trap cleared. The next trap is waiting.') : esc(why || (caught ? 'The alarm went off.' : 'This break-in has moved on.'))}${caught ? ' You’re out of that room until tomorrow.' : ''}</p>
+      <div class="row"><a class="btn" href="/trophy-room/#raid=${this.id}">Back to the trap house</a></div>`;
+    setTimeout(() => el.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 300);
+    this.hud();
+  },
+};
+
 /* ---------- help ---------- */
 function openHelp(on) {
   $('help').hidden = !on;
@@ -696,8 +792,12 @@ $('tabPractice').addEventListener('click', () => showTab('practice'));
 // No pinch-zoom while dragging pieces around (Safari's own gesture events).
 for (const ev of ['gesturestart', 'gesturechange']) document.addEventListener(ev, (e) => { if (e.target.closest && e.target.closest('.pen')) e.preventDefault(); }, { passive: false });
 
-Today.init();
-Practice.init();
-showTab(location.hash === '#practice' ? 'practice' : prefs.tab === 'practice' ? 'practice' : 'today');
-Today.load();
-if (!prefs.seenHelp) setTimeout(() => openHelp(true), 400);
+const trapHash = /^#trap=([a-z0-9]{12})$/.exec(location.hash || '');
+if (trapHash) Trap.start(trapHash[1]);
+else {
+  Today.init();
+  Practice.init();
+  showTab(location.hash === '#practice' ? 'practice' : prefs.tab === 'practice' ? 'practice' : 'today');
+  Today.load();
+  if (!prefs.seenHelp) setTimeout(() => openHelp(true), 400);
+}

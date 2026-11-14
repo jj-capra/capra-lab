@@ -45,7 +45,11 @@ JC's words, kept whole so later work starts from them:
    by rarity like earning (amber, shards, diamonds); 2D now, the hologram later (the drawing is in
    named layers for it). The Avatar Studio is `/avatar/`; README, Avatars.
 5. **Lab levels**: entry-level scientist up to beautiful mind; levels unlock more traps.
-6. **Trophy rooms and trap houses**: each player's trophy room sits on a trap house they build from
+6. **Trophy rooms and trap houses** (built Nov 14 2026): each player's trophy room sits on a trap house they build from
    a library (hard trivia, tough golf holes, an impossible Goat Getaway...), four traps to start.
    Get through someone's traps and you take a trophy or loot and a selfie in their trophy room with
-   their hologram behind you, made for sharing by text.
+   their hologram behind you, made for sharing by text. JC's picks: anyone can watch a room on its
+   security cameras; all four kinds of trap (Mind Heist trivia, a Par-Tee Time hole, Puzzled Spin and
+   Three Clue Crew, a Goat Getaway pen); the raider's pick of one trophy or the loot; caught means
+   out of that room for the day and amber for the owner; trophies are Masters plus every diamond feat.
+   README has the details. Next: the IRL camera game (push-ups, squats, wall sits, dribbling, targets).

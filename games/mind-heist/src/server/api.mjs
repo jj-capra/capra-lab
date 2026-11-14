@@ -145,7 +145,7 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
     let n = 0;
     const r = await mutate('p/' + pid, (p) => { n = Math.max(0, Math.floor(Number(p.gems) || 0)); if (!n) return SKIP; p.gems = 0; });
     if (!n || r.skipped) return 0;
-    try { await wallet.pay(handle, { diamonds: n }, { game: 'mind-heist', why: 'Mind Heist diamonds moved to the lab' }); return n; }
+    try { await wallet.pay(handle, { diamonds: n }, { game: 'mind-heist', why: 'Mind Heist diamonds moved to the lab', trophy: false }); return n; }
     catch (e) { await mutate('p/' + pid, (p) => { p.gems = (p.gems || 0) + n; }).catch(() => null); return 0; }
   }
 

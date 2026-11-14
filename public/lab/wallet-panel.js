@@ -42,6 +42,7 @@ function paint(w) {
   $('wlBody').innerHTML = `<div class="wl-coins">${ORDER.map((k) => `<div class="wl-coin">${coin(k, 22)}<b>${short(w[k])}</b><small>${COINS[k].short}</small></div>`).join('')}</div>
     <p class="wl-line">${esc(todayLine)}</p>
     <a class="wl-avatar" href="/avatar/"><span class="wl-face">${drawAvatar(lookFor(p.handle, w.look), { tight: true })}</span><span class="t"><b>AVATAR STUDIO</b><small>${w.look ? 'Spend it on hats, glasses, outfits, gadgets and more.' : 'Make your comic avatar: a person or an animal. Spend coins on hats, glasses and more.'}</small></span><span class="go">Open</span></a>
+    <a class="wl-avatar" href="/trophy-room/"><span class="wl-face wl-trophy" aria-hidden="true">🏆</span><span class="t"><b>TROPHY ROOM</b><small>${w.trophies ? `${w.trophies} ${w.trophies === 1 ? 'trophy' : 'trophies'} on your shelf. Set your traps, then break into someone else’s room.` : 'Every diamond feat puts a trophy on your shelf. Set your traps, then break into someone else’s room.'}</small></span><span class="go">Open</span></a>
     <p class="wl-line wl-gm"><a href="/glacial-maw/">${esc(gm)}</a></p>${howToEarn()}`;
 }
 

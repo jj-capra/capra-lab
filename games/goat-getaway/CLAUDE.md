@@ -34,6 +34,10 @@ on from Vault Jam (2026-11-02 = No. 1), on the same puzzles.
   through `POST /hint`, which counts them: each hint before your first getaway adds `HINT_MS`
   (15 s) to your time, and a day with hints earns no par diamond. Guests' hints and practice hints
   are worked out on the phone and cost nothing.
+- **The trophy rooms' Goat Pen trap** (Nov 14 2026, lab/heist.js): `/goat-getaway/#trap=<raid>` skips today's
+  pen and practice and shows the practice board without levels, hints or skip: the pen comes from
+  `/api/heist/raid` (an Old Ram or G.O.A.T. pen), the clock counts down, the move limit shows, and a
+  getaway posts the moves to `/api/heist/answer`, which replays them. Then Back to the trap house.
 - **Practice**: endless pens (`practice.json`, written by the build), Easy / Medium / Hard, no
   rewards, a clock that starts on the first move.
 

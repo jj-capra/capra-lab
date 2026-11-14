@@ -31,6 +31,7 @@ import { memoryStore as parTeeMemory } from '../games/par-tee-time/server/store.
 import { createCards } from '../lab/cards.js';
 import { createWallet } from '../lab/wallet.js';
 import { createHandoff } from '../lab/handoff.js';
+import { createHeist } from '../lab/heist.js';
 import { memoryStore as casMemory } from '../lab/casstore.js';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'public');
@@ -50,6 +51,12 @@ const wallet = createWallet({ store: casMemory(), clock: () => Date.now() + wall
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 const handoff = createHandoff({ store: casMemory(),
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
+// Trophy rooms and trap houses (/api/heist/*); /api/heist/__clock?add=ms moves its clock (local only)
+let heistOffset = 0;
+const heistStore = casMemory();   // /api/heist/__peek?raid= shows a break-in with its answers (local only)
+const heist = createHeist({ store: heistStore, wallet, clock: () => Date.now() + heistOffset,
+  verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; },
+  lookup: async (h) => { const r = await profiles.get(h); return r && r.identity ? r.identity : null; } });
 const primal = createApi(memoryStore(), profiles);
 // Mind Heist checks lab keys against the same profiles, as its function does on Netlify
 const mhStore = mhMemory();
@@ -170,6 +177,15 @@ http.createServer(async (req, res) => {
     res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify(r));
   }
   if (url.pathname.startsWith('/api/wallet/')) return toFunction(req, res, (r) => wallet.handle(r));
+  if (url.pathname === '/api/heist/__clock') {
+    heistOffset += Number(url.searchParams.get('add') || 0);
+    res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: heistOffset }));
+  }
+  if (url.pathname === '/api/heist/__peek') {
+    const e = heistStore.map.get('x/' + (url.searchParams.get('raid') || ''));
+    res.writeHead(e ? 200 : 404, { 'content-type': 'application/json' }); return res.end(JSON.stringify(e ? e.data : { error: 'none' }));
+  }
+  if (url.pathname.startsWith('/api/heist/')) return toFunction(req, res, (r) => heist.handle(r));
   if (url.pathname.startsWith('/api/handoff/')) return toFunction(req, res, (r) => handoff.handle(r, { ip: req.socket.remoteAddress || '127.0.0.1', geo: { country: { code: 'US' }, subdivision: { code: 'WA' }, city: 'Spokane' } }));
   if (url.pathname === '/par-tee-time/__clock') {
     parTeeOffset += Number(url.searchParams.get('add') || 0);
