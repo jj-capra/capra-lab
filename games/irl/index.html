@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script src="/lab/fill.js"></script>
 <title>IRL · Capra Lab</title>
-<meta name="description" content="Real moves, real loot. Squats, push-ups, wall sits, target smashing and dribbling, counted by your phone's camera. A Capra Lab original.">
+<meta name="description" content="Real moves, real loot. Bowl, throw, shoot, rally, squat and smash in animated scenes that copy your moves, played with your phone's camera. A Capra Lab original.">
 <meta name="theme-color" content="#16141F">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -68,9 +68,19 @@
   /* the camera stage */
   .stage { padding: 0; }
   .cam { position: fixed; left: 0; right: 0; top: var(--st); height: calc(var(--lab-h, 100dvh) - var(--st)); background: #000; overflow: hidden; }
-  .cam video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-  .cam video.mirror { transform: scaleX(-1); }
-  .cam canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  /* The main view is the scene (#overlay, drawn by scene.js) and the camera picture sits in a small box
+     in the corner with the stick figure on it (JC, Nov 15 2026: "an animation as the main view that syncs
+     to my movement. Much like how NEX Playground displays an animation with a camera view of the players
+     on the upper or bottom corner"). The camera sheet can switch back to the camera full screen. */
+  .cam > canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+  /* (the box sits inside the camera layer, which already reaches the real bottom: no --lab-gap here) */
+  .pip { position: absolute; z-index: 3; left: max(12px, var(--sl)); bottom: calc(var(--sb) + 86px); width: min(34vw, 190px); aspect-ratio: var(--pip-ar, 3 / 4);
+    border-radius: 14px; overflow: hidden; background: #000; border: 3px solid var(--ink); box-shadow: 0 0 0 2px rgba(255, 248, 236, 0.85), 4px 5px 0 var(--shadow); pointer-events: none; }
+  .pip video, .pip canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  .pip video.mirror { transform: scaleX(-1); }
+  .cam.two .pip { left: 50%; transform: translateX(-50%); width: min(24vw, 170px); }
+  .cam.camera .pip { inset: 0; left: 0; bottom: auto; width: 100%; height: 100%; aspect-ratio: auto; border: 0; border-radius: 0; box-shadow: none; z-index: 0; transform: none; }
+  .cam.camera .pip canvas { display: none; }
   .stage.live .sbar .ttl { opacity: 0; }
   .cam::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.45) 100%); }
   .cam::before { content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: #FF3D3D; opacity: 0; }
@@ -89,6 +99,7 @@
   .count.p { border-color: var(--pc); }
   .count.p b { color: var(--pc); }
   .count.p small { max-width: 8.6em; letter-spacing: 0.04em; white-space: normal; overflow-wrap: anywhere; line-height: 1.15; }
+  @media (orientation: portrait) { .stage.two .count b { font-size: 44px; } .stage.two .clock b { font-size: 30px; } }
   .meter { position: fixed; z-index: 4; right: max(14px, var(--sr)); top: calc(var(--st) + 168px); width: 18px; height: 34vh; border-radius: 999px; background: rgba(18, 14, 24, 0.75); border: 3px solid var(--ink); overflow: hidden; }
   .meter.l { right: auto; left: max(14px, var(--sl)); }
   .meter i { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: linear-gradient(0deg, var(--green), var(--yellow)); transition: height 0.12s; }
@@ -207,6 +218,9 @@
     .big { font-size: 100px; }
     .sheet { width: min(100%, 620px); }
     .opts { grid-template-columns: 1fr 1fr; }
+    .pip { width: min(19vw, 260px); bottom: calc(var(--sb) + 12px); }
+    .cam.scene ~ .coach:not(.duo) { max-width: calc(100% - 2 * min(19vw, 260px) - 70px); }
+    .cam.two .pip { width: min(16vw, 220px); bottom: calc(var(--sb) + 66px); }
   }
   @media (prefers-reduced-motion: reduce) { .countdown b, .pop { animation-duration: 0.01s; } }
 </style>
@@ -225,7 +239,7 @@
   <div class="wrap">
     <div class="home-top">
       <div class="logo"><div class="badge" aria-hidden="true">💪</div><div><h1>IRL</h1><p>REAL MOVES. REAL LOOT.</p></div></div>
-      <p class="tag">Prop your phone up, step back and move. The camera counts your reps, times your holds, watches your hands hit targets, stop shots and chop avocados. Every finished challenge pays amber, and beating the goal or your best pays shards.</p>
+      <p class="tag">Prop your phone up, step back and move. Bowl a strike, hit your receiver, drain free throws, rally at tennis, crush pitches and smash targets in animated scenes that copy your moves, with the camera in the corner. Every finished challenge pays amber, and beating the goal or your best pays shards.</p>
       <div class="pick">
         <div class="who" id="who" role="radiogroup" aria-label="Players"><button type="button" role="radio" data-n="1" aria-checked="true">1 PLAYER</button><button type="button" role="radio" data-n="2" aria-checked="false">2 PLAYERS</button></div>
         <p class="who-note" id="whoNote"></p>
@@ -241,7 +255,7 @@
 
 <!-- ============ THE CAMERA ============ -->
 <section class="screen stage" data-screen="stage" id="stage" hidden>
-  <div class="cam" id="cam"><video id="video" playsinline muted autoplay></video><canvas id="overlay"></canvas></div>
+  <div class="cam scene" id="cam"><canvas id="overlay"></canvas><div class="pip" id="pip"><video id="video" playsinline muted autoplay></video><canvas id="pipCv"></canvas></div></div>
   <header class="sbar">
     <button class="round-btn" id="backBtn" type="button" aria-label="Back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
     <div class="ttl" id="stTitle"></div>
@@ -279,7 +293,8 @@
   <ul>
     <li><b>Pick a challenge</b>, then follow the setup: where to put your phone and how far to stand.</li>
     <li><b>Step into your spot.</b> When the camera sees what it needs, a 3-2-1 countdown starts on its own, so you never have to run back to tap the screen.</li>
-    <li><b>Move.</b> The stick figure over the camera shows what it sees. A voice counts your reps so you can hear it from across the room.</li>
+    <li><b>Move.</b> The game plays in an animated scene that copies your moves: your lab avatar does what you do, or the ball, football or racket in the front follows your hand. The camera picture sits in the corner with the stick figure it sees. A voice counts your reps so you can hear it from across the room.</li>
+    <li><b>The sports:</b> Bowling (swing your arm and roll it; step left or right to line it up), QB Throw (ball up over your head to aim, then throw to the open man), Free Throws (shoot it up from your chest) and Tennis Rally (swing as the ball reaches you).</li>
     <li><b>2 players:</b> switch it on at the top, stand side by side, and each of you plays your own half of the screen. Whoever’s phone it is gets paid for their side.</li>
     <li><b>The camera:</b> tap the camera button for front, back or the 0.5× ultra-wide (when your phone offers it). Turn the phone sideways for a picture that fills a TV.</li>
     <li><b>Pay:</b> +40 amber for each finished challenge, +1 shard for beating its goal (once a day each), +1 shard for a new personal best. IRL pays up to 300 amber and 6 shards a day.</li>
@@ -294,6 +309,7 @@
   <div class="opts" id="camOpts"></div>
   <p class="fine" id="camNote"></p>
   <label class="tog"><input type="checkbox" id="mirrorChk" checked><span>Mirror the picture, like a mirror (on for watching yourself, on the phone or on a TV).</span></label>
+  <label class="tog"><input type="checkbox" id="sceneChk" checked><span>Animated scene up front, the camera in the corner. Off shows the camera full screen (the sports games always play in their scene).</span></label>
 </div></div>
 
 <script src="/lab/chip.js" defer></script>

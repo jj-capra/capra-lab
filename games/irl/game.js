@@ -7,13 +7,16 @@
    Tests set window.__irlFake before load and feed made-up bodies through window.__irl.feed(frame)
    ({ lm, world } for one player, { people: [{ lm, world }, ...] } for two). */
 import { CHALLENGES, ORDER, COUNTERS, BONES, P, SILOS, TWO_UP, framing, shareRow, splitPlayers, winnerOf, MIN_TO_PAY } from './logic.mjs';
+import { drawSport, drawBackdrop, drawPuppet } from './scene.js';
+import { drawAvatar, lookFor } from '/lab/avatar.mjs';
+import { SKINS, FURS, SHIRTS } from '/lab/avatar-catalog.mjs';
 
 const $ = (id) => document.getElementById(id);
 const FAKE = !!window.__irlFake;
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const store = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* private mode */ } } };
 const me = () => { const p = store.get('capra-lab.profile', null); return p && p.name && p.code ? p : null; };
-const prefs = Object.assign({ sound: true, cam: 'front', mirror: true, players: 1, guest: 'Player 2', youRight: false, names: ['Player 1', 'Player 2'] }, store.get('irl.prefs', {}));
+const prefs = Object.assign({ sound: true, cam: 'front', mirror: true, scene: true, players: 1, guest: 'Player 2', youRight: false, names: ['Player 1', 'Player 2'] }, store.get('irl.prefs', {}));
 const savePrefs = () => store.set('irl.prefs', prefs);
 const NAME_MAX = 17;
 const PCOL = ['#29D3F0', '#FF3D8B'];      // two players: the left one cyan, the right one magenta
@@ -65,6 +68,14 @@ const sfx = {
   crack: (p = 1) => { tone(2400, 0, 0.04, 'square', 0.09, 900); tone(160 + p * 120, 0, 0.12, 'sawtooth', 0.08, 60); },
   drop: (pts = 10) => { tone(140, 0, 0.09, 'square', 0.07, 80); tone(pts >= 100 ? 1320 : pts >= 50 ? 990 : 660, 0.08, 0.22, 'triangle', 0.09); if (pts >= 100) tone(1760, 0.2, 0.3, 'triangle', 0.08); },
   strike: () => { tone(330, 0, 0.12, 'square', 0.05); tone(220, 0.12, 0.25, 'square', 0.05); },
+  // the sports: a ball rumbling down the lane, pins crashing, the crowd, a whoosh, the swish and the clank
+  roll: () => tone(70, 0, 1.6, 'sawtooth', 0.035, 50),
+  pins: (n = 5) => { for (let i = 0; i < Math.min(8, n + 2); i++) tone(500 + Math.random() * 900, i * 0.035, 0.09, 'square', 0.04, 160); },
+  cheer: () => { for (let i = 0; i < 10; i++) tone(300 + Math.random() * 500, i * 0.05, 0.3, 'sawtooth', 0.015, 250 + Math.random() * 300); },
+  whoosh: () => tone(500, 0, 0.35, 'sine', 0.05, 140),
+  swish: () => { tone(1800, 0, 0.18, 'sine', 0.04, 900); tone(1200, 0.05, 0.2, 'triangle', 0.04, 700); },
+  clank: () => { tone(420, 0, 0.12, 'square', 0.07, 380); tone(640, 0.02, 0.18, 'triangle', 0.05, 600); },
+  pok: () => { tone(900, 0, 0.05, 'square', 0.06, 400); tone(240, 0, 0.08, 'sine', 0.08, 120); },
 };
 function say(text) {
   if (!prefs.sound || !('speechSynthesis' in window) || !text) return;
@@ -81,13 +92,19 @@ $('helpX').onclick = () => { $('veil').hidden = true; };
 $('veil').addEventListener('click', (e) => { if (e.target === $('veil')) $('veil').hidden = true; });
 
 /* ---------- home ---------- */
+// "60 seconds · goal 20 reps", "Five frames · goal 70 pins", "Hold up to 3:00 · goal 60 s"
+function challengeLine(k, upper = false) {
+  const c = CHALLENGES[k];
+  const s = k === 'wallsit' ? `Hold up to ${fmt(c.secs)} · goal ${c.goal} s` : c.frames ? `${c.frames} frames · goal ${c.goal} ${c.units}` : `${c.secs} seconds · goal ${c.goal} ${c.units}`;
+  return upper ? s.toUpperCase() : s;
+}
 function renderHome() {
   const b = bests(), two = prefs.players === 2;
   for (const el of document.querySelectorAll('#who button')) el.setAttribute('aria-checked', String(Number(el.dataset.n) === prefs.players));
   $('whoNote').textContent = two ? 'Side by side, a half of the screen each. Push-ups stay solo: the camera has to see you side-on.' : 'Just you. Switch to 2 players for a head-to-head.';
   $('cards').innerHTML = ORDER.map((k) => {
     const c = CHALLENGES[k], solo = two && !TWO_UP.includes(k);
-    const what = k === 'wallsit' ? `Hold up to ${fmt(c.secs)} · goal ${c.goal} s` : `${c.secs} seconds · goal ${c.goal} ${c.units}`;
+    const what = challengeLine(k);
     return `<button type="button" class="ch" data-k="${k}" style="--c:${c.color}"><span class="em" aria-hidden="true">${c.emoji}</span>
       <span><b>${esc(c.name.toUpperCase())}</b><small>${solo ? '<i class="solo">SOLO ONLY</i> ' : ''}${esc(c.blurb)} ${esc(what)}</small></span>
       <span class="best">${b[k] != null ? esc(scoreText(k, b[k])) : '–'}<span>BEST</span></span></button>`;
@@ -97,7 +114,34 @@ function renderHome() {
 for (const el of document.querySelectorAll('#who button')) el.onclick = () => { prefs.players = Number(el.dataset.n); savePrefs(); renderHome(); };
 
 /* ---------- the camera and the motion tracker ---------- */
-const video = $('video'), canvas = $('overlay'), ctx = canvas.getContext('2d');
+const video = $('video'), canvas = $('overlay'), ctx = canvas.getContext('2d'), pipCv = $('pipCv'), pipCtx = pipCv.getContext('2d');
+// The scene up front with the camera in the corner (the sports games always), or the camera full screen.
+const sceneOn = () => !!(S && CHALLENGES[S.kind].sport) || prefs.scene !== false;
+function applyView() {
+  const cam = $('cam');
+  cam.classList.toggle('scene', sceneOn()); cam.classList.toggle('camera', !sceneOn()); cam.classList.toggle('two', !!(S && S.two));
+  const b = box();
+  cam.style.setProperty('--pip-ar', `${Math.round(b.aspect * 1000)} / 1000`);
+}
+video.addEventListener('loadedmetadata', () => applyView());
+video.addEventListener('resize', () => applyView());
+/* The player as a puppet in the scenes: their lab avatar (their saved look, or the free look picked from
+   their handle; a guest's from their name) drawn as a comic body that copies their pose. */
+const LOOK = { mine: null };
+function puppetLook(seed, saved = null) {
+  const l = lookFor(seed, saved), animal = l.base === 'animal';
+  const img = new Image();
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(drawAvatar(l, { plain: true }).replace('<svg ', '<svg width="300" height="300" '));
+  return { head: img, skin: animal ? FURS[l.fur] : SKINS[l.skin], shirt: SHIRTS[l.shirt], pants: '#2B3A67' };
+}
+async function loadMyLook() {
+  const p = me();
+  if (!p) return;
+  let saved = null;
+  try { const j = await (await fetch('/api/wallet/looks?h=' + encodeURIComponent(p.handle))).json(); saved = (j && j.looks && j.looks[String(p.handle).toLowerCase()]) || null; } catch { /* the free look */ }
+  LOOK.mine = puppetLook(p.handle, saved);
+}
+const plLook = (pl) => (pl.own && LOOK.mine) || (pl.look ||= puppetLook(pl.own ? ((me() || {}).handle || 'guest') : pl.name));
 let stream = null, landmarker = null, loadingModel = null, raf = 0, lastVideoTime = -1, wake = null, poses = 1, camLand = null;
 async function loadModel() {
   if (landmarker) return landmarker;
@@ -161,6 +205,7 @@ async function startCamera() {
   video.srcObject = stream;
   video.classList.toggle('mirror', mirrored());
   await video.play().catch(() => {});
+  applyView();
   if (!cams.listed) await listCams();
   paintCamRow();
 }
@@ -210,12 +255,26 @@ function frameLoop() {
 
 /* ---------- drawing: the comic stick figure, targets, pops ---------- */
 // frames: one per player ({ lm } or nothing where the camera can't see them).
+// A sports scene's part of the screen: all of it alone, a half each for two.
+const sportRect = (i, b) => (S && S.two ? { x: i ? b.W / 2 : 0, y: 0, w: b.W / 2, h: b.H } : { x: 0, y: 0, w: b.W, h: b.H });
 function draw(frames, t = performance.now()) {
   const dpr = Math.min(2, window.devicePixelRatio || 1), b = box();
   if (canvas.width !== Math.round(b.W * dpr) || canvas.height !== Math.round(b.H * dpr)) { canvas.width = Math.round(b.W * dpr); canvas.height = Math.round(b.H * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, b.W, b.H);
-  if (FAKE) { ctx.fillStyle = '#1B1528'; ctx.fillRect(b.ox, b.oy, b.dw, b.dh); }
+  const scene = sceneOn();
+  drawPip(frames);
+  if (S && CHALLENGES[S.kind].sport) {
+    // where the top bar and the score boxes end, so a scene's own boards sit clear of them
+    const camTop = $('cam').getBoundingClientRect().top, top = $('backBtn').getBoundingClientRect().bottom - camTop + 6;
+    const hudEls = [...document.querySelectorAll('#hud .count, #hud .clock')].filter((el) => !el.hidden && el.offsetParent !== null);
+    const hud = hudEls.length && !$('hud').hidden ? Math.max(...hudEls.map((el) => el.getBoundingClientRect().bottom)) - camTop + 8 : top;
+    for (const pl of S.players) drawSport(ctx, S.kind, sportRect(pl.i, b), pl.counter, t, { lm: frames && frames[pl.i] && frames[pl.i].lm, mirror: mirrored(), range: sideRange(pl.i), color: pl.color, aspect: b.aspect, top, hud, name: S.two ? pl.name : '' });
+    if (S.two) drawDivider(b, true, false);
+    return;
+  }
+  if (scene) drawBackdrop(ctx, S ? S.kind : 'squat', b.W, b.H, { x: b.ox, y: b.oy, w: b.dw, h: b.dh }, t, S ? Math.max(0, ...S.players.map((pl) => pl.cheerAt || 0)) : 0);
+  else if (FAKE) { ctx.fillStyle = '#1B1528'; ctx.fillRect(b.ox, b.oy, b.dw, b.dh); }
   if (!S) return;
   if (S.two) drawDivider(b);
   const live = S.phase === 'live';
@@ -223,7 +282,10 @@ function draw(frames, t = performance.now()) {
     const f = frames && frames[pl.i], c = pl.counter, lm = f && f.lm;
     if (S.kind === 'keeper') drawGoal(b, ...sideRange(pl.i));
     if (S.kind === 'derby' && c) drawSilos(b, t, pl);
-    if (lm) drawBody(b, lm, pl.color);
+    if (lm && scene) {
+      drawPuppet(ctx, lm, (p) => { const [x, y] = toScreen(b, p); return { x, y }; }, plLook(pl), S.two ? pl.color : null);
+      if (S.kind === 'dribble') drawDribbleBall(b, lm, pl);
+    } else if (lm) drawBody(b, lm, pl.color);
     // the target
     const tg = live && S.kind === 'targets' ? c.target : null;
     if (tg) {
@@ -259,14 +321,58 @@ function drawBody(b, lm, color) {
   }
   if (ok(P.NOSE)) { const [x, y] = toScreen(b, lm[P.NOSE]); ctx.beginPath(); ctx.arc(x, y, 14, 0, Math.PI * 2); ctx.lineWidth = 4; ctx.strokeStyle = color; ctx.stroke(); }
 }
-// Two players: a dashed line down the middle of the picture, and each name over its half until the go.
-function drawDivider(b) {
+// The camera picture in the corner box, with the stick figure the tracker sees (in each player's color).
+function drawPip(frames) {
+  if (!sceneOn()) return;
+  const dpr = Math.min(2, window.devicePixelRatio || 1), w = pipCv.clientWidth, h = pipCv.clientHeight;
+  if (!w || !h) return;
+  if (pipCv.width !== Math.round(w * dpr) || pipCv.height !== Math.round(h * dpr)) { pipCv.width = Math.round(w * dpr); pipCv.height = Math.round(h * dpr); }
+  pipCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  pipCtx.clearRect(0, 0, w, h);
+  if (FAKE) { pipCtx.fillStyle = '#1B1528'; pipCtx.fillRect(0, 0, w, h); }
+  if (!frames) return;
+  frames.forEach((f, i) => {
+    const lm = f && f.lm;
+    if (!lm) return;
+    const pl = S && S.players[i], col = pl ? (S.two ? pl.color : '#FFB14A') : '#FFB14A';
+    const ok = (k) => lm[k] && (lm[k].visibility == null || lm[k].visibility > 0.45);
+    const at = (p) => [(mirrored() ? 1 - p.x : p.x) * w, p.y * h];
+    pipCtx.lineCap = 'round'; pipCtx.lineWidth = 2.5; pipCtx.strokeStyle = col; pipCtx.beginPath();
+    for (const [a, z] of BONES) if (ok(a) && ok(z)) { const [x1, y1] = at(lm[a]), [x2, y2] = at(lm[z]); pipCtx.moveTo(x1, y1); pipCtx.lineTo(x2, y2); }
+    pipCtx.stroke();
+  });
+}
+// Dribble Drill in the scene: a basketball that bounces between the dribbling hand and the floor in time
+// with the hand (the camera follows the hand, not the ball, so the ball is drawn from it).
+function drawDribbleBall(b, lm, pl) {
+  const ok = (k) => lm[k] && (lm[k].visibility == null || lm[k].visibility > 0.45);
+  const hands = [P.LW, P.RW].filter(ok);
+  if (!hands.length) return;
+  const d = (pl.drib ||= { w: null, lo: 1, hi: 0 });
+  const w = hands.length === 2 ? (d.w != null && hands.includes(d.w) ? d.w : hands.sort((a, c) => lm[c].y - lm[a].y)[0]) : hands[0];
+  d.w = w;
+  const y = lm[w].y;
+  d.lo = Math.min(y, d.lo * 0.98 + y * 0.02); d.hi = Math.max(y, d.hi * 0.98 + y * 0.02);
+  const span = Math.max(0.04, d.hi - d.lo), down = clampN((y - d.lo) / span, 0, 1);   // 0 hand up, 1 hand down
+  const feet = [27, 28, 31, 32].filter(ok).map((k) => lm[k].y), floorY = feet.length ? Math.max(...feet) : Math.min(1, y + 0.3);
+  const by = y + (floorY - y) * (1 - down) + 0.03;
+  const [x, sy] = toScreen(b, { x: lm[w].x, y: by }), r = Math.max(8, b.dh * 0.04);
+  ctx.save(); ctx.translate(x, sy - r);
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fillStyle = '#F2711C'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#120E18'; ctx.stroke();
+  ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(-r, 0); ctx.lineTo(r, 0); ctx.moveTo(0, -r); ctx.lineTo(0, r); ctx.stroke();
+  ctx.restore();
+}
+const clampN = (v, a, c) => Math.max(a, Math.min(c, v));
+// Two players: a dashed line down the middle of the picture (or the screen, for the sports), and each
+// name over its half until the go.
+function drawDivider(b, full = false, names = true) {
+  if (full) b = { ...b, ox: 0, oy: 0, dw: b.W, dh: b.H };
   const x = b.ox + b.dw / 2, top = Math.max(b.oy, 0), bot = Math.min(b.oy + b.dh, b.H);
   ctx.save();
   ctx.setLineDash([14, 12]); ctx.lineCap = 'round';
   for (const [w, c] of [[7, 'rgba(18,14,24,0.7)'], [3, 'rgba(255,248,236,0.75)']]) { ctx.lineWidth = w; ctx.strokeStyle = c; ctx.beginPath(); ctx.moveTo(x, top); ctx.lineTo(x, bot); ctx.stroke(); }
   ctx.setLineDash([]);
-  if (S.phase !== 'live') {
+  if (S.phase !== 'live' && names) {
     const y = top + Math.min(110, b.H * 0.2);
     ctx.font = `${Math.round(Math.max(20, Math.min(34, b.dw / 22)))}px Bangers, Impact, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
     for (const pl of S.players) {
@@ -463,7 +569,7 @@ let S = null;   // { kind, two, phase: setup | wait | count | live | done, playe
 let ticker = 0;
 function newPlayer(i, two, C) {
   const names = two ? duoNames() : [(me() || {}).name || 'You'];
-  return { i, name: names[i], color: two ? PCOL[i] : C.color, counter: null, score: 0, done: false, lostSince: null,
+  return { i, name: names[i], color: two ? PCOL[i] : C.color, counter: null, score: 0, done: false, lostSince: null, own: !two || ownerSide() === i,
     tgShown: new Map(), lit: null, batPath: null, trails: null, lastBallAt: null, goalSaid: false };
 }
 async function openChallenge(kind) {
@@ -473,10 +579,12 @@ async function openChallenge(kind) {
   $('stage').classList.remove('live');
   $('stage').classList.toggle('two', two);
   $('stTitle').textContent = C.name.toUpperCase() + (two ? ' · 2P' : '');
+  applyView();
+  if (C.sport) for (const pl of S.players) pl.counter = makeCounter(kind, C, pl.i);   // the scene shows before the go
   $('hud').hidden = true; $('meterL').hidden = true; $('meterR').hidden = true; $('coach0').hidden = true; $('coach1').hidden = true; $('camAlert').hidden = true; $('countdown').innerHTML = '';
   $('setup').hidden = false;
   $('setup').style.setProperty('--c', C.color);
-  $('setup').innerHTML = `<div class="top"><span class="em" aria-hidden="true">${C.emoji}</span><h2>${esc(C.name.toUpperCase())}<small>${two ? 'HEAD TO HEAD · ' : ''}${kind === 'wallsit' ? `HOLD UP TO ${fmt(C.secs)} · GOAL ${C.goal} SECONDS` : `${C.secs} SECONDS · GOAL ${C.goal} ${C.units.toUpperCase()}`}</small></h2></div>
+  $('setup').innerHTML = `<div class="top"><span class="em" aria-hidden="true">${C.emoji}</span><h2>${esc(C.name.toUpperCase())}<small>${two ? 'HEAD TO HEAD · ' : ''}${esc(challengeLine(kind, true))}</small></h2></div>
     <ol class="steps"><li>${esc(two ? C.setup2 : C.setup)}</li><li>${esc(C.how)}</li><li>Tap <b>Start</b>, then walk to your ${two ? 'spots' : 'spot'}. The countdown starts by itself when the camera sees ${two ? 'you both' : 'you'}.</li></ol>
     ${two ? '<div class="duo" id="duo"></div>' : ''}
     <button type="button" class="camrow" id="camRow"><span aria-hidden="true">📷</span><span id="camName">${esc(camName())}</span><small>CHANGE</small></button>
@@ -553,6 +661,7 @@ function openCams() {
     ? 'No 0.5× lens here: your phone didn’t hand its ultra-wide to the browser. Step back a little farther instead.'
     : 'More lenses (like the 0.5× ultra-wide) show up here once the camera has started.';
   $('mirrorChk').checked = prefs.mirror !== false;
+  $('sceneChk').checked = prefs.scene !== false;
   for (const el of $('camOpts').querySelectorAll('.opt')) el.onclick = () => pickCam(el.dataset.cam);
   $('camVeil').hidden = false;
 }
@@ -564,6 +673,7 @@ async function pickCam(v) {
   try { await startCamera(); } catch (e) { cameraTrouble(e); }
 }
 $('mirrorChk').onchange = () => { prefs.mirror = $('mirrorChk').checked; savePrefs(); video.classList.toggle('mirror', mirrored()); if (S) draw(S.frames); };
+$('sceneChk').onchange = () => { prefs.scene = $('sceneChk').checked; savePrefs(); applyView(); if (S) draw(S.frames); };
 $('camX').onclick = () => { $('camVeil').hidden = true; };
 $('camVeil').addEventListener('click', (e) => { if (e.target === $('camVeil')) $('camVeil').hidden = true; });
 
@@ -621,6 +731,7 @@ function play(pl, f) {
   else pl.lostSince = null;
   const r = pl.counter.update(f);
   const c = pl.counter;
+  if (CHALLENGES[S.kind].sport) return playSport(pl, r, f);
   if (r.rep) {
     pl.score = c.score;
     setCount(i, scoreText(S.kind, pl.score));
@@ -667,6 +778,41 @@ function play(pl, f) {
   }
 }
 const meterOf = (i) => $(S && S.two && !i ? 'meterL' : 'meterR');
+// The sports games' sounds, pops and voice.
+function playSport(pl, r, f) {
+  const i = pl.i, solo = !S.two, c = pl.counter, t = f.t;
+  const cheer = () => { sfx.cheer(); pl.cheerAt = t; };
+  if (S.kind === 'bowling') {
+    if (r.roll) { sfx.roll(); pl.crashed = false; }
+    if (c.phase === 'rolling' && !pl.crashed && c.pins.some((p) => p.down)) { pl.crashed = true; sfx.pins(c.pins.filter((p) => p.down).length); }
+    if (r.rolled) {
+      const m = r.rolled.mark;
+      if (m === 'strike') { cheer(); flashCam(); pop('STRIKE!', null, i); if (solo) say('Strike!'); }
+      else if (m === 'spare') { cheer(); pop('SPARE!', null, i); if (solo) say('Spare!'); }
+      else if (m === 'gutter') { sfx.miss(); pop('GUTTER!', null, i); }
+      else pop(String(r.rolled.down), null, i);
+    }
+  } else if (S.kind === 'qb') {
+    if (r.huddle) sfx.beep();
+    if (r.threw) sfx.whoosh();
+    if (r.caught) { cheer(); pop(r.caught.td ? 'TOUCHDOWN!' : `+${r.caught.yards} YDS`, null, i); if (r.caught.td) { flashCam(); if (solo) say('Touchdown!'); } }
+    if (r.incomplete) { sfx.thud(); pop('INCOMPLETE', null, i); }
+    if (r.picked) { sfx.miss(); pop('PICKED OFF!', null, i); }
+    if (r.sacked) { sfx.thud(); pop('SACKED!', null, i); }
+  } else if (S.kind === 'hoops') {
+    if (r.shot) sfx.whoosh();
+    if (r.made) { r.made.kind === 'swish' ? sfx.swish() : sfx.clank(); setTimeout(() => sfx.swish(), 120); if (c.streak >= 3) cheer(); pop(c.streak >= 3 ? 'ON FIRE!' : r.made.kind === 'swish' ? 'SWISH!' : 'IN!', null, i); }
+    if (r.miss) { sfx.clank(); pop(r.miss.kind === 'short' ? 'SHORT' : r.miss.kind === 'long' ? 'LONG' : r.miss.kind === 'wide' ? 'WIDE' : 'RIMMED OUT', null, i); }
+  } else if (S.kind === 'tennis') {
+    if (r.pitch) sfx.pok();
+    if (r.hit) { sfx.pok(); if (r.hit.winner) { cheer(); flashCam(); } pop(r.hit.winner ? 'WINNER!' : c.rally >= 5 ? `${c.rally} RALLY!` : 'NICE!', null, i); }
+    if (r.net) { sfx.thud(); pop('NET!', null, i); }
+    if (r.miss) { sfx.miss(); pop('MISSED', null, i); }
+  }
+  if (c.score !== pl.score) { pl.score = c.score; setCount(i, String(pl.score)); }
+  if (r.say && !(pl.lostSince && t - pl.lostSince > 1500)) coach(i, r.say, r.rep ? 'ok' : '');
+  if (r.done) { pl.done = true; if (!solo) { coach(i, `Done: ${scoreText(S.kind, c.score)}`, 'ok'); sfx.whistle(); } }
+}
 
 /* ---------- where things go on screen ---------- */
 // The part of the picture a player's targets, shots and silos can use: their side of it, under the top
@@ -682,14 +828,16 @@ function freeArea(side) {
   const coachTop = coaches.length ? Math.min(...coaches) : cam.bottom - 70;
   let A = { x0: a, x1: z, y0: Math.max(0, fy(bar.bottom + 8)), y1: Math.min(1, fy(coachTop - 10)) };
   const area = (q) => Math.max(0, q.x1 - q.x0) * b.dw * Math.max(0, q.y1 - q.y0) * b.dh;
-  for (const el of document.querySelectorAll('#hud .count, #hud .clock')) {
-    if (el.hidden || el.offsetParent === null) continue;
+  const boxes = [...document.querySelectorAll('#hud .count, #hud .clock')].filter((el) => !el.hidden && el.offsetParent !== null);
+  if (sceneOn()) boxes.push($('pip'));
+  for (const el of boxes) {
     const r = el.getBoundingClientRect();
-    const R = { x0: fx(r.left - 8), x1: fx(r.right + 8), y0: fy(r.top), y1: fy(r.bottom + 10) };
+    const R = { x0: fx(r.left - 8), x1: fx(r.right + 8), y0: fy(r.top - 8), y1: fy(r.bottom + 10) };
     if (R.x1 <= A.x0 || R.x0 >= A.x1 || R.y1 <= A.y0 || R.y0 >= A.y1) continue;     // not in the way
-    const below = { ...A, y0: Math.max(A.y0, R.y1) };
+    const high = (R.y0 + R.y1) / 2 < (A.y0 + A.y1) / 2;
+    const vert = high ? { ...A, y0: Math.max(A.y0, R.y1) } : { ...A, y1: Math.min(A.y1, R.y0) };
     const beside = (R.x0 + R.x1) / 2 < (A.x0 + A.x1) / 2 ? { ...A, x0: Math.max(A.x0, R.x1) } : { ...A, x1: Math.min(A.x1, R.x0) };
-    A = area(beside) > area(below) ? beside : below;
+    A = area(beside) > area(vert) ? beside : vert;
   }
   return A;
 }
@@ -764,6 +912,7 @@ function countdown() {
   }, i * 900));
 }
 function makeCounter(kind, C, side) {
+  if (C.sport) return COUNTERS[kind]({ mirror: mirrored(), range: sideRange(side), frames: C.frames });
   if (kind === 'wallsit') return COUNTERS.wallsit(C.secs);
   if (kind === 'targets') return COUNTERS.targets({ bounds: targetBounds(0.075, 0.68, side) });
   if (kind === 'keeper') return COUNTERS.keeper({ bounds: targetBounds(0.075, 0.9, side) });
@@ -777,8 +926,9 @@ function go() {
   $('countdown').innerHTML = '';
   S.phase = 'live'; S.startAt = performance.now();
   $('stage').classList.add('live');
-  // the score boxes: yours alone, or one each side of the clock with the names
-  $('hud').hidden = false;
+  // the score boxes: yours alone, or one each side of the clock with the names (bowling keeps its
+  // own scoresheet in the scene instead)
+  $('hud').hidden = !!C.frames;
   $('countBox1').hidden = !two;
   for (const pl of S.players) {
     const bx = $('countBox' + pl.i);
@@ -794,14 +944,21 @@ function go() {
     pl.score = 0; pl.done = false; pl.trails = null; pl.batPath = null; pl.lit = null; pl.goalSaid = false; pl.tgShown = new Map();
     setCount(pl.i, scoreText(S.kind, 0));
   }
-  $('clock').textContent = S.kind === 'wallsit' && !two ? fmt(C.goal) : S.kind === 'wallsit' ? '0:00' : fmt(C.secs);
+  $('clock').textContent = C.frames ? `1/${C.frames}` : S.kind === 'wallsit' && !two ? fmt(C.goal) : S.kind === 'wallsit' ? '0:00' : fmt(C.secs);
   $('clockBox').classList.remove('low');
-  $('clockLbl').textContent = S.kind === 'wallsit' ? (two ? 'time' : 'to the goal') : 'left';
+  $('clockLbl').textContent = C.frames ? 'frame' : S.kind === 'wallsit' ? (two ? 'time' : 'to the goal') : 'left';
   for (const pl of S.players) coach(pl.i, 'GO!', 'ok');
   clearInterval(ticker);
   ticker = setInterval(() => {
     if (!S || S.phase !== 'live') return clearInterval(ticker);
     const el = (performance.now() - S.startAt) / 1000;
+    if (C.frames) {
+      // bowling runs frame by frame, not on the clock (ten minutes is the most a game can take)
+      const fr = Math.min(...S.players.map((pl) => (pl.counter.next.done ? C.frames : pl.counter.next.frame)));
+      $('clock').textContent = `${fr}/${C.frames}`;
+      if (el > 600) finish();
+      return;
+    }
     if (S.kind === 'wallsit') {
       for (const pl of S.players) {
         const held = pl.counter.score;
@@ -863,18 +1020,25 @@ async function finish() {
   say(kind === 'wallsit' ? `Time! ${score} seconds` : `Time! ${score}`);
   const { prev, newBest } = keepBest(kind, score), beat = score >= C.goal;
   // the card first, the pay as it comes back
-  $('resCard').innerHTML = `<p class="kick">${C.emoji} ${esc(C.name)}${kind === 'wallsit' ? '' : ` · ${C.secs} seconds`}</p>
+  $('resCard').innerHTML = `<p class="kick">${C.emoji} ${esc(C.name)}${playedFor(kind)}</p>
     <p class="big">${esc(scoreText(kind, score))}<small>${kind === 'wallsit' ? 'HELD' : esc((score === 1 ? C.unit : C.units).toUpperCase())}</small></p>
     ${newBest ? '<span class="burst gold">NEW PERSONAL BEST!</span>' : beat ? '<span class="burst">GOAL SMASHED!</span>' : ''}
     <p class="stats"><span>🎯 Goal ${esc(scoreText(kind, C.goal))}</span><span>🏆 Best ${prev == null && !newBest ? '–' : esc(scoreText(kind, Math.max(prev ?? 0, newBest ? score : 0)))}</span>${c ? statBits(kind, c) : ''}</p>
     <p class="paid" id="paidLine"></p>`;
   show('results');
   if (window.CapraShare) shareCard(CapraShare.text({ emoji: '💪', game: 'IRL', sub: C.name,
-    lines: [`${kind === 'wallsit' ? `${fmt(score)} held` : `${score} ${score === 1 ? C.unit : C.units} in ${C.secs} s`}${newBest ? ' · new best' : ''}`],
+    lines: [`${kind === 'wallsit' ? `${fmt(score)} held` : `${score} ${score === 1 ? C.unit : C.units} in ${C.frames ? `${C.frames} frames` : `${C.secs} s`}`}${newBest ? ' · new best' : ''}`, ...(kind === 'bowling' && c ? [bowlMarks(c)] : [])],
     grid: [shareRow(score, C.goal, newBest)] }));
   payOwner(kind, score, beat, newBest);
 }
+const playedFor = (kind) => { const C = CHALLENGES[kind]; return kind === 'wallsit' ? '' : C.frames ? ` · ${C.frames} frames` : ` · ${C.secs} seconds`; };
+// a bowling game's marks, frame by frame: "X 7/ 9- X X9/"
+const bowlMarks = (c) => c.card.frames.map((f) => f.marks.join('') || '·').join(' ');
 function statBits(kind, c) {
+  if (kind === 'bowling') return `<span>🎳 ${bowlMarks(c)}</span><span>Strikes ${c.strikes}</span><span>Spares ${c.spares}</span>`;
+  if (kind === 'qb') return `<span>🏈 ${c.comps}/${c.atts} completions</span><span>🙌 ${c.tds} TD</span>${c.ints ? `<span>Picked ${c.ints}</span>` : ''}${c.sacks ? `<span>Sacked ${c.sacks}</span>` : ''}`;
+  if (kind === 'hoops') return `<span>🏀 ${c.score}/${c.shots} made</span><span>💦 ${c.swishes} swishes</span><span>🔥 Best streak ${c.best}</span>`;
+  if (kind === 'tennis') return `<span>🎾 ${c.returns} returns</span><span>⚡ ${c.winners} winners</span><span>Best rally ${c.best}</span>`;
   if (kind === 'targets') return `<span>💥 Best combo ${c.best}</span><span>Missed ${c.misses}</span>`;
   if (kind === 'keeper') return `<span>🥅 Let in ${c.goals}</span><span>🔥 Best streak ${c.best}</span>`;
   if (kind === 'derby') return `<span>⚾ ${c.hits} hits</span><span>🚀 ${c.homers} deep</span><span>🔥 Best streak ${c.best}</span><span>Strikes ${c.strikes}</span>`;
@@ -888,7 +1052,7 @@ function finishTwo(kind, C, scores) {
   const mine = own >= 0 ? scores[own] : null;
   const { newBest } = mine != null ? keepBest(kind, mine) : { newBest: false };
   const unitOf = (n) => (kind === 'wallsit' ? 'HELD' : (n === 1 ? C.unit : C.units).toUpperCase());
-  $('resCard').innerHTML = `<p class="kick">${C.emoji} ${esc(C.name)} · head to head${kind === 'wallsit' ? '' : ` · ${C.secs} seconds`}</p>
+  $('resCard').innerHTML = `<p class="kick">${C.emoji} ${esc(C.name)} · head to head${playedFor(kind)}</p>
     <div class="vs">${S.players.map((pl) => `<div class="side${w === pl.i ? ' win' : ''}" style="--pc:${pl.color}"><span class="nm">${w === pl.i ? '👑 ' : ''}${esc(pl.name)}${own === pl.i ? ' <i>YOU</i>' : ''}</span>
       <b>${esc(scoreText(kind, scores[pl.i]))}</b><small>${esc(unitOf(scores[pl.i]))}</small>${pl.counter ? `<p class="stats">${statBits(kind, pl.counter)}</p>` : ''}</div>`).join('<span class="vsx" aria-hidden="true">VS</span>')}</div>
     ${w < 0 ? '<span class="burst">DEAD HEAT!</span>' : `<span class="burst gold">${esc(names[w].toUpperCase())} WINS!</span>`}
@@ -934,4 +1098,5 @@ addEventListener('resize', () => {
 window.__irl = { feed: (f) => handle({ aspect: box().aspect, ...f, t: f.t ?? performance.now() }), state: () => S, open: openChallenge, finish, cams };
 
 renderHome();
-if (/^#(squat|pushup|wallsit|targets|dribble|keeper|avocado|derby)$/.test(location.hash)) openChallenge(location.hash.slice(1));
+loadMyLook();
+if (/^#(squat|pushup|wallsit|targets|dribble|keeper|avocado|derby|bowling|qb|hoops|tennis)$/.test(location.hash)) openChallenge(location.hash.slice(1));

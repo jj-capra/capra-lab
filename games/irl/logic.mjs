@@ -3,7 +3,9 @@
    Wall sits. Squats etc. this earns more Amber and other loot").
    The camera picture stays on the phone: MediaPipe's pose model finds 33 body points a frame
    ({ x, y } from 0 to 1 across and down the picture, plus `visibility`), and this file turns those
-   points into reps, holds, hits and dribbles. No camera here, so the tests can feed it made-up bodies. */
+   points into reps, holds, hits and dribbles. No camera here, so the tests can feed it made-up bodies.
+   The sports games (bowling, QB Throw, free throws, tennis) are in sports.mjs. */
+import { bowling, qbThrow, hoops, tennis } from './sports.mjs';
 
 // The body points MediaPipe numbers (its 33-point pose).
 export const P = { NOSE: 0, LS: 11, RS: 12, LE: 13, RE: 14, LW: 15, RW: 16, LI: 19, RI: 20, LH: 23, RH: 24, LK: 25, RK: 26, LA: 27, RA: 28 };
@@ -71,9 +73,40 @@ export const CHALLENGES = {
     how: 'Pitches come right at you, faster and faster. Swing your hands through like you’re holding a bat as the ball gets to you. Swing hard to reach the back silos (100 in the corners, 50 in the middle); a softer hit lands in the front row (10 to 30). Swing early to pull it into a corner, late to go the other way.',
     setup2: 'Phone at chest height 10 to 12 feet away, facing you both. Stand well apart (swings go sideways): each of you gets your own pitches and your own silos.',
   },
+  // JC, Nov 15 2026: "an animation as the main view that syncs to my movement... I want bowling and QB
+  // throw etc." (sports.mjs); the scene is the game, the camera sits in the corner. `sport: true` means
+  // a world of its own drawn by scene.js; `frames` games run until the last frame, not on a clock.
+  bowling: {
+    name: 'Bowling', emoji: '🎳', secs: 0, frames: 5, goal: 70, unit: 'pin', units: 'pins', color: '#C77DFF', sport: true,
+    blurb: 'Five frames down a real lane. Strikes and spares count extra.',
+    setup: 'Phone at waist height 7 to 9 feet away, facing you, so it sees you from head to knees with room to step left and right.',
+    setup2: 'Phone at waist height 9 to 12 feet away, facing you both, side by side with room to swing. Each of you bowls your own lane.',
+    how: 'Swing your arm back past your hip and roll it forward like a real bowling ball: the faster your hand comes up, the faster it rolls. Step left or right to line it up (the arrow on the lane shows where it starts); flick your wrist sideways to hook it. Five frames.',
+  },
+  qb: {
+    name: 'QB Throw', emoji: '🏈', secs: 60, goal: 120, unit: 'yard', units: 'yards', color: '#FF8A3D', sport: true,
+    blurb: 'Hit your receivers downfield. Deep balls are touchdowns.',
+    setup: 'Phone at chest height 7 to 9 feet away, facing you, so it sees you from head to waist with room over your head to throw.',
+    setup2: 'Phone at chest height 9 to 12 feet away, facing you both, side by side with room to throw. Each of you runs your own offense.',
+    how: 'Hold the ball up over your head and move it left or right: the target on the field follows your hand. When a receiver glows OPEN, throw hard. The slant is open first, the deep go last, and only a hard throw reaches him. Covered receivers get picked off. Don’t wait too long or you’re sacked.',
+  },
+  hoops: {
+    name: 'Free Throws', emoji: '🏀', secs: 45, goal: 12, unit: 'make', units: 'makes', color: '#FF9F1C', sport: true,
+    blurb: 'Step to the line and drain as many as you can.',
+    setup: 'Phone at chest height 7 to 9 feet away, facing you, so it sees you from head to waist with room over your head.',
+    setup2: 'Phone at chest height 9 to 12 feet away, facing you both, side by side. Each of you shoots at your own hoop.',
+    how: 'Hold the ball at your chest and shoot it up over your head like a free throw. A smooth, medium push drops it in: too soft is short, too hard bricks off the back. Keep your hands in line with your nose to shoot it straight.',
+  },
+  tennis: {
+    name: 'Tennis Rally', emoji: '🎾', secs: 60, goal: 30, unit: 'point', units: 'points', color: '#C6E83A', sport: true,
+    blurb: 'Rally with the pro across the net. Winners are worth 5.',
+    setup: 'Phone at chest height 7 to 9 feet away, facing you, so it sees you from head to knees with room to swing both ways.',
+    setup2: 'Phone at chest height 10 to 12 feet away, facing you both. Stand well apart (swings go sideways): each of you plays your own court.',
+    how: 'Swing your racket hand across as the ball reaches you, forehand or backhand. Swing early to hit it cross-court, late to send it down the line. A hard swing into a corner can be a winner (+5); every return is a point.',
+  },
 };
-export const ORDER = ['squat', 'pushup', 'wallsit', 'targets', 'dribble', 'keeper', 'avocado', 'derby'];
-export const MIN_TO_PAY = { squat: 3, pushup: 3, wallsit: 10, targets: 3, dribble: 10, keeper: 3, avocado: 10, derby: 30 };
+export const ORDER = ['bowling', 'qb', 'hoops', 'tennis', 'derby', 'keeper', 'targets', 'avocado', 'dribble', 'squat', 'pushup', 'wallsit'];
+export const MIN_TO_PAY = { squat: 3, pushup: 3, wallsit: 10, targets: 3, dribble: 10, keeper: 3, avocado: 10, derby: 30, bowling: 30, qb: 20, hoops: 3, tennis: 5 };
 // Two players (JC, Nov 15 2026: "bring two player to IRL!"): side by side in front of one camera, each
 // with their own half of the screen. Every challenge with a `setup2` works for two; push-ups need the
 // camera side-on, where one player would hide the other, so they stay solo.
@@ -135,7 +168,11 @@ export function framing(kind, lm) {
   if (!lm) return { ok: false, say: 'Step into the picture' };
   const any = (ids) => ids.some((i) => seen(lm[i], 0.6));
   if (!any([P.LS, P.RS])) return { ok: false, say: 'We can’t see your shoulders' };
-  if (kind === 'targets' || kind === 'keeper' || kind === 'avocado' || kind === 'derby') return any([P.LW, P.RW]) ? { ok: true, say: 'Ready' } : { ok: false, say: 'Show us your hands' };
+  if (kind === 'targets' || kind === 'keeper' || kind === 'avocado' || kind === 'derby' || kind === 'qb' || kind === 'hoops') return any([P.LW, P.RW]) ? { ok: true, say: 'Ready' } : { ok: false, say: 'Show us your hands' };
+  if (kind === 'bowling' || kind === 'tennis') {
+    if (!any([P.LH, P.RH])) return { ok: false, say: 'Step back: we can’t see your hips' };
+    return any([P.LW, P.RW]) ? { ok: true, say: 'Ready' } : { ok: false, say: 'Show us your hands' };
+  }
   if (kind === 'dribble') {
     if (!any([P.LH, P.RH])) return { ok: false, say: 'Step back: we can’t see your hips' };
     return any([P.LW, P.RW]) ? { ok: true, say: 'Ready' } : { ok: false, say: 'Show us your dribbling hand' };
@@ -571,7 +608,7 @@ export function derby({ rand = Math.random, flight = 1300, gap = 900, win = 230,
   };
 }
 
-export const COUNTERS = { squat: squats, pushup: pushups, wallsit, targets, dribble: dribbles, keeper, avocado: avocados, derby };
+export const COUNTERS = { squat: squats, pushup: pushups, wallsit, targets, dribble: dribbles, keeper, avocado: avocados, derby, bowling, qb: qbThrow, hoops, tennis };
 
 // The results text's row: ten squares filled by how much of the goal you got (⚡ on a new best).
 export function shareRow(score, goal, best = false) {

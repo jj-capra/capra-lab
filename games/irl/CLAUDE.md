@@ -8,7 +8,41 @@ the browser was the plan he okayed).
 
 ## Rules
 
-- Eight challenges (`CHALLENGES` in `logic.mjs`): **Squats** and **Push-ups** (as many as you can in
+- **Scenes** (JC, Nov 15 2026: "I want an animation as the main view that syncs to my movement. Much like
+  how NEX Playground displays an animation with a camera view of the players on the upper or bottom
+  corner. I want bowling and QB throw etc."; his picks: every challenge gets a scene, plus basketball
+  free throws and a tennis rally). The main view is a comic scene (`scene.js`); the camera picture sits
+  in a small box in the corner (`#pip`: bottom left, raised above the coach line upright; bottom middle
+  for two) with the stick figure the tracker sees. The sports games are worlds of their own seen
+  through a little 3D camera (`cam3`), what you hold (ball, football, racket) drawn in front following
+  your hand. The other challenges keep their play area (the camera picture's shape, where targets,
+  shots and silos already live) with a backdrop around it (gym, brick wall, court, carnival, stadium,
+  kitchen, farm) and the player as a **puppet**: their lab avatar's head (saved look from
+  `/api/wallet/looks`, else the free look from their handle; a guest's from their name) on a comic body
+  whose joints are their joints (`drawPuppet`); Dribble Drill draws a ball bouncing from the hand. The
+  camera sheet's "Animated scene" switch puts the camera back full screen for those (`prefs.scene`);
+  the sports always play in their scene.
+- **The sports games** (`sports.mjs`; `sport: true` in `CHALLENGES`), first on the home screen:
+  - **Bowling** (five frames, goal 70 pins, real scoring with the last frame's bonus balls; untimed,
+    the HUD hidden for the scoresheet in the scene): a hand dropping to the hip then coming up fast past
+    the waist rolls the ball, its speed from how fast the hand rises (`BOWL`), where you stand in your
+    part of the screen is where it leaves the foul line (the arrow on the lane), the hand's sideways
+    flick hooks it. The pins are a top-down physics world (`bowlSim`, meters, circles that knock each
+    other over, kickbacks, the pit), tuned so the pocket strikes often; the second ball sees only the
+    pins left standing.
+  - **QB Throw** (60 s, goal 120 yards): three receivers (slant, out, go) each covered by a defender who
+    loses a step at his own moment (`ROUTES` open windows: slant first, go last). Ball up over your
+    head (a hand above the nose) and the target follows the hand's offset from your nose, locking onto
+    the receiver you point at; the throw is that hand coming down fast. Power must reach the route
+    (`need`: a deep go needs a hard throw); open = caught for yards (plus run after the catch), covered
+    can be picked; a catch near the end zone is a touchdown (+10). Sacked after 4.4 s (−3).
+  - **Free Throws** (45 s, goal 12 makes): the hands coming up from below the chin to over the head
+    fast is the shot; its speed against `HOOPS.sweet` is the depth (short, long), the hands' offset from
+    the nose the aim (wide); close enough swishes, nearly goes in off the rim or rims out.
+  - **Tennis Rally** (60 s, goal 30 points): balls to your forehand or backhand; a sideways swing of the
+    hands within 230 ms of it reaching you returns it (+1), early goes cross-court, late down the line;
+    a hard one into a corner can be a winner (+5); too soft is into the net, no swing a miss.
+- Eight more challenges (`CHALLENGES` in `logic.mjs`): **Squats** and **Push-ups** (as many as you can in
   60 s, goals 20 and 15), **Wall Sit** (hold up to 3:00, goal 60 s; standing up for 2 s ends it),
   **Target Smash** (45 s; one target at a time, out at arm's reach and away from your hands, gone
   after 2.6 s; hit it with a wrist or index finger; goal 25) and **Dribble Drill** (30 s; one dribble
@@ -93,10 +127,14 @@ the browser was the plan he okayed).
 - `logic.mjs`: the challenges, the counters (`squats`, `pushups`, `wallsit`, `targets`, `dribbles`,
   `keeper`, `avocados`, `derby`),
   framing and the share row. No camera, no DOM.
+- `sports.mjs`: the sports games (`bowling`, `qbThrow`, `hoops`, `tennis`), the bowling physics and
+  scoring (`bowlSim`, `bowlScore`, `bowlNext`), the routes. No camera, no DOM.
+- `scene.js`: the scenes (`drawSport`, `drawBackdrop`), the puppet (`drawPuppet`) and the little 3D
+  camera (`cam3`). Draws only.
 - `game.js`, `index.html`: the page (home, the camera stage, results). The camera layer starts under
-  the status bar (`top: env(safe-area-inset-top)`) and fills to `--lab-h`; the video is letterboxed
-  (`object-fit: contain`) and mirrored (unless switched off), the stick figure and targets are drawn
-  on a canvas over it.
+  the status bar (`top: env(safe-area-inset-top)`) and fills to `--lab-h`; the scene is drawn on its
+  canvas (`#overlay`), the video sits in the corner box (`#pip`, letterboxed, mirrored unless switched
+  off, its own canvas for the stick figure), or full screen under the canvas with the scene switched off.
 - `models/pose_landmarker_lite.task`: Google's lite pose model (see `models/SOURCE.md`).
   `scripts/build.mjs` copies it, plus `@mediapipe/tasks-vision`'s `vision_bundle.mjs` and
   `wasm/vision_wasm_internal.{js,wasm}` (package.json pins the version), to `public/irl/`.
@@ -107,6 +145,7 @@ the browser was the plan he okayed).
 
 ```
 node games/irl/test/irl.test.mjs     # the counters, fed made-up bodies (test/bodies.mjs)
+node games/irl/test/sports.test.mjs  # bowling (scoring, pins, a whole game), QB, free throws, tennis
 npm run build && node scripts/dev-server.mjs
 ```
 The page has a test mode: set `window.__irlFake = true` before it loads and feed frames with
