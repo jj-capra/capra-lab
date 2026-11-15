@@ -87,6 +87,7 @@
   .cam.flash::before { animation: camFlash 0.45s ease-out; }
   @keyframes camFlash { 0% { opacity: 0.45; } 100% { opacity: 0; } }
   .sbar { position: fixed; z-index: 5; left: 0; right: 0; top: calc(var(--st) + 10px); display: flex; align-items: center; gap: 10px; padding: 0 max(14px, var(--sr)) 0 max(14px, var(--sl)); }
+  .sbar .ttl.long { font-size: 20px; letter-spacing: 0.03em; }
   .sbar .ttl { flex: 1; min-width: 0; text-align: center; font-family: var(--display); font-size: 24px; letter-spacing: 0.06em; text-shadow: 2px 2px 0 var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sbar .round-btn { background: rgba(18, 14, 24, 0.8); border-color: rgba(255, 248, 236, 0.25); }
   .hud { position: fixed; z-index: 4; left: 0; right: 0; top: calc(var(--st) + 60px); display: flex; justify-content: space-between; align-items: flex-start; padding: 0 max(14px, var(--sr)) 0 max(14px, var(--sl)); pointer-events: none; }
@@ -96,6 +97,18 @@
   .clock b { display: block; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums; }
   .clock.low b { color: var(--red); }
   /* two players: a score box each side of the clock, in the player's color, with the name */
+  /* the workout's score bar: the move, how far through, a dot a move (its own row for two players) */
+  .hud { flex-wrap: wrap; row-gap: 8px; }
+  .wk { flex: 1 1 0; min-width: 0; align-self: stretch; display: flex; flex-direction: column; justify-content: center; margin: 0 10px; padding: 6px 10px 7px; border-radius: 16px; background: rgba(18, 14, 24, 0.82); border: 3px solid var(--ink); box-shadow: 4px 5px 0 rgba(5, 3, 10, 0.6); text-align: center; }
+  .wk b { font-family: var(--display); font-weight: 400; font-size: clamp(17px, 4.8vw, 32px); line-height: 1; color: #FF5E5B; text-shadow: 2px 2px 0 var(--ink); overflow-wrap: normal; word-break: keep-all; }
+  @media (orientation: portrait) { .stage.wkout:not(.two) .count b { font-size: 50px; } .stage.wkout:not(.two) .clock b { font-size: 34px; } .stage.wkout .count, .stage.wkout .clock { padding: 6px 10px 8px; } }
+  .wk small { display: block; margin-top: 3px; font: 800 10.5px/1.2 Inter, system-ui, sans-serif; letter-spacing: 0.1em; color: rgba(255, 248, 236, 0.72); text-transform: uppercase; }
+  .wkdots { display: flex; gap: 4px; justify-content: center; margin-top: 5px; }
+  .wkdots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 248, 236, 0.2); border: 1.5px solid var(--ink); }
+  .wkdots i.on { background: var(--yellow); }
+  .wkdots i.now { background: #FF5E5B; box-shadow: 0 0 0 2px var(--paper); }
+  .stage.two .wk { order: 5; flex: 0 1 100%; margin: 0 max(0px, calc(50% - 260px)); }   /* its own row, centered */
+  .cam.resting .pip { visibility: hidden; }   /* a workout's rest: the card takes the middle */
   .count.p { border-color: var(--pc); }
   .count.p b { color: var(--pc); }
   .count.p small { max-width: 8.6em; letter-spacing: 0.04em; white-space: normal; overflow-wrap: anywhere; line-height: 1.15; }
@@ -225,7 +238,13 @@
     .pip { width: min(19vw, 260px); bottom: calc(var(--sb) + 12px); }
     .cam.scene ~ .coach:not(.duo) { max-width: calc(100% - 2 * min(19vw, 260px) - 70px); }
     .cam.two .pip { width: min(16vw, 220px); bottom: calc(var(--sb) + 66px); }
+    /* the workout's move bar: under the score on the left when alone (the middle is your head), a narrow
+       column under the clock for two (between your heads) */
+    .stage.wkout:not(.two) .wk { position: absolute; left: max(14px, var(--sl)); top: calc(100% + 8px); width: min(250px, 28vw); margin: 0; }
+    .stage.two .wk { margin: 0 calc(50% - 120px); }
+    .wk b { font-size: clamp(17px, 2.6vw, 28px); }
   }
+  .pop.sm { font-size: 38px; -webkit-text-stroke: 2px var(--ink); text-shadow: 3px 4px 0 var(--shadow); }   /* two players: half the screen each */
   @media (prefers-reduced-motion: reduce) { .countdown b, .pop { animation-duration: 0.01s; } }
 </style>
 </head>
@@ -267,6 +286,7 @@
   </header>
   <div class="hud" id="hud" hidden>
     <div class="count" id="countBox0"><b id="count0">0</b><small id="countUnit0">reps</small></div>
+    <div class="wk" id="wkBar" hidden><b id="wkName"></b><small id="wkSub"></small><span class="wkdots" id="wkDots" aria-hidden="true"></span></div>
     <div class="clock" id="clockBox"><b id="clock">1:00</b><small id="clockLbl">left</small></div>
     <div class="count" id="countBox1" hidden><b id="count1">0</b><small id="countUnit1"></small></div>
   </div>
@@ -299,9 +319,11 @@
     <li><b>Step into your spot.</b> When the camera sees what it needs, a 3-2-1 countdown starts on its own, so you never have to run back to tap the screen.</li>
     <li><b>Move.</b> The game plays in an animated scene that copies your moves: your lab avatar does what you do, or the ball, football or racket in the front follows your hand. The camera picture sits in the corner with the stick figure it sees. A voice counts your reps so you can hear it from across the room.</li>
     <li><b>The sports:</b> Bowling (swing your arm and roll it; step left or right to line it up), QB Throw (ball up over your head to aim, then throw to the open man), Free Throws (shoot it up from your chest), Tennis Rally (swing as the ball reaches you) and Send It! (flap to push off the pier, then step side to side through the green updrafts, arms out like wings).</li>
+    <li><b>Full Body Workout:</b> eight moves in a row, about six minutes: Jumping Jacks, Standing Knee Crunches, High Knees, Squats, Cross Crunches, Skater Hops, a Reaction Drill (move the way the arrow says, fast) and Burpees. Each move is on the clock with a 10-second rest that shows how to do the next one. Every rep adds to your total.</li>
     <li><b>2 players:</b> switch it on at the top, stand side by side, and each of you plays your own half of the screen. Whoever’s phone it is gets paid for their side.</li>
     <li><b>The camera:</b> tap the camera button for front, back or the 0.5× ultra-wide (when your phone offers it). Turn the phone sideways for a picture that fills a TV.</li>
     <li><b>Pay:</b> +40 amber for each finished challenge, +1 shard for beating its goal (once a day each), +1 shard for a new personal best. IRL pays up to 300 amber and 6 shards a day.</li>
+    <li><b>Phone getting hot or freezing?</b> IRL eases off by itself when a phone struggles. You can also turn on <b>Easy on the phone</b> under the camera button: lighter graphics and a gentler tracker. Plugging the phone in and taking off a thick case helps it stay cool too.</li>
     <li><b>Private:</b> the camera picture is read right on your phone and never recorded or sent.</li>
     <li><b>Camera blocked?</b> On iPhone: Settings → Apps → Safari → Camera → Ask or Allow, then reopen IRL.</li>
   </ul>
@@ -314,6 +336,7 @@
   <p class="fine" id="camNote"></p>
   <label class="tog"><input type="checkbox" id="mirrorChk" checked><span>Mirror the picture, like a mirror (on for watching yourself, on the phone or on a TV).</span></label>
   <label class="tog"><input type="checkbox" id="sceneChk" checked><span>Animated scene up front, the camera in the corner. Off shows the camera full screen (the sports games always play in their scene).</span></label>
+  <label class="tog"><input type="checkbox" id="liteChk"><span>Easy on the phone: lighter graphics and a gentler tracker, for a phone that gets hot, stutters or freezes. <i id="liteNote"></i></span></label>
 </div></div>
 
 <script src="/lab/chip.js" defer></script>

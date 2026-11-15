@@ -38,11 +38,46 @@ function poly(ctx, pts, fill, stroke = INK, lw = 3) {
   if (stroke) { ctx.lineWidth = lw; ctx.strokeStyle = stroke; ctx.lineJoin = 'round'; ctx.stroke(); }
 }
 function seg(ctx, a, b, color, w) { if (!a || !b) return; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.lineWidth = w; ctx.strokeStyle = color; ctx.lineCap = 'round'; ctx.stroke(); }
-// Halftone dots over a region (the comic print look).
+/* Light mode (Nov 15 2026: IRL froze on an iPhone 17 that ran it alongside the camera and the tracker):
+   the page turns it on when the phone is struggling, or the player does in the camera sheet. Scenes then
+   skip the halftone dots and the crowd's sway. */
+const LITE = { on: false };
+export const setLite = (on) => { LITE.on = !!on; };
+const canvasOf = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+// Halftone dots over a region (the comic print look): one fill with a pattern of two dots, rows offset
+// by half a gap (it was a fill per dot, thousands a frame, the heaviest thing in a scene).
+const DOT_PATS = new Map();
 function dots(ctx, r, color = 'rgba(255,248,236,0.08)', gap = 9) {
-  ctx.save(); ctx.fillStyle = color;
-  for (let y = r.y + gap / 2; y < r.y + r.h; y += gap) for (let x = r.x + ((Math.round(y / gap) % 2) * gap) / 2; x < r.x + r.w; x += gap) { ctx.beginPath(); ctx.arc(x, y, 1.2, 0, Math.PI * 2); ctx.fill(); }
-  ctx.restore();
+  if (LITE.on) return;
+  let pat = DOT_PATS.get(color + gap);
+  if (!pat) {
+    const k = 2, c = canvasOf(gap * k, gap * 2 * k), g = c.getContext('2d');
+    g.scale(k, k); g.fillStyle = color;
+    for (const [x, y] of [[0, gap / 2], [gap, gap / 2], [gap / 2, gap * 1.5]]) { g.beginPath(); g.arc(x, y, 1.2, 0, Math.PI * 2); g.fill(); }
+    pat = ctx.createPattern(c, 'repeat');
+    if (pat.setTransform && typeof DOMMatrix === 'function') pat.setTransform(new DOMMatrix([1 / k, 0, 0, 1 / k, 0, 0]));
+    DOT_PATS.set(color + gap, pat);
+  }
+  ctx.save(); ctx.fillStyle = pat; ctx.fillRect(r.x, r.y, r.w, r.h); ctx.restore();
+}
+// A still layer: what doesn't move in a scene, painted once into its own canvas (again only when `key`
+// or the rectangle changes) and copied each frame. One per side of the screen; switching games lets the
+// last game's go (a canvas only gives its memory back to iPhone when it's shrunk to nothing).
+const LAYERS = new Map();
+function still(ctx, kind, key, rect, paint) {
+  const id = kind + (rect.x > 1 ? 'R' : 'L'), dpr = ctx.getTransform ? ctx.getTransform().a || 1 : 1;
+  for (const [k, L] of LAYERS) if (!k.startsWith(kind)) { L.c.width = L.c.height = 0; LAYERS.delete(k); }
+  const w = Math.max(1, Math.round(rect.w * dpr)), h = Math.max(1, Math.round(rect.h * dpr));
+  const full = [key, rect.x, rect.y, rect.w, rect.h, dpr, LITE.on, fontsIn()].join('|');
+  let L = LAYERS.get(id);
+  if (!L) { L = { c: canvasOf(w, h), key: '' }; LAYERS.set(id, L); }
+  if (L.key !== full) {
+    if (L.c.width !== w || L.c.height !== h) { L.c.width = w; L.c.height = h; }
+    const g = L.c.getContext('2d');
+    g.setTransform(dpr, 0, 0, dpr, -rect.x * dpr, -rect.y * dpr); g.clearRect(rect.x, rect.y, rect.w, rect.h);
+    paint(g); L.key = full;
+  }
+  ctx.drawImage(L.c, rect.x, rect.y, rect.w, rect.h);
 }
 function label(ctx, text, x, y, size, fill = PAPER, stroke = INK, align = 'center') {
   ctx.font = `${Math.round(size)}px Bangers, Impact, "Arial Narrow Bold", sans-serif`; ctx.textAlign = align; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
@@ -99,11 +134,13 @@ export function drawPuppet(ctx, lm, at, look, ring = null) {
   else if (ls && rs) hc = { x: (ls.x + rs.x) / 2, y: (ls.y + rs.y) / 2 - sw * 0.75 };
   if (!hc) return;
   hw = Math.min(hw, sw * 1.3) * 1.15;
-  const img = look.head;
-  if (img && img.complete && img.naturalWidth) {
+  // the avatar drawn once onto a canvas when it loaded (look.bmp): Safari redraws an SVG picture from
+  // scratch every time it's put on a canvas
+  const img = look.bmp || (look.head && look.head.complete && look.head.naturalWidth ? look.head : null);
+  if (img) {
     // the avatar's head sits at (50, 50.5) of its 100 box, 35 wide; draw its top three quarters
-    const D = (hw / 35) * 100;
-    ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight * 0.74, hc.x - D * 0.5, hc.y - D * 0.505, D, D * 0.74);
+    const D = (hw / 35) * 100, iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+    ctx.drawImage(img, 0, 0, iw, ih * 0.74, hc.x - D * 0.5, hc.y - D * 0.505, D, D * 0.74);
   } else {
     ctx.beginPath(); ctx.ellipse(hc.x, hc.y, hw * 0.5, hw * 0.58, 0, 0, Math.PI * 2); ctx.fillStyle = look.skin || '#E8B07E'; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = INK; ctx.stroke();
   }
@@ -114,10 +151,38 @@ export function drawPuppet(ctx, lm, at, look, ring = null) {
    W × H is the whole screen; the floor line is where the player's feet would be.
    --------------------------------------------------------------------------------------------------- */
 const BACK = {
-  squat: 'gym', pushup: 'gym', wallsit: 'wall', dribble: 'court', targets: 'carnival', keeper: 'stadium', avocado: 'kitchen', derby: 'farm',
+  squat: 'gym', pushup: 'gym', wallsit: 'wall', dribble: 'court', targets: 'carnival', keeper: 'stadium', avocado: 'kitchen', derby: 'farm', workout: 'gym',
 };
-export function drawBackdrop(ctx, kind, W, H, play, t, cheer = 0) {
+// What doesn't move is painted once into a canvas the size of the screen and copied each frame; only the
+// carnival's bulbs and the crowd are drawn live. `dpr` is the canvas's pixels per screen point.
+const BG = { c: null, key: '' };
+const fontsIn = () => { try { return document.fonts ? document.fonts.check('20px Bangers') : true; } catch { return true; } };
+export function drawBackdrop(ctx, kind, W, H, play, t, cheer = 0, dpr = 1) {
   const kindOf = BACK[kind] || 'gym', floor = play.y + play.h * 0.9;
+  const key = [kindOf, Math.round(W), Math.round(H), Math.round(floor), dpr, LITE.on, fontsIn()].join('|');
+  if (BG.key !== key) {
+    const w = Math.max(1, Math.round(W * dpr)), h = Math.max(1, Math.round(H * dpr));
+    if (!BG.c) BG.c = canvasOf(w, h);
+    else if (BG.c.width !== w || BG.c.height !== h) { BG.c.width = w; BG.c.height = h; }
+    const g = BG.c.getContext('2d');
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+    backdropStill(g, kindOf, W, H, floor);
+    BG.key = key;
+  }
+  ctx.drawImage(BG.c, 0, 0, W, H);
+  if (kindOf === 'carnival') {
+    // the bulbs blink, two colors swapping
+    for (const on of [0, 1]) {
+      ctx.beginPath();
+      for (let x = 14; x < W; x += 34) if (((Math.floor(t / 300) + x) % 2) === on) { ctx.moveTo(x + 5, floor * 0.2); ctx.arc(x, floor * 0.2, 5, 0, Math.PI * 2); }
+      ctx.fillStyle = on ? '#FFD23F' : '#FFF3B0'; ctx.fill();
+    }
+  } else if (kindOf === 'stadium') {
+    const bob = (i) => (cheer ? Math.max(0, Math.sin((t - cheer) / 80 + i)) * 10 * Math.max(0, 1 - (t - cheer) / 900) : 0);
+    crowd(ctx, 0, floor * 0.45, W, floor * 0.5, t, bob);
+  }
+}
+function backdropStill(ctx, kindOf, W, H, floor) {
   const sky = { gym: ['#2A2140', '#3B2E58'], wall: ['#5A2E2E', '#3E2222'], court: ['#1F2B4A', '#2F3E66'], carnival: ['#3B1747', '#5C2266'], stadium: ['#0E1630', '#1B2A55'], kitchen: ['#E8F4F2', '#CFE6E2'], farm: ['#7FD3FF', '#D8F2FF'] }[kindOf];
   const g = ctx.createLinearGradient(0, 0, 0, floor);
   g.addColorStop(0, sky[0]); g.addColorStop(1, sky[1]);
@@ -127,16 +192,17 @@ export function drawBackdrop(ctx, kind, W, H, play, t, cheer = 0) {
   // floor boards or grass stripes running away from you
   ctx.save(); ctx.strokeStyle = 'rgba(18,14,24,0.18)'; ctx.lineWidth = 2;
   const vx = W / 2;
-  for (let i = -8; i <= 8; i++) { ctx.beginPath(); ctx.moveTo(vx + i * W * 0.04, floor); ctx.lineTo(vx + i * W * 0.22, H); ctx.stroke(); }
-  for (let k = 1; k < 5; k++) { const y = floor + (H - floor) * (k / 5) ** 1.6; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+  ctx.beginPath();
+  for (let i = -8; i <= 8; i++) { ctx.moveTo(vx + i * W * 0.04, floor); ctx.lineTo(vx + i * W * 0.22, H); }
+  for (let k = 1; k < 5; k++) { const y = floor + (H - floor) * (k / 5) ** 1.6; ctx.moveTo(0, y); ctx.lineTo(W, y); }
+  ctx.stroke();
   ctx.restore();
   ctx.beginPath(); ctx.moveTo(0, floor); ctx.lineTo(W, floor); ctx.lineWidth = 4; ctx.strokeStyle = INK; ctx.stroke();
-  const bob = (i) => (cheer ? Math.max(0, Math.sin((t - cheer) / 80 + i)) * 10 * Math.max(0, 1 - (t - cheer) / 900) : 0);
   if (kindOf === 'gym' || kindOf === 'wall') {
     if (kindOf === 'wall') {
-      ctx.save(); ctx.strokeStyle = 'rgba(18,14,24,0.35)'; ctx.lineWidth = 2;
-      for (let y = 0, r = 0; y < floor; y += 26, r++) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); for (let x = (r % 2) * 30; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y + 26); ctx.stroke(); } }
-      ctx.restore();
+      ctx.save(); ctx.strokeStyle = 'rgba(18,14,24,0.35)'; ctx.lineWidth = 2; ctx.beginPath();
+      for (let y = 0, r = 0; y < floor; y += 26, r++) { ctx.moveTo(0, y); ctx.lineTo(W, y); for (let x = (r % 2) * 30; x < W; x += 60) { ctx.moveTo(x, y); ctx.lineTo(x, y + 26); } }
+      ctx.stroke(); ctx.restore();
     } else {
       // gym banners and a dumbbell rack along the wall
       for (let i = 0; i < 4; i++) { const x = W * (0.12 + i * 0.25); poly(ctx, [{ x: x - 30, y: 0 }, { x: x + 30, y: 0 }, { x: x + 30, y: floor * 0.32 }, { x, y: floor * 0.26 }, { x: x - 30, y: floor * 0.32 }], ['#FFD23F', '#FF3D8B', '#29D3F0', '#5BE38A'][i], INK, 3); }
@@ -153,18 +219,16 @@ export function drawBackdrop(ctx, kind, W, H, play, t, cheer = 0) {
     poly(ctx, [{ x: W * 0.36, y: floor }, { x: W * 0.64, y: floor }, { x: W * 0.8, y: H }, { x: W * 0.2, y: H }], 'rgba(255,61,139,0.35)', PAPER, 3);
   } else if (kindOf === 'carnival') {
     for (let i = 0; i < 12; i++) { const x0 = (W / 12) * i; poly(ctx, [{ x: x0, y: 0 }, { x: x0 + W / 12, y: 0 }, { x: x0 + W / 24, y: floor * 0.18 }], i % 2 ? '#FF3D8B' : PAPER, INK, 2); }
-    for (let x = 14; x < W; x += 34) { ctx.beginPath(); ctx.arc(x, floor * 0.2, 5, 0, Math.PI * 2); ctx.fillStyle = (Math.floor(t / 300) + x) % 2 ? '#FFD23F' : '#FFF3B0'; ctx.fill(); }
     ctx.fillStyle = '#8A5A36'; ctx.fillRect(0, floor - 26, W, 26); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.strokeRect(-2, floor - 26, W + 4, 26);
     label(ctx, 'SMASH-O-RAMA', W / 2, Math.max(26, floor * 0.1), Math.min(40, W * 0.06), '#FFD23F');
   } else if (kindOf === 'stadium') {
-    // floodlights and the crowd in the stands
+    // floodlights (the crowd in the stands is drawn live)
     for (const fx of [0.08, 0.92]) { const x = W * fx; ctx.fillStyle = '#FFF6C2'; ctx.beginPath(); ctx.arc(x, 30, 16, 0, Math.PI * 2); ctx.fill(); ctx.save(); ctx.globalAlpha = 0.12; ctx.fillStyle = '#FFF6C2'; ctx.beginPath(); ctx.moveTo(x, 30); ctx.lineTo(W / 2 - 160, floor); ctx.lineTo(W / 2 + 160, floor); ctx.closePath(); ctx.fill(); ctx.restore(); }
-    crowd(ctx, 0, floor * 0.45, W, floor * 0.5, t, bob);
   } else if (kindOf === 'kitchen') {
-    ctx.save(); ctx.strokeStyle = 'rgba(18,14,24,0.12)'; ctx.lineWidth = 2;
-    for (let y = 0; y < floor; y += 36) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
-    for (let x = 0; x < W; x += 36) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, floor); ctx.stroke(); }
-    ctx.restore();
+    ctx.save(); ctx.strokeStyle = 'rgba(18,14,24,0.12)'; ctx.lineWidth = 2; ctx.beginPath();
+    for (let y = 0; y < floor; y += 36) { ctx.moveTo(0, y); ctx.lineTo(W, y); }
+    for (let x = 0; x < W; x += 36) { ctx.moveTo(x, 0); ctx.lineTo(x, floor); }
+    ctx.stroke(); ctx.restore();
     ctx.fillStyle = '#8C5CFF'; ctx.fillRect(0, floor - 18, W, 18); ctx.strokeStyle = INK; ctx.lineWidth = 3; ctx.strokeRect(-2, floor - 18, W + 4, 18);
     label(ctx, 'GUAC SHACK', W / 2, Math.max(26, floor * 0.1), Math.min(40, W * 0.06), '#5BE38A');
   } else if (kindOf === 'farm') {
@@ -175,15 +239,16 @@ export function drawBackdrop(ctx, kind, W, H, play, t, cheer = 0) {
   }
   dots(ctx, { x: 0, y: 0, w: W, h: H }, kindOf === 'kitchen' || kindOf === 'farm' ? 'rgba(18,14,24,0.05)' : 'rgba(255,248,236,0.05)');
 }
+// The crowd in the stands: a body and a head each, every color drawn as one shape (a fill each person
+// was a few hundred fills a frame). Light mode stops the sway; a cheer still bounces them.
 function crowd(ctx, x0, y0, w, h, t, bob = () => 0) {
-  const cols = ['#FF3D8B', '#29D3F0', '#FFD23F', '#5BE38A', '#C77DFF', '#FF8A3D'];
+  const cols = ['#FF3D8B', '#29D3F0', '#FFD23F', '#5BE38A', '#C77DFF', '#FF8A3D'], skins = ['#F6C8A0', '#CF935F', '#86522E', '#E8B07E'];
   ctx.fillStyle = 'rgba(18,14,24,0.6)'; ctx.fillRect(x0, y0, w, h);
+  const sway = LITE.on ? 0 : 1.5, spots = [];
   let i = 0;
-  for (let row = 0; row < 3; row++) for (let x = x0 + 10 + (row % 2) * 12; x < x0 + w; x += 24, i++) {
-    const y = y0 + 16 + row * (h / 3.2) - bob(i) - Math.sin(t / 400 + i) * 1.5;
-    ctx.fillStyle = cols[i % cols.length]; ctx.beginPath(); ctx.arc(x, y + 10, 9, Math.PI, 0); ctx.fill();
-    ctx.fillStyle = ['#F6C8A0', '#CF935F', '#86522E', '#E8B07E'][i % 4]; ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill();
-  }
+  for (let row = 0; row < 3; row++) for (let x = x0 + 10 + (row % 2) * 12; x < x0 + w; x += 24, i++) spots.push({ x, y: y0 + 16 + row * (h / 3.2) - bob(i) - Math.sin(t / 400 + i) * sway, i });
+  cols.forEach((c, k) => { ctx.beginPath(); for (const s of spots) if (s.i % cols.length === k) { ctx.moveTo(s.x + 9, s.y + 10); ctx.arc(s.x, s.y + 10, 9, 0, Math.PI, true); } ctx.fillStyle = c; ctx.fill(); });
+  skins.forEach((c, k) => { ctx.beginPath(); for (const s of spots) if (s.i % skins.length === k) { ctx.moveTo(s.x + 6, s.y); ctx.arc(s.x, s.y, 6, 0, Math.PI * 2); } ctx.fillStyle = c; ctx.fill(); });
 }
 
 /* ---------------------------------------------------------------------------------------------------
@@ -230,9 +295,9 @@ function pinShape(ctx, x, y, k, tip = 0, dirX = 0, alpha = 1) {
   ctx.fillStyle = '#E8322E'; ctx.fillRect(-w * 0.2, -h * 0.72, w * 0.4, h * 0.035); ctx.fillRect(-w * 0.22, -h * 0.66, w * 0.44, h * 0.035);
   ctx.restore();
 }
-function bowlingScene(ctx, rect, c, t, info) {
-  const sb = sheetBox(rect, c, info);
-  const P = bowlingCam(rect, Math.max(0.29, (sb.bottom - rect.y) / rect.h + 0.11)), L = LANE, half = L.w / 2;
+// The alley, the lanes, the masking panel and the neighbors' pins: none of it moves (a still layer).
+function bowlingAlley(ctx, rect, P) {
+  const L = LANE, half = L.w / 2;
   // the alley: a warm wall with big pop dots
   const g = ctx.createLinearGradient(0, rect.y, 0, rect.y + rect.h * 0.4);
   g.addColorStop(0, '#E9E3F2'); g.addColorStop(1, '#CFC6E0');
@@ -266,6 +331,12 @@ function bowlingScene(ctx, rect, c, t, info) {
     // the neighbors' pins, standing far off
     for (const off of [-1.63, 1.63]) for (let k = 0; k < 4; k++) for (let i = 0; i <= k; i++) { const p = P(off + (i - k / 2) * L.pinGap, 0, L.len + k * L.rowDz); if (p) pinShape(ctx, p.x, p.y, p.k, 0, 0, 0.9); }
   }
+}
+function bowlingScene(ctx, rect, c, t, info) {
+  const sb = sheetBox(rect, c, info);
+  const pinsAt = Math.max(0.29, (sb.bottom - rect.y) / rect.h + 0.11);
+  const P = bowlingCam(rect, pinsAt), L = LANE, half = L.w / 2;
+  still(ctx, 'bowling', pinsAt.toFixed(4), rect, (ctx) => bowlingAlley(ctx, rect, P));
   // our pins, far ones first
   const pins = [...(c ? c.pins : [])].filter((p) => !p.gone).sort((a, b) => b.z - a.z);
   for (const p of pins) { const s = P(p.x, 0, p.z); if (s) pinShape(ctx, s.x, s.y, s.k, p.down ? p.tip : 0, p.tx); }
@@ -679,4 +750,131 @@ function sendItScene(ctx, rect, c, t, info) {
     }
     if (st.wings) label(ctx, 'WINGS OUT · GLIDING', rect.x + rect.w / 2, rect.y + (info.hud || 120) + 4, 16, '#5BE38A');
   }
+}
+
+/* ---------------------------------------------------------------------------------------------------
+   The Full Body Workout (workout.mjs): the rest card between moves (REST, the seconds, what's next and a
+   little coach figure doing it), the reaction drill's arrows and the skater hops' floor marks.
+   info: { area (where the card may go: under the score bar, over the coach line), players: [{ c, color,
+   mid (the middle of their part, screen x), toScreen }], two, t }.
+   --------------------------------------------------------------------------------------------------- */
+// The coach figure's key poses, in a box two units tall (head top 0, feet 2), x across the screen.
+const J = ['hd', 'nk', 'ls', 'rs', 'le', 're', 'lw', 'rw', 'lh', 'rh', 'lk', 'rk', 'lf', 'rf'];
+const STAND = { hd: [0, 0.2], nk: [0, 0.4], ls: [-0.24, 0.46], rs: [0.24, 0.46], le: [-0.32, 0.78], re: [0.32, 0.78], lw: [-0.34, 1.06], rw: [0.34, 1.06], lh: [-0.14, 1.06], rh: [0.14, 1.06], lk: [-0.15, 1.5], rk: [0.15, 1.5], lf: [-0.16, 1.95], rf: [0.16, 1.95] };
+const pose = (o = {}) => ({ ...STAND, ...o });
+const shift = (p, dx, dy = 0) => Object.fromEntries(J.map((k) => [k, [p[k][0] + dx, p[k][1] + dy]]));
+const flip = (p) => Object.fromEntries(J.map((k) => { const m = k[0] === 'l' ? 'r' + k.slice(1) : k[0] === 'r' ? 'l' + k.slice(1) : k; return [k, [-p[m][0], p[m][1]]]; }));
+const ARMS_UP = pose({ le: [-0.28, 0.16], re: [0.28, 0.16], lw: [-0.24, -0.12], rw: [0.24, -0.12] });
+const SQUAT = { hd: [0, 0.6], nk: [0, 0.8], ls: [-0.24, 0.86], rs: [0.24, 0.86], le: [-0.32, 1.0], re: [0.32, 1.0], lw: [-0.22, 0.92], rw: [0.22, 0.92], lh: [-0.18, 1.42], rh: [0.18, 1.42], lk: [-0.36, 1.6], rk: [0.36, 1.6], lf: [-0.18, 1.95], rf: [0.18, 1.95] };
+const CRUNCH = pose({ hd: [0.06, 0.34], nk: [0.05, 0.52], ls: [-0.18, 0.58], rs: [0.27, 0.58], le: [0.02, 0.86], re: [0.24, 0.9], lw: [-0.1, 0.62], rw: [0.12, 0.62], rh: [0.14, 1.06], rk: [0.16, 1.04], rf: [0.22, 1.46] });
+const BEHIND = pose({ le: [-0.46, 0.36], re: [0.46, 0.36], lw: [-0.12, 0.16], rw: [0.12, 0.16] });
+const TWIST = pose({ hd: [0.08, 0.3], nk: [0.06, 0.48], ls: [-0.12, 0.56], rs: [0.3, 0.5], le: [0.12, 0.9], lw: [-0.02, 0.3], re: [0.5, 0.42], rw: [0.16, 0.24], rk: [0.16, 1.04], rf: [0.24, 1.46] });
+const KNEE = pose({ lk: [-0.14, 1.06], lf: [-0.12, 1.5], le: [-0.34, 0.62], lw: [-0.2, 0.5], re: [0.34, 0.86], rw: [0.4, 1.1] });
+const SKATE = shift(pose({ lk: [-0.12, 1.48], lf: [-0.14, 1.95], rk: [-0.02, 1.52], rf: [-0.34, 1.8], le: [-0.1, 0.72], lw: [0.06, 0.92], re: [0.46, 0.62], rw: [0.6, 0.5] }), -0.42, 0.04);
+const CROUCH = { hd: [0, 0.9], nk: [0, 1.05], ls: [-0.24, 1.1], rs: [0.24, 1.1], le: [-0.3, 1.45], re: [0.3, 1.45], lw: [-0.3, 1.9], rw: [0.3, 1.9], lh: [-0.16, 1.4], rh: [0.16, 1.4], lk: [-0.34, 1.55], rk: [0.34, 1.55], lf: [-0.18, 1.95], rf: [0.18, 1.95] };
+const PLANK = { hd: [0, 1.4], nk: [0, 1.52], ls: [-0.24, 1.56], rs: [0.24, 1.56], le: [-0.3, 1.75], re: [0.3, 1.75], lw: [-0.3, 1.95], rw: [0.3, 1.95], lh: [-0.13, 1.68], rh: [0.13, 1.68], lk: [-0.14, 1.8], rk: [0.14, 1.8], lf: [-0.15, 1.92], rf: [0.15, 1.92] };
+const DEMOS = {
+  jacks: { ms: 420, keys: [pose({ lf: [-0.1, 1.95], rf: [0.1, 1.95], lk: [-0.12, 1.5], rk: [0.12, 1.5] }), pose({ le: [-0.5, 0.26], re: [0.5, 0.26], lw: [-0.6, -0.02], rw: [0.6, -0.02], lk: [-0.32, 1.5], rk: [0.32, 1.5], lf: [-0.5, 1.95], rf: [0.5, 1.95] })] },
+  crunch: { ms: 520, keys: [ARMS_UP, CRUNCH, ARMS_UP, flip(CRUNCH)] },
+  knees: { ms: 230, keys: [KNEE, flip(KNEE)] },
+  squat: { ms: 800, keys: [pose({ le: [-0.3, 0.66], re: [0.3, 0.66], lw: [-0.22, 0.58], rw: [0.22, 0.58] }), SQUAT] },
+  cross: { ms: 540, keys: [BEHIND, TWIST, BEHIND, flip(TWIST)] },
+  skate: { ms: 620, keys: [SKATE, flip(SKATE)] },
+  react: { ms: 380, keys: [STAND, shift(STAND, -0.42), STAND, SQUAT, STAND, shift(ARMS_UP, 0, -0.06), STAND, shift(STAND, 0.42)] },
+  burpee: { ms: 520, keys: [STAND, CROUCH, PLANK, CROUCH, shift(ARMS_UP, 0, -0.2)] },
+};
+export function drawDemo(ctx, key, cx, cy, h, t, color = '#FF5E5B', skin = '#E8B07E') {
+  const d = DEMOS[key] || DEMOS.jacks, n = d.keys.length, u = (t / d.ms) % n, i = Math.floor(u), k = 0.5 - 0.5 * Math.cos(Math.PI * (u - i));
+  const A = d.keys[i], B = d.keys[(i + 1) % n], s = h / 2;
+  const at = (j) => ({ x: cx + lerp(A[j][0], B[j][0], k) * s, y: cy - h / 2 + lerp(A[j][1], B[j][1], k) * s });
+  const p = Object.fromEntries(J.map((j) => [j, at(j)])), w = Math.max(3, h * 0.055);
+  const limb = (a, b, col, ww = w) => { seg(ctx, p[a], p[b], INK, ww + 4); seg(ctx, p[a], p[b], col, ww); };
+  ctx.beginPath(); ctx.ellipse(cx + (p.lf.x + p.rf.x - 2 * cx) / 2, cy + h / 2, h * 0.2, h * 0.035, 0, 0, Math.PI * 2); ctx.fillStyle = 'rgba(5,3,10,0.3)'; ctx.fill();
+  limb('lh', 'lk', '#2B3A67'); limb('lk', 'lf', '#2B3A67'); limb('rh', 'rk', '#2B3A67'); limb('rk', 'rf', '#2B3A67');
+  poly(ctx, [p.ls, p.rs, p.rh, p.lh], color, INK, 3);
+  limb('ls', 'le', color); limb('le', 'lw', skin, w * 0.85); limb('rs', 're', color); limb('re', 'rw', skin, w * 0.85);
+  ctx.beginPath(); ctx.arc(p.hd.x, p.hd.y, h * 0.1, 0, Math.PI * 2); ctx.fillStyle = skin; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke();
+}
+function roundBox(ctx, x, y, w, h, r, fill, stroke = INK, lw = 4) {
+  ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  ctx.fillStyle = fill; ctx.fill(); if (stroke) { ctx.lineWidth = lw; ctx.strokeStyle = stroke; ctx.stroke(); }
+}
+// Words that fit a width (shrinking the size), for the card's titles.
+function fitLabel(ctx, text, x, y, size, maxW, fill, align = 'center') {
+  ctx.font = `${Math.round(size)}px Bangers, Impact, sans-serif`;
+  const w = ctx.measureText(text).width;
+  label(ctx, text, x, y, w > maxW ? size * (maxW / w) : size, fill, INK, align);
+}
+// A fat comic arrow pointing `dir` (left, right, up, down), its middle at (x, y), `s` long.
+function arrow(ctx, x, y, s, dir, fill) {
+  const rot = { right: 0, down: Math.PI / 2, left: Math.PI, up: -Math.PI / 2 }[dir];
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
+  const L = s / 2, hw = s * 0.2, head = s * 0.42;
+  poly(ctx, [{ x: -L, y: -hw * 0.55 }, { x: L - head, y: -hw * 0.55 }, { x: L - head, y: -hw * 1.5 }, { x: L, y: 0 }, { x: L - head, y: hw * 1.5 }, { x: L - head, y: hw * 0.55 }, { x: -L, y: hw * 0.55 }], fill, INK, Math.max(4, s * 0.05));
+  ctx.restore();
+}
+export function drawWorkout(ctx, info) {
+  const { area, players, t, two } = info, c0 = players[0] && players[0].c, cueArea = info.cueArea || area;
+  if (!c0) return;
+  // the skater hops' floor marks: two cones either side of where you've been hopping
+  for (const pl of players) {
+    const z = pl.c && pl.c.phase === 'work' && pl.c.zone;
+    if (!z) continue;
+    for (const sgn of [-1, 1]) {
+      const p = pl.toScreen({ x: z.x + sgn * z.d, y: z.y }), r = Math.max(10, cueArea.h * 0.03);
+      poly(ctx, [{ x: p.x - r, y: p.y }, { x: p.x, y: p.y - r * 2.2 }, { x: p.x + r, y: p.y }], '#FF7A1A', INK, 3);
+      ctx.fillStyle = PAPER; ctx.fillRect(p.x - r * 0.45, p.y - r * 1.25, r * 0.9, r * 0.3);
+    }
+  }
+  // the reaction drill's cue over each player's part
+  for (const pl of players) {
+    const cue = pl.c && pl.c.phase === 'work' && pl.c.cue;
+    if (!cue) continue;
+    const half = two ? cueArea.w / 2 : cueArea.w, s = Math.min(half * 0.55, cueArea.h * 0.5, 240), cx = pl.mid, cy = cueArea.y + s * 0.62;
+    const left = Math.max(0, Math.min(1, (cue.until - t) / (cue.until - cue.at)));
+    const col = two ? pl.color : '#FFD23F';
+    const dir = { left: 'left', right: 'right', duck: 'down', reach: 'up' }[cue.kind];
+    ctx.save(); ctx.globalAlpha = 0.96;
+    arrow(ctx, cx, cy, s, dir, col);
+    fitLabel(ctx, cue.kind.toUpperCase() + '!', cx, cy + s * 0.62, s * 0.36, half * 0.9, col);
+    // the time left, a bar shrinking under it
+    const bw = s * 0.9, by = cy + s * 0.92;
+    roundBox(ctx, cx - bw / 2, by, bw, 12, 6, 'rgba(18,14,24,0.7)', INK, 3);
+    roundBox(ctx, cx - bw / 2, by, bw * left, 12, 6, left > 0.35 ? '#5BE38A' : '#FF3D3D', null);
+    ctx.restore();
+  }
+  // the rest card: shared (both players run the same clock)
+  if (c0.phase !== 'rest') return;
+  const mv = c0.move, first = c0.station === 0, secs = Math.max(0, Math.ceil(c0.left));
+  const wide = area.w > area.h * 1.3;
+  const cw = wide ? Math.min(area.w - 8, 600) : Math.min(area.w - 28, 360), ch = wide ? Math.min(area.h - 16, 260) : Math.min(area.h - 16, 420);
+  if (ch < 120) return;
+  const x = area.x + (area.w - cw) / 2, y = area.y + (area.h - ch) / 2;
+  ctx.save();
+  roundBox(ctx, x + 6, y + 8, cw, ch, 22, 'rgba(5,3,10,0.55)', null);
+  roundBox(ctx, x, y, cw, ch, 22, '#221A33');
+  dots(ctx, { x: x + 4, y: y + 4, w: cw - 8, h: ch - 8 }, 'rgba(255,248,236,0.06)');
+  const tx = wide ? x + cw * 0.4 : x + cw / 2, tw = wide ? cw * 0.56 : cw - 32, align = wide ? 'left' : 'center';
+  let ty = y + (wide ? 30 : 32);
+  fitLabel(ctx, first ? 'GET READY' : 'REST', tx, ty, 30, tw - 60, PAPER, align);
+  fitLabel(ctx, String(secs), x + cw - 34, y + 34, 44, 60, secs <= 3 ? '#FF3D3D' : '#FFD23F', 'center');
+  ty += 30;
+  ctx.font = '800 11.5px Inter, system-ui, sans-serif'; ctx.textAlign = align; ctx.textBaseline = 'middle'; ctx.fillStyle = 'rgba(255,248,236,0.72)';
+  ctx.fillText(`${first ? 'UP FIRST' : 'UP NEXT'} · ${c0.station + 1} OF ${info.moves} · ${mv.works.toUpperCase()}`, tx, ty);
+  ty += wide ? 32 : 34;
+  fitLabel(ctx, mv.name.toUpperCase(), tx, ty, wide ? 34 : 32, tw, '#FF5E5B', align);
+  ty += wide ? 26 : 28;
+  // how to do it, wrapped
+  ctx.font = '700 13px Inter, system-ui, sans-serif'; ctx.fillStyle = PAPER; ctx.textAlign = align;
+  const lines = [];
+  for (const word of mv.how.split(' ')) { const cur = lines.length ? lines[lines.length - 1] : null; if (cur != null && ctx.measureText(cur + ' ' + word).width <= tw) lines[lines.length - 1] = cur + ' ' + word; else lines.push(word); }
+  const lh = 17, room = wide ? Math.floor((y + ch - 14 - ty) / lh) + 1 : 4;
+  lines.slice(0, Math.max(1, room)).forEach((ln, i) => ctx.fillText(ln, tx, ty + i * lh));
+  ty += Math.min(lines.length, Math.max(1, room)) * lh;
+  // the little coach doing it
+  const fig = wide ? { cx: x + cw * 0.2, cy: y + ch / 2 + 4, h: Math.min(ch * 0.74, cw * 0.36) } : { cx: x + cw / 2, h: Math.max(60, y + ch - 18 - ty) * 0.92 };
+  if (!wide) fig.cy = y + ch - 14 - fig.h / 2;
+  ctx.beginPath(); ctx.arc(fig.cx, fig.cy, fig.h * 0.6, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,94,91,0.16)'; ctx.fill();
+  drawDemo(ctx, c0.key, fig.cx, fig.cy, fig.h, t, info.color || '#FF5E5B');
+  ctx.restore();
 }

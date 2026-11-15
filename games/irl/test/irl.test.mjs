@@ -13,8 +13,8 @@ function cycle(make, from, to, frames = 20) {
   return out;
 }
 
-test('the challenges: thirteen, each with a goal, a clock (or frames, or one flight) and setup words', () => {
-  assert.deepEqual(ORDER, ['bowling', 'qb', 'hoops', 'tennis', 'sendit', 'derby', 'keeper', 'targets', 'avocado', 'dribble', 'squat', 'pushup', 'wallsit']);
+test('the challenges: fourteen, each with a goal, a clock (or frames, or one flight, or a circuit) and setup words', () => {
+  assert.deepEqual(ORDER, ['bowling', 'qb', 'hoops', 'tennis', 'sendit', 'workout', 'derby', 'keeper', 'targets', 'avocado', 'dribble', 'squat', 'pushup', 'wallsit']);
   for (const k of ORDER) {
     const c = CHALLENGES[k];
     assert.ok(c.name && c.emoji && (c.secs > 0 || c.frames > 0 || c.untimed) && c.goal > 0 && c.setup && c.how, k);

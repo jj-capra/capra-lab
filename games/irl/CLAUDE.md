@@ -55,6 +55,36 @@ the browser was the plan he okayed).
   - **Tennis Rally** (60 s, goal 30 points): balls to your forehand or backhand; a sideways swing of the
     hands within 230 ms of it reaching you returns it (+1), early goes cross-court, late down the line;
     a hard one into a corner can be a winner (+5); too soft is into the net, no swing a miss.
+- **Full Body Workout** (JC, Nov 15 2026: "a workout that is a full body workout with standing knee crunches
+  and other exercises to strengthen the core and build speed and agility"; `workout.mjs`, `workout: true` in
+  `CHALLENGES`, right after the sports on the home screen; goal 150 reps, paid from 40). A circuit of eight
+  standing moves (`WORKOUT.plan`), each on its own clock with a 10 s rest between (5 s to get ready before
+  the first): Jumping Jacks 30 s, Standing Knee Crunches 40 s, High Knees 30 s, Squats 40 s, Cross Crunches
+  40 s, Skater Hops 30 s, Reaction Drill 40 s, Burpees 30 s (about 6 minutes, `workoutSecs`). The score is
+  every rep added up. How each counts (picture points, in picture heights both ways, `bodyOf`):
+  - jacks: hands over the head with the feet wider than 1.2 shoulder widths, after hands by the sides and
+    feet back together (feet out of the picture don't hold it up);
+  - knee crunches: a knee lifted 0.55 of the way to the hip (`kneeLifts`: the standing thigh is the longest
+    hip-to-knee drop seen) while an elbow or hand comes within 0.75 of a torso of it; cross crunches the
+    same with only the opposite arm (0.8); each knee once per lift;
+  - high knees: every knee past 0.45 of the way up (and back under 0.2); the coach asks for "Faster!" under
+    two a second, "Knees higher!" when they stop short;
+  - squats: logic.mjs's squat counter (passed in as `squats`, so the two files don't import each other);
+  - skater hops: the hips landing half a shoulder width past home on the other side; home follows where
+    you've stood lately (1.2 s); two cones on the floor mark the spots;
+  - reaction drill: a cue at a time (LEFT, RIGHT as the screen shows them, DUCK, REACH), only once you're
+    back in the middle and standing; within 1.7 s (30 ms less a hit, 1.1 s at least) it's a hit, timed
+    (the fastest is in the results); the wrong way or too late is a miss. Seeded: two players get the
+    same cues. A big comic arrow, the word and a shrinking bar over each player; the cue is said aloud
+    (one player);
+  - burpees: hands below the knees (or the shoulders down most of a torso), then standing tall with a hand
+    over the head.
+  The move bar (`#wkBar`, between the score and the clock; under the score on the left sideways alone, a
+  narrow column under the clock for two) shows the move, "2 of 8 · core" and a dot a move. A rest shows a
+  card instead (REST, the seconds, what's next, how to do it and a little coach figure doing it:
+  `drawDemo`, key poses in `DEMOS` in scene.js) and the corner camera hides for it. Beeps for each part's
+  last three seconds, a whistle and the next move's name said at each rest. Results: reps per move and the
+  fastest reaction; the share text has a square a move (`workoutRow`: 🟩 its `target`, 🟨 some, ⬛ none).
 - Eight more challenges (`CHALLENGES` in `logic.mjs`): **Squats** and **Push-ups** (as many as you can in
   60 s, goals 20 and 15), **Wall Sit** (hold up to 3:00, goal 60 s; standing up for 2 s ends it),
   **Target Smash** (45 s; one target at a time, out at arm's reach and away from your hands, gone
@@ -117,10 +147,32 @@ the browser was the plan he okayed).
   themselves (on the phone or on a TV); a switch in the camera sheet turns that off.
 - **Sideways and on a TV** (JC, Nov 15 2026: "maximize viewport in landscape mode... so I can mirror to
   my tv and play games for family game night"): turned sideways, the camera asks for a wide 16:9
-  picture (1280×720; upright stays 640×480) and restarts in the new shape if the phone turns before
+  picture (1280×720 when the camera is the main view, 960×540 when it's the corner box, 640×360 in light
+  mode; upright stays 640×480; 30 frames a second at most) and restarts in the new shape if the phone turns before
   the go; the setup is a panel down the right, the score boxes sit smaller in the corners, and
   targets and silos fit around them from the side (`freeArea`). Home and results spread across in two
   columns. The home screen tells how to mirror to the TV with the back camera.
+- **Going easy on the phone** (JC, Nov 15 2026: IRL froze on his son's iPhone 17, fine on his 16 Pro Max:
+  "in case there is some way to lessen the tax on the phone's computing power"). The camera, the tracker
+  and the scene share the phone, and a phone that heats up slows down. What keeps it light:
+  - the scenes: the halftone dots are one pattern fill (they were a fill per dot, thousands a frame, the
+    heaviest thing on screen); what doesn't move is painted once into a canvas and copied (`BG` for the
+    backdrops, `still()` layers for the bowling alley; a canvas is shrunk to nothing when its game goes,
+    so iPhone gets the memory back); the crowd is a fill a color; the avatar's SVG head is drawn onto a
+    canvas once (`look.bmp`: Safari redraws an SVG picture from scratch every time it's drawn);
+  - the page reads the layout at most every 400 ms (`hudLayout`), not every frame;
+  - the tracker runs on fewer frames before the go (`trackGap`);
+  - levels (`PERF`, kept on the phone two weeks in `irl.perf`): the page times every tracker frame
+    (`govern`); when frames keep taking too long (26 ms, then 32) or the screen keeps missing its turns
+    (60 ms between), it steps down: level 1 a softer canvas (1.5×) and at most 25 tracker frames a second,
+    level 2 (`setLite`) 1× and 16, the smaller camera picture, no halftone dots or crowd sway. A tracker
+    slow on the GPU (60 ms a frame) moves to the CPU first. The camera sheet's **Easy on the phone**
+    switch (`prefs.lite`) goes straight to level 2;
+  - the watchdog (`watchdog`, `rebuildTracker`): a camera picture that stops is played again (iPhone
+    pauses it now and then), then the camera restarted after 4 s; a tracker that throws 8 frames running,
+    loses its WebGL (its own canvas, `surface()`) or answers nothing for 3 s is rebuilt on the CPU (and
+    stays there on this phone); while the tracker gives nothing during play, the game carries on with the
+    last pose it saw (at most ten times a second), so the scene never freezes.
 - **Hands-free start**: tap Start, walk to your spot; once the camera sees what the challenge needs
   (`framing`) for 1.2 s, a 3-2-1 starts on its own. A voice counts reps (squats, push-ups; every 10
   for dribbles and wall-sit seconds), with beeps for the countdown and the last 3 seconds.
@@ -143,8 +195,10 @@ the browser was the plan he okayed).
 - `sports.mjs`: the sports games (`bowling`, `qbThrow`, `hoops`, `tennis`, `sendIt`), the bowling physics
   and scoring (`bowlSim`, `bowlScore`, `bowlNext`), the routes, the Send It! sky (`makeAir`). No camera,
   no DOM.
-- `scene.js`: the scenes (`drawSport`, `drawBackdrop`), the puppet (`drawPuppet`) and the little 3D
-  camera (`cam3`). Draws only.
+- `workout.mjs`: the Full Body Workout: the moves' counters (`jacks`, `kneeCrunch`, `highKnees`, `skaters`,
+  `reaction`, `burpees`), the circuit (`workout`, `WORKOUT`, `MOVES`) and its share row. No camera, no DOM.
+- `scene.js`: the scenes (`drawSport`, `drawBackdrop`, `drawWorkout` with the coach figure `drawDemo`),
+  the puppet (`drawPuppet`), the little 3D camera (`cam3`) and light mode (`setLite`). Draws only.
 - `game.js`, `index.html`: the page (home, the camera stage, results). The camera layer starts under
   the status bar (`top: env(safe-area-inset-top)`) and fills to `--lab-h`; the scene is drawn on its
   canvas (`#overlay`), the video sits in the corner box (`#pip`, letterboxed, mirrored unless switched
@@ -160,11 +214,12 @@ the browser was the plan he okayed).
 ```
 node games/irl/test/irl.test.mjs     # the counters, fed made-up bodies (test/bodies.mjs)
 node games/irl/test/sports.test.mjs  # bowling (scoring, pins, a whole game), QB, free throws, tennis, Send It!
+node games/irl/test/workout.test.mjs # each workout move, the whole circuit on its clock, two players
 npm run build && node scripts/dev-server.mjs
 ```
 The page has a test mode: set `window.__irlFake = true` before it loads and feed frames with
 `window.__irl.feed({ lm, world, aspect })`, or `feed({ people: [{ lm, world }, { lm, world }] })` for
 two players (the camera and tracker are skipped; the fake picture is 480×640 upright, 1280×720
-sideways). Chromium's fake
+sideways). `window.__irl.perf()` shows the level, the timings and the tracker. Chromium's fake
 camera (`--use-fake-device-for-media-stream --use-fake-ui-for-media-stream`) checks that the real
 tracker loads and runs.

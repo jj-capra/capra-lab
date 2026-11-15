@@ -194,7 +194,7 @@ async function buildIrl() {
   await fs.rm(out, { recursive: true, force: true });
   await fs.mkdir(path.join(out, 'vendor', 'wasm'), { recursive: true });
   await fs.mkdir(path.join(out, 'models'), { recursive: true });
-  for (const f of ['index.html', 'game.js', 'logic.mjs', 'sports.mjs', 'scene.js']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  for (const f of ['index.html', 'game.js', 'logic.mjs', 'sports.mjs', 'scene.js', 'workout.mjs']) await fs.copyFile(path.join(game, f), path.join(out, f));
   // tasks-vision posts usage numbers (which task ran, how fast) to Google every minute; IRL promises
   // nothing leaves the phone, so the copy we serve has that send switched off. The build stops if a
   // new version moves it, so it can't come back unnoticed.

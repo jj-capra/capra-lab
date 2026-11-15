@@ -7,7 +7,8 @@
    Tests set window.__irlFake before load and feed made-up bodies through window.__irl.feed(frame)
    ({ lm, world } for one player, { people: [{ lm, world }, ...] } for two). */
 import { CHALLENGES, ORDER, COUNTERS, BONES, P, SILOS, TWO_UP, framing, shareRow, splitPlayers, winnerOf, MIN_TO_PAY } from './logic.mjs';
-import { drawSport, drawBackdrop, drawPuppet } from './scene.js';
+import { drawSport, drawBackdrop, drawPuppet, drawWorkout, setLite } from './scene.js';
+import { MOVES, WORKOUT, workoutRow } from './workout.mjs';
 import { flyTitle } from './sports.mjs';
 import { CRAFTS } from '../send-it/logic.mjs';
 import { drawAvatar, lookFor } from '/lab/avatar.mjs';
@@ -20,6 +21,18 @@ const store = { get(k, d) { try { const v = localStorage.getItem(k); return v ==
 const me = () => { const p = store.get('capra-lab.profile', null); return p && p.name && p.code ? p : null; };
 const prefs = Object.assign({ sound: true, cam: 'front', mirror: true, scene: true, players: 1, guest: 'Player 2', youRight: false, names: ['Player 1', 'Player 2'] }, store.get('irl.prefs', {}));
 const savePrefs = () => store.set('irl.prefs', prefs);
+/* Going easy on the phone (JC, Nov 15 2026: IRL froze on his son's iPhone 17 and ran fine on his 16 Pro
+   Max). The camera, the tracker and the scene all share the phone's chips, and a phone that heats up
+   slows down. The page times every tracker frame: when they keep taking too long it steps down a level
+   (level 1: a softer canvas and fewer tracker frames; level 2: softer again, fewer again, a smaller
+   camera picture and no halftone dots or crowd sway) and remembers it on this phone for two weeks. The
+   camera sheet's "Easy on the phone" switch (prefs.lite) goes straight to level 2. If the phone's GPU
+   gives out on the tracker, it's rebuilt on the CPU (and stays there on this phone). */
+const PERF = (() => { const p = store.get('irl.perf', null); return p && Date.now() - (p.at || 0) < 14 * 864e5 ? { level: Math.min(2, p.level | 0), cpu: !!p.cpu } : { level: 0, cpu: false }; })();
+const savePerf = () => store.set('irl.perf', { level: PERF.level, cpu: PERF.cpu, at: Date.now() });
+const perfLevel = () => (prefs.lite ? 2 : PERF.level);
+const dprNow = () => Math.min([2, 1.5, 1][perfLevel()], window.devicePixelRatio || 1);
+setLite(perfLevel() >= 2);
 const NAME_MAX = 17;
 const PCOL = ['#29D3F0', '#FF3D8B'];      // two players: the left one cyan, the right one magenta
 const SIDE = ['LEFT', 'RIGHT'];
@@ -97,7 +110,7 @@ $('veil').addEventListener('click', (e) => { if (e.target === $('veil')) $('veil
 // "60 seconds · goal 20 reps", "Five frames · goal 70 pins", "Hold up to 3:00 · goal 60 s"
 function challengeLine(k, upper = false) {
   const c = CHALLENGES[k];
-  const s = k === 'wallsit' ? `Hold up to ${fmt(c.secs)} · goal ${c.goal} s` : c.frames ? `${c.frames} frames · goal ${c.goal} ${c.units}` : c.untimed ? `One flight · goal ${c.goal} ${c.units}` : `${c.secs} seconds · goal ${c.goal} ${c.units}`;
+  const s = k === 'wallsit' ? `Hold up to ${fmt(c.secs)} · goal ${c.goal} s` : c.workout ? `${c.moves} moves · about ${Math.round(c.secs / 60)} minutes · goal ${c.goal} ${c.units}` : c.frames ? `${c.frames} frames · goal ${c.goal} ${c.units}` : c.untimed ? `One flight · goal ${c.goal} ${c.units}` : `${c.secs} seconds · goal ${c.goal} ${c.units}`;
   return upper ? s.toUpperCase() : s;
 }
 function renderHome() {
@@ -132,9 +145,11 @@ video.addEventListener('resize', () => applyView());
 const LOOK = { mine: null };
 function puppetLook(seed, saved = null) {
   const l = lookFor(seed, saved), animal = l.base === 'animal';
-  const img = new Image();
+  const img = new Image(), look = { head: img, bmp: null, skin: animal ? FURS[l.fur] : SKINS[l.skin], shirt: SHIRTS[l.shirt], pants: '#2B3A67' };
+  // drawn onto a canvas once: a picture made of SVG costs Safari a full redraw every frame
+  img.onload = () => { try { const c = document.createElement('canvas'); c.width = c.height = 240; c.getContext('2d').drawImage(img, 0, 0, 240, 240); look.bmp = c; } catch { /* the SVG still draws */ } };
   img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(drawAvatar(l, { plain: true }).replace('<svg ', '<svg width="300" height="300" '));
-  return { head: img, skin: animal ? FURS[l.fur] : SKINS[l.skin], shirt: SHIRTS[l.shirt], pants: '#2B3A67' };
+  return look;
 }
 async function loadMyLook() {
   const p = me();
@@ -150,10 +165,16 @@ async function loadModel() {
   loadingModel ||= (async () => {
     const { FilesetResolver, PoseLandmarker } = await import('./vendor/vision_bundle.mjs');
     const files = await FilesetResolver.forVisionTasks(new URL('./vendor/wasm', location.href).href);
-    const opts = (delegate) => ({ baseOptions: { modelAssetPath: new URL('./models/pose_landmarker_lite.task', location.href).href, delegate },
+    // our own canvas for the tracker's WebGL, so we hear when the phone takes it away (and rebuild)
+    const surface = () => {
+      const c = typeof OffscreenCanvas !== 'undefined' ? new OffscreenCanvas(1, 1) : document.createElement('canvas');
+      if (c.addEventListener) c.addEventListener('webglcontextlost', (e) => { if (e.preventDefault) e.preventDefault(); rebuildTracker(); });
+      return c;
+    };
+    const opts = (delegate) => ({ baseOptions: { modelAssetPath: new URL('./models/pose_landmarker_lite.task', location.href).href, delegate }, canvas: surface(),
       runningMode: 'VIDEO', numPoses: poses, minPoseDetectionConfidence: 0.5, minPosePresenceConfidence: 0.5, minTrackingConfidence: 0.5 });
-    try { return await PoseLandmarker.createFromOptions(files, opts('GPU')); }
-    catch { return await PoseLandmarker.createFromOptions(files, opts('CPU')); }
+    if (!PERF.cpu) { try { return await PoseLandmarker.createFromOptions(files, opts('GPU')); } catch { /* the CPU, then */ } }
+    return await PoseLandmarker.createFromOptions(files, opts('CPU'));
   })();
   try { landmarker = await loadingModel; } catch (e) { loadingModel = null; throw e; }
   return landmarker;
@@ -184,9 +205,12 @@ const camName = (c = prefs.cam) => (c === 'front' ? 'Front camera' : c === 'back
 async function startCamera() {
   stopCamera();
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { const e = new Error('no camera'); e.name = 'NotSupportedError'; throw e; }
-  // a picture the shape of the screen: wide (16:9) when the phone is sideways, so it fills a TV
-  const land = innerWidth > innerHeight;
-  const size = land ? { width: { ideal: 1280 }, height: { ideal: 720 } } : { width: { ideal: 640 }, height: { ideal: 480 } };
+  // a picture the shape of the screen: wide (16:9) when the phone is sideways, so it fills a TV (1280 ×
+  // 720 when the camera is the main view; smaller when it's only the corner box, smaller again in light
+  // mode: the tracker shrinks every picture to 256 across anyway). 30 frames a second at most.
+  const land = innerWidth > innerHeight, lite = perfLevel() >= 2;
+  const [vw, vh] = land ? (lite ? [640, 360] : sceneOn() ? [960, 540] : [1280, 720]) : [640, 480];
+  const size = { width: { ideal: vw }, height: { ideal: vh }, frameRate: { ideal: 30 } };
   const want = prefs.cam || 'front';
   const dev = want === 'wide' ? cams.wide : want.startsWith('dev:') ? (cams.devs.find((d) => d.label === want.slice(4)) || {}).deviceId : null;
   const facingMode = want === 'front' ? 'user' : 'environment';
@@ -238,44 +262,119 @@ const sideRange = (i) => (S && S.two ? (i ? [0.5, 1] : [0, 0.5]) : [0, 1]);
 // Screen fractions into the picture's own x (mirrored back), for the counters.
 const toPic = (q) => (mirrored() ? { ...q, x0: 1 - q.x1, x1: 1 - q.x0 } : q);
 
+/* The frame loop: a new camera frame goes to the tracker (no sooner than trackGap after the last), its
+   bodies to handle(). A watchdog keeps it from freezing: a camera picture that stops is played again
+   (then the camera restarted), a tracker that keeps failing is rebuilt on the CPU, and while the tracker
+   gives nothing during play the game carries on with the last pose it saw. */
+const trk = { lastDetect: 0, lastFresh: 0, lastHandle: 0, lastCoast: 0, errs: 0, rebuilding: false, kicked: 0, restarted: 0 };
+const gov = { ema: 0, det: 0, rafEma: 0, last: 0, slowSince: null, since: 0 };
+// the least time between tracker frames: fewer before the go (it only has to find you), fewer in light mode
+const trackGap = () => { const l = perfLevel(); return S && (S.phase === 'live' || S.phase === 'count') ? [0, 40, 62][l] : [62, 80, 100][l]; };
 function frameLoop() {
   cancelAnimationFrame(raf);
+  trk.lastFresh = trk.lastHandle = trk.lastDetect = performance.now();
+  Object.assign(gov, { ema: 0, det: 0, rafEma: 0, last: 0, slowSince: null, since: 0 });
   const step = () => {
     if (!S || S.phase === 'done') return;
-    if (!FAKE && landmarker && video.readyState >= 2 && video.currentTime !== lastVideoTime) {
-      lastVideoTime = video.currentTime;
-      try {
-        const res = landmarker.detectForVideo(video, performance.now());
-        const people = (res.landmarks || []).map((lm, i) => ({ lm, world: (res.worldLandmarks && res.worldLandmarks[i]) || null }));
-        handle({ people, t: performance.now(), aspect: (video.videoWidth || 480) / (video.videoHeight || 640) });
-      } catch (e) { /* one bad frame; keep going */ }
-    }
     raf = requestAnimationFrame(step);
+    if (FAKE) return;
+    const now = performance.now();
+    // how often the screen gets a turn: long gaps mean the phone can't keep up (the camera's own frame
+    // rate, low in a dim room, doesn't count against it)
+    if (gov.last && now - gov.last < 1000) gov.rafEma = gov.rafEma ? gov.rafEma * 0.92 + (now - gov.last) * 0.08 : now - gov.last;
+    gov.last = now;
+    if (stream && video.readyState >= 2) {
+      const fresh = video.currentTime !== lastVideoTime;
+      if (fresh) trk.lastFresh = now;
+      if (landmarker && (fresh || now - trk.lastDetect > 250) && now - trk.lastDetect >= trackGap()) detect(now);
+    }
+    watchdog(now);
   };
   raf = requestAnimationFrame(step);
+}
+function detect(now) {
+  let res;
+  trk.lastDetect = now;
+  try { res = landmarker.detectForVideo(video, now); trk.errs = 0; }
+  catch { if (++trk.errs >= 8) rebuildTracker(); return; }
+  const det = performance.now() - now;
+  lastVideoTime = video.currentTime;
+  const people = (res.landmarks || []).map((lm, i) => ({ lm, world: (res.worldLandmarks && res.worldLandmarks[i]) || null }));
+  handle({ people, t: now, aspect: (video.videoWidth || 480) / (video.videoHeight || 640) });
+  trk.lastHandle = performance.now();
+  govern(trk.lastHandle - now, det, now);
+}
+function watchdog(now) {
+  if (!S || S.phase === 'done' || document.hidden) return;
+  if (stream) {
+    if (video.paused && now - trk.kicked > 1000) { trk.kicked = now; video.play().catch(() => {}); }     // iPhone pauses it now and then
+    if (now - trk.lastFresh > 4000 && now - trk.restarted > 8000) { trk.restarted = trk.lastFresh = now; startCamera().catch(cameraTrouble); }
+  }
+  if (S.phase === 'live' && now - trk.lastHandle > 220 && now - trk.lastCoast > 100) {
+    trk.lastCoast = now;
+    handle({ people: S.lastPeople || [], t: now, aspect: box().aspect });
+  }
+  if (landmarker && !trk.rebuilding && now - trk.lastHandle > 3000 && now - trk.lastFresh < 500) rebuildTracker();
+}
+async function rebuildTracker() {
+  if (trk.rebuilding) return;
+  trk.rebuilding = true; trk.errs = 0;
+  const old = landmarker; landmarker = null; loadingModel = null;
+  try { if (old) old.close(); } catch { /* gone already */ }
+  if (!PERF.cpu) { PERF.cpu = true; savePerf(); }
+  try { await loadModel(); } catch { /* the watchdog tries again */ }
+  trk.rebuilding = false; trk.lastHandle = performance.now(); gov.since = 0;
+}
+// Steps down a level when tracker frames keep taking too long, or the screen keeps missing its turns. A
+// tracker that's slow on its own (a phone's GPU busy with everything else) moves to the CPU first.
+function govern(work, det, t) {
+  gov.since ||= t;
+  if (t - gov.since < 2000) return;       // the first frames warm the tracker up: slow, and no sign of anything
+  gov.ema = gov.ema ? gov.ema * 0.9 + work * 0.1 : work;
+  gov.det = gov.det ? gov.det * 0.9 + det * 0.1 : det;
+  const gpuSlow = !PERF.cpu && gov.det > 60, slow = gpuSlow || (!prefs.lite && PERF.level < 2 && (gov.ema > [26, 32][PERF.level] || gov.rafEma > 60));
+  if (!slow) { gov.slowSince = null; return; }
+  gov.slowSince ??= t;
+  if (t - gov.slowSince < 2500) return;
+  if (gpuSlow) rebuildTracker();
+  else { PERF.level++; savePerf(); setLite(perfLevel() >= 2); lay.at = 0; }
+  Object.assign(gov, { ema: 0, det: 0, rafEma: 0, last: 0, slowSince: null, since: 0 });
 }
 
 /* ---------- drawing: the comic stick figure, targets, pops ---------- */
 // frames: one per player ({ lm } or nothing where the camera can't see them).
 // A sports scene's part of the screen: all of it alone, a half each for two.
 const sportRect = (i, b) => (S && S.two ? { x: i ? b.W / 2 : 0, y: 0, w: b.W / 2, h: b.H } : { x: 0, y: 0, w: b.W, h: b.H });
+// Where the top bar and the score boxes end, so a scene's own boards sit clear of them. Measured at most
+// every 400 ms (reading the page's layout every frame makes the browser lay it out again every frame).
+const lay = { at: 0, top: 0, hud: 0, coachTop: 0, boxes: [], boxBottom: 0 };
+function hudLayout(t) {
+  if (lay.at && t - lay.at < 400 && t >= lay.at) return lay;
+  const camTop = $('cam').getBoundingClientRect().top, top = $('backBtn').getBoundingClientRect().bottom - camTop + 6;
+  const hudEls = [...document.querySelectorAll('#hud .count, #hud .clock, #hud .wk')].filter((el) => !el.hidden && el.offsetParent !== null);
+  const hud = hudEls.length && !$('hud').hidden ? Math.max(...hudEls.map((el) => el.getBoundingClientRect().bottom)) - camTop + 8 : top;
+  const coaches = [...document.querySelectorAll('.coach')].filter((el) => !el.hidden).map((el) => el.getBoundingClientRect().top - camTop - 10);
+  const coachTop = coaches.length ? Math.min(...coaches) : $('cam').clientHeight - 80;
+  // the score and clock boxes alone (cam-relative), for the workout's card and arrows
+  const camLeft = $('cam').getBoundingClientRect().left;
+  const boxes = $('hud').hidden ? [] : hudEls.filter((el) => !el.classList.contains('wk')).map((el) => { const r = el.getBoundingClientRect(); return { l: r.left - camLeft, r: r.right - camLeft, b: r.bottom - camTop }; });
+  const boxBottom = boxes.length ? Math.max(...boxes.map((q) => q.b)) + 8 : top;
+  return Object.assign(lay, { at: t, top, hud, coachTop, boxes, boxBottom });
+}
 function draw(frames, t = performance.now()) {
-  const dpr = Math.min(2, window.devicePixelRatio || 1), b = box();
+  const dpr = dprNow(), b = box();
   if (canvas.width !== Math.round(b.W * dpr) || canvas.height !== Math.round(b.H * dpr)) { canvas.width = Math.round(b.W * dpr); canvas.height = Math.round(b.H * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, b.W, b.H);
   const scene = sceneOn();
   drawPip(frames);
   if (S && CHALLENGES[S.kind].sport) {
-    // where the top bar and the score boxes end, so a scene's own boards sit clear of them
-    const camTop = $('cam').getBoundingClientRect().top, top = $('backBtn').getBoundingClientRect().bottom - camTop + 6;
-    const hudEls = [...document.querySelectorAll('#hud .count, #hud .clock')].filter((el) => !el.hidden && el.offsetParent !== null);
-    const hud = hudEls.length && !$('hud').hidden ? Math.max(...hudEls.map((el) => el.getBoundingClientRect().bottom)) - camTop + 8 : top;
+    const { top, hud } = hudLayout(t);
     for (const pl of S.players) drawSport(ctx, S.kind, sportRect(pl.i, b), pl.counter, t, { lm: frames && frames[pl.i] && frames[pl.i].lm, mirror: mirrored(), range: sideRange(pl.i), color: pl.color, aspect: b.aspect, top, hud, name: S.two ? pl.name : '' });
     if (S.two) drawDivider(b, true, false);
     return;
   }
-  if (scene) drawBackdrop(ctx, S ? S.kind : 'squat', b.W, b.H, { x: b.ox, y: b.oy, w: b.dw, h: b.dh }, t, S ? Math.max(0, ...S.players.map((pl) => pl.cheerAt || 0)) : 0);
+  if (scene) drawBackdrop(ctx, S ? S.kind : 'squat', b.W, b.H, { x: b.ox, y: b.oy, w: b.dw, h: b.dh }, t, S ? Math.max(0, ...S.players.map((pl) => pl.cheerAt || 0)) : 0, dpr);
   else if (FAKE) { ctx.fillStyle = '#1B1528'; ctx.fillRect(b.ox, b.oy, b.dw, b.dh); }
   if (!S) return;
   if (S.two) drawDivider(b);
@@ -305,6 +404,19 @@ function draw(frames, t = performance.now()) {
     if (live && S.kind === 'avocado') { drawTrails(b, f, pl, t); drawAvocados(b, t, c); }
     if (live && S.kind === 'derby') { drawBat(b, f, pl, t); drawPitch(b, t, c); drawFlyers(b, t, c); }
   }
+  if (live && S.kind === 'workout') {
+    // the rest card: between the score and the clock from the top bar down when sideways alone, else
+    // under them; the reaction arrows: under the top bar when sideways alone, else under the move bar
+    const L = hudLayout(t), side = b.W > b.H && !S.two, h = (y) => Math.max(0, L.coachTop - y);
+    let area = { x: 0, y: L.boxBottom, w: b.W, h: h(L.boxBottom) };
+    if (side) {
+      const x0 = Math.max(0, ...L.boxes.filter((q) => q.r < b.W / 2).map((q) => q.r)) + 12, x1 = Math.min(b.W, ...L.boxes.filter((q) => q.l > b.W / 2).map((q) => q.l)) - 12;
+      area = { x: x0, y: L.top, w: Math.max(0, x1 - x0), h: h(L.top) };
+    }
+    const cueArea = side ? { x: 0, y: L.top, w: b.W, h: h(L.top) } : { x: 0, y: L.hud, w: b.W, h: h(L.hud) };
+    drawWorkout(ctx, { area, cueArea, two: S.two, t, moves: WORKOUT.plan.length, color: CHALLENGES.workout.color,
+      players: S.players.map((pl) => ({ c: pl.counter, color: pl.color, mid: b.ox + (b.dw * (sideRange(pl.i)[0] + sideRange(pl.i)[1])) / 2, toScreen: (p) => { const [x, y] = toScreen(b, p); return { x, y }; } })) });
+  }
 }
 function drawBody(b, lm, color) {
   const ok = (i) => lm[i] && (lm[i].visibility == null || lm[i].visibility > 0.45);
@@ -326,7 +438,7 @@ function drawBody(b, lm, color) {
 // The camera picture in the corner box, with the stick figure the tracker sees (in each player's color).
 function drawPip(frames) {
   if (!sceneOn()) return;
-  const dpr = Math.min(2, window.devicePixelRatio || 1), w = pipCv.clientWidth, h = pipCv.clientHeight;
+  const dpr = dprNow(), w = pipCv.clientWidth, h = pipCv.clientHeight;
   if (!w || !h) return;
   if (pipCv.width !== Math.round(w * dpr) || pipCv.height !== Math.round(h * dpr)) { pipCv.width = Math.round(w * dpr); pipCv.height = Math.round(h * dpr); }
   pipCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -559,7 +671,7 @@ function drawAvocados(b, t, c) {
 function flashCam() { const c = $('cam'); c.classList.remove('flash'); void c.offsetWidth; c.classList.add('flash'); }
 function pop(text, at, side) {
   const el = document.createElement('div');
-  el.className = 'pop'; el.textContent = text;
+  el.className = 'pop' + (S && S.two ? ' sm' : ''); el.textContent = text;
   if (at) { const b = box(), [x, y] = toScreen(b, at), r = $('cam').getBoundingClientRect(); el.style.left = r.left + x + 'px'; el.style.top = r.top + y + 'px'; }
   else if (S && S.two && side != null) el.style.left = side ? '75%' : '25%';
   document.body.appendChild(el);
@@ -576,11 +688,15 @@ function newPlayer(i, two, C) {
 }
 async function openChallenge(kind) {
   const C = CHALLENGES[kind], two = prefs.players === 2 && TWO_UP.includes(kind);
+  lay.at = 0;
+  $('cam').classList.remove('resting');
   S = { kind, two, seed: (Math.random() * 1e9) >>> 0, phase: 'setup', players: [0, two ? 1 : null].filter((i) => i != null).map((i) => newPlayer(i, two, C)), okSince: null, startAt: 0, frames: null };
   show('stage');
   $('stage').classList.remove('live');
   $('stage').classList.toggle('two', two);
   $('stTitle').textContent = C.name.toUpperCase() + (two ? ' · 2P' : '');
+  $('stTitle').classList.toggle('long', $('stTitle').textContent.length > 15);
+  $('stage').classList.toggle('wkout', !!C.workout);
   if (!CRAFTS.some((c) => c.id === prefs.craft)) prefs.craft = 'goat';
   applyView();
   if (C.sport) for (const pl of S.players) pl.counter = makeCounter(kind, C, pl.i);   // the scene shows before the go
@@ -590,6 +706,7 @@ async function openChallenge(kind) {
   $('setup').innerHTML = `<div class="top"><span class="em" aria-hidden="true">${C.emoji}</span><h2>${esc(C.name.toUpperCase())}<small>${two ? 'HEAD TO HEAD · ' : ''}${esc(challengeLine(kind, true))}</small></h2></div>
     <ol class="steps"><li>${esc(two ? C.setup2 : C.setup)}</li><li>${esc(C.how)}</li><li>Tap <b>Start</b>, then walk to your ${two ? 'spots' : 'spot'}. The countdown starts by itself when the camera sees ${two ? 'you both' : 'you'}.</li></ol>
     ${two ? '<div class="duo" id="duo"></div>' : ''}
+    ${kind === 'workout' ? `<p class="fine" style="margin-top:12px">THE MOVES, IN ORDER</p><div class="rides moves">${WORKOUT.plan.map(([k, secs]) => `<span class="ride"><span aria-hidden="true">${MOVES[k].emoji}</span>${esc(MOVES[k].short)} · ${secs}s</span>`).join('')}</div>` : ''}
     ${kind === 'sendit' ? `<p class="fine" style="margin-top:12px">${two ? 'YOUR CONTRAPTIONS (THE RIGHT PLAYER GETS THE NEXT ONE)' : 'YOUR CONTRAPTION'}</p><div class="rides" id="rides">${CRAFTS.map((c) => `<button type="button" class="ride" data-id="${c.id}" aria-pressed="${c.id === prefs.craft}"><span aria-hidden="true">${c.emoji}</span>${esc(c.name)}</button>`).join('')}</div>` : ''}
     <button type="button" class="camrow" id="camRow"><span aria-hidden="true">📷</span><span id="camName">${esc(camName())}</span><small>CHANGE</small></button>
     <p class="fine">The picture stays on your phone. Nothing is recorded or sent.</p>
@@ -672,6 +789,8 @@ function openCams() {
     : 'More lenses (like the 0.5× ultra-wide) show up here once the camera has started.';
   $('mirrorChk').checked = prefs.mirror !== false;
   $('sceneChk').checked = prefs.scene !== false;
+  $('liteChk').checked = !!prefs.lite;
+  $('liteNote').textContent = !prefs.lite && PERF.level ? 'IRL already eased off a little on this phone by itself.' : '';
   for (const el of $('camOpts').querySelectorAll('.opt')) el.onclick = () => pickCam(el.dataset.cam);
   $('camVeil').hidden = false;
 }
@@ -684,6 +803,13 @@ async function pickCam(v) {
 }
 $('mirrorChk').onchange = () => { prefs.mirror = $('mirrorChk').checked; savePrefs(); video.classList.toggle('mirror', mirrored()); if (S) draw(S.frames); };
 $('sceneChk').onchange = () => { prefs.scene = $('sceneChk').checked; savePrefs(); applyView(); if (S) draw(S.frames); };
+$('liteChk').onchange = () => {
+  prefs.lite = $('liteChk').checked; savePrefs(); setLite(perfLevel() >= 2); lay.at = 0;
+  $('liteNote').textContent = !prefs.lite && PERF.level ? 'IRL already eased off a little on this phone by itself.' : '';
+  if (S) draw(S.frames);
+  // a smaller camera picture too, before the go
+  if (!FAKE && S && stream && (S.phase === 'setup' || S.phase === 'wait')) startCamera().catch(cameraTrouble);
+};
 $('camX').onclick = () => { $('camVeil').hidden = true; };
 $('camVeil').addEventListener('click', (e) => { if (e.target === $('camVeil')) $('camVeil').hidden = true; });
 
@@ -716,7 +842,7 @@ function handle(f) {
   const people = f.people || (f.lm !== undefined ? [{ lm: f.lm, world: f.world }] : []);
   const mk = (p) => ({ lm: (p && p.lm) || null, world: (p && p.world) || null, t: f.t, aspect: f.aspect || 0.75 });
   const frames = S.two ? splitPlayers(people, mirrored()).map(mk) : [mk(people.find((p) => p && p.lm))];
-  S.frames = frames;
+  S.frames = frames; S.lastPeople = people;
   if (S.phase !== 'live') draw(frames, f.t);
   if (S.phase === 'setup') {
     if (!$('startBtn').disabled) { const w = frameCheck(frames); setStatus(w.ok ? (S.two ? 'We can see you both. Tap Start.' : 'We can see you. Tap Start.') : `${w.say}. You can still tap Start and get in place.`, w.ok ? 'ok' : ''); }
@@ -742,6 +868,7 @@ function play(pl, f) {
   const r = pl.counter.update(f);
   const c = pl.counter;
   if (CHALLENGES[S.kind].sport) return playSport(pl, r, f);
+  if (CHALLENGES[S.kind].workout) return playWorkout(pl, r, f);
   if (r.rep) {
     pl.score = c.score;
     setCount(i, scoreText(S.kind, pl.score));
@@ -788,6 +915,42 @@ function play(pl, f) {
   }
 }
 const meterOf = (i) => $(S && S.two && !i ? 'meterL' : 'meterR');
+// The workout's score bar (between the score and the clock): the move, how far through, a dot a move.
+function paintWk(c) {
+  const key = c.phase + c.station;
+  if (!S || S.wkKey === key) return;
+  S.wkKey = key;
+  const mv = c.move, n = WORKOUT.plan.length;
+  $('wkName').textContent = (c.phase === 'done' ? 'Done!' : mv.short).toUpperCase();
+  $('wkSub').textContent = c.phase === 'work' ? `${c.station + 1} of ${n} · ${mv.works}` : c.phase === 'done' ? `${n} moves` : `${c.station ? 'up next' : 'up first'} · ${mv.works}`;
+  $('wkBar').hidden = c.phase !== 'work';      // a rest's card shows what's next (and takes the corner box's place too)
+  $('cam').classList.toggle('resting', c.phase === 'rest');
+  $('wkDots').innerHTML = WORKOUT.plan.map((_, i) => `<i class="${i < c.station || c.phase === 'done' ? 'on' : i === c.station ? 'now' : ''}"></i>`).join('');
+  lay.at = 0;
+}
+// The workout's sounds, pops, voice and coach line. The whistle and the move names are called once (from
+// the left player's clock: both run the same one).
+function playWorkout(pl, r, f) {
+  const i = pl.i, solo = !S.two, c = pl.counter, lead = i === 0;
+  if (r.start && lead) { sfx.go(); say(r.start.name); paintWk(c); }
+  if (r.rest && lead) { if (c.station > 0) { sfx.whistle(); say(`Rest. Next up: ${r.next.name}`); } else say(`First up: ${r.next.name}`); paintWk(c); }
+  if (r.cue) { sfx.beep(); if (solo) say(r.say); }
+  // the reaction drill's pops go low, under the next arrow
+  const [a, z] = sideRange(i), low = { x: mirrored() ? 1 - (a + z) / 2 : (a + z) / 2, y: 0.72 };
+  if (r.hit) { sfx.smash(); pop(`${(r.hit.ms / 1000).toFixed(2)} s`, low); }
+  if (r.miss) { sfx.miss(); pop(r.miss.wrong ? 'WRONG WAY' : 'TOO SLOW', low); }
+  if (r.rep && !r.hit) {
+    sfx.rep();
+    const k = c.key, n = c.reps[c.station], counted = k === 'crunch' || k === 'cross' || k === 'squat' || k === 'burpee';
+    if (counted) pop(r.say && r.say !== 'Nice!' ? r.say.toUpperCase() : 'REP!', null, i);
+    if (solo && (counted || n % 10 === 0)) say(String(n));
+  }
+  if (c.score !== pl.score) { pl.score = c.score; setCount(i, String(pl.score)); }
+  const line = c.phase === 'rest' ? (c.station ? (solo ? 'Catch your breath' : 'Rest up') : 'Get ready!') : r.say;
+  if (line && !(pl.lostSince && f.t - pl.lostSince > 1500)) coach(i, line, r.rep ? 'ok' : '');
+  if (r.meter != null) meterOf(i).querySelector('i').style.height = Math.round(r.meter * 100) + '%';
+  if (r.done) { pl.done = true; if (!solo) coach(i, `Done: ${c.score} reps`, 'ok'); }
+}
 // The sports games' sounds, pops and voice.
 function playSport(pl, r, f) {
   const i = pl.i, solo = !S.two, c = pl.counter, t = f.t;
@@ -932,6 +1095,7 @@ const craftFor = (side) => { const i = Math.max(0, CRAFTS.findIndex((c) => c.id 
 function makeCounter(kind, C, side) {
   if (C.sport) return COUNTERS[kind]({ mirror: mirrored(), range: sideRange(side), frames: C.frames, seed: S.seed, craft: craftFor(side) });
   if (kind === 'wallsit') return COUNTERS.wallsit(C.secs);
+  if (kind === 'workout') return COUNTERS.workout({ seed: S.seed, mirror: mirrored() });
   if (kind === 'targets') return COUNTERS.targets({ bounds: targetBounds(0.075, 0.68, side) });
   if (kind === 'keeper') return COUNTERS.keeper({ bounds: targetBounds(0.075, 0.9, side) });
   if (kind === 'derby') return COUNTERS.derby({ bounds: targetBounds(0.06, 0.9, side), layout: derbyLayout(side) });
@@ -942,7 +1106,7 @@ function go() {
   if (!S || S.phase !== 'count') return;
   const C = CHALLENGES[S.kind], two = S.two;
   $('countdown').innerHTML = '';
-  S.phase = 'live'; S.startAt = performance.now();
+  S.phase = 'live'; S.startAt = performance.now(); lay.at = 0;
   $('stage').classList.add('live');
   // the score boxes: yours alone, or one each side of the clock with the names (bowling keeps its
   // own scoresheet in the scene instead)
@@ -954,7 +1118,8 @@ function go() {
     bx.style.setProperty('--pc', pl.color);
     $('countUnit' + pl.i).textContent = two ? pl.name : S.kind === 'wallsit' ? 'held' : C.units;
   }
-  const metered = S.kind === 'squat' || S.kind === 'pushup' || S.kind === 'wallsit';
+  const metered = S.kind === 'squat' || S.kind === 'pushup' || S.kind === 'wallsit' || S.kind === 'workout';
+  $('wkBar').hidden = !C.workout; S.wkKey = null;
   $('meterR').hidden = !metered; $('meterL').hidden = !(metered && two);
   for (const m of ['meterL', 'meterR']) $(m).querySelector('i').style.height = '0';
   for (const pl of S.players) {
@@ -962,14 +1127,25 @@ function go() {
     pl.score = 0; pl.done = false; pl.trails = null; pl.batPath = null; pl.lit = null; pl.goalSaid = false; pl.tgShown = new Map();
     setCount(pl.i, scoreText(S.kind, 0));
   }
-  $('clock').textContent = C.frames ? `1/${C.frames}` : C.untimed ? '30' : S.kind === 'wallsit' && !two ? fmt(C.goal) : S.kind === 'wallsit' ? '0:00' : fmt(C.secs);
+  $('clock').textContent = C.workout ? String(WORKOUT.ready) : C.frames ? `1/${C.frames}` : C.untimed ? '30' : S.kind === 'wallsit' && !two ? fmt(C.goal) : S.kind === 'wallsit' ? '0:00' : fmt(C.secs);
   $('clockBox').classList.remove('low');
-  $('clockLbl').textContent = C.frames ? 'frame' : C.untimed ? 'feet up' : S.kind === 'wallsit' ? (two ? 'time' : 'to the goal') : 'left';
+  $('clockLbl').textContent = C.workout ? 'get ready' : C.frames ? 'frame' : C.untimed ? 'feet up' : S.kind === 'wallsit' ? (two ? 'time' : 'to the goal') : 'left';
   for (const pl of S.players) coach(pl.i, 'GO!', 'ok');
   clearInterval(ticker);
   ticker = setInterval(() => {
     if (!S || S.phase !== 'live') return clearInterval(ticker);
     const el = (performance.now() - S.startAt) / 1000;
+    if (C.workout) {
+      // the circuit keeps its own clock: this move's seconds (or the rest's), beeps for the last three
+      const c = S.players[0].counter, left = c.left;
+      $('clock').textContent = String(Math.max(0, Math.ceil(left)));
+      $('clockLbl').textContent = c.phase === 'work' ? 'left' : c.phase === 'done' ? 'done' : c.station === 0 ? 'get ready' : 'rest';
+      $('clockBox').classList.toggle('low', c.phase === 'work' && left <= 3);
+      if (c.phase !== 'done' && left <= 3.05 && left > 0 && Math.ceil(left) !== S.lastTick) { S.lastTick = Math.ceil(left); sfx.beep(); }
+      paintWk(c);
+      if (el > C.secs + 20) finish();
+      return;
+    }
     if (C.untimed) {
       // Send It! flies until the splash: the clock box shows how high you are (the lower of two)
       const up = Math.min(...S.players.filter((pl) => !pl.done).map((pl) => pl.counter.alt));
@@ -1053,14 +1229,15 @@ async function finish() {
     <p class="paid" id="paidLine"></p>`;
   show('results');
   if (window.CapraShare) shareCard(CapraShare.text({ emoji: '💪', game: 'IRL', sub: C.name,
-    lines: [`${kind === 'wallsit' ? `${fmt(score)} held` : kind === 'sendit' ? `${score} feet · ${flyTitle(score)}` : `${score} ${score === 1 ? C.unit : C.units} in ${C.frames ? `${C.frames} frames` : `${C.secs} s`}`}${newBest ? ' · new best' : ''}`, ...(kind === 'bowling' && c ? [bowlMarks(c)] : [])],
-    grid: [shareRow(score, C.goal, newBest)] }));
+    lines: [`${kind === 'wallsit' ? `${fmt(score)} held` : kind === 'workout' ? `${score} ${score === 1 ? C.unit : C.units} · ${C.moves} moves` : kind === 'sendit' ? `${score} feet · ${flyTitle(score)}` : `${score} ${score === 1 ? C.unit : C.units} in ${C.frames ? `${C.frames} frames` : `${C.secs} s`}`}${newBest ? ' · new best' : ''}`, ...(kind === 'bowling' && c ? [bowlMarks(c)] : [])],
+    grid: [kind === 'workout' && c ? workoutRow(c.reps, newBest) : shareRow(score, C.goal, newBest)] }));
   payOwner(kind, score, beat, newBest);
 }
-const playedFor = (kind) => { const C = CHALLENGES[kind]; return kind === 'wallsit' ? '' : C.frames ? ` · ${C.frames} frames` : C.untimed ? '' : ` · ${C.secs} seconds`; };
+const playedFor = (kind) => { const C = CHALLENGES[kind]; return kind === 'wallsit' ? '' : C.workout ? ` · ${C.moves} moves` : C.frames ? ` · ${C.frames} frames` : C.untimed ? '' : ` · ${C.secs} seconds`; };
 // a bowling game's marks, frame by frame: "X 7/ 9- X X9/"
 const bowlMarks = (c) => c.card.frames.map((f) => f.marks.join('') || '·').join(' ');
 function statBits(kind, c) {
+  if (kind === 'workout') return WORKOUT.plan.map(([k], i) => `<span>${MOVES[k].emoji} ${esc(MOVES[k].short)} ${c.reps[i]}</span>`).join('') + (c.fastest != null ? `<span>⚡ Fastest reaction ${(c.fastest / 1000).toFixed(2)} s</span>` : '');
   if (kind === 'sendit') return `<span>🛫 ${esc(c.craft.name)}</span><span>🏅 ${esc(flyTitle(c.score))}</span><span>⬆️ ${c.ups} updrafts</span><span>⛰️ ${Math.round(c.state.maxY)} ft high</span><span>⏱️ ${c.state.flyT.toFixed(0)} s up</span>`;
   if (kind === 'bowling') return `<span>🎳 ${bowlMarks(c)}</span><span>Strikes ${c.strikes}</span><span>Spares ${c.spares}</span>`;
   if (kind === 'qb') return `<span>🏈 ${c.comps}/${c.atts} completions</span><span>🙌 ${c.tds} TD</span>${c.ints ? `<span>Picked ${c.ints}</span>` : ''}${c.sacks ? `<span>Sacked ${c.sacks}</span>` : ''}`;
@@ -1090,7 +1267,7 @@ function finishTwo(kind, C, scores) {
   const order = w === 1 ? [1, 0] : [0, 1];
   if (window.CapraShare) shareCard(CapraShare.text({ emoji: '💪', game: 'IRL', sub: `${C.name} · head to head`,
     lines: order.map((i) => `${i === w ? '👑 ' : ''}${names[i]} ${scoreLine(kind, scores[i], C)}`),
-    grid: order.map((i) => shareRow(scores[i], C.goal, false)) }));
+    grid: order.map((i) => (kind === 'workout' && S.players[i].counter ? workoutRow(S.players[i].counter.reps) : shareRow(scores[i], C.goal, false))) }));
   if (own >= 0) payOwner(kind, mine, mine >= C.goal, newBest, `${names[own]}: `);
   else payOwner(kind, 0, false, false);
 }
@@ -1114,6 +1291,7 @@ let turnT = 0;
 addEventListener('resize', () => {
   clearTimeout(turnT);
   turnT = setTimeout(() => {
+    lay.at = 0;
     if (!S || S.phase === 'done') return;
     draw(S.frames);
     const land = innerWidth > innerHeight;
@@ -1122,8 +1300,9 @@ addEventListener('resize', () => {
 });
 
 // tests drive the page with made-up bodies
-window.__irl = { feed: (f) => handle({ aspect: box().aspect, ...f, t: f.t ?? performance.now() }), state: () => S, open: openChallenge, finish, cams };
+window.__irl = { feed: (f) => handle({ aspect: box().aspect, ...f, t: f.t ?? performance.now() }), state: () => S, open: openChallenge, finish, cams,
+  perf: () => ({ level: perfLevel(), saved: { ...PERF }, gov: { ...gov }, trk: { ...trk }, dpr: dprNow(), tracker: landmarker }) };
 
 renderHome();
 loadMyLook();
-if (/^#(squat|pushup|wallsit|targets|dribble|keeper|avocado|derby|bowling|qb|hoops|tennis|sendit)$/.test(location.hash)) openChallenge(location.hash.slice(1));
+if (/^#(squat|pushup|wallsit|targets|dribble|keeper|avocado|derby|bowling|qb|hoops|tennis|sendit|workout)$/.test(location.hash)) openChallenge(location.hash.slice(1));
