@@ -197,9 +197,10 @@ export function Home({ me, setMe, nav, home, reloadHome }) {
                 ? html`<div><span class="muted">Your daily</span><div class="score">${money(daily.score)}</div></div>
                     <div class="row"><button class="btn sm" onClick=${async () => { const t = `🧠 Mind Heist No. ${today.no} · ${today.title}\n${money(daily.score)}\n${gridEmoji(daily.grid)}`; const r = await shareOrCopy({ title: 'Mind Heist', text: t, url: link('/') }); if (r === 'copied') toast('Copied. Paste it in the chat.'); }}>Share</button>
                     <button class="btn sm" onClick=${() => setSheet('board')}>Leaderboard</button></div>`
-                : html`<span>One official run per day. Your score goes on the friends board.</span>
+                : html`<span>One official run per day. Your score goes on the friends board${IN_LAB ? ' and Capra Lab’s daily board' : ''}.</span>
                     <button class="btn hi" onClick=${() => startSolo(nav, today.id)}>Play your daily</button>`}
             </div>
+            ${IN_LAB && html`<button class="btn sm lab-board-btn" onClick=${() => window.CapraDaily && window.CapraDaily.open('mind-heist')}>🏆 Today’s lab board: most money, fastest wins</button>`}
           </section>`}
           <div class="big-two">
             <button class="mode-btn play" onClick=${() => { Sound.fx('tap'); setSheet('play'); }}><span class="t">Play</span><span class="s">Solo or challenge a friend</span></button>

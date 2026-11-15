@@ -11,6 +11,8 @@ import { createCrew } from '../../lab/crew.js';
 import { blobStore, PROFILE_STORE } from '../../lab/stores.js';
 import { createCards, STORE as CARD_STORE } from '../../lab/cards.js';
 import { blobsStore as casBlobs } from '../../lab/casstore.js';
+import { createWallet, STORE as WALLET_STORE } from '../../lab/wallet.js';
+import { createDaily, STORE as DAILY_STORE } from '../../lab/daily.js';
 
 export default async function (req) {
   // Blobs context is per invocation, so bind the stores per request.
@@ -22,6 +24,8 @@ export default async function (req) {
     verify: (name, code) => profiles.verify(name, code),
     role: (handle) => crew.role(handle),
     cards: createCards({ store: casBlobs(getStore, CARD_STORE) }),   // Cap Shields from the daily draw
+    // today's challenge goes on Capra Lab's daily boards (the #1 at midnight is paid from the wallet)
+    daily: createDaily({ store: casBlobs(getStore, DAILY_STORE), wallet: createWallet({ store: casBlobs(getStore, WALLET_STORE) }) }),
   }).handle(req);
 }
 

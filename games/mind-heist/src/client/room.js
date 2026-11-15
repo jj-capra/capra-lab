@@ -1283,6 +1283,7 @@ function Final({ room, send, nav, tv, invite }) {
         ${res.badges && res.badges.length > 0 && html`<div class="row">${res.badges.map(b => html`<span class="badge"><i>${BADGE_ICONS[b]}</i>${BADGES[b] ? BADGES[b][0] : b}</span>`)}</div>`}`}
     </section>`}
 
+    ${!tv && res && res.board && html`<${LabBoard} view=${res.board} />`}
     ${!tv && html`<${TextShare} room=${room} res=${res} />`}
     ${room.recap && html`<section class="recap stk"><details>
       <summary>Every answer from this board</summary>
@@ -1290,6 +1291,19 @@ function Final({ room, send, nav, tv, invite }) {
     </details></section>`}
     ${deckSheet && html`<${RematchSheet} room=${room} send=${send} onClose=${() => setDeckSheet(false)} />`}
   </div>`;
+}
+
+// Capra Lab's daily board (the lab's /lab/daily.js card), as the server answered it when the run banked.
+function LabBoard({ view }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const paint = () => { if (el.show) el.show(view); };
+    if (customElements.get('lab-daily-board')) paint();
+    else customElements.whenDefined('lab-daily-board').then(paint);
+  }, [view]);
+  return html`<lab-daily-board class="lab-board" board="mind-heist" ref=${ref}></lab-daily-board>`;
 }
 
 function RematchSheet({ room, send, onClose }) {

@@ -115,6 +115,9 @@
   .play-btns .btn { width: 100%; justify-content: space-between; text-align: left; }
   .play-btns .btn span { display: grid; gap: 2px; }
   .best { margin: -4px 2px 0; font-size: 13px; font-weight: 700; color: rgba(255, 248, 236, 0.75); }
+  .best:empty { display: none; }
+  .board-link { justify-self: start; align-self: start; display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; min-height: 44px; padding: 8px 14px; border-radius: 999px; border: 2px solid var(--shadow); background: var(--panel); color: var(--paper); font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; }
+  .board-link small { font-size: 12.5px; font-weight: 700; color: rgba(255, 248, 236, 0.72); }
 
   /* ---------- playing ---------- */
   .hud { display: flex; align-items: center; justify-content: center; gap: 8px; flex: 1; min-width: 0; }
@@ -255,6 +258,7 @@
       <button class="btn alt" id="practiceBtn" type="button"><span>Practice run<small>Five fresh puzzles, any time</small></span><b aria-hidden="true">▸</b></button>
     </div>
     <p class="best" id="bestLine"></p>
+    <button class="board-link" id="boardBtn" type="button">🏆 <span>Today's board</span> <small id="boardLead"></small></button>
   </div>
 </section>
 
@@ -301,6 +305,7 @@
     </div>
     <p class="label">YOUR GALLERY</p>
     <div class="gallery" id="gallery"></div>
+    <lab-daily-board id="resBoard" hidden></lab-daily-board>
     <div id="resShare"></div>
     <div class="res-actions">
       <button class="btn" id="againBtn" type="button">Practice run</button>
@@ -327,6 +332,7 @@
 <script src="/lab/chip.js" defer></script>
 <script src="/lab/share.js" defer></script>
 <script src="/lab/wallet.js" type="module"></script>
+<script src="/lab/daily.js" type="module"></script>
 <script type="module" src="./game.js"></script>
 </body>
 </html>

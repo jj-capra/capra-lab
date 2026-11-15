@@ -104,7 +104,13 @@
   .pickable { cursor: pointer; }
   .pickable .hit { stroke: var(--yellow); stroke-width: 2.5; stroke-dasharray: 5 4; animation: ants 1s linear infinite; }
   @keyframes ants { to { stroke-dashoffset: -18; } }
-  @media (prefers-reduced-motion: reduce) { .holo, .holo-rig, .holo-scan, .laser, .beams, .noise, .trap-frame.here, .alarm-wash, .mon.alarm { animation: none !important; } }
+  /* the trove: twinkling gold, torch flames */
+  .spark { transform-box: fill-box; transform-origin: center; animation: twinkle 2.6s ease-in-out infinite; }
+  .spark.s1 { animation-delay: -0.9s; } .spark.s2 { animation-delay: -1.7s; }
+  @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); } 45% { opacity: 1; transform: scale(1) rotate(20deg); } 60% { opacity: 0.9; transform: scale(0.85) rotate(30deg); } }
+  .flame { transform-box: fill-box; transform-origin: 50% 100%; animation: flame 0.9s ease-in-out infinite alternate; }
+  @keyframes flame { from { transform: scale(1, 1) skewX(-3deg); } to { transform: scale(0.9, 1.12) skewX(4deg); } }
+  @media (prefers-reduced-motion: reduce) { .holo, .holo-rig, .holo-scan, .laser, .beams, .noise, .trap-frame.here, .alarm-wash, .mon.alarm, .spark, .flame { animation: none !important; } .spark { opacity: 0.8; } }
 
   /* ---------- cards, buttons ---------- */
   .card { margin: 16px 0 0; padding: 16px; border-radius: 20px; background: var(--panel); border: 3px solid var(--shadow); box-shadow: 5px 6px 0 var(--shadow); }
@@ -144,10 +150,15 @@
   .slot .ed { position: absolute; top: 8px; right: 10px; font-size: 12px; font-weight: 800; color: rgba(255, 248, 236, 0.55); }
 
   /* trophies */
-  .shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
-  .trophy { display: grid; justify-items: center; gap: 4px; padding: 10px 8px 12px; border-radius: 16px; background: linear-gradient(#2E2443, #231B33); border: 2px solid var(--shadow); text-align: center; }
-  .trophy svg { width: 72px; height: 86px; filter: drop-shadow(3px 4px 0 var(--shadow)); }
-  .trophy b { font-size: 13px; font-weight: 800; line-height: 1.25; }
+  /* the trove: every trophy a relic in a gold-framed velvet case with a brass plate */
+  .shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 12px; }
+  .trophy { position: relative; display: grid; justify-items: center; gap: 6px; padding: 12px 8px 12px; border-radius: 16px; text-align: center;
+    background: radial-gradient(circle at 50% 34%, rgba(255, 182, 39, 0.28), transparent 58%), radial-gradient(circle at 50% 30%, #5A2440, #2A1022 72%);
+    border: 3px solid var(--shadow); box-shadow: inset 0 0 0 2px #E09A1C, inset 0 0 0 4px #5A2440, inset 0 0 0 5px rgba(255, 233, 138, 0.5), 3px 4px 0 var(--shadow); }
+  .trophy::before, .trophy::after { content: "✦"; position: absolute; top: 6px; font-size: 11px; color: #FFE98A; opacity: 0.85; }
+  .trophy::before { left: 9px; } .trophy::after { right: 9px; }
+  .trophy svg { width: 72px; height: 86px; filter: drop-shadow(3px 4px 0 var(--shadow)) drop-shadow(0 0 10px rgba(255, 196, 64, 0.35)); }
+  .trophy b { font-size: 12.5px; font-weight: 800; line-height: 1.25; color: var(--ink); padding: 4px 8px; border-radius: 6px; background: linear-gradient(#FFF0A8, #F2B33D 55%, #C98318); border: 2px solid var(--shadow); box-shadow: 2px 2px 0 var(--shadow); max-width: 100%; overflow-wrap: anywhere; }
   .trophy small { font-size: 11.5px; font-weight: 700; color: rgba(255, 248, 236, 0.66); line-height: 1.3; }
   .trophy small.stolen { color: #FF8A8A; }
   button.trophy { cursor: pointer; color: inherit; font: inherit; border: 3px solid var(--shadow); }

@@ -86,6 +86,8 @@
   .cdraw { margin: 0 0 22px; padding: 14px 14px 16px; border: 3px solid var(--ink); border-radius: 20px; background: #221B33; box-shadow: 5px 6px 0 #05030A; }
   .cd-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 10px; margin-bottom: 12px; }
   .cd-head h2 { margin: 0; white-space: nowrap; font-family: var(--display); font-weight: 400; font-size: 26px; letter-spacing: 0.06em; line-height: 1; color: var(--cyan); }
+  .dboards .cd-head h2.db-h { color: var(--yellow); }
+  .dboards .cd-head span { font-size: 12.5px; font-weight: 700; color: rgba(255, 248, 236, 0.7); }
   #cdWhen { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--yellow); white-space: nowrap; }
   .cd-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
   .cd-card { position: relative; aspect-ratio: 3 / 4; padding: 0; border: 0; background: none; cursor: pointer; perspective: 600px; font: inherit; color: inherit; -webkit-tap-highlight-color: transparent; }
@@ -439,6 +441,13 @@
       <h3 class="cd-h">YOUR HAND</h3>
       <div class="cd-list" id="cdHandList"></div>
     </div>
+  </section>
+
+  <!-- Today's boards (public/lab/daily.js, lab/daily.js): Three Clue Crew, Puzzled Spin, Mind Heist and
+       No Cap rank every day's first run; the #1 at midnight takes a trophy and a diamond. -->
+  <section class="cdraw dboards" id="dailyBoards" aria-label="Today's boards">
+    <div class="cd-head"><h2 class="db-h">TODAY'S BOARDS</h2><span>#1 at midnight wins a trophy</span></div>
+    <lab-daily-today></lab-daily-today>
   </section>
 
   <!-- Capra's Lab: JC's private side (lab/crew.js, public/lab/capras-lab.js). Only the owner and his

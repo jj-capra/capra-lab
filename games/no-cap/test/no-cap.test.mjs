@@ -2,7 +2,10 @@
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createApi } from '../server/api.js';
+import { createApi, dailyCards } from '../server/api.js';
+import { createDaily } from '../../../lab/daily.js';
+import { createWallet } from '../../../lab/wallet.js';
+import { memoryStore as casMemory } from '../../../lab/casstore.js';
 import { memoryStore } from '../server/store.js';
 import { createCards } from '../../../lab/cards.js';
 import { loadDecks, problems } from '../server/load.mjs';
@@ -247,6 +250,47 @@ await test('solo run, then a challenge with a board', async () => {
   const after = (await g.call(`/challenges/${c.made}`, {})).challenge;
   assert.equal(after.board.length, 2, 'the friend is on the board');
   assert.equal(after.board.find((b) => b.name === 'Friend').score, 0);
+});
+
+await test('today’s challenge: ten cards from the whole shelf, the first run on the board, later ones practice', async () => {
+  let now = Date.parse('2026-11-14T20:00:00Z');
+  const verify = async (name, code) => (code === '123456' ? { name, handle: name.toLowerCase() } : null);
+  const daily = createDaily({ store: casMemory(), wallet: createWallet({ store: casMemory(), clock: () => now, verify }), verify, clock: () => now });
+  const decks = [fake('alpha'), fake('gamma'), fake('beta', 'adult')];
+  const api = createApi({ store: memoryStore(), decks, verify, clock: () => now, daily });
+  const call = (p, body = {}) => api.route('POST', p, body);
+  await assert.rejects(call('/rooms', { kind: 'daily', shelf: 'kids', name: 'Guest' }), /Sign in/);
+  const ten = dailyCards(decks, 'kids', '2026-11-14');
+  assert.equal(ten.length, 10);
+  assert.ok(new Set(ten.map((x) => x.d)).size === 2, 'the ten come from both kids decks');
+  assert.deepEqual(dailyCards(decks, 'kids', '2026-11-14'), ten, 'the same ten all day');
+  assert.notDeepEqual(dailyCards(decks, 'kids', '2026-11-15'), ten, 'new ones tomorrow');
+  const s = await call('/rooms', { kind: 'daily', shelf: 'kids', ...JJ });
+  assert.equal(s.room.daily.official, true);
+  assert.match(s.room.deck.title, /Today’s ten · Kids/);
+  const seat = { pid: s.pid, tok: s.tok };
+  // leaving and coming back finds the same room
+  const back = await call('/rooms', { kind: 'daily', shelf: 'kids', ...JJ });
+  assert.equal(back.code, s.code);
+  // all ten: every fact on each card, 2 seconds a card
+  for (let i = 0; i < 10; i++) {
+    await call(`/rooms/${s.code}/go`, { ...seat, i });
+    const x = ten[i], cap = decks.find((d) => d.id === x.d).cards[x.c].cap;
+    now += 2000;
+    for (const k of [0, 1, 2, 3].filter((k) => k !== cap)) await call(`/rooms/${s.code}/tap`, { ...seat, i, k });
+  }
+  const end = await call(`/rooms/${s.code}`, seat);
+  assert.equal(end.room.daily.posted, true);
+  await assert.rejects(call(`/rooms/${s.code}/challenge`, seat), /challenge link/);
+  const v = await daily.view('no-cap:kids');
+  assert.equal(v.list[0].name, 'JJ-Capra');
+  assert.equal(v.list[0].ms, 20000, 'the time spent hunting');
+  assert.equal(v.list[0].points, end.room.players[0].score);
+  // another go today is practice: it doesn't change the board
+  const again = await call('/rooms', { kind: 'daily', shelf: 'kids', ...JJ });
+  assert.notEqual(again.code, s.code);
+  assert.equal(again.room.daily.official, false);
+  assert.equal((await daily.view('no-cap:kids')).of, 1);
 });
 
 console.log(`\nNo Cap: ${passed} tests passed`);

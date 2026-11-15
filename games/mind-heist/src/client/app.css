@@ -191,6 +191,8 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: 
 .cats { display: flex; flex-wrap: wrap; gap: 8px; }
 .cat-chip { padding: 5px 12px; border-radius: 10px; background: var(--deep-2); border: 2px solid var(--edge); font-weight: 700; font-size: var(--t-sm); }
 .daily-line { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; border-top: 2px dashed var(--edge); padding-top: 14px; }
+.drop-card .lab-board-btn { justify-self: start; white-space: normal; text-align: left; }
+.final .lab-board { width: 100%; max-width: 560px; margin: 0 auto; }
 .daily-line .score { font-family: var(--f-display); font-weight: 800; font-size: 30px; color: var(--money); }
 .big-two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .mode-btn { min-height: 132px; border-radius: 26px; display: grid; align-content: center; justify-items: start; gap: 6px; padding: 18px 20px; border: 4px solid var(--ink); box-shadow: 7px 7px 0 var(--cobalt); color: var(--ink); text-align: left; transition: transform .08s, box-shadow .08s; }

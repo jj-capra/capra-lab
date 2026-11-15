@@ -189,8 +189,8 @@ function renderRoom(room) {
     <div class="cams" role="tablist" aria-label="Cameras"><button type="button" role="tab" data-cam="1" aria-selected="false">CAM 1 · TRAP HALL</button><button type="button" role="tab" data-cam="2" aria-selected="true">CAM 2 · VAULT</button></div>
     <section class="card break" id="act"></section>
     ${own ? `<section class="card" id="editor"></section>` : `<section class="card"><h3>THE TRAP HOUSE <span class="tag">IN THIS ORDER</span></h3>${trapsList(room.traps)}</section>`}
-    <section class="card"><h3>THE TROPHIES</h3>${n ? `<div class="shelf">${room.trophies.map((t) => trophyCard(t, own, name)).join('')}</div>` : `<p class="empty">${own ? 'No trophies yet. A Masters trophy, a par diamond in Goat Getaway or a day at #1 on Screensaver puts one on your shelf. So does a trophy taken from someone else’s room.' : `Nothing on the shelves yet. The loot pile is still worth a look.`}</p>`}
-      ${room.loot && Object.keys(room.loot).length ? `<p class="fine">💰 The loot pile right now: ${esc(words(room.loot).replace(/\+/g, ''))}.</p>` : ''}</section>
+    <section class="card"><h3>THE TROVE</h3>${n ? `<div class="shelf">${room.trophies.map((t) => trophyCard(t, own, name)).join('')}</div>` : `<p class="empty">${own ? 'No trophies yet. Finish #1 on a daily board (Three Clue Crew, Puzzled Spin, Mind Heist or No Cap), win a Masters, get a Goat Getaway pen out at par or take #1 on Screensaver, and a trophy lands in your trove. So does one taken from someone else’s room.' : `No trophies in the trove yet. The loot chest is still worth a look.`}</p>`}
+      ${room.loot && Object.keys(room.loot).length ? `<p class="fine">💰 The loot chest right now: ${esc(words(room.loot).replace(/\+/g, ''))}.</p>` : ''}</section>
     <section class="card"><h3>SECURITY LOG</h3>${room.log.length ? `<ul class="log">${room.log.map(logLine).join('')}</ul>` : '<p class="empty">Quiet so far. Nobody has tried the traps.</p>'}</section>
     <p class="center"><a class="link" href="#rooms">Watch other trophy rooms →</a></p>`;
   window.scrollTo(0, 0);
@@ -506,7 +506,7 @@ async function inside(x, st) {
     <section class="card"><h3>TAKE ONE</h3>
       ${room.trophies.length ? `<div class="shelf">${room.trophies.map((t) => trophyCard(t, false, room.owner.name, 'button')).join('')}</div>` : ''}
       ${hasLoot ? `<div class="row"><button type="button" class="loot-pick" id="lootPick" aria-pressed="false"><span class="em">💰</span><span><b>THE LOOT</b><small>${esc(words(loot).replace(/\+/g, ''))} out of ${esc(possessive(room.owner.name))} stash</small></span></button></div>` : ''}
-      ${empty ? `<p>The room’s cleaned out. Nothing on the shelves, nothing in the pile. You still get the selfie and the bragging rights.</p>` : ''}
+      ${empty ? `<p>The trove’s cleaned out. No trophies, nothing in the loot chest. You still get the selfie and the bragging rights.</p>` : ''}
       <div class="row"><button class="btn" type="button" id="take" ${empty ? '' : 'disabled'}>${empty ? 'TAKE THE BRAGGING RIGHTS' : 'PICK SOMETHING'}</button></div></section>`;
   const mon = $('mon');
   setScene(mon, vaultSvg(room, { pick: true }), 'CAM 02 · VAULT', false);
@@ -537,7 +537,7 @@ async function inside(x, st) {
 async function done(x, st) {
   const p = me(), took = x.took || { name: 'something' }, owner = x.owner.name, my = nav;
   st.innerHTML = `<section class="card intro"><div class="burst win">HEIST!</div>
-      <p>You took <b>${esc(took.name)}</b> from ${esc(possessive(owner))} trophy room${took.pick === 'trophy' ? '. It’s on your shelf now, marked stolen' : ''}. Plus ${esc(words(BREAK_PAY).replace('+', ''))} for the break-in.</p></section>
+      <p>You took <b>${esc(took.name)}</b> from ${esc(possessive(owner))} trophy room${took.pick === 'trophy' ? '. It’s in your trove now, marked stolen' : ''}. Plus ${esc(words(BREAK_PAY).replace('+', ''))} for the break-in.</p></section>
     <section class="card"><h3>THE SELFIE</h3><p class="muted" style="margin-bottom:12px">You, the loot and ${esc(possessive(owner))} hologram. Made for the group chat.</p>
       <div class="selfie selfie-wait" id="selfieBox" role="img" aria-label="The selfie is developing"><span>📸 DEVELOPING…</span></div>
       <div class="row"><button class="btn" type="button" id="shareShot" disabled>📲 SHARE</button><a class="btn alt" id="saveShot" download="trophy-room-selfie.png" aria-disabled="true">SAVE</a></div>

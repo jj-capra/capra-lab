@@ -118,6 +118,8 @@
   /* ---------- the deck picker ---------- */
   .shelves { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
   .shelves::-webkit-scrollbar { display: none; }
+  .board-link { justify-self: start; display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; min-height: 44px; padding: 8px 14px; border-radius: 999px; border: 2.5px solid var(--ink); background: var(--panel2); color: var(--paper); font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; text-align: left; }
+  .board-link small { font-size: 12.5px; font-weight: 700; color: var(--dim); }
   .shelves button { flex: none; min-height: 40px; padding: 4px 14px; border-radius: 999px; border: 2.5px solid var(--ink); background: var(--panel2); font-weight: 900; font-size: 14px; }
   .shelves button[aria-pressed="true"] { background: var(--yellow); color: var(--ink); }
   .decks { display: grid; gap: 10px; }
@@ -249,6 +251,13 @@
       <p class="tagline">Three facts. One cap. Draft the topics your friends know least, then find the facts in theirs.</p>
       <p class="brewnote" id="brewNote" hidden>🧪 Brewing in Capra’s Lab</p>
     </div>
+    <section class="card daily" id="dailyCard" hidden>
+      <h2>Today’s ten</h2>
+      <div class="shelves" id="dailyShelves" role="tablist" aria-label="Shelf"></div>
+      <p class="note" id="dailyNote">The same ten cards for everyone on your shelf today. Most points wins; a tie goes to the quicker hunt. Your first run counts.</p>
+      <button class="btn big wide" type="button" id="dailyBtn">Play today’s ten</button>
+      <button class="board-link" type="button" id="dailyBoardBtn">🏆 <span>Today’s board</span> <small id="dailyLead"></small></button>
+    </section>
     <section class="card" id="startCard" hidden>
       <h2>Play</h2>
       <p class="as" id="asLine"></p>
@@ -289,5 +298,6 @@
 <script src="/lab/share.js" defer></script>
 <script src="/lab/card-offer.js" type="module"></script>
 <script src="/lab/wallet.js" type="module"></script>
+<script src="/lab/daily.js" type="module"></script>
 </body>
 </html>

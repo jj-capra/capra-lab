@@ -122,8 +122,43 @@ async function home(code = '') {
     hello = await api('/hello');
     $('brewNote').hidden = !hello.brew;
     $('startCard').hidden = !hello.canHost;
+    paintDaily();
   } catch (e) { toast(e.message, true); }
 }
+
+/* ---------- today's ten (JC, Nov 14 2026: a daily challenge leaderboard; Capra Lab's /lab/daily.js) ---------- */
+let dailyShelf = null;
+function paintDaily() {
+  const decks = (hello && hello.decks) || [];
+  const shelves = SHELVES.filter((x) => decks.some((d) => d.shelf === x.id));
+  $('dailyCard').hidden = !hello || !hello.canHost || !shelves.length;
+  if (!shelves.length) return;
+  dailyShelf = shelves.some((x) => x.id === dailyShelf) ? dailyShelf : (shelves.some((x) => x.id === store.get(SHELF)) ? store.get(SHELF) : shelves[0].id);
+  $('dailyShelves').innerHTML = shelves.map((x) => `<button type="button" role="tab" data-ds="${x.id}" aria-pressed="${x.id === dailyShelf}">${esc(x.name)}</button>`).join('');
+  $('dailyBtn').textContent = lab() ? 'Play today’s ten' : 'Sign in to play today’s ten';
+  paintLead();
+}
+async function paintLead() {
+  const el = $('dailyLead'), shelf = dailyShelf;
+  el.textContent = '';
+  if (!window.CapraDaily) return;
+  const v = await CapraDaily.board(`no-cap:${shelf}`).catch(() => null);
+  if (!v || shelf !== dailyShelf) return;
+  const top = v.list[0];
+  el.textContent = v.me && v.me.rank ? `· you’re #${v.me.rank} of ${v.of}` : top ? `· ${top.name} leads, ${top.points.toLocaleString('en-US')}` : '· nobody yet, be first!';
+  if (v.me && v.me.rank) $('dailyBtn').textContent = 'Play it again (practice)';
+}
+$('dailyShelves').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-ds]');
+  if (!b) return;
+  dailyShelf = b.dataset.ds; store.set(SHELF, dailyShelf); paintDaily();
+});
+$('dailyBtn').onclick = async () => {
+  if (!lab()) { location.href = '/#profile'; return; }
+  try { enter(await api('/rooms', { kind: 'daily', shelf: dailyShelf })); }
+  catch (e) { toast(e.message, true); }
+};
+$('dailyBoardBtn').onclick = () => { if (window.CapraDaily) CapraDaily.open(`no-cap:${dailyShelf}`); };
 async function open(kind) {
   const me = lab();
   const name = me ? me.name : typedName($('nameIn'));
@@ -436,10 +471,11 @@ function renderSoloFinal() {
     : `I scored ${me.score} on No Cap: ${r.deck.title}. Beat it.`;
   $('playBody').innerHTML = `<div class="banner"><div class="big">Your score</div></div><div class="bigscore">${num(me.score)}</div>
     <p class="note" style="text-align:center">${esc(r.deck.title)} · ${r.n} cards</p>
+    ${r.daily ? `<lab-daily-board board="${esc(r.daily.board)}"></lab-daily-board>${r.daily.official ? '' : '<p class="note" style="text-align:center">Practice: your first run today is the one on the board.</p>'}` : ''}
     <div id="shareBox"></div>
     <div id="boardBox"></div>
-    ${r.challenge ? '' : `<button class="btn big wide" type="button" id="challBtn">${url ? 'Send the challenge again' : 'Challenge a friend'}</button>`}
-    <button class="btn alt wide" type="button" id="againSolo">Play another deck</button>`;
+    ${r.challenge || r.daily ? '' : `<button class="btn big wide" type="button" id="challBtn">${url ? 'Send the challenge again' : 'Challenge a friend'}</button>`}
+    <button class="btn alt wide" type="button" id="againSolo">${r.daily ? 'Play a deck' : 'Play another deck'}</button>`;
   shareCard($('shareBox'), text, url || (r.challenge ? `${location.origin}/no-cap/c/${r.challenge}` : `${location.origin}/no-cap/`));
   $('againSolo').onclick = () => { seat = null; room = null; home().then(() => open('solo')); };
   if ($('challBtn')) $('challBtn').onclick = async () => {

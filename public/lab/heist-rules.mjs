@@ -61,11 +61,18 @@ export function trophyKind(t) {
   if (g === 'goat-getaway') return 'goat';
   if (g === 'screensaver') return 'screen';
   if (g === 'mind-heist') return 'brain';
+  if (g === 'three-clue-crew') return 'clues';
+  if (g === 'puzzled-spin') return 'spin';
+  if (g === 'no-cap') return 'cap';
   return 'star';
 }
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 export function trophyName(t) {
   const why = String((t && t.why) || '');
   const k = trophyKind(t);
+  // a daily board win (lab/daily.js): "#1 on Three Clue Crew · 9–12, 2026-11-14"
+  const daily = /^#1 on (.+?) · (.+), (\d{4})-(\d{2})-(\d{2})$/.exec(why);
+  if (daily) return `${daily[1]} #1 · ${daily[2]} · ${MONTHS[Number(daily[4]) - 1]} ${Number(daily[5])}`;
   if (k === 'masters') { const m = /on (.+)$/.exec(why); return m ? `Masters Trophy · ${m[1]}` : 'Masters Trophy'; }
   if (k === 'goat') return 'Golden Goat · out at par';
   if (k === 'screen') { const m = /, (\d{4}-\d{2}-\d{2})$/.exec(why); return m ? `Screensaver #1 · ${m[1]}` : 'Screensaver #1'; }

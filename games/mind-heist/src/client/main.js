@@ -19,6 +19,10 @@ if (IN_LAB) {
   const w = document.createElement('script');
   w.src = '/lab/wallet.js'; w.type = 'module';
   document.head.appendChild(w);
+  // and the daily boards: an official daily goes on Capra Lab's board for the day (/lab/daily.js, Nov 14 2026)
+  const b = document.createElement('script');
+  b.src = '/lab/daily.js'; b.type = 'module';
+  document.head.appendChild(b);
 }
 
 // Vault Jam became its own Capra Lab game, Goat Getaway (Nov 7 2026): old /jam links go there.

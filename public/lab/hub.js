@@ -13,6 +13,7 @@ import { keyCardBlob, readKeyCardFile } from './keycard.js';
 import './capras-lab.js';   /* Capra's Lab: the owner's and crew's private panel */
 import './card-draw.js';    /* the daily Card Draw: four cards a day */
 import './wallet-panel.js';  /* the wallet: diamonds, amber and shards */
+import './daily.js';         /* today's boards: every daily board's leader */
 import { drawAvatar, lookFor } from './avatar.mjs';  /* the player's comic avatar (the Avatar Studio) */
 
 const ME_KEY = 'capra-lab.profile';      /* { name, handle, created, code } */

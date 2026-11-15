@@ -3,7 +3,7 @@
    A 1080 × 1350 picture (the shape Instagram and texts show whole): the raider up front with what they
    took, the owner's hologram glowing behind them, the owner's trophy room around them, comic captions. */
 import { drawAvatar } from '/lab/avatar.mjs';
-import { trophySvg } from './art.js';
+import { trophySvg, seeded, troveDefs, coinHeap, chest, crown, chalice, mask, gem, pearls, sparkle } from './art.js';
 
 const W = 1080, H = 1350, INK = '#120E18';
 const FONT = 'Bangers, Impact, "Arial Narrow Bold", sans-serif';
@@ -20,30 +20,45 @@ function load(svg, w, h) {
     img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg.replace('<svg ', `<svg width="${w}" height="${h}" `));
   });
 }
-// The room behind: steel wall, shelves of what's left, a floor in perspective (no text: SVG pictures
-// can't use the page's fonts, so every word is drawn on the canvas).
-function roomSvg(trophies) {
+// The room behind: the owner's treasure trove (stone, torches, trophies on the ledges, a heap of gold,
+// chests, relics). No text: SVG pictures can't use the page's fonts, so every word is drawn on the canvas.
+function roomSvg(trophies, seed = '') {
+  const id = 'sv', rnd = seeded('selfie:' + seed);
   const slots = [[120, 360], [300, 360], [780, 360], [960, 360], [120, 640], [300, 640], [780, 640], [960, 640]];
-  let shelf = '';
-  for (const y of [360, 640]) for (const x0 of [30, 690]) shelf += `<rect x="${x0}" y="${y}" width="360" height="22" fill="#5B4370" stroke="${INK}" stroke-width="6"/>`;
+  let ledges = '';
+  for (const y of [360, 640]) for (const x0 of [30, 690]) {
+    ledges += `<path d="M${x0 + 30} ${y + 22}l18 30h36l18-30M${x0 + 246} ${y + 22}l18 30h36l18-30" fill="#3A2C45" stroke="${INK}" stroke-width="5"/>`;
+    ledges += `<rect x="${x0}" y="${y}" width="360" height="22" fill="#4A3A55" stroke="${INK}" stroke-width="6"/><rect x="${x0 + 3}" y="${y + 3}" width="354" height="7" fill="#E09A1C"/>`;
+  }
   let items = '';
   trophies.slice(0, slots.length).forEach((t, i) => {
     const [x, y] = slots[i], w = 140;
     items += trophySvg(t.kind, { stolen: !!t.from }).replace('<svg ', `<svg x="${x - w / 2}" y="${y - w * 1.2 + 6}" width="${w}" height="${w * 1.2}" `);
   });
-  let panels = '';
-  for (let r = 0; r < 4; r++) for (let c = 0; c < 6; c++) panels += `<rect x="${c * 180 + 6}" y="${r * 210 + 6}" width="168" height="198" rx="8" fill="#251C38" stroke="#110C1C" stroke-width="5"/><circle cx="${c * 180 + 22}" cy="${r * 210 + 22}" r="4" fill="#4A3D63"/><circle cx="${c * 180 + 158}" cy="${r * 210 + 22}" r="4" fill="#4A3D63"/>`;
-  let floor = '';
-  for (let i = -8; i <= 8; i++) floor += `<line x1="${540 + i * 50}" y1="860" x2="${540 + i * 260}" y2="1350" stroke="#2E2540" stroke-width="5"/>`;
-  for (const y of [910, 990, 1110, 1290]) floor += `<line x1="0" y1="${y}" x2="1080" y2="${y}" stroke="#2E2540" stroke-width="5"/>`;
+  // empty ledge spots hold relics
+  const relic = [(x, y) => chalice(id, x, y, 2.7), (x, y) => crown(id, x, y, 2.6), (x, y) => mask(id, x, y - 56, 2.6), (x, y) => gem(x - 24, y - 16, 3, '#5BE38A') + gem(x + 20, y - 14, 3.2, '#3D7BFF') + gem(x, y - 40, 3, '#FF3D5A')];
+  for (let i = trophies.length; i < slots.length; i++) items += relic[i % 4](slots[i][0], slots[i][1]);
+  const heap = coinHeap(id, { x0: -30, x1: 1110, side: 1130, peak: 960, bottom: 1370, coins: 150, r: 16, rnd });
+  let front = chest(id, 975, 1160, 2.2, 'gold', null, rnd) + crown(id, 870, 1060, 2.2, 12) + chalice(id, 1010, 1010, 2, -8);
+  front += gem(700, 1040, 3, '#FF3D5A', -12) + gem(90, 1050, 3, '#B79CFF', 10) + pearls(820, 1120, 930, 1150, 18, 9, 6);
+  let sparks = '';
+  [[200, 230], [880, 520], [60, 760], [1010, 780], [470, 900], [640, 980], [150, 980], [560, 360]].forEach(([x, y], k) => { sparks += sparkle(x, y, 14 + (k % 3) * 5, k); });
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">
-    <defs><linearGradient id="w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A2140"/><stop offset="1" stop-color="#140E20"/></linearGradient>
-    <radialGradient id="g" cx=".55" cy=".42" r=".55"><stop offset="0" stop-color="#29D3F0" stop-opacity=".34"/><stop offset="1" stop-color="#29D3F0" stop-opacity="0"/></radialGradient></defs>
-    <rect width="${W}" height="860" fill="url(#w)"/>${panels}
-    <rect y="860" width="${W}" height="${H - 860}" fill="#1B1528"/>${floor}
+    <defs>${troveDefs(id)}
+    <radialGradient id="g" cx=".55" cy=".42" r=".55"><stop offset="0" stop-color="#29D3F0" stop-opacity=".26"/><stop offset="1" stop-color="#29D3F0" stop-opacity="0"/></radialGradient></defs>
+    <rect width="${W}" height="${H}" fill="#1A1220"/>
+    ${stoneWallBig(rnd)}
+    <rect width="${W}" height="${H}" fill="url(#${id}-warm)"/>
     <rect width="${W}" height="${H}" fill="url(#g)"/>
-    ${shelf}${items}
+    ${ledges}${items}
+    ${heap.svg}${front}${sparks}
   </svg>`;
+}
+function stoneWallBig(rnd) {
+  const tones = ['#2E2233', '#2A1F30', '#35283C', '#30233A'];
+  let out = '';
+  for (let y = 0, row = 0; y < 1000; y += 66, row++) for (let x = row % 2 ? -70 : 0; x < W; x += 140) out += `<rect x="${x + 3}" y="${y + 3}" width="134" height="60" rx="7" fill="${tones[Math.floor(rnd() * 4)]}" stroke="#160E1B" stroke-width="6"/>`;
+  return out;
 }
 // The hologram: the owner in cyan light with scan lines, drawn on its own canvas first.
 function hologram(img, size) {
@@ -87,7 +102,7 @@ export async function makeSelfie({ owner, ownerLook, raider, raiderLook, took, t
   c.width = W; c.height = H;
   const g = c.getContext('2d');
   const [bg, holoImg, meImg, prize] = await Promise.all([
-    load(roomSvg(trophies), W, H),
+    load(roomSvg(trophies, owner), W, H),
     load(drawAvatar(ownerLook, { plain: true }), 900, 900),
     load(drawAvatar(raiderLook, { plain: true }), 1000, 1000),
     took && took.pick === 'trophy' ? load(trophySvg(took.kind, { stolen: true }), 300, 360) : Promise.resolve(null),

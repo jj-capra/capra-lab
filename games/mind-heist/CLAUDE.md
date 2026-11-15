@@ -118,6 +118,14 @@ on purpose; do not bring any of them back unless JC asks.
   the lab wallet on `/home` or `/me/lab` (`moveGems`, once: the profile goes to zero in the same
   compare-and-swap), and `me.gems` shows the lab's diamonds. A finished board pays amber and a crew
   win a shard through Capra Lab's `/lab/wallet.js` (`room.js`, on the final).
+- **Capra Lab's daily board** (JC, Nov 14 2026: "a daily challenge leaderboard... The most points the
+  fastest wins"). The function gets `daily` (`lab/daily.js`): opening today's official daily solo
+  room starts a linked profile's clock (`daily.begin`, the first room that day), and when the official
+  run banks its haul goes on the `mind-heist` board, timed from that first room (`bankResults`; the
+  board comes back in `results[mid].board` and the final shows it as the lab's `<lab-daily-board>`,
+  loaded from `/lab/daily.js` by `main.js`). The drop card has a 🏆 Today's lab board button. The #1 at
+  midnight (two or more players) gets a trophy and a diamond in the lab wallet. The friends boards
+  are unchanged.
 - **Trophies**: Vault Jam's (the day's fastest solve, Nov 2–7 2026) stay on profiles as history
   (🏆 count and shelf, shown only when there are any). Days still pending at the move
   (`jamPend`) are settled from the old race boards (`j/<date>`) the first time the player loads

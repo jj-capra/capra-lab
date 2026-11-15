@@ -70,7 +70,10 @@ const DECK_CFG = new Map();   // store -> { at, v }: the owner's deck switches, 
 // of the profile's lab player; without it only the cards already on a profile can be played.
 // `wallet`: the lab wallet (lab/wallet.js; JC, Nov 12 2026: "diamonds amber and shards in Capra Lab"). A linked
 // profile's diamonds move into it, and the home card shows the lab's diamonds.
-export function makeHandler(store, { clock = () => Date.now(), labCheck = askCapraLab, labRole = null, cards = null, wallet = null } = {}) {
+// `daily`: Capra Lab's daily boards (lab/daily.js; JC, Nov 14 2026: "a daily challenge leaderboard...
+// The most points the fastest wins"). A linked profile's official daily goes on the 'mind-heist' board:
+// the haul, timed from the first daily solo room it opened today (so quitting and starting over costs time).
+export function makeHandler(store, { clock = () => Date.now(), labCheck = askCapraLab, labRole = null, cards = null, wallet = null, daily = null } = {}) {
   /* ---------- storage helpers ---------- */
   async function mutate(key, fn, { create = null } = {}) {
     for (let attempt = 0; attempt < 8; attempt++) {
@@ -222,6 +225,7 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
     const cal = calendar(now);
     const grid = room.kind === 'solo' ? E.gridOf(room) : null;
     const results = {};
+    const boardRuns = {};   // mid -> the lab player whose official daily this was
     const ids = E.players(room).filter(id => room.members[id] && !room.members[id].guest && room.members[id].pid);
     await Promise.all(ids.map(async (mid) => {
       try {
@@ -229,9 +233,20 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
           const official = room.kind === 'solo' && !room.challengeId && cal.featured && room.deckId === cal.featured.id
             && !(p.daily && p.daily.date === today) && !room.ended;
           results[mid] = P.applyGame(p, room, mid, now, { official, grid });
+          boardRuns[mid] = official && p.lab ? { handle: p.lab, name: p.name } : null;
         });
       } catch (e) { /* a missing profile should not block the others */ }
     }));
+    // Capra Lab's daily board: the official daily of a linked profile goes on it (the first one counts).
+    if (daily) {
+      await Promise.all(Object.entries(boardRuns).filter(([, who]) => who).map(async ([mid, who]) => {
+        try {
+          const b = await daily.begin('mind-heist', who);
+          const from = b.first ? room.created : Math.min(b.at, room.created);
+          results[mid].board = await daily.post('mind-heist', who, room.crews[0].haul, now - from, { right: room.crews[0].right, of: 12 });
+        } catch (e) { /* the board is extra: never lose the run over it */ }
+      }));
+    }
     if (room.challengeId && room.kind === 'solo') {
       const pid = room.hostId;
       const score = room.crews[0].haul;
@@ -400,7 +415,15 @@ export function makeHandler(store, { clock = () => Date.now(), labCheck = askCap
         settings.theme = cleanTheme(settings.theme || me.profile.theme);
         const room = E.newRoom({ kind, code, host, deck: d, deckNo: dropNo(d), settings, seed: randomSeed(), now });
         const w = await store.set(roomKey(code), room, { onlyIfNew: true });
-        if (w.modified) return json(200, { code, room: E.view(room, me.pid, now) });
+        if (w.modified) {
+          // today's official daily starts the lab board's clock (the first one opened today)
+          const cal0 = calendar(now);
+          if (daily && kind === 'solo' && me.profile.lab && cal0.featured && d.id === cal0.featured.id
+            && !(me.profile.daily && me.profile.daily.date === pacificDate(now))) {
+            await daily.begin('mind-heist', { handle: me.profile.lab, name: me.profile.name }).catch(() => {});
+          }
+          return json(200, { code, room: E.view(room, me.pid, now) });
+        }
       }
       bad('Could not open a room. Try again.', 503);
     }

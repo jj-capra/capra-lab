@@ -45,6 +45,7 @@ export const FEATS = [
   { game: 'Screensaver', what: '#1 on the day’s board', pay: { diamonds: 1 } },
   { game: 'Par-Tee Time', what: 'Loot from a Masters Course', pay: { shards: 1 } },
   { game: 'Par-Tee Time', what: 'A Masters trophy (a course best held 7 days)', pay: { diamonds: 1 } },
+  { game: 'Daily boards', what: '#1 at midnight on a Three Clue Crew, Puzzled Spin, Mind Heist or No Cap board (plus a trophy)', pay: { diamonds: 1 } },
   { game: 'Trophy Room', what: 'Catch a raider in your trap house', pay: { amber: 15 } },
   { game: 'Trophy Room', what: 'Break into someone’s trophy room (plus a trophy or their loot)', pay: { shards: 2 } },
   { game: 'Glacial Maw', what: 'Everything you earn hunting (amber, Rift Shards, diamond gems)', pay: {} },

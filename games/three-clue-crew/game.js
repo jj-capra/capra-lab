@@ -63,7 +63,19 @@ function dailyState() {
 }
 function saveDaily(st) { store.set('tcc.daily', st); }
 
+const boardOf = (tier) => `three-clue-crew:${tier}`;
+
 /* ---------- home ---------- */
+async function paintLead() {
+  const el = $('boardLead');
+  el.textContent = '';
+  if (!window.CapraDaily) return;
+  const tier = prefs.tier;
+  const v = await CapraDaily.board(boardOf(tier)).catch(() => null);
+  if (!v || tier !== prefs.tier) return;
+  const top = v.list[0];
+  el.textContent = top ? `· ${top.name} leads, ${top.points}/10` : '· nobody yet, be first!';
+}
 function paintHome() {
   $('homeHost').textContent = pick(HELLO);
   const seg = $('tiers');
@@ -92,6 +104,7 @@ function paintHome() {
     $('dailySub').textContent = `No. ${no} · the same ten for everyone`;
     $('dailyNote').textContent = '';
   }
+  paintLead();
 }
 
 /* ---------- a game ---------- */
@@ -104,6 +117,9 @@ function startDaily() {
   if (!st) { st = { ids: dailySet(ROUNDS[tier].length, tier, no), answers: [], done: false }; all.tiers[tier] = st; saveDaily(all); }
   game = { kind: 'daily', tier, no, ids: st.ids, answers: st.answers.slice(), seed: hash(`tcc:${tier}:${no}`) };
   if (st.done) { results(); return; }
+  // Today's board: the first start of the day starts the clock (the server keeps it), so a run you
+  // leave and come back to keeps its first start.
+  if (window.CapraDaily) { st.started = true; saveDaily(all); CapraDaily.start(boardOf(tier)); }
   show('play');
   nextRound();
 }
@@ -262,10 +278,29 @@ function results() {
     box.innerHTML = '<lab-text-share></lab-text-share>';
     box.firstChild.set({ emoji: '🔍', title: 'Three Clue Crew', text, url: `${location.origin}/three-clue-crew/` });
   }
+  // Today's board: the daily ten goes on it (the server checks the picks and times the run).
+  const board = $('resBoard');
+  board.hidden = game.kind !== 'daily';
+  if (game.kind === 'daily') {
+    board.setAttribute('board', boardOf(game.tier));
+    postBoard(game);
+  }
   show('results');
 }
 
+async function postBoard(g) {
+  const all = dailyState(), st = all.tiers[g.tier];
+  if (!window.CapraDaily || !st || !st.done || !st.started || st.posted) return;
+  const v = await CapraDaily.finish(boardOf(g.tier), g.answers.map((a) => a.pick));
+  if (!v || v.error) return;
+  const now = dailyState();
+  if (now.tiers[g.tier]) { now.tiers[g.tier].posted = true; saveDaily(now); }
+  const el = $('resBoard');
+  if (el.getAttribute('board') === v.board) el.show(v);
+}
+
 /* ---------- buttons ---------- */
+$('boardBtn').onclick = () => { if (window.CapraDaily) CapraDaily.open(boardOf(prefs.tier)); };
 $('dailyBtn').onclick = startDaily;
 $('quickBtn').onclick = startQuick;
 $('moreBtn').onclick = startQuick;

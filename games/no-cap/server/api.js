@@ -19,9 +19,16 @@
 //   POST /rooms/:code/challenge              solo, finished: make a "beat my score" link
 //   POST /challenges/:id                     a challenge and its board
 //   POST /challenges/:id/play { name? }      take it: a solo room with the same cards
+//   POST /rooms   { kind: 'daily', shelf }   today's challenge (lab players): ten cards from the whole
+//                                            shelf, the same for everyone that day. The first one
+//                                            opened is official (it comes back if you leave) and goes
+//                                            on Capra Lab's daily board `no-cap:<shelf>` (lab/daily.js):
+//                                            the points, then the time spent hunting. Later ones are
+//                                            practice. No challenge links from a daily (the cards would leak).
 //
-// Store `no-cap`: r/<CODE> rooms (12 hours), c/<id> challenges.
-import { MAX_PLAYERS, MIN_LIVE, CARDS_PER_GAME, FIND_MS, REVEAL_MS, PICK_MS, CHOOSE_MS, POINTS, NAME_MAX, handSize, claims, cardPoints } from '../shared/rules.mjs';
+// Store `no-cap`: r/<CODE> rooms (12 hours), c/<id> challenges, dly/<handle>/<shelf>/<date> the seat in
+// that day's official daily room.
+import { SHELVES, MAX_PLAYERS, MIN_LIVE, CARDS_PER_GAME, FIND_MS, REVEAL_MS, PICK_MS, CHOOSE_MS, POINTS, NAME_MAX, handSize, claims, cardPoints } from '../shared/rules.mjs';
 import { mutate, SKIP } from './store.js';
 
 // No Cap is a JJ Brew (JC, Nov 8 2026): only Capra's Lab can open a room or play solo. Room links
@@ -34,7 +41,24 @@ const ABC = 'abcdefghijkmnpqrstuvwxyz23456789';
 const ROOM_ABC = 'BCDFGHJKLMNPQRSTVWXZ';
 const cleanName = (s) => String(s || '').replace(/[^\p{L}\p{N} ._'!?-]/gu, '').replace(/\s+/g, ' ').trim().slice(0, NAME_MAX);
 
-export function createApi({ store, decks, verify, role = async () => null, clock = () => Date.now(), rand = Math.random, cards = null }) {
+// Today's ten for a shelf (JC, Nov 14 2026: "a daily challenge leaderboard"): a seeded shuffle of every
+// card on the shelf, so a day's ten can come from any of its decks and the same cards come round rarely.
+function seeded(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) h = Math.imul(h ^ str.charCodeAt(i), 16777619);
+  let a = h >>> 0;
+  return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+export function dailyCards(decks, shelf, date) {
+  const pool = decks.filter((d) => d.shelf === shelf && !d.brew).sort((a, b) => (a.id < b.id ? -1 : 1))
+    .flatMap((d) => d.cards.map((_, c) => ({ d: d.id, c })));
+  const r = seeded(`no-cap:${shelf}:${date}`);
+  for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+  return pool.slice(0, Math.min(pool.length, CARDS_PER_GAME));
+}
+const pacificDay = (now) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+
+export function createApi({ store, decks, verify, role = async () => null, clock = () => Date.now(), rand = Math.random, cards = null, daily = null }) {
   const rid = (n, abc = ABC) => Array.from({ length: n }, () => abc[Math.floor(rand() * abc.length)]).join('');
   const shuffle = (list) => { const a = list.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const byId = Object.fromEntries(decks.map((d) => [d.id, d]));
@@ -95,7 +119,7 @@ export function createApi({ store, decks, verify, role = async () => null, clock
     room.startedAt = now; room.phase = 'play'; room.game = (room.game || 0) + 1;
   }
   const card = (room, i, tl) => {
-    if (room.kind === 'solo') return byId[room.deckId].cards[room.cards[i]];
+    if (room.kind === 'solo') { const x = room.cards[i]; return typeof x === 'object' ? byId[x.d].cards[x.c] : byId[room.deckId].cards[x]; }
     const x = room.pile[tl.times[i] ? tl.times[i].c : tl.c];
     return byId[x.d].cards[x.c];
   };
@@ -212,11 +236,13 @@ export function createApi({ store, decks, verify, role = async () => null, clock
     const nameOf = (p) => (room.players[p] ? room.players[p].name : 'Someone');
     const out = {
       now, code: room.code, kind: room.kind, phase: tl.over ? 'over' : room.phase, game: room.game || 0,
-      deck: room.deckId ? { id: room.deckId, title: byId[room.deckId].title, shelf: byId[room.deckId].shelf } : null,
+      deck: room.daily ? { id: room.deckId, title: `Today’s ten · ${(SHELVES.find((x) => x.id === room.daily.shelf) || {}).name || ''}`, shelf: room.daily.shelf }
+        : room.deckId ? { id: room.deckId, title: byId[room.deckId].title, shelf: byId[room.deckId].shelf } : null,
       host: me === room.host, me, hostName: room.players[room.host] ? room.players[room.host].name : 'The host',
       players: room.order.filter((p) => room.players[p]).map((p) => ({ pid: p, name: room.players[p].name, score: res.total[p] || 0, host: p === room.host })),
       n: live ? (room.pile || []).length : room.cards ? room.cards.length : 0, challenge: room.challenge || null, made: room.made || null,
       hand: handSize(room.order.filter((p) => room.players[p]).length),
+      daily: room.daily ? { board: room.daily.board, shelf: room.daily.shelf, official: !!room.daily.official, posted: !!room.daily.posted } : null,
       // your Cap Shield this game (lab players only): up until the first cap you tap, then used
       shield: me && room.players[me] && room.players[me].lab
         ? { up: room.players[me].shield === (room.game || 0) && room.players[me].shieldUsed !== (room.game || 0), used: room.players[me].shieldUsed === (room.game || 0) } : null,
@@ -291,6 +317,7 @@ export function createApi({ store, decks, verify, role = async () => null, clock
       const crew = !!(me && me.role);
       return { now, brew: BREW, role: me ? me.role : null, name: me ? me.name : null, canHost: canHost(me), decks: canHost(me) ? deckList(crew) : [] };
     }
+    if (path === '/rooms' && body.kind === 'daily') return openDaily(await who(body), String(body.shelf || ''), now);
     if (path === '/rooms') {
       const me = await who(body);
       if (!canHost(me)) fail(403, 'No Cap is still being tested in Capra’s Lab. Only the lab’s crew can start a game for now.');
@@ -319,6 +346,7 @@ export function createApi({ store, decks, verify, role = async () => null, clock
       const p = room.players[String(body.pid || '')];
       // a challenge run that ran out on the clock gets on the board the first time it's looked at
       if (room.kind === 'solo' && room.challenge && !room.posted && timeline(room, now).over) await recordTaker(room, now);
+      if (room.daily && room.daily.official && !room.daily.posted && timeline(room, now).over) await postDaily(room, now);
       return { room: view(room, p && p.tok === String(body.tok || '') ? String(body.pid) : null, now) };
     }
     if (op === '/join') {
@@ -423,6 +451,7 @@ export function createApi({ store, decks, verify, role = async () => null, clock
       }
       if (op === '/challenge') {
         if (room.kind !== 'solo' || !tl.over) fail(409, 'Finish the run first.');
+        if (room.daily) fail(409, 'Today’s ten can’t be a challenge link (it would give the day away).');
         if (room.made) return SKIP;
         room.made = rid(8);
         return;
@@ -431,7 +460,44 @@ export function createApi({ store, decks, verify, role = async () => null, clock
     });
     if (op === '/challenge' && room.made) await makeChallenge(room, now);
     if (room.kind === 'solo' && room.challenge && !room.posted && timeline(room, now).over) await recordTaker(room, now);
+    if (room.daily && room.daily.official && !room.daily.posted && timeline(room, now).over) await postDaily(room, now);
     return { room: view(room, me, now) };
+  }
+
+  /* ---------- today's challenge ---------- */
+  async function openDaily(me, shelf, now) {
+    if (!me) fail(401, 'Sign in to Capra Lab to play today’s challenge and get on the board.');
+    if (!SHELVES.some((x) => x.id === shelf)) fail(400, 'Pick a shelf.');
+    const board = `no-cap:${shelf}`, date = daily ? daily.today() : pacificDay(now);
+    const list = dailyCards(decks, shelf, date);
+    if (!list.length) fail(404, 'No decks on that shelf yet.');
+    const extra = (official) => ({ fixed: list, daily: { board, shelf, date, official } });
+    const key = `dly/${me.handle}/${shelf}/${date}`;
+    const mine = await store.get(key);
+    if (mine) {
+      // your official run: back where you left it; once it's over, another go is practice
+      const g = await store.get('r/' + mine.data.code);
+      const r = g && !expired(g.data, now) ? g.data : null;
+      if (r && r.players[mine.data.pid] && !timeline(r, now).over) return { ...mine.data, room: view(r, mine.data.pid, now) };
+      if (r && r.daily && r.daily.official && !r.daily.posted) await postDaily(r, now);
+      return newRoom('solo', list[0].d, me.name, me, now, extra(false));
+    }
+    const b = daily ? await daily.begin(board, me) : { first: true };
+    const out = await newRoom('solo', list[0].d, me.name, me, now, extra(!!b.first));
+    if (b.first) await store.set(key, { code: out.code, pid: out.pid, tok: out.tok }, { onlyIfNew: true });
+    return out;
+  }
+  // The official daily goes on the board once it's over: the points, then the time spent hunting.
+  async function postDaily(room, now) {
+    if (!daily) return;
+    const tl = timeline(room, now), res = results(room, now, tl), host = room.players[room.host];
+    if (!host || !host.lab) return;
+    const ms = tl.times.reduce((a, t) => a + Math.max(0, t.findEnd - t.findStart), 0);
+    try {
+      await daily.post(room.daily.board, { handle: host.lab, name: host.name }, res.total[room.host] || 0, ms, { marks: res.marks[room.host] }, room.daily.date);
+      await mutate(store, 'r/' + room.code, (r) => { if (r.daily.posted) return SKIP; r.daily.posted = true; });
+      room.daily.posted = true;
+    } catch (e) { console.error('no-cap daily', e); }
   }
 
   /* ---------- challenges ---------- */

@@ -32,6 +32,7 @@ import { createCards } from '../lab/cards.js';
 import { createWallet } from '../lab/wallet.js';
 import { createHandoff } from '../lab/handoff.js';
 import { createHeist } from '../lab/heist.js';
+import { createDaily } from '../lab/daily.js';
 import { memoryStore as casMemory } from '../lab/casstore.js';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'public');
@@ -57,6 +58,11 @@ const heistStore = casMemory();   // /api/heist/__peek?raid= shows a break-in wi
 const heist = createHeist({ store: heistStore, wallet, clock: () => Date.now() + heistOffset,
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; },
   lookup: async (h) => { const r = await profiles.get(h); return r && r.identity ? r.identity : null; } });
+// The daily challenge boards (/api/daily/*); /api/daily/__clock?add=ms moves their clock (local only)
+let dailyOffset = 0;
+const dailyStore = casMemory();
+const daily = createDaily({ store: dailyStore, wallet, clock: () => Date.now() + dailyOffset,
+  verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 const primal = createApi(memoryStore(), profiles);
 // Mind Heist checks lab keys against the same profiles, as its function does on Netlify
 const mhStore = mhMemory();
@@ -64,7 +70,7 @@ let mhOffset = 0; // moved by /mind-heist/__clock, so Mind Heist's browser tests
 const mh = mindHeist(mhStore, { clock: () => Date.now() + mhOffset, labCheck: async (name, code) => {
   const p = await profiles.verify(name, code);
   return p ? { name: p.name, handle: p.handle } : null;
-}, labRole: (handle) => crew.role(handle), cards, wallet });
+}, labRole: (handle) => crew.role(handle), cards, wallet, daily });
 
 // Goat Getaway pays amber and diamonds into the lab wallet; /goat-getaway/__clock?add=ms
 // moves its clock (local only) so a test can reach tomorrow's ribbon
@@ -84,7 +90,7 @@ const classified = classifiedApi({ store: classifiedMemory(), content: classifie
 
 // No Cap reads its decks straight from games/no-cap/decks/; /no-cap/__clock?add=ms moves its clock
 let noCapOffset = 0;
-const noCap = noCapApi({ store: noCapMemory(), decks: noCapDecks(path.join(ROOT, '..', 'games', 'no-cap')), role: (handle) => crew.role(handle), clock: () => Date.now() + noCapOffset, cards,
+const noCap = noCapApi({ store: noCapMemory(), decks: noCapDecks(path.join(ROOT, '..', 'games', 'no-cap')), role: (handle) => crew.role(handle), clock: () => Date.now() + noCapOffset, cards, daily,
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 
 const screensaver = screensaverApi({ store: screensaverMemory(), role: (handle) => crew.role(handle), cards, wallet,
@@ -177,6 +183,11 @@ http.createServer(async (req, res) => {
     res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify(r));
   }
   if (url.pathname.startsWith('/api/wallet/')) return toFunction(req, res, (r) => wallet.handle(r));
+  if (url.pathname === '/api/daily/__clock') {
+    dailyOffset += Number(url.searchParams.get('add') || 0);
+    res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: dailyOffset }));
+  }
+  if (url.pathname.startsWith('/api/daily/')) return toFunction(req, res, (r) => daily.handle(r));
   if (url.pathname === '/api/heist/__clock') {
     heistOffset += Number(url.searchParams.get('add') || 0);
     res.writeHead(200, { 'content-type': 'application/json' }); return res.end(JSON.stringify({ offset: heistOffset }));

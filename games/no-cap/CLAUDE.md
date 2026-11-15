@@ -58,6 +58,14 @@ as their lab name.
 - **Solo and challenges**: ten cards on your own (you read it yourself; tap Go for each card). At
   the end, **Challenge a friend** makes `/no-cap/c/<id>`: the same ten cards in the same order, and
   a board of everyone who took it.
+- **Today's ten** (JC, Nov 14 2026: "a daily challenge leaderboard... The most points the fastest wins"):
+  a card on home for lab players. Ten cards from the whole shelf, the same for everyone that day
+  (`dailyCards()` in `server/api.js`, seeded by shelf and date). `POST /rooms { kind: 'daily', shelf }`:
+  the first room opened is official and comes back if you leave (`dly/<handle>/<shelf>/<date>`); once
+  it's over it goes on Capra Lab's daily board `no-cap:<shelf>` (`lab/daily.js`, passed in as `daily`)
+  with its points and the time spent hunting, and later runs that day are practice. No challenge links
+  from a daily (they would give the day away). The final shows the board; home has the leader and a
+  🏆 Today's board button. The #1 at midnight (two or more players) gets a trophy and a diamond.
 - **Shelves by age** (JC: "Shelves by age"): Kids (elementary), Middle School, High School, Young
   Adults, three decks each: a time-warp deck, a history deck, a modern deck.
 
@@ -78,7 +86,7 @@ sources) into `server/decks.gen.mjs` (not committed), so caps never reach `publi
   `/pick` `/play` `/tap` `/go` `/again` `/remove` `/challenge`, `/challenges/:id` + `/play`). Where
   a game stands is worked out from what's stored: solo cards wait for Go (`timeline()`); with
   friends `draftLine()` replays the picks, plays and taps with their times, and a pick or play that
-  ran out its clock is the lowest card left, so nothing is written when a clock runs out. Store `no-cap`: `r/<CODE>` rooms (12 hours), `c/<id>` challenges.
+  ran out its clock is the lowest card left, so nothing is written when a clock runs out. Store `no-cap`: `r/<CODE>` rooms (12 hours), `c/<id>` challenges, `dly/<handle>/<shelf>/<date>` the seat in that day's official daily.
   `netlify/functions/no-cap.mjs` (`config.path` `/no-cap/api/*`).
 - `index.html`, `game.js`: home, deck picker, lobby, the draft, your hand, the card, the final
   with the results text, challenge links.

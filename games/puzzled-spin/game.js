@@ -73,6 +73,16 @@ function dailyState() {
   const st = store.get('ps.daily2', {});
   return st.day === day ? st : { day, tiers: {} };
 }
+async function paintLead() {
+  const el = $('boardLead');
+  el.textContent = '';
+  if (!window.CapraDaily) return;
+  const tier = prefs.tier;
+  const v = await CapraDaily.board(`puzzled-spin:${tier}`).catch(() => null);
+  if (!v || tier !== prefs.tier) return;
+  const top = v.list[0];
+  el.textContent = top ? `· ${top.name} leads, ${num(top.points)} pts` : '· nobody yet, be first!';
+}
 function paintHome() {
   const seg = $('tiers');
   seg.innerHTML = '';
@@ -91,6 +101,7 @@ function paintHome() {
   const no = dayNumber();
   const d = dailyState().tiers[t.id];
   $('dailySub').textContent = d ? `No. ${no} · done: ${num(d.score)} pts, ${d.solved}/${PER_RUN} pictures` : `No. ${no} · the same five for everyone`;
+  paintLead();
   const best = store.get('ps.best2', {})[t.id];
   $('bestLine').textContent = best ? `Your best ${t.name} run: ${num(best)} points.` : '';
   // the logo: a little kaleidoscope cut in four, one tile always spinning home
@@ -111,18 +122,21 @@ function startRun(kind) {
     if (d) { showResults({ ...d, kind: 'daily', tier, no, replay: true }); return; }
   }
   const base = (Math.random() * 2 ** 32) >>> 0;
-  run = { kind, tier, no, base, at: Date.now(), i: 0, score: 0, streak: 0, marks: [], solved: 0, pieces: [] };
+  run = { kind, tier, no, base, at: Date.now(), i: 0, score: 0, streak: 0, marks: [], solved: 0, pieces: [], answers: [] };
   if (kind === 'daily') {
     // a daily run counts once started: leaving it ends it
     const st = dailyState();
-    st.tiers[tier] = { score: 0, solved: 0, marks: [] };
+    st.tiers[tier] = { score: 0, solved: 0, marks: [], answers: [], started: !!window.CapraDaily };
     store.set('ps.daily2', st);
+    // today's board: the server starts the clock now and checks the pictures at the end
+    if (window.CapraDaily) CapraDaily.start(boardOf(tier));
   }
   show('play');
   $('backText').textContent = 'MENU';
   $('playBack').classList.remove('arm');
   startPuzzle();
 }
+const boardOf = (tier) => `puzzled-spin:${tier}`;
 const seedFor = (r, i) => (r.kind === 'daily' ? dailySeed(r.tier, r.no, i) : hash(`${r.base}:${i}`));
 
 function startPuzzle() {
@@ -334,6 +348,7 @@ function solvedPuzzle() {
   run.marks[run.i] = fast ? 'fast' : 'ok';
   run.streak = fast ? run.streak + 1 : 0;
   run.pieces[run.i] = { id: run.id, n: p.n, name: p.name, done: true };
+  run.answers[run.i] = { q: run.q.map((row) => row.slice()), left: Math.round(left * 1000) / 1000, pts };
   reveal();
   sfx.win();
   $('score').textContent = num(run.score);
@@ -353,6 +368,7 @@ function timeUp() {
   run.marks[run.i] = 'miss';
   run.streak = 0;
   run.pieces[run.i] = { id: run.id, n: p.n, name: p.name, done: false };
+  run.answers[run.i] = null;
   sfx.miss();
   paintMarks();
   paintStreak();
@@ -383,7 +399,8 @@ function between(title, pts, line) {
 function saveDailyProgress() {
   if (run.kind !== 'daily') return;
   const st = dailyState();
-  st.tiers[run.tier] = { score: run.score, solved: run.solved, marks: run.marks.slice() };
+  const was = st.tiers[run.tier] || {};
+  st.tiers[run.tier] = { score: run.score, solved: run.solved, marks: run.marks.slice(), answers: run.answers.slice(), started: !!was.started, posted: !!was.posted };
   store.set('ps.daily2', st);
 }
 
@@ -432,6 +449,10 @@ function showResults(res) {
     }
   } else if (bests[t.id]) bestLine = `Your best: ${num(bests[t.id])}`;
   $('resBest').textContent = bestLine;
+  // Today's board: the daily run goes on it once (the server checks every picture is whole).
+  const board = $('resBoard');
+  board.hidden = res.kind !== 'daily';
+  if (res.kind === 'daily') { board.setAttribute('board', boardOf(res.tier)); postBoard(res.tier); }
   // The results text, the same card in every Capra Lab game: ⚡ fast, 🟩 finished, 🟥 time ran out.
   const box = $('resShare');
   box.innerHTML = '';
@@ -446,7 +467,20 @@ function showResults(res) {
   show('results');
 }
 
+async function postBoard(tier) {
+  const d = dailyState().tiers[tier];
+  if (!window.CapraDaily || !d || !d.started || d.posted) return;
+  const answers = Array.from({ length: PER_RUN }, (_, i) => (d.answers && d.answers[i]) || null);
+  const v = await CapraDaily.finish(boardOf(tier), answers);
+  if (!v || v.error) return;
+  const st = dailyState();
+  if (st.tiers[tier]) { st.tiers[tier].posted = true; store.set('ps.daily2', st); }
+  const el = $('resBoard');
+  if (el.getAttribute('board') === v.board) el.show(v);
+}
+
 /* ---------- buttons ---------- */
+$('boardBtn').onclick = () => { if (window.CapraDaily) CapraDaily.open(boardOf(prefs.tier)); };
 $('dailyBtn').onclick = () => startRun('daily');
 $('practiceBtn').onclick = () => startRun('practice');
 $('againBtn').onclick = () => startRun('practice');

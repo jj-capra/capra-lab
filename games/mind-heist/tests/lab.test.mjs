@@ -257,3 +257,53 @@ test('the lab wallet: a linked profile’s diamonds (and Goat Getaway’s waitin
   assert.equal(again.me.gems, 6, 'moved once, not twice');
   assert.equal((await wallet.wallet('jj-capra')).diamonds, 6);
 });
+
+// Capra Lab's daily boards (lab/daily.js; JC, Nov 14 2026: "a daily challenge leaderboard"): a linked
+// profile's official daily goes on the 'mind-heist' board with its haul, timed from its first daily room.
+test('the official daily of a linked profile goes on the lab board; practice runs don’t', async () => {
+  const E = await import('../src/server/engine.mjs');
+  const { createDaily } = await import('../../../lab/daily.js');
+  let t = Date.parse('2026-11-14T18:00:00Z');
+  const daily = createDaily({ store: casMemory(), clock: () => t });
+  const store = memoryStore();
+  const labCheck = async (name, code) => { const p = LAB[String(name).toLowerCase()]; return p && p.code === code ? { name: p.name, handle: p.handle } : null; };
+  const h = makeHandler(store, { clock: () => t, labCheck, daily });
+  const call = async (method, path, body, who) => {
+    const headers = { 'content-type': 'application/json' };
+    if (who) headers.authorization = `Bearer ${who.pid}.${who.token}`;
+    const res = await h(new Request('https://x.test/api' + path, { method, headers, body: body ? JSON.stringify(body) : undefined }));
+    return { status: res.status, ...(await res.json()) };
+  };
+  const made = await call('POST', '/me/lab', { ...jj, create: true, avatar: '🦊' });
+  const who = { pid: made.pid, token: made.token };
+  const play = async (code, right) => {
+    let v = (await call('GET', `/rooms/${code}`, null, who)).room;
+    for (let n = 0; n < 12; n++) {
+      let c, r; outer: for (c = 0; c < 3; c++) for (r = 0; r < 4; r++) if (!v.board[c].tiles[r].taken) break outer;
+      v = (await call('POST', `/rooms/${code}/act`, { type: 'pick', c, r }, who)).room;
+      if (v.phase === 'intro') { t += E.INTRO_MS + 1; v = (await call('GET', `/rooms/${code}`, null, who)).room; }
+      t += 3000;
+      const tile = (await store.get('r/' + code)).data.board[c].tiles[r];
+      v = (await call('POST', `/rooms/${code}/act`, { type: 'lock', i: right ? tile.ans : (tile.ans + 1) % 4 }, who)).room;
+      v = (await call('POST', `/rooms/${code}/act`, { type: 'next' }, who)).room;
+    }
+    return v;
+  };
+  const home = await call('GET', '/home', null, who);
+  const opened = t;
+  const a = await call('POST', '/rooms', { kind: 'solo', deckId: home.today.id }, who);
+  const v = await play(a.code, true);
+  assert.equal(v.phase, 'final');
+  const board = v.results[made.pid].board;
+  assert.ok(board, 'the final carries the board');
+  assert.equal(board.list[0].name, 'JJ Capra');
+  assert.equal(board.list[0].points, v.crews[0].haul);
+  assert.equal(board.list[0].ms, t - opened, 'timed from the room it opened');
+  // a second run today is practice: the board keeps the first
+  const b = await call('POST', '/rooms', { kind: 'solo', deckId: home.today.id }, who);
+  const v2 = await play(b.code, false);
+  assert.equal(v2.results[made.pid].board, undefined);
+  const now = await daily.view('mind-heist');
+  assert.equal(now.of, 1);
+  assert.equal(now.list[0].points, v.crews[0].haul);
+});
