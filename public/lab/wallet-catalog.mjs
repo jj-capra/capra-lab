@@ -33,6 +33,7 @@ export const EARN = {
   'primal-survival': { name: 'Primal Survival', match: { amber: 25, why: 'a match' }, win: { shards: 1, why: 'a win' } },
   'three-clue-crew': { name: 'Three Clue Crew', game: { amber: 20, why: 'a game of ten' }, perfect: { shards: 1, why: 'a perfect ten' } },
   'puzzled-spin':    { name: 'Puzzled Spin', run: { amber: 20, why: 'a run of five' }, clear: { shards: 1, why: 'all five solved' } },
+  'send-it':         { name: 'Send It!', flight: { amber: 20, why: 'a flight off the pier' }, best: { shards: 1, why: 'a new best distance' } },
   // IRL pays more (JC, Nov 14 2026: "this earns more Amber and other loot"), with its own daily cap
   'irl':             { name: 'IRL', cap: { amber: 300, shards: 6 }, set: { amber: 40, why: 'a challenge' }, goal: { shards: 1, why: 'beat the goal' }, best: { shards: 1, why: 'a new personal best' } },
 };
@@ -45,7 +46,7 @@ export const FEATS = [
   { game: 'Screensaver', what: '#1 on the day’s board', pay: { diamonds: 1 } },
   { game: 'Par-Tee Time', what: 'Loot from a Masters Course', pay: { shards: 1 } },
   { game: 'Par-Tee Time', what: 'A Masters trophy (a course best held 7 days)', pay: { diamonds: 1 } },
-  { game: 'Daily boards', what: '#1 at midnight on a Three Clue Crew, Puzzled Spin, Mind Heist or No Cap board (plus a trophy)', pay: { diamonds: 1 } },
+  { game: 'Daily boards', what: '#1 at midnight on a Three Clue Crew, Puzzled Spin, Mind Heist, No Cap or Par-Tee Time board (plus a trophy)', pay: { diamonds: 1 } },
   { game: 'Trophy Room', what: 'Catch a raider in your trap house', pay: { amber: 15 } },
   { game: 'Trophy Room', what: 'Break into someone’s trophy room (plus a trophy or their loot)', pay: { shards: 2 } },
   { game: 'Glacial Maw', what: 'Everything you earn hunting (amber, Rift Shards, diamond gems)', pay: {} },

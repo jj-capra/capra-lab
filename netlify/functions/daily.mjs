@@ -9,7 +9,7 @@ import { blobStore, PROFILE_STORE } from '../../lab/stores.js';
 
 export default async function (req) {
   const profiles = createProfiles(await blobStore(PROFILE_STORE));
-  const verify = async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; };
+  const verify = async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle, hcp: p.hcp || 0 } : null; };   // hcp: the Daily 3's net
   const wallet = createWallet({ store: blobsStore(getStore, WALLET_STORE), verify });
   return createDaily({ store: blobsStore(getStore, STORE), wallet, verify }).handle(req);
 }

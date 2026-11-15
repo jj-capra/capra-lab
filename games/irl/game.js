@@ -2,7 +2,7 @@
    MediaPipe's pose model (run right on the phone from ./vendor and ./models, nothing sent anywhere),
    logic.mjs turns the body points into reps, holds, hits and dribbles, and the lab wallet pays.
    Tests set window.__irlFake before load and feed made-up bodies through window.__irl.feed(frame). */
-import { CHALLENGES, ORDER, COUNTERS, BONES, P, framing, shareRow, MIN_TO_PAY } from './logic.mjs';
+import { CHALLENGES, ORDER, COUNTERS, BONES, P, SILOS, framing, shareRow, MIN_TO_PAY } from './logic.mjs';
 
 const $ = (id) => document.getElementById(id);
 const FAKE = !!window.__irlFake;
@@ -44,6 +44,11 @@ const sfx = {
   slice: (n = 1) => { tone(2200, 0, 0.07, 'sawtooth', 0.025, 500); tone(380 * Math.pow(1.26, n), 0.03, 0.14, 'triangle', 0.1); },
   spicy: () => { tone(600, 0, 0.35, 'square', 0.06, 120); tone(90, 0.05, 0.3, 'sawtooth', 0.05); },
   thud: () => tone(120, 0, 0.12, 'sine', 0.06, 70),
+  // Silo Derby: the pitch's whoosh, the crack of the bat, the skee-ball clunk as it drops in
+  pitch: () => tone(900, 0, 0.32, 'sine', 0.03, 220),
+  crack: (p = 1) => { tone(2400, 0, 0.04, 'square', 0.09, 900); tone(160 + p * 120, 0, 0.12, 'sawtooth', 0.08, 60); },
+  drop: (pts = 10) => { tone(140, 0, 0.09, 'square', 0.07, 80); tone(pts >= 100 ? 1320 : pts >= 50 ? 990 : 660, 0.08, 0.22, 'triangle', 0.09); if (pts >= 100) tone(1760, 0.2, 0.3, 'triangle', 0.08); },
+  strike: () => { tone(330, 0, 0.12, 'square', 0.05); tone(220, 0.12, 0.25, 'square', 0.05); },
 };
 function say(text) {
   if (!prefs.sound || !('speechSynthesis' in window) || !text) return;
@@ -142,6 +147,7 @@ function draw(f) {
   const color = S ? CHALLENGES[S.kind].color : '#FFD23F';
   const lm = f && f.lm;
   if (S && S.kind === 'keeper') drawGoal(b);
+  if (S && S.kind === 'derby' && S.counter) drawSilos(b, f ? f.t : performance.now());
   if (lm) {
     const ok = (i) => lm[i] && (lm[i].visibility == null || lm[i].visibility > 0.45);
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
@@ -173,6 +179,82 @@ function draw(f) {
   }
   if (S && S.phase === 'live' && S.kind === 'keeper') drawBall(b, f ? f.t : performance.now());
   if (S && S.phase === 'live' && S.kind === 'avocado') { drawTrails(b, f); drawAvocados(b, f ? f.t : performance.now()); }
+  if (S && S.phase === 'live' && S.kind === 'derby') { drawBat(b, f); drawPitch(b, f ? f.t : performance.now()); drawFlyers(b, f ? f.t : performance.now()); }
+}
+// Silo Derby: a row of grain silos across the top of the picture, the back row big (100, 50, 100), the
+// front row smaller (10, 20, 30, 20, 10); a silo glows when a ball drops in.
+function drawSilos(b, t) {
+  for (const sl of S.counter.silos) {
+    const [x, y] = toScreen(b, sl), r = sl.r * b.dh, w = r * 1.5, h = r * 2.1, hot = S.lit && S.lit[sl.i] && t - S.lit[sl.i] < 650;
+    const body = sl.pts >= 100 ? '#E8322E' : sl.pts >= 50 ? '#3D7BFF' : sl.pts >= 30 ? '#5BE38A' : sl.pts >= 20 ? '#B79CFF' : '#29D3F0';
+    ctx.save(); ctx.translate(x, y); ctx.globalAlpha = 0.94;
+    if (hot) { ctx.beginPath(); ctx.arc(0, h * 0.2, w * 1.25, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,214,63,0.45)'; ctx.fill(); }
+    ctx.lineWidth = 3.5; ctx.strokeStyle = '#120E18'; ctx.lineJoin = 'round';
+    // the silo: a tin barrel with a dome, bands, and the hole at the top the ball drops into
+    ctx.beginPath(); ctx.rect(-w / 2, -h * 0.15, w, h); ctx.fillStyle = body; ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = 'rgba(18,14,24,0.45)'; ctx.lineWidth = 2;
+    for (const k of [0.25, 0.55]) { ctx.beginPath(); ctx.moveTo(-w / 2, -h * 0.15 + h * k); ctx.lineTo(w / 2, -h * 0.15 + h * k); ctx.stroke(); }
+    ctx.lineWidth = 3.5; ctx.strokeStyle = '#120E18';
+    ctx.beginPath(); ctx.moveTo(-w / 2, -h * 0.15); ctx.quadraticCurveTo(0, -h * 0.75, w / 2, -h * 0.15); ctx.closePath(); ctx.fillStyle = '#C9C2D6'; ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(0, -h * 0.32, w * 0.24, w * 0.09, 0, 0, Math.PI * 2); ctx.fillStyle = '#120E18'; ctx.fill();
+    // the points, big on the barrel
+    ctx.font = `${Math.round(r * (sl.pts >= 100 ? 0.95 : 1.05))}px Bangers, Impact, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.lineWidth = 4; ctx.strokeStyle = '#120E18'; ctx.strokeText(String(sl.pts), 0, h * 0.42); ctx.fillStyle = '#FFF8EC'; ctx.fillText(String(sl.pts), 0, h * 0.42);
+    ctx.restore();
+  }
+}
+// The bat: from the hands out along the forearm, a fat comic bat (and a swoosh when it's moving fast).
+function drawBat(b, f) {
+  const lm = f && f.lm; if (!lm) return;
+  const ok = (i) => lm[i] && (lm[i].visibility == null || lm[i].visibility > 0.45);
+  const hands = [P.LW, P.RW].filter(ok); if (!hands.length) return;
+  const hx = hands.reduce((a, i) => a + lm[i].x, 0) / hands.length, hy = hands.reduce((a, i) => a + lm[i].y, 0) / hands.length;
+  // point the bat away from the elbows (both arms together, like a grip)
+  const els = [[P.LE, P.LW], [P.RE, P.RW]].filter(([e, w]) => ok(e) && ok(w));
+  let dx = 0, dy = -1;
+  if (els.length) { dx = els.reduce((a, [e, w]) => a + (lm[w].x - lm[e].x) * b.dw, 0); dy = els.reduce((a, [e, w]) => a + (lm[w].y - lm[e].y) * b.dh, 0); if (mirrored()) dx = -dx; }
+  const d = Math.hypot(dx, dy) || 1, L = b.dh * 0.26;
+  const [x0, y0] = toScreen(b, { x: hx, y: hy }), x1 = x0 + (dx / d) * L, y1 = y0 + (dy / d) * L;
+  S.batPath ||= [];
+  S.batPath.push({ x: x1, y: y1, t: f.t }); while (S.batPath.length && f.t - S.batPath[0].t > 140) S.batPath.shift();
+  if (S.batPath.length > 2) {
+    ctx.beginPath(); S.batPath.forEach((q, j) => (j ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y)));
+    ctx.lineWidth = 16; ctx.lineCap = 'round'; ctx.strokeStyle = 'rgba(255,248,236,0.28)'; ctx.stroke();
+  }
+  ctx.save(); ctx.translate(x0, y0); ctx.rotate(Math.atan2(dy, dx));
+  ctx.beginPath(); ctx.moveTo(-8, -4); ctx.lineTo(L * 0.45, -5); ctx.quadraticCurveTo(L * 0.8, -11, L, -10); ctx.quadraticCurveTo(L + 9, 0, L, 10); ctx.quadraticCurveTo(L * 0.8, 11, L * 0.45, 5); ctx.lineTo(-8, 4); ctx.closePath();
+  ctx.fillStyle = '#C98A4B'; ctx.fill(); ctx.lineWidth = 3.5; ctx.strokeStyle = '#120E18'; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(L * 0.5, -3); ctx.lineTo(L * 0.92, -6); ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(255,248,236,0.55)'; ctx.stroke();
+  ctx.beginPath(); ctx.arc(-9, 0, 6, 0, Math.PI * 2); ctx.fillStyle = '#120E18'; ctx.fill();
+  ctx.restore();
+}
+function baseball(x, y, r, spin) {
+  ctx.save(); ctx.translate(x, y); ctx.rotate(spin);
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fillStyle = '#FFF8EC'; ctx.fill();
+  ctx.lineWidth = Math.max(1.5, r * 0.09); ctx.strokeStyle = '#E8322E';
+  ctx.beginPath(); ctx.arc(-r * 1.25, 0, r * 0.85, -0.75, 0.75); ctx.stroke();                     // the two red seams
+  ctx.beginPath(); ctx.arc(r * 1.25, 0, r * 0.85, Math.PI - 0.75, Math.PI + 0.75); ctx.stroke();
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.lineWidth = Math.max(2, r * 0.1); ctx.strokeStyle = '#120E18'; ctx.stroke();
+  ctx.restore();
+}
+function drawPitch(b, t) {
+  const ball = S.counter.ball(t); if (!ball) return;
+  const [x, y] = toScreen(b, ball), r = Math.max(4, ball.r * b.dh);
+  const [fx, fy] = toScreen(b, S.counter.pitch.from), dx = x - fx, dy = y - fy, d = Math.hypot(dx, dy) || 1;
+  ctx.save(); ctx.strokeStyle = 'rgba(255,248,236,0.5)'; ctx.lineCap = 'round';
+  for (const k of [-0.5, 0, 0.5]) { const ox = (-dy / d) * r * k, oy = (dx / d) * r * k; ctx.lineWidth = Math.max(2, r * 0.16); ctx.beginPath(); ctx.moveTo(x - (dx / d) * r * 1.2 + ox, y - (dy / d) * r * 1.2 + oy); ctx.lineTo(x - (dx / d) * r * 2.6 + ox, y - (dy / d) * r * 2.6 + oy); ctx.stroke(); }
+  // the sweet spot: a ring that tightens onto the ball as it arrives
+  if (ball.p > 0.55 && ball.p < 1.15) { ctx.beginPath(); ctx.arc(x, y, r + 6 + Math.max(0, 1 - ball.p) * 40, 0, Math.PI * 2); ctx.lineWidth = 5; ctx.strokeStyle = ball.p >= 0.85 ? '#5BE38A' : '#FFD23F'; ctx.stroke(); }
+  ctx.restore();
+  baseball(x, y, r, t / 70);
+}
+function drawFlyers(b, t) {
+  for (const fl of S.counter.flyers) {
+    const p = S.counter.flyer(fl, t);
+    if (p.u >= 1) continue;
+    const [x, y] = toScreen(b, p);
+    baseball(x, y, Math.max(4, p.r * b.dh), t / 50);
+  }
 }
 // Goalkeeper: the goal frame around the picture (posts, crossbar, a faint net) and the ball coming in.
 function drawGoal(b) {
@@ -365,6 +447,12 @@ function handle(f) {
     if (S.kind === 'targets') { sfx.smash(); pop(r.combo >= 3 ? `x${r.combo}!` : 'SMASH!', r.hit); }
     else if (S.kind === 'keeper') { sfx.save(); pop(r.streak >= 3 ? `${r.streak} IN A ROW!` : 'SAVE!', r.save); if (S.score % 5 === 0) say(`${S.score} saves`); }
     else if (S.kind === 'avocado') { /* each cut pops its own points below */ }
+    else if (S.kind === 'derby') {
+      const h = r.hit, sl = S.counter.silos[h.silo];
+      sfx.crack(h.power); pop(h.row === 0 ? 'CRACK!' : 'POP!', h.from);
+      setTimeout(() => { if (!S || S.kind !== 'derby') return; (S.lit ||= {})[h.silo] = performance.now(); sfx.drop(h.pts); pop(`+${h.pts}`, sl); if (h.pts >= 100) flashCam(); }, 760);
+      if (h.pts >= 100) say('Corner pocket!');
+    }
     else { sfx.rep(); pop(S.kind === 'dribble' ? 'BOUNCE!' : r.say && r.say !== 'Nice!' ? r.say.toUpperCase() : 'REP!'); }
     if (S.kind === 'squat' || S.kind === 'pushup') say(String(S.score));
     else if (S.kind === 'dribble' && S.score % 10 === 0) say(String(S.score));
@@ -373,6 +461,13 @@ function handle(f) {
   if (S.kind === 'keeper') {
     if (r.shot) sfx.kick();
     if (r.goal) { sfx.goal(); pop('GOAL!', r.goal); flashCam(); $('count').textContent = String(S.counter.score); }
+  }
+  if (S.kind === 'derby') {
+    if (r.pitch) sfx.pitch();
+    if (r.strike) { sfx.strike(); pop('STRIKE!', S.lastBallAt); }
+    if (r.foul) { sfx.miss(); pop('FOUL!', r.foul); }
+    if (r.grounder) { sfx.thud(); pop('GROUNDER', r.grounder); }
+    const bl = S.counter.ball(f.t); if (bl) S.lastBallAt = { x: bl.x, y: bl.y };
   }
   if (S.kind === 'avocado') {
     for (const e of r.events || []) {
@@ -397,6 +492,34 @@ function targetBounds(r = 0.075, yMax = 0.68) {
   const mx = Math.min(0.2, (r * 1.05 * b.dh + 14) / b.dw);   // the whole ring stays on screen
   return { x0: mx, x1: 1 - mx, y0: Math.min(y0, 0.4), y1: Math.max(y1, Math.min(y0, 0.4) + 0.15) };
 }
+// Silo Derby's silos, kept above the player and clear of the score and the clock: the back row (100,
+// 50, 100) in the gap between those two at the top of the picture, the front row (10 to 30) just under them.
+function derbyLayout() {
+  const b = box(), cam = $('cam').getBoundingClientRect();
+  const L = $('hud').querySelector('.count').getBoundingClientRect(), R = $('clockBox').getBoundingClientRect();
+  // screen spots first (0..1 across the picture as it shows), then into the picture's own x (mirrored
+  // for the front camera), so a silo lands where it was measured
+  const y = (p) => (p - cam.top - b.oy) / b.dh, sx = (p) => (p - cam.left - b.ox) / b.dw, px = (v) => (mirrored() ? 1 - v : v);
+  const lRight = L.left + Math.max(L.width, 124);            // the score box grows to four digits
+  const gapPx = R.left - lRight - 12, rf = 0.042;
+  let rb = Math.min(0.05, gapPx / 3.6 / 1.5 / b.dh);
+  const hudY = y(Math.max(L.bottom, R.bottom) + 8);
+  let back, fy;
+  if (rb >= 0.036) {
+    // room between the score and the clock: the back row up there, the front row just under them
+    const half = (rb * 1.5 * b.dh) / 2 / b.dw, top = Math.max(0.005, y(cam.top + 4)) + rb * 1.6;
+    const gapL = sx(lRight + 6) + half, gapR = sx(R.left - 6) - half, mid = (gapL + gapR) / 2, spread = Math.max(0, (gapR - gapL) / 2);
+    back = (lane) => ({ x: px(mid + lane * spread), y: top, r: rb });
+    fy = Math.max(hudY, top + rb * 3.4) + rf * 1.6;
+  } else {
+    // a narrow phone: both rows under the score and the clock
+    rb = 0.045;
+    const top = hudY + rb * 1.6;
+    back = (lane) => ({ x: px(0.5 + lane * 0.3), y: top, r: rb });
+    fy = top + rb * 1.8 + rf * 1.6;
+  }
+  return SILOS.map(({ row, lane }) => (row ? { x: px(0.5 + lane * 0.19), y: fy, r: rf } : back(lane)));
+}
 function countdown() {
   S.phase = 'count';
   coach('Get ready!', 'ok');
@@ -417,8 +540,9 @@ function go() {
   S.counter = S.kind === 'wallsit' ? COUNTERS.wallsit(C.secs)
     : S.kind === 'targets' ? COUNTERS.targets({ bounds: targetBounds() })
     : S.kind === 'keeper' ? COUNTERS.keeper({ bounds: targetBounds(0.075, 0.9) })
+    : S.kind === 'derby' ? COUNTERS.derby({ bounds: targetBounds(0.06, 0.9), layout: derbyLayout() })
     : COUNTERS[S.kind]();
-  S.trails = null;
+  S.trails = null; S.batPath = null; S.lit = null;
   $('count').textContent = scoreText(S.kind, 0);
   $('clock').textContent = S.kind === 'wallsit' ? fmt(C.goal) : fmt(C.secs);
   $('clockBox').classList.remove('low');
@@ -459,7 +583,7 @@ async function finish() {
   $('resCard').innerHTML = `<p class="kick">${C.emoji} ${esc(C.name)}${kind === 'wallsit' ? '' : ` · ${C.secs} seconds`}</p>
     <p class="big">${esc(scoreText(kind, score))}<small>${kind === 'wallsit' ? 'HELD' : esc((score === 1 ? C.unit : C.units).toUpperCase())}</small></p>
     ${newBest ? '<span class="burst gold">NEW PERSONAL BEST!</span>' : beat ? '<span class="burst">GOAL SMASHED!</span>' : ''}
-    <p class="stats"><span>🎯 Goal ${esc(scoreText(kind, C.goal))}</span><span>🏆 Best ${prev == null && !newBest ? '–' : esc(scoreText(kind, Math.max(prev ?? 0, newBest ? score : 0)))}</span>${kind === 'targets' ? `<span>💥 Best combo ${S.counter.best}</span><span>Missed ${S.counter.misses}</span>` : ''}${kind === 'keeper' ? `<span>🥅 Let in ${S.counter.goals}</span><span>🔥 Best streak ${S.counter.best}</span>` : ''}${kind === 'avocado' ? `<span>🔪 ${S.counter.cuts} cuts</span><span>🥑 Most on one ${S.counter.most}</span>${S.counter.spicy ? `<span>🌶️ ${S.counter.spicy}</span>` : ''}<span>Dropped ${S.counter.dropped}</span>` : ''}</p>
+    <p class="stats"><span>🎯 Goal ${esc(scoreText(kind, C.goal))}</span><span>🏆 Best ${prev == null && !newBest ? '–' : esc(scoreText(kind, Math.max(prev ?? 0, newBest ? score : 0)))}</span>${kind === 'targets' ? `<span>💥 Best combo ${S.counter.best}</span><span>Missed ${S.counter.misses}</span>` : ''}${kind === 'keeper' ? `<span>🥅 Let in ${S.counter.goals}</span><span>🔥 Best streak ${S.counter.best}</span>` : ''}${kind === 'derby' ? `<span>⚾ ${S.counter.hits} hits</span><span>🚀 ${S.counter.homers} deep</span><span>🔥 Best streak ${S.counter.best}</span><span>Strikes ${S.counter.strikes}</span>` : ''}${kind === 'avocado' ? `<span>🔪 ${S.counter.cuts} cuts</span><span>🥑 Most on one ${S.counter.most}</span>${S.counter.spicy ? `<span>🌶️ ${S.counter.spicy}</span>` : ''}<span>Dropped ${S.counter.dropped}</span>` : ''}</p>
     <p class="paid" id="paidLine"></p>`;
   show('results');
   const shareText = window.CapraShare ? CapraShare.text({ emoji: '💪', game: 'IRL', sub: C.name,
@@ -506,4 +630,4 @@ document.addEventListener('visibilitychange', () => {
 window.__irl = { feed: (f) => handle({ aspect: 0.75, ...f, t: f.t ?? performance.now() }), state: () => S, open: openChallenge, finish };
 
 renderHome();
-if (/^#(squat|pushup|wallsit|targets|dribble|keeper|avocado)$/.test(location.hash)) openChallenge(location.hash.slice(1));
+if (/^#(squat|pushup|wallsit|targets|dribble|keeper|avocado|derby)$/.test(location.hash)) openChallenge(location.hash.slice(1));

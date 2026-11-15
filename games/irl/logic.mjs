@@ -56,9 +56,17 @@ export const CHALLENGES = {
     setup: 'Phone at chest height 5 to 7 feet away, facing you, so it sees you from head to waist with room to swing.',
     how: 'Avocados fly up in front of you. Swipe your hands through them fast. The first cut on an avocado is 1 point, then 3, 9, 27 and 81 for each cut on the same one before it falls. Don’t chop the chili peppers.',
   },
+  // JC, Nov 14 2026: "a baseball game where you swing at rapid balls and you are hitting them into silos
+  // with different point values. Like a home run derby but more like skeeball"
+  derby: {
+    name: 'Silo Derby', emoji: '⚾', secs: 60, goal: 300, unit: 'point', units: 'points', color: '#FFB627',
+    blurb: 'Crush pitches into the silos. Skee-ball scoring.',
+    setup: 'Phone at chest height 7 to 9 feet away, facing you, so it sees you from head to knees with room to swing.',
+    how: 'Pitches come right at you, faster and faster. Swing your hands through like you’re holding a bat as the ball gets to you. Swing hard to reach the back silos (100 in the corners, 50 in the middle); a softer hit lands in the front row (10 to 30). Swing early to pull it into a corner, late to go the other way.',
+  },
 };
-export const ORDER = ['squat', 'pushup', 'wallsit', 'targets', 'dribble', 'keeper', 'avocado'];
-export const MIN_TO_PAY = { squat: 3, pushup: 3, wallsit: 10, targets: 3, dribble: 10, keeper: 3, avocado: 10 };
+export const ORDER = ['squat', 'pushup', 'wallsit', 'targets', 'dribble', 'keeper', 'avocado', 'derby'];
+export const MIN_TO_PAY = { squat: 3, pushup: 3, wallsit: 10, targets: 3, dribble: 10, keeper: 3, avocado: 10, derby: 30 };
 
 const seen = (p, min = 0.5) => !!p && (p.visibility == null || p.visibility >= min);
 // The angle at b (degrees). With 3D points (MediaPipe's world landmarks, in meters) it's the true
@@ -99,7 +107,7 @@ export function framing(kind, lm) {
   if (!lm) return { ok: false, say: 'Step into the picture' };
   const any = (ids) => ids.some((i) => seen(lm[i], 0.6));
   if (!any([P.LS, P.RS])) return { ok: false, say: 'We can’t see your shoulders' };
-  if (kind === 'targets' || kind === 'keeper' || kind === 'avocado') return any([P.LW, P.RW]) ? { ok: true, say: 'Ready' } : { ok: false, say: 'Show us your hands' };
+  if (kind === 'targets' || kind === 'keeper' || kind === 'avocado' || kind === 'derby') return any([P.LW, P.RW]) ? { ok: true, say: 'Ready' } : { ok: false, say: 'Show us your hands' };
   if (kind === 'dribble') {
     if (!any([P.LH, P.RH])) return { ok: false, say: 'Step back: we can’t see your hips' };
     return any([P.LW, P.RW]) ? { ok: true, say: 'Ready' } : { ok: false, say: 'Show us your dribbling hand' };
@@ -426,7 +434,116 @@ export function avocados({ rand = Math.random, gravity = 1.5, chili = 0.12 } = {
   };
 }
 
-export const COUNTERS = { squat: squats, pushup: pushups, wallsit, targets, dribble: dribbles, keeper, avocado: avocados };
+// Silo Derby: a home run derby scored like skee-ball. The phone is the pitcher: each pitch leaves from
+// right in front of the phone (big, at the bottom of the picture) and comes in to the player's belt,
+// shrinking, quicker as the game goes on. A swing is the hands sweeping sideways fast (the middle of the
+// wrists and fingers, 1.2 picture-heights a second or more) between the head and the knees; the swing's
+// moment is its fastest frame. Swinging within `win` ms of the ball arriving is contact:
+//   - power is the swing's speed (full at 2.8) times how close the timing was (55% to 100%);
+//   - the direction is the timing: early pulls the ball the way the hands were going, late sends it the
+//     other way, right on time is the middle; at the very edge of the window it's a foul;
+//   - a strong hit (power 0.6 or more) carries to the back row: 100 in the corners, 50 in the middle;
+//     a softer one drops into the front row: 10, 20, 30 in the middle, 20, 10; a weak one is a grounder.
+// A pitch with no swing, or a swing out of the window, is a strike. Silos sit across the top of the
+// picture inside `bounds`; a hit flies to its silo (`flyers`) and drops in. A swing long before the
+// ball gets there (more than 2.5 windows early: getting set, or the hands coming back) doesn't count.
+export const SILOS = [
+  { row: 0, lane: -1, pts: 100 }, { row: 0, lane: 0, pts: 50 }, { row: 0, lane: 1, pts: 100 },
+  { row: 1, lane: -2, pts: 10 }, { row: 1, lane: -1, pts: 20 }, { row: 1, lane: 0, pts: 30 }, { row: 1, lane: 1, pts: 20 }, { row: 1, lane: 2, pts: 10 },
+];
+export const SWING = { min: 1.2, full: 2.8, back: 0.6, grounder: 0.12, foul: 0.92 };
+export function derby({ rand = Math.random, flight = 1300, gap = 900, win = 230, bounds = { x0: 0.08, x1: 0.92, y0: 0.1, y1: 0.86 }, layout = null } = {}) {
+  let points = 0, hits = 0, homers = 0, strikes = 0, fouls = 0, streak = 0, best = 0, pitch = null, next = 700, n = 0, swing = null, cool = 0;
+  const hist = [], flyers = [];
+  const mid = (bounds.x0 + bounds.x1) / 2, w = bounds.x1 - bounds.x0;
+  // where the silos stand: `layout` (the page fits them around its score and clock), else a default
+  const silos = SILOS.map((s, i) => ({ ...s, i, x: mid + s.lane * w * (s.row ? 0.19 : 0.34), y: bounds.y0 + (s.row ? 0.12 : 0.02), r: s.row ? 0.042 : 0.05, ...(layout && layout[i] ? layout[i] : {}) }));
+  const R0 = 0.16, R1 = 0.05, FLY = 750;
+  const handPts = (lm) => [P.LW, P.RW, P.LI, P.RI].map((i) => lm[i]).filter((p) => seen(p, 0.45));
+  function throwIt(lm, t) {
+    const b = frame(lm);
+    n++;
+    const zone = { x: clampIn(b.cx, bounds.x0, bounds.x1), y: clampIn((b.shY + b.hipY) / 2 + 0.03 + (rand() - 0.5) * 0.06, bounds.y0 + 0.2, bounds.y1) };
+    const dur = Math.max(700, flight - n * 25) * (0.85 + rand() * 0.3);
+    pitch = { id: n, born: t, dur, arrive: t + dur, kind: dur < 850 ? 'heater' : dur > 1150 ? 'changeup' : 'fastball', from: { x: 0.5 + (zone.x - 0.5) * 0.3, y: 1.08 }, to: zone };
+  }
+  function at(pc, t) {
+    const p = (t - pc.born) / pc.dur, q = Math.min(1.25, Math.max(0, p)), e = 1 - (1 - Math.min(1, q)) ** 1.6;
+    return { x: pc.from.x + (pc.to.x - pc.from.x) * e, y: pc.from.y + (pc.to.y - pc.from.y) * e - Math.max(0, q - 1) * 0.3, r: R1 + (R0 - R1) * (1 - Math.min(1, q)) ** 2, p };
+  }
+  function flyerAt(fl, t) {
+    const u = Math.min(1, (t - fl.born) / FLY), h = 0.18 + (fl.row ? 0 : 0.12);
+    return { x: fl.from.x + (fl.to.x - fl.from.x) * u, y: fl.from.y + (fl.to.y - fl.from.y) * u - h * 4 * u * (1 - u), r: 0.05 - 0.022 * u, u };
+  }
+  // contact: where the ball goes, from the swing's speed, direction and timing
+  function contact(sw, t) {
+    const dt = sw.t - pitch.arrive, q = 1 - Math.abs(dt) / win;
+    const pull = clampIn(-dt / (win * 0.8), -1, 1), d = Math.sign(sw.vx) * pull;
+    const power = clampIn((sw.speed - SWING.min) / (SWING.full - SWING.min), 0, 1) * (0.55 + 0.45 * q);
+    const ball = at(pitch, sw.t), from = { x: ball.x, y: ball.y };
+    pitch = null; next = t + Math.max(500, gap - n * 15);
+    if (Math.abs(-dt / win) > SWING.foul) { fouls++; streak = 0; return { foul: from, say: dt < 0 ? 'Foul! A hair early' : 'Foul! A hair late' }; }
+    if (power < SWING.grounder) { streak = 0; return { grounder: from, say: 'Grounder. Swing harder!' }; }
+    const row = power >= SWING.back ? 0 : 1;
+    const lane = row === 0 ? (d < -0.4 ? -1 : d > 0.4 ? 1 : 0) : clampIn(Math.round(d * 2.4), -2, 2);
+    const silo = silos.find((s) => s.row === row && s.lane === lane);
+    points += silo.pts; hits++; streak++; best = Math.max(best, streak);
+    if (row === 0) homers++;
+    const fl = { id: n, from, to: { x: silo.x, y: silo.y }, born: t, silo: silo.i, row, pts: silo.pts };
+    flyers.push(fl);
+    return { rep: true, hit: { ...fl, power, timing: q, dir: d }, say: silo.pts === 100 ? 'CORNER POCKET! 100' : row === 0 ? 'DEEP! 50' : silo.pts === 30 ? 'Line drive! 30' : `Base hit, ${silo.pts}` };
+  }
+  return {
+    get score() { return points; },
+    get hits() { return hits; },
+    get homers() { return homers; },
+    get strikes() { return strikes; },
+    get fouls() { return fouls; },
+    get best() { return best; },
+    get pitch() { return pitch; },
+    get flyers() { return flyers; },
+    silos,
+    ball(t) { return pitch ? at(pitch, t) : null; },
+    flyer(fl, t) { return flyerAt(fl, t); },
+    update(f) {
+      const lm = f.lm || [], t = f.t, aspect = f.aspect || 1;
+      for (let i = flyers.length - 1; i >= 0; i--) if (t - flyers[i].born > FLY + 500) flyers.splice(i, 1);
+      // the hands: where they are, and how fast they're going sideways
+      const hs = handPts(lm), b = frame(lm);
+      let out = null;
+      if (hs.length) {
+        const hx = hs.reduce((a, p) => a + p.x, 0) / hs.length, hy = hs.reduce((a, p) => a + p.y, 0) / hs.length;
+        hist.push({ x: hx, y: hy, t });
+        while (hist.length && t - hist[0].t > 160) hist.shift();
+        let o = hist[0];
+        for (let i = hist.length - 1; i >= 0; i--) if (t - hist[i].t >= 60) { o = hist[i]; break; }   // the newest point 60 ms back
+        const vx = o && t > o.t ? ((hx - o.x) * aspect) / ((t - o.t) / 1000) : 0;
+        const inZone = hy > b.headY - 0.05 && hy < b.kneeY + 0.05;
+        if (!swing && t >= cool && inZone && Math.abs(vx) >= SWING.min) swing = { t, speed: Math.abs(vx), vx, start: t };
+        else if (swing) {
+          if (Math.abs(vx) > swing.speed && Math.sign(vx) === Math.sign(swing.vx)) { swing.speed = Math.abs(vx); swing.t = t; swing.vx = vx; }
+          if (Math.abs(vx) < SWING.min * 0.5 || t - swing.start > 160 || Math.sign(vx) !== Math.sign(swing.vx)) {
+            const sw = swing; swing = null; cool = t + 450;
+            if (pitch) {
+              const dt = sw.t - pitch.arrive;
+              if (Math.abs(dt) <= win) out = contact(sw, t);
+              else if (dt < -win && dt > -win * 2.5) { strikes++; streak = 0; pitch = null; next = t + Math.max(550, gap - n * 15); out = { strike: true, early: true, say: 'Strike! Way early' }; }
+            }
+          }
+        }
+      } else { hist.length = 0; swing = null; }
+      if (out) return out;
+      if (!pitch) { if (t >= next) { throwIt(lm, t); return { pitch: true, say: 'Here’s the pitch!' }; } return { say: streak >= 3 ? `${streak} hits in a row!` : 'Batter up' }; }
+      if (t - pitch.arrive > win && !swing) {
+        strikes++; streak = 0; pitch = null; next = t + Math.max(550, gap - n * 15);
+        return { strike: true, say: 'Strike! Swing at it' };
+      }
+      return { say: at(pitch, t).p > 0.7 ? 'SWING!' : 'Here it comes…' };
+    },
+  };
+}
+
+export const COUNTERS = { squat: squats, pushup: pushups, wallsit, targets, dribble: dribbles, keeper, avocado: avocados, derby };
 
 // The results text's row: ten squares filled by how much of the goal you got (⚡ on a new best).
 export function shareRow(score, goal, best = false) {

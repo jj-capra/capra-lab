@@ -10,8 +10,9 @@
    Games without a server time and post their runs through window.CapraDaily:
      await CapraDaily.start(board)            today's official run starts (the first call starts the clock)
      await CapraDaily.finish(board, answers)  → the board, with { points, ms }; null for a guest
+     await CapraDaily.golf(scores, open)      Par-Tee Time's Daily 3: the strokes so far, hole by hole
    Games with a server post their own (lab/daily.js begin/post). */
-import { BOARDS, fmtPoints, fmtMs, WIN_MIN } from './daily-boards.mjs';
+import { BOARDS, fmtPoints, fmtMs, WIN_MIN, ruleOf } from './daily-boards.mjs';
 
 const me = () => { try { const p = JSON.parse(localStorage.getItem('capra-lab.profile') || 'null'); return p && p.name && p.code ? p : null; } catch { return null; } };
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -28,6 +29,13 @@ const CapraDaily = {
     if (!me()) return null;
     try { const v = await post('finish', { board, answers }); window.dispatchEvent(new CustomEvent('capra-daily:posted', { detail: v })); return v; }
     catch (e) { return { error: e.message, code: e.code }; }
+  },
+  // Par-Tee Time's Daily 3: post the strokes so far (and say which hole is opening); the server keeps
+  // them, and the third posts the round.  → { golf: { holes, scores, opened, hcp, left }, view? }
+  async golf(scores, open = null) {
+    if (!me()) return null;
+    try { const v = await post('golf', { board: 'par-tee-time', scores, open }); if (v.view) window.dispatchEvent(new CustomEvent('capra-daily:posted', { detail: v.view })); return v; }
+    catch (e) { return { error: e.message, code: e.code, status: e.status }; }
   },
   async board(board) {
     if (me()) { try { return await post('board', { board }); } catch { /* a bad key: fall back to the public board */ } }
@@ -79,13 +87,13 @@ class LabDailyBoard extends HTMLElement {
     this.shadowRoot.innerHTML = `<style>${CSS}</style><div class="c" role="region" aria-label="Today's board">
       <div class="top"><h3>🏆 TODAY’S BOARD</h3><span class="sub">${esc(b.emoji)} ${esc(b.variant)}</span></div>
       ${rows}${mine}${y}
-      <p class="rule">Most points wins; a tie goes to the faster run. Your first run of the day counts. At midnight the #1 takes a trophy for their trophy room and a 💎${WIN_MIN > 1 ? ` (when ${WIN_MIN} or more played)` : ''}.</p></div>`;
+      <p class="rule">${esc(ruleOf(id, WIN_MIN))}</p></div>`;
   }
 }
 if (!customElements.get('lab-daily-board')) customElements.define('lab-daily-board', LabDailyBoard);
 
 // <lab-daily-today>: every board's leader right now, for the hub (dark panel). Each row opens its game.
-const GAME_URL = { 'three-clue-crew': '/three-clue-crew/', 'puzzled-spin': '/puzzled-spin/', 'mind-heist': '/mind-heist/', 'no-cap': '/no-cap/' };
+const GAME_URL = { 'three-clue-crew': '/three-clue-crew/', 'puzzled-spin': '/puzzled-spin/', 'mind-heist': '/mind-heist/', 'no-cap': '/no-cap/', 'par-tee-time': '/par-tee-time/' };
 const TODAY_CSS = `
   :host { display: block; font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif; color: #FFF8EC; }
   ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }

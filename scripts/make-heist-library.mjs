@@ -32,10 +32,16 @@ const holes = HOLE_DEFS.filter((d) => TOUGH.includes(d.course) && d.par >= 3).ma
   return { id: d.id, name: d.name, par: d.par, course: c.name, tag: c.tag, theme: d.theme };
 });
 
+// Every hole, for Par-Tee Time's Daily 3 (lab/daily.js deals three a day, one from each third of the
+// courses): id, name, par, theme and the course's place in the order (ci, 0 easiest to 7 hardest).
+const golf = HOLE_DEFS.map((d) => ({ id: d.id, name: d.name, par: d.par, theme: d.theme, ci: COURSE_SETS.findIndex((x) => x.id === d.course) }));
+
 const out = `// Made by scripts/make-heist-library.mjs; don't edit by hand. The trap house's library: hard Mind Heist
-// questions (TRIVIA: q, o options, a answer, c category, d deck, v value) and tough Par-Tee Time holes (HOLES).
+// questions (TRIVIA: q, o options, a answer, c category, d deck, v value) and tough Par-Tee Time holes (HOLES);
+// every Par-Tee Time hole for the Daily 3 (GOLF: id, name, par, theme, ci the course's place, easiest first).
 export const TRIVIA = ${JSON.stringify(trivia)};
 export const HOLES = ${JSON.stringify(holes, null, 0).replace(/},{/g, '},\n  {')};
+export const GOLF = ${JSON.stringify(golf, null, 0).replace(/},{/g, '},\n  {')};
 `;
 writeFileSync(new URL('lab/heist-library.mjs', root), out);
-console.log(`${trivia.length} hard questions, ${holes.length} tough holes`);
+console.log(`${trivia.length} hard questions, ${holes.length} tough holes, ${golf.length} holes in all`);

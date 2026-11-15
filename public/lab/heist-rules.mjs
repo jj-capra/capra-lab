@@ -57,7 +57,7 @@ export function lootOf(w) {
 // diamonds over from Mind Heist's store.
 export function trophyKind(t) {
   const g = t && t.game;
-  if (g === 'par-tee-time') return 'masters';
+  if (g === 'par-tee-time') return /^#1 on /.test(String(t.why || '')) ? 'golf' : 'masters';   // the Daily 3's #1, or a Masters
   if (g === 'goat-getaway') return 'goat';
   if (g === 'screensaver') return 'screen';
   if (g === 'mind-heist') return 'brain';

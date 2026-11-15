@@ -162,6 +162,14 @@ button, input { font-family: var(--ui); }
 .logo .hat { position: absolute; width: .56em; left: -.06em; top: -.5em; transform: rotate(-16deg); }
 .tag { text-align: center; margin: 4px auto 0; max-width: 34ch; font-size: 16px; line-height: 1.4; color: var(--pale); text-wrap: balance; }
 .menu { display: flex; flex-direction: column; gap: 12px; }
+/* the Daily 3 (Nov 14 2026): three holes a day on Capra Lab's daily board */
+.btn.daily { background: linear-gradient(135deg, var(--gold-tint), var(--gold) 70%); }
+.btn.daily .dtop { display: inline-flex; align-items: center; gap: 8px; }
+.btn.daily .dno { font-style: normal; font-family: var(--sfx); font-size: 14px; letter-spacing: .08em; padding: 1px 7px; border: 2px solid var(--ink); border-radius: 6px; background: var(--ink); color: var(--gold); }
+.btn.daily .dno:empty { display: none; }
+.boardlink { align-self: flex-start; display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px; min-height: 44px; margin-top: -4px; padding: 7px 14px; border-radius: 999px; border: 3px solid var(--ink); background: var(--night-2); color: var(--cream); font: 600 15px/1.2 var(--ui); box-shadow: 3px 3px 0 var(--ink); cursor: pointer; text-align: left; }
+.boardlink small { font-size: 13px; font-weight: 500; color: var(--pale); }
+#finalBoard { margin: 12px 0 4px; }
 .howto { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .howto .panel { padding: 10px; box-shadow: 4px 4px 0 var(--ink); }
 .howto .panel::after { inset: 4px; }
@@ -377,6 +385,8 @@ table.card td.tot { font-weight: 700; }
     </h1>
     <p class="tag">Comic-book mini golf with pool-table geometry. Nine wild holes. Talk smack with a friend online.</p>
     <div class="menu">
+      <button class="btn big daily" id="goDaily"><span class="dtop">Daily 3 <i class="dno" id="dailyNo"></i></span><small id="dailySub">Three holes, the same for everyone today</small></button>
+      <button class="boardlink" id="goDailyBoard" type="button">🏆 <span>Today&rsquo;s board</span> <small id="dailyLead"></small></button>
       <button class="btn big coral" id="goNpc">Play a hustler<small>Rookie, Hustler or Shark NPC</small></button>
       <button class="btn big sky" id="goLocal">Pass &amp; play<small>A friend on this device</small></button>
       <button class="btn big gold" id="goOnline">Online with a friend<small>Join each other by a four-letter code</small></button>
@@ -631,6 +641,7 @@ table.card td.tot { font-weight: 700; }
     <p class="winner" id="finalWin">WINNER!</p>
     <p class="final-sub" id="finalSub"></p>
     <div class="tablewrap"><table class="card" id="finalTable"></table></div>
+    <lab-daily-board id="finalBoard" hidden></lab-daily-board>
     <div class="quip" id="finalQuip" hidden></div>
     <div class="confirm" id="finalPost" hidden>
       <span id="finalPostTxt"></span>
@@ -3432,8 +3443,9 @@ function startMatch(cfg) {
   G.token++;
   G.mode = cfg.mode; G.matchId = cfg.id || String(Date.now());
   G.players = cfg.players.map((p, i) => Object.assign({ seat: i, scores: [] }, p));
-  G.holes = cfg.holes; G.hi = 0; G.shotN = 0; G.chatLog = []; G.cfg = cfg; G.paused = false; G.cardFromMenu = false;
-  ['#scrTitle', '#scrSetup', '#scrOnline', '#scrMasters', '#scrBuild', '#scrCourse', '#mdFinal', '#mdCard', '#mdMenu'].forEach(s => show($(s), false));
+  if (Array.isArray(cfg.scores)) G.players[0].scores = cfg.scores.slice();   // a Daily 3 coming back: the holes already in
+  G.holes = cfg.holes; G.hi = Math.min(cfg.holes.length - 1, cfg.startAt || 0); G.shotN = 0; G.chatLog = []; G.cfg = cfg; G.paused = false; G.cardFromMenu = false;
+  ['#scrTitle', '#scrSetup', '#scrOnline', '#scrMasters', '#scrBuild', '#scrCourse', '#mdFinal', '#mdCard', '#mdMenu', '#finalBoard'].forEach(s => show($(s), false));
   show($('#hud')); show($('#controls')); show($('#chatbar'), false);
   $('#hud').classList.toggle('solo', G.players.length < 2);   // a Masters round: one player, no opponent
   $('#bcol0').innerHTML = ''; $('#bcol1').innerHTML = '';
@@ -3468,6 +3480,7 @@ function startHole() {
   if (solo) caption(`HOLE ${G.hi + 1} OF ${G.holes.length} · ${courseById(def.course).name.toUpperCase()} · PAR ${def.par}`, def.name, def.blurb, 3000);
   else caption(`${courseById(def.course).name.toUpperCase()} · HOLE ${def.pos + 1} · PAR ${def.par}`, def.name, def.blurb, 3000);
   setHint('<b>' + esc(def.name) + '</b>');
+  if (dailyOfficial()) dailyOpen(G.hi);
   setTimeout(() => { if (tok === G.token) beginTurn(); }, 1500);
 }
 function teeUp(s) {
@@ -4525,6 +4538,7 @@ function resolveShot() {
 }
 function holeOver() {
   if (G.mode === 'solo' && G.cfg.masters && G.cfg.masters.kind === 'trap') return trapHoleDone();
+  if (dailyOfficial() && G.hi < G.holes.length - 1) CapraDaily.golf(G.players[0].scores.slice(0, G.hi + 1), null);   // the hole's in (the last posts from the final)
   G.state = 'holeover';
   // The card is the hole's card now, even if it was open as the menu's scorecard: online the game
   // plays on behind the menu, and a hole that ended under the scorecard used to leave "Next hole"
@@ -4561,7 +4575,7 @@ function advanceHole() {
   G.hi++; startHole();
 }
 function finalCard() {
-  if (G.mode === 'solo') return mastersFinal();
+  if (G.mode === 'solo') return G.cfg.masters && G.cfg.masters.kind === 'daily' ? dailyFinal() : mastersFinal();
   G.state = 'final'; G.token++;
   show($('#mdCard'), false);
   const a = relPar(0), b = relPar(1), net = useNet();
@@ -4614,6 +4628,7 @@ function quitToTitle() {
   ['#hud', '#controls', '#chatbar', '#mdCard', '#mdMenu', '#mdFinal', '#scrSetup', '#scrOnline', '#scrMasters', '#scrBuild', '#scrCourse', '#caption'].forEach(s => show($(s), false));
   $('#bcol0').innerHTML = ''; $('#bcol1').innerHTML = '';
   show($('#scrTitle'));
+  paintDaily();
   setBackdropHole(); G.balls = []; RD.statKey = '';
   requestAnimationFrame(() => rdResize($('#cv')));
 }
@@ -5469,6 +5484,7 @@ function startSolo(kind, tryId) {
 function leaveSolo() {
   const m = G.cfg && G.cfg.masters; if (!m) return quitToTitle();
   if (m.kind === 'trap') return trapWalkOut();
+  if (m.kind === 'daily') { quitToTitle(); if (m.official && G.state !== 'final') toast('Your Daily 3 is saved hole by hole. Come back to finish it.', 3600); return; }
   const burn = m.kind === 'try' && G.state !== 'final' ? MS.tryId : '';
   MS.tryId = '';
   quitToTitle();
@@ -5618,9 +5634,126 @@ function bindMasters() {
     const c = MS.course; if (!c) return;
     try { await mPost('remove', { id: c.id }); MS.cab = null; openMasters(); } catch (e) { setMStatus($('#mcStatus'), e.message, true); }
   });
-  $('#finalRetry').addEventListener('click', () => { au(); $('#finalWin').textContent = 'POSTING…'; postTry(); });
+  $('#finalRetry').addEventListener('click', () => { au(); $('#finalWin').textContent = 'POSTING…'; if (G.cfg && G.cfg.masters && G.cfg.masters.kind === 'daily') dailyPost(); else postTry(); });
 }
 // A challenge link (/par-tee-time/#m=<id>) opens its course page; so does coming back from signing in.
+/* ---------------- the Daily 3 (Nov 14 2026) ----------------
+   JC: "Par-Tee Time needs a daily three hole challenge with a leaderboard and trophy too". Capra Lab's
+   daily boards (lab/daily.js, /lab/daily.js) deal three holes a day, the same for everyone: one from the
+   easy courses, one from the middle, one from the hard. A signed-in player's first round of the day is
+   official: the clock starts on the first tee, each hole is saved on the server as it's finished (leave
+   and come back, on any phone, and the round picks up at the next hole; a hole left part way goes down as
+   double par), and the third posts it: net of the handicap, to par, fewest wins, ties to the faster round.
+   The #1 at midnight (two or more on the board) takes a trophy and a diamond. Later rounds, and guests,
+   play it as practice. */
+const D_BOARD = 'par-tee-time';
+const DAILY = { deal: null, busy: false };
+const dailyOfficial = () => !!(G.mode === 'solo' && G.cfg && G.cfg.masters && G.cfg.masters.kind === 'daily' && G.cfg.masters.official);
+async function paintDaily() {
+  if (!window.CapraDaily) return;
+  const v = await CapraDaily.board(D_BOARD).catch(() => null);
+  if (!v || !v.deal) return;
+  DAILY.deal = v.deal;
+  $('#dailyNo').textContent = 'NO. ' + v.deal.no;
+  const mine = v.me && v.me.rank ? v.me : null, top = v.list[0];
+  $('#dailySub').textContent = mine ? `Done: ${relTxt(mine.points)} net · #${mine.rank} of ${v.of} today · play it again for fun`
+    : v.me && v.me.started ? 'Pick up where you left off'
+    : `${v.deal.holes.map(h => h.name).join(' · ')} · par ${v.deal.par}`;
+  $('#dailyLead').textContent = top ? `· ${top.name} leads at ${relTxt(top.points)}` : '· nobody yet, be first!';
+}
+async function startDaily() {
+  if (DAILY.busy || !window.CapraDaily) return;
+  DAILY.busy = true;
+  try {
+    let deal = null, scores = [], official = false, hcp = 0;
+    if (signedIn()) {
+      const st = await CapraDaily.start(D_BOARD);
+      if (st && st.golf) { deal = { no: st.golf.no, holes: st.golf.holes, par: st.golf.par }; official = !st.golf.done; scores = official ? st.golf.scores : []; hcp = st.golf.hcp || 0; }
+    }
+    if (!deal) { const v = await CapraDaily.board(D_BOARD).catch(() => null); deal = v && v.deal; }
+    if (!deal) throw new Error('Today’s holes didn’t load. Check your signal and try again.');
+    const idx = deal.holes.map(h => HOLE_DEFS.findIndex(d => d.id === h.id));
+    if (idx.some(i => i < 0)) throw new Error('Today’s holes need the newest Par-Tee Time. Reload the page.');
+    DAILY.deal = deal;
+    const lab = labMe(), name = cleanName(lab ? lab.name : PREF.p1.name) || 'You';
+    sfx.ui();
+    startMatch({ mode: 'solo', holes: idx, players: [{ name, color: PREF.p1.color, hcp }], courseKey: 'daily', scores, startAt: scores.length,
+      masters: { kind: 'daily', id: '', name: `Daily 3 · No. ${deal.no}`, best: null, hcp, official, no: deal.no } });
+    if (!official) toast(signedIn() ? 'Practice: your first round today is the one on the board.' : 'Practice: sign in to Capra Lab to get on the board.', 3800);
+    else if (scores.length) toast(`Back on the tee: hole ${scores.length + 1} of 3.`, 2600);
+  } catch (e) { toast(e.message, 3600); }
+  finally { DAILY.busy = false; }
+}
+// A hole of the official round is opening: the server keeps what's done; if it already has this hole
+// (left part way earlier, or played on another phone), the round moves on to the next.
+async function dailyOpen(k) {
+  const mid = G.matchId;
+  const r = await CapraDaily.golf(G.players[0].scores.slice(0, k), k);
+  if (!r || r.error || !r.golf || G.matchId !== mid || G.hi !== k || G.state === 'final') return;   // offline: the final posts it all
+  const sc = r.golf.scores;
+  if (r.golf.done && !r.view) return;
+  if (sc.length <= k) return;
+  G.players[0].scores = sc.slice();
+  if (r.golf.left === k) toast(`You left hole ${k + 1} part way, so it went down as double par (${sc[k]}).`, 4600);
+  G.token++;
+  if (sc.length >= G.holes.length) return finalCard();
+  G.hi = sc.length; startHole();
+}
+function dailyFinal() {
+  G.state = 'final'; G.token++;
+  show($('#mdCard'), false);
+  const m = G.cfg.masters, p = G.players[0], r = relPar(0), st = strokesFor(m.hcp, G.holes.length);
+  if (window.CapraWallet) CapraWallet.earn('par-tee-time', 'round', 'daily:' + m.no + ':' + (m.official ? 'board' : G.roundAt));
+  buildCard($('#finalTable'));
+  show($('#finalQuip'), false); show($('#finalPost'), false); $('#finalShare').innerHTML = '';
+  $('#finalWin').textContent = m.official ? 'POSTING…' : 'PRACTICE DONE';
+  $('#finalSub').textContent = `${p.name} · ${r.sc} (${relTxt(r.rel)})${st ? ` · net ${r.sc - st} (${relTxt(r.rel - st)})` : ''}${m.official ? '' : ' · practice never counts'}`;
+  const again = $('#finalAgain'); again.disabled = false; again.textContent = 'Play it again';
+  $('#finalHome').textContent = 'Home';
+  const b = $('#finalBoard');
+  if (b.getAttribute('board') !== D_BOARD) b.setAttribute('board', D_BOARD);
+  show(b);
+  show($('#mdFinal'));
+  dailyPost();
+}
+async function dailyPost() {
+  const m = G.cfg.masters, p = G.players[0], mid = G.matchId;
+  show($('#finalPost'), false);
+  let view = null;
+  if (m.official) {
+    const res = await CapraDaily.golf(p.scores.slice(0, G.holes.length), null);
+    if (G.matchId !== mid || G.state !== 'final') return;
+    if (res && res.view) view = res.view;
+    else if (res && res.error && (!res.status || res.status >= 500 || res.status === 429)) {
+      $('#finalWin').textContent = 'NOT POSTED YET';
+      $('#finalPostTxt').textContent = res.error + ' Your holes are saved on the server as you finished them.';
+      show($('#finalPost'));
+    } else if (res && res.error) { $('#finalWin').textContent = 'NOT COUNTED'; $('#finalSub').textContent = res.error; }
+  }
+  if (!view) view = await CapraDaily.board(D_BOARD).catch(() => null);
+  if (G.matchId !== mid || G.state !== 'final') return;
+  const mine = m.official && view && view.me && view.me.rank ? view.me : null;
+  if (mine) {
+    $('#finalWin').textContent = mine.rank === 1 ? 'TOP OF THE BOARD!' : `#${mine.rank} TODAY`;
+    if (mine.rank === 1) { impactFrame('TOP OF\nTHE BOARD!'); sfx.cheer(); }
+  }
+  if (view) $('#finalBoard').show(view);
+  dailyShare(mine, view);
+}
+// The results text (the lab's group-chat card): the round to par (and net), where it stands today, and a
+// mark a hole (⚡ hole in one, 🟩 under par, 🟨 par, 🟥 over).
+function dailyShare(mine, view) {
+  const box = $('#finalShare'); box.innerHTML = '';
+  if (!window.CapraShare) return;
+  const m = G.cfg.masters, p = G.players[0], r = relPar(0), st = strokesFor(m.hcp, G.holes.length);
+  const row = G.holes.map((h, k) => { const v = p.scores[k]; if (v == null) return '⬛'; const d = v - HOLE_DEFS[h].par; return v === 1 ? '⚡' : d < 0 ? '🟩' : d > 0 ? '🟥' : '🟨'; }).join('');
+  const lines = [`${mine && mine.rank === 1 ? '👑 ' : ''}${p.name} ${r.sc} (${relTxt(r.rel)})${st ? ` · net ${relTxt(r.rel - st)}` : ''}`];
+  if (mine && view) lines.push(`#${mine.rank} of ${view.of} on today’s board`); else if (!m.official) lines.push('Practice round');
+  const text = CapraShare.text({ emoji: '⛳', game: 'Par-Tee Time', no: m.no, sub: 'Daily 3', lines, grid: [row] });
+  box.innerHTML = '<lab-text-share></lab-text-share>';
+  box.firstChild.set({ emoji: '⛳', title: 'Par-Tee Time', text, url: location.origin + '/par-tee-time/' });
+}
+
 /* ---------------- the trap house (Nov 14 2026) ----------------
    A golf trap in someone's trophy room (/trophy-room/, lab/heist.js): the trophy room links here with
    #trap=<raid>; the hole plays as a one-hole solo round, scratch, no mulligans; the strokes go to
@@ -5716,9 +5849,12 @@ function openMenu() {
   segment($('#menuCamSeg'), CAM_OPTS, PREF.cam, v => { PREF.cam = v; savePrefs(); });
   const tryRound = G.mode === 'solo' && G.cfg.masters && G.cfg.masters.kind === 'try';
   const trapRound = G.mode === 'solo' && G.cfg.masters && G.cfg.masters.kind === 'trap';
-  $('#menuQuit').textContent = trapRound ? 'Walk out of the trap' : G.mode === 'solo' ? 'Quit to the course' : 'Quit to title';
-  $('#quitTxt').textContent = trapRound ? 'Walk out? The alarm goes off and you’re caught.' : tryRound ? 'Quit this try? It still counts as one of your three.' : G.mode === 'solo' ? 'Quit this practice round? Practice never counts.' : 'Quit this round? Scores for this round are lost.';
-  $('#quitYes').textContent = trapRound ? 'Walk out' : tryRound ? 'Burn the try' : 'Quit round';
+  const dailyRound = G.mode === 'solo' && G.cfg.masters && G.cfg.masters.kind === 'daily', official = dailyOfficial();
+  $('#menuQuit').textContent = trapRound ? 'Walk out of the trap' : dailyRound ? 'Leave the Daily 3' : G.mode === 'solo' ? 'Quit to the course' : 'Quit to title';
+  $('#quitTxt').textContent = trapRound ? 'Walk out? The alarm goes off and you’re caught.' : tryRound ? 'Quit this try? It still counts as one of your three.'
+    : official ? 'Leave now? The holes you finished are saved. This one goes down as double par when you come back.'
+    : G.mode === 'solo' ? 'Quit this practice round? Practice never counts.' : 'Quit this round? Scores for this round are lost.';
+  $('#quitYes').textContent = trapRound ? 'Walk out' : tryRound ? 'Burn the try' : official ? 'Leave' : 'Quit round';
   show($('#mdMenu'));
   setTimeout(() => $('#menuResume').focus(), 30);
 }
@@ -5730,6 +5866,8 @@ function bindUI() {
   $('#goLocal').addEventListener('click', () => { au(); sfx.ui(); openSetup('local'); });
   $('#goOnline').addEventListener('click', () => { au(); sfx.ui(); openOnline(); });
   $('#goMasters').addEventListener('click', () => { au(); sfx.ui(); openMasters(); });
+  $('#goDaily').addEventListener('click', () => { au(); startDaily(); });
+  $('#goDailyBoard').addEventListener('click', () => { sfx.ui(); if (window.CapraDaily) CapraDaily.open(D_BOARD); });
   bindMasters();
   $('#setupBack').addEventListener('click', () => { show($('#scrSetup'), false); show($('#scrTitle')); });
   $('#teeOff').addEventListener('click', teeOff);
@@ -5766,6 +5904,7 @@ function bindUI() {
     if (TRAP.over) { location.href = '/trophy-room/#raid=' + TRAP.id; return; }   // a golf trap: back to the trap house
     if (G.mode === 'online') { if (NET.seat === 0) netHostStart(); return; }
     if (G.mode === 'solo' && G.cfg.masters.kind === 'try') return leaveSolo();   // a try: back to the course page
+    if (G.mode === 'solo' && G.cfg.masters.kind === 'daily') return startDaily();  // another go at today's three (practice)
     startMatch(Object.assign({}, G.cfg, { players: G.cfg.players }));          // practice runs it back for free
   });
   $('#finalHome').addEventListener('click', () => { if (TRAP.over) { TRAP.over = false; return quitToTitle(); } if (G.mode === 'solo' && G.cfg.masters.kind === 'practice') leaveSolo(); else quitToTitle(); });
@@ -5801,10 +5940,11 @@ function boot() {
   requestAnimationFrame(frame);
   netInit();
   mastersInit();
+  paintDaily();
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 
-window.__partee = { G, RD, NET, PREF, CAM, ROT, camPredict, HOLE_DEFS, compileHole, buildNav, makePlanner, pickShot, SKILLS, newBall, cloneBall, makeWorld, applyShot, runToRest, startMatch, advanceHole, doShot, resolveShot, humanShoot, sendChat, netHostStart, startOnlineMatch, quitToTitle, holeThumb, COURSE_SETS, NPCS, MS, mastersOrder, openCourse, openMasters, leaveSolo, holeOver, TRAP };
+window.__partee = { G, RD, NET, PREF, CAM, ROT, camPredict, HOLE_DEFS, compileHole, buildNav, makePlanner, pickShot, SKILLS, newBall, cloneBall, makeWorld, applyShot, runToRest, startMatch, advanceHole, doShot, resolveShot, humanShoot, sendChat, netHostStart, startOnlineMatch, quitToTitle, holeThumb, COURSE_SETS, NPCS, MS, mastersOrder, openCourse, openMasters, leaveSolo, holeOver, TRAP, DAILY, startDaily };
 
 })();
 </script>
@@ -5814,4 +5954,5 @@ window.__partee = { G, RD, NET, PREF, CAM, ROT, camPredict, HOLE_DEFS, compileHo
 <script src="/lab/card-offer.js" type="module"></script>
 <script src="/lab/wallet.js" type="module"></script>
 <script src="/lab/handicap.js" type="module"></script>
+<script src="/lab/daily.js" type="module"></script>
 </body></html>

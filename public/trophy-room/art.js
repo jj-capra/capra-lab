@@ -74,6 +74,15 @@ export function trophySvg(kind, { stolen = false, size = '' } = {}) {
       <path d="M45 62h10v17h-10Z" fill="url(#${g})" stroke="${INK}" stroke-width="3"/>
       <path d="M36 79h28l3 9H33Z" fill="url(#${g})" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
       ${shine('M31 22c-3 4-4 9-3 14')}`;
+  } else if (kind === 'golf') {
+    // Par-Tee Time's Daily 3: a golf ball on a gold tee, the pin beside it
+    const dimples = [[38, 28], [46, 25], [54, 28], [34, 36], [42, 34], [50, 34], [58, 36], [38, 44], [46, 42], [54, 44]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.1" fill="#D6CCBE"/>`).join('');
+    body = `<path d="M74 86V8" stroke="${INK}" stroke-width="2.8"/><path d="M74 8l-17 5.5 17 5.5Z" fill="#FF3D5A" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M34 56h24l-6 7h-12Z" fill="url(#${g})" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M43 63h6l-1 16h-4Z" fill="url(#${g})" stroke="${INK}" stroke-width="2.8" stroke-linejoin="round"/>
+      <circle cx="46" cy="35" r="21" fill="#FFF8EC" stroke="${INK}" stroke-width="3.2"/>${dimples}
+      <path d="M33 25c-4 4-5 10-3 15" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+      <path d="M36 79h28l3 9H33Z" fill="url(#${g})" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`;
   } else if (kind === 'cap') {
     // No Cap: a gold cap under the red no-cap ring
     body = `<path d="M26 46c0-20 11-31 25-31s24 10 25 27l-1 4Z" fill="url(#${g})" stroke="${INK}" stroke-width="3.2" stroke-linejoin="round"/>
@@ -90,7 +99,7 @@ export function trophySvg(kind, { stolen = false, size = '' } = {}) {
   }
   const tag = stolen ? `<g transform="rotate(-12 50 60)"><rect x="14" y="52" width="72" height="16" rx="2" fill="#FF3D3D" stroke="${INK}" stroke-width="2.6"/><text x="50" y="64.5" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="13" fill="#fff" letter-spacing="1.5">STOLEN</text></g>` : '';
   const sz = size ? ` width="${size}" height="${Math.round(size * 1.2)}"` : '';
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120"${sz} aria-hidden="true"><defs>${GOLD(g)}</defs>${body}${plinth(kind === 'masters' ? 'MASTERS' : kind === 'goat' ? 'AT PAR' : kind === 'screen' ? 'HIGH SCORE' : ['clues', 'spin', 'cap'].includes(kind) ? 'DAILY #1' : '')}${tag}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120"${sz} aria-hidden="true"><defs>${GOLD(g)}</defs>${body}${plinth(kind === 'masters' ? 'MASTERS' : kind === 'goat' ? 'AT PAR' : kind === 'screen' ? 'HIGH SCORE' : ['clues', 'spin', 'cap', 'golf'].includes(kind) ? 'DAILY #1' : '')}${tag}</svg>`;
 }
 
 /* ---------- the treasure trove's pieces (shared with the selfie) ---------- */

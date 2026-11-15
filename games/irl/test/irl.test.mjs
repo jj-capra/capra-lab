@@ -1,6 +1,6 @@
 // IRL: the counters, fed made-up bodies (no camera here).  node games/irl/test/irl.test.mjs
 import assert from 'node:assert/strict';
-import { P, CHALLENGES, ORDER, COUNTERS, squats, pushups, wallsit, dribbles, targets, keeper, avocados, CUT_POINTS, framing, shareRow, angle, MIN_TO_PAY } from '../logic.mjs';
+import { P, CHALLENGES, ORDER, COUNTERS, squats, pushups, wallsit, dribbles, targets, keeper, avocados, derby, SILOS, CUT_POINTS, framing, shareRow, angle, MIN_TO_PAY } from '../logic.mjs';
 
 let passed = 0;
 const test = (name, fn) => { fn(); passed++; console.log('ok  ', name); };
@@ -13,8 +13,8 @@ function cycle(make, from, to, frames = 20) {
   return out;
 }
 
-test('the challenges: seven, each with a goal, a clock and setup words', () => {
-  assert.deepEqual(ORDER, ['squat', 'pushup', 'wallsit', 'targets', 'dribble', 'keeper', 'avocado']);
+test('the challenges: eight, each with a goal, a clock and setup words', () => {
+  assert.deepEqual(ORDER, ['squat', 'pushup', 'wallsit', 'targets', 'dribble', 'keeper', 'avocado', 'derby']);
   for (const k of ORDER) {
     const c = CHALLENGES[k];
     assert.ok(c.name && c.emoji && c.secs > 0 && c.goal > 0 && c.setup && c.how, k);
@@ -184,6 +184,79 @@ test('avocado chop: a fast swipe cuts, every cut on the same one triples, chilis
   const d = avocados({ rand, chili: 0 });
   for (let tt = 0; tt < 6000; tt += 33) d.update(frame(null, null, tt));
   assert.ok(d.dropped >= 2, `dropped ${d.dropped}`);
+});
+
+test('silo derby: timing aims the hit, swing speed carries it, skee-ball points', () => {
+  assert.deepEqual(SILOS.map((x) => x.pts), [100, 50, 100, 10, 20, 30, 20, 10]);
+  let seed = 3; const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const g = derby({ rand });
+  const base = squatter(178, 'front');
+  const beltY = (base.lm[P.LS].y + base.lm[P.LH].y) / 2;
+  const frame = (x, t) => {
+    const lm = base.lm.map((p) => ({ ...p }));
+    for (const i of [P.LW, P.RW, P.LI, P.RI]) lm[i] = { ...lm[i], x, y: beltY, visibility: 0.95 };
+    return { lm, aspect: ASPECT, t };
+  };
+  let t = 0;
+  const idle = () => { const r = g.update(frame(0.3, t)); t += 16; return r; };
+  // swing: the hands sweep from x0 to x1 in `dur` ms, fastest around `at`
+  const swing = (at, x0, x1, dur = 100) => {
+    const out = [];
+    while (t < at + 400) {
+      const u = Math.max(0, Math.min(1, (t - (at - dur * 0.7)) / dur));
+      const r = g.update(frame(x0 + (x1 - x0) * u, t)); t += 16;
+      if (r.hit || r.strike || r.foul || r.grounder) out.push(r);
+      if (out.length) break;
+    }
+    return out[0] || {};
+  };
+  const nextPitch = () => { while (!g.pitch) idle(); return g.pitch; };
+  // on time and hard: the middle of the back row
+  let pc = nextPitch();
+  assert.ok(pc.to.y > 0.3 && pc.from.y > 1, 'it comes from the phone to the belt');
+  let r = swing(pc.arrive, 0.3, 0.75);
+  assert.ok(r.hit, 'contact'); assert.equal(r.hit.row, 0); assert.equal(r.hit.pts, 50);
+  // early and hard, hands going right: pulled into the right corner (100)
+  pc = nextPitch();
+  r = swing(pc.arrive - 130, 0.3, 0.75);
+  assert.equal(r.hit && r.hit.pts, 100); assert.ok(g.silos[r.hit.silo].lane === 1);
+  // late and hard, hands going right: the other way, the left corner
+  pc = nextPitch();
+  r = swing(pc.arrive + 130, 0.3, 0.75);
+  assert.equal(r.hit && r.hit.pts, 100); assert.ok(g.silos[r.hit.silo].lane === -1);
+  // a soft swing on time: the front row's 30
+  pc = nextPitch();
+  r = swing(pc.arrive, 0.35, 0.65, 110);
+  assert.ok(r.hit, 'soft contact'); assert.equal(r.hit.row, 1); assert.equal(r.hit.pts, 30);
+  assert.equal(g.score, 280); assert.equal(g.homers, 3); assert.equal(g.best, 4);
+  // way early: a strike; no swing at all: a strike
+  pc = nextPitch();
+  r = swing(pc.arrive - 400, 0.3, 0.75);
+  assert.ok(r.strike && r.say.includes('early'));
+  // a swing long before the ball gets there (getting set) doesn't count: the pitch is still coming
+  pc = nextPitch();
+  const id = pc.id;
+  const far = pc.arrive - 900;
+  while (t < far + 200) { const u = Math.max(0, Math.min(1, (t - (far - 70)) / 100)); g.update(frame(0.3 + 0.45 * u, t)); t += 16; }
+  assert.ok(g.pitch && g.pitch.id === id, 'still coming');
+  for (let k = 0; k < 40; k++) { g.update(frame(0.75 - k * 0.01, t)); t += 16; }   // hands drift back
+  let looked0 = null;
+  while (!looked0) { const x = g.update(frame(0.35, t)); t += 16; if (x.strike) looked0 = x; }
+  pc = nextPitch();
+  let looked = null;
+  while (!looked) { const x = idle(); if (x.strike) looked = x; }
+  assert.equal(g.strikes, 3); assert.equal(g.best, 4);
+  // the very edge of the window: a foul
+  pc = nextPitch();
+  r = swing(pc.arrive + 220, 0.3, 0.75);
+  assert.ok(r.foul, 'foul'); assert.equal(g.fouls, 1);
+  // a ball flies to its silo and drops in
+  const fl = { from: { x: 0.5, y: 0.5 }, to: { x: 0.2, y: 0.1 }, born: 0, row: 0 };
+  const top = g.flyer(fl, 375), end = g.flyer(fl, 750);
+  assert.ok(top.y < 0.1, 'it arcs up'); assert.ok(Math.abs(end.x - 0.2) < 1e-9 && Math.abs(end.y - 0.1) < 1e-9);
+  // silos sit across the top of the play area, back row above the front
+  assert.ok(g.silos.every((x) => x.x >= 0.08 && x.x <= 0.92));
+  assert.ok(g.silos.filter((x) => x.row === 0).every((x) => x.y < g.silos.find((y) => y.row === 1).y));
 });
 
 test('framing tells you what the camera is missing', () => {

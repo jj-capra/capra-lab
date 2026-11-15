@@ -1,10 +1,11 @@
 // The daily challenge boards: node lab/test/daily.test.mjs
 import assert from 'node:assert/strict';
-import { createDaily } from '../daily.js';
+import { createDaily, golfDeal } from '../daily.js';
+import { GOLF } from '../heist-library.mjs';
 import { createWallet } from '../wallet.js';
 import { memoryStore } from '../casstore.js';
 import { ranked, WIN_MIN, BOARDS, fmtMs, winWhy } from '../../public/lab/daily-boards.mjs';
-import { trophyName } from '../../public/lab/heist-rules.mjs';
+import { trophyName, trophyKind } from '../../public/lab/heist-rules.mjs';
 import { ROUNDS } from '../../games/three-clue-crew/rounds.js';
 import { dailySet, dayNumber as tccDay } from '../../games/three-clue-crew/logic.mjs';
 import { puzzle, dailySeed, dayNumber as spinDay, solvePoints } from '../../games/puzzled-spin/logic.mjs';
@@ -17,7 +18,8 @@ async function test(name, fn) {
 function setup() {
   let now = Date.parse('2026-11-14T20:00:00Z');   // noon Pacific
   const players = { 'JJ-Capra': 'jj-capra', Roman: 'roman', Mia: 'mia' };
-  const verify = async (name, code) => (players[name] && code === 'k' ? { name, handle: players[name] } : null);
+  const hcps = { Mia: 6 };
+  const verify = async (name, code) => (players[name] && code === 'k' ? { name, handle: players[name], hcp: hcps[name] || 0 } : null);
   const wallet = createWallet({ store: memoryStore(), clock: () => now, verify });
   const daily = createDaily({ store: memoryStore(), wallet, verify, clock: () => now });
   const call = (path, body) => daily.route('POST', '/api/daily/' + path, body, new URLSearchParams());
@@ -124,6 +126,63 @@ await test('the routes want a sign-in; today lists every board with a leader', a
   await g.daily.post('no-cap:high', me('roman', 'Roman'), 1200, 200000);
   const t = await g.get('today');
   assert.deepEqual(t.boards.map((b) => b.board), ['no-cap:high']);
+});
+
+await test('Par-Tee Time’s Daily 3: three holes a day, hole by hole, fewest net strokes wins', async () => {
+  const g = setup(), board = 'par-tee-time';
+  const deal = golfDeal('2026-11-14');
+  assert.equal(deal.holes.length, 3); assert.equal(deal.no, 1);
+  const info = deal.holes.map((h) => GOLF.find((x) => x.id === h.id));
+  assert.ok(info[0].ci <= 2 && info[1].ci >= 3 && info[1].ci <= 5 && info[2].ci >= 6, 'easy, middle, hard');
+  assert.equal(new Set(info.map((h) => h.theme)).size, 3, 'three themes');
+  assert.deepEqual(golfDeal('2026-11-14'), deal);
+  assert.equal((await g.get('board?b=par-tee-time')).deal.holes[0].id, deal.holes[0].id, 'guests get the holes too');
+  await assert.rejects(g.call('golf', { ...JJ, board, scores: [], open: 0 }), /Start today/);
+  await assert.rejects(g.call('finish', { ...JJ, board, answers: [] }), /hole by hole/);
+  // JJ: par, par, one over (gross par + 1, scratch)
+  const s = await g.call('start', { ...JJ, board });
+  assert.deepEqual(s.golf.scores, []); assert.equal(s.golf.holes.length, 3);
+  await g.call('golf', { ...JJ, board, scores: [], open: 0 });
+  g.tick(60000);
+  const p = deal.holes.map((h) => h.par);
+  let r = await g.call('golf', { ...JJ, board, scores: [p[0]], open: 1 });
+  assert.deepEqual(r.golf.scores, [p[0]]); assert.equal(r.golf.opened, 1);
+  // a kept hole can't be changed
+  r = await g.call('golf', { ...JJ, board, scores: [1, p[1]], open: 2 });
+  assert.deepEqual(r.golf.scores, [p[0], p[1]]);
+  g.tick(60000);
+  r = await g.call('golf', { ...JJ, board, scores: [p[0], p[1], p[2] + 1] });
+  assert.equal(r.golf.done, true);
+  assert.equal(r.view.list[0].points, 1, 'one over par'); assert.equal(r.view.list[0].ms, 120000);
+  // Roman leaves hole 2 part way and comes back: it goes down as double par
+  await g.call('start', { ...RO, board });
+  await g.call('golf', { ...RO, board, scores: [], open: 0 });
+  await g.call('golf', { ...RO, board, scores: [p[0] - 1], open: 1 });
+  r = await g.call('start', { ...RO, board });
+  assert.deepEqual(r.golf.scores, [p[0] - 1]); assert.equal(r.golf.opened, 1);
+  r = await g.call('golf', { ...RO, board, scores: [p[0] - 1], open: 1 });
+  assert.equal(r.golf.left, 1); assert.deepEqual(r.golf.scores, [p[0] - 1, p[1] * 2]); assert.equal(r.golf.opened, null);
+  // the page then opens the next hole: that's a fresh open, not a second penalty
+  r = await g.call('golf', { ...RO, board, scores: r.golf.scores, open: 2 });
+  assert.equal(r.golf.left, null); assert.equal(r.golf.scores.length, 2); assert.equal(r.golf.opened, 2);
+  r = await g.call('golf', { ...RO, board, scores: [...r.golf.scores, p[2]] });
+  assert.equal(r.view.list.find((e) => e.name === 'Roman').points, p[1] - 1);
+  // Mia's handicap 6 takes 1 off three holes: two over on the card is one over net; faster than JJ, so she leads
+  await g.call('start', { ...MIA, board });
+  g.tick(30000);
+  r = await g.call('golf', { ...MIA, board, scores: [p[0] + 1, p[1], p[2] + 1] });
+  assert.deepEqual(r.view.list.map((e) => e.name).slice(0, 2), ['Mia', 'JJ-Capra'], 'fewest net strokes, then the faster round');
+  assert.equal(r.view.list[0].points, 1);
+  // a second round today changes nothing
+  r = await g.call('golf', { ...MIA, board, scores: [1, 1, 1] });
+  assert.equal(r.golf.done, true); assert.equal(r.view.list[0].points, 1);
+  // midnight: the #1 takes the Daily 3 trophy
+  g.tick(13 * 3600e3);
+  await g.get('today');
+  const box = await g.wallet.trophyCase('mia');
+  assert.equal(trophyKind(box.trophies[0]), 'golf');
+  assert.equal(trophyName(box.trophies[0]), 'Par-Tee Time #1 · Daily 3 · Nov 14');
+  assert.equal((await g.wallet.wallet('mia')).diamonds, 1);
 });
 
 console.log(`\nDaily boards: ${passed} tests passed`);

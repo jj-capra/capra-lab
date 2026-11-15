@@ -62,7 +62,7 @@ const heist = createHeist({ store: heistStore, wallet, clock: () => Date.now() +
 let dailyOffset = 0;
 const dailyStore = casMemory();
 const daily = createDaily({ store: dailyStore, wallet, clock: () => Date.now() + dailyOffset,
-  verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
+  verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle, hcp: p.hcp || 0 } : null; } });
 const primal = createApi(memoryStore(), profiles);
 // Mind Heist checks lab keys against the same profiles, as its function does on Netlify
 const mhStore = mhMemory();

@@ -176,6 +176,15 @@ async function buildPuzzledSpin() {
   console.log('built public/puzzled-spin/');
 }
 
+/* Send It!: a homemade flying machine off the pier, flown by tilting the phone, no server (Nov 14 2026) */
+async function buildSendIt() {
+  const game = path.join(ROOT, 'games', 'send-it'), out = path.join(ROOT, 'public', 'send-it');
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(out, { recursive: true });
+  for (const f of ['index.html', 'game.js', 'logic.mjs']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  console.log('built public/send-it/');
+}
+
 /* IRL: real moves in front of the camera (Nov 14 2026). The pose model runs on the phone: MediaPipe's
    tasks-vision bundle and wasm (from node_modules) and the lite pose model (games/irl/models) are
    served from the lab itself, next to the page. */
@@ -205,3 +214,4 @@ await buildScreensaver();
 await buildThreeClueCrew();
 await buildPuzzledSpin();
 await buildIrl();
+await buildSendIt();
