@@ -9,6 +9,8 @@
    player's screen left), `range` the part of the screen this player owns ([0, 1] alone, a half each for
    two), so stepping across your part of the screen moves you across your lane. */
 
+import { CRAFTS, craftOf, seeded, PIER } from '../send-it/logic.mjs';   // the same path from public/irl/ to public/send-it/
+
 const P = { NOSE: 0, LS: 11, RS: 12, LE: 13, RE: 14, LW: 15, RW: 16, LI: 19, RI: 20, LH: 23, RH: 24, LK: 25, RK: 26 };
 const seen = (p, min = 0.5) => !!p && (p.visibility == null || p.visibility >= min);
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -535,4 +537,139 @@ export function tennisBall(bl, t) {
 export function tennisBack(bk, t) {
   const k = clamp((t - bk.born) / (bk.land - bk.born), 0, 1);
   return { x: bk.from.x + (bk.to.x - bk.from.x) * k, z: bk.from.z + (bk.to.z - bk.from.z) * k, y: 0.95 * (1 - k) + 2.0 * 4 * k * (1 - k), k };
+}
+
+/* ===================================================================================================
+   SEND IT! (JC, Nov 15 2026: "Put Send It in IRL and make it a flight path game where they move from side
+   to side ... to stay up longer and hit updraft paths"). Send It!'s contraptions off the same pier, but
+   flown with your body: flap your arms for three seconds to push it off (every flap is more speed), then
+   step side to side to steer. It sinks all the way down; green updrafts lift it (they come in paths that
+   snake across the water, so riding one leads to the next), red downdrafts shove it down, and arms out
+   wide like wings glides farther (tip them to bank). Feet out from the pier when it splashes is the
+   score. Feet and seconds; x across the water (±FLY.half), z out from the pier's edge, y up.
+   =================================================================================================== */
+export const FLY = { half: 40, deck: 60, push: 3000, sink: 4.4, grow: 1 / 300, lift: 16, down: 10, top: 80, wing: 0.8, steer: 34, base: 34, perPump: 1.6, pumpMax: 24, cap: 180 };
+export const FLY_TITLES = [[0, 'Belly Flop'], [150, 'Pier Plunk'], [300, 'Seagull Status'], [600, 'Pelican Pro'], [1000, 'Sky Captain'], [1600, 'Thermal Ace'], [2500, 'SENT IT!']];
+export const flyTitle = (ft) => FLY_TITLES.filter(([d]) => ft >= d).pop()[1];
+// The air over the water: paths of updrafts that snake across, then open stretches with a downdraft or
+// two to dodge, farther apart the farther out you get. Seeded, so two players fly the same sky.
+export function makeAir(seed = 1) {
+  const r = seeded(seed), zones = [];
+  let z = 80, x = (r() - 0.5) * 36;
+  while (z < 8000) {
+    const n = 3 + Math.floor(r() * 3), dir = r() < 0.5 ? -1 : 1, step = 9 + r() * 12;
+    for (let i = 0; i < n; i++) {
+      const len = 60 + r() * 35;
+      zones.push({ kind: 'up', x: clamp(x, -32, 32), z0: z, z1: z + len, r: 9 + r() * 4 });
+      z += len + 16 + r() * 22;
+      x += dir * step;
+      if (Math.abs(x) > 30) x = clamp(x, -30, 30) - dir * step * 2;
+    }
+    const gap = 90 + r() * 90 + z / 40;
+    for (let k = 0, dn = 1 + (r() < 0.55 ? 1 : 0); k < dn; k++) {
+      const z0 = z + gap * (0.15 + k * 0.42);
+      zones.push({ kind: 'down', x: clamp((r() - 0.5) * 60, -32, 32), z0, z1: z0 + 45 + r() * 25, r: 10 + r() * 5 });
+    }
+    z += gap;
+    x = clamp(x + (r() - 0.5) * 34, -30, 30);
+  }
+  zones.sort((a, b) => a.z0 - b.z0);
+  return {
+    zones,
+    at(px, pz) { for (const q of zones) { if (q.z0 > pz) break; if (pz <= q.z1 && Math.abs(px - q.x) <= q.r) return q; } return null; },
+    next(pz, kind = 'up') { return zones.find((q) => q.kind === kind && q.z1 > pz + 5) || null; },
+  };
+}
+export function sendIt({ mirror = false, range = [0, 1], seed = 1, craft = 'goat' } = {}) {
+  const C = craftOf(craft), air = makeAir(seed), H = hands();
+  const sinkMul = 1.25 - C.lift * 0.25, speedMul = 1.12 - C.drag * 0.12, steer = FLY.steer / C.mass;
+  const s = { phase: 'push', craft: C.id, t0: null, pumps: 0, x: 0, camX: 0, y: PIER, z: -FLY.deck, vz: 0, vy: 0, roll: 0, zone: null, maxY: PIER, ups: 0, downs: 0, upT: 0, wings: false, flyT: 0, targetX: 0, speed: 0 };
+  let lastT = null, dir = 0, ext = null, said = 0;
+  return {
+    craft: C, air, state: s,
+    get score() { return Math.max(0, Math.round(s.z)); },
+    get phase() { return s.phase; },
+    get alt() { return Math.max(0, s.y); },
+    get ups() { return s.ups; },
+    get pumps() { return s.pumps; },
+    update(f) {
+      const lm = f.lm || [], t = f.t;
+      const dt = lastT == null ? 0 : Math.min(0.1, (t - lastT) / 1000);
+      lastT = t;
+      H.push(lm, t);
+      if (s.phase === 'done') return {};
+      const b = bodyOf(lm);
+      // where you stand in your part of the screen is where it heads across the water; arms out wide
+      // glide it farther, and tipping them banks it
+      let bank = 0;
+      s.wings = false;
+      if (b) {
+        const u = inRange(screenX(b.cx, mirror), range);
+        s.targetX = clamp((u - 0.5) * 2 * FLY.half * 1.3, -FLY.half + 2, FLY.half - 2);
+        const l = H.at(15), r = H.at(16);
+        if (l && r) {
+          const out = Math.abs(l.x - r.x) > b.sw * 2.2, level = Math.abs(l.y - b.shY) < b.torso * 0.6 && Math.abs(r.y - b.shY) < b.torso * 0.6;
+          s.wings = out && level;
+          // the hand on the screen's right lower than the left banks right
+          const [L, R] = screenX(l.x, mirror) < screenX(r.x, mirror) ? [l, r] : [r, l];
+          if (out) bank = clamp((R.y - L.y) / (b.sw * 1.2), -1, 1);
+          s.targetX = clamp(s.targetX + bank * 14, -FLY.half + 2, FLY.half - 2);
+        }
+      }
+      if (s.phase === 'push') {
+        s.t0 ??= t;
+        // a flap: both hands (their middle) going down then back up by a good bit
+        const hs = [H.at(15), H.at(16)].filter(Boolean);
+        if (hs.length && b) {
+          const y = hs.reduce((a, p) => a + p.y, 0) / hs.length, amp = b.torso * 0.22;
+          if (ext == null) { ext = y; dir = 0; }
+          else if (dir >= 0) { if (y > ext) ext = y; else if (ext - y > amp) { dir = -1; ext = y; } }
+          else { if (y < ext) ext = y; else if (y - ext > amp) { dir = 1; ext = y; s.pumps++; } }
+        }
+        const k = Math.min(1, (t - s.t0) / FLY.push);
+        s.z = -FLY.deck + FLY.deck * k * k;
+        s.x += (s.targetX * 0.3 - s.x) * Math.min(1, dt * 2);
+        s.camX = s.x;
+        if (k >= 1) {
+          s.phase = 'fly';
+          s.speed = s.vz = (FLY.base + Math.min(FLY.pumpMax, s.pumps * FLY.perPump)) * speedMul;
+          return { launched: { speed: s.vz, pumps: s.pumps }, say: 'SEND IT!' };
+        }
+        return { say: 'Flap your arms to push off!', meter: Math.min(1, (s.pumps * FLY.perPump) / FLY.pumpMax) };
+      }
+      // flying
+      s.flyT += dt;
+      const zone = air.at(s.x, s.z);
+      const sink = (FLY.sink + s.z * FLY.grow) * sinkMul * (s.wings ? FLY.wing : 1);
+      s.vy = -sink + (zone && zone.kind === 'up' ? FLY.lift : zone ? -FLY.down : 0);
+      s.y = Math.min(FLY.top, s.y + s.vy * dt);
+      s.z += s.vz * dt;
+      const dx = s.targetX - s.x;
+      s.x += clamp(dx, -steer * dt, steer * dt);
+      s.camX += (s.x - s.camX) * Math.min(1, dt * 3);
+      s.roll += (clamp(dx / 22, -0.6, 0.6) + bank * 0.25 - s.roll) * Math.min(1, dt * 5);
+      s.maxY = Math.max(s.maxY, s.y);
+      if (zone && zone.kind === 'up') s.upT += dt;
+      let ev = {};
+      if (zone !== s.zone) {
+        if (zone && zone.kind === 'up') { s.ups++; ev = { updraft: zone, say: 'Updraft! Ride it up' }; }
+        else if (zone) { s.downs++; ev = { downdraft: zone, say: 'Downdraft! Get out of it' }; }
+        s.zone = zone;
+      }
+      if (s.y <= 0 || s.flyT > FLY.cap) {
+        s.y = Math.max(0, s.y); s.phase = 'done';
+        return { splash: true, done: true, say: `Splash! ${Math.round(s.z)} feet` };
+      }
+      if (ev.say) return ev;
+      // the coach: toward the next updraft, or to spread your wings
+      const nx = air.next(s.z);
+      if (t - said > 900 && !zone) {
+        said = t;
+        if (nx && nx.z0 - s.z < 220 && Math.abs(nx.x - s.x) > nx.r) return { say: nx.x > s.x ? 'Updraft ahead: move right ▶' : '◀ Updraft ahead: move left' };
+        if (!s.wings) return { say: 'Arms out like wings to glide' };
+        return { say: s.y < 10 ? 'Low! Find an updraft' : 'Gliding…' };
+      }
+      return {};
+    },
+  };
 }

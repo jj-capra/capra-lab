@@ -39,6 +39,19 @@ the browser was the plan he okayed).
   - **Free Throws** (45 s, goal 12 makes): the hands coming up from below the chin to over the head
     fast is the shot; its speed against `HOOPS.sweet` is the depth (short, long), the hands' offset from
     the nose the aim (wide); close enough swishes, nearly goes in off the rim or rims out.
+  - **Send It!** (JC, Nov 15 2026: "Put Send It in IRL and make it a flight path game where they move from
+    side to side ... to stay up longer and hit updraft paths"; one flight, untimed, goal 1500 feet):
+    Send It!'s contraptions (`CRAFTS` and the rear-view drawings `rear.mjs`, imported from
+    `../send-it/`, the same path in the repo and in `public/`; picked in the setup, the right player of
+    two gets the next one) off the same pier. Flap your arms for three seconds to push off (each flap
+    is more launch speed, `FLY.perPump`), then step side to side to steer (your place in your part of
+    the screen is your place across the water; tipping your arms banks it). It sinks all the way, a
+    little faster the farther out it gets (`FLY.grow`); green updrafts lift it (`FLY.lift`), coming in
+    paths that snake across the water so one leads to the next; red downdrafts shove it down; arms out
+    wide like wings sinks slower (`FLY.wing`). Feet from the pier at the splash is the score, with
+    titles (`FLY_TITLES`: Belly Flop to SENT IT! at 2500). Two players fly the same sky (one seed a
+    game). The clock box shows how high you are; a gauge down the side too. Chase camera behind the
+    contraption, buoys every 100 feet. The phone-tilt Send It! (`games/send-it/`) stays its own game.
   - **Tennis Rally** (60 s, goal 30 points): balls to your forehand or backhand; a sideways swing of the
     hands within 230 ms of it reaching you returns it (+1), early goes cross-court, late down the line;
     a hard one into a corner can be a winner (+5); too soft is into the net, no swing a miss.
@@ -127,8 +140,9 @@ the browser was the plan he okayed).
 - `logic.mjs`: the challenges, the counters (`squats`, `pushups`, `wallsit`, `targets`, `dribbles`,
   `keeper`, `avocados`, `derby`),
   framing and the share row. No camera, no DOM.
-- `sports.mjs`: the sports games (`bowling`, `qbThrow`, `hoops`, `tennis`), the bowling physics and
-  scoring (`bowlSim`, `bowlScore`, `bowlNext`), the routes. No camera, no DOM.
+- `sports.mjs`: the sports games (`bowling`, `qbThrow`, `hoops`, `tennis`, `sendIt`), the bowling physics
+  and scoring (`bowlSim`, `bowlScore`, `bowlNext`), the routes, the Send It! sky (`makeAir`). No camera,
+  no DOM.
 - `scene.js`: the scenes (`drawSport`, `drawBackdrop`), the puppet (`drawPuppet`) and the little 3D
   camera (`cam3`). Draws only.
 - `game.js`, `index.html`: the page (home, the camera stage, results). The camera layer starts under
@@ -145,7 +159,7 @@ the browser was the plan he okayed).
 
 ```
 node games/irl/test/irl.test.mjs     # the counters, fed made-up bodies (test/bodies.mjs)
-node games/irl/test/sports.test.mjs  # bowling (scoring, pins, a whole game), QB, free throws, tennis
+node games/irl/test/sports.test.mjs  # bowling (scoring, pins, a whole game), QB, free throws, tennis, Send It!
 npm run build && node scripts/dev-server.mjs
 ```
 The page has a test mode: set `window.__irlFake = true` before it loads and feed frames with

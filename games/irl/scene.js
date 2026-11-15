@@ -9,7 +9,8 @@
        and silos already live) and get a backdrop around it and the player's lab avatar as a comic
        puppet that copies their pose (drawPuppet), instead of the camera picture.
    Comic look: flat colors, ink outlines, halftone dots. Nothing here reads the camera. */
-import { LANE, routeAt, defenderAt, isOpen, tennisBall, tennisBack, HOOPS } from './sports.mjs';
+import { LANE, routeAt, defenderAt, isOpen, tennisBall, tennisBack, HOOPS, FLY } from './sports.mjs';
+import { drawRear } from '../send-it/rear.mjs';   // Send It!'s contraptions from behind (public/send-it/ next door)
 
 const INK = '#120E18', PAPER = '#FFF8EC';
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -196,6 +197,7 @@ export function drawSport(ctx, kind, rect, c, t, info) {
   else if (kind === 'qb') qbScene(ctx, rect, c, t, info);
   else if (kind === 'hoops') hoopsScene(ctx, rect, c, t, info);
   else if (kind === 'tennis') tennisScene(ctx, rect, c, t, info);
+  else if (kind === 'sendit') sendItScene(ctx, rect, c, t, info);
   ctx.restore();
 }
 
@@ -578,4 +580,103 @@ function racket(ctx, x, y, r) {
   ctx.strokeStyle = 'rgba(255,248,236,0.7)'; ctx.lineWidth = 1;
   for (let k = -3; k <= 3; k++) { ctx.beginPath(); ctx.moveTo(k * r * 0.09, -r * 1.45); ctx.lineTo(k * r * 0.09, -r * 0.55); ctx.stroke(); ctx.beginPath(); ctx.moveTo(-r * 0.32, -r + k * r * 0.12); ctx.lineTo(r * 0.32, -r + k * r * 0.12); ctx.stroke(); }
   ctx.restore();
+}
+
+/* ---- SEND IT!: the chase camera behind the contraption, out over the water ---- */
+function sendItCam(rect, st) {
+  const f = Math.min(rect.w * 0.95, rect.h * 1.5);
+  return cam3({ x: st.camX * 0.85, y: Math.max(6, st.y + 9), z: st.z - 46, pitch: 0.13, f, cx: rect.x + rect.w / 2, cy: rect.y + rect.h * 0.42 });
+}
+function cloud(ctx, x, y, r) {
+  ctx.beginPath();
+  for (const [dx, dy, k] of [[-1.1, 0.2, 0.6], [-0.4, -0.2, 0.85], [0.4, -0.15, 0.75], [1.1, 0.2, 0.6]]) ctx.arc(x + dx * r, y + dy * r, k * r, 0, Math.PI * 2);
+  ctx.fillStyle = PAPER; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(18,14,24,0.5)'; ctx.stroke();
+}
+function sendItScene(ctx, rect, c, t, info) {
+  const st = c ? c.state : { camX: 0, x: 0, y: 30, z: -60, roll: 0, phase: 'push', craft: 'goat', pumps: 0 };
+  const P = sendItCam(rect, st);
+  // the sky down to the horizon, the sun and a few clouds that drift past
+  const hz = P(0, 0, st.z + 4000), horizon = hz ? hz.y : rect.y + rect.h * 0.35;
+  const g = ctx.createLinearGradient(0, rect.y, 0, horizon);
+  g.addColorStop(0, '#5EC8FF'); g.addColorStop(1, '#CFF1FF');
+  ctx.fillStyle = g; ctx.fillRect(rect.x, rect.y, rect.w, horizon - rect.y + 1);
+  ctx.beginPath(); ctx.arc(rect.x + rect.w * 0.82, rect.y + Math.max(30, (horizon - rect.y) * 0.35), Math.min(28, rect.w * 0.05), 0, Math.PI * 2); ctx.fillStyle = '#FFE66B'; ctx.fill();
+  for (let i = 0; i < 5; i++) {
+    const cx = rect.x + ((i * 0.27 + 0.1 - (st.z / 9000) * (1 + i * 0.3)) % 1 + 1) % 1 * rect.w, cy = rect.y + (horizon - rect.y) * (0.25 + (i % 3) * 0.18);
+    cloud(ctx, cx, cy, Math.min(26, rect.w * 0.035) * (1 + (i % 2) * 0.4));
+  }
+  // the water: rolling stripes that rush toward you
+  ctx.fillStyle = '#2E86DE'; ctx.fillRect(rect.x, horizon, rect.w, rect.y + rect.h - horizon);
+  ctx.save(); ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+  const z0 = Math.floor((st.z - 40) / 30) * 30;
+  for (let z = z0; z < st.z + 900; z += 30) { const a = P(-200, 0, z), b = P(200, 0, z); if (a && b) { ctx.lineWidth = clamp(a.k * 0.25, 1, 3); ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); } }
+  ctx.restore();
+  // buoys down both sides every 100 feet, with the distance
+  for (let z = Math.max(100, Math.ceil((st.z - 30) / 100) * 100); z < st.z + 700; z += 100) {
+    for (const x of [-FLY.half - 6, FLY.half + 6]) {
+      const p = P(x, 0, z);
+      if (!p) continue;
+      const h = Math.max(4, p.k * 3);
+      ctx.beginPath(); ctx.moveTo(p.x - h * 0.4, p.y); ctx.lineTo(p.x, p.y - h); ctx.lineTo(p.x + h * 0.4, p.y); ctx.closePath(); ctx.fillStyle = z % 500 ? '#FF7A1A' : '#FFD23F'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke();
+      if (p.k > 1.2) label(ctx, `${z}`, p.x, p.y - h - 8, Math.min(18, p.k * 2.4), PAPER);
+    }
+  }
+  // the pier and its crowd, until it's well behind
+  if (st.z < 80) {
+    const deck = (x, z, y = 30) => P(x, y, z);
+    poly(ctx, [deck(-9, -70), deck(9, -70), deck(9, 0), deck(-9, 0)], '#C98A4B', INK, 3);
+    for (let z = -70; z <= 0; z += 10) for (const x of [-9, 9]) seg(ctx, deck(x, z, 30), deck(x, z, 0), '#7A4A24', 4);
+    const a0 = deck(-9, 0, 30), a1 = deck(9, 0, 30), b0 = deck(-9, 0, 42), b1 = deck(9, 0, 42);
+    if (a0 && a1 && b0 && b1) {
+      seg(ctx, a0, b0, INK, 6); seg(ctx, a1, b1, INK, 6);
+      poly(ctx, [b0, b1, deck(9, 0, 38), deck(-9, 0, 38)], '#FF3D8B', INK, 3);
+      const m = deck(0, 0, 40);
+      if (m) label(ctx, 'SEND IT!', m.x, m.y, Math.max(10, m.k * 3.2), '#FFD23F');
+    }
+  }
+  // the updrafts (green, arrows rising) and downdrafts (red, arrows sinking), far ones first
+  const zones = c ? c.air.zones.filter((q) => q.z1 > st.z - 30 && q.z0 < st.z + 800) : [];
+  for (const q of zones.slice().reverse()) {
+    const up = q.kind === 'up', zc = (q.z0 + q.z1) / 2, col = up ? '91,227,138' : '255,90,90';
+    // its footprint on the water
+    ctx.save(); ctx.beginPath();
+    for (let a = 0; a <= Math.PI * 2 + 0.01; a += 0.3) { const p = P(q.x + Math.cos(a) * q.r, 0, zc + Math.sin(a) * (q.z1 - q.z0) / 2); if (p) (a ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); }
+    ctx.closePath(); ctx.fillStyle = `rgba(${col},0.35)`; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = `rgba(${col},0.9)`; ctx.stroke(); ctx.restore();
+    // the column of moving air
+    const fl = P(q.x - q.r, 0, q.z0), fr = P(q.x + q.r, 0, q.z0), tl = P(q.x - q.r, 90, q.z0), tr = P(q.x + q.r, 90, q.z0);
+    if (fl && fr && tl && tr) {
+      ctx.save(); ctx.beginPath(); ctx.moveTo(fl.x, fl.y); ctx.lineTo(fr.x, fr.y); ctx.lineTo(tr.x, tr.y); ctx.lineTo(tl.x, tl.y); ctx.closePath();
+      ctx.fillStyle = `rgba(${col},0.16)`; ctx.fill(); ctx.clip();
+      const k = fl.k, w = Math.abs(fr.x - fl.x), cx = (fl.x + fr.x) / 2, H = Math.abs(fl.y - tl.y);
+      ctx.strokeStyle = `rgba(${up ? '230,255,236' : '255,235,235'},0.85)`; ctx.lineWidth = Math.max(2, k * 0.6); ctx.lineCap = 'round';
+      const shift = ((t / 1000) * (up ? 1 : -1) * 18 * k) % (k * 12);
+      for (let y = fl.y + shift - k * 12; y > tl.y - k * 12; y -= k * 12) for (const dx of [-0.25, 0.25]) {
+        const x = cx + dx * w, d = up ? -1 : 1, s2 = Math.max(4, w * 0.12);
+        ctx.beginPath(); ctx.moveTo(x - s2, y - d * s2 * 0.2); ctx.lineTo(x, y + d * s2 * 0.6 * -1); ctx.lineTo(x + s2, y - d * s2 * 0.2); ctx.stroke();
+      }
+      ctx.restore();
+      if (H > 30 && up && q.z0 > st.z + 20) { const lp = P(q.x, 92, q.z0); if (lp && lp.k > 0.8) label(ctx, '⬆', lp.x, lp.y, Math.min(24, lp.k * 4), '#5BE38A'); }
+    }
+  }
+  // the contraption's shadow on the water, then the contraption
+  const sh = P(st.x, 0, st.z);
+  if (sh) { ctx.beginPath(); ctx.ellipse(sh.x, sh.y, sh.k * 7, sh.k * 1.6, 0, 0, Math.PI * 2); ctx.fillStyle = 'rgba(5,3,10,0.28)'; ctx.fill(); }
+  const cp = P(st.x, Math.max(0.5, st.y), st.z);
+  if (cp) drawRear(ctx, st.craft, cp.x, cp.y, (cp.k * 16) / 180, st.roll, t / 1000, null);
+  // the push: the crew on the deck and the flap meter
+  if (st.phase === 'push') {
+    const n = c ? Math.min(1, (c.pumps * FLY.perPump) / FLY.pumpMax) : 0, bw = Math.min(240, rect.w * 0.5), bx = rect.x + rect.w / 2 - bw / 2, by = rect.y + rect.h * 0.62;
+    label(ctx, 'FLAP!', rect.x + rect.w / 2, by - 26, Math.min(54, rect.w * 0.1), '#FFD23F');
+    ctx.fillStyle = 'rgba(18,14,24,0.7)'; ctx.fillRect(bx, by, bw, 16); ctx.fillStyle = '#5BE38A'; ctx.fillRect(bx + 2, by + 2, (bw - 4) * n, 12); ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.strokeRect(bx, by, bw, 16);
+  }
+  // the altitude gauge down the right side (to the 80-foot ceiling), and wings when they're out
+  if (st.phase !== 'push') {
+    const gx = rect.x + rect.w - 30, gy0 = rect.y + (info.hud || 120), gy1 = rect.y + rect.h - 90, gh = gy1 - gy0;
+    if (gh > 60) {
+      ctx.fillStyle = 'rgba(18,14,24,0.6)'; ctx.fillRect(gx, gy0, 12, gh); ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.strokeRect(gx, gy0, 12, gh);
+      const yy = gy1 - (Math.min(FLY.top, Math.max(0, st.y)) / FLY.top) * gh;
+      ctx.beginPath(); ctx.moveTo(gx - 4, yy); ctx.lineTo(gx - 16, yy - 7); ctx.lineTo(gx - 16, yy + 7); ctx.closePath(); ctx.fillStyle = st.y < 10 ? '#FF5A5A' : '#FFD23F'; ctx.fill(); ctx.stroke();
+    }
+    if (st.wings) label(ctx, 'WINGS OUT · GLIDING', rect.x + rect.w / 2, rect.y + (info.hud || 120) + 4, 16, '#5BE38A');
+  }
 }

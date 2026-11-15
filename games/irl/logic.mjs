@@ -5,7 +5,7 @@
    ({ x, y } from 0 to 1 across and down the picture, plus `visibility`), and this file turns those
    points into reps, holds, hits and dribbles. No camera here, so the tests can feed it made-up bodies.
    The sports games (bowling, QB Throw, free throws, tennis) are in sports.mjs. */
-import { bowling, qbThrow, hoops, tennis } from './sports.mjs';
+import { bowling, qbThrow, hoops, tennis, sendIt } from './sports.mjs';
 
 // The body points MediaPipe numbers (its 33-point pose).
 export const P = { NOSE: 0, LS: 11, RS: 12, LE: 13, RE: 14, LW: 15, RW: 16, LI: 19, RI: 20, LH: 23, RH: 24, LK: 25, RK: 26, LA: 27, RA: 28 };
@@ -97,6 +97,15 @@ export const CHALLENGES = {
     setup2: 'Phone at chest height 9 to 12 feet away, facing you both, side by side. Each of you shoots at your own hoop.',
     how: 'Hold the ball at your chest and shoot it up over your head like a free throw. A smooth, medium push drops it in: too soft is short, too hard bricks off the back. Keep your hands in line with your nose to shoot it straight.',
   },
+  // JC, Nov 15 2026: "Put Send It in IRL and make it a flight path game where they move from side to side
+  // ... to stay up longer and hit updraft paths". One flight, no clock: it's over at the splash.
+  sendit: {
+    name: 'Send It!', emoji: '🛫', secs: 0, untimed: true, goal: 1500, unit: 'foot', units: 'feet', color: '#7CC8FF', sport: true,
+    blurb: 'Fly a homemade contraption off the pier with your body. Ride the updrafts.',
+    setup: 'Phone at chest height 7 to 9 feet away, facing you, so it sees you from head to waist with room to step a big step left and right.',
+    setup2: 'Phone at chest height 10 to 12 feet away, facing you both, side by side with room to step left and right. You fly the same sky: farthest wins.',
+    how: 'Flap your arms for three seconds to push off the pier (every flap is more speed). Then steer by stepping side to side: fly through the green updrafts to climb (they snake across the water in paths) and around the red downdrafts. Arms out wide like wings glides farther; tip them to bank. Farthest from the pier wins.',
+  },
   tennis: {
     name: 'Tennis Rally', emoji: '🎾', secs: 60, goal: 30, unit: 'point', units: 'points', color: '#C6E83A', sport: true,
     blurb: 'Rally with the pro across the net. Winners are worth 5.',
@@ -105,8 +114,8 @@ export const CHALLENGES = {
     how: 'Swing your racket hand across as the ball reaches you, forehand or backhand. Swing early to hit it cross-court, late to send it down the line. A hard swing into a corner can be a winner (+5); every return is a point.',
   },
 };
-export const ORDER = ['bowling', 'qb', 'hoops', 'tennis', 'derby', 'keeper', 'targets', 'avocado', 'dribble', 'squat', 'pushup', 'wallsit'];
-export const MIN_TO_PAY = { squat: 3, pushup: 3, wallsit: 10, targets: 3, dribble: 10, keeper: 3, avocado: 10, derby: 30, bowling: 30, qb: 20, hoops: 3, tennis: 5 };
+export const ORDER = ['bowling', 'qb', 'hoops', 'tennis', 'sendit', 'derby', 'keeper', 'targets', 'avocado', 'dribble', 'squat', 'pushup', 'wallsit'];
+export const MIN_TO_PAY = { squat: 3, pushup: 3, wallsit: 10, targets: 3, dribble: 10, keeper: 3, avocado: 10, derby: 30, bowling: 30, qb: 20, hoops: 3, tennis: 5, sendit: 150 };
 // Two players (JC, Nov 15 2026: "bring two player to IRL!"): side by side in front of one camera, each
 // with their own half of the screen. Every challenge with a `setup2` works for two; push-ups need the
 // camera side-on, where one player would hide the other, so they stay solo.
@@ -168,7 +177,7 @@ export function framing(kind, lm) {
   if (!lm) return { ok: false, say: 'Step into the picture' };
   const any = (ids) => ids.some((i) => seen(lm[i], 0.6));
   if (!any([P.LS, P.RS])) return { ok: false, say: 'We can’t see your shoulders' };
-  if (kind === 'targets' || kind === 'keeper' || kind === 'avocado' || kind === 'derby' || kind === 'qb' || kind === 'hoops') return any([P.LW, P.RW]) ? { ok: true, say: 'Ready' } : { ok: false, say: 'Show us your hands' };
+  if (kind === 'targets' || kind === 'keeper' || kind === 'avocado' || kind === 'derby' || kind === 'qb' || kind === 'hoops' || kind === 'sendit') return any([P.LW, P.RW]) ? { ok: true, say: 'Ready' } : { ok: false, say: 'Show us your hands' };
   if (kind === 'bowling' || kind === 'tennis') {
     if (!any([P.LH, P.RH])) return { ok: false, say: 'Step back: we can’t see your hips' };
     return any([P.LW, P.RW]) ? { ok: true, say: 'Ready' } : { ok: false, say: 'Show us your hands' };
@@ -608,7 +617,7 @@ export function derby({ rand = Math.random, flight = 1300, gap = 900, win = 230,
   };
 }
 
-export const COUNTERS = { squat: squats, pushup: pushups, wallsit, targets, dribble: dribbles, keeper, avocado: avocados, derby, bowling, qb: qbThrow, hoops, tennis };
+export const COUNTERS = { squat: squats, pushup: pushups, wallsit, targets, dribble: dribbles, keeper, avocado: avocados, derby, bowling, qb: qbThrow, hoops, tennis, sendit: sendIt };
 
 // The results text's row: ten squares filled by how much of the goal you got (⚡ on a new best).
 export function shareRow(score, goal, best = false) {

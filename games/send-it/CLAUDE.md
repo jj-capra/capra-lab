@@ -12,7 +12,8 @@ event's or sponsor's name, logo or marks anywhere in the game.
 - **Contraptions** (`CRAFTS` in `logic.mjs`): G.O.A.T. Glider, Flying Bathtub, Couch Glider, Taco Wing,
   Pizza Box Biplane, Leaf-Blower Cart. Each has `lift`, `drag`, `mass`, `stall` (the angle of attack,
   degrees, where the wing gives up) and `boost` (the cart's three leaf-blower blasts). A new one needs
-  its numbers there and its drawing in `DRAW` in `game.js` (nose to the right, about 90 × 60).
+  its numbers there, its drawing in `DRAW` in `game.js` (nose to the right, about 90 × 60) and its
+  view from behind in `REAR` in `rear.mjs` (wings across, about 184 wide; IRL's flight draws it too).
 - **The run-up**: a 3-2-1, then 3 seconds to tap PUSH as fast as you can (`launchSpeed(taps)`); the crew
   runs it down the 60-foot deck and off the edge, 30 feet above the water (`PIER`).
 - **Flying**: the phone's tilt sets the nose: upright, pull the top toward you to climb, push it away to
@@ -44,6 +45,15 @@ event's or sponsor's name, logo or marks anywhere in the game.
   contraption (60 ft or more; a first flight on a contraption isn't a "best").
 - The results text: `CapraShare.text` with 🛫 Send It! · <contraption>, the feet and title, and a row of
   🟦 a square for every 30 feet out to 300, then 🌊.
+
+## In IRL too
+
+IRL has its own Send It! (JC, Nov 15 2026: "Put Send It in IRL and make it a flight path game where they
+move from side to side ... to stay up longer and hit updraft paths"): the same contraptions off the same
+pier, flown with your body (flap to push off, step side to side through updraft paths). It imports
+`logic.mjs` (`CRAFTS`, `seeded`, `PIER`) and `rear.mjs` (the contraptions drawn from behind, shared with
+this game's chase camera) by the relative path `../send-it/`, so keep both as plain modules with no DOM
+and keep `rear.mjs` in `scripts/build.mjs`'s copy list. Its rules are in `games/irl/CLAUDE.md`.
 
 ## Develop and test
 

@@ -13,11 +13,11 @@ function cycle(make, from, to, frames = 20) {
   return out;
 }
 
-test('the challenges: twelve, each with a goal, a clock (or frames) and setup words', () => {
-  assert.deepEqual(ORDER, ['bowling', 'qb', 'hoops', 'tennis', 'derby', 'keeper', 'targets', 'avocado', 'dribble', 'squat', 'pushup', 'wallsit']);
+test('the challenges: thirteen, each with a goal, a clock (or frames, or one flight) and setup words', () => {
+  assert.deepEqual(ORDER, ['bowling', 'qb', 'hoops', 'tennis', 'sendit', 'derby', 'keeper', 'targets', 'avocado', 'dribble', 'squat', 'pushup', 'wallsit']);
   for (const k of ORDER) {
     const c = CHALLENGES[k];
-    assert.ok(c.name && c.emoji && (c.secs > 0 || c.frames > 0) && c.goal > 0 && c.setup && c.how, k);
+    assert.ok(c.name && c.emoji && (c.secs > 0 || c.frames > 0 || c.untimed) && c.goal > 0 && c.setup && c.how, k);
     assert.ok(COUNTERS[k] && MIN_TO_PAY[k] > 0, k);
   }
   assert.equal(Math.round(angle({ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 1, y: 1 })), 90);
@@ -277,7 +277,7 @@ test('the results row fills toward the goal', () => {
 test('two players: who is who, a half each, and who won', () => {
   // every challenge but push-ups (side-on, one player would hide the other) works for two
   assert.deepEqual(TWO_UP, ORDER.filter((k) => k !== 'pushup'));
-  assert.ok(['bowling', 'qb', 'hoops', 'tennis'].every((k) => TWO_UP.includes(k)), 'the sports games are for two as well');
+  assert.ok(['bowling', 'qb', 'hoops', 'tennis', 'sendit'].every((k) => TWO_UP.includes(k)), 'the sports games are for two as well');
   for (const k of TWO_UP) assert.ok(CHALLENGES[k].setup2, k);
   // two bodies, in either order from the tracker: sorted by where they stand on screen
   const at = (x) => { const b = squatter(178); return { lm: b.lm.map((q) => ({ ...q, x: x + (q.x - 0.5) * 0.4 })), world: b.world }; };

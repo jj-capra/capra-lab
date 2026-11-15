@@ -8,6 +8,8 @@
    ({ lm, world } for one player, { people: [{ lm, world }, ...] } for two). */
 import { CHALLENGES, ORDER, COUNTERS, BONES, P, SILOS, TWO_UP, framing, shareRow, splitPlayers, winnerOf, MIN_TO_PAY } from './logic.mjs';
 import { drawSport, drawBackdrop, drawPuppet } from './scene.js';
+import { flyTitle } from './sports.mjs';
+import { CRAFTS } from '../send-it/logic.mjs';
 import { drawAvatar, lookFor } from '/lab/avatar.mjs';
 import { SKINS, FURS, SHIRTS } from '/lab/avatar-catalog.mjs';
 
@@ -95,7 +97,7 @@ $('veil').addEventListener('click', (e) => { if (e.target === $('veil')) $('veil
 // "60 seconds · goal 20 reps", "Five frames · goal 70 pins", "Hold up to 3:00 · goal 60 s"
 function challengeLine(k, upper = false) {
   const c = CHALLENGES[k];
-  const s = k === 'wallsit' ? `Hold up to ${fmt(c.secs)} · goal ${c.goal} s` : c.frames ? `${c.frames} frames · goal ${c.goal} ${c.units}` : `${c.secs} seconds · goal ${c.goal} ${c.units}`;
+  const s = k === 'wallsit' ? `Hold up to ${fmt(c.secs)} · goal ${c.goal} s` : c.frames ? `${c.frames} frames · goal ${c.goal} ${c.units}` : c.untimed ? `One flight · goal ${c.goal} ${c.units}` : `${c.secs} seconds · goal ${c.goal} ${c.units}`;
   return upper ? s.toUpperCase() : s;
 }
 function renderHome() {
@@ -574,11 +576,12 @@ function newPlayer(i, two, C) {
 }
 async function openChallenge(kind) {
   const C = CHALLENGES[kind], two = prefs.players === 2 && TWO_UP.includes(kind);
-  S = { kind, two, phase: 'setup', players: [0, two ? 1 : null].filter((i) => i != null).map((i) => newPlayer(i, two, C)), okSince: null, startAt: 0, frames: null };
+  S = { kind, two, seed: (Math.random() * 1e9) >>> 0, phase: 'setup', players: [0, two ? 1 : null].filter((i) => i != null).map((i) => newPlayer(i, two, C)), okSince: null, startAt: 0, frames: null };
   show('stage');
   $('stage').classList.remove('live');
   $('stage').classList.toggle('two', two);
   $('stTitle').textContent = C.name.toUpperCase() + (two ? ' · 2P' : '');
+  if (!CRAFTS.some((c) => c.id === prefs.craft)) prefs.craft = 'goat';
   applyView();
   if (C.sport) for (const pl of S.players) pl.counter = makeCounter(kind, C, pl.i);   // the scene shows before the go
   $('hud').hidden = true; $('meterL').hidden = true; $('meterR').hidden = true; $('coach0').hidden = true; $('coach1').hidden = true; $('camAlert').hidden = true; $('countdown').innerHTML = '';
@@ -587,12 +590,19 @@ async function openChallenge(kind) {
   $('setup').innerHTML = `<div class="top"><span class="em" aria-hidden="true">${C.emoji}</span><h2>${esc(C.name.toUpperCase())}<small>${two ? 'HEAD TO HEAD · ' : ''}${esc(challengeLine(kind, true))}</small></h2></div>
     <ol class="steps"><li>${esc(two ? C.setup2 : C.setup)}</li><li>${esc(C.how)}</li><li>Tap <b>Start</b>, then walk to your ${two ? 'spots' : 'spot'}. The countdown starts by itself when the camera sees ${two ? 'you both' : 'you'}.</li></ol>
     ${two ? '<div class="duo" id="duo"></div>' : ''}
+    ${kind === 'sendit' ? `<p class="fine" style="margin-top:12px">${two ? 'YOUR CONTRAPTIONS (THE RIGHT PLAYER GETS THE NEXT ONE)' : 'YOUR CONTRAPTION'}</p><div class="rides" id="rides">${CRAFTS.map((c) => `<button type="button" class="ride" data-id="${c.id}" aria-pressed="${c.id === prefs.craft}"><span aria-hidden="true">${c.emoji}</span>${esc(c.name)}</button>`).join('')}</div>` : ''}
     <button type="button" class="camrow" id="camRow"><span aria-hidden="true">📷</span><span id="camName">${esc(camName())}</span><small>CHANGE</small></button>
     <p class="fine">The picture stays on your phone. Nothing is recorded or sent.</p>
     <div class="go"><div class="status" id="status"><i></i><span id="statusTxt">Starting the camera…</span></div>
     <div class="row"><button class="btn" type="button" id="startBtn" disabled>START</button></div></div>`;
   $('startBtn').onclick = begin;
   $('camRow').onclick = openCams;
+  for (const el of document.querySelectorAll('#rides .ride')) el.onclick = () => {
+    prefs.craft = el.dataset.id; savePrefs();
+    for (const b of document.querySelectorAll('#rides .ride')) b.setAttribute('aria-pressed', String(b.dataset.id === prefs.craft));
+    for (const pl of S.players) pl.counter = makeCounter(kind, C, pl.i);
+    draw(S.frames);
+  };
   if (two) paintDuo();
   draw(null);
   frameLoop();
@@ -803,6 +813,12 @@ function playSport(pl, r, f) {
     if (r.shot) sfx.whoosh();
     if (r.made) { r.made.kind === 'swish' ? sfx.swish() : sfx.clank(); setTimeout(() => sfx.swish(), 120); if (c.streak >= 3) cheer(); pop(c.streak >= 3 ? 'ON FIRE!' : r.made.kind === 'swish' ? 'SWISH!' : 'IN!', null, i); }
     if (r.miss) { sfx.clank(); pop(r.miss.kind === 'short' ? 'SHORT' : r.miss.kind === 'long' ? 'LONG' : r.miss.kind === 'wide' ? 'WIDE' : 'RIMMED OUT', null, i); }
+  } else if (S.kind === 'sendit') {
+    if (c.phase === 'push' && c.pumps !== pl.pumps) { pl.pumps = c.pumps; sfx.whoosh(); }
+    if (r.launched) { sfx.cheer(); pop('SEND IT!', null, i); if (solo) say('Send it!'); }
+    if (r.updraft) tone(300, 0, 0.5, 'triangle', 0.06, 900);
+    if (r.downdraft) tone(700, 0, 0.5, 'sawtooth', 0.04, 160);
+    if (r.splash) { sfx.thud(); tone(180, 0, 0.6, 'sawtooth', 0.05, 50); pop(`SPLASH! ${c.score} FT`, null, i); flashCam(); if (solo) say(`${c.score} feet!`); }
   } else if (S.kind === 'tennis') {
     if (r.pitch) sfx.pok();
     if (r.hit) { sfx.pok(); if (r.hit.winner) { cheer(); flashCam(); } pop(r.hit.winner ? 'WINNER!' : c.rally >= 5 ? `${c.rally} RALLY!` : 'NICE!', null, i); }
@@ -911,8 +927,10 @@ function countdown() {
     if (i === 3) setTimeout(go, 500);
   }, i * 900));
 }
+// Send It!: the contraption you picked (the other player gets the next one along).
+const craftFor = (side) => { const i = Math.max(0, CRAFTS.findIndex((c) => c.id === prefs.craft)); return CRAFTS[(i + (side || 0)) % CRAFTS.length].id; };
 function makeCounter(kind, C, side) {
-  if (C.sport) return COUNTERS[kind]({ mirror: mirrored(), range: sideRange(side), frames: C.frames });
+  if (C.sport) return COUNTERS[kind]({ mirror: mirrored(), range: sideRange(side), frames: C.frames, seed: S.seed, craft: craftFor(side) });
   if (kind === 'wallsit') return COUNTERS.wallsit(C.secs);
   if (kind === 'targets') return COUNTERS.targets({ bounds: targetBounds(0.075, 0.68, side) });
   if (kind === 'keeper') return COUNTERS.keeper({ bounds: targetBounds(0.075, 0.9, side) });
@@ -944,14 +962,22 @@ function go() {
     pl.score = 0; pl.done = false; pl.trails = null; pl.batPath = null; pl.lit = null; pl.goalSaid = false; pl.tgShown = new Map();
     setCount(pl.i, scoreText(S.kind, 0));
   }
-  $('clock').textContent = C.frames ? `1/${C.frames}` : S.kind === 'wallsit' && !two ? fmt(C.goal) : S.kind === 'wallsit' ? '0:00' : fmt(C.secs);
+  $('clock').textContent = C.frames ? `1/${C.frames}` : C.untimed ? '30' : S.kind === 'wallsit' && !two ? fmt(C.goal) : S.kind === 'wallsit' ? '0:00' : fmt(C.secs);
   $('clockBox').classList.remove('low');
-  $('clockLbl').textContent = C.frames ? 'frame' : S.kind === 'wallsit' ? (two ? 'time' : 'to the goal') : 'left';
+  $('clockLbl').textContent = C.frames ? 'frame' : C.untimed ? 'feet up' : S.kind === 'wallsit' ? (two ? 'time' : 'to the goal') : 'left';
   for (const pl of S.players) coach(pl.i, 'GO!', 'ok');
   clearInterval(ticker);
   ticker = setInterval(() => {
     if (!S || S.phase !== 'live') return clearInterval(ticker);
     const el = (performance.now() - S.startAt) / 1000;
+    if (C.untimed) {
+      // Send It! flies until the splash: the clock box shows how high you are (the lower of two)
+      const up = Math.min(...S.players.filter((pl) => !pl.done).map((pl) => pl.counter.alt));
+      $('clock').textContent = String(Math.round(Number.isFinite(up) ? up : 0));
+      $('clockBox').classList.toggle('low', Number.isFinite(up) && up < 10);
+      if (el > 300) finish();
+      return;
+    }
     if (C.frames) {
       // bowling runs frame by frame, not on the clock (ten minutes is the most a game can take)
       const fr = Math.min(...S.players.map((pl) => (pl.counter.next.done ? C.frames : pl.counter.next.frame)));
@@ -1027,14 +1053,15 @@ async function finish() {
     <p class="paid" id="paidLine"></p>`;
   show('results');
   if (window.CapraShare) shareCard(CapraShare.text({ emoji: '💪', game: 'IRL', sub: C.name,
-    lines: [`${kind === 'wallsit' ? `${fmt(score)} held` : `${score} ${score === 1 ? C.unit : C.units} in ${C.frames ? `${C.frames} frames` : `${C.secs} s`}`}${newBest ? ' · new best' : ''}`, ...(kind === 'bowling' && c ? [bowlMarks(c)] : [])],
+    lines: [`${kind === 'wallsit' ? `${fmt(score)} held` : kind === 'sendit' ? `${score} feet · ${flyTitle(score)}` : `${score} ${score === 1 ? C.unit : C.units} in ${C.frames ? `${C.frames} frames` : `${C.secs} s`}`}${newBest ? ' · new best' : ''}`, ...(kind === 'bowling' && c ? [bowlMarks(c)] : [])],
     grid: [shareRow(score, C.goal, newBest)] }));
   payOwner(kind, score, beat, newBest);
 }
-const playedFor = (kind) => { const C = CHALLENGES[kind]; return kind === 'wallsit' ? '' : C.frames ? ` · ${C.frames} frames` : ` · ${C.secs} seconds`; };
+const playedFor = (kind) => { const C = CHALLENGES[kind]; return kind === 'wallsit' ? '' : C.frames ? ` · ${C.frames} frames` : C.untimed ? '' : ` · ${C.secs} seconds`; };
 // a bowling game's marks, frame by frame: "X 7/ 9- X X9/"
 const bowlMarks = (c) => c.card.frames.map((f) => f.marks.join('') || '·').join(' ');
 function statBits(kind, c) {
+  if (kind === 'sendit') return `<span>🛫 ${esc(c.craft.name)}</span><span>🏅 ${esc(flyTitle(c.score))}</span><span>⬆️ ${c.ups} updrafts</span><span>⛰️ ${Math.round(c.state.maxY)} ft high</span><span>⏱️ ${c.state.flyT.toFixed(0)} s up</span>`;
   if (kind === 'bowling') return `<span>🎳 ${bowlMarks(c)}</span><span>Strikes ${c.strikes}</span><span>Spares ${c.spares}</span>`;
   if (kind === 'qb') return `<span>🏈 ${c.comps}/${c.atts} completions</span><span>🙌 ${c.tds} TD</span>${c.ints ? `<span>Picked ${c.ints}</span>` : ''}${c.sacks ? `<span>Sacked ${c.sacks}</span>` : ''}`;
   if (kind === 'hoops') return `<span>🏀 ${c.score}/${c.shots} made</span><span>💦 ${c.swishes} swishes</span><span>🔥 Best streak ${c.best}</span>`;
@@ -1099,4 +1126,4 @@ window.__irl = { feed: (f) => handle({ aspect: box().aspect, ...f, t: f.t ?? per
 
 renderHome();
 loadMyLook();
-if (/^#(squat|pushup|wallsit|targets|dribble|keeper|avocado|derby|bowling|qb|hoops|tennis)$/.test(location.hash)) openChallenge(location.hash.slice(1));
+if (/^#(squat|pushup|wallsit|targets|dribble|keeper|avocado|derby|bowling|qb|hoops|tennis|sendit)$/.test(location.hash)) openChallenge(location.hash.slice(1));

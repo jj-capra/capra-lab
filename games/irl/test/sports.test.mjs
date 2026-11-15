@@ -1,7 +1,7 @@
 // IRL's sports games (bowling, QB Throw, free throws, tennis), played with made-up bodies.
 //   node games/irl/test/sports.test.mjs
 import assert from 'node:assert/strict';
-import { bowlScore, bowlNext, bowlSim, rack, bowling, qbThrow, routeAt, isOpen, aimOf, hoops, tennis, HOOPS, LANE } from '../sports.mjs';
+import { bowlScore, bowlNext, bowlSim, rack, bowling, qbThrow, routeAt, isOpen, aimOf, hoops, tennis, HOOPS, LANE, sendIt, makeAir, FLY, flyTitle } from '../sports.mjs';
 import { squatter } from './bodies.mjs';
 
 let passed = 0;
@@ -186,6 +186,47 @@ test('tennis: swing as the ball arrives to return it, early goes cross-court; a 
   for (let i = 0; i < 400 && !missed; i++) { const r = step(body()); if (r.miss) missed = true; }
   assert.ok(missed, 'no swing is a miss');
   assert.equal(c.rally, 0);
+});
+
+test('Send It!: flaps push it off, side to side steers, updrafts lift, the splash ends it', () => {
+  // the same seed is the same sky (two players fly the same course)
+  assert.deepEqual(makeAir(9).zones.slice(0, 5), makeAir(9).zones.slice(0, 5));
+  const air = makeAir(9);
+  assert.ok(air.zones.some((q) => q.kind === 'up') && air.zones.some((q) => q.kind === 'down'));
+  const up = air.zones.find((q) => q.kind === 'up');
+  assert.equal(air.at(up.x, (up.z0 + up.z1) / 2), up);
+  assert.equal(air.at(up.x + up.r + 5, (up.z0 + up.z1) / 2) === up, false);
+  const cx0 = (L[11].x + L[12].x) / 2;
+  const stand = (u, extra = {}) => body(extra, u - cx0);
+  const fly = (steerToUpdrafts, flaps) => {
+    const c = sendIt({ seed: 4 });
+    let t = 0;
+    while (c.phase !== 'done' && t < 400000) {
+      const s = c.state;
+      let u = 0.5, hands = {};
+      if (s.phase === 'push' && flaps) { const y = shY + (Math.floor(t / 200) % 2 ? 0.12 : -0.05); hands = { 15: [L[15].x, y], 16: [L[16].x, y] }; }
+      if (s.phase === 'fly' && steerToUpdrafts) { const nx = c.air.at(s.x, s.z) || c.air.next(s.z); if (nx && nx.z0 - s.z < 300) u = 0.5 + nx.x / (2 * FLY.half * 1.3); }
+      c.update({ ...stand(u, hands), t }); t += 33;
+    }
+    return c;
+  };
+  const lazy = fly(false, false), pilot = fly(true, true);
+  assert.equal(lazy.pumps, 0); assert.ok(pilot.pumps >= 5, 'flapping counts');
+  assert.ok(pilot.state.speed > lazy.state.speed, 'flaps launch it faster');
+  assert.ok(pilot.ups > lazy.ups && pilot.score > lazy.score * 1.8, `riding the updrafts goes much farther (${pilot.score} vs ${lazy.score} ft)`);
+  assert.equal(pilot.phase, 'done'); assert.equal(pilot.alt, 0, 'it ends in the water');
+  // stepping across your part of the screen steers it across the water
+  const c = sendIt({ seed: 4 });
+  let t = 0;
+  for (let i = 0; i < 120; i++) { c.update({ ...stand(0.5), t }); t += 33; }
+  for (let i = 0; i < 60; i++) { c.update({ ...stand(0.75), t }); t += 33; }
+  assert.ok(c.state.x > 10, 'stepping right flies right');
+  const m = sendIt({ seed: 4, mirror: true });
+  t = 0;
+  for (let i = 0; i < 120; i++) { m.update({ ...stand(0.5), t }); t += 33; }
+  for (let i = 0; i < 60; i++) { m.update({ ...stand(0.75), t }); t += 33; }
+  assert.ok(m.state.x < -10, 'mirrored, the picture\'s right is the screen\'s left');
+  assert.equal(flyTitle(0), 'Belly Flop'); assert.equal(flyTitle(2600), 'SENT IT!');
 });
 
 console.log(`\nIRL sports: ${passed} tests passed`);

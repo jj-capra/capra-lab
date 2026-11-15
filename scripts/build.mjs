@@ -181,7 +181,7 @@ async function buildSendIt() {
   const game = path.join(ROOT, 'games', 'send-it'), out = path.join(ROOT, 'public', 'send-it');
   await fs.rm(out, { recursive: true, force: true });
   await fs.mkdir(out, { recursive: true });
-  for (const f of ['index.html', 'game.js', 'logic.mjs']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  for (const f of ['index.html', 'game.js', 'logic.mjs', 'rear.mjs']) await fs.copyFile(path.join(game, f), path.join(out, f));
   console.log('built public/send-it/');
 }
 
