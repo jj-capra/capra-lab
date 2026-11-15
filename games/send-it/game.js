@@ -194,7 +194,8 @@ function startRun(id = prefs.craft) {
   G = { phase: 'count', craft, taps: 0, t0: performance.now(), pushAt: 0, flight: null, input: 0, touch: null, neutral: null, tiltHist: [], blast: false,
     splashAt: 0, drops: [], maxSpeed: 0, seed: (Math.random() * 2 ** 31) >>> 0, lastWarn: '', lastT: performance.now(), crowd: Array.from({ length: 14 }, (_, i) => ({ x: -DECK + 4 + i * 4.2, c: ['#FF3D8B', '#29D3F0', '#FFD23F', '#5BE38A', '#B79CFF', '#FF8A3D'][i % 6], p: Math.random() * 6 })) };
   show('game');
-  $('pushBtn').hidden = true; $('pushbar').hidden = true; $('blastBtn').hidden = true; $('warn').hidden = true;
+  $('pushBtn').hidden = true; $('pushbar').hidden = true; $('blastBtn').hidden = true; $('warn').hidden = true; $('radarBox').hidden = true;
+  CAM.phi = 0;
   say(`${craft.emoji} ${craft.name} on the pier. Get ready to push!`);
   ['3', '2', '1'].forEach((n, i) => setTimeout(() => { if (G && G.phase === 'count') { $('count3').textContent = n; sfx.beep(); } }, i * 700));
   setTimeout(() => { if (!G || G.phase !== 'count') return; $('count3').textContent = ''; beginPush(); }, 2100);
@@ -214,9 +215,9 @@ function launch() {
   G.neutral = tilt.ok && h.length ? h.reduce((a, b) => a + b, 0) / h.length : null;
   G.phase = 'fly';
   $('pushBtn').hidden = true; $('pushbar').hidden = true;
-  $('blastBtn').hidden = !G.craft.boost; $('blastLeft').textContent = `${G.craft.boost} left`;
+  $('blastBtn').hidden = !G.craft.boost; $('blastLeft').textContent = `${G.craft.boost} left`; $('radarBox').hidden = false;
   sfx.launch();
-  say(tilt.ok ? 'SEND IT! Tilt to fly: pull back to climb, push to dive.' : 'SEND IT! Drag up to climb, down to dive.');
+  say(tilt.ok ? 'SEND IT! Pull back to climb, dip to dive.' : 'SEND IT! Drag up to climb, down to dive.');
   setTimeout(() => { if (G && G.phase === 'fly') $('say').hidden = true; }, 2600);
 }
 function say(text) { const el = $('say'); el.hidden = !text; el.textContent = text || ''; }
@@ -275,139 +276,225 @@ function splash() {
   say(`SPLASH! ${Math.round(s.distance)} feet out.`);
 }
 
-/* ---------- drawing the world ---------- */
+/* ---------- drawing the world: a chase camera right behind the contraption ----------
+   JC, Nov 14 2026: "The view should change from right behind the vehicle or vessel so they can more see
+   everything and the phone dip down and pull back makes more sense with the flight." The camera rides
+   behind and a little above, pitching with the nose (CAM.follow of it), so pulling the phone back tips the
+   whole view up into a climb and dipping it tips the water up into a dive. World: x ahead (feet), y up,
+   z to the right. The radar strip at the bottom maps the wind ahead from the side. */
+const CAM = { back: 48, up: 8, follow: 0.7, phi: 0 };
+const SPAN = 16;                                      // feet across a contraption's wings, as drawn from behind
 function view() {
   const dpr = Math.min(2, window.devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight;
   if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const top = $('game').querySelector('.hud').getBoundingClientRect().bottom - cv.getBoundingClientRect().top + 8;
-  const waterY = H * 0.8, ppf = Math.max(2.2, Math.min((waterY - top) / 78, W / 95));
-  return { W, H, waterY, ppf, top };
+  return { W, H, top, f: Math.min(H * 0.95, W * 2.1), sx0: W / 2, sy0: H * 0.38 };
+}
+// The camera for this frame, and project(x, y, z) → { x, y, k } on screen (k: pixels per foot there).
+function makeCam(v, wx, wy, theta, dt) {
+  CAM.phi += (theta * CAM.follow - CAM.phi) * Math.min(1, dt * 5);
+  const ph = CAM.phi, c = Math.cos(ph), s = Math.sin(ph);
+  const camX = wx - CAM.back * c - CAM.up * s, camY = Math.max(1.2, wy - CAM.back * s + CAM.up * c);
+  const project = (x, y, z = 0) => {
+    const dx = x - camX, dy = y - camY, fwd = dx * c + dy * s;
+    if (fwd < 1) return null;
+    const k = v.f / fwd;
+    return { x: v.sx0 + z * k, y: v.sy0 - (dy * c - dx * s) * k, k, fwd };
+  };
+  return { camX, camY, c, s, project, horizon: v.sy0 + v.f * Math.tan(ph) };
 }
 function draw(now) {
-  const v = view(), { W, H, waterY, ppf, top } = v, t = now / 1000;
+  const v = view(), { W, H } = v, t = now / 1000;
+  const dt = Math.min(0.05, (now - (G.drawT || now)) / 1000); G.drawT = now;
   const s = G.flight ? G.flight.state : null;
-  // where the craft is (on the deck during the run-up)
   const pushP = G.phase === 'push' ? Math.min(1, (now - G.pushAt) / PUSH_MS) : G.phase === 'count' ? 0 : 1;
-  const cx = s ? s.x : -DECK + 6 + (DECK - 6) * Math.pow(pushP, 1.6), cy = s ? s.y : PIER + 1.2;
-  const camX = Math.max(-DECK - 4, cx - (W * 0.34) / ppf), camY = Math.max(0, cy - 66);
-  const X = (x) => (x - camX) * ppf, Y = (y) => waterY - (y - camY) * ppf;
-  // sky, sun, clouds, the far shore
-  const sky = ctx.createLinearGradient(0, 0, 0, waterY); sky.addColorStop(0, '#5DB8F2'); sky.addColorStop(1, '#CDEBFF');
+  const px = s ? s.x : -DECK + 6 + (DECK - 6) * Math.pow(pushP, 1.6), py = s ? s.y : PIER + 2.2;
+  const cam = makeCam(v, px, Math.max(py, 2.5), s && !s.splashed ? s.theta : 0, dt), P = cam.project;
+  const hz = cam.horizon;
+  // sky and the sun
+  const sky = ctx.createLinearGradient(0, Math.min(hz, H) - H, 0, Math.min(hz, H)); sky.addColorStop(0, '#4FAEEB'); sky.addColorStop(1, '#D7F0FF');
   ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = 'rgba(255,255,255,0.12)';
-  for (let yy = 6; yy < waterY; yy += 12) for (let xx = (yy / 12) % 2 ? 6 : 0; xx < W; xx += 12) { ctx.beginPath(); ctx.arc(xx, yy, 1.4, 0, Math.PI * 2); ctx.fill(); }
-  ctx.beginPath(); ctx.arc(W * 0.66 - camX * ppf * 0.02, top + 46, 30, 0, Math.PI * 2); ctx.fillStyle = '#FFE27A'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke();
-  for (let k = -2; k < 14; k++) {
-    const wx = k * 140 + ((k * 37) % 50), sx = (wx - camX * 0.4) * ppf * 0.5;   // clouds drift by slower than the water
-    const py = top + 30 + ((k * 13) % 5) * (waterY - top) * 0.07;
-    if (sx < -120 || sx > W + 120) continue;
-    ctx.save(); ctx.translate(sx, py);
-    ctx.beginPath(); for (const [dx, dy, r] of [[0, 0, 18], [20, -8, 22], [42, 0, 17], [22, 6, 18]]) { ctx.moveTo(dx + r, dy); ctx.arc(dx, dy, r, 0, Math.PI * 2); }
-    ctx.fillStyle = '#FFFFFF'; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(18,14,24,0.5)'; ctx.stroke();
-    ctx.restore();
+  for (let yy = 6; yy < Math.min(H, hz); yy += 12) for (let xx = (yy / 12) % 2 ? 6 : 0; xx < W; xx += 12) { ctx.beginPath(); ctx.arc(xx, yy, 1.4, 0, Math.PI * 2); ctx.fill(); }
+  const sun = P(cam.camX + 4000, cam.camY + 1500, 1500);
+  if (sun) { ctx.beginPath(); ctx.arc(sun.x, sun.y, 30, 0, Math.PI * 2); ctx.fillStyle = '#FFE27A'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke(); }
+  // clouds far off, drifting closer as you fly
+  for (let k = Math.floor(cam.camX / 300) + 2; k < Math.floor(cam.camX / 300) + 10; k++) {
+    const h = (k * 2654435761) >>> 0, wx = k * 300 + (h % 140), wz = ((h >>> 8) % 1400) - 700, wy = 260 + ((h >>> 16) % 200);
+    const q = P(wx, wy, wz); if (!q || q.fwd < 500 || q.fwd > 2600) continue;
+    const r = Math.max(10, Math.min(34, q.k * 45));
+    ctx.save(); ctx.translate(q.x, q.y); ctx.beginPath();
+    for (const [dx, dy, rr] of [[0, 0, 1], [1.1, -0.45, 1.2], [2.3, 0, 0.95], [1.2, 0.35, 1]]) { ctx.moveTo((dx + rr) * r, dy * r); ctx.arc(dx * r, dy * r, rr * r, 0, Math.PI * 2); }
+    ctx.fillStyle = '#FFFFFF'; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(18,14,24,0.45)'; ctx.stroke(); ctx.restore();
   }
-  ctx.fillStyle = '#7FB59A'; ctx.beginPath(); ctx.moveTo(0, waterY);
-  for (let xx = 0; xx <= W + 20; xx += 20) { const wx = xx / ppf + camX * 0.15; ctx.lineTo(xx, waterY - 16 - 10 * Math.sin(wx * 0.05) - 6 * Math.sin(wx * 0.13)); }
-  ctx.lineTo(W, waterY); ctx.closePath(); ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(18,14,24,0.4)'; ctx.stroke();
-  // the wind bands: red pushes back, green carries
-  const wind = G.flight ? G.flight.wind : null;
-  if (wind) for (const b of wind.bands) {
-    const x0 = X(b.x0), x1 = X(b.x1); if (x1 < 0 || x0 > W) continue;
-    const y0 = Y(b.y1), y1 = Y(b.y0), head = b.w < 0;
-    ctx.fillStyle = head ? 'rgba(255,75,75,0.16)' : 'rgba(91,227,138,0.18)'; ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
-    ctx.setLineDash([8, 6]); ctx.lineWidth = 2; ctx.strokeStyle = head ? 'rgba(196,32,32,0.55)' : 'rgba(30,140,70,0.55)'; ctx.strokeRect(x0, y0, x1 - x0, y1 - y0); ctx.setLineDash([]);
-    const sp = Math.abs(b.w) * ppf * 1.6, rows = Math.max(1, Math.round((y1 - y0) / 26));
-    ctx.strokeStyle = head ? 'rgba(196,32,32,0.75)' : 'rgba(30,140,70,0.8)'; ctx.lineWidth = 3; ctx.lineCap = 'round';
-    for (let r = 0; r < rows; r++) {
-      const yy = y0 + (r + 0.5) * ((y1 - y0) / rows);
-      for (let k = 0; k < (x1 - x0) / 70 + 1; k++) {
-        let ax = x0 + ((k * 70 + (head ? -1 : 1) * t * sp + r * 31) % (x1 - x0 + 70) + (x1 - x0 + 70)) % (x1 - x0 + 70) - 35;
-        if (ax < x0 + 6 || ax > x1 - 30) continue;
-        const d = head ? -1 : 1;
-        ctx.beginPath(); ctx.moveTo(ax, yy); ctx.lineTo(ax + 24, yy); ctx.moveTo(ax + (d > 0 ? 24 : 0), yy); ctx.lineTo(ax + (d > 0 ? 17 : 7), yy - 6); ctx.moveTo(ax + (d > 0 ? 24 : 0), yy); ctx.lineTo(ax + (d > 0 ? 17 : 7), yy + 6); ctx.stroke();
+  // the water from the horizon down, bands rushing toward you, whitecaps
+  if (hz < H) {
+    const y0 = Math.max(0, hz);
+    const sea = ctx.createLinearGradient(0, y0, 0, H); sea.addColorStop(0, '#7CC8F0'); sea.addColorStop(0.25, '#2E9BE0'); sea.addColorStop(1, '#14569A');
+    ctx.fillStyle = sea; ctx.fillRect(0, y0, W, H - y0);
+    // the far shore sitting on the horizon
+    if (hz > -30) {
+      ctx.fillStyle = '#7FB59A'; ctx.beginPath(); ctx.moveTo(0, hz);
+      for (let xx = 0; xx <= W + 16; xx += 16) ctx.lineTo(xx, hz - 7 - 6 * Math.sin(xx * 0.021 + 1) - 4 * Math.sin(xx * 0.057));
+      ctx.lineTo(W, hz); ctx.closePath(); ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(18,14,24,0.4)'; ctx.stroke();
+    }
+    const step = 8, first = Math.floor(cam.camX / step) * step + step;
+    let prevY = null;
+    for (let wx = first, i = 0; wx < cam.camX + 900; wx += step, i++) {
+      const q = P(wx, 0, 0); if (!q) continue;
+      if (prevY != null && Math.abs(prevY - q.y) < 1.2) break;
+      if (prevY != null && ((wx / step) % 2 === 0)) { ctx.fillStyle = 'rgba(255,255,255,0.07)'; ctx.fillRect(0, Math.min(q.y, prevY), W, Math.abs(prevY - q.y)); }
+      prevY = q.y;
+      if (q.fwd < 260) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.75)'; ctx.lineWidth = Math.max(1, q.k * 0.35); ctx.lineCap = 'round';
+        for (let z = -150 + ((wx * 7) % 24); z <= 150; z += 24) {
+          const a = P(wx, 0, z), b = P(wx, 0, z + 3.5); if (!a || !b || b.x < 0 || a.x > W) continue;
+          const lift = Math.sin(wx * 0.3 + z + t * 3) * q.k * 0.25;
+          ctx.beginPath(); ctx.moveTo(a.x, a.y + lift); ctx.quadraticCurveTo((a.x + b.x) / 2, a.y - q.k * 0.5 + lift, b.x, b.y + lift); ctx.stroke();
+        }
       }
     }
+    if (hz > 0) { ctx.beginPath(); ctx.moveTo(0, hz); ctx.lineTo(W, hz); ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.stroke(); }
   }
-  // the water
-  const sea = ctx.createLinearGradient(0, waterY, 0, H); sea.addColorStop(0, '#2E9BE0'); sea.addColorStop(1, '#14569A');
-  ctx.fillStyle = sea; ctx.fillRect(0, waterY, W, H - waterY);
-  ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-  for (let r = 0; r < 4; r++) {
-    const yy = waterY + 8 + r * ((H - waterY) / 4); ctx.beginPath();
-    for (let xx = -10; xx <= W + 10; xx += 8) { const wx = xx / ppf + camX; ctx.lineTo(xx, yy + Math.sin(wx * 0.4 + t * 2 + r) * 2.5); }
-    ctx.stroke();
-  }
-  ctx.beginPath(); ctx.moveTo(0, waterY); ctx.lineTo(W, waterY); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke();
-  // buoys every 50 feet, and the best flag
+  // what's ahead, far to near: wind bands, buoys
+  const wind = G.flight ? G.flight.wind : null;
+  const items = [];
+  if (wind) for (const b of wind.bands) if (b.x1 > cam.camX + 2) items.push({ d: Math.max(b.x0, cam.camX + 2), draw: () => windBand(b, cam, t, v) });
   const best = bests()[G.craft.id];
-  for (let d = 50; d <= 1500; d += 50) {
-    const bx = X(d); if (bx < -30 || bx > W + 30) continue;
-    buoy(bx, waterY, `${d}`, d % 100 === 0 ? '#E8322E' : '#FFF8EC', t);
+  for (let d = 50; d <= 1500; d += 50) if (d > cam.camX + 3 && d < cam.camX + 420) for (const z of [-17, 17]) items.push({ d, draw: () => buoy(P(d, 0, z), `${d}`, d % 100 === 0 ? '#E8322E' : '#FFF8EC', t, false) });
+  if (best && best > cam.camX + 3) items.push({ d: best, draw: () => buoy(P(best, 0, 0), 'BEST', '#FFD23F', t, true) });
+  items.sort((a, b) => b.d - a.d).forEach((it) => it.draw());
+  // the pier on the run-up (once it's airborne the camera's out over the water)
+  if (G.phase === 'count' || G.phase === 'push') pier(cam, t, v);
+  // the shadow on the water, then the crew and the contraption
+  const me = P(px, py, 0);
+  const sh = P(px, 0, 0);
+  if (sh && s && !s.splashed && py > 0.5) { ctx.beginPath(); ctx.ellipse(sh.x, sh.y, SPAN * sh.k * 0.42, Math.max(2, SPAN * sh.k * 0.06), 0, 0, Math.PI * 2); ctx.fillStyle = 'rgba(8,30,60,0.32)'; ctx.fill(); }
+  if (G.phase === 'push' || G.phase === 'count') crew(cam, px, t, G.phase === 'push');
+  if (me && (G.phase !== 'splash' || now - G.splashAt < 140)) {
+    const sc = (SPAN * me.k) / 180, nose = s ? (s.theta - CAM.phi) * 90 : 0, roll = s ? Math.max(-0.12, Math.min(0.12, -s.wind * 0.006 + Math.sin(t * 1.3) * 0.03)) : 0;
+    drawRear(ctx, G.craft.id, me.x, me.y - nose, sc, roll, t, s);
   }
-  if (best) { const bx = X(best); if (bx > -30 && bx < W + 30) buoy(bx, waterY, 'BEST', '#FFD23F', t, true); }
-  // the pier: deck, pilings, railing, the crowd, the banner at the edge
-  pier(X, Y, ppf, t);
-  // the crew running it down the deck
-  if (G.phase === 'push' || G.phase === 'count') crew(X(cx - 7), Y(PIER), ppf, t, G.phase === 'push');
-  // the contraption
-  const sc = (ppf * 16) / 90;
-  if (G.phase !== 'splash' || now - G.splashAt < 120) drawCraft(ctx, G.craft.id, X(cx), Y(cy) - 4 * sc, sc, s ? s.theta : 0, t, s);
   // the splash
-  if (G.phase === 'splash') {
-    const dt = (now - G.splashAt) / 1000;
-    for (const d of G.drops) { const x = d.x + d.vx * dt * 0.6, y = d.vy * dt - 16 * dt * dt; if (y < 0) continue; ctx.beginPath(); ctx.arc(X(x), Y(y), d.r * ppf, 0, Math.PI * 2); ctx.fillStyle = '#E6F6FF'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke(); }
-    ctx.beginPath(); ctx.ellipse(X(s.x), waterY, (6 + dt * 14) * ppf * 0.5, 4 + dt * 6, 0, 0, Math.PI * 2); ctx.lineWidth = 3; ctx.strokeStyle = '#FFFFFF'; ctx.stroke();
+  if (G.phase === 'splash' && me) {
+    const st = (now - G.splashAt) / 1000;
+    for (const d of G.drops) {
+      const x = me.x + d.vx * st * me.k * 0.5, y = me.y - (d.vy * st - 18 * st * st) * me.k * 0.35;
+      if (d.vy * st - 18 * st * st < -2) continue;
+      ctx.beginPath(); ctx.arc(x, y, Math.max(3, d.r * me.k * 0.9), 0, Math.PI * 2); ctx.fillStyle = '#E6F6FF'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke();
+    }
+    ctx.beginPath(); ctx.ellipse(me.x, me.y + 10, (40 + st * 160), 10 + st * 30, 0, 0, Math.PI * 2); ctx.lineWidth = 4; ctx.strokeStyle = '#FFFFFF'; ctx.stroke();
   }
-  // the nose meter: how close the wing is to stalling
-  if (s && G.phase === 'fly') noseMeter(v, s);
+  // speed lines at the edges, a tint inside a wind band
+  if (s && G.phase === 'fly') {
+    const inBand = wind && wind.bands.find((b) => s.x >= b.x0 && s.x <= b.x1 && s.y >= b.y0 && s.y <= b.y1);
+    if (inBand) { const g = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.75); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, inBand.w < 0 ? 'rgba(255,60,60,0.35)' : 'rgba(80,230,130,0.35)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); }
+    const n = Math.min(14, Math.max(0, Math.round((s.airspeed - 16) / 2)));
+    ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2 + t * 0.7, r0 = Math.max(W, H) * (0.42 + ((i * 37 + Math.floor(t * 9)) % 10) / 40);
+      ctx.beginPath(); ctx.moveTo(W / 2 + Math.cos(a) * r0, H / 2 + Math.sin(a) * r0); ctx.lineTo(W / 2 + Math.cos(a) * (r0 + 40), H / 2 + Math.sin(a) * (r0 + 40)); ctx.stroke();
+    }
+    noseMeter(v, s);
+  }
+  radar(s, px, py, t);
 }
-function buoy(x, waterY, label, color, t, flag = false) {
-  const bob = Math.sin(t * 2.2 + x * 0.02) * 2;
-  ctx.save(); ctx.translate(x, waterY + bob);
-  ctx.beginPath(); ctx.moveTo(-9, 0); ctx.lineTo(9, 0); ctx.lineTo(6, -16); ctx.lineTo(-6, -16); ctx.closePath(); ctx.fillStyle = color; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(0, -16); ctx.lineTo(0, -36); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(0, -36); ctx.lineTo(flag ? 34 : 26, -31); ctx.lineTo(0, -25); ctx.closePath(); ctx.fillStyle = flag ? '#FFD23F' : '#FFF8EC'; ctx.fill(); ctx.stroke();
-  ctx.font = '12px Bangers, Impact, sans-serif'; ctx.fillStyle = INK; ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; ctx.fillText(label, 3, -30.5);
+// A wind band ahead: its front face (red headwind, green tailwind) and streaks of air blowing through it,
+// toward you for a headwind and away for a tailwind.
+function windBand(b, cam, t, v) {
+  const P = cam.project, head = b.w < 0, x0 = Math.max(b.x0, cam.camX + 2), Z = 46;
+  const col = head ? '255,75,75' : '91,227,138', ink = head ? 'rgba(196,32,32,0.7)' : 'rgba(30,140,70,0.75)';
+  const a = P(x0, b.y1, -Z), bq = P(x0, b.y1, Z), c = P(x0, b.y0, Z), d = P(x0, b.y0, -Z);
+  const ahead = b.x0 - cam.camX;
+  if (a && bq && c && d && ahead > 2 && ahead < 280) {
+    ctx.save(); ctx.globalAlpha = Math.max(0.15, Math.min(1, (280 - ahead) / 140));
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(bq.x, bq.y); ctx.lineTo(c.x, c.y); ctx.lineTo(d.x, d.y); ctx.closePath();
+    ctx.fillStyle = `rgba(${col},0.16)`; ctx.fill(); ctx.setLineDash([10, 7]); ctx.lineWidth = 2; ctx.strokeStyle = ink; ctx.stroke(); ctx.setLineDash([]);
+    if (ahead < 200) {
+      const fs = Math.max(12, Math.min(30, a.k * 4));
+      ctx.font = `${fs}px Bangers, Impact, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      ctx.lineWidth = 4; ctx.strokeStyle = INK; const label = head ? '← HEADWIND' : 'TAILWIND →';
+      ctx.strokeText(label, (a.x + bq.x) / 2, a.y - 4); ctx.fillStyle = head ? '#FF6B6B' : '#5BE38A'; ctx.fillText(label, (a.x + bq.x) / 2, a.y - 4);
+    }
+    ctx.restore();
+  }
+  if (ahead > 320) return;
+  b.parts ||= Array.from({ length: 70 }, (_, i) => ({ u: (i * 0.618) % 1, y: b.y0 + ((i * 0.381) % 1) * (b.y1 - b.y0), z: (((i * 0.731) % 1) - 0.5) * Z * 2 }));
+  const len = b.x1 - b.x0, dir = head ? -1 : 1;
+  ctx.strokeStyle = head ? 'rgba(255,90,90,0.85)' : 'rgba(110,240,150,0.9)'; ctx.lineCap = 'round';
+  for (const p of b.parts) {
+    const x = b.x0 + ((((p.u * len + dir * t * Math.abs(b.w) * 2.2) % len) + len) % len);
+    if (x < cam.camX + 3) continue;
+    const q1 = P(x, p.y, p.z), q2 = P(x + dir * 4, p.y, p.z); if (!q1 || !q2) continue;
+    ctx.lineWidth = Math.max(1.5, q1.k * 0.3); ctx.beginPath(); ctx.moveTo(q1.x, q1.y); ctx.lineTo(q2.x, q2.y); ctx.stroke();
+  }
+}
+function buoy(q, label, color, t, flag) {
+  if (!q || q.fwd > 600) return;
+  const s = Math.max(0.25, Math.min(3, q.k / 9)), bob = Math.sin(t * 2.2 + q.fwd * 0.05) * 2 * s;
+  ctx.save(); ctx.translate(q.x, q.y + bob); ctx.scale(s, s);
+  ctx.beginPath(); ctx.moveTo(-10, 0); ctx.lineTo(10, 0); ctx.lineTo(7, -18); ctx.lineTo(-7, -18); ctx.closePath(); ctx.fillStyle = color; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, -18); ctx.lineTo(0, flag ? -52 : -40); ctx.stroke();
+  const fy = flag ? -52 : -40, fw = flag ? 40 : 30;
+  ctx.beginPath(); ctx.rect(1, fy, fw, 13); ctx.fillStyle = flag ? '#FFD23F' : '#FFF8EC'; ctx.fill(); ctx.stroke();
+  ctx.font = '12px Bangers, Impact, sans-serif'; ctx.fillStyle = INK; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(label, 1 + fw / 2, fy + 7);
   ctx.restore();
 }
-function pier(X, Y, ppf, t) {
-  const x0 = X(-DECK - 60), x1 = X(0), top = Y(PIER), th = Math.max(8, 1.6 * ppf), water = Y(0);
-  if (x1 < -10) return;
-  ctx.fillStyle = '#5E3B1E';
-  for (let px = -DECK - 56; px <= -1; px += 9) { const xx = X(px); ctx.fillRect(xx - 3, top + th, 6, water - top - th); ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.strokeRect(xx - 3, top + th, 6, water - top - th); }
-  ctx.fillStyle = '#9B6A3C'; ctx.fillRect(x0, top, x1 - x0, th); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.strokeRect(x0, top, x1 - x0, th);
-  ctx.lineWidth = 1.5; ctx.strokeStyle = 'rgba(18,14,24,0.45)'; for (let px = -DECK - 56; px < 0; px += 4) { ctx.beginPath(); ctx.moveTo(X(px), top); ctx.lineTo(X(px), top + th); ctx.stroke(); }
-  // the crowd behind the rail, bouncing
-  for (const p of G.crowd) {
-    const hx = X(p.x), jump = (G.phase === 'fly' || G.phase === 'splash' ? Math.abs(Math.sin(t * 6 + p.p)) * 8 : Math.abs(Math.sin(t * 3 + p.p)) * 3);
-    ctx.beginPath(); ctx.arc(hx, top - 18 - jump, 7, 0, Math.PI * 2); ctx.fillStyle = '#F2C39A'; ctx.fill(); ctx.lineWidth = 2.2; ctx.strokeStyle = INK; ctx.stroke();
-    ctx.beginPath(); ctx.rect(hx - 7, top - 11 - jump, 14, 11 + jump); ctx.fillStyle = p.c; ctx.fill(); ctx.stroke();
-    if (G.phase === 'fly') { ctx.beginPath(); ctx.moveTo(hx - 6, top - 9 - jump); ctx.lineTo(hx - 12, top - 24 - jump); ctx.moveTo(hx + 6, top - 9 - jump); ctx.lineTo(hx + 12, top - 24 - jump); ctx.stroke(); }
+// The pier from behind the contraption: the deck running to the edge, the crowd along both rails and
+// the SEND IT! arch over the end.
+function pier(cam, t, v) {
+  const P = cam.project, Wd = 9;
+  const quad = (pts, fill, lw = 3) => { const q = pts.map(([x, y, z]) => P(x, y, z)); if (q.some((p) => !p)) return false; ctx.beginPath(); q.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); ctx.lineWidth = lw; ctx.strokeStyle = INK; ctx.stroke(); return true; };
+  const near = Math.max(-DECK - 40, cam.camX + 1.5);
+  if (near < 0) {
+    quad([[near, PIER - 3, -Wd], [0, PIER - 3, -Wd], [0, 0, -Wd], [near, 0, -Wd]], '#5E3B1E', 2);
+    quad([[near, PIER - 3, Wd], [0, PIER - 3, Wd], [0, 0, Wd], [near, 0, Wd]], '#5E3B1E', 2);
+    quad([[near, PIER, -Wd], [0, PIER, -Wd], [0, PIER, Wd], [near, PIER, Wd]], '#9B6A3C');
+    ctx.strokeStyle = 'rgba(18,14,24,0.4)'; ctx.lineWidth = 1.5;
+    for (let x = Math.ceil(near / 3) * 3; x < 0; x += 3) { const a = P(x, PIER, -Wd), b = P(x, PIER, Wd); if (a && b) { ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); } }
+    quad([[-0.01, PIER, -Wd], [-0.01, PIER, Wd], [-0.01, PIER - 1, Wd], [-0.01, PIER - 1, -Wd]], '#FFD23F', 2.5);
+    // the crowd along both rails, far to near
+    const people = [];
+    for (const p of G.crowd) for (const side of [-1, 1]) if (p.x > cam.camX + 2) people.push({ ...p, z: side * (Wd + 1.5) });
+    people.sort((a, b) => b.x - a.x);
+    for (const p of people) {
+      const q = P(p.x, PIER, p.z); if (!q) continue;
+      const jump = (G.phase === 'fly' || G.phase === 'splash' ? Math.abs(Math.sin(t * 6 + p.p)) : Math.abs(Math.sin(t * 3 + p.p)) * 0.3) * q.k * 1.2;
+      const bw = q.k * 1.7, bh = q.k * 3.2, hr = q.k * 0.95;
+      ctx.beginPath(); ctx.rect(q.x - bw / 2, q.y - bh - jump, bw, bh); ctx.fillStyle = p.c; ctx.fill(); ctx.lineWidth = Math.max(1.5, q.k * 0.25); ctx.strokeStyle = INK; ctx.stroke();
+      ctx.beginPath(); ctx.arc(q.x, q.y - bh - hr - jump, hr, 0, Math.PI * 2); ctx.fillStyle = '#F2C39A'; ctx.fill(); ctx.stroke();
+      if (G.phase !== 'count') { ctx.beginPath(); ctx.moveTo(q.x - bw * 0.4, q.y - bh * 0.9 - jump); ctx.lineTo(q.x - bw * 0.8, q.y - bh * 1.5 - jump); ctx.moveTo(q.x + bw * 0.4, q.y - bh * 0.9 - jump); ctx.lineTo(q.x + bw * 0.8, q.y - bh * 1.5 - jump); ctx.stroke(); }
+    }
+    for (const z of [-Wd, Wd]) { const a = P(near, PIER + 3.4, z), b = P(0, PIER + 3.4, z); if (a && b) { ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke(); } }
   }
-  ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.beginPath(); ctx.moveTo(x0, top - 10); ctx.lineTo(X(-6), top - 10); ctx.stroke();
-  // the launch edge: hazard stripes and the banner
-  const ex = X(0);
-  for (let k = 0; k < 4; k++) { ctx.fillStyle = k % 2 ? '#FFD23F' : INK; ctx.fillRect(ex - 4 * (k + 1) * (ppf / 4), top, 4 * (ppf / 4), th); }
-  ctx.beginPath(); ctx.moveTo(ex - 2, top); ctx.lineTo(ex - 2, top - 46); ctx.lineWidth = 3; ctx.stroke();
-  ctx.save(); ctx.translate(ex - 2, top - 46); ctx.rotate(Math.sin(t * 3) * 0.04);
-  ctx.beginPath(); ctx.rect(-70, 0, 68, 22); ctx.fillStyle = '#FF3D8B'; ctx.fill(); ctx.lineWidth = 3; ctx.stroke();
-  ctx.font = '18px Bangers, Impact, sans-serif'; ctx.fillStyle = '#FFF8EC'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('SEND IT!', -36, 12);
-  ctx.restore();
+  // the arch over the end of the pier
+  const l0 = P(0, PIER, -Wd - 1), l1 = P(0, PIER + 12, -Wd - 1), r0 = P(0, PIER, Wd + 1), r1 = P(0, PIER + 12, Wd + 1), bl = P(0, PIER + 12, -Wd - 1), br = P(0, PIER + 9, Wd + 1);
+  if (l0 && l1 && r0 && r1 && bl && br && l1.fwd > 16) {
+    ctx.lineWidth = Math.max(3, l0.k * 0.5); ctx.strokeStyle = INK;
+    ctx.beginPath(); ctx.moveTo(l0.x, l0.y); ctx.lineTo(l1.x, l1.y); ctx.moveTo(r0.x, r0.y); ctx.lineTo(r1.x, r1.y); ctx.stroke();
+    const h = l1.k * 3.2, wob = Math.sin(t * 3) * l1.k * 0.15;
+    ctx.beginPath(); ctx.rect(l1.x, l1.y + wob, r1.x - l1.x, h); ctx.fillStyle = '#FF3D8B'; ctx.fill(); ctx.lineWidth = 3; ctx.stroke();
+    ctx.font = `${Math.max(12, h * 0.78)}px Bangers, Impact, sans-serif`; ctx.fillStyle = '#FFF8EC'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.lineWidth = 4; ctx.strokeStyle = INK; ctx.strokeText('SEND IT!', (l1.x + r1.x) / 2, l1.y + wob + h / 2); ctx.fillText('SEND IT!', (l1.x + r1.x) / 2, l1.y + wob + h / 2);
+  }
 }
-function crew(x, deckY, ppf, t, running) {
-  for (const k of [0, 1]) {
-    const bx = x - k * 22, step = running ? Math.sin(t * 22 + k * 2) : 0;
-    ctx.save(); ctx.translate(bx, deckY);
-    ctx.lineWidth = 4; ctx.strokeStyle = INK; ctx.lineCap = 'round';
-    ctx.beginPath(); ctx.moveTo(0, -18); ctx.lineTo(-6 + step * 7, 0); ctx.moveTo(0, -18); ctx.lineTo(6 - step * 7, 0); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0, -18); ctx.lineTo(6, -34); ctx.moveTo(4, -30); ctx.lineTo(18, -26); ctx.stroke();
-    ctx.beginPath(); ctx.arc(9, -40, 6, 0, Math.PI * 2); ctx.fillStyle = k ? '#29D3F0' : '#FFD23F'; ctx.fill(); ctx.lineWidth = 2.4; ctx.stroke();
+// The crew shoving it down the deck, seen from behind.
+function crew(cam, px, t, running) {
+  for (const z of [-3.2, 3.2]) {
+    const q = cam.project(px - 7, PIER, z); if (!q) continue;
+    const k = q.k, step = running ? Math.sin(t * 22 + z) : 0;
+    ctx.save(); ctx.translate(q.x, q.y); ctx.lineCap = 'round'; ctx.strokeStyle = INK;
+    ctx.lineWidth = Math.max(4, k * 0.55);
+    ctx.beginPath(); ctx.moveTo(0, -k * 2.8); ctx.lineTo(-k * 0.7 + step * k * 0.5, 0); ctx.moveTo(0, -k * 2.8); ctx.lineTo(k * 0.7 - step * k * 0.5, 0); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-k * 0.9, -k * 5.2); ctx.lineTo(k * 0.9, -k * 5.2); ctx.lineTo(k * 0.7, -k * 2.6); ctx.lineTo(-k * 0.7, -k * 2.6); ctx.closePath(); ctx.fillStyle = z < 0 ? '#FFD23F' : '#29D3F0'; ctx.fill(); ctx.lineWidth = Math.max(2, k * 0.25); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-k * 0.8, -k * 5); ctx.lineTo(-k * 1.2 * Math.sign(z) - k * 0.4, -k * 6.6); ctx.moveTo(k * 0.8, -k * 5); ctx.lineTo(-k * 1.2 * Math.sign(z) + k * 0.4, -k * 6.6); ctx.lineWidth = Math.max(3, k * 0.4); ctx.stroke();
+    ctx.beginPath(); ctx.arc(0, -k * 6.1, k * 0.85, 0, Math.PI * 2); ctx.fillStyle = '#5B3A1E'; ctx.fill(); ctx.lineWidth = Math.max(2, k * 0.25); ctx.stroke();
     ctx.restore();
   }
 }
 function noseMeter(v, s) {
-  const c = G.craft, as = (c.stall * Math.PI) / 180, x = 14, h = Math.min(170, v.H * 0.26), y = v.waterY - h - 18, w = 18;
+  const c = G.craft, as = (c.stall * Math.PI) / 180, x = 14, h = Math.min(160, v.H * 0.22), y = v.top + 34, w = 18;
   const frac = Math.max(-0.3, Math.min(1.3, s.alpha / as));
   ctx.save();
   ctx.fillStyle = 'rgba(18,14,24,0.7)'; ctx.fillRect(x - 4, y - 22, w + 8, h + 30);
@@ -418,6 +505,105 @@ function noseMeter(v, s) {
   ctx.beginPath(); ctx.moveTo(x - 6, my); ctx.lineTo(x + w + 6, my); ctx.lineWidth = 5; ctx.strokeStyle = '#FFF8EC'; ctx.stroke(); ctx.lineWidth = 2; ctx.strokeStyle = INK; ctx.stroke();
   ctx.font = '12px Bangers, Impact, sans-serif'; ctx.fillStyle = '#FFF8EC'; ctx.textAlign = 'center'; ctx.fillText('NOSE', x + w / 2, y - 9);
   ctx.restore();
+}
+// The radar: the next 230 feet from the side (0 to 60 feet up), the wind bands in red and green, the
+// buoys, and you, so you can pick the height to fly at.
+const rc = $('radar'), rx = rc.getContext('2d');
+function radar(s, px, py, t) {
+  const box = rc.parentElement; if (box.hidden) return;
+  const dpr = Math.min(2, window.devicePixelRatio || 1), W = rc.clientWidth, H = rc.clientHeight;
+  if (rc.width !== Math.round(W * dpr) || rc.height !== Math.round(H * dpr)) { rc.width = Math.round(W * dpr); rc.height = Math.round(H * dpr); }
+  rx.setTransform(dpr, 0, 0, dpr, 0, 0); rx.clearRect(0, 0, W, H);
+  const from = px - 30, span = 260, top = 60, X = (x) => ((x - from) / span) * W, Y = (y) => H - 6 - (Math.min(top, y) / top) * (H - 12);
+  rx.fillStyle = 'rgba(46,155,224,0.55)'; rx.fillRect(0, Y(0), W, H - Y(0));
+  const wind = G.flight ? G.flight.wind : null;
+  if (wind) for (const b of wind.bands) {
+    if (b.x1 < from || b.x0 > from + span) continue;
+    rx.fillStyle = b.w < 0 ? 'rgba(255,75,75,0.6)' : 'rgba(91,227,138,0.65)';
+    rx.fillRect(X(b.x0), Y(b.y1), X(b.x1) - X(b.x0), Y(b.y0) - Y(b.y1));
+  }
+  rx.fillStyle = 'rgba(255,248,236,0.7)'; rx.font = '10px Bangers, Impact, sans-serif'; rx.textAlign = 'center';
+  for (let d = 50; d <= 1500; d += 50) { const x = X(d); if (x < 0 || x > W) continue; rx.fillRect(x - 1, Y(0) - 5, 2, 5); rx.fillText(String(d), x, Y(0) - 7); }
+  if (from < 0) { rx.fillStyle = '#9B6A3C'; rx.fillRect(Math.max(0, X(-DECK)), Y(PIER), X(0) - Math.max(0, X(-DECK)), 3); }
+  // you: a little arrow pointing where the nose points
+  const th = s ? s.theta : 0, mx = X(px), my = Y(Math.max(0, py));
+  rx.save(); rx.translate(mx, my); rx.rotate(-th);
+  rx.beginPath(); rx.moveTo(9, 0); rx.lineTo(-6, -5); rx.lineTo(-3, 0); rx.lineTo(-6, 5); rx.closePath(); rx.fillStyle = '#FFD23F'; rx.fill(); rx.lineWidth = 1.5; rx.strokeStyle = INK; rx.stroke();
+  rx.restore();
+  rx.fillStyle = 'rgba(255,248,236,0.6)'; rx.textAlign = 'left'; rx.fillText('RADAR', 6, 12);
+}
+
+/* ---------- the contraptions from behind (wings across, about 180 wide, the middle at 0,0) ---------- */
+const REAR = {
+  goat(c, t) {
+    c.beginPath(); c.moveTo(-92, 4); c.quadraticCurveTo(0, -40, 92, 4); c.lineTo(86, 10); c.quadraticCurveTo(0, -26, -86, 10); c.closePath();
+    c.fillStyle = '#FFD23F'; c.fill(); c.save(); c.clip(); c.fillStyle = '#FF3D8B'; for (let x = -88; x < 92; x += 26) c.fillRect(x, -44, 11, 60); c.restore(); outline(c, null);
+    c.beginPath(); c.moveTo(0, -18); c.lineTo(-20, 30); c.moveTo(0, -18); c.lineTo(20, 30); c.moveTo(-24, 30); c.lineTo(24, 30); c.lineWidth = 3; c.strokeStyle = INK; c.stroke();
+    // the goat from behind: horns, ears, a fluffy rump, a tail, dangling hooves
+    c.beginPath(); c.moveTo(-7, 6); c.quadraticCurveTo(-16, -4, -10, -12); c.moveTo(7, 6); c.quadraticCurveTo(16, -4, 10, -12); c.lineWidth = 4; c.strokeStyle = '#8A7FA0'; c.stroke();
+    c.beginPath(); c.ellipse(-13, 9, 6, 3, -0.4, 0, Math.PI * 2); c.ellipse(13, 9, 6, 3, 0.4, 0, Math.PI * 2); outline(c, '#FFF8EC', 2.4);
+    c.beginPath(); c.ellipse(0, 18, 15, 13, 0, 0, Math.PI * 2); outline(c, '#FFF8EC', 3);
+    c.beginPath(); c.ellipse(0, 9, 3, 5, 0, 0, Math.PI * 2); outline(c, '#FFF8EC', 2);
+    for (const lx of [-7, 7]) { c.beginPath(); c.moveTo(lx, 29); c.lineTo(lx + Math.sin(t * 8 + lx) * 2, 40); c.lineWidth = 3.4; c.strokeStyle = INK; c.stroke(); c.beginPath(); c.arc(lx + Math.sin(t * 8 + lx) * 2, 41, 2.4, 0, Math.PI * 2); c.fillStyle = INK; c.fill(); }
+  },
+  tub(c, t) {
+    c.beginPath(); c.moveTo(-92, 0); c.lineTo(-30, -8); c.lineTo(-30, 6); c.lineTo(-88, 10); c.closePath(); outline(c, '#C98A4B');
+    c.beginPath(); c.moveTo(92, 0); c.lineTo(30, -8); c.lineTo(30, 6); c.lineTo(88, 10); c.closePath(); outline(c, '#C98A4B');
+    c.beginPath(); c.moveTo(-36, -4); c.lineTo(36, -4); c.quadraticCurveTo(36, 26, 0, 26); c.quadraticCurveTo(-36, 26, -36, -4); c.closePath(); outline(c, '#F3F0FF');
+    c.beginPath(); c.ellipse(0, -4, 36, 7, 0, 0, Math.PI * 2); outline(c, '#F3F0FF'); c.beginPath(); c.ellipse(0, -4, 29, 4.5, 0, 0, Math.PI * 2); c.fillStyle = '#C9C2D6'; c.fill();
+    for (const fx of [-20, 20]) { c.beginPath(); c.ellipse(fx, 28, 5, 4, 0, 0, Math.PI * 2); outline(c, '#FFD23F', 2.2); }
+    rearPilot(c, -6, -14, 9, '#E8322E');
+    c.beginPath(); c.arc(16, -12, 6, 0, Math.PI * 2); outline(c, '#FFD23F', 2.2);
+  },
+  couch(c, t) {
+    c.beginPath(); c.rect(-94, -44, 188, 8); outline(c, '#C98A4B');
+    c.beginPath(); c.moveTo(-50, -36); c.lineTo(-40, -18); c.moveTo(50, -36); c.lineTo(40, -18); c.lineWidth = 3; c.strokeStyle = INK; c.stroke();
+    rearPilot(c, 0, -26, 9, '#29D3F0');
+    c.beginPath(); c.rect(-44, -20, 88, 34); outline(c, '#C42828');
+    c.beginPath(); c.moveTo(-15, -20); c.lineTo(-15, 14); c.moveTo(15, -20); c.lineTo(15, 14); c.lineWidth = 2; c.strokeStyle = 'rgba(18,14,24,0.5)'; c.stroke();
+    for (const ax of [-54, 44]) { c.beginPath(); c.rect(ax, -6, 10, 22); outline(c, '#E8322E'); }
+    for (const lx of [-38, 34]) { c.beginPath(); c.rect(lx, 14, 4, 6); outline(c, '#7A4A24', 2); }
+  },
+  taco(c, t) {
+    rearPilot(c, 0, -6, 9, '#5BE38A');
+    c.beginPath(); c.moveTo(-62, -22); c.quadraticCurveTo(-62, 28, 0, 28); c.quadraticCurveTo(62, 28, 62, -22); c.lineTo(50, -22); c.quadraticCurveTo(50, 14, 0, 15); c.quadraticCurveTo(-50, 14, -50, -22); c.closePath(); outline(c, '#FFB627');
+    c.beginPath(); for (let i = 0; i <= 10; i++) c.lineTo(-56 + (i % 2 ? 4 : 0), -22 + i * 3.5); c.lineWidth = 4; c.strokeStyle = '#5BE38A'; c.stroke();
+    c.beginPath(); for (let i = 0; i <= 10; i++) c.lineTo(56 - (i % 2 ? 4 : 0), -22 + i * 3.5); c.stroke();
+    for (const [x, y] of [[-30, 18], [8, 21], [34, 14]]) { c.beginPath(); c.arc(x, y, 2, 0, Math.PI * 2); c.fillStyle = 'rgba(120,70,10,0.5)'; c.fill(); }
+    for (const sd of [-1, 1]) { c.beginPath(); c.moveTo(sd * 60, -6); c.lineTo(sd * 92, -2); c.lineTo(sd * 60, 4); c.closePath(); outline(c, '#F4E3C1', 2.4); }
+  },
+  pizza(c, t) {
+    c.beginPath(); c.rect(-90, -36, 180, 8); outline(c, '#F4E3C1');
+    c.beginPath(); c.rect(-82, 2, 164, 8); outline(c, '#F4E3C1');
+    for (const x of [-56, 56]) { c.beginPath(); c.moveTo(x, -28); c.lineTo(x, 2); c.lineWidth = 3; c.strokeStyle = INK; c.stroke(); }
+    for (const [x, y] of [[-74, -32], [-30, -32], [30, -32], [74, -32], [-64, 6], [64, 6]]) { c.beginPath(); c.arc(x, y, 3, 0, Math.PI * 2); outline(c, '#E8322E', 1.4); }
+    c.beginPath(); c.rect(-2.5, -50, 5, 16); outline(c, '#C98A4B', 2.2);
+    c.beginPath(); c.rect(-18, -22, 36, 26); outline(c, '#C98A4B');
+    rearPilot(c, 0, -26, 8, '#FFD23F');
+  },
+  cart(c, t, s) {
+    c.beginPath(); c.moveTo(-90, -32); c.lineTo(90, -32); c.lineTo(72, -22); c.lineTo(-72, -22); c.closePath(); outline(c, '#C98A4B');
+    rearPilot(c, 0, -30, 9, '#FF3D8B');
+    c.beginPath(); c.moveTo(-36, -18); c.lineTo(36, -18); c.lineTo(28, 16); c.lineTo(-28, 16); c.closePath(); outline(c, 'rgba(201,217,232,0.55)');
+    c.lineWidth = 1.6; c.strokeStyle = INK;
+    for (let x = -28; x <= 28; x += 8) { c.beginPath(); c.moveTo(x, -18); c.lineTo(x * 0.8, 16); c.stroke(); }
+    for (let y = -10; y <= 10; y += 7) { c.beginPath(); c.moveTo(-34 + (y + 18) * 0.2, y); c.lineTo(34 - (y + 18) * 0.2, y); c.stroke(); }
+    c.beginPath(); c.moveTo(-40, -22); c.lineTo(40, -22); c.lineWidth = 5; c.stroke();
+    for (const wx of [-24, 24]) { c.beginPath(); c.ellipse(wx, 22, 6, 5, 0, 0, Math.PI * 2); outline(c, '#2A2140', 2.4); }
+    for (const bx of [-14, 14]) { c.beginPath(); c.arc(bx, 2, 8, 0, Math.PI * 2); outline(c, '#FF8A3D', 2.4); c.beginPath(); c.arc(bx, 2, 4, 0, Math.PI * 2); c.fillStyle = INK; c.fill(); }
+    if (s && s.boostT > 0) for (let i = 0; i < 7; i++) { const r = 8 + i * 6 + Math.sin(t * 40 + i) * 2; c.beginPath(); c.arc((i % 2 ? 14 : -14) + Math.sin(t * 30 + i) * 6, 6 + i * 7, r, 0, Math.PI * 2); c.fillStyle = `rgba(255,${200 - i * 16},90,${0.55 - i * 0.06})`; c.fill(); }
+  },
+};
+function rearPilot(c, x, y, r, helmet) {
+  c.beginPath(); c.arc(x, y, r, 0, Math.PI * 2); outline(c, helmet, 2.6);
+  c.beginPath(); c.moveTo(x - r, y + 1); c.lineTo(x + r, y + 1); c.lineWidth = 2.4; c.strokeStyle = INK; c.stroke();
+  c.beginPath(); c.moveTo(x, y - r); c.lineTo(x, y + 1); c.lineWidth = 2; c.strokeStyle = 'rgba(255,248,236,0.7)'; c.stroke();
+}
+function drawRear(c, id, x, y, scale, roll, t, s) {
+  c.save(); c.translate(x, y); c.rotate(roll); c.scale(scale, scale);
+  c.lineJoin = 'round'; c.lineCap = 'round';
+  (REAR[id] || REAR.goat)(c, t, s);
+  c.restore();
 }
 
 /* ---------- results ---------- */

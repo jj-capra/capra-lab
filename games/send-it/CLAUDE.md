@@ -26,8 +26,18 @@ event's or sponsor's name, logo or marks anywhere in the game.
 - **Wind** (`makeWind(seed)`): bands out over the water at different heights, headwind (red, pushes
   you back) and tailwind (green, carries you), drawn as boxes of moving arrows; climb or dive to dodge
   the red and ride the green. Light gusts everywhere else.
+- **The view** (JC, Nov 14 2026: "The view should change from right behind the vehicle or vessel so they
+  can more see everything and the phone dip down and pull back makes more sense with the flight"): a
+  chase camera 48 feet behind and 8 above the contraption (`CAM` in `game.js`), pitching with 70% of
+  its nose, so pulling the phone back tips the whole view up into a climb and dipping it tips the water
+  up into a dive. The contraptions are drawn from behind for it (`REAR`, wings across, about 180 wide;
+  `DRAW` keeps the side views for the picker). Ahead: the water rushing in, buoys both sides every 50
+  feet with their distance, a BEST buoy, wind bands as red or green walls with air streaking through
+  them (toward you for a headwind), the contraption's shadow on the water. On the run-up the camera is
+  on the deck behind the crew, the crowd along both rails and the SEND IT! arch over the end.
 - **The screen**: the NOSE meter on the left (green, yellow near the stall, red stalled), STALL / EASY
-  ON THE NOSE / HEADWIND / TAILWIND calls, buoys every 50 feet and a BEST flag at your best.
+  ON THE NOSE / HEADWIND / TAILWIND calls, and the RADAR strip at the bottom: the next 230 feet from the
+  side (0 to 60 feet up) with the wind bands and you, for picking the height to fly at.
 - **Scoring**: feet out from the pier's edge at the splash; titles from Belly Flop to SENT IT! (300+).
   Bests per contraption on the phone per lab handle (`sendit.best.<handle>`).
 - **Pay** (`send-it` in the wallet catalog): +20 amber a flight, +1 shard for beating your best on a
