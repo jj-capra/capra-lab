@@ -38,6 +38,12 @@ const sfx = {
   smash: () => { tone(1200, 0, 0.05, 'square', 0.06, 300); tone(180, 0, 0.18, 'sawtooth', 0.06, 60); },
   miss: () => tone(170, 0, 0.2, 'sawtooth', 0.05, 120),
   whistle: () => { tone(2100, 0, 0.18, 'sine', 0.09, 2400); tone(2100, 0.24, 0.5, 'sine', 0.09, 2350); },
+  kick: () => { tone(110, 0, 0.14, 'sine', 0.16, 45); tone(700, 0, 0.04, 'square', 0.03, 200); },
+  save: () => { tone(260, 0, 0.08, 'square', 0.08, 120); tone(880, 0.05, 0.12, 'triangle', 0.09); tone(1320, 0.12, 0.16, 'triangle', 0.08); },
+  goal: () => { tone(150, 0, 0.55, 'sawtooth', 0.07); tone(155, 0, 0.55, 'square', 0.03); },
+  slice: (n = 1) => { tone(2200, 0, 0.07, 'sawtooth', 0.025, 500); tone(380 * Math.pow(1.26, n), 0.03, 0.14, 'triangle', 0.1); },
+  spicy: () => { tone(600, 0, 0.35, 'square', 0.06, 120); tone(90, 0.05, 0.3, 'sawtooth', 0.05); },
+  thud: () => tone(120, 0, 0.12, 'sine', 0.06, 70),
 };
 function say(text) {
   if (!prefs.sound || !('speechSynthesis' in window) || !text) return;
@@ -135,6 +141,7 @@ function draw(f) {
   if (FAKE) { ctx.fillStyle = '#1B1528'; ctx.fillRect(b.ox, b.oy, b.dw, b.dh); }
   const color = S ? CHALLENGES[S.kind].color : '#FFD23F';
   const lm = f && f.lm;
+  if (S && S.kind === 'keeper') drawGoal(b);
   if (lm) {
     const ok = (i) => lm[i] && (lm[i].visibility == null || lm[i].visibility > 0.45);
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
@@ -164,7 +171,105 @@ function draw(f) {
     ctx.beginPath(); ctx.arc(0, 0, r + 9, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * left); ctx.lineWidth = 6; ctx.strokeStyle = '#FFD23F'; ctx.stroke();
     ctx.restore();
   }
+  if (S && S.phase === 'live' && S.kind === 'keeper') drawBall(b, f ? f.t : performance.now());
+  if (S && S.phase === 'live' && S.kind === 'avocado') { drawTrails(b, f); drawAvocados(b, f ? f.t : performance.now()); }
 }
+// Goalkeeper: the goal frame around the picture (posts, crossbar, a faint net) and the ball coming in.
+function drawGoal(b) {
+  const L = b.ox + b.dw * 0.04, R = b.ox + b.dw * 0.96, T = b.oy + b.dh * 0.07, B = b.oy + b.dh;
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255,248,236,0.12)'; ctx.lineWidth = 1.5;
+  for (let x = L; x <= R; x += 22) { ctx.beginPath(); ctx.moveTo(x, T); ctx.lineTo(x, B); ctx.stroke(); }
+  for (let y = T; y <= B; y += 22) { ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(R, y); ctx.stroke(); }
+  ctx.lineCap = 'round';
+  for (const [w, c] of [[16, '#120E18'], [10, '#FFF8EC']]) {
+    ctx.lineWidth = w; ctx.strokeStyle = c;
+    ctx.beginPath(); ctx.moveTo(L, B); ctx.lineTo(L, T); ctx.lineTo(R, T); ctx.lineTo(R, B); ctx.stroke();
+  }
+  ctx.restore();
+}
+function drawBall(b, t) {
+  const ball = S.counter.ball(t); if (!ball) return;
+  const [x, y] = toScreen(b, ball), r = Math.max(4, ball.r * b.dh), sh = S.counter.shot;
+  const [fx, fy] = toScreen(b, sh.from);
+  ctx.save();
+  // speed lines back toward where it came from
+  const dx = x - fx, dy = y - fy, d = Math.hypot(dx, dy) || 1;
+  ctx.strokeStyle = 'rgba(255,248,236,0.55)'; ctx.lineCap = 'round';
+  for (const k of [-0.55, 0, 0.55]) {
+    const ox = (-dy / d) * r * k, oy = (dx / d) * r * k;
+    ctx.lineWidth = Math.max(2, r * 0.18);
+    ctx.beginPath(); ctx.moveTo(x - (dx / d) * r * 1.2 + ox, y - (dy / d) * r * 1.2 + oy); ctx.lineTo(x - (dx / d) * r * (2.2 + ball.p) + ox, y - (dy / d) * r * (2.2 + ball.p) + oy); ctx.stroke();
+  }
+  if (ball.p >= 0.55) { ctx.beginPath(); ctx.arc(x, y, r + 10, 0, Math.PI * 2); ctx.lineWidth = 6; ctx.strokeStyle = '#FFD23F'; ctx.stroke(); }
+  ctx.translate(x, y); ctx.rotate(t / 160);
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fillStyle = '#FFF8EC'; ctx.fill();
+  const pent = (cx, cy, rr, rot) => { ctx.beginPath(); for (let i = 0; i < 5; i++) { const a = rot + (i * 2 * Math.PI) / 5; ctx.lineTo(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr); } ctx.closePath(); ctx.fillStyle = '#120E18'; ctx.fill(); };
+  ctx.save(); ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.clip();
+  pent(0, 0, r * 0.36, -Math.PI / 2);
+  for (let i = 0; i < 5; i++) { const a = -Math.PI / 2 + (i * 2 * Math.PI) / 5; pent(Math.cos(a) * r * 0.95, Math.sin(a) * r * 0.95, r * 0.32, a + Math.PI); }
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.lineWidth = Math.max(2, r * 0.1); ctx.strokeStyle = '#120E18'; ctx.stroke();
+  ctx.restore();
+}
+// Avocado Chop: a slash streak behind each hand, then the avocados (whole, split, sliced) and chilis.
+function drawTrails(b, f) {
+  const lm = f && f.lm, t = f ? f.t : performance.now();
+  S.trails ||= { L: [], R: [] };
+  for (const [k, w, i] of [['L', P.LW, P.LI], ['R', P.RW, P.RI]]) {
+    const pt = lm && [lm[i], lm[w]].find((p) => p && (p.visibility == null || p.visibility > 0.45));
+    const tr = S.trails[k];
+    if (pt) tr.push({ x: pt.x, y: pt.y, t });
+    while (tr.length && t - tr[0].t > 170) tr.shift();
+    if (tr.length < 2) continue;
+    for (const [lw, c] of [[14, 'rgba(155,229,100,0.35)'], [6, '#FFF8EC']]) {
+      ctx.beginPath();
+      tr.forEach((q, j) => { const [x, y] = toScreen(b, q); j ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+      ctx.lineWidth = lw; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = c; ctx.stroke();
+    }
+  }
+}
+function drawAvocados(b, t) {
+  for (const it of S.counter.items) {
+    const [x, y] = toScreen(b, it), r = it.r * b.dh;
+    ctx.save();
+    ctx.translate(x, y);
+    if (it.fade) ctx.globalAlpha = Math.max(0, 1 - (t - it.fade) / 450);
+    if (it.kind === 'chili') {
+      ctx.rotate(it.spin);
+      ctx.beginPath(); ctx.moveTo(-r * 0.9, -r * 0.2); ctx.quadraticCurveTo(-r * 0.2, -r * 0.7, r * 0.6, -r * 0.35); ctx.quadraticCurveTo(r * 1.1, -r * 0.1, r * 0.9, r * 0.5);
+      ctx.quadraticCurveTo(r * 0.2, r * 0.1, -r * 0.9, r * 0.25); ctx.closePath();
+      ctx.fillStyle = '#E8322E'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#120E18'; ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-r * 0.9, 0); ctx.lineTo(-r * 1.25, -r * 0.25); ctx.lineWidth = 5; ctx.strokeStyle = '#3E8E2F'; ctx.stroke();
+      ctx.restore(); continue;
+    }
+    const shape = (s) => { ctx.beginPath(); ctx.moveTo(0, -r * s); ctx.bezierCurveTo(r * 0.55 * s, -r * s, r * 0.85 * s, r * 0.25 * s, r * 0.8 * s, r * 0.5 * s); ctx.bezierCurveTo(r * 0.7 * s, r * 1.05 * s, -r * 0.7 * s, r * 1.05 * s, -r * 0.8 * s, r * 0.5 * s); ctx.bezierCurveTo(-r * 0.85 * s, r * 0.25 * s, -r * 0.55 * s, -r * s, 0, -r * s); ctx.closePath(); };
+    if (!it.cuts) {
+      ctx.rotate(Math.sin(it.spin) * 0.6);
+      shape(1); ctx.fillStyle = '#365E22'; ctx.fill(); ctx.lineWidth = 3.5; ctx.strokeStyle = '#120E18'; ctx.stroke();
+      ctx.beginPath(); ctx.arc(-r * 0.3, -r * 0.2, r * 0.18, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.fill();
+      ctx.restore(); continue;
+    }
+    // split along the first cut; the halves drift apart and tip, sliced again by every later cut
+    const a = it.lines[0], gap = 4 + it.cuts * 4 + (it.fade ? (t - it.fade) / 12 : 0);
+    for (const side of [-1, 1]) {
+      ctx.save();
+      ctx.translate(Math.cos(a + Math.PI / 2) * gap * side, Math.sin(a + Math.PI / 2) * gap * side);
+      ctx.rotate(side * (0.12 + it.cuts * 0.05));
+      ctx.save(); ctx.rotate(a); ctx.beginPath(); ctx.rect(-r * 2, side > 0 ? 0 : -r * 2, r * 4, r * 2); ctx.clip(); ctx.rotate(-a);
+      shape(1); ctx.fillStyle = '#365E22'; ctx.fill();
+      shape(0.84); ctx.fillStyle = '#D8EE7C'; ctx.fill();
+      shape(0.5); ctx.fillStyle = '#F2F7B5'; ctx.fill();
+      // the pit stays in one half, sitting on the cut
+      if (side < 0) { ctx.save(); ctx.rotate(a); ctx.beginPath(); ctx.arc(0, -r * 0.08, r * 0.3, 0, Math.PI * 2); ctx.fillStyle = '#8A5A2B'; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = '#120E18'; ctx.stroke(); ctx.restore(); }
+      shape(1); ctx.lineWidth = 3.5; ctx.strokeStyle = '#120E18'; ctx.stroke();
+      for (const l of it.lines.slice(1)) { ctx.save(); ctx.rotate(l); ctx.beginPath(); ctx.moveTo(-r * 1.1, 0); ctx.lineTo(r * 1.1, 0); ctx.lineWidth = 3; ctx.strokeStyle = '#120E18'; ctx.stroke(); ctx.restore(); }
+      ctx.restore(); ctx.restore();
+    }
+    ctx.restore();
+  }
+}
+function flashCam() { const c = $('cam'); c.classList.remove('flash'); void c.offsetWidth; c.classList.add('flash'); }
 function pop(text, at) {
   const el = document.createElement('div');
   el.className = 'pop'; el.textContent = text;
@@ -258,11 +363,25 @@ function handle(f) {
     S.score = S.counter.score;
     $('count').textContent = scoreText(S.kind, S.score);
     if (S.kind === 'targets') { sfx.smash(); pop(r.combo >= 3 ? `x${r.combo}!` : 'SMASH!', r.hit); }
+    else if (S.kind === 'keeper') { sfx.save(); pop(r.streak >= 3 ? `${r.streak} IN A ROW!` : 'SAVE!', r.save); if (S.score % 5 === 0) say(`${S.score} saves`); }
+    else if (S.kind === 'avocado') { /* each cut pops its own points below */ }
     else { sfx.rep(); pop(S.kind === 'dribble' ? 'BOUNCE!' : r.say && r.say !== 'Nice!' ? r.say.toUpperCase() : 'REP!'); }
     if (S.kind === 'squat' || S.kind === 'pushup') say(String(S.score));
     else if (S.kind === 'dribble' && S.score % 10 === 0) say(String(S.score));
   }
   if (r.miss) { sfx.miss(); pop('MISS', r.miss); }
+  if (S.kind === 'keeper') {
+    if (r.shot) sfx.kick();
+    if (r.goal) { sfx.goal(); pop('GOAL!', r.goal); flashCam(); $('count').textContent = String(S.counter.score); }
+  }
+  if (S.kind === 'avocado') {
+    for (const e of r.events || []) {
+      if (e.cut) { sfx.slice(e.cut.n); pop(e.cut.guac ? `+${e.cut.pts} GUAC!` : `+${e.cut.pts}`, e.cut); }
+      if (e.spicy) { sfx.spicy(); pop('🌶️ −25', e.spicy); flashCam(); }
+      if (e.drop) sfx.thud();
+    }
+    if (S.counter.score !== S.score) { S.score = S.counter.score; $('count').textContent = String(S.score); }
+  }
   if (S.kind === 'wallsit') { const s = S.counter.score; if (s !== S.score) { S.score = s; $('count').textContent = scoreText('wallsit', s); if (s && s % 10 === 0) say(`${s} seconds`); } }
   if (r.say && !(S.lostSince && f.t - S.lostSince > 1500)) coach(r.say, r.rep ? 'ok' : '');
   if (r.meter != null) $('meterFill').style.height = Math.round(r.meter * 100) + '%';
@@ -270,11 +389,11 @@ function handle(f) {
 }
 // Where targets may pop up: inside the camera picture, below the counter and clock, above the coach
 // line, and in reach (the top two thirds of the picture).
-function targetBounds() {
-  const b = box(), cam = $('cam').getBoundingClientRect(), r = 0.075;
+function targetBounds(r = 0.075, yMax = 0.68) {
+  const b = box(), cam = $('cam').getBoundingClientRect();
   const hudBottom = $('hud').getBoundingClientRect().bottom - cam.top, coachTop = $('coach').getBoundingClientRect().top - cam.top;
   const toY = (px) => (px - b.oy) / b.dh;
-  const y0 = Math.max(0.08, toY(hudBottom + 12) + r), y1 = Math.min(0.68, toY(coachTop - 12) - r);
+  const y0 = Math.max(0.08, toY(hudBottom + 12) + r), y1 = Math.min(yMax, toY(coachTop - 12) - r);
   const mx = Math.min(0.2, (r * 1.05 * b.dh + 14) / b.dw);   // the whole ring stays on screen
   return { x0: mx, x1: 1 - mx, y0: Math.min(y0, 0.4), y1: Math.max(y1, Math.min(y0, 0.4) + 0.15) };
 }
@@ -295,7 +414,11 @@ function go() {
   $('countdown').innerHTML = '';
   S.phase = 'live'; S.startAt = performance.now(); S.score = 0;
   $('hud').hidden = false; $('meter').hidden = !(S.kind === 'squat' || S.kind === 'pushup' || S.kind === 'wallsit');
-  S.counter = S.kind === 'wallsit' ? COUNTERS.wallsit(C.secs) : S.kind === 'targets' ? COUNTERS.targets({ bounds: targetBounds() }) : COUNTERS[S.kind]();
+  S.counter = S.kind === 'wallsit' ? COUNTERS.wallsit(C.secs)
+    : S.kind === 'targets' ? COUNTERS.targets({ bounds: targetBounds() })
+    : S.kind === 'keeper' ? COUNTERS.keeper({ bounds: targetBounds(0.075, 0.9) })
+    : COUNTERS[S.kind]();
+  S.trails = null;
   $('count').textContent = scoreText(S.kind, 0);
   $('clock').textContent = S.kind === 'wallsit' ? fmt(C.goal) : fmt(C.secs);
   $('clockBox').classList.remove('low');
@@ -336,7 +459,7 @@ async function finish() {
   $('resCard').innerHTML = `<p class="kick">${C.emoji} ${esc(C.name)}${kind === 'wallsit' ? '' : ` · ${C.secs} seconds`}</p>
     <p class="big">${esc(scoreText(kind, score))}<small>${kind === 'wallsit' ? 'HELD' : esc((score === 1 ? C.unit : C.units).toUpperCase())}</small></p>
     ${newBest ? '<span class="burst gold">NEW PERSONAL BEST!</span>' : beat ? '<span class="burst">GOAL SMASHED!</span>' : ''}
-    <p class="stats"><span>🎯 Goal ${esc(scoreText(kind, C.goal))}</span><span>🏆 Best ${prev == null && !newBest ? '–' : esc(scoreText(kind, Math.max(prev ?? 0, newBest ? score : 0)))}</span>${kind === 'targets' ? `<span>💥 Best combo ${S.counter.best}</span><span>Missed ${S.counter.misses}</span>` : ''}</p>
+    <p class="stats"><span>🎯 Goal ${esc(scoreText(kind, C.goal))}</span><span>🏆 Best ${prev == null && !newBest ? '–' : esc(scoreText(kind, Math.max(prev ?? 0, newBest ? score : 0)))}</span>${kind === 'targets' ? `<span>💥 Best combo ${S.counter.best}</span><span>Missed ${S.counter.misses}</span>` : ''}${kind === 'keeper' ? `<span>🥅 Let in ${S.counter.goals}</span><span>🔥 Best streak ${S.counter.best}</span>` : ''}${kind === 'avocado' ? `<span>🔪 ${S.counter.cuts} cuts</span><span>🥑 Most on one ${S.counter.most}</span>${S.counter.spicy ? `<span>🌶️ ${S.counter.spicy}</span>` : ''}<span>Dropped ${S.counter.dropped}</span>` : ''}</p>
     <p class="paid" id="paidLine"></p>`;
   show('results');
   const shareText = window.CapraShare ? CapraShare.text({ emoji: '💪', game: 'IRL', sub: C.name,
@@ -383,4 +506,4 @@ document.addEventListener('visibilitychange', () => {
 window.__irl = { feed: (f) => handle({ aspect: 0.75, ...f, t: f.t ?? performance.now() }), state: () => S, open: openChallenge, finish };
 
 renderHome();
-if (/^#(squat|pushup|wallsit|targets|dribble)$/.test(location.hash)) openChallenge(location.hash.slice(1));
+if (/^#(squat|pushup|wallsit|targets|dribble|keeper|avocado)$/.test(location.hash)) openChallenge(location.hash.slice(1));

@@ -1,6 +1,6 @@
 // IRL: the counters, fed made-up bodies (no camera here).  node games/irl/test/irl.test.mjs
 import assert from 'node:assert/strict';
-import { P, CHALLENGES, ORDER, COUNTERS, squats, pushups, wallsit, dribbles, targets, framing, shareRow, angle, MIN_TO_PAY } from '../logic.mjs';
+import { P, CHALLENGES, ORDER, COUNTERS, squats, pushups, wallsit, dribbles, targets, keeper, avocados, CUT_POINTS, framing, shareRow, angle, MIN_TO_PAY } from '../logic.mjs';
 
 let passed = 0;
 const test = (name, fn) => { fn(); passed++; console.log('ok  ', name); };
@@ -13,8 +13,8 @@ function cycle(make, from, to, frames = 20) {
   return out;
 }
 
-test('the challenges: five, each with a goal, a clock and setup words', () => {
-  assert.deepEqual(ORDER, ['squat', 'pushup', 'wallsit', 'targets', 'dribble']);
+test('the challenges: seven, each with a goal, a clock and setup words', () => {
+  assert.deepEqual(ORDER, ['squat', 'pushup', 'wallsit', 'targets', 'dribble', 'keeper', 'avocado']);
   for (const k of ORDER) {
     const c = CHALLENGES[k];
     assert.ok(c.name && c.emoji && c.secs > 0 && c.goal > 0 && c.setup && c.how, k);
@@ -103,6 +103,87 @@ test('targets: reach and hit them; too slow is a miss; hits in a row build a com
   g.update(frame(null)); t += 2500;
   const r = g.update(frame(null));
   assert.ok(r.miss, 'left alone too long, it fades'); assert.equal(g.misses, 1);
+});
+
+test('goalkeeper: a hand on the ball once it is close is a save; leave it and it is a goal', () => {
+  let seed = 11; const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const g = keeper({ rand });
+  const base = squatter(178, 'front');
+  // hands and feet are out of play (hidden) unless a test puts one on the ball
+  const frame = (hand, t) => {
+    const lm = base.lm.map((p, i) => ([15, 16, 19, 20, 27, 28, 31, 32].includes(i) ? { ...p, visibility: 0.1 } : { ...p }));
+    if (hand) { lm[P.RW] = { ...lm[P.RW], x: hand.x, y: hand.y, visibility: 0.95 }; lm[P.RI] = { ...lm[P.RI], x: hand.x, y: hand.y, visibility: 0.95 }; }
+    return { lm, aspect: ASPECT, t };
+  };
+  let t = 0, saves = 0, kinds = new Set();
+  for (let i = 0; i < 6; i++) {
+    while (!g.shot) { g.update(frame(null, t)); t += 33; }
+    kinds.add(g.shot.kind);
+    const s = g.shot;
+    assert.ok(s.to.x >= 0.08 && s.to.x <= 0.92 && s.to.y >= 0.1 && s.to.y <= 0.86, 'aimed inside the picture');
+    // too early to save: the ball is still far off
+    const early = g.ball(t);
+    const r0 = g.update(frame({ x: early.x, y: early.y }, t)); t += 33;
+    assert.ok(!r0.rep, 'a far-off ball can’t be saved yet');
+    while (g.shot && g.ball(t).p < 0.7) { g.update(frame(null, t)); t += 33; }
+    const b = g.ball(t);
+    const r = g.update(frame({ x: b.x + 0.02, y: b.y }, t)); t += 33;
+    if (r.rep) saves++;
+  }
+  assert.equal(saves, 6); assert.equal(g.best, 6);
+  while (!g.shot) { g.update(frame(null, t)); t += 33; }
+  let goal = false;
+  for (let i = 0; i < 200 && !goal; i++) { goal = !!g.update(frame(null, t)).goal; t += 33; }
+  assert.ok(goal, 'left alone, it goes in'); assert.equal(g.goals, 1);
+  assert.ok(kinds.size >= 2, 'shots come from different places');
+});
+
+test('avocado chop: a fast swipe cuts, every cut on the same one triples, chilis cost 25', () => {
+  assert.deepEqual(CUT_POINTS, [1, 3, 9, 27, 81]);
+  let seed = 5; const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const g = avocados({ rand, chili: 0 });
+  const base = squatter(178, 'front');
+  const away = { x: 0.02, y: 0.98 };
+  const frame = (L, R, t) => {
+    const lm = base.lm.map((p) => ({ ...p }));
+    // a hand not in play is hidden, so each swipe starts fresh (moving it back through would cut too)
+    for (const [w, i, h] of [[P.LW, P.LI, L], [P.RW, P.RI, R]]) { lm[w] = { ...lm[w], ...(h || away), visibility: h ? 0.95 : 0.1 }; lm[i] = { ...lm[i], ...(h || away), visibility: 0.1 }; }
+    return { lm, aspect: ASPECT, t };
+  };
+  let t = 0;
+  while (!g.items.length) { g.update(frame(null, null, t)); t += 33; }
+  const it = g.items[0];
+  while (it.y > 0.7) { g.update(frame(null, null, t)); t += 33; }
+  // a slow drift through it does nothing
+  const ahead = (k) => it.y + it.vy * (0.033 * k);
+  const sy = ahead(1);
+  g.update(frame({ x: it.x - 0.01, y: sy }, null, t)); t += 33;
+  const slow = g.update(frame({ x: it.x + 0.01, y: sy }, null, t)); t += 33;
+  assert.ok(!slow.rep, 'too slow to cut');
+  g.update(frame(null, null, t)); t += 33;
+  // three fast swipes, a quarter second apart: 1 + 3 + 9
+  let got = [];
+  for (let k = 0; k < 3; k++) {
+    g.update(frame({ x: it.x - 0.2, y: ahead(1) }, null, t)); t += 33;
+    const r = g.update(frame({ x: it.x + 0.2, y: ahead(0) }, null, t)); t += 33;
+    if (r.cut) got.push(r.cut.pts);
+    for (let w = 0; w < 7; w++) { g.update(frame(null, null, t)); t += 33; }
+  }
+  assert.deepEqual(got, [1, 3, 9]);
+  assert.equal(g.score, 13); assert.equal(g.most, 3);
+  // a chili: −25, but never below zero
+  const h = avocados({ rand, chili: 1 });
+  let t2 = 0;
+  while (!h.items.some((x) => x.kind === 'chili')) { h.update(frame(null, null, t2)); t2 += 33; if (t2 > 20000) break; }
+  const c = h.items.find((x) => x.kind === 'chili');
+  assert.ok(c, 'a chili shows up');
+  h.update(frame({ x: c.x - 0.2, y: c.y }, null, t2)); t2 += 33;
+  const r = h.update(frame({ x: c.x + 0.2, y: c.y + c.vy * 0.033 }, null, t2));
+  assert.ok(r.spicy); assert.equal(h.score, 0); assert.equal(h.spicy, 1);
+  // avocados nobody touches fall and count as dropped
+  const d = avocados({ rand, chili: 0 });
+  for (let tt = 0; tt < 6000; tt += 33) d.update(frame(null, null, tt));
+  assert.ok(d.dropped >= 2, `dropped ${d.dropped}`);
 });
 
 test('framing tells you what the camera is missing', () => {

@@ -41,9 +41,24 @@ export const CHALLENGES = {
     setup: 'Phone 8 to 10 feet away, facing you, so it sees you from head to knees, dribbling hand and all.',
     how: 'Dribble hard and low. The camera follows your dribbling hand: every bounce of your hand down and back up is one dribble.',
   },
+  // JC, Nov 14 2026: "defend a soccer goal"
+  keeper: {
+    name: 'Goalkeeper', emoji: '🧤', secs: 45, goal: 12, unit: 'save', units: 'saves', color: '#FF3D8B',
+    blurb: 'Shots fly at your goal. Stop them.',
+    setup: 'Phone at waist height 7 to 9 feet away, facing you, so it sees you from head to feet with room to dive both ways.',
+    how: 'You’re in goal. Shots come at you high, low, left and right, and get faster. Get a hand (or a foot, for the low ones) on the ball before it reaches you.',
+  },
+  // JC, Nov 14 2026: "a game that cuts flying avocados and the more slices per avocado as they fall the
+  // points triple for each consecutive cut"
+  avocado: {
+    name: 'Avocado Chop', emoji: '🥑', secs: 45, goal: 250, unit: 'point', units: 'points', color: '#9BE564',
+    blurb: 'Slice the flying avocados. Every extra cut triples.',
+    setup: 'Phone at chest height 5 to 7 feet away, facing you, so it sees you from head to waist with room to swing.',
+    how: 'Avocados fly up in front of you. Swipe your hands through them fast. The first cut on an avocado is 1 point, then 3, 9, 27 and 81 for each cut on the same one before it falls. Don’t chop the chili peppers.',
+  },
 };
-export const ORDER = ['squat', 'pushup', 'wallsit', 'targets', 'dribble'];
-export const MIN_TO_PAY = { squat: 3, pushup: 3, wallsit: 10, targets: 3, dribble: 10 };
+export const ORDER = ['squat', 'pushup', 'wallsit', 'targets', 'dribble', 'keeper', 'avocado'];
+export const MIN_TO_PAY = { squat: 3, pushup: 3, wallsit: 10, targets: 3, dribble: 10, keeper: 3, avocado: 10 };
 
 const seen = (p, min = 0.5) => !!p && (p.visibility == null || p.visibility >= min);
 // The angle at b (degrees). With 3D points (MediaPipe's world landmarks, in meters) it's the true
@@ -84,7 +99,7 @@ export function framing(kind, lm) {
   if (!lm) return { ok: false, say: 'Step into the picture' };
   const any = (ids) => ids.some((i) => seen(lm[i], 0.6));
   if (!any([P.LS, P.RS])) return { ok: false, say: 'We can’t see your shoulders' };
-  if (kind === 'targets') return any([P.LW, P.RW]) ? { ok: true, say: 'Ready' } : { ok: false, say: 'Show us your hands' };
+  if (kind === 'targets' || kind === 'keeper' || kind === 'avocado') return any([P.LW, P.RW]) ? { ok: true, say: 'Ready' } : { ok: false, say: 'Show us your hands' };
   if (kind === 'dribble') {
     if (!any([P.LH, P.RH])) return { ok: false, say: 'Step back: we can’t see your hips' };
     return any([P.LW, P.RW]) ? { ok: true, say: 'Ready' } : { ok: false, say: 'Show us your dribbling hand' };
@@ -268,7 +283,150 @@ export function targets({ life = 2600, r = 0.075, rand = Math.random, bounds = {
     },
   };
 }
-export const COUNTERS = { squat: squats, pushup: pushups, wallsit, targets, dribble: dribbles };
+
+// The player's body on screen: the middle of the shoulders, how wide they are, and the heights of the
+// head, hips and knees (with guesses where the camera can't see).
+function frame(lm) {
+  const sh = [lm[P.LS], lm[P.RS]].filter((p) => seen(p));
+  const cx = sh.length ? sh.reduce((a, p) => a + p.x, 0) / sh.length : 0.5;
+  const shY = sh.length ? sh.reduce((a, p) => a + p.y, 0) / sh.length : 0.35;
+  const sw = sh.length === 2 ? Math.max(0.08, Math.abs(sh[0].x - sh[1].x)) : 0.14;
+  const avg = (ids, d) => { const ps = ids.map((i) => lm[i]).filter((p) => seen(p)); return ps.length ? ps.reduce((a, p) => a + p.y, 0) / ps.length : d; };
+  const hipY = avg([P.LH, P.RH], shY + 0.22), kneeY = avg([P.LK, P.RK], hipY + 0.2), headY = seen(lm[P.NOSE]) ? lm[P.NOSE].y : shY - 0.1;
+  return { cx, sw, shY, hipY, kneeY, headY };
+}
+const clampIn = (v, a, b) => Math.max(a, Math.min(b, v));
+
+// Goalkeeper: the phone is the shooter. One shot at a time is struck from right in front of the phone
+// (big, at the bottom of the picture) and flies away to a spot around the player (high, low, left,
+// right, over the head), shrinking as it goes. Once it's close to the player (the last 45% of its
+// flight) a hand, finger or foot on the ball is a save; if it gets all the way past, it's a goal.
+// Shots get quicker as the game goes on.
+export function keeper({ rand = Math.random, flight = 1500, gap = 900, bounds = { x0: 0.08, x1: 0.92, y0: 0.1, y1: 0.86 } } = {}) {
+  let saves = 0, goals = 0, streak = 0, best = 0, shot = null, next = 600, n = 0;
+  const R0 = 0.2, R1 = 0.072;
+  const stoppers = (lm) => [P.LW, P.RW, P.LI, P.RI, 27, 28, 31, 32].map((i) => lm[i]).filter((p) => seen(p, 0.45));
+  function shoot(lm, t) {
+    const b = frame(lm), side = rand() < 0.5 ? -1 : 1, pick = rand();
+    let x, y, kind;
+    if (pick < 0.3) { kind = 'high'; x = b.cx + side * b.sw * (1.2 + rand() * 0.6); y = b.headY - 0.02 + rand() * 0.04; }
+    else if (pick < 0.6) { kind = 'mid'; x = b.cx + side * b.sw * (1.4 + rand() * 0.7); y = (b.shY + b.hipY) / 2 + rand() * 0.06; }
+    else if (pick < 0.85) { kind = 'low'; x = b.cx + side * b.sw * (0.8 + rand() * 0.8); y = b.kneeY + rand() * 0.06; }
+    else { kind = 'top'; x = b.cx + (rand() - 0.5) * b.sw * 0.6; y = b.headY - 0.12; }
+    x = clampIn(x, bounds.x0, bounds.x1); y = clampIn(y, bounds.y0, bounds.y1);
+    n++;
+    const dur = Math.max(750, flight - n * 35);
+    shot = { id: n, born: t, dur, kind, from: { x: 0.5 + (x - 0.5) * 0.35, y: 1.08 }, to: { x, y } };
+  }
+  // where the ball is at time t, and how big
+  function at(s, t) {
+    // quick off the foot, easing as it reaches the player; the ball shrinks with distance
+    const p = Math.max(0, (t - s.born) / s.dur), q = Math.min(1, p), e = 1 - (1 - q) ** 1.8;
+    return { x: s.from.x + (s.to.x - s.from.x) * e, y: s.from.y + (s.to.y - s.from.y) * e, r: R1 + (R0 - R1) * (1 - q) ** 2.2, p };
+  }
+  return {
+    get score() { return saves; },
+    get goals() { return goals; },
+    get best() { return best; },
+    get shot() { return shot; },
+    ball(t) { return shot ? at(shot, t) : null; },
+    update(f) {
+      const lm = f.lm || [], t = f.t, aspect = f.aspect || 1;
+      if (!shot) { if (t >= next) { shoot(lm, t); return { say: 'Here it comes!', shot: true }; } return { say: streak >= 3 ? `${streak} saves in a row!` : 'Get set' }; }
+      const b = at(shot, t);
+      if (b.p >= 0.55 && stoppers(lm).some((h) => Math.hypot((h.x - b.x) * aspect, h.y - b.y) <= b.r + 0.03)) {
+        saves++; streak++; best = Math.max(best, streak);
+        const where = { x: b.x, y: b.y }; shot = null; next = t + Math.max(450, gap - n * 15);
+        return { rep: true, save: where, streak, say: streak >= 3 ? `${streak} in a row!` : 'SAVE!' };
+      }
+      if (b.p >= 1.05) {
+        goals++; streak = 0;
+        const where = { x: b.x, y: b.y }; shot = null; next = t + Math.max(550, gap - n * 15);
+        return { goal: where, say: 'Goal! Next one' };
+      }
+      return { say: b.p >= 0.55 ? 'Stop it!' : 'Here it comes!' };
+    },
+  };
+}
+
+// Avocado Chop: avocados (and the odd chili) are thrown up from the bottom and fall back down. A cut
+// is a hand swiping fast through one (the line a wrist or finger travels between two frames crosses
+// it). Every cut on the same avocado triples: 1, 3, 9, 27, 81 points; after the fifth it's guac.
+// A chili cut costs 25 points. Each hand can cut a given avocado once every 220 ms.
+export const CUT_POINTS = [1, 3, 9, 27, 81];
+export function avocados({ rand = Math.random, gravity = 1.5, chili = 0.12 } = {}) {
+  let points = 0, n = 0, next = 400, lastT = null, most = 0, dropped = 0, spicy = 0, cuts = 0;
+  const items = [], prev = {};
+  const HANDS = { L: [P.LW, P.LI], R: [P.RW, P.RI] };
+  function launch(t, k) {
+    const x = 0.18 + rand() * 0.64, apex = 0.16 + rand() * 0.26, y = 1.06;
+    const vy = -Math.sqrt(2 * gravity * (y - apex)), vx = (0.5 - x) * (0.25 + rand() * 0.35);
+    items.push({ id: ++n, kind: k || (t > 6000 && rand() < chili ? 'chili' : 'avo'), x, y, vx, vy, r: 0.062, cuts: 0, spin: rand() * 6, lines: [], last: {}, born: t });
+  }
+  function segHits(ax, ay, bx, by, cx, cy, r, aspect) {
+    // distance from the item's middle to the swipe's line, x in screen proportion
+    const px = (bx - ax) * aspect, py = by - ay, qx = (cx - ax) * aspect, qy = cy - ay;
+    const L = px * px + py * py, u = L ? Math.max(0, Math.min(1, (qx * px + qy * py) / L)) : 0;
+    return Math.hypot(qx - u * px, qy - u * py) <= r;
+  }
+  return {
+    get score() { return points; },
+    get most() { return most; },
+    get dropped() { return dropped; },
+    get spicy() { return spicy; },
+    get cuts() { return cuts; },
+    get items() { return items; },
+    update(f) {
+      const lm = f.lm || [], t = f.t, aspect = f.aspect || 1;
+      const dt = lastT == null ? 0 : Math.min(0.06, (t - lastT) / 1000);
+      lastT = t;
+      if (t >= next) {
+        const many = t > 12000 && rand() < 0.35 ? (t > 25000 && rand() < 0.4 ? 3 : 2) : 1;
+        for (let i = 0; i < many; i++) launch(t);
+        next = t + Math.max(650, 1500 - t / 40) * (0.8 + rand() * 0.4);
+      }
+      for (const it of items) { it.vy += gravity * dt; it.x += it.vx * dt; it.y += it.vy * dt; it.spin += dt * 3; }
+      const events = [];
+      for (const [hand, ids] of Object.entries(HANDS)) {
+        for (const i of ids) {
+          const p = lm[i], key = hand + i;
+          if (!seen(p, 0.45)) { delete prev[key]; continue; }
+          const q = prev[key]; prev[key] = { x: p.x, y: p.y, t };
+          if (!q || t - q.t > 150) continue;
+          const speed = Math.hypot((p.x - q.x) * aspect, p.y - q.y) / Math.max(0.016, (t - q.t) / 1000);
+          if (speed < 0.9) continue;
+          for (const it of items) {
+            if (it.gone || (it.last[hand] && t - it.last[hand] < 220)) continue;
+            if (!segHits(q.x, q.y, p.x, p.y, it.x, it.y, it.r, aspect)) continue;
+            it.last[hand] = t;
+            const ang = Math.atan2(p.y - q.y, (p.x - q.x) * aspect);
+            if (it.kind === 'chili') { it.gone = true; spicy++; points = Math.max(0, points - 25); events.push({ spicy: { x: it.x, y: it.y } }); continue; }
+            const pts = CUT_POINTS[it.cuts]; it.cuts++; cuts++; points += pts; most = Math.max(most, it.cuts);
+            it.lines.push(ang);
+            if (it.cuts >= CUT_POINTS.length) it.gone = true;
+            events.push({ cut: { x: it.x, y: it.y, n: it.cuts, pts, guac: it.gone } });
+          }
+        }
+      }
+      for (let i = items.length - 1; i >= 0; i--) {
+        const it = items[i];
+        if (it.gone && !it.fade) it.fade = t;
+        if ((it.fade && t - it.fade > 450) || (it.y > 1.2 && it.vy > 0)) {
+          if (!it.fade && it.kind === 'avo' && it.cuts === 0) { dropped++; events.push({ drop: { x: it.x } }); }
+          items.splice(i, 1);
+        }
+      }
+      const big = events.filter((e) => e.cut).sort((a, b) => b.cut.pts - a.cut.pts)[0];
+      return {
+        rep: !!big, cut: big ? big.cut : null, events,
+        spicy: events.find((e) => e.spicy)?.spicy || null, drop: events.some((e) => e.drop),
+        say: big ? (big.cut.guac ? 'GUAC!' : big.cut.n >= 2 ? `x${big.cut.pts}!` : 'Slice!') : events.some((e) => e.spicy) ? 'Too spicy! −25' : 'Swipe through them!',
+      };
+    },
+  };
+}
+
+export const COUNTERS = { squat: squats, pushup: pushups, wallsit, targets, dribble: dribbles, keeper, avocado: avocados };
 
 // The results text's row: ten squares filled by how much of the goal you got (⚡ on a new best).
 export function shareRow(score, goal, best = false) {

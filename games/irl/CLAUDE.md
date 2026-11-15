@@ -8,12 +8,26 @@ the browser was the plan he okayed).
 
 ## Rules
 
-- Five challenges (`CHALLENGES` in `logic.mjs`): **Squats** and **Push-ups** (as many as you can in
+- Seven challenges (`CHALLENGES` in `logic.mjs`): **Squats** and **Push-ups** (as many as you can in
   60 s, goals 20 and 15), **Wall Sit** (hold up to 3:00, goal 60 s; standing up for 2 s ends it),
   **Target Smash** (45 s; one target at a time, out at arm's reach and away from your hands, gone
   after 2.6 s; hit it with a wrist or index finger; goal 25) and **Dribble Drill** (30 s; one dribble
   is the dribbling hand dropping at least a fifth of the torso and coming back up; goal 40). The
   dribble counts the hand, not the ball (no ball tracking yet).
+- **Goalkeeper** (JC, Nov 14 2026: "defend a soccer goal"; 45 s, goal 12 saves): the phone is the
+  shooter. Each shot is struck from right in front of the phone (big, at the bottom of the picture)
+  and flies away to a spot around the player (high, low, left, right, over the head, worked out from
+  where the player stands), shrinking as it goes. In the last 45% of its flight a hand, finger or
+  foot on the ball is a save (a yellow ring shows it's in reach); past the player it's a goal. Shots
+  get quicker. A goal frame and net are drawn around the picture.
+- **Avocado Chop** (JC, Nov 14 2026: "a game that cuts flying avocados and the more slices per avocado
+  as they fall the points triple for each consecutive cut"; 45 s, goal 250 points): avocados (and,
+  after 6 s, the odd chili) are thrown up from the bottom and fall back. A cut is a hand swiping fast
+  (0.9 picture-heights a second or more) through one, the line a wrist or finger travelled between
+  frames crossing it; each hand can cut a given avocado once every 220 ms. Cuts on the same avocado
+  score 1, 3, 9, 27, 81 (`CUT_POINTS`); after the fifth it's guac. A chili cut is −25 (never below
+  0). A slash streak follows each hand; a cut avocado splits along the cut and every later cut adds
+  a slice.
 - Squats: down when the 3D knee angle is under 105° or the hips drop more than half a standing thigh;
   a rep when standing back up needs every sign to agree (knees past 148° and hips back up). Push-ups:
   only in a plank (body near flat and straight), elbows under 95° then past 150°. Wall sit: knees and
@@ -32,7 +46,8 @@ the browser was the plan he okayed).
 
 ## Files
 
-- `logic.mjs`: the challenges, the counters (`squats`, `pushups`, `wallsit`, `targets`, `dribbles`),
+- `logic.mjs`: the challenges, the counters (`squats`, `pushups`, `wallsit`, `targets`, `dribbles`,
+  `keeper`, `avocados`),
   framing and the share row. No camera, no DOM.
 - `game.js`, `index.html`: the page (home, the camera stage, results). The camera layer starts under
   the status bar (`top: env(safe-area-inset-top)`) and fills to `--lab-h`; the video is letterboxed

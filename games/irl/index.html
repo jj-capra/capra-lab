@@ -66,6 +66,9 @@
   .cam video.mirror { transform: scaleX(-1); }
   .cam canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
   .cam::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.45) 100%); }
+  .cam::before { content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: #FF3D3D; opacity: 0; }
+  .cam.flash::before { animation: camFlash 0.45s ease-out; }
+  @keyframes camFlash { 0% { opacity: 0.45; } 100% { opacity: 0; } }
   .sbar { position: fixed; z-index: 5; left: 0; right: 0; top: calc(var(--st) + 10px); display: flex; align-items: center; gap: 10px; padding: 0 max(14px, var(--sr)) 0 max(14px, var(--sl)); }
   .sbar .ttl { flex: 1; min-width: 0; text-align: center; font-family: var(--display); font-size: 24px; letter-spacing: 0.06em; text-shadow: 2px 2px 0 var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sbar .round-btn { background: rgba(18, 14, 24, 0.8); border-color: rgba(255, 248, 236, 0.25); }
@@ -146,7 +149,7 @@
   </header>
   <div class="wrap">
     <div class="logo"><div class="badge" aria-hidden="true">💪</div><div><h1>IRL</h1><p>REAL MOVES. REAL LOOT.</p></div></div>
-    <p class="tag">Prop your phone up, step back and move. The camera counts your reps, times your holds and watches your hands hit the targets. Every finished challenge pays amber, and beating the goal or your best pays shards.</p>
+    <p class="tag">Prop your phone up, step back and move. The camera counts your reps, times your holds, watches your hands hit targets, stop shots and chop avocados. Every finished challenge pays amber, and beating the goal or your best pays shards.</p>
     <div class="cards" id="cards"></div>
     <p class="note">🔒 <b>The camera picture never leaves your phone.</b> The motion tracker runs right on it: nothing is recorded, saved or sent anywhere. Only your score goes to your Capra Lab wallet.</p>
   </div>
