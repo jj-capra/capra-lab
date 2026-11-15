@@ -58,6 +58,12 @@
   .ch .best span { display: block; font: 800 10px/1.2 Inter, system-ui, sans-serif; letter-spacing: 0.12em; color: rgba(255, 248, 236, 0.6); }
   .note { margin: 16px 0 0; padding: 12px 14px; border-radius: 16px; background: rgba(255, 248, 236, 0.06); border: 2px dashed rgba(255, 248, 236, 0.18); font-size: 13.5px; font-weight: 600; line-height: 1.5; color: rgba(255, 248, 236, 0.82); }
   .note b { color: var(--paper); }
+  /* one player or two */
+  .who { display: flex; gap: 0; margin: 0 0 6px; padding: 4px; border-radius: 18px; background: var(--ink); border: 3px solid var(--shadow); width: max-content; max-width: 100%; }
+  .who button { border: 0; background: transparent; padding: 8px 16px; border-radius: 13px; font-family: var(--display); font-size: 22px; letter-spacing: 0.06em; color: rgba(255, 248, 236, 0.7); }
+  .who button[aria-checked="true"] { background: var(--yellow); color: var(--ink); }
+  .who-note { margin: 0 0 12px; font-size: 13px; font-weight: 700; color: rgba(255, 248, 236, 0.7); }
+  .solo { font-style: normal; font-weight: 800; font-size: 10.5px; letter-spacing: 0.1em; padding: 1px 6px; border-radius: 6px; background: var(--ink); color: var(--yellow); }
 
   /* the camera stage */
   .stage { padding: 0; }
@@ -65,6 +71,7 @@
   .cam video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
   .cam video.mirror { transform: scaleX(-1); }
   .cam canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .stage.live .sbar .ttl { opacity: 0; }
   .cam::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.45) 100%); }
   .cam::before { content: ''; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: #FF3D3D; opacity: 0; }
   .cam.flash::before { animation: camFlash 0.45s ease-out; }
@@ -78,14 +85,24 @@
   .count small, .clock small { display: block; font: 800 11px/1.2 Inter, system-ui, sans-serif; letter-spacing: 0.14em; color: rgba(255, 248, 236, 0.7); text-transform: uppercase; }
   .clock b { display: block; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums; }
   .clock.low b { color: var(--red); }
+  /* two players: a score box each side of the clock, in the player's color, with the name */
+  .count.p { border-color: var(--pc); }
+  .count.p b { color: var(--pc); }
+  .count.p small { max-width: 8.6em; letter-spacing: 0.04em; white-space: normal; overflow-wrap: anywhere; line-height: 1.15; }
   .meter { position: fixed; z-index: 4; right: max(14px, var(--sr)); top: calc(var(--st) + 168px); width: 18px; height: 34vh; border-radius: 999px; background: rgba(18, 14, 24, 0.75); border: 3px solid var(--ink); overflow: hidden; }
+  .meter.l { right: auto; left: max(14px, var(--sl)); }
   .meter i { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: linear-gradient(0deg, var(--green), var(--yellow)); transition: height 0.12s; }
   .coach { position: fixed; z-index: 4; left: 50%; bottom: calc(var(--sb) + 24px - var(--lab-gap, 0px)); transform: translateX(-50%); max-width: calc(100% - 32px); padding: 10px 18px; border-radius: 16px;
     background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 5px 0 var(--shadow); font-family: var(--display); font-size: 28px; letter-spacing: 0.05em; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .coach.duo { max-width: calc(50% - 2 * max(14px, var(--sl), var(--sr))); font-size: 22px; padding: 8px 12px; box-shadow: 0 0 0 3px var(--pc), 4px 5px 0 var(--shadow); }
+  .coach.duo.l { left: 25%; }
+  .coach.duo.r { left: 75%; }
   .coach.ok { background: var(--green); }
   .coach.warn { background: var(--yellow); }
-  .setup { position: fixed; z-index: 6; left: 0; right: 0; bottom: 0; max-height: calc(var(--lab-h, 100dvh) - var(--st) - 70px); overflow: auto;
-    padding: 18px max(18px, var(--sr)) calc(var(--sb) + 18px - var(--lab-gap, 0px)) max(18px, var(--sl)); border-radius: 26px 26px 0 0; background: var(--panel); border: 3px solid var(--shadow); border-bottom: 0; }
+  .setup { --pb: calc(var(--sb) + 18px); position: fixed; z-index: 6; left: 0; right: 0; bottom: calc(0px - var(--lab-gap, 0px)); max-height: calc(var(--lab-h, 100dvh) - var(--st) - 70px); overflow: auto;
+    padding: 18px max(18px, var(--sr)) var(--pb) max(18px, var(--sl)); border-radius: 26px 26px 0 0; background: var(--panel); border: 3px solid var(--shadow); border-bottom: 0; }
+  /* the status and START stay in view when the panel scrolls (two players' names, a phone held sideways) */
+  .setup .go { position: sticky; bottom: calc(-1 * var(--pb)); margin-bottom: calc(-1 * var(--pb)); padding-bottom: var(--pb); background: var(--panel); box-shadow: 0 -14px 14px -8px var(--panel); }
   .setup .top { display: flex; align-items: center; gap: 12px; }
   .setup .em { font-size: 40px; line-height: 1; }
   .setup h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 34px; letter-spacing: 0.05em; color: var(--c, var(--yellow)); line-height: 1; }
@@ -104,6 +121,24 @@
   .btn.dark { background: var(--panel-2); color: var(--paper); border-color: var(--shadow); }
   .row { display: flex; gap: 10px; margin-top: 14px; }
   .row > * { flex: 1 1 0; min-width: 0; }
+  .duo { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: end; margin: 14px 0 0; }
+  .duo .pl { display: grid; gap: 4px; min-width: 0; }
+  .duo .pl span { font: 800 11px/1.2 Inter, system-ui, sans-serif; letter-spacing: 0.12em; color: var(--pc); }
+  .duo .pl input, .duo .pl b { width: 100%; min-width: 0; min-height: 44px; padding: 8px 10px; border-radius: 12px; border: 3px solid var(--pc); background: var(--ink); color: var(--paper); font: 800 15px Inter, system-ui, sans-serif; }
+  .duo .pl b { display: flex; align-items: center; overflow-wrap: anywhere; }
+  .duo .swap { margin-bottom: 2px; }
+  .duo .duo-fine { grid-column: 1 / -1; margin: 0; }
+  .camrow { display: flex; align-items: center; gap: 10px; width: 100%; margin: 12px 0 0; padding: 10px 12px; border-radius: 14px; border: 2px solid rgba(255, 248, 236, 0.18); background: var(--panel-2); text-align: left; font-weight: 800; font-size: 14.5px; }
+  .camrow small { margin-left: auto; font-size: 11px; letter-spacing: 0.12em; color: var(--yellow); }
+  .opts { display: grid; gap: 10px; margin: 6px 0 0; }
+  .opts .kick { margin: 8px 0 0; font: 800 11px/1.2 Inter, system-ui, sans-serif; letter-spacing: 0.14em; color: rgba(255, 248, 236, 0.6); }
+  .opt { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: center; width: 100%; padding: 10px 12px; border-radius: 16px; text-align: left; background: var(--panel-2); border: 3px solid var(--shadow); }
+  .opt[aria-pressed="true"] { border-color: var(--yellow); box-shadow: 0 0 0 2px var(--yellow); }
+  .opt .em { font-size: 30px; text-align: center; }
+  .opt b { display: block; font-family: var(--display); font-weight: 400; font-size: 23px; letter-spacing: 0.05em; line-height: 1; overflow-wrap: anywhere; }
+  .opt small { display: block; margin-top: 3px; font-size: 12.5px; font-weight: 600; line-height: 1.35; color: rgba(255, 248, 236, 0.78); }
+  .tog { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0 0; font-size: 13.5px; font-weight: 700; line-height: 1.4; }
+  .tog input { width: 22px; height: 22px; margin: 0; flex: none; accent-color: var(--yellow); }
   .fine { margin: 10px 0 0; font-size: 12.5px; font-weight: 600; line-height: 1.45; color: rgba(255, 248, 236, 0.7); }
   .countdown { position: fixed; z-index: 7; inset: 0 0 auto; height: var(--lab-h, 100%); display: grid; place-items: center; pointer-events: none; }
   .countdown b { font-family: var(--display); font-weight: 400; font-size: 46vmin; line-height: 1; color: var(--yellow); -webkit-text-stroke: 6px var(--ink); text-shadow: 10px 12px 0 var(--shadow); animation: cd 0.9s ease-out both; }
@@ -125,14 +160,54 @@
   .stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 18px; margin: 14px 0 0; font-size: 14px; font-weight: 800; color: rgba(255, 248, 236, 0.85); }
   .paid { margin: 12px 0 0; font-size: 15px; font-weight: 800; color: var(--green); }
   .share { margin-top: 16px; text-align: left; }
+  /* head to head */
+  .vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: start; margin: 10px 0 0; }
+  .vs .side { min-width: 0; padding: 12px 8px; border-radius: 18px; background: var(--ink); border: 3px solid var(--pc); }
+  .vs .side.win { box-shadow: 0 0 0 3px var(--yellow), 4px 5px 0 var(--shadow); }
+  .vs .nm { display: block; font-family: var(--display); font-size: 22px; letter-spacing: 0.04em; color: var(--pc); overflow-wrap: anywhere; line-height: 1.05; }
+  .vs .nm i { font: 800 10px/1 Inter, system-ui, sans-serif; letter-spacing: 0.12em; font-style: normal; padding: 2px 5px; border-radius: 5px; background: var(--pc); color: var(--ink); vertical-align: middle; }
+  .vs b { display: block; margin-top: 4px; font-family: var(--display); font-weight: 400; font-size: 72px; line-height: 0.9; color: var(--paper); text-shadow: 4px 5px 0 var(--shadow); }
+  .vs small { display: block; font-family: var(--display); font-size: 18px; letter-spacing: 0.06em; color: rgba(255, 248, 236, 0.8); }
+  .vs .stats { font-size: 12px; gap: 4px 10px; margin-top: 8px; }
+  .vsx { align-self: center; font-family: var(--display); font-size: 30px; color: var(--yellow); text-shadow: 3px 3px 0 var(--shadow); }
 
   /* help */
   .veil { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 40; background: rgba(5, 3, 10, 0.72); display: flex; align-items: flex-end; justify-content: center; }
-  .sheet { position: relative; width: min(100%, 560px); max-height: calc(var(--lab-h, 100dvh) - var(--st) - 20px); overflow: auto; padding: 20px max(18px, var(--sr)) calc(var(--sb) + 20px - var(--lab-gap, 0px)) max(18px, var(--sl)); border-radius: 24px 24px 0 0; background: var(--panel); border: 3px solid var(--shadow); border-bottom: 0; }
+  .sheet { position: relative; width: min(100%, 560px); max-height: calc(var(--lab-h, 100dvh) - var(--st) - 20px); overflow: auto; padding: 20px max(18px, var(--sr)) calc(var(--sb) + 20px) max(18px, var(--sl)); border-radius: 24px 24px 0 0; background: var(--panel); border: 3px solid var(--shadow); border-bottom: 0; }
   .sheet h2 { margin: 0 40px 8px 0; font-family: var(--display); font-weight: 400; font-size: 32px; letter-spacing: 0.05em; }
   .sheet ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
   .sheet li { font-size: 14.5px; font-weight: 600; line-height: 1.45; }
   .sheet .x { position: absolute; top: 14px; right: max(14px, var(--sr)); }
+  /* Sideways (JC, Nov 15 2026: "All games need to maximize viewport in landscape mode. This is important
+     for IRL especially, so I can mirror to my tv"): the home and results spread across the width, and
+     on the camera the picture fills the screen (a wide camera picture, see startCamera) with the setup
+     as a panel down the right side, the score boxes smaller in the corners. */
+  @media (orientation: landscape) {
+    .wrap { max-width: 1240px; }
+    .home-top { display: grid; grid-template-columns: auto 1fr; gap: 10px 28px; align-items: center; }
+    .home-top .tag { margin: 0; }
+    .home-top .pick { grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 4px; }
+    .home-top .pick .who-note { margin: 0; }
+    .cards { grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); }
+    .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+    .res-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+    .res-grid .share { margin-top: 12px; }
+    .count b { font-size: 50px; } .clock b { font-size: 32px; }
+    .count, .clock { padding: 4px 12px 6px; }
+    .hud { top: calc(var(--st) + 56px); }
+    .meter { top: calc(var(--st) + 140px); height: calc(var(--lab-h, 100dvh) - var(--st) - var(--sb) - 230px); }
+    .coach { font-size: 24px; padding: 8px 16px; bottom: calc(var(--sb) + 12px - var(--lab-gap, 0px)); }
+    .coach.duo { font-size: 20px; }
+    .setup { --pb: 14px; left: auto; top: calc(var(--st) + 58px); bottom: calc(var(--sb) + 10px - var(--lab-gap, 0px)); right: max(10px, var(--sr)); width: min(430px, 52vw); max-height: none;
+      padding: 14px 16px var(--pb); border-radius: 22px; border-bottom: 3px solid var(--shadow); }
+    .setup .go .row { margin-top: 10px; }
+    .setup h2 { font-size: 28px; }
+    .steps li { font-size: 13.5px; }
+    .alert { top: calc(var(--st) + 58px); }
+    .big { font-size: 100px; }
+    .sheet { width: min(100%, 620px); }
+    .opts { grid-template-columns: 1fr 1fr; }
+  }
   @media (prefers-reduced-motion: reduce) { .countdown b, .pop { animation-duration: 0.01s; } }
 </style>
 </head>
@@ -148,27 +223,39 @@
     </div>
   </header>
   <div class="wrap">
-    <div class="logo"><div class="badge" aria-hidden="true">💪</div><div><h1>IRL</h1><p>REAL MOVES. REAL LOOT.</p></div></div>
-    <p class="tag">Prop your phone up, step back and move. The camera counts your reps, times your holds, watches your hands hit targets, stop shots and chop avocados. Every finished challenge pays amber, and beating the goal or your best pays shards.</p>
+    <div class="home-top">
+      <div class="logo"><div class="badge" aria-hidden="true">💪</div><div><h1>IRL</h1><p>REAL MOVES. REAL LOOT.</p></div></div>
+      <p class="tag">Prop your phone up, step back and move. The camera counts your reps, times your holds, watches your hands hit targets, stop shots and chop avocados. Every finished challenge pays amber, and beating the goal or your best pays shards.</p>
+      <div class="pick">
+        <div class="who" id="who" role="radiogroup" aria-label="Players"><button type="button" role="radio" data-n="1" aria-checked="true">1 PLAYER</button><button type="button" role="radio" data-n="2" aria-checked="false">2 PLAYERS</button></div>
+        <p class="who-note" id="whoNote"></p>
+      </div>
+    </div>
     <div class="cards" id="cards"></div>
-    <p class="note">🔒 <b>The camera picture never leaves your phone.</b> The motion tracker runs right on it: nothing is recorded, saved or sent anywhere. Only your score goes to your Capra Lab wallet.</p>
+    <div class="notes">
+      <p class="note">📺 <b>Family game night:</b> turn your phone sideways and mirror it to the TV (Control Center → Screen Mirroring). Pick the back camera (or the 0.5× if your phone offers it) and stand the phone with its back to you, so everyone watches the TV. Portrait Orientation Lock has to be off for the phone to turn.</p>
+      <p class="note">🔒 <b>The camera picture never leaves your phone.</b> The motion tracker runs right on it: nothing is recorded, saved or sent anywhere. Only your score goes to your Capra Lab wallet.</p>
+    </div>
   </div>
 </section>
 
 <!-- ============ THE CAMERA ============ -->
-<section class="screen stage" data-screen="stage" hidden>
+<section class="screen stage" data-screen="stage" id="stage" hidden>
   <div class="cam" id="cam"><video id="video" playsinline muted autoplay></video><canvas id="overlay"></canvas></div>
   <header class="sbar">
     <button class="round-btn" id="backBtn" type="button" aria-label="Back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
     <div class="ttl" id="stTitle"></div>
-    <button class="round-btn" id="flipBtn" type="button" aria-label="Switch camera"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><path d="M9 13a3 3 0 0 0 5.5 1.5M15 12a3 3 0 0 0-5.5-1.5M14.5 16.5v-2h-2M9.5 8.5v2h2"/></svg></button>
+    <button class="round-btn" id="flipBtn" type="button" aria-label="Camera"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><path d="M9 13a3 3 0 0 0 5.5 1.5M15 12a3 3 0 0 0-5.5-1.5M14.5 16.5v-2h-2M9.5 8.5v2h2"/></svg></button>
   </header>
   <div class="hud" id="hud" hidden>
-    <div class="count"><b id="count">0</b><small id="countUnit">reps</small></div>
+    <div class="count" id="countBox0"><b id="count0">0</b><small id="countUnit0">reps</small></div>
     <div class="clock" id="clockBox"><b id="clock">1:00</b><small id="clockLbl">left</small></div>
+    <div class="count" id="countBox1" hidden><b id="count1">0</b><small id="countUnit1"></small></div>
   </div>
-  <div class="meter" id="meter" hidden aria-hidden="true"><i id="meterFill"></i></div>
-  <div class="coach" id="coach" hidden role="status" aria-live="polite"></div>
+  <div class="meter l" id="meterL" hidden aria-hidden="true"><i></i></div>
+  <div class="meter" id="meterR" hidden aria-hidden="true"><i></i></div>
+  <div class="coach" id="coach0" hidden role="status" aria-live="polite"></div>
+  <div class="coach" id="coach1" hidden role="status" aria-live="polite"></div>
   <div class="setup" id="setup"></div>
   <div class="countdown" id="countdown" aria-live="assertive"></div>
   <div class="alert" id="camAlert" hidden role="alert"></div>
@@ -178,8 +265,10 @@
 <section class="screen" data-screen="results" hidden>
   <div class="wrap res">
     <header class="bar" style="padding-top:0"><capra-lab-chip></capra-lab-chip></header>
-    <div class="res-card" id="resCard"></div>
-    <div class="share" id="resShare"></div>
+    <div class="res-grid">
+      <div class="res-card" id="resCard"></div>
+      <div class="share" id="resShare"></div>
+    </div>
     <div class="row"><button class="btn dark" type="button" id="homeBtn">ALL CHALLENGES</button><button class="btn" type="button" id="againBtn">AGAIN</button></div>
   </div>
 </section>
@@ -191,10 +280,20 @@
     <li><b>Pick a challenge</b>, then follow the setup: where to put your phone and how far to stand.</li>
     <li><b>Step into your spot.</b> When the camera sees what it needs, a 3-2-1 countdown starts on its own, so you never have to run back to tap the screen.</li>
     <li><b>Move.</b> The stick figure over the camera shows what it sees. A voice counts your reps so you can hear it from across the room.</li>
+    <li><b>2 players:</b> switch it on at the top, stand side by side, and each of you plays your own half of the screen. Whoever’s phone it is gets paid for their side.</li>
+    <li><b>The camera:</b> tap the camera button for front, back or the 0.5× ultra-wide (when your phone offers it). Turn the phone sideways for a picture that fills a TV.</li>
     <li><b>Pay:</b> +40 amber for each finished challenge, +1 shard for beating its goal (once a day each), +1 shard for a new personal best. IRL pays up to 300 amber and 6 shards a day.</li>
     <li><b>Private:</b> the camera picture is read right on your phone and never recorded or sent.</li>
     <li><b>Camera blocked?</b> On iPhone: Settings → Apps → Safari → Camera → Ask or Allow, then reopen IRL.</li>
   </ul>
+</div></div>
+
+<div class="veil" id="camVeil" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="camTitle">
+  <button class="round-btn x" type="button" id="camX" aria-label="Close">✕</button>
+  <h2 id="camTitle">CAMERA</h2>
+  <div class="opts" id="camOpts"></div>
+  <p class="fine" id="camNote"></p>
+  <label class="tog"><input type="checkbox" id="mirrorChk" checked><span>Mirror the picture, like a mirror (on for watching yourself, on the phone or on a TV).</span></label>
 </div></div>
 
 <script src="/lab/chip.js" defer></script>

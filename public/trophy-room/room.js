@@ -182,11 +182,11 @@ function logLine(e) {
 function renderRoom(room) {
   const p = me(), own = !!(room.me && room.me.own), name = room.owner.name, h = room.owner.handle;
   const n = room.trophies.length;
-  app.innerHTML = `
+  app.innerHTML = `<div class="cctv">
     <div class="head"><p class="kick">🎥 Security cameras · live</p><h2>${esc(possessive(name))}<small>TROPHY ROOM</small></h2>
       <p class="stats"><span>🏆 ${plural(n, 'trophy', 'trophies')}</span><span>🚨 ${room.caught} caught</span><span>🔓 ${plural(room.broken, 'break-in')}</span></p></div>
     ${monitor('mon', 'CAM 02 · VAULT')}
-    <div class="cams" role="tablist" aria-label="Cameras"><button type="button" role="tab" data-cam="1" aria-selected="false">CAM 1 · TRAP HALL</button><button type="button" role="tab" data-cam="2" aria-selected="true">CAM 2 · VAULT</button></div>
+    <div class="cams" role="tablist" aria-label="Cameras"><button type="button" role="tab" data-cam="1" aria-selected="false">CAM 1 · TRAP HALL</button><button type="button" role="tab" data-cam="2" aria-selected="true">CAM 2 · VAULT</button></div></div>
     <section class="card break" id="act"></section>
     ${own ? `<section class="card" id="editor"></section>` : `<section class="card"><h3>THE TRAP HOUSE <span class="tag">IN THIS ORDER</span></h3>${trapsList(room.traps)}</section>`}
     <section class="card"><h3>THE TROVE</h3>${n ? `<div class="shelf">${room.trophies.map((t) => trophyCard(t, own, name)).join('')}</div>` : `<p class="empty">${own ? 'No trophies yet. Finish #1 on a daily board (Three Clue Crew, Puzzled Spin, Mind Heist, No Cap or Par-Tee Time’s Daily 3), win a Masters, get a Goat Getaway pen out at par or take #1 on Screensaver, and a trophy lands in your trove. So does one taken from someone else’s room.' : `No trophies in the trove yet. The loot chest is still worth a look.`}</p>`}

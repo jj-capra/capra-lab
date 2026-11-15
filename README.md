@@ -215,6 +215,8 @@ Put its source in `games/<game>/`, add a step to `scripts/build.mjs` that copies
 
 **Every page leaves room for the iPhone status bar.** Capra Lab is often opened from the home screen, where the page runs under the status bar (time, battery) and iOS blurs whatever sits there. Use `viewport-fit=cover` in the viewport tag and start every screen, top bar and in-game HUD below `env(safe-area-inset-top)` (for example `padding-top: calc(env(safe-area-inset-top, 0px) + 12px)`), with the same for `env(safe-area-inset-bottom)` at the bottom and the left/right insets in landscape. Fixed and absolutely positioned layers need it too, since body padding doesn't move them. To check without a phone, Chromium's DevTools protocol can fake the insets: `Emulation.setSafeAreaInsetsOverride` with `{ top: 59, bottom: 34 }`.
 
+**Every page uses the whole screen sideways.** JC mirrors his phone to the TV for family game night, so a phone turned sideways must not show a narrow column in the middle. Each page has an `@media (orientation: landscape) and (min-width: 600px)` block that widens the column (about 1180px), puts menus and results in two columns and lays the play screen out sideways (the board or camera picture as big as the screen is tall, its controls beside it). Upright layouts don't change. Check with a 852×393 viewport and the insets `{ top: 0, bottom: 21, left: 59, right: 59 }`.
+
 ## Testing and deploying
 
 ```

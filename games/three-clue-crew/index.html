@@ -207,6 +207,19 @@
   .sheet-card h2 { margin: 0 0 10px; font-family: var(--display); font-weight: 400; font-size: 32px; letter-spacing: 0.04em; }
   .sheet-card ol { margin: 0 0 14px; padding-left: 22px; display: grid; gap: 8px; font-size: 15px; font-weight: 600; line-height: 1.4; }
   .sheet-card .btn { width: 100%; }
+  .col { display: contents; }
+  /* Sideways (JC, Nov 15 2026: "All games need to maximize viewport in landscape mode"): the menu and
+     the results in two columns across the screen, a round's four choices in one row under the clues. */
+  @media (orientation: landscape) and (min-width: 600px) {
+    .wrap { max-width: 1180px; }
+    .home-body, .res-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 28px; align-items: start; }
+    .col { display: grid; gap: 16px; align-content: start; }
+    .play-body { gap: 12px; }
+    .clue { min-height: 78px; font-size: clamp(26px, 4.2vw, 46px); }
+    .choices { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .choice { min-height: 64px; }
+  }
+  @media (orientation: landscape) and (min-height: 600px) { .clue { min-height: 130px; } .choice { min-height: 84px; font-size: 21px; } }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .clue, .choice { opacity: 1; transform: none; }
@@ -224,6 +237,7 @@
     </div>
   </header>
   <div class="home-body wrap">
+    <div class="col">
     <div class="logo">
       <div class="cards" aria-hidden="true"><i>1</i><i>2</i><i>3</i></div>
       <h1>THREE CLUE <em>CREW</em></h1>
@@ -232,6 +246,8 @@
       <div class="mic" aria-hidden="true"><svg viewBox="0 0 32 32"><g stroke="#120E18" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="4" width="10" height="15" rx="5" fill="#FFF8EC"/><path d="M7.5 14.5a8.5 8.5 0 0 0 17 0" fill="none"/><path d="M16 23v4.5M11.5 27.5h9" fill="none"/></g></svg></div>
       <div class="bubble" id="homeHost" aria-live="polite"></div>
     </div>
+    </div>
+    <div class="col">
     <div>
       <p class="label" id="tierLabel">PICK YOUR GRADE LEVEL</p>
       <div class="seg" id="tiers" role="radiogroup" aria-labelledby="tierLabel"></div>
@@ -242,6 +258,7 @@
     </div>
     <p class="daily-note" id="dailyNote"></p>
     <button class="board-link" id="boardBtn" type="button">🏆 <span>Today's board</span> <small id="boardLead"></small></button>
+    </div>
   </div>
 </section>
 
@@ -272,6 +289,7 @@
     <button class="back" id="resBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>MENU</button>
   </header>
   <div class="res-body wrap">
+    <div class="col">
     <div class="res-score">
       <small id="resTitle"></small>
       <div class="num" id="resNum">0<span>/10</span></div>
@@ -282,6 +300,8 @@
       <div class="bubble" id="resHost"></div>
     </div>
     <div id="resShare"></div>
+    </div>
+    <div class="col">
     <lab-daily-board id="resBoard" hidden></lab-daily-board>
     <div class="res-actions">
       <button class="btn" id="moreBtn" type="button">Quick 10</button>
@@ -289,6 +309,7 @@
     </div>
     <p class="label">THE ROUNDS</p>
     <ul class="res-list" id="resList"></ul>
+    </div>
   </div>
 </section>
 

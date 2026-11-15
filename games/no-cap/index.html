@@ -214,6 +214,17 @@
   }
   .toast.show { transform: translate(-50%, 0); }
   .toast.err { background: #FFD3DA; }
+  /* Sideways (JC, Nov 15 2026: "All games need to maximize viewport in landscape mode"): the home
+     cards side by side across the screen, the deck picker in two columns. */
+  @media (orientation: landscape) and (min-width: 600px) {
+    .bar, .shieldbar { max-width: 1180px; }
+    .wrap { max-width: 1180px; }
+    #home .wrap { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); align-items: start; }
+    #home .hero { align-self: center; }
+    .logo { font-size: clamp(44px, 7.2vw, 96px); }
+    .sheet { max-width: 920px; }
+    .decks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
   @media (prefers-reduced-motion: reduce) { .banner .mic, .claim.cap .stamp { animation: none; } }
 
   /* the draft: a pile of topic cards, your hand, the order */

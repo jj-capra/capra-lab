@@ -48,6 +48,32 @@ the browser was the plan he okayed).
   only in a plank (body near flat and straight), elbows under 95° then past 150°. Wall sit: knees and
   hips both between about 62° and 125°. Angles use MediaPipe's world landmarks (3D), so facing the
   phone or side-on both work; picture points are the fallback.
+- **Two players** (JC, Nov 15 2026: "bring two player to IRL!"): the 1 PLAYER / 2 PLAYERS switch on the
+  home screen. Side by side in front of one camera, each with a half of the screen (a dashed line down
+  the middle): the tracker looks for two bodies (`numPoses` 2, set with `setOptions`) and
+  `splitPlayers` sorts them by where they stand on screen, left player cyan, right magenta. Every
+  challenge but push-ups works for two (`TWO_UP`: a challenge with `setup2`; push-ups need the camera
+  side-on, where one would hide the other); each player gets their own counter, kept to their half
+  (targets, shots, pitches, silos and avocados), their own score box beside the clock and their own
+  coach line. The countdown waits until both are framed. Names: the phone owner's lab name on their
+  side (YOU), a guest name typed for the other, ⇄ swaps sides; left and right as the players face the
+  screen. Results: both scores, 👑 the winner (or DEAD HEAT), and the share text has a line and a row
+  each. Only the phone owner is paid and gets a best, from their own side's score. The voice counts
+  reps only for one player (two at once would talk over each other).
+- **The camera** (JC, Nov 15 2026: "My camera can go to .5 view zoomed out so it can see more things"):
+  the camera button (top right, and the camera line in the setup) picks Front, Back, the **0.5×
+  ultra-wide** when the browser is given it (a lens named "Ultra Wide", as iPhone's "Back Ultra Wide
+  Camera", or a back camera whose zoom goes under 1×), and any other lenses the phone offers by their
+  own names (some phones only share the wide lens that way). Kept in `irl.prefs` (`cam`). Whether
+  Safari gets the ultra-wide depends on the phone and iOS; when it doesn't, the sheet says so. The
+  picture always shows **mirrored**, whichever camera, because the players are the ones watching
+  themselves (on the phone or on a TV); a switch in the camera sheet turns that off.
+- **Sideways and on a TV** (JC, Nov 15 2026: "maximize viewport in landscape mode... so I can mirror to
+  my tv and play games for family game night"): turned sideways, the camera asks for a wide 16:9
+  picture (1280×720; upright stays 640×480) and restarts in the new shape if the phone turns before
+  the go; the setup is a panel down the right, the score boxes sit smaller in the corners, and
+  targets and silos fit around them from the side (`freeArea`). Home and results spread across in two
+  columns. The home screen tells how to mirror to the TV with the back camera.
 - **Hands-free start**: tap Start, walk to your spot; once the camera sees what the challenge needs
   (`framing`) for 1.2 s, a 3-2-1 starts on its own. A voice counts reps (squats, push-ups; every 10
   for dribbles and wall-sit seconds), with beeps for the countdown and the last 3 seconds.
@@ -56,6 +82,9 @@ the browser was the plan he okayed).
   shard for beating its goal (`goal`, once a day each), +1 shard for a new personal best (`best`).
   Bests are kept on the phone per lab handle (`irl.best.<handle>`).
 - **Private**: the camera picture is read on the phone and never recorded or sent; say so on the page.
+  MediaPipe's tasks-vision bundle posts usage numbers (which task ran, how fast) to Google every
+  minute; `scripts/build.mjs` switches that send off in the copy the lab serves and stops the build
+  if a new version moves it.
 - The results text: `CapraShare.text` with 💪 IRL · <challenge>, the score line and a row of ten
   squares filled toward the goal (⚡ on a new best).
 
@@ -66,7 +95,7 @@ the browser was the plan he okayed).
   framing and the share row. No camera, no DOM.
 - `game.js`, `index.html`: the page (home, the camera stage, results). The camera layer starts under
   the status bar (`top: env(safe-area-inset-top)`) and fills to `--lab-h`; the video is letterboxed
-  (`object-fit: contain`) and mirrored for the front camera, the stick figure and targets are drawn
+  (`object-fit: contain`) and mirrored (unless switched off), the stick figure and targets are drawn
   on a canvas over it.
 - `models/pose_landmarker_lite.task`: Google's lite pose model (see `models/SOURCE.md`).
   `scripts/build.mjs` copies it, plus `@mediapipe/tasks-vision`'s `vision_bundle.mjs` and
@@ -81,6 +110,8 @@ node games/irl/test/irl.test.mjs     # the counters, fed made-up bodies (test/bo
 npm run build && node scripts/dev-server.mjs
 ```
 The page has a test mode: set `window.__irlFake = true` before it loads and feed frames with
-`window.__irl.feed({ lm, world, aspect })` (the camera and tracker are skipped). Chromium's fake
+`window.__irl.feed({ lm, world, aspect })`, or `feed({ people: [{ lm, world }, { lm, world }] })` for
+two players (the camera and tracker are skipped; the fake picture is 480×640 upright, 1280×720
+sideways). Chromium's fake
 camera (`--use-fake-device-for-media-stream --use-fake-ui-for-media-stream`) checks that the real
 tracker loads and runs.

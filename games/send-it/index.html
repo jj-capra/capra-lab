@@ -114,6 +114,19 @@
   .sheet h2 { margin: 0 0 10px; font-family: var(--display); font-weight: 400; font-size: 32px; letter-spacing: 0.04em; }
   .sheet ol { margin: 0 0 14px; padding-left: 22px; display: grid; gap: 8px; font-size: 15px; font-weight: 600; line-height: 1.4; }
   .sheet .btn { width: 100%; }
+  /* Sideways (JC, Nov 15 2026: "All games need to maximize viewport in landscape mode"): the title and
+     TO THE PIER on the left, the contraptions three across on the right; the results side by side. */
+  @media (orientation: landscape) and (min-width: 600px) {
+    .wrap { max-width: 1180px; }
+    .home-body { grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr); grid-template-rows: auto auto auto auto 1fr; column-gap: 26px;
+      grid-template-areas: "logo label" "tag crafts" "go crafts" "note crafts" ". crafts"; }
+    .home-body .logo { grid-area: logo; font-size: clamp(48px, 6.2vw, 108px); } .home-body .tag { grid-area: tag; } .home-body .label { grid-area: label; align-self: end; }
+    .home-body .crafts { grid-area: crafts; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .home-body .go { grid-area: go; } .home-body .note { grid-area: note; }
+    .res-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 22px; align-items: start; }
+    .res-body .row { grid-column: 1 / -1; }
+    .sheet { max-width: 640px; }
+  }
 </style>
 </head>
 <body>

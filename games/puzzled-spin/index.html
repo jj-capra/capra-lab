@@ -225,6 +225,22 @@
   .sheet-card h2 { margin: 0 0 10px; font-family: var(--display); font-weight: 400; font-size: 32px; letter-spacing: 0.04em; }
   .sheet-card ol { margin: 0 0 14px; padding-left: 22px; display: grid; gap: 8px; font-size: 15px; font-weight: 600; line-height: 1.4; }
   .sheet-card .btn { width: 100%; }
+  .col { display: contents; }
+  /* Sideways (JC, Nov 15 2026: "All games need to maximize viewport in landscape mode"): the menu and
+     the results in two columns; while playing, the picture as big as the screen is tall on the left,
+     the count, goal and peek beside it. */
+  @media (orientation: landscape) and (min-width: 600px) {
+    .wrap { max-width: 1180px; }
+    .home-body, .res-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 28px; align-items: start; }
+    .col { display: grid; gap: 16px; align-content: start; }
+    .col .board-link { justify-self: start; }
+    .play-body { display: grid; grid-template-columns: auto minmax(200px, 300px); grid-template-rows: auto auto auto 1fr; column-gap: 28px; row-gap: 14px; justify-content: center; align-content: start; }
+    .board-wrap { grid-column: 1; grid-row: 1 / span 4; width: min(calc(var(--lab-h, 100dvh) - var(--st) - var(--sb) - 84px), 58vw, 760px); }
+    .status, .hint, .marks { grid-column: 2; }
+    .status { flex-wrap: wrap; align-items: flex-start; }
+    .hint { text-align: left; }
+    .goal .pic { width: 96px; height: 96px; }
+  }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
@@ -243,11 +259,14 @@
     </div>
   </header>
   <div class="home-body wrap">
+    <div class="col">
     <div class="logo">
       <div class="spin" id="logoTiles" aria-hidden="true"></div>
       <h1>PUZZLED <em>SPIN</em></h1>
     </div>
     <p class="tag">Each picture is a comic art piece cut into tiles, and some tiles are turned the wrong way. Tap to spin them until the picture is whole, from simple two-tone mirrors all the way to a kaleidoscope masterpiece!</p>
+    </div>
+    <div class="col">
     <div>
       <p class="label" id="tierLabel">PICK YOUR GRADE LEVEL</p>
       <div class="seg" id="tiers" role="radiogroup" aria-labelledby="tierLabel"></div>
@@ -259,6 +278,7 @@
     </div>
     <p class="best" id="bestLine"></p>
     <button class="board-link" id="boardBtn" type="button">🏆 <span>Today's board</span> <small id="boardLead"></small></button>
+    </div>
   </div>
 </section>
 
@@ -296,6 +316,7 @@
     <button class="back" id="resBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>MENU</button>
   </header>
   <div class="res-body wrap">
+    <div class="col">
     <div class="res-score">
       <small id="resTitle"></small>
       <div class="num" id="resNum">0</div>
@@ -305,11 +326,14 @@
     </div>
     <p class="label">YOUR GALLERY</p>
     <div class="gallery" id="gallery"></div>
+    </div>
+    <div class="col">
     <lab-daily-board id="resBoard" hidden></lab-daily-board>
     <div id="resShare"></div>
     <div class="res-actions">
       <button class="btn" id="againBtn" type="button">Practice run</button>
       <button class="btn alt" id="levelBtn" type="button">Change level</button>
+    </div>
     </div>
   </div>
 </section>

@@ -403,6 +403,15 @@
     .games { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
     .tile { min-height: 172px; }
   }
+  /* Sideways (JC, Nov 15 2026: "All games need to maximize viewport in landscape mode"): the hub spreads
+     across the screen, the wallet and the card draw side by side, the games five or six across. */
+  @media (orientation: landscape) and (min-width: 700px) {
+    .lab { max-width: 1240px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 22px; align-items: start; padding-top: calc(env(safe-area-inset-top) + 22px); }
+    .lab > * { grid-column: 1 / -1; }
+    .lab > .wallet { grid-column: 1; }
+    .lab > #cardDraw { grid-column: 2; }
+    .games { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+  }
   @media (prefers-reduced-motion: reduce) {
     .tile { transition: none; }
     a.tile:active, a.tile:hover { transform: none; }

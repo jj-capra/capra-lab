@@ -1,15 +1,31 @@
 /* IRL: the page. Pick a challenge, prop the phone up, step back: the camera finds your body with
    MediaPipe's pose model (run right on the phone from ./vendor and ./models, nothing sent anywhere),
    logic.mjs turns the body points into reps, holds, hits and dribbles, and the lab wallet pays.
-   Tests set window.__irlFake before load and feed made-up bodies through window.__irl.feed(frame). */
-import { CHALLENGES, ORDER, COUNTERS, BONES, P, SILOS, framing, shareRow, MIN_TO_PAY } from './logic.mjs';
+   Two players (JC, Nov 15 2026) stand side by side, a half of the screen each; the tracker finds both
+   bodies and splitPlayers sorts them left and right. Any camera the phone offers can be picked,
+   the 0.5× ultra-wide too when the browser is given it.
+   Tests set window.__irlFake before load and feed made-up bodies through window.__irl.feed(frame)
+   ({ lm, world } for one player, { people: [{ lm, world }, ...] } for two). */
+import { CHALLENGES, ORDER, COUNTERS, BONES, P, SILOS, TWO_UP, framing, shareRow, splitPlayers, winnerOf, MIN_TO_PAY } from './logic.mjs';
 
 const $ = (id) => document.getElementById(id);
 const FAKE = !!window.__irlFake;
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const store = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* private mode */ } } };
 const me = () => { const p = store.get('capra-lab.profile', null); return p && p.name && p.code ? p : null; };
-const prefs = Object.assign({ sound: true }, store.get('irl.prefs', {}));
+const prefs = Object.assign({ sound: true, cam: 'front', mirror: true, players: 1, guest: 'Player 2', youRight: false, names: ['Player 1', 'Player 2'] }, store.get('irl.prefs', {}));
+const savePrefs = () => store.set('irl.prefs', prefs);
+const NAME_MAX = 17;
+const PCOL = ['#29D3F0', '#FF3D8B'];      // two players: the left one cyan, the right one magenta
+const SIDE = ['LEFT', 'RIGHT'];
+// Two players: whose phone it is (their side gets the pay and the best), and both names.
+const ownerSide = () => (me() ? (prefs.youRight ? 1 : 0) : -1);
+function duoNames() {
+  const p = me(), clip = (n, d) => (String(n || '').trim().slice(0, NAME_MAX) || d);
+  if (!p) return [clip(prefs.names[0], 'Player 1'), clip(prefs.names[1], 'Player 2')];
+  const you = clip(p.name, 'You'), guest = clip(prefs.guest, 'Player 2');
+  return prefs.youRight ? [guest, you] : [you, guest];
+}
 const bestKey = () => 'irl.best.' + ((me() || {}).handle || 'guest');
 const bests = () => store.get(bestKey(), {});
 const dayKey = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
@@ -58,7 +74,7 @@ function paintSound() {
   $('soundBtn').innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/>${prefs.sound ? '<path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/>' : '<path d="M16 9.5l5 5M21 9.5l-5 5"/>'}</svg>`;
   $('soundBtn').setAttribute('aria-pressed', String(prefs.sound));
 }
-$('soundBtn').onclick = () => { prefs.sound = !prefs.sound; store.set('irl.prefs', prefs); paintSound(); if (prefs.sound) sfx.beep(); };
+$('soundBtn').onclick = () => { prefs.sound = !prefs.sound; savePrefs(); paintSound(); if (prefs.sound) sfx.beep(); };
 paintSound();
 $('helpBtn').onclick = () => { $('veil').hidden = false; $('helpX').focus(); };
 $('helpX').onclick = () => { $('veil').hidden = true; };
@@ -66,40 +82,87 @@ $('veil').addEventListener('click', (e) => { if (e.target === $('veil')) $('veil
 
 /* ---------- home ---------- */
 function renderHome() {
-  const b = bests();
+  const b = bests(), two = prefs.players === 2;
+  for (const el of document.querySelectorAll('#who button')) el.setAttribute('aria-checked', String(Number(el.dataset.n) === prefs.players));
+  $('whoNote').textContent = two ? 'Side by side, a half of the screen each. Push-ups stay solo: the camera has to see you side-on.' : 'Just you. Switch to 2 players for a head-to-head.';
   $('cards').innerHTML = ORDER.map((k) => {
-    const c = CHALLENGES[k];
+    const c = CHALLENGES[k], solo = two && !TWO_UP.includes(k);
     const what = k === 'wallsit' ? `Hold up to ${fmt(c.secs)} · goal ${c.goal} s` : `${c.secs} seconds · goal ${c.goal} ${c.units}`;
     return `<button type="button" class="ch" data-k="${k}" style="--c:${c.color}"><span class="em" aria-hidden="true">${c.emoji}</span>
-      <span><b>${esc(c.name.toUpperCase())}</b><small>${esc(c.blurb)} ${esc(what)}</small></span>
+      <span><b>${esc(c.name.toUpperCase())}</b><small>${solo ? '<i class="solo">SOLO ONLY</i> ' : ''}${esc(c.blurb)} ${esc(what)}</small></span>
       <span class="best">${b[k] != null ? esc(scoreText(k, b[k])) : '–'}<span>BEST</span></span></button>`;
   }).join('');
   for (const el of $('cards').querySelectorAll('.ch')) el.onclick = () => openChallenge(el.dataset.k);
 }
+for (const el of document.querySelectorAll('#who button')) el.onclick = () => { prefs.players = Number(el.dataset.n); savePrefs(); renderHome(); };
 
 /* ---------- the camera and the motion tracker ---------- */
 const video = $('video'), canvas = $('overlay'), ctx = canvas.getContext('2d');
-let stream = null, facing = 'user', landmarker = null, loadingModel = null, raf = 0, lastVideoTime = -1, wake = null;
+let stream = null, landmarker = null, loadingModel = null, raf = 0, lastVideoTime = -1, wake = null, poses = 1, camLand = null;
 async function loadModel() {
   if (landmarker) return landmarker;
   loadingModel ||= (async () => {
     const { FilesetResolver, PoseLandmarker } = await import('./vendor/vision_bundle.mjs');
     const files = await FilesetResolver.forVisionTasks(new URL('./vendor/wasm', location.href).href);
     const opts = (delegate) => ({ baseOptions: { modelAssetPath: new URL('./models/pose_landmarker_lite.task', location.href).href, delegate },
-      runningMode: 'VIDEO', numPoses: 1, minPoseDetectionConfidence: 0.5, minPosePresenceConfidence: 0.5, minTrackingConfidence: 0.5 });
+      runningMode: 'VIDEO', numPoses: poses, minPoseDetectionConfidence: 0.5, minPosePresenceConfidence: 0.5, minTrackingConfidence: 0.5 });
     try { return await PoseLandmarker.createFromOptions(files, opts('GPU')); }
     catch { return await PoseLandmarker.createFromOptions(files, opts('CPU')); }
   })();
   try { landmarker = await loadingModel; } catch (e) { loadingModel = null; throw e; }
   return landmarker;
 }
+// One body or two: the tracker looks for as many people as there are players.
+async function setPoses(n) {
+  if (poses === n) return;
+  poses = n;
+  if (landmarker) { try { await landmarker.setOptions({ numPoses: n }); } catch { /* keeps looking for the old count */ } }
+}
+/* The cameras. Front and back by which way they face; after the first camera permission the browser
+   names every lens it offers, and one called "Ultra Wide" is the 0.5× (iPhone lists it as "Back Ultra
+   Wide Camera" when Safari is given it). A back camera that zooms out past 1× is the 0.5× too. Any
+   other lenses are offered by their own names. The choice is kept in prefs.cam: front, back, wide or
+   dev:<the lens's name>. */
+const cams = { listed: false, n: 0, devs: [], wide: null, zoomMin: null, others: [] };
+async function listCams() {
+  try {
+    const devs = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === 'videoinput');
+    cams.n = devs.length; cams.devs = devs; cams.listed = devs.some((d) => d.label);
+    const wide = devs.find((d) => /ultra ?wide/i.test(d.label));
+    cams.wide = wide ? wide.deviceId : null;
+    cams.others = devs.length > 2 ? devs.filter((d) => d.label && d !== wide && !/^(front|back) camera$/i.test(d.label.trim()) && !/front|user|facetime/i.test(d.label)) : [];
+  } catch { /* no list: front and back still work */ }
+}
+const hasWide = () => !!cams.wide || (cams.zoomMin != null && cams.zoomMin < 1);
+const camName = (c = prefs.cam) => (c === 'front' ? 'Front camera' : c === 'back' ? 'Back camera' : c === 'wide' ? '0.5× ultra-wide' : String(c).slice(4));
 async function startCamera() {
   stopCamera();
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { const e = new Error('no camera'); e.name = 'NotSupportedError'; throw e; }
-  stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: facing, width: { ideal: 640 }, height: { ideal: 480 } }, audio: false });
+  // a picture the shape of the screen: wide (16:9) when the phone is sideways, so it fills a TV
+  const land = innerWidth > innerHeight;
+  const size = land ? { width: { ideal: 1280 }, height: { ideal: 720 } } : { width: { ideal: 640 }, height: { ideal: 480 } };
+  const want = prefs.cam || 'front';
+  const dev = want === 'wide' ? cams.wide : want.startsWith('dev:') ? (cams.devs.find((d) => d.label === want.slice(4)) || {}).deviceId : null;
+  const facingMode = want === 'front' ? 'user' : 'environment';
+  try { stream = await navigator.mediaDevices.getUserMedia({ video: dev ? { deviceId: { exact: dev }, ...size } : { facingMode, ...size }, audio: false }); }
+  catch (e) {
+    if (!dev || e.name === 'NotAllowedError' || e.name === 'SecurityError') throw e;
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', ...size }, audio: false });   // that lens is gone: the back camera
+  }
+  camLand = land;
+  const track = stream.getVideoTracks()[0];
+  if (want !== 'front' && track && track.getCapabilities) {
+    try {
+      const z = track.getCapabilities().zoom;
+      if (z && typeof z.min === 'number') cams.zoomMin = z.min;
+      if (want === 'wide' && !dev && z && z.min < 1) await track.applyConstraints({ advanced: [{ zoom: z.min }] });
+    } catch { /* no zoom here */ }
+  }
   video.srcObject = stream;
-  video.classList.toggle('mirror', facing === 'user');
+  video.classList.toggle('mirror', mirrored());
   await video.play().catch(() => {});
+  if (!cams.listed) await listCams();
+  paintCamRow();
 }
 function stopCamera() {
   if (stream) for (const t of stream.getTracks()) t.stop();
@@ -111,15 +174,22 @@ async function keepAwake(on) {
     if (!on && wake) { await wake.release(); wake = null; }
   } catch { /* the screen may dim; fine */ }
 }
-const mirrored = () => FAKE || facing === 'user';
+// The picture shows mirrored (like a mirror) whichever camera: the players are always the ones being
+// filmed and watching, on the phone or on a TV. Prefs can turn it off.
+const mirrored = () => FAKE || prefs.mirror !== false;
 // Where the picture sits on screen (letterboxed, the whole camera picture shows).
 function box() {
-  const W = canvas.clientWidth, H = canvas.clientHeight;
-  const vw = FAKE ? 480 : video.videoWidth || 480, vh = FAKE ? 640 : video.videoHeight || 640;
+  const W = canvas.clientWidth, H = canvas.clientHeight, land = W > H;
+  const vw = FAKE ? (land ? 1280 : 480) : video.videoWidth || 480, vh = FAKE ? (land ? 720 : 640) : video.videoHeight || 640;
   const s = Math.min(W / vw, H / vh), dw = vw * s, dh = vh * s;
   return { W, H, ox: (W - dw) / 2, oy: (H - dh) / 2, dw, dh, aspect: vw / vh };
 }
 const toScreen = (b, p) => [b.ox + (mirrored() ? 1 - p.x : p.x) * b.dw, b.oy + p.y * b.dh];
+// A player's part of the picture, as fractions across it as it shows (0 left, 1 right): all of it
+// alone, a half each for two.
+const sideRange = (i) => (S && S.two ? (i ? [0.5, 1] : [0, 0.5]) : [0, 1]);
+// Screen fractions into the picture's own x (mirrored back), for the counters.
+const toPic = (q) => (mirrored() ? { ...q, x0: 1 - q.x1, x1: 1 - q.x0 } : q);
 
 function frameLoop() {
   cancelAnimationFrame(raf);
@@ -129,7 +199,8 @@ function frameLoop() {
       lastVideoTime = video.currentTime;
       try {
         const res = landmarker.detectForVideo(video, performance.now());
-        handle({ lm: (res.landmarks && res.landmarks[0]) || null, world: (res.worldLandmarks && res.worldLandmarks[0]) || null, t: performance.now(), aspect: (video.videoWidth || 480) / (video.videoHeight || 640) });
+        const people = (res.landmarks || []).map((lm, i) => ({ lm, world: (res.worldLandmarks && res.worldLandmarks[i]) || null }));
+        handle({ people, t: performance.now(), aspect: (video.videoWidth || 480) / (video.videoHeight || 640) });
       } catch (e) { /* one bad frame; keep going */ }
     }
     raf = requestAnimationFrame(step);
@@ -138,54 +209,79 @@ function frameLoop() {
 }
 
 /* ---------- drawing: the comic stick figure, targets, pops ---------- */
-function draw(f) {
+// frames: one per player ({ lm } or nothing where the camera can't see them).
+function draw(frames, t = performance.now()) {
   const dpr = Math.min(2, window.devicePixelRatio || 1), b = box();
   if (canvas.width !== Math.round(b.W * dpr) || canvas.height !== Math.round(b.H * dpr)) { canvas.width = Math.round(b.W * dpr); canvas.height = Math.round(b.H * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, b.W, b.H);
   if (FAKE) { ctx.fillStyle = '#1B1528'; ctx.fillRect(b.ox, b.oy, b.dw, b.dh); }
-  const color = S ? CHALLENGES[S.kind].color : '#FFD23F';
-  const lm = f && f.lm;
-  if (S && S.kind === 'keeper') drawGoal(b);
-  if (S && S.kind === 'derby' && S.counter) drawSilos(b, f ? f.t : performance.now());
-  if (lm) {
-    const ok = (i) => lm[i] && (lm[i].visibility == null || lm[i].visibility > 0.45);
-    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    for (const [w, c] of [[11, '#120E18'], [6, color]]) {
-      ctx.lineWidth = w; ctx.strokeStyle = c;
-      ctx.beginPath();
-      for (const [a, z] of BONES) if (ok(a) && ok(z)) { const [x1, y1] = toScreen(b, lm[a]), [x2, y2] = toScreen(b, lm[z]); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); }
-      ctx.stroke();
+  if (!S) return;
+  if (S.two) drawDivider(b);
+  const live = S.phase === 'live';
+  for (const pl of S.players) {
+    const f = frames && frames[pl.i], c = pl.counter, lm = f && f.lm;
+    if (S.kind === 'keeper') drawGoal(b, ...sideRange(pl.i));
+    if (S.kind === 'derby' && c) drawSilos(b, t, pl);
+    if (lm) drawBody(b, lm, pl.color);
+    // the target
+    const tg = live && S.kind === 'targets' ? c.target : null;
+    if (tg) {
+      const [x, y] = toScreen(b, tg), r = c.radius * b.dh * 1.05;
+      if (!pl.tgShown.has(tg.id)) pl.tgShown.set(tg.id, t);
+      const left = Math.max(0, 1 - (t - pl.tgShown.get(tg.id)) / 2600);
+      ctx.save(); ctx.translate(x, y);
+      ctx.fillStyle = 'rgba(5,3,10,0.35)'; ctx.beginPath(); ctx.arc(5, 7, r, 0, Math.PI * 2); ctx.fill();
+      const ring = S.two ? pl.color : '#FF3D8B';
+      for (const [rr, cl] of [[1, ring], [0.68, '#FFF8EC'], [0.36, ring]]) { ctx.beginPath(); ctx.arc(0, 0, r * rr, 0, Math.PI * 2); ctx.fillStyle = cl; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = '#120E18'; ctx.stroke(); }
+      ctx.beginPath(); ctx.arc(0, 0, r + 9, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * left); ctx.lineWidth = 6; ctx.strokeStyle = '#FFD23F'; ctx.stroke();
+      ctx.restore();
     }
-    for (const i of [11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28]) {
-      if (!ok(i)) continue;
-      const [x, y] = toScreen(b, lm[i]);
-      ctx.beginPath(); ctx.arc(x, y, i === 15 || i === 16 ? 9 : 6, 0, Math.PI * 2);
-      ctx.fillStyle = i === 15 || i === 16 ? '#FFF8EC' : color; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#120E18'; ctx.stroke();
+    if (live && S.kind === 'keeper') drawBall(b, t, c);
+    if (live && S.kind === 'avocado') { drawTrails(b, f, pl, t); drawAvocados(b, t, c); }
+    if (live && S.kind === 'derby') { drawBat(b, f, pl, t); drawPitch(b, t, c); drawFlyers(b, t, c); }
+  }
+}
+function drawBody(b, lm, color) {
+  const ok = (i) => lm[i] && (lm[i].visibility == null || lm[i].visibility > 0.45);
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  for (const [w, c] of [[11, '#120E18'], [6, color]]) {
+    ctx.lineWidth = w; ctx.strokeStyle = c;
+    ctx.beginPath();
+    for (const [a, z] of BONES) if (ok(a) && ok(z)) { const [x1, y1] = toScreen(b, lm[a]), [x2, y2] = toScreen(b, lm[z]); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); }
+    ctx.stroke();
+  }
+  for (const i of [11, 12, 13, 14, 15, 16, 23, 24, 25, 26, 27, 28]) {
+    if (!ok(i)) continue;
+    const [x, y] = toScreen(b, lm[i]);
+    ctx.beginPath(); ctx.arc(x, y, i === 15 || i === 16 ? 9 : 6, 0, Math.PI * 2);
+    ctx.fillStyle = i === 15 || i === 16 ? '#FFF8EC' : color; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#120E18'; ctx.stroke();
+  }
+  if (ok(P.NOSE)) { const [x, y] = toScreen(b, lm[P.NOSE]); ctx.beginPath(); ctx.arc(x, y, 14, 0, Math.PI * 2); ctx.lineWidth = 4; ctx.strokeStyle = color; ctx.stroke(); }
+}
+// Two players: a dashed line down the middle of the picture, and each name over its half until the go.
+function drawDivider(b) {
+  const x = b.ox + b.dw / 2, top = Math.max(b.oy, 0), bot = Math.min(b.oy + b.dh, b.H);
+  ctx.save();
+  ctx.setLineDash([14, 12]); ctx.lineCap = 'round';
+  for (const [w, c] of [[7, 'rgba(18,14,24,0.7)'], [3, 'rgba(255,248,236,0.75)']]) { ctx.lineWidth = w; ctx.strokeStyle = c; ctx.beginPath(); ctx.moveTo(x, top); ctx.lineTo(x, bot); ctx.stroke(); }
+  ctx.setLineDash([]);
+  if (S.phase !== 'live') {
+    const y = top + Math.min(110, b.H * 0.2);
+    ctx.font = `${Math.round(Math.max(20, Math.min(34, b.dw / 22)))}px Bangers, Impact, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.lineJoin = 'round';
+    for (const pl of S.players) {
+      const cx = b.ox + b.dw * (pl.i ? 0.75 : 0.25);
+      ctx.lineWidth = 6; ctx.strokeStyle = '#120E18'; ctx.strokeText(pl.name.toUpperCase(), cx, y);
+      ctx.fillStyle = pl.color; ctx.fillText(pl.name.toUpperCase(), cx, y);
     }
-    if (ok(P.NOSE)) { const [x, y] = toScreen(b, lm[P.NOSE]); ctx.beginPath(); ctx.arc(x, y, 14, 0, Math.PI * 2); ctx.lineWidth = 4; ctx.strokeStyle = color; ctx.stroke(); }
   }
-  // the target
-  const tg = S && S.phase === 'live' && S.kind === 'targets' ? S.counter.target : null;
-  if (tg) {
-    const [x, y] = toScreen(b, tg), r = S.counter.radius * b.dh * 1.05;
-    const left = Math.max(0, 1 - (performance.now() - (S.tgShown.get(tg.id) || performance.now())) / 2600);
-    if (!S.tgShown.has(tg.id)) S.tgShown.set(tg.id, performance.now());
-    ctx.save(); ctx.translate(x, y);
-    ctx.fillStyle = 'rgba(5,3,10,0.35)'; ctx.beginPath(); ctx.arc(5, 7, r, 0, Math.PI * 2); ctx.fill();
-    for (const [rr, c] of [[1, '#FF3D8B'], [0.68, '#FFF8EC'], [0.36, '#FF3D8B']]) { ctx.beginPath(); ctx.arc(0, 0, r * rr, 0, Math.PI * 2); ctx.fillStyle = c; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = '#120E18'; ctx.stroke(); }
-    ctx.beginPath(); ctx.arc(0, 0, r + 9, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * left); ctx.lineWidth = 6; ctx.strokeStyle = '#FFD23F'; ctx.stroke();
-    ctx.restore();
-  }
-  if (S && S.phase === 'live' && S.kind === 'keeper') drawBall(b, f ? f.t : performance.now());
-  if (S && S.phase === 'live' && S.kind === 'avocado') { drawTrails(b, f); drawAvocados(b, f ? f.t : performance.now()); }
-  if (S && S.phase === 'live' && S.kind === 'derby') { drawBat(b, f); drawPitch(b, f ? f.t : performance.now()); drawFlyers(b, f ? f.t : performance.now()); }
+  ctx.restore();
 }
 // Silo Derby: a row of grain silos across the top of the picture, the back row big (100, 50, 100), the
 // front row smaller (10, 20, 30, 20, 10); a silo glows when a ball drops in.
-function drawSilos(b, t) {
-  for (const sl of S.counter.silos) {
-    const [x, y] = toScreen(b, sl), r = sl.r * b.dh, w = r * 1.5, h = r * 2.1, hot = S.lit && S.lit[sl.i] && t - S.lit[sl.i] < 650;
+function drawSilos(b, t, pl) {
+  for (const sl of pl.counter.silos) {
+    const [x, y] = toScreen(b, sl), r = sl.r * b.dh, w = r * 1.5, h = r * 2.1, hot = pl.lit && pl.lit[sl.i] && t - pl.lit[sl.i] < 650;
     const body = sl.pts >= 100 ? '#E8322E' : sl.pts >= 50 ? '#3D7BFF' : sl.pts >= 30 ? '#5BE38A' : sl.pts >= 20 ? '#B79CFF' : '#29D3F0';
     ctx.save(); ctx.translate(x, y); ctx.globalAlpha = 0.94;
     if (hot) { ctx.beginPath(); ctx.arc(0, h * 0.2, w * 1.25, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,214,63,0.45)'; ctx.fill(); }
@@ -204,7 +300,7 @@ function drawSilos(b, t) {
   }
 }
 // The bat: from the hands out along the forearm, a fat comic bat (and a swoosh when it's moving fast).
-function drawBat(b, f) {
+function drawBat(b, f, pl, t) {
   const lm = f && f.lm; if (!lm) return;
   const ok = (i) => lm[i] && (lm[i].visibility == null || lm[i].visibility > 0.45);
   const hands = [P.LW, P.RW].filter(ok); if (!hands.length) return;
@@ -215,10 +311,10 @@ function drawBat(b, f) {
   if (els.length) { dx = els.reduce((a, [e, w]) => a + (lm[w].x - lm[e].x) * b.dw, 0); dy = els.reduce((a, [e, w]) => a + (lm[w].y - lm[e].y) * b.dh, 0); if (mirrored()) dx = -dx; }
   const d = Math.hypot(dx, dy) || 1, L = b.dh * 0.26;
   const [x0, y0] = toScreen(b, { x: hx, y: hy }), x1 = x0 + (dx / d) * L, y1 = y0 + (dy / d) * L;
-  S.batPath ||= [];
-  S.batPath.push({ x: x1, y: y1, t: f.t }); while (S.batPath.length && f.t - S.batPath[0].t > 140) S.batPath.shift();
-  if (S.batPath.length > 2) {
-    ctx.beginPath(); S.batPath.forEach((q, j) => (j ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y)));
+  const path = (pl.batPath ||= []);
+  path.push({ x: x1, y: y1, t }); while (path.length && t - path[0].t > 140) path.shift();
+  if (path.length > 2) {
+    ctx.beginPath(); path.forEach((q, j) => (j ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y)));
     ctx.lineWidth = 16; ctx.lineCap = 'round'; ctx.strokeStyle = 'rgba(255,248,236,0.28)'; ctx.stroke();
   }
   ctx.save(); ctx.translate(x0, y0); ctx.rotate(Math.atan2(dy, dx));
@@ -237,10 +333,10 @@ function baseball(x, y, r, spin) {
   ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.lineWidth = Math.max(2, r * 0.1); ctx.strokeStyle = '#120E18'; ctx.stroke();
   ctx.restore();
 }
-function drawPitch(b, t) {
-  const ball = S.counter.ball(t); if (!ball) return;
+function drawPitch(b, t, c) {
+  const ball = c.ball(t); if (!ball) return;
   const [x, y] = toScreen(b, ball), r = Math.max(4, ball.r * b.dh);
-  const [fx, fy] = toScreen(b, S.counter.pitch.from), dx = x - fx, dy = y - fy, d = Math.hypot(dx, dy) || 1;
+  const [fx, fy] = toScreen(b, c.pitch.from), dx = x - fx, dy = y - fy, d = Math.hypot(dx, dy) || 1;
   ctx.save(); ctx.strokeStyle = 'rgba(255,248,236,0.5)'; ctx.lineCap = 'round';
   for (const k of [-0.5, 0, 0.5]) { const ox = (-dy / d) * r * k, oy = (dx / d) * r * k; ctx.lineWidth = Math.max(2, r * 0.16); ctx.beginPath(); ctx.moveTo(x - (dx / d) * r * 1.2 + ox, y - (dy / d) * r * 1.2 + oy); ctx.lineTo(x - (dx / d) * r * 2.6 + ox, y - (dy / d) * r * 2.6 + oy); ctx.stroke(); }
   // the sweet spot: a ring that tightens onto the ball as it arrives
@@ -248,17 +344,18 @@ function drawPitch(b, t) {
   ctx.restore();
   baseball(x, y, r, t / 70);
 }
-function drawFlyers(b, t) {
-  for (const fl of S.counter.flyers) {
-    const p = S.counter.flyer(fl, t);
+function drawFlyers(b, t, c) {
+  for (const fl of c.flyers) {
+    const p = c.flyer(fl, t);
     if (p.u >= 1) continue;
     const [x, y] = toScreen(b, p);
     baseball(x, y, Math.max(4, p.r * b.dh), t / 50);
   }
 }
-// Goalkeeper: the goal frame around the picture (posts, crossbar, a faint net) and the ball coming in.
-function drawGoal(b) {
-  const L = b.ox + b.dw * 0.04, R = b.ox + b.dw * 0.96, T = b.oy + b.dh * 0.07, B = b.oy + b.dh;
+// Goalkeeper: the goal frame around the picture (posts, crossbar, a faint net) and the ball coming in;
+// for two players a goal each, around each half.
+function drawGoal(b, a = 0, z = 1) {
+  const L = b.ox + b.dw * (a + 0.04 * (z - a)), R = b.ox + b.dw * (z - 0.04 * (z - a)), T = b.oy + b.dh * 0.07, B = b.oy + b.dh;
   ctx.save();
   ctx.strokeStyle = 'rgba(255,248,236,0.12)'; ctx.lineWidth = 1.5;
   for (let x = L; x <= R; x += 22) { ctx.beginPath(); ctx.moveTo(x, T); ctx.lineTo(x, B); ctx.stroke(); }
@@ -270,9 +367,9 @@ function drawGoal(b) {
   }
   ctx.restore();
 }
-function drawBall(b, t) {
-  const ball = S.counter.ball(t); if (!ball) return;
-  const [x, y] = toScreen(b, ball), r = Math.max(4, ball.r * b.dh), sh = S.counter.shot;
+function drawBall(b, t, c) {
+  const ball = c.ball(t); if (!ball) return;
+  const [x, y] = toScreen(b, ball), r = Math.max(4, ball.r * b.dh), sh = c.shot;
   const [fx, fy] = toScreen(b, sh.from);
   ctx.save();
   // speed lines back toward where it came from
@@ -295,12 +392,12 @@ function drawBall(b, t) {
   ctx.restore();
 }
 // Avocado Chop: a slash streak behind each hand, then the avocados (whole, split, sliced) and chilis.
-function drawTrails(b, f) {
-  const lm = f && f.lm, t = f ? f.t : performance.now();
-  S.trails ||= { L: [], R: [] };
+function drawTrails(b, f, pl, t) {
+  const lm = f && f.lm;
+  pl.trails ||= { L: [], R: [] };
   for (const [k, w, i] of [['L', P.LW, P.LI], ['R', P.RW, P.RI]]) {
     const pt = lm && [lm[i], lm[w]].find((p) => p && (p.visibility == null || p.visibility > 0.45));
-    const tr = S.trails[k];
+    const tr = pl.trails[k];
     if (pt) tr.push({ x: pt.x, y: pt.y, t });
     while (tr.length && t - tr[0].t > 170) tr.shift();
     if (tr.length < 2) continue;
@@ -311,8 +408,8 @@ function drawTrails(b, f) {
     }
   }
 }
-function drawAvocados(b, t) {
-  for (const it of S.counter.items) {
+function drawAvocados(b, t, c) {
+  for (const it of c.items) {
     const [x, y] = toScreen(b, it), r = it.r * b.dh;
     ctx.save();
     ctx.translate(x, y);
@@ -352,35 +449,48 @@ function drawAvocados(b, t) {
   }
 }
 function flashCam() { const c = $('cam'); c.classList.remove('flash'); void c.offsetWidth; c.classList.add('flash'); }
-function pop(text, at) {
+function pop(text, at, side) {
   const el = document.createElement('div');
   el.className = 'pop'; el.textContent = text;
   if (at) { const b = box(), [x, y] = toScreen(b, at), r = $('cam').getBoundingClientRect(); el.style.left = r.left + x + 'px'; el.style.top = r.top + y + 'px'; }
+  else if (S && S.two && side != null) el.style.left = side ? '75%' : '25%';
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 750);
 }
 
 /* ---------- a challenge ---------- */
-let S = null;   // { kind, phase: setup | wait | count | live | done, counter, okSince, startAt, score, ... }
+let S = null;   // { kind, two, phase: setup | wait | count | live | done, players: [...], okSince, startAt }
 let ticker = 0;
+function newPlayer(i, two, C) {
+  const names = two ? duoNames() : [(me() || {}).name || 'You'];
+  return { i, name: names[i], color: two ? PCOL[i] : C.color, counter: null, score: 0, done: false, lostSince: null,
+    tgShown: new Map(), lit: null, batPath: null, trails: null, lastBallAt: null, goalSaid: false };
+}
 async function openChallenge(kind) {
-  const C = CHALLENGES[kind];
-  S = { kind, phase: 'setup', counter: null, okSince: null, startAt: 0, score: 0, tgShown: new Map(), lastFrame: null, lostSince: null };
+  const C = CHALLENGES[kind], two = prefs.players === 2 && TWO_UP.includes(kind);
+  S = { kind, two, phase: 'setup', players: [0, two ? 1 : null].filter((i) => i != null).map((i) => newPlayer(i, two, C)), okSince: null, startAt: 0, frames: null };
   show('stage');
-  $('stTitle').textContent = C.name.toUpperCase();
-  $('hud').hidden = true; $('meter').hidden = true; $('coach').hidden = true; $('camAlert').hidden = true; $('countdown').innerHTML = '';
+  $('stage').classList.remove('live');
+  $('stage').classList.toggle('two', two);
+  $('stTitle').textContent = C.name.toUpperCase() + (two ? ' · 2P' : '');
+  $('hud').hidden = true; $('meterL').hidden = true; $('meterR').hidden = true; $('coach0').hidden = true; $('coach1').hidden = true; $('camAlert').hidden = true; $('countdown').innerHTML = '';
   $('setup').hidden = false;
   $('setup').style.setProperty('--c', C.color);
-  $('setup').innerHTML = `<div class="top"><span class="em" aria-hidden="true">${C.emoji}</span><h2>${esc(C.name.toUpperCase())}<small>${kind === 'wallsit' ? `HOLD UP TO ${fmt(C.secs)} · GOAL ${C.goal} SECONDS` : `${C.secs} SECONDS · GOAL ${C.goal} ${C.units.toUpperCase()}`}</small></h2></div>
-    <ol class="steps"><li>${esc(C.setup)}</li><li>${esc(C.how)}</li><li>Tap <b>Start</b>, then walk to your spot. The countdown starts by itself when the camera sees you.</li></ol>
-    <div class="status" id="status"><i></i><span id="statusTxt">Starting the camera…</span></div>
-    <div class="row"><button class="btn" type="button" id="startBtn" disabled>START</button></div>
-    <p class="fine">The picture stays on your phone. Nothing is recorded or sent.</p>`;
+  $('setup').innerHTML = `<div class="top"><span class="em" aria-hidden="true">${C.emoji}</span><h2>${esc(C.name.toUpperCase())}<small>${two ? 'HEAD TO HEAD · ' : ''}${kind === 'wallsit' ? `HOLD UP TO ${fmt(C.secs)} · GOAL ${C.goal} SECONDS` : `${C.secs} SECONDS · GOAL ${C.goal} ${C.units.toUpperCase()}`}</small></h2></div>
+    <ol class="steps"><li>${esc(two ? C.setup2 : C.setup)}</li><li>${esc(C.how)}</li><li>Tap <b>Start</b>, then walk to your ${two ? 'spots' : 'spot'}. The countdown starts by itself when the camera sees ${two ? 'you both' : 'you'}.</li></ol>
+    ${two ? '<div class="duo" id="duo"></div>' : ''}
+    <button type="button" class="camrow" id="camRow"><span aria-hidden="true">📷</span><span id="camName">${esc(camName())}</span><small>CHANGE</small></button>
+    <p class="fine">The picture stays on your phone. Nothing is recorded or sent.</p>
+    <div class="go"><div class="status" id="status"><i></i><span id="statusTxt">Starting the camera…</span></div>
+    <div class="row"><button class="btn" type="button" id="startBtn" disabled>START</button></div></div>`;
   $('startBtn').onclick = begin;
+  $('camRow').onclick = openCams;
+  if (two) paintDuo();
   draw(null);
   frameLoop();
   if (FAKE) { setStatus('Camera ready (test)', ''); $('startBtn').disabled = false; return; }
   try {
+    await setPoses(S.players.length);
     await startCamera();
     if (!S || S.kind !== kind) return;
     setStatus('Warming up the motion tracker… the first time takes a few seconds.', '');
@@ -389,6 +499,27 @@ async function openChallenge(kind) {
     setStatus('Ready when you are. Tap Start.', 'ok');
     $('startBtn').disabled = false;
   } catch (e) { cameraTrouble(e); }
+}
+// Two players: the names, left and right as you face the screen. The phone's owner (their lab profile)
+// keeps their own name and gets the pay and the best; the swap button moves them to the other side.
+function paintDuo() {
+  const el = $('duo'); if (!el || !S) return;
+  const names = duoNames(), own = ownerSide();
+  el.innerHTML = [0, 1].map((i) => `<label class="pl" style="--pc:${PCOL[i]}"><span>${SIDE[i]}${own === i ? ' · YOU' : ''}</span>${own === i
+    ? `<b>${esc(names[i])}</b>` : `<input type="text" data-i="${i}" maxlength="${NAME_MAX}" value="${esc(names[i])}" autocomplete="off" spellcheck="false" aria-label="${SIDE[i]} player's name">`}</label>`)
+    .join(`<button type="button" class="round-btn swap" id="swapBtn" aria-label="Swap sides">⇄</button>`) + '<p class="fine duo-fine">Left and right as you face the screen.</p>';
+  for (const inp of el.querySelectorAll('input')) inp.oninput = () => {
+    const i = Number(inp.dataset.i), v = inp.value.slice(0, NAME_MAX);
+    if (own >= 0) prefs.guest = v; else prefs.names[i] = v;
+    savePrefs();
+    if (S && S.players[i]) S.players[i].name = duoNames()[i];
+  };
+  $('swapBtn').onclick = () => {
+    if (own >= 0) prefs.youRight = !prefs.youRight; else prefs.names = [prefs.names[1], prefs.names[0]];
+    savePrefs();
+    const n = duoNames(); for (const pl of S.players) pl.name = n[pl.i];
+    paintDuo(); draw(S.frames);
+  };
 }
 function setStatus(text, kind) {
   const s = $('status'); if (!s) return;
@@ -402,72 +533,122 @@ function cameraTrouble(e) {
   $('camAlert').innerHTML = blocked
     ? `<h3>CAMERA'S BLOCKED</h3><p>IRL needs the camera to see you move (the picture never leaves your phone).</p><p>On iPhone: Settings → Apps → Safari → Camera → Ask or Allow. Then come back and try again.</p><div class="row"><button class="btn" type="button" id="retryCam">TRY AGAIN</button></div>`
     : none
-      ? `<h3>NO CAMERA</h3><p>We couldn’t find a camera on this device. IRL works on a phone or tablet with a camera.</p>`
+      ? `<h3>NO CAMERA</h3><p>We couldn’t find ${prefs.cam === 'front' ? 'a camera' : 'that camera'} on this device. IRL works on a phone or tablet with a camera.</p>${prefs.cam !== 'front' ? '<div class="row"><button class="btn" type="button" id="frontCam">USE THE FRONT CAMERA</button></div>' : ''}`
       : `<h3>THAT DIDN'T START</h3><p>The motion tracker didn’t load (${esc((e && e.message) || 'unknown')}). Check your signal and try again.</p><div class="row"><button class="btn" type="button" id="retryCam">TRY AGAIN</button></div>`;
   setStatus(blocked ? 'Camera blocked' : 'Not ready', 'bad');
   const r = $('retryCam'); if (r) r.onclick = () => openChallenge(S ? S.kind : 'squat');
+  const f = $('frontCam'); if (f) f.onclick = () => { prefs.cam = 'front'; savePrefs(); openChallenge(S ? S.kind : 'squat'); };
 }
+
+/* ---------- the camera picker ---------- */
+function paintCamRow() { const el = $('camName'); if (el) el.textContent = camName(); }
+function openCams() {
+  const opt = (v, em, title, blurb) => `<button type="button" class="opt" data-cam="${esc(v)}" aria-pressed="${prefs.cam === v}"><span class="em" aria-hidden="true">${em}</span><span><b>${esc(title)}</b><small>${esc(blurb)}</small></span></button>`;
+  const back = FAKE || cams.n !== 1 || matchMedia('(pointer: coarse)').matches;     // a phone always has one
+  $('camOpts').innerHTML = opt('front', '🤳', 'FRONT', 'Watch yourself on the phone’s screen.')
+    + (back ? opt('back', '📷', 'BACK', 'The sharper camera. Mirror the screen to your TV and turn the phone around, so the back faces you.') : '')
+    + (hasWide() ? opt('wide', '🔭', '0.5× ULTRA-WIDE', 'Sees the most of the room: stand closer, play bigger. Best for two players.') : '')
+    + (cams.others.length ? `<p class="kick">MORE LENSES YOUR PHONE OFFERED</p>${cams.others.map((d) => opt('dev:' + d.label, '🎥', d.label.toUpperCase(), 'Try it: some phones only share their wide lens this way.')).join('')}` : '');
+  $('camNote').textContent = hasWide() ? '' : cams.listed
+    ? 'No 0.5× lens here: your phone didn’t hand its ultra-wide to the browser. Step back a little farther instead.'
+    : 'More lenses (like the 0.5× ultra-wide) show up here once the camera has started.';
+  $('mirrorChk').checked = prefs.mirror !== false;
+  for (const el of $('camOpts').querySelectorAll('.opt')) el.onclick = () => pickCam(el.dataset.cam);
+  $('camVeil').hidden = false;
+}
+async function pickCam(v) {
+  prefs.cam = v; savePrefs();
+  $('camVeil').hidden = true;
+  paintCamRow();
+  if (FAKE || !S || S.phase === 'done') return;
+  try { await startCamera(); } catch (e) { cameraTrouble(e); }
+}
+$('mirrorChk').onchange = () => { prefs.mirror = $('mirrorChk').checked; savePrefs(); video.classList.toggle('mirror', mirrored()); if (S) draw(S.frames); };
+$('camX').onclick = () => { $('camVeil').hidden = true; };
+$('camVeil').addEventListener('click', (e) => { if (e.target === $('camVeil')) $('camVeil').hidden = true; });
+
+/* ---------- playing ---------- */
 function begin() {
   if (!S) return;
   audio(); say(' ');      // a tap unlocks sound and voice on iPhone
   keepAwake(true);
   S.phase = 'wait'; S.okSince = null;
   $('setup').hidden = true;
-  coach('Get in your spot', 'warn');
+  for (const pl of S.players) coach(pl.i, 'Get in your spot', 'warn');
 }
-function coach(text, kind = '') {
-  const el = $('coach');
+// The coach line: one at the bottom for one player, one under each half for two.
+function coach(i, text, kind = '') {
+  const el = $('coach' + i);
   el.hidden = false;
   if (el.textContent !== text) el.textContent = text;
-  el.className = 'coach' + (kind ? ' ' + kind : '');
+  el.className = 'coach' + (S && S.two ? ' duo ' + (i ? 'r' : 'l') : '') + (kind ? ' ' + kind : '');
+  if (S && S.two) el.style.setProperty('--pc', PCOL[i]);
+}
+const setCount = (i, text) => { $('count' + i).textContent = text; };
+// Whether the camera sees what the challenge needs, for every player.
+function frameCheck(frames) {
+  const each = S.players.map((pl) => framing(S.kind, frames[pl.i] && frames[pl.i].lm));
+  const bad = each.findIndex((fr) => !fr.ok);
+  return { ok: bad < 0, each, say: bad < 0 ? 'Ready' : S.two ? `${S.players[bad].name}: ${each[bad].say}` : each[bad].say };
 }
 function handle(f) {
   if (!S) return;
-  S.lastFrame = f;
-  if (S.phase !== 'live') draw(f);
-  const C = CHALLENGES[S.kind];
+  const people = f.people || (f.lm !== undefined ? [{ lm: f.lm, world: f.world }] : []);
+  const mk = (p) => ({ lm: (p && p.lm) || null, world: (p && p.world) || null, t: f.t, aspect: f.aspect || 0.75 });
+  const frames = S.two ? splitPlayers(people, mirrored()).map(mk) : [mk(people.find((p) => p && p.lm))];
+  S.frames = frames;
+  if (S.phase !== 'live') draw(frames, f.t);
   if (S.phase === 'setup') {
-    if (!$('startBtn').disabled) { const fr = framing(S.kind, f.lm); setStatus(fr.ok ? 'We can see you. Tap Start.' : `${fr.say}. You can still tap Start and get in place.`, fr.ok ? 'ok' : ''); }
+    if (!$('startBtn').disabled) { const w = frameCheck(frames); setStatus(w.ok ? (S.two ? 'We can see you both. Tap Start.' : 'We can see you. Tap Start.') : `${w.say}. You can still tap Start and get in place.`, w.ok ? 'ok' : ''); }
     return;
   }
   if (S.phase === 'wait') {
-    const fr = framing(S.kind, f.lm);
-    if (fr.ok) { S.okSince ??= f.t; coach('Hold still…', 'ok'); if (f.t - S.okSince > 1200) countdown(); }
-    else { S.okSince = null; coach(fr.say, 'warn'); }
+    const w = frameCheck(frames);
+    if (w.ok) { S.okSince ??= f.t; for (const pl of S.players) coach(pl.i, 'Hold still…', 'ok'); if (f.t - S.okSince > 1200) countdown(); }
+    else { S.okSince = null; w.each.forEach((fr, i) => coach(i, fr.ok ? 'Ready!' : fr.say, fr.ok ? 'ok' : 'warn')); }
     return;
   }
   if (S.phase !== 'live') return;
-  if (!f.lm) { S.lostSince ??= f.t; if (f.t - S.lostSince > 1500) coach('We lost you! Step back in', 'warn'); }
-  else S.lostSince = null;
-  const r = S.counter.update(f);
-  draw(f);   // after the update, so a target that just popped up shows this frame
+  for (const pl of S.players) play(pl, frames[pl.i]);
+  draw(frames, f.t);   // after the updates, so a target that just popped up shows this frame
+  if (S.players.every((pl) => pl.done)) finish();
+}
+// One player's frame: their counter, then the sounds, pops and coach line it calls for.
+function play(pl, f) {
+  if (pl.done) return;
+  const t = f.t, solo = !S.two, i = pl.i;
+  if (!f.lm) { pl.lostSince ??= t; if (t - pl.lostSince > 1500) coach(i, solo ? 'We lost you! Step back in' : 'Step back in!', 'warn'); }
+  else pl.lostSince = null;
+  const r = pl.counter.update(f);
+  const c = pl.counter;
   if (r.rep) {
-    S.score = S.counter.score;
-    $('count').textContent = scoreText(S.kind, S.score);
+    pl.score = c.score;
+    setCount(i, scoreText(S.kind, pl.score));
     if (S.kind === 'targets') { sfx.smash(); pop(r.combo >= 3 ? `x${r.combo}!` : 'SMASH!', r.hit); }
-    else if (S.kind === 'keeper') { sfx.save(); pop(r.streak >= 3 ? `${r.streak} IN A ROW!` : 'SAVE!', r.save); if (S.score % 5 === 0) say(`${S.score} saves`); }
+    else if (S.kind === 'keeper') { sfx.save(); pop(r.streak >= 3 ? `${r.streak} IN A ROW!` : 'SAVE!', r.save); if (solo && pl.score % 5 === 0) say(`${pl.score} saves`); }
     else if (S.kind === 'avocado') { /* each cut pops its own points below */ }
     else if (S.kind === 'derby') {
-      const h = r.hit, sl = S.counter.silos[h.silo];
+      const h = r.hit, sl = c.silos[h.silo];
       sfx.crack(h.power); pop(h.row === 0 ? 'CRACK!' : 'POP!', h.from);
-      setTimeout(() => { if (!S || S.kind !== 'derby') return; (S.lit ||= {})[h.silo] = performance.now(); sfx.drop(h.pts); pop(`+${h.pts}`, sl); if (h.pts >= 100) flashCam(); }, 760);
-      if (h.pts >= 100) say('Corner pocket!');
+      setTimeout(() => { if (!S || S.kind !== 'derby') return; (pl.lit ||= {})[h.silo] = performance.now(); sfx.drop(h.pts); pop(`+${h.pts}`, sl); if (h.pts >= 100) flashCam(); }, 760);
+      if (solo && h.pts >= 100) say('Corner pocket!');
     }
-    else { sfx.rep(); pop(S.kind === 'dribble' ? 'BOUNCE!' : r.say && r.say !== 'Nice!' ? r.say.toUpperCase() : 'REP!'); }
-    if (S.kind === 'squat' || S.kind === 'pushup') say(String(S.score));
-    else if (S.kind === 'dribble' && S.score % 10 === 0) say(String(S.score));
+    else { sfx.rep(); pop(S.kind === 'dribble' ? 'BOUNCE!' : r.say && r.say !== 'Nice!' ? r.say.toUpperCase() : 'REP!', null, i); }
+    // the voice counts for one player (two at once would talk over each other)
+    if (solo && (S.kind === 'squat' || S.kind === 'pushup')) say(String(pl.score));
+    else if (solo && S.kind === 'dribble' && pl.score % 10 === 0) say(String(pl.score));
   }
   if (r.miss) { sfx.miss(); pop('MISS', r.miss); }
   if (S.kind === 'keeper') {
     if (r.shot) sfx.kick();
-    if (r.goal) { sfx.goal(); pop('GOAL!', r.goal); flashCam(); $('count').textContent = String(S.counter.score); }
+    if (r.goal) { sfx.goal(); pop('GOAL!', r.goal); flashCam(); setCount(i, String(c.score)); }
   }
   if (S.kind === 'derby') {
     if (r.pitch) sfx.pitch();
-    if (r.strike) { sfx.strike(); pop('STRIKE!', S.lastBallAt); }
+    if (r.strike) { sfx.strike(); pop('STRIKE!', pl.lastBallAt); }
     if (r.foul) { sfx.miss(); pop('FOUL!', r.foul); }
     if (r.grounder) { sfx.thud(); pop('GROUNDER', r.grounder); }
-    const bl = S.counter.ball(f.t); if (bl) S.lastBallAt = { x: bl.x, y: bl.y };
+    const bl = c.ball(t); if (bl) pl.lastBallAt = { x: bl.x, y: bl.y };
   }
   if (S.kind === 'avocado') {
     for (const e of r.events || []) {
@@ -475,54 +656,105 @@ function handle(f) {
       if (e.spicy) { sfx.spicy(); pop('🌶️ −25', e.spicy); flashCam(); }
       if (e.drop) sfx.thud();
     }
-    if (S.counter.score !== S.score) { S.score = S.counter.score; $('count').textContent = String(S.score); }
+    if (c.score !== pl.score) { pl.score = c.score; setCount(i, String(pl.score)); }
   }
-  if (S.kind === 'wallsit') { const s = S.counter.score; if (s !== S.score) { S.score = s; $('count').textContent = scoreText('wallsit', s); if (s && s % 10 === 0) say(`${s} seconds`); } }
-  if (r.say && !(S.lostSince && f.t - S.lostSince > 1500)) coach(r.say, r.rep ? 'ok' : '');
-  if (r.meter != null) $('meterFill').style.height = Math.round(r.meter * 100) + '%';
-  if (r.done) finish();
+  if (S.kind === 'wallsit') { const sc = c.score; if (sc !== pl.score) { pl.score = sc; setCount(i, scoreText('wallsit', sc)); if (solo && sc && sc % 10 === 0) say(`${sc} seconds`); } }
+  if (r.say && !(pl.lostSince && t - pl.lostSince > 1500)) coach(i, r.say, r.rep ? 'ok' : '');
+  if (r.meter != null) meterOf(i).querySelector('i').style.height = Math.round(r.meter * 100) + '%';
+  if (r.done) {
+    pl.done = true;
+    if (!solo) { coach(i, `Done: ${scoreText(S.kind, c.score)}`, 'ok'); sfx.whistle(); }
+  }
 }
-// Where targets may pop up: inside the camera picture, below the counter and clock, above the coach
-// line, and in reach (the top two thirds of the picture).
-function targetBounds(r = 0.075, yMax = 0.68) {
+const meterOf = (i) => $(S && S.two && !i ? 'meterL' : 'meterR');
+
+/* ---------- where things go on screen ---------- */
+// The part of the picture a player's targets, shots and silos can use: their side of it, under the top
+// bar, above the coach line, clear of the score boxes and the clock. Each box in the way is cut around
+// from below or from the side, whichever leaves more room (on a phone held sideways, the side).
+// Screen fractions across the picture (0 left, 1 right, as it shows) and down it.
+function freeArea(side) {
   const b = box(), cam = $('cam').getBoundingClientRect();
-  const hudBottom = $('hud').getBoundingClientRect().bottom - cam.top, coachTop = $('coach').getBoundingClientRect().top - cam.top;
-  const toY = (px) => (px - b.oy) / b.dh;
-  const y0 = Math.max(0.08, toY(hudBottom + 12) + r), y1 = Math.min(yMax, toY(coachTop - 12) - r);
+  const fx = (px) => (px - cam.left - b.ox) / b.dw, fy = (py) => (py - cam.top - b.oy) / b.dh;
+  const [a, z] = sideRange(side);
+  const bar = $('backBtn').getBoundingClientRect();
+  const coaches = [...document.querySelectorAll('.coach')].filter((el) => !el.hidden).map((el) => el.getBoundingClientRect().top);
+  const coachTop = coaches.length ? Math.min(...coaches) : cam.bottom - 70;
+  let A = { x0: a, x1: z, y0: Math.max(0, fy(bar.bottom + 8)), y1: Math.min(1, fy(coachTop - 10)) };
+  const area = (q) => Math.max(0, q.x1 - q.x0) * b.dw * Math.max(0, q.y1 - q.y0) * b.dh;
+  for (const el of document.querySelectorAll('#hud .count, #hud .clock')) {
+    if (el.hidden || el.offsetParent === null) continue;
+    const r = el.getBoundingClientRect();
+    const R = { x0: fx(r.left - 8), x1: fx(r.right + 8), y0: fy(r.top), y1: fy(r.bottom + 10) };
+    if (R.x1 <= A.x0 || R.x0 >= A.x1 || R.y1 <= A.y0 || R.y0 >= A.y1) continue;     // not in the way
+    const below = { ...A, y0: Math.max(A.y0, R.y1) };
+    const beside = (R.x0 + R.x1) / 2 < (A.x0 + A.x1) / 2 ? { ...A, x0: Math.max(A.x0, R.x1) } : { ...A, x1: Math.min(A.x1, R.x0) };
+    A = area(beside) > area(below) ? beside : below;
+  }
+  return A;
+}
+// Where targets (and shots) may go: inside the free area with the whole ring on screen, and in reach
+// (above yMax of the picture), as the counters want them (picture x).
+function targetBounds(r = 0.075, yMax = 0.68, side = 0) {
+  const b = box(), A = freeArea(side);
   const mx = Math.min(0.2, (r * 1.05 * b.dh + 14) / b.dw);   // the whole ring stays on screen
-  return { x0: mx, x1: 1 - mx, y0: Math.min(y0, 0.4), y1: Math.max(y1, Math.min(y0, 0.4) + 0.15) };
+  let x0 = A.x0 + mx, x1 = A.x1 - mx;
+  if (x1 - x0 < 0.12) { const m = (A.x0 + A.x1) / 2; x0 = m - 0.06; x1 = m + 0.06; }
+  const y0 = Math.max(0.08, A.y0 + r), y1 = Math.min(yMax, A.y1 - r);
+  const Y0 = Math.min(y0, 0.4);
+  return toPic({ x0, x1, y0: Y0, y1: Math.max(y1, Y0 + 0.15) });
+}
+// Avocado Chop: thrown up across the middle of the picture, or across each player's half.
+function avoBounds(side) {
+  if (!S.two) return { x0: 0.18, x1: 0.82 };
+  const b = box(), [a, z] = sideRange(side), m = Math.max(0.05, (0.062 * b.dh) / b.dw + 0.03);
+  return toPic({ x0: a + m, x1: z - m });
 }
 // Silo Derby's silos, kept above the player and clear of the score and the clock: the back row (100,
-// 50, 100) in the gap between those two at the top of the picture, the front row (10 to 30) just under them.
-function derbyLayout() {
+// 50, 100) in the gap between those two at the top of the picture (each player's own gap, for two),
+// the front row (10 to 30) just under them, or in the gap too when it's wide (a phone held sideways).
+function derbyLayout(side = 0) {
   const b = box(), cam = $('cam').getBoundingClientRect();
-  const L = $('hud').querySelector('.count').getBoundingClientRect(), R = $('clockBox').getBoundingClientRect();
-  // screen spots first (0..1 across the picture as it shows), then into the picture's own x (mirrored
-  // for the front camera), so a silo lands where it was measured
   const y = (p) => (p - cam.top - b.oy) / b.dh, sx = (p) => (p - cam.left - b.ox) / b.dw, px = (v) => (mirrored() ? 1 - v : v);
-  const lRight = L.left + Math.max(L.width, 124);            // the score box grows to four digits
-  const gapPx = R.left - lRight - 12, rf = 0.042;
-  let rb = Math.min(0.05, gapPx / 3.6 / 1.5 / b.dh);
-  const hudY = y(Math.max(L.bottom, R.bottom) + 8);
-  let back, fy;
-  if (rb >= 0.036) {
-    // room between the score and the clock: the back row up there, the front row just under them
-    const half = (rb * 1.5 * b.dh) / 2 / b.dw, top = Math.max(0.005, y(cam.top + 4)) + rb * 1.6;
-    const gapL = sx(lRight + 6) + half, gapR = sx(R.left - 6) - half, mid = (gapL + gapR) / 2, spread = Math.max(0, (gapR - gapL) / 2);
-    back = (lane) => ({ x: px(mid + lane * spread), y: top, r: rb });
-    fy = Math.max(hudY, top + rb * 3.4) + rf * 1.6;
-  } else {
-    // a narrow phone: both rows under the score and the clock
-    rb = 0.045;
-    const top = hudY + rb * 1.6;
-    back = (lane) => ({ x: px(0.5 + lane * 0.3), y: top, r: rb });
-    fy = top + rb * 1.8 + rf * 1.6;
+  const [a, z] = sideRange(side), mid0 = (a + z) / 2;
+  // the gap at the top of this side: from the box on its left to the box on its right (a score box
+  // grows to four digits, so it's given 124 px)
+  let gl = cam.left + b.ox + a * b.dw, gr = cam.left + b.ox + z * b.dw, hudBottom = cam.top;
+  for (const el of document.querySelectorAll('#hud .count, #hud .clock')) {
+    if (el.hidden || el.offsetParent === null) continue;
+    const r = el.getBoundingClientRect();
+    const L = el.id === 'countBox1' ? r.right - Math.max(r.width, 124) : r.left;      // the right score box grows leftward
+    const R = el.id === 'countBox0' ? r.left + Math.max(r.width, 124) : r.right;
+    if (sx(R) <= a || sx(L) >= z) continue;                                          // over the other player's half
+    hudBottom = Math.max(hudBottom, r.bottom);
+    if (sx((L + R) / 2) <= mid0) gl = Math.max(gl, R + 6); else gr = Math.min(gr, L - 6);
   }
-  return SILOS.map(({ row, lane }) => (row ? { x: px(0.5 + lane * 0.19), y: fy, r: rf } : back(lane)));
+  const gapPx = gr - gl - 12, hudY = y(hudBottom + 8);
+  const spacing = 0.19 * (z - a);                                       // front row lanes, as picture fractions
+  let rf = Math.min(0.042, (spacing * b.dw * 0.85) / 1.5 / b.dh);
+  let rb = Math.min(0.05, gapPx / 3.6 / 1.5 / b.dh);
+  let back, front;
+  if (rb >= (S.two ? 0.03 : 0.036)) {
+    const half = (rb * 1.5 * b.dh) / 2 / b.dw, top = Math.max(0.005, y(cam.top + 4)) + rb * 1.6;
+    const gL = sx(gl) + half, gR = sx(gr) - half, mid = (gL + gR) / 2, spread = Math.max(0, (gR - gL) / 2);
+    back = (lane) => ({ x: px(mid + lane * spread), y: top, r: rb });
+    // a wide gap fits the front row too, just under the back row; else it goes under the score
+    const fs = Math.min(spacing, (gR - gL) / 4.4), fr = Math.min(rf, (fs * b.dw * 0.85) / 1.5 / b.dh);
+    if (fr >= 0.032 && top + rb * 3.4 + fr * 1.6 < hudY + rf * 1.6) front = (lane) => ({ x: px(mid + lane * fs), y: top + rb * 3.4, r: fr });
+    else { const fy = Math.max(hudY, top + rb * 3.4) + rf * 1.6; front = (lane) => ({ x: px(mid0 + lane * spacing), y: fy, r: rf }); }
+  } else {
+    // no room up there (a narrow phone): both rows under the score and the clock
+    rb = Math.min(0.045, ((z - a) * 0.3 * b.dw * 0.8) / 1.5 / b.dh);
+    const top = hudY + rb * 1.6;
+    back = (lane) => ({ x: px(mid0 + lane * 0.3 * (z - a)), y: top, r: rb });
+    const fy = top + rb * 1.8 + rf * 1.6;
+    front = (lane) => ({ x: px(mid0 + lane * spacing), y: fy, r: rf });
+  }
+  return SILOS.map(({ row, lane }) => (row ? front(lane) : back(lane)));
 }
 function countdown() {
   S.phase = 'count';
-  coach('Get ready!', 'ok');
+  for (const pl of S.players) coach(pl.i, 'Get ready!', 'ok');
   const steps = ['3', '2', '1', 'GO!'];
   steps.forEach((n, i) => setTimeout(() => {
     if (!S || S.phase !== 'count') return;
@@ -531,34 +763,56 @@ function countdown() {
     if (i === 3) setTimeout(go, 500);
   }, i * 900));
 }
+function makeCounter(kind, C, side) {
+  if (kind === 'wallsit') return COUNTERS.wallsit(C.secs);
+  if (kind === 'targets') return COUNTERS.targets({ bounds: targetBounds(0.075, 0.68, side) });
+  if (kind === 'keeper') return COUNTERS.keeper({ bounds: targetBounds(0.075, 0.9, side) });
+  if (kind === 'derby') return COUNTERS.derby({ bounds: targetBounds(0.06, 0.9, side), layout: derbyLayout(side) });
+  if (kind === 'avocado') return COUNTERS.avocado({ bounds: avoBounds(side) });
+  return COUNTERS[kind]();
+}
 function go() {
   if (!S || S.phase !== 'count') return;
-  const C = CHALLENGES[S.kind];
+  const C = CHALLENGES[S.kind], two = S.two;
   $('countdown').innerHTML = '';
-  S.phase = 'live'; S.startAt = performance.now(); S.score = 0;
-  $('hud').hidden = false; $('meter').hidden = !(S.kind === 'squat' || S.kind === 'pushup' || S.kind === 'wallsit');
-  S.counter = S.kind === 'wallsit' ? COUNTERS.wallsit(C.secs)
-    : S.kind === 'targets' ? COUNTERS.targets({ bounds: targetBounds() })
-    : S.kind === 'keeper' ? COUNTERS.keeper({ bounds: targetBounds(0.075, 0.9) })
-    : S.kind === 'derby' ? COUNTERS.derby({ bounds: targetBounds(0.06, 0.9), layout: derbyLayout() })
-    : COUNTERS[S.kind]();
-  S.trails = null; S.batPath = null; S.lit = null;
-  $('count').textContent = scoreText(S.kind, 0);
-  $('clock').textContent = S.kind === 'wallsit' ? fmt(C.goal) : fmt(C.secs);
+  S.phase = 'live'; S.startAt = performance.now();
+  $('stage').classList.add('live');
+  // the score boxes: yours alone, or one each side of the clock with the names
+  $('hud').hidden = false;
+  $('countBox1').hidden = !two;
+  for (const pl of S.players) {
+    const bx = $('countBox' + pl.i);
+    bx.classList.toggle('p', two);
+    bx.style.setProperty('--pc', pl.color);
+    $('countUnit' + pl.i).textContent = two ? pl.name : S.kind === 'wallsit' ? 'held' : C.units;
+  }
+  const metered = S.kind === 'squat' || S.kind === 'pushup' || S.kind === 'wallsit';
+  $('meterR').hidden = !metered; $('meterL').hidden = !(metered && two);
+  for (const m of ['meterL', 'meterR']) $(m).querySelector('i').style.height = '0';
+  for (const pl of S.players) {
+    pl.counter = makeCounter(S.kind, C, pl.i);
+    pl.score = 0; pl.done = false; pl.trails = null; pl.batPath = null; pl.lit = null; pl.goalSaid = false; pl.tgShown = new Map();
+    setCount(pl.i, scoreText(S.kind, 0));
+  }
+  $('clock').textContent = S.kind === 'wallsit' && !two ? fmt(C.goal) : S.kind === 'wallsit' ? '0:00' : fmt(C.secs);
   $('clockBox').classList.remove('low');
-  $('countUnit').textContent = S.kind === 'wallsit' ? 'held' : C.units;
-  $('clockLbl').textContent = S.kind === 'wallsit' ? 'to the goal' : 'left';
-  coach('GO!', 'ok');
+  $('clockLbl').textContent = S.kind === 'wallsit' ? (two ? 'time' : 'to the goal') : 'left';
+  for (const pl of S.players) coach(pl.i, 'GO!', 'ok');
   clearInterval(ticker);
   ticker = setInterval(() => {
     if (!S || S.phase !== 'live') return clearInterval(ticker);
     const el = (performance.now() - S.startAt) / 1000;
     if (S.kind === 'wallsit') {
-      // the wall sit's own clock is the held time (big, on the left); this one counts down to the goal
-      const held = S.counter.score;
-      $('clock').textContent = held >= C.goal ? 'GOAL!' : fmt(C.goal - held);
-      $('clockLbl').textContent = held >= C.goal ? `max ${fmt(C.secs)}` : 'to the goal';
-      if (held >= C.goal && !S.goalSaid) { S.goalSaid = true; sfx.go(); pop('GOAL!'); }
+      for (const pl of S.players) {
+        const held = pl.counter.score;
+        if (held >= C.goal && !pl.goalSaid) { pl.goalSaid = true; sfx.go(); pop('GOAL!', null, pl.i); }
+      }
+      if (!two) {
+        // the wall sit's own clock is the held time (big, on the left); this one counts down to the goal
+        const held = S.players[0].counter.score;
+        $('clock').textContent = held >= C.goal ? 'GOAL!' : fmt(C.goal - held);
+        $('clockLbl').textContent = held >= C.goal ? `max ${fmt(C.secs)}` : 'to the goal';
+      } else $('clock').textContent = fmt(el);
       if (el > C.secs + 30) finish();
       return;
     }
@@ -569,33 +823,17 @@ function go() {
     if (left <= 0) finish();
   }, 100);
 }
-async function finish() {
-  if (!S || S.phase === 'done') return;
-  const kind = S.kind, C = CHALLENGES[kind], score = S.counter ? S.counter.score : 0;
-  S.phase = 'done';
-  clearInterval(ticker); cancelAnimationFrame(raf);
-  sfx.whistle(); say(kind === 'wallsit' ? `Time! ${score} seconds` : `Time! ${score}`);
-  stopCamera(); keepAwake(false);
+const scoreLine = (kind, n, C) => (kind === 'wallsit' ? `${fmt(n)} held` : `${n} ${n === 1 ? C.unit : C.units}`);
+// The phone owner's best and pay, from their own score (in a head-to-head, their side's).
+function keepBest(kind, score) {
   const b = bests(), prev = b[kind], newBest = score >= MIN_TO_PAY[kind] && (prev == null || score > prev);
   if (newBest) { b[kind] = score; store.set(bestKey(), b); }
-  const beat = score >= C.goal;
-  // the card first, the pay as it comes back
-  $('resCard').innerHTML = `<p class="kick">${C.emoji} ${esc(C.name)}${kind === 'wallsit' ? '' : ` · ${C.secs} seconds`}</p>
-    <p class="big">${esc(scoreText(kind, score))}<small>${kind === 'wallsit' ? 'HELD' : esc((score === 1 ? C.unit : C.units).toUpperCase())}</small></p>
-    ${newBest ? '<span class="burst gold">NEW PERSONAL BEST!</span>' : beat ? '<span class="burst">GOAL SMASHED!</span>' : ''}
-    <p class="stats"><span>🎯 Goal ${esc(scoreText(kind, C.goal))}</span><span>🏆 Best ${prev == null && !newBest ? '–' : esc(scoreText(kind, Math.max(prev ?? 0, newBest ? score : 0)))}</span>${kind === 'targets' ? `<span>💥 Best combo ${S.counter.best}</span><span>Missed ${S.counter.misses}</span>` : ''}${kind === 'keeper' ? `<span>🥅 Let in ${S.counter.goals}</span><span>🔥 Best streak ${S.counter.best}</span>` : ''}${kind === 'derby' ? `<span>⚾ ${S.counter.hits} hits</span><span>🚀 ${S.counter.homers} deep</span><span>🔥 Best streak ${S.counter.best}</span><span>Strikes ${S.counter.strikes}</span>` : ''}${kind === 'avocado' ? `<span>🔪 ${S.counter.cuts} cuts</span><span>🥑 Most on one ${S.counter.most}</span>${S.counter.spicy ? `<span>🌶️ ${S.counter.spicy}</span>` : ''}<span>Dropped ${S.counter.dropped}</span>` : ''}</p>
-    <p class="paid" id="paidLine"></p>`;
-  show('results');
-  const shareText = window.CapraShare ? CapraShare.text({ emoji: '💪', game: 'IRL', sub: C.name,
-    lines: [`${kind === 'wallsit' ? `${fmt(score)} held` : `${score} ${score === 1 ? C.unit : C.units} in ${C.secs} s`}${newBest ? ' · new best' : ''}`],
-    grid: [shareRow(score, C.goal, newBest)] }) : '';
-  if (window.CapraShare) {
-    $('resShare').innerHTML = '<lab-text-share></lab-text-share>';
-    $('resShare').firstChild.set({ emoji: '💪', title: 'IRL', text: shareText, url: `${location.origin}/irl/` });
-  }
-  const line = $('paidLine');
+  return { prev, newBest };
+}
+async function payOwner(kind, score, beat, newBest, who = '') {
+  const line = $('paidLine'), C = CHALLENGES[kind];
   if (!me()) { line.innerHTML = '<a href="/#profile" style="color:inherit">Make your Capra Lab profile</a> to get paid for every challenge.'; return; }
-  if (score < MIN_TO_PAY[kind]) { line.textContent = `Do at least ${scoreText(kind, MIN_TO_PAY[kind])} ${kind === 'wallsit' ? 'held' : C.units} to get paid.`; line.style.color = 'rgba(255,248,236,.7)'; return; }
+  if (score < MIN_TO_PAY[kind]) { line.textContent = `${who}Do at least ${scoreText(kind, MIN_TO_PAY[kind])} ${kind === 'wallsit' ? 'held' : C.units} to get paid.`; line.style.color = 'rgba(255,248,236,.7)'; return; }
   if (!window.CapraWallet) return;
   const day = dayKey(), paid = { amber: 0, shards: 0 };
   const add = (r) => { if (r && r.paid) for (const k of Object.keys(r.paid)) paid[k] = (paid[k] || 0) + r.paid[k]; };
@@ -605,7 +843,65 @@ async function finish() {
   const bits = [];
   if (paid.amber) bits.push(`+${paid.amber} amber`);
   if (paid.shards) bits.push(`+${paid.shards} shard${paid.shards === 1 ? '' : 's'}`);
-  line.textContent = bits.length ? `Paid into your wallet: ${bits.join(', ')}` : 'You’ve hit today’s IRL pay limit. Come back tomorrow for more.';
+  line.textContent = bits.length ? `${who}Paid into your wallet: ${bits.join(', ')}` : 'You’ve hit today’s IRL pay limit. Come back tomorrow for more.';
+}
+function shareCard(text) {
+  if (!window.CapraShare) return;
+  $('resShare').innerHTML = '<lab-text-share></lab-text-share>';
+  $('resShare').firstChild.set({ emoji: '💪', title: 'IRL', text, url: `${location.origin}/irl/` });
+}
+async function finish() {
+  if (!S || S.phase === 'done') return;
+  const kind = S.kind, C = CHALLENGES[kind], scores = S.players.map((pl) => (pl.counter ? pl.counter.score : 0));
+  S.phase = 'done';
+  $('stage').classList.remove('live');
+  clearInterval(ticker); cancelAnimationFrame(raf);
+  sfx.whistle();
+  stopCamera(); keepAwake(false);
+  if (S.two) return finishTwo(kind, C, scores);
+  const score = scores[0], c = S.players[0].counter;
+  say(kind === 'wallsit' ? `Time! ${score} seconds` : `Time! ${score}`);
+  const { prev, newBest } = keepBest(kind, score), beat = score >= C.goal;
+  // the card first, the pay as it comes back
+  $('resCard').innerHTML = `<p class="kick">${C.emoji} ${esc(C.name)}${kind === 'wallsit' ? '' : ` · ${C.secs} seconds`}</p>
+    <p class="big">${esc(scoreText(kind, score))}<small>${kind === 'wallsit' ? 'HELD' : esc((score === 1 ? C.unit : C.units).toUpperCase())}</small></p>
+    ${newBest ? '<span class="burst gold">NEW PERSONAL BEST!</span>' : beat ? '<span class="burst">GOAL SMASHED!</span>' : ''}
+    <p class="stats"><span>🎯 Goal ${esc(scoreText(kind, C.goal))}</span><span>🏆 Best ${prev == null && !newBest ? '–' : esc(scoreText(kind, Math.max(prev ?? 0, newBest ? score : 0)))}</span>${c ? statBits(kind, c) : ''}</p>
+    <p class="paid" id="paidLine"></p>`;
+  show('results');
+  if (window.CapraShare) shareCard(CapraShare.text({ emoji: '💪', game: 'IRL', sub: C.name,
+    lines: [`${kind === 'wallsit' ? `${fmt(score)} held` : `${score} ${score === 1 ? C.unit : C.units} in ${C.secs} s`}${newBest ? ' · new best' : ''}`],
+    grid: [shareRow(score, C.goal, newBest)] }));
+  payOwner(kind, score, beat, newBest);
+}
+function statBits(kind, c) {
+  if (kind === 'targets') return `<span>💥 Best combo ${c.best}</span><span>Missed ${c.misses}</span>`;
+  if (kind === 'keeper') return `<span>🥅 Let in ${c.goals}</span><span>🔥 Best streak ${c.best}</span>`;
+  if (kind === 'derby') return `<span>⚾ ${c.hits} hits</span><span>🚀 ${c.homers} deep</span><span>🔥 Best streak ${c.best}</span><span>Strikes ${c.strikes}</span>`;
+  if (kind === 'avocado') return `<span>🔪 ${c.cuts} cuts</span><span>🥑 Most on one ${c.most}</span>${c.spicy ? `<span>🌶️ ${c.spicy}</span>` : ''}<span>Dropped ${c.dropped}</span>`;
+  return '';
+}
+// Two players: both scores side by side, the winner crowned; the phone's owner is paid for their side.
+function finishTwo(kind, C, scores) {
+  const names = S.players.map((pl) => pl.name), w = winnerOf(scores), own = ownerSide();
+  say(w < 0 ? 'Time! It’s a tie!' : `Time! ${names[w]} wins!`);
+  const mine = own >= 0 ? scores[own] : null;
+  const { newBest } = mine != null ? keepBest(kind, mine) : { newBest: false };
+  const unitOf = (n) => (kind === 'wallsit' ? 'HELD' : (n === 1 ? C.unit : C.units).toUpperCase());
+  $('resCard').innerHTML = `<p class="kick">${C.emoji} ${esc(C.name)} · head to head${kind === 'wallsit' ? '' : ` · ${C.secs} seconds`}</p>
+    <div class="vs">${S.players.map((pl) => `<div class="side${w === pl.i ? ' win' : ''}" style="--pc:${pl.color}"><span class="nm">${w === pl.i ? '👑 ' : ''}${esc(pl.name)}${own === pl.i ? ' <i>YOU</i>' : ''}</span>
+      <b>${esc(scoreText(kind, scores[pl.i]))}</b><small>${esc(unitOf(scores[pl.i]))}</small>${pl.counter ? `<p class="stats">${statBits(kind, pl.counter)}</p>` : ''}</div>`).join('<span class="vsx" aria-hidden="true">VS</span>')}</div>
+    ${w < 0 ? '<span class="burst">DEAD HEAT!</span>' : `<span class="burst gold">${esc(names[w].toUpperCase())} WINS!</span>`}
+    ${newBest ? '<p class="paid" style="color:var(--yellow)">New personal best for you!</p>' : ''}
+    <p class="stats"><span>🎯 Goal ${esc(scoreText(kind, C.goal))}</span></p>
+    <p class="paid" id="paidLine"></p>`;
+  show('results');
+  const order = w === 1 ? [1, 0] : [0, 1];
+  if (window.CapraShare) shareCard(CapraShare.text({ emoji: '💪', game: 'IRL', sub: `${C.name} · head to head`,
+    lines: order.map((i) => `${i === w ? '👑 ' : ''}${names[i]} ${scoreLine(kind, scores[i], C)}`),
+    grid: order.map((i) => shareRow(scores[i], C.goal, false)) }));
+  if (own >= 0) payOwner(kind, mine, mine >= C.goal, newBest, `${names[own]}: `);
+  else payOwner(kind, 0, false, false);
 }
 function leave() {
   if (S && S.phase === 'live') return finish();
@@ -613,11 +909,7 @@ function leave() {
   renderHome(); show('home');
 }
 $('backBtn').onclick = leave;
-$('flipBtn').onclick = async () => {
-  if (FAKE || !S) return;
-  facing = facing === 'user' ? 'environment' : 'user';
-  try { await startCamera(); } catch (e) { cameraTrouble(e); }
-};
+$('flipBtn').onclick = () => { if (S) openCams(); };
 $('homeBtn').onclick = () => { S = null; renderHome(); show('home'); };
 $('againBtn').onclick = () => { const k = S ? S.kind : 'squat'; openChallenge(k); };
 document.addEventListener('visibilitychange', () => {
@@ -625,9 +917,21 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') { if (S.phase === 'live') finish(); else if (S.phase !== 'done') stopCamera(); }
   else if (S.phase === 'setup' || S.phase === 'wait') startCamera().catch(cameraTrouble);
 });
+// Turning the phone: before the go, a fresh camera picture the new shape (wide when sideways); the
+// overlay redraws to fit either way.
+let turnT = 0;
+addEventListener('resize', () => {
+  clearTimeout(turnT);
+  turnT = setTimeout(() => {
+    if (!S || S.phase === 'done') return;
+    draw(S.frames);
+    const land = innerWidth > innerHeight;
+    if (!FAKE && stream && camLand != null && land !== camLand && (S.phase === 'setup' || S.phase === 'wait')) startCamera().catch(cameraTrouble);
+  }, 350);
+});
 
 // tests drive the page with made-up bodies
-window.__irl = { feed: (f) => handle({ aspect: 0.75, ...f, t: f.t ?? performance.now() }), state: () => S, open: openChallenge, finish };
+window.__irl = { feed: (f) => handle({ aspect: box().aspect, ...f, t: f.t ?? performance.now() }), state: () => S, open: openChallenge, finish, cams };
 
 renderHome();
 if (/^#(squat|pushup|wallsit|targets|dribble|keeper|avocado|derby)$/.test(location.hash)) openChallenge(location.hash.slice(1));

@@ -16,6 +16,7 @@ export const CHALLENGES = {
     blurb: 'As many as you can in a minute.',
     setup: 'Prop your phone up 6 to 8 feet away, facing you, so it sees all of you from head to feet.',
     how: 'Sit back like there’s a chair behind you until your thighs are level, then stand all the way up. A rep counts when you stand.',
+    setup2: 'Prop your phone up 8 to 10 feet away, facing you both, side by side with an arm’s length between you, so it sees both of you from head to feet.',
   },
   pushup: {
     name: 'Push-ups', emoji: '💪', secs: 60, goal: 15, unit: 'rep', units: 'reps', color: '#FF7A59',
@@ -28,18 +29,21 @@ export const CHALLENGES = {
     blurb: 'Hold it as long as you can (3 minutes tops).',
     setup: 'Phone 6 to 8 feet away and side-on to you, so it sees you from head to feet against the wall.',
     how: 'Back flat on the wall, slide down until your knees are bent like you’re sitting in a chair. The clock runs while you hold it; stand up and it stops.',
+    setup2: 'Both of you back on the wall, side by side and an arm’s length apart. Phone 8 to 10 feet away and off to one side at an angle, so it sees you both from head to feet.',
   },
   targets: {
     name: 'Target Smash', emoji: '🎯', secs: 45, goal: 25, unit: 'target', units: 'targets', color: '#29D3F0',
     blurb: 'Smack the targets that pop up around you.',
     setup: 'Phone at chest height 5 to 7 feet away, facing you, so it sees you from head to waist with room to reach.',
     how: 'Targets pop up on the screen around you. Reach out and hit each one with a hand before it fades. Hits in a row build a combo.',
+    setup2: 'Phone at chest height 8 to 10 feet away, facing you both, side by side with room to reach. Each of you gets your own half of the screen and your own targets.',
   },
   dribble: {
     name: 'Dribble Drill', emoji: '🏀', secs: 30, goal: 40, unit: 'dribble', units: 'dribbles', color: '#5BE38A',
     blurb: 'Pound the ball for 30 seconds.',
     setup: 'Phone 8 to 10 feet away, facing you, so it sees you from head to knees, dribbling hand and all.',
     how: 'Dribble hard and low. The camera follows your dribbling hand: every bounce of your hand down and back up is one dribble.',
+    setup2: 'Phone 10 to 12 feet away, facing you both, side by side with room to dribble, so it sees you from head to knees.',
   },
   // JC, Nov 14 2026: "defend a soccer goal"
   keeper: {
@@ -47,6 +51,7 @@ export const CHALLENGES = {
     blurb: 'Shots fly at your goal. Stop them.',
     setup: 'Phone at waist height 7 to 9 feet away, facing you, so it sees you from head to feet with room to dive both ways.',
     how: 'You’re in goal. Shots come at you high, low, left and right, and get faster. Get a hand (or a foot, for the low ones) on the ball before it reaches you.',
+    setup2: 'Phone at waist height 9 to 12 feet away, facing you both. Each of you guards your own goal in your own half of the screen, with room to dive.',
   },
   // JC, Nov 14 2026: "a game that cuts flying avocados and the more slices per avocado as they fall the
   // points triple for each consecutive cut"
@@ -55,6 +60,7 @@ export const CHALLENGES = {
     blurb: 'Slice the flying avocados. Every extra cut triples.',
     setup: 'Phone at chest height 5 to 7 feet away, facing you, so it sees you from head to waist with room to swing.',
     how: 'Avocados fly up in front of you. Swipe your hands through them fast. The first cut on an avocado is 1 point, then 3, 9, 27 and 81 for each cut on the same one before it falls. Don’t chop the chili peppers.',
+    setup2: 'Phone at chest height 8 to 10 feet away, facing you both, side by side with room to swing. Each of you chops the avocados on your own side.',
   },
   // JC, Nov 14 2026: "a baseball game where you swing at rapid balls and you are hitting them into silos
   // with different point values. Like a home run derby but more like skeeball"
@@ -63,10 +69,32 @@ export const CHALLENGES = {
     blurb: 'Crush pitches into the silos. Skee-ball scoring.',
     setup: 'Phone at chest height 7 to 9 feet away, facing you, so it sees you from head to knees with room to swing.',
     how: 'Pitches come right at you, faster and faster. Swing your hands through like you’re holding a bat as the ball gets to you. Swing hard to reach the back silos (100 in the corners, 50 in the middle); a softer hit lands in the front row (10 to 30). Swing early to pull it into a corner, late to go the other way.',
+    setup2: 'Phone at chest height 10 to 12 feet away, facing you both. Stand well apart (swings go sideways): each of you gets your own pitches and your own silos.',
   },
 };
 export const ORDER = ['squat', 'pushup', 'wallsit', 'targets', 'dribble', 'keeper', 'avocado', 'derby'];
 export const MIN_TO_PAY = { squat: 3, pushup: 3, wallsit: 10, targets: 3, dribble: 10, keeper: 3, avocado: 10, derby: 30 };
+// Two players (JC, Nov 15 2026: "bring two player to IRL!"): side by side in front of one camera, each
+// with their own half of the screen. Every challenge with a `setup2` works for two; push-ups need the
+// camera side-on, where one player would hide the other, so they stay solo.
+export const TWO_UP = ORDER.filter((k) => CHALLENGES[k].setup2);
+// Which body is which player: the tracker finds up to two bodies a frame, in no set order. Sort them by
+// where they stand on screen (`mirror` when the picture shows mirrored): the one on the left is the left
+// player. One body alone belongs to the half it stands in. Answers [left, right], null where nobody is.
+export function bodyX(lm, mirror = false) {
+  const ps = [P.LS, P.RS, P.LH, P.RH, P.NOSE].map((i) => lm && lm[i]).filter((p) => seen(p, 0.3));
+  if (!ps.length) return null;
+  const x = ps.reduce((a, p) => a + p.x, 0) / ps.length;
+  return mirror ? 1 - x : x;
+}
+export function splitPlayers(poses, mirror = false) {
+  const list = (poses || []).map((p) => ({ p, x: p && bodyX(p.lm, mirror) })).filter((o) => o.x != null).sort((a, b) => a.x - b.x);
+  if (list.length >= 2) return [list[0].p, list[list.length - 1].p];
+  if (list.length === 1) return list[0].x < 0.5 ? [list[0].p, null] : [null, list[0].p];
+  return [null, null];
+}
+// Who won a head-to-head: the index of the higher score, or -1 for a tie.
+export const winnerOf = (scores) => (scores.length < 2 || scores[0] === scores[1] ? -1 : scores[0] > scores[1] ? 0 : 1);
 
 const seen = (p, min = 0.5) => !!p && (p.visibility == null || p.visibility >= min);
 // The angle at b (degrees). With 3D points (MediaPipe's world landmarks, in meters) it's the true
@@ -323,8 +351,8 @@ export function keeper({ rand = Math.random, flight = 1500, gap = 900, bounds = 
     else { kind = 'top'; x = b.cx + (rand() - 0.5) * b.sw * 0.6; y = b.headY - 0.12; }
     x = clampIn(x, bounds.x0, bounds.x1); y = clampIn(y, bounds.y0, bounds.y1);
     n++;
-    const dur = Math.max(750, flight - n * 35);
-    shot = { id: n, born: t, dur, kind, from: { x: 0.5 + (x - 0.5) * 0.35, y: 1.08 }, to: { x, y } };
+    const dur = Math.max(750, flight - n * 35), mid = (bounds.x0 + bounds.x1) / 2;   // struck from in front of this player's goal
+    shot = { id: n, born: t, dur, kind, from: { x: mid + (x - mid) * 0.35, y: 1.08 }, to: { x, y } };
   }
   // where the ball is at time t, and how big
   function at(s, t) {
@@ -362,13 +390,13 @@ export function keeper({ rand = Math.random, flight = 1500, gap = 900, bounds = 
 // it). Every cut on the same avocado triples: 1, 3, 9, 27, 81 points; after the fifth it's guac.
 // A chili cut costs 25 points. Each hand can cut a given avocado once every 220 ms.
 export const CUT_POINTS = [1, 3, 9, 27, 81];
-export function avocados({ rand = Math.random, gravity = 1.5, chili = 0.12 } = {}) {
+export function avocados({ rand = Math.random, gravity = 1.5, chili = 0.12, bounds = { x0: 0.18, x1: 0.82 } } = {}) {
   let points = 0, n = 0, next = 400, lastT = null, most = 0, dropped = 0, spicy = 0, cuts = 0;
   const items = [], prev = {};
   const HANDS = { L: [P.LW, P.LI], R: [P.RW, P.RI] };
   function launch(t, k) {
-    const x = 0.18 + rand() * 0.64, apex = 0.16 + rand() * 0.26, y = 1.06;
-    const vy = -Math.sqrt(2 * gravity * (y - apex)), vx = (0.5 - x) * (0.25 + rand() * 0.35);
+    const x = bounds.x0 + rand() * (bounds.x1 - bounds.x0), apex = 0.16 + rand() * 0.26, y = 1.06, mid = (bounds.x0 + bounds.x1) / 2;
+    const vy = -Math.sqrt(2 * gravity * (y - apex)), vx = (mid - x) * (0.25 + rand() * 0.35);
     items.push({ id: ++n, kind: k || (t > 6000 && rand() < chili ? 'chili' : 'avo'), x, y, vx, vy, r: 0.062, cuts: 0, spin: rand() * 6, lines: [], last: {}, born: t });
   }
   function segHits(ax, ay, bx, by, cx, cy, r, aspect) {
@@ -465,7 +493,7 @@ export function derby({ rand = Math.random, flight = 1300, gap = 900, win = 230,
     n++;
     const zone = { x: clampIn(b.cx, bounds.x0, bounds.x1), y: clampIn((b.shY + b.hipY) / 2 + 0.03 + (rand() - 0.5) * 0.06, bounds.y0 + 0.2, bounds.y1) };
     const dur = Math.max(700, flight - n * 25) * (0.85 + rand() * 0.3);
-    pitch = { id: n, born: t, dur, arrive: t + dur, kind: dur < 850 ? 'heater' : dur > 1150 ? 'changeup' : 'fastball', from: { x: 0.5 + (zone.x - 0.5) * 0.3, y: 1.08 }, to: zone };
+    pitch = { id: n, born: t, dur, arrive: t + dur, kind: dur < 850 ? 'heater' : dur > 1150 ? 'changeup' : 'fastball', from: { x: mid + (zone.x - mid) * 0.3, y: 1.08 }, to: zone };
   }
   function at(pc, t) {
     const p = (t - pc.born) / pc.dur, q = Math.min(1.25, Math.max(0, p)), e = 1 - (1 - Math.min(1, q)) ** 1.6;

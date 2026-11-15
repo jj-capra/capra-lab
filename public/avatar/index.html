@@ -105,6 +105,19 @@
   .buybar .why { margin: 6px 0 0; font-size: 12px; font-weight: 700; }
   .buybar .why a { color: #5B3CC4; }
   @media (max-height: 700px) { .frame { width: min(28vw, 112px); } .title { font-size: 20px; } }
+  /* Sideways (JC, Nov 15 2026: "All games need to maximize viewport in landscape mode"): the avatar,
+     wallet and part tabs stay put down the left, the choices fill the rest of the screen. */
+  @media (orientation: landscape) and (min-width: 600px) {
+    body { display: grid; grid-template-columns: minmax(300px, 0.85fr) minmax(0, 2fr); align-items: start; }
+    .top { grid-column: 1; grid-row: 1 / span 2; height: var(--lab-h, 100dvh); overflow-y: auto; background: none; }
+    .guest, .body { grid-column: 2; }
+    .guest { margin-left: 8px; }
+    .body { padding-left: 8px; padding-top: calc(var(--st) + 14px); }
+    .wrap { max-width: none; }
+    .frame { width: min(15vw, 150px); }
+    .tabs { flex-wrap: wrap; overflow: visible; padding-right: 0; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+  }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
 </head>

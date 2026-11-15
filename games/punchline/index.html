@@ -354,6 +354,25 @@
   .confetti i { position: absolute; top: -20px; width: 10px; height: 14px; border: 2px solid var(--ink); animation: fall linear forwards; }
   @keyframes fall { to { transform: translate3d(var(--dx), 110vh, 0) rotate(var(--r)); } }
 
+  /* Sideways (JC, Nov 15 2026: "All games need to maximize viewport in landscape mode"): the home
+     cards side by side across the screen; in a round, a joke's setup on the left and its four punchlines on the right, and the four signs as big as the screen is tall. */
+  @media (orientation: landscape) and (min-width: 600px) {
+    .wrap { max-width: 1180px; }
+    #wrap-home { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); align-items: start; }
+    #wrap-home .hero { align-self: center; }
+    .logo { font-size: clamp(40px, 6.6vw, 84px); }
+    .hud { max-width: 1180px; }
+    .stage { max-width: 1180px; }
+    .grid4 { width: min(100%, calc((100dvh - 104px - var(--st) - var(--sb)) * 1.4286)); }
+    .panel.big { width: min(100%, calc((100dvh - 124px - var(--st) - var(--sb)) * 1.4286)); }
+    .stage:has(.grid4.jokes:not(.gone)) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto auto 1fr; column-gap: 22px; row-gap: 8px; align-content: center; }
+    .stage:has(.grid4.jokes:not(.gone)) .panel { grid-column: 1; grid-row: 1; justify-self: center; width: min(100%, calc((100dvh - 130px - var(--st) - var(--sb)) * 1.4286)); }
+    .stage:has(.grid4.jokes:not(.gone)) .ask { grid-column: 1; grid-row: 2; }
+    .stage:has(.grid4.jokes:not(.gone)) .status { grid-column: 1; grid-row: 3; }
+    .stage:has(.grid4.jokes:not(.gone)) .grid4 { grid-column: 2; grid-row: 1 / span 3; align-self: center; width: 100%; }
+    .sheet { max-width: 920px; }
+    .decks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
   @media (max-height: 640px) {
     .ask { font-size: 19px; min-height: 22px; }
     .tile.txt { min-height: 66px; }

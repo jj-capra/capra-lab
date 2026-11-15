@@ -110,6 +110,16 @@
   @keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); } 45% { opacity: 1; transform: scale(1) rotate(20deg); } 60% { opacity: 0.9; transform: scale(0.85) rotate(30deg); } }
   .flame { transform-box: fill-box; transform-origin: 50% 100%; animation: flame 0.9s ease-in-out infinite alternate; }
   @keyframes flame { from { transform: scale(1, 1) skewX(-3deg); } to { transform: scale(0.9, 1.12) skewX(4deg); } }
+  .cctv { display: contents; }
+  /* Sideways (JC, Nov 15 2026: "All games need to maximize viewport in landscape mode"): the camera
+     stays on the left while the trap house, the trove and the log scroll on the right. */
+  @media (orientation: landscape) and (min-width: 600px) {
+    .bar, .wrap { max-width: 1180px; }
+    #app:has(> .cctv) { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); grid-template-rows: repeat(9, auto) 1fr; column-gap: 22px; align-items: start; }
+    #app > .cctv { display: block; grid-column: 1; grid-row: 1 / -1; position: sticky; top: 8px; }
+    #app:has(> .cctv) > :not(.cctv) { grid-column: 2; }
+    #app:has(> .cctv) > .card:first-of-type { margin-top: 8px; }
+  }
   @media (prefers-reduced-motion: reduce) { .holo, .holo-rig, .holo-scan, .laser, .beams, .noise, .trap-frame.here, .alarm-wash, .mon.alarm, .spark, .flame { animation: none !important; } .spark { opacity: 0.8; } }
 
   /* ---------- cards, buttons ---------- */

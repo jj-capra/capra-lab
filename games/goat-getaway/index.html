@@ -302,6 +302,17 @@
     .confetti { display: none; }
   }
   @media (min-width: 700px) { .wrap { gap: 16px; } }
+  /* Sideways (JC, Nov 15 2026: "All games need to maximize viewport in landscape mode"): the title,
+     tabs, clock and buttons down the left, the pen on the right as big as the screen is tall. The
+     panels open up (display: contents) so their pieces can sit in the two columns. */
+  @media (orientation: landscape) and (min-width: 600px) {
+    .wrap { max-width: 1180px; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: repeat(16, auto) 1fr; column-gap: 28px; align-items: start; }
+    .wrap > * { grid-column: 1; }
+    #today:not([hidden]), #practice:not([hidden]), .stack, #play:not([hidden]) { display: contents; }
+    .stack > *, #play > * { grid-column: 1; }
+    .wrap .pen { grid-column: 2; grid-row: 1 / -1; margin: 0; width: max(240px, min(560px, calc(var(--lab-h, 100dvh) - var(--st) - var(--sb) - 76px))); }
+    .logo { font-size: clamp(34px, 5vw, 56px); }
+  }
 </style>
 </head>
 <body>

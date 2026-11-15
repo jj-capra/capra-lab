@@ -195,7 +195,13 @@ async function buildIrl() {
   await fs.mkdir(path.join(out, 'vendor', 'wasm'), { recursive: true });
   await fs.mkdir(path.join(out, 'models'), { recursive: true });
   for (const f of ['index.html', 'game.js', 'logic.mjs']) await fs.copyFile(path.join(game, f), path.join(out, f));
-  await fs.copyFile(path.join(tv, 'vision_bundle.mjs'), path.join(out, 'vendor', 'vision_bundle.mjs'));
+  // tasks-vision posts usage numbers (which task ran, how fast) to Google every minute; IRL promises
+  // nothing leaves the phone, so the copy we serve has that send switched off. The build stops if a
+  // new version moves it, so it can't come back unnoticed.
+  const bundle = await fs.readFile(path.join(tv, 'vision_bundle.mjs'), 'utf8');
+  const SEND = 'this.o.send({url:"https://odml.pa.googleapis.com/v1/log"';
+  if (bundle.split(SEND).length !== 2) throw new Error('IRL: tasks-vision changed its usage logging; switch it off again in scripts/build.mjs');
+  await fs.writeFile(path.join(out, 'vendor', 'vision_bundle.mjs'), bundle.replace(SEND, 'r=null,t?.();return;' + SEND));
   for (const f of ['vision_wasm_internal.js', 'vision_wasm_internal.wasm']) await fs.copyFile(path.join(tv, 'wasm', f), path.join(out, 'vendor', 'wasm', f));
   await fs.copyFile(path.join(game, 'models', 'pose_landmarker_lite.task'), path.join(out, 'models', 'pose_landmarker_lite.task'));
   console.log('built public/irl/');

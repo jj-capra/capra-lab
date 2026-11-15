@@ -1,6 +1,6 @@
 // IRL: the counters, fed made-up bodies (no camera here).  node games/irl/test/irl.test.mjs
 import assert from 'node:assert/strict';
-import { P, CHALLENGES, ORDER, COUNTERS, squats, pushups, wallsit, dribbles, targets, keeper, avocados, derby, SILOS, CUT_POINTS, framing, shareRow, angle, MIN_TO_PAY } from '../logic.mjs';
+import { P, CHALLENGES, ORDER, COUNTERS, squats, pushups, wallsit, dribbles, targets, keeper, avocados, derby, SILOS, CUT_POINTS, TWO_UP, splitPlayers, bodyX, winnerOf, framing, shareRow, angle, MIN_TO_PAY } from '../logic.mjs';
 
 let passed = 0;
 const test = (name, fn) => { fn(); passed++; console.log('ok  ', name); };
@@ -272,6 +272,46 @@ test('the results row fills toward the goal', () => {
   assert.equal(shareRow(10, 20), '🟩🟩🟩🟩🟩⬛⬛⬛⬛⬛');
   assert.equal(shareRow(30, 20, true), '🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩⚡');
   assert.equal(shareRow(0, 20), '⬛'.repeat(10));
+});
+
+test('two players: who is who, a half each, and who won', () => {
+  // every challenge but push-ups (side-on, one player would hide the other) works for two
+  assert.deepEqual(TWO_UP, ORDER.filter((k) => k !== 'pushup'));
+  for (const k of TWO_UP) assert.ok(CHALLENGES[k].setup2, k);
+  // two bodies, in either order from the tracker: sorted by where they stand on screen
+  const at = (x) => { const b = squatter(178); return { lm: b.lm.map((q) => ({ ...q, x: x + (q.x - 0.5) * 0.4 })), world: b.world }; };
+  const a = at(0.3), b = at(0.7);
+  assert.deepEqual(splitPlayers([b, a]), [a, b]);
+  // mirrored (the picture shows flipped), the one at picture x 0.7 shows on the left
+  assert.deepEqual(splitPlayers([a, b], true), [b, a]);
+  assert.ok(Math.abs(bodyX(a.lm) - 0.3) < 0.02 && Math.abs(bodyX(a.lm, true) - 0.7) < 0.02);
+  // one body alone belongs to the half it stands in; nobody is nobody
+  assert.deepEqual(splitPlayers([b]), [null, b]);
+  assert.deepEqual(splitPlayers([a]), [a, null]);
+  assert.deepEqual(splitPlayers([a], true), [null, a]);
+  assert.deepEqual(splitPlayers([]), [null, null]);
+  assert.deepEqual(splitPlayers([{ lm: null }]), [null, null]);
+  assert.equal(winnerOf([12, 9]), 0); assert.equal(winnerOf([3, 9]), 1); assert.equal(winnerOf([7, 7]), -1);
+  // each player's avocados, shots, pitches and silos stay in their own half
+  const half = { x0: 0.55, x1: 0.95, y0: 0.1, y1: 0.86 };
+  let seed = 7; const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const av = avocados({ rand, bounds: { x0: 0.55, x1: 0.95 } });
+  for (let t = 0; t < 20000; t += 33) av.update({ lm: [], t });
+  assert.ok(av.items.length > 0);
+  const k = keeper({ rand, bounds: half }), right = at(0.75);
+  k.update({ lm: right.lm, t: 700 });
+  assert.ok(k.shot && k.shot.to.x >= 0.55 && k.shot.to.x <= 0.95 && k.shot.from.x > 0.6, 'the shot comes from in front of the right half');
+  const d = derby({ rand, bounds: half });
+  d.update({ lm: right.lm, t: 800 });
+  assert.ok(d.pitch && d.pitch.from.x > 0.6 && d.pitch.to.x >= 0.55, 'the pitch comes to the right half');
+  assert.ok(d.silos.every((x) => x.x >= 0.55 && x.x <= 0.95), 'silos in the right half');
+});
+
+test('avocados fly up inside their bounds', () => {
+  let seed = 11; const rand = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const av = avocados({ rand, bounds: { x0: 0.05, x1: 0.45 } }), xs = [];
+  for (let t = 0; t < 15000; t += 33) { av.update({ lm: [], t }); for (const it of av.items) if (it.y > 1) xs.push(it.x); }
+  assert.ok(xs.length && xs.every((x) => x >= 0.05 && x <= 0.45), 'launched in the left half');
 });
 
 console.log(`\nIRL: ${passed} tests passed`);
