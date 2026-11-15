@@ -17,9 +17,15 @@ the browser was the plan he okayed).
   through a little 3D camera (`cam3`), what you hold (ball, football, racket) drawn in front following
   your hand. The other challenges keep their play area (the camera picture's shape, where targets,
   shots and silos already live) with a backdrop around it (gym, brick wall, court, carnival, stadium,
-  kitchen, farm) and the player as a **puppet**: their lab avatar's head (saved look from
-  `/api/wallet/looks`, else the free look from their handle; a guest's from their name) on a comic body
-  whose joints are their joints (`drawPuppet`); Dribble Drill draws a ball bouncing from the hand. The
+  kitchen, farm) and the player as a **puppet**: their lab avatar's head on a comic body whose joints
+  are their joints (`drawPuppet`); Dribble Drill draws a ball bouncing from the hand. The phone owner's
+  puppet is always their own saved look (JC, Nov 15 2026: "My profile should be my IRL character"; a
+  failed request used to leave him in the free look, a girl with braids, all visit): the Capra Lab
+  button's wallet this visit or the last look this phone saw (`irl.look`) shows at once, then
+  `/api/wallet/looks` settles it (`loadMyLook`); a failed request is asked again (2, 5, 15, 30 s, when a
+  challenge opens, when the page comes back) with a plain head meanwhile. Only the wallet saying no look
+  is saved gives the free look from the handle. The other player of two gets the lab look of the name
+  typed for them when it's a lab player's (`guestLook`), else a free look from that name. The
   camera sheet's "Animated scene" switch puts the camera back full screen for those (`prefs.scene`);
   the sports always play in their scene.
 - **The sports games** (`sports.mjs`; `sport: true` in `CHALLENGES`), first on the home screen:

@@ -140,9 +140,17 @@ function applyView() {
 }
 video.addEventListener('loadedmetadata', () => applyView());
 video.addEventListener('resize', () => applyView());
-/* The player as a puppet in the scenes: their lab avatar (their saved look, or the free look picked from
-   their handle; a guest's from their name) drawn as a comic body that copies their pose. */
-const LOOK = { mine: null };
+/* The player as a puppet in the scenes: their lab avatar drawn as a comic body that copies their pose
+   (JC, Nov 15 2026: "My profile should be my IRL character": a failed look request used to leave him in
+   the free look for the whole visit). The phone owner wears their saved look: what the Capra Lab button
+   already has this visit or the last look this phone saw (irl.look) shows straight away, then the
+   wallet's answer (/api/wallet/looks) settles it. A request that fails is asked again (2, 5, 15, 30 s,
+   when a challenge opens, when the page comes back); only the wallet saying there's no saved look gives
+   the free look picked from the handle. The other player of two is looked up by the name typed for
+   them, so a lab player gets their own look too. */
+const handleOf = (n) => String(n || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 24);
+const myHandle = () => { const p = me(); return p ? String(p.handle || handleOf(p.name)).toLowerCase() : ''; };
+const LOOK = { mine: null, of: '', sure: false, asking: null, retry: 0, tries: 0, guests: new Map() };
 function puppetLook(seed, saved = null) {
   const l = lookFor(seed, saved), animal = l.base === 'animal';
   const img = new Image(), look = { head: img, bmp: null, skin: animal ? FURS[l.fur] : SKINS[l.skin], shirt: SHIRTS[l.shirt], pants: '#2B3A67' };
@@ -151,14 +159,58 @@ function puppetLook(seed, saved = null) {
   img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(drawAvatar(l, { plain: true }).replace('<svg ', '<svg width="300" height="300" '));
   return look;
 }
-async function loadMyLook() {
-  const p = me();
-  if (!p) return;
-  let saved = null;
-  try { const j = await (await fetch('/api/wallet/looks?h=' + encodeURIComponent(p.handle))).json(); saved = (j && j.looks && j.looks[String(p.handle).toLowerCase()]) || null; } catch { /* the free look */ }
-  LOOK.mine = puppetLook(p.handle, saved);
+// The wallet's saved look for a handle: the look, null when none is saved, or it throws (no answer).
+async function savedLookOf(h) {
+  const r = await fetch('/api/wallet/looks?h=' + encodeURIComponent(h), { cache: 'no-store' });
+  if (!r.ok) throw new Error('looks ' + r.status);
+  const j = await r.json();
+  if (!j || !j.looks || !(h in j.looks)) throw new Error('no looks');
+  return j.looks[h] || null;
 }
-const plLook = (pl) => (pl.own && LOOK.mine) || (pl.look ||= puppetLook(pl.own ? ((me() || {}).handle || 'guest') : pl.name));
+function wearMine(h, saved, sure) {
+  const key = h + ':' + JSON.stringify(saved || null);
+  if (!LOOK.mine || LOOK.of !== key) { LOOK.mine = puppetLook(h, saved); LOOK.of = key; }
+  if (sure) { LOOK.sure = true; store.set('irl.look', { h, look: saved || null }); }
+}
+function loadMyLook() {
+  const h = myHandle();
+  if (LOOK.of && !LOOK.of.startsWith(h + ':')) { LOOK.mine = null; LOOK.of = ''; LOOK.sure = false; }   // someone else signed in
+  if (!h) return Promise.resolve();
+  if (!LOOK.sure) {
+    // the Capra Lab button's wallet this visit (checked on every try: it may answer before we do)
+    let w = null;
+    try { const c = JSON.parse(sessionStorage.getItem('capra-lab.wallet') || 'null'); if (c && c.w && 'look' in c.w && String(c.who || '').toLowerCase() === h) w = c.w; } catch { /* private mode */ }
+    const kept = store.get('irl.look', null);
+    if (w) wearMine(h, w.look, false);
+    else if (!LOOK.mine && kept && kept.h === h) wearMine(h, kept.look, false);
+  }
+  if (LOOK.asking) return LOOK.asking;
+  clearTimeout(LOOK.retry);
+  LOOK.asking = savedLookOf(h)
+    .then((saved) => { LOOK.tries = 0; if (myHandle() === h) wearMine(h, saved, true); })
+    .catch(() => {
+      LOOK.tries++;
+      // nothing known yet: a plain comic head meanwhile, never someone else's look
+      if (!LOOK.mine && myHandle() === h) { LOOK.mine = { head: null, bmp: null, skin: SKINS[0], shirt: '#2D6BFF', pants: '#2B3A67' }; LOOK.of = h + ':?'; }
+      LOOK.retry = setTimeout(loadMyLook, [2, 5, 15, 30][Math.min(3, LOOK.tries - 1)] * 1000);
+    })
+    .finally(() => { LOOK.asking = null; });
+  return LOOK.asking;
+}
+// The other player: their lab look when the name typed for them is a lab player's, else a free look.
+function guestLook(name) {
+  const h = handleOf(name) || 'guest';
+  let g = LOOK.guests.get(h);
+  if (!g) {
+    g = { look: puppetLook(h, null) };
+    LOOK.guests.set(h, g);
+    if (h.length >= 2 && h !== myHandle()) savedLookOf(h).then((saved) => { if (saved) g.look = puppetLook(h, saved); }).catch(() => { g.again = true; });
+  }
+  return g.look;
+}
+window.addEventListener('capra-wallet:changed', (e) => { const d = e && e.detail, h = myHandle(); if (h && d && 'look' in d) wearMine(h, d.look || null, true); });
+window.addEventListener('storage', (e) => { if (!e.key || e.key === 'capra-lab.profile') loadMyLook(); });
+const plLook = (pl) => (pl.own ? LOOK.mine || (pl.look ||= puppetLook('guest')) : guestLook(pl.name));
 let stream = null, landmarker = null, loadingModel = null, raf = 0, lastVideoTime = -1, wake = null, poses = 1, camLand = null;
 async function loadModel() {
   if (landmarker) return landmarker;
@@ -689,6 +741,8 @@ function newPlayer(i, two, C) {
 async function openChallenge(kind) {
   const C = CHALLENGES[kind], two = prefs.players === 2 && TWO_UP.includes(kind);
   lay.at = 0;
+  if (!LOOK.sure) loadMyLook();
+  for (const [h, g] of LOOK.guests) if (g.again) LOOK.guests.delete(h);
   $('cam').classList.remove('resting');
   S = { kind, two, seed: (Math.random() * 1e9) >>> 0, phase: 'setup', players: [0, two ? 1 : null].filter((i) => i != null).map((i) => newPlayer(i, two, C)), okSince: null, startAt: 0, frames: null };
   show('stage');
@@ -1281,6 +1335,7 @@ $('flipBtn').onclick = () => { if (S) openCams(); };
 $('homeBtn').onclick = () => { S = null; renderHome(); show('home'); };
 $('againBtn').onclick = () => { const k = S ? S.kind : 'squat'; openChallenge(k); };
 document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && !LOOK.sure) loadMyLook();
   if (!S || FAKE) return;
   if (document.visibilityState === 'hidden') { if (S.phase === 'live') finish(); else if (S.phase !== 'done') stopCamera(); }
   else if (S.phase === 'setup' || S.phase === 'wait') startCamera().catch(cameraTrouble);
