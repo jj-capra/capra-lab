@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createDaily, golfDeal } from '../daily.js';
 import { GOLF } from '../heist-library.mjs';
 import { createWallet } from '../wallet.js';
-import { memoryStore } from '../casstore.js';
+import { memoryStore, mutate } from '../casstore.js';
 import { ranked, WIN_MIN, BOARDS, fmtMs, winWhy } from '../../public/lab/daily-boards.mjs';
 import { trophyName, trophyKind } from '../../public/lab/heist-rules.mjs';
 import { ROUNDS } from '../../games/three-clue-crew/rounds.js';
@@ -21,10 +21,11 @@ function setup() {
   const hcps = { Mia: 6 };
   const verify = async (name, code) => (players[name] && code === 'k' ? { name, handle: players[name], hcp: hcps[name] || 0 } : null);
   const wallet = createWallet({ store: memoryStore(), clock: () => now, verify });
-  const daily = createDaily({ store: memoryStore(), wallet, verify, clock: () => now });
+  const dstore = memoryStore();
+  const daily = createDaily({ store: dstore, wallet, verify, clock: () => now });
   const call = (path, body) => daily.route('POST', '/api/daily/' + path, body, new URLSearchParams());
   const get = (path) => daily.route('GET', '/api/daily/' + path.split('?')[0], null, new URLSearchParams(path.split('?')[1] || ''));
-  return { daily, wallet, call, get, tick: (ms) => { now += ms; }, now: () => now };
+  return { daily, wallet, dstore, verify, call, get, tick: (ms) => { now += ms; }, now: () => now };
 }
 const JJ = { name: 'JJ-Capra', code: 'k' }, RO = { name: 'Roman', code: 'k' }, MIA = { name: 'Mia', code: 'k' };
 const me = (h, n) => ({ handle: h, name: n });
@@ -90,15 +91,15 @@ await test('Puzzled Spin: pictures must be whole and the clocks must add up', as
   assert.equal(r3.points, most, 'each picture capped at the most it can pay');
 });
 
-await test('midnight: the #1 of a board with two or more takes a trophy and a diamond', async () => {
+await test('midnight: the #1 of every board takes a trophy and a diamond, alone or not', async () => {
   const g = setup(), board = 'mind-heist';
   await g.daily.begin(board, me('jj-capra', 'JJ-Capra'));
   await g.daily.post(board, me('jj-capra', 'JJ-Capra'), 2400, 300000);
   await g.daily.begin(board, me('roman', 'Roman'));
   await g.daily.post(board, me('roman', 'Roman'), 3100, 420000);
-  // a lone player on another board wins nothing
+  // a lone player on another board wins too (JC, Nov 16 2026)
   await g.daily.post('no-cap:kids', me('mia', 'Mia'), 900, 100000);
-  assert.equal(WIN_MIN, 2);
+  assert.equal(WIN_MIN, 1);
   g.tick(13 * 3600e3);                      // past midnight Pacific
   const v = await g.get('board?b=mind-heist');
   assert.equal(v.of, 0, 'a new day, an empty board');
@@ -108,7 +109,9 @@ await test('midnight: the #1 of a board with two or more takes a trophy and a di
   const box = await g.wallet.trophyCase('roman');
   assert.equal(box.trophies.length, 1);
   assert.equal(trophyName(box.trophies[0]), 'Mind Heist #1 · Daily drop · Nov 14');
-  assert.equal((await g.wallet.wallet('mia')).diamonds, 0, 'one player is not a contest');
+  assert.equal((await g.wallet.wallet('mia')).diamonds, 1, 'a lone #1 wins too');
+  assert.equal(trophyName((await g.wallet.trophyCase('mia')).trophies[0]), 'No Cap #1 · Kids · Nov 14');
+  assert.equal((await g.wallet.wallet('jj-capra')).diamonds, 0, 'only the #1');
   // settling twice pays once
   await g.daily.settle(board, '2026-11-14');
   await g.get('today');
@@ -116,6 +119,31 @@ await test('midnight: the #1 of a board with two or more takes a trophy and a di
   // yesterday's day is closed: no late posts
   await g.daily.post(board, me('mia', 'Mia'), 9999, 1, null, '2026-11-14');
   assert.equal((await g.daily.view(board, '2026-11-14')).of, 2);
+});
+
+await test('days closed under the two-player rule pay their lone #1, once', async () => {
+  const g = setup();
+  await g.daily.post('no-cap:adult', me('jj-capra', 'JJ-Capra'), 1669, 189000);
+  await g.daily.post('puzzled-spin:1', me('mia', 'Mia'), 3408, 80000);
+  g.tick(86400e3);                          // Nov 15
+  await g.daily.post('par-tee-time', me('jj-capra', 'JJ-Capra'), -4, 143000);
+  // how the old rule left them: closed, nobody paid
+  for (const k of ['no-cap:adult/2026-11-14', 'puzzled-spin:1/2026-11-14', 'par-tee-time/2026-11-15']) await mutate(g.dstore, 'd/' + k, (d) => { d.settled = true; d.winner = null; });
+  await g.dstore.set('open', { list: [] });
+  g.tick(13 * 3600e3);                      // Nov 16 morning
+  assert.equal(await g.daily.fixSoloWins(), 3);
+  assert.equal((await g.wallet.wallet('jj-capra')).diamonds, 2);
+  assert.equal((await g.wallet.wallet('mia')).diamonds, 1);
+  const names = (await g.wallet.trophyCase('jj-capra')).trophies.map(trophyName).sort();
+  assert.deepEqual(names, ['No Cap #1 · Young Adults · Nov 14', 'Par-Tee Time #1 · Daily 3 · Nov 15']);
+  assert.equal((await g.get('board?b=par-tee-time')).yesterday.name, 'JJ-Capra');
+  // once: again, on this server or a fresh one, pays nothing
+  assert.equal(await g.daily.fixSoloWins(), 0);
+  const again = createDaily({ store: g.dstore, wallet: g.wallet, verify: g.verify, clock: g.now });
+  assert.equal(await again.fixSoloWins(), 0);
+  await again.route('GET', '/api/daily/today', null, new URLSearchParams());
+  assert.equal((await g.wallet.wallet('jj-capra')).diamonds, 2);
+  assert.equal((await g.wallet.wallet('mia')).diamonds, 1);
 });
 
 await test('the routes want a sign-in; today lists every board with a leader', async () => {

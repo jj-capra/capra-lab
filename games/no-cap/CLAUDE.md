@@ -65,7 +65,7 @@ as their lab name.
   it's over it goes on Capra Lab's daily board `no-cap:<shelf>` (`lab/daily.js`, passed in as `daily`)
   with its points and the time spent hunting, and later runs that day are practice. No challenge links
   from a daily (they would give the day away). The final shows the board; home has the leader and a
-  🏆 Today's board button. The #1 at midnight (two or more players) gets a trophy and a diamond.
+  🏆 Today's board button. The #1 at midnight gets a trophy and a diamond (alone on the board too, since Nov 16 2026).
 - **Shelves by age** (JC: "Shelves by age"): Kids (elementary), Middle School, High School, Young
   Adults, three decks each: a time-warp deck, a history deck, a modern deck.
 

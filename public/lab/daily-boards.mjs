@@ -9,7 +9,9 @@
 
    Shared by the server (lab/daily.js) and the board card (/lab/daily.js). */
 
-export const WIN_MIN = 2;                 // players on a board for its #1 to take the trophy
+// Players on a board for its #1 to take the trophy. It was 2 until JC, Nov 16 2026 (first on all four
+// boards he played, alone on each, and no trophies): a #1 who played alone wins too.
+export const WIN_MIN = 1;
 export const WIN_PAY = { diamonds: 1 };   // a rare feat, checked by a server: a diamond (and so a trophy)
 
 const tiers = (game, title, emoji, unit) => Object.fromEntries([['1', 'K–1'], ['2', '2–3'], ['3', '6–8'], ['4', '9–12']]

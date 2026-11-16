@@ -59,6 +59,7 @@ export function golfDeal(date) {
   return { no: golfNo(date), holes, par: holes.reduce((a, h) => a + h.par, 0) };
 }
 function dayBefore(date) { const t = Date.parse(date + 'T12:00:00Z') - 86400000; return new Date(t).toISOString().slice(0, 10); }
+function dayAfter(date) { const t = Date.parse(date + 'T12:00:00Z') + 86400000; return new Date(t).toISOString().slice(0, 10); }
 
 export function createDaily({ store, wallet = null, verify = null, clock = () => Date.now() }) {
   const today = () => walletDay(clock());
@@ -101,19 +102,52 @@ export function createDaily({ store, wallet = null, verify = null, clock = () =>
   }
 
   // Close a past day: the #1 of a board with enough players takes the trophy and the diamond.
+  function winnerOf(d, board) {
+    const list = ranked(d.entries, isLow(board));
+    return list.length >= WIN_MIN ? { handle: list[0].handle, name: list[0].name, points: list[0].points, ms: list[0].ms, of: list.length } : null;
+  }
+  async function payWinner(board, date, winner) {
+    if (winner && wallet) await wallet.pay(winner.handle, WIN_PAY, { game: BOARDS[board].game, why: winWhy(board, date) }).catch((e) => console.error('daily pay', e));
+  }
   async function settle(board, date) {
     let winner = null, flipped = false;
     await mutate(store, keyOf(board, date), (d) => {
       flipped = false; winner = null;      // a retried write starts over, so nobody is paid twice
       if (d.settled) return SKIP;
-      const list = ranked(d.entries, isLow(board));
-      winner = list.length >= WIN_MIN ? { handle: list[0].handle, name: list[0].name, points: list[0].points, ms: list[0].ms, of: list.length } : null;
+      winner = winnerOf(d, board);
       d.settled = true; d.winner = winner; flipped = true;
     }).catch(() => { flipped = false; });
-    if (flipped && winner && wallet) {
-      await wallet.pay(winner.handle, WIN_PAY, { game: BOARDS[board].game, why: winWhy(board, date) }).catch((e) => console.error('daily pay', e));
-    }
+    if (flipped) await payWinner(board, date, winner);
     return winner;
+  }
+  /* Days closed while a board needed two players (Nov 14 2026 until JC's call on Nov 16: a lone #1 wins
+     too) left their lone #1 with nothing. Once, the first call after this went live closes them again
+     under today's rule and pays them; `fix/solo` marks it done. */
+  const FIRST_DAY = '2026-11-14';
+  let soloFixed = false;
+  async function fixSoloWins() {
+    if (soloFixed) return 0;
+    if (await store.get('fix/solo')) { soloFixed = true; return 0; }
+    const t = today();
+    let paid = 0;
+    for (let date = FIRST_DAY; date < t; date = dayAfter(date)) {
+      for (const board of Object.keys(BOARDS)) {
+        const d = await read(board, date);
+        if (!d || !d.settled || d.winner || !Object.keys(d.entries || {}).length) continue;
+        let winner = null, flipped = false;
+        await mutate(store, keyOf(board, date), (x) => {
+          flipped = false; winner = null;
+          if (!x.settled || x.winner) return SKIP;
+          winner = winnerOf(x, board);
+          if (!winner) return SKIP;
+          x.winner = winner; x.resettled = clock(); flipped = true;
+        }).catch(() => { flipped = false; });
+        if (flipped) { await payWinner(board, date, winner); paid++; }
+      }
+    }
+    await mutate(store, 'fix/solo', (f) => { if (f.at) return SKIP; f.at = clock(); f.paid = paid; }, () => ({})).catch(() => {});
+    soloFixed = true;
+    return paid;
   }
   async function settleDue() {
     const got = await store.get('open');
@@ -259,6 +293,7 @@ export function createDaily({ store, wallet = null, verify = null, clock = () =>
   async function route(method, path, body, query) {
     const action = path.replace(/^.*\/api\/daily\/?/, '').replace(/\/$/, '');
     await settleDue().catch((e) => console.error('daily settle', e));
+    await fixSoloWins().catch((e) => console.error('daily solo fix', e));
     if (method === 'GET' && action === 'board') return view(String(query.get('b') || ''), /^\d{4}-\d{2}-\d{2}$/.test(query.get('d') || '') ? query.get('d') : today());
     if (method === 'GET' && action === 'today') return leaders();
     if (method !== 'POST') throw fail(405, 'Use POST.');
@@ -290,5 +325,5 @@ export function createDaily({ store, wallet = null, verify = null, clock = () =>
       return new Response(JSON.stringify({ error: status === 500 ? 'The daily board didn’t answer just then. Try again in a moment.' : e.message, code: e.code || null }), { status, headers });
     }
   }
-  return { begin, post, view, settle, settleDue, leaders, finish, golf, route, handle: handleRequest, today };
+  return { begin, post, view, settle, settleDue, fixSoloWins, leaders, finish, golf, route, handle: handleRequest, today };
 }

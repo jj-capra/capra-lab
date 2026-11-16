@@ -124,7 +124,7 @@ on purpose; do not bring any of them back unless JC asks.
   run banks its haul goes on the `mind-heist` board, timed from that first room (`bankResults`; the
   board comes back in `results[mid].board` and the final shows it as the lab's `<lab-daily-board>`,
   loaded from `/lab/daily.js` by `main.js`). The drop card has a 🏆 Today's lab board button. The #1 at
-  midnight (two or more players) gets a trophy and a diamond in the lab wallet. The friends boards
+  midnight gets a trophy and a diamond in the lab wallet (alone on the board too, since Nov 16 2026). The friends boards
   are unchanged.
 - **Trophies**: Vault Jam's (the day's fastest solve, Nov 2–7 2026) stay on profiles as history
   (🏆 count and shelf, shown only when there are any). Days still pending at the move
