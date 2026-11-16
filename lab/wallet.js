@@ -37,8 +37,15 @@ const LOG_KEEP = 40, REFS_KEEP = 60, HUNTERS_KEEP = 8, TROPHIES_KEEP = 80;
 const blank = () => ({ diamonds: 0, amber: 0, shards: 0, day: null, today: {}, gm: null, log: [], items: [], look: null, trophies: [] });
 const NOT_TROPHY = /moved to the lab/i;
 // The trophy shelf; a wallet from before trophies finds its diamond feats in the log.
+// A log copy's id is 't' + its time. Until Nov 16 2026 the first trophy paid into a log-only wallet
+// landed twice (its log copy and the real one, same time and why): one each.
+const logId = (t) => 't' + Number(t.at).toString(36);
+function oneEach(list) {
+  const real = new Set(list.filter((t) => t.id !== logId(t)).map((t) => t.at + '|' + t.why));
+  return list.filter((t) => t.id !== logId(t) || !real.has(t.at + '|' + t.why));
+}
 export function shelf(w, handle) {
-  if (Array.isArray(w && w.trophies)) return w.trophies;
+  if (Array.isArray(w && w.trophies)) return oneEach(w.trophies);
   return ((w && w.log) || []).filter((e) => e.diamonds > 0 && e.game !== 'glacial-maw' && e.game !== 'avatar' && !NOT_TROPHY.test(e.why || ''))
     .map((e) => ({ id: 't' + Number(e.at).toString(36), at: e.at, game: e.game, why: e.why || '', orig: handle, d: e.diamonds }));
 }
@@ -93,12 +100,12 @@ export function createWallet({ store, clock = () => Date.now(), verify = null })
     if (!Object.keys(add).length) return { paid: {}, ...view(await read(handle), now) };
     const { data } = await mutate(store, keyOf(handle), (w) => {
       roll(w, day);
+      if (add.diamonds) w.trophies = shelf(w, handle);   // the shelf from the log as it was, before this pay is in it
       for (const k of Object.keys(add)) w[k] = (w[k] || 0) + add[k];
       const t = (w.today[game] ||= {});
       for (const k of Object.keys(add)) t[k] = (t[k] || 0) + add[k];
       note(w, now, game, why, add);
       if (add.diamonds && trophy) {
-        w.trophies = shelf(w, handle);
         w.trophies.push({ id: 't' + now.toString(36) + Math.random().toString(36).slice(2, 5), at: now, game, why: String(why).slice(0, 80), orig: handle, d: add.diamonds });
         if (w.trophies.length > TROPHIES_KEEP) w.trophies.splice(0, w.trophies.length - TROPHIES_KEEP);
       }

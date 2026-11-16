@@ -83,6 +83,24 @@ await test('a diamond mints a trophy; moving old diamonds and plain amber do not
   assert.deepEqual(shelf(old, 'roman').map((t) => t.why), ['#1 on Screensaver, 2026-11-10']);
 });
 
+await test('a wallet from before trophies gets its next trophy once (the Nov 16 doubles show once too)', async () => {
+  const g = setup();
+  await g.walletStore.set('w/roman', { diamonds: 1, amber: 0, shards: 0, log: [{ at: 1, game: 'screensaver', why: '#1 on Screensaver, 2026-11-10', diamonds: 1 }], items: [], look: null });
+  await g.wallet.pay('roman', { diamonds: 1 }, { game: 'mind-heist', why: '#1 on Mind Heist · Daily drop, 2026-11-14' });
+  await g.wallet.pay('roman', { diamonds: 2 }, { game: 'mind-heist', why: 'Mind Heist diamonds moved to the lab', trophy: false });
+  let box = await g.wallet.trophyCase('roman');
+  assert.deepEqual(box.trophies.map((t) => t.why), ['#1 on Screensaver, 2026-11-10', '#1 on Mind Heist · Daily drop, 2026-11-14']);
+  // a shelf stored with the double shows it once, and the next write keeps it once
+  const at = g.now(), why = '#1 on No Cap · Kids, 2026-11-15';
+  await g.walletStore.set('w/mia', { diamonds: 1, log: [], items: [], trophies: [{ id: 't' + at.toString(36) + 'abc', at, game: 'no-cap', why, orig: 'mia', d: 1 }, { id: 't' + at.toString(36), at, game: 'no-cap', why, orig: 'mia', d: 1 }] });
+  assert.equal((await g.wallet.trophyCase('mia')).trophies.length, 1);
+  g.tick(1000);
+  await g.wallet.pay('mia', { diamonds: 1 }, { game: 'par-tee-time', why: '#1 on Par-Tee Time · Daily 3, 2026-11-15' });
+  box = await g.wallet.trophyCase('mia');
+  assert.deepEqual(box.trophies.map((t) => t.game), ['no-cap', 'par-tee-time']);
+  assert.equal(g.walletStore.map.get('w/mia').data.trophies.length, 2);
+});
+
 await test('anyone can watch a room; the owner sees the library and sets traps', async () => {
   const g = setup();
   await g.wallet.pay('jj-capra', { diamonds: 1 }, { game: 'par-tee-time', why: 'Masters trophy on Clockwork' });
