@@ -157,6 +157,7 @@ async function call(path, body) {
 
 /* ---------- the pen: pieces you drag along their length ---------- */
 const pct = (n) => `${(n * 100) / 6}%`;
+const GATE = 4;   // the goat is out with its head in column 4 (the gate is columns 4 and 5 of its row)
 class Pen {
   constructor(el, onMove) {
     this.onMove = onMove;
@@ -174,6 +175,7 @@ class Pen {
   }
   get board() { return this.boards[this.boards.length - 1]; }
   load(start) {
+    clearTimeout(this.walkT);
     this.drop();
     this.start = start; this.boards = [start]; this.moves = []; this.locked = false;
     this.draw(true);
@@ -195,8 +197,25 @@ class Pen {
     this.draw();
     return { board: this.board, moves };
   }
-  undo() { if (this.moves.length && !this.locked) { this.drop(); this.boards.pop(); this.moves.pop(); this.draw(); } }
-  reset() { this.drop(); this.boards = [this.start]; this.moves = []; this.locked = false; this.draw(true); }
+  undo() { clearTimeout(this.walkT); if (this.moves.length && !this.locked) { this.drop(); this.boards.pop(); this.moves.pop(); this.draw(); } }
+  reset() { clearTimeout(this.walkT); this.drop(); this.boards = [this.start]; this.moves = []; this.locked = false; this.draw(true); }
+  /* Once nothing stands between the goat and the gate, it walks out by itself (JC, Nov 18 2026: "it
+     needs to automatically walk out once they have clear path"). The walk goes through onMove like any
+     slide, so it's the move it would have been (merged with a goat slide just before it); `walkMs` says
+     how long it takes, for the sound and the result to wait on. A new drag, undo or reset calls it off. */
+  walkCheck() {
+    clearTimeout(this.walkT);
+    const b = this.board, a = pieces(b).A;
+    if (this.locked || solved(b) || !a || a.c + reach(b, 'A').max < GATE) return;
+    this.walkT = setTimeout(() => {
+      if (this.locked || this.drag || this.board !== b) return;
+      const el = this.els.get('A'), d = GATE - a.c;
+      this.walkMs = Math.round(120 + d * 200);
+      el.style.setProperty('--walk', this.walkMs + 'ms');
+      el.classList.add('walk');
+      this.onMove('A', d);
+    }, 260);
+  }
   // Point at the best next move: the piece pulses with an arrow, a dashed outline shows where it goes.
   showHint(id, d) {
     this.clearHint();
@@ -255,9 +274,9 @@ class Pen {
       el.style.top = pct(p.r);
       el.classList.remove('out');
     }
-    const won = solved(b);
-    if (won) { this.els.get('A').classList.add('out'); this.el.classList.add('won'); }
-    else this.el.classList.remove('won');
+    const won = solved(b), goat = this.els.get('A');
+    if (won) { goat.classList.add('walk', 'out'); this.el.classList.add('won'); }
+    else { goat.classList.remove('walk'); goat.style.removeProperty('--walk'); this.walkMs = 0; this.el.classList.remove('won'); }
   }
   // A piece that can't go anywhere shakes, and the pieces that can move light up for a moment
   // (JC, Nov 14 2026: on a crowded pen, "freeze when trying to move tiles").
@@ -276,6 +295,7 @@ class Pen {
     // A drag whose finger-up never arrived (a phone can swallow it) must not lock the pen.
     if (this.drag) { if (e.pointerId === this.drag.pid || Date.now() - this.drag.last < 1500) return; this.drop(); }
     e.preventDefault();
+    clearTimeout(this.walkT);
     const p = pieces(this.board)[id];
     const { min, max } = reach(this.board, id);
     if (!min && !max) { this.shake(id); return; }
@@ -331,6 +351,7 @@ class Pen {
     void g.el.offsetWidth;
     g.el.classList.remove('drag');
     g.el.style.transform = '';
+    if (d) this.walkCheck();
   }
   key(e, id) {
     if (this.locked || solved(this.board)) return;
@@ -340,7 +361,7 @@ class Pen {
     if (!d) return;
     e.preventDefault();
     const { min, max } = reach(this.board, id);
-    if (d >= min && d <= max) this.onMove(id, d); else this.shake(id);
+    if (d >= min && d <= max) { this.onMove(id, d); this.walkCheck(); } else this.shake(id);
   }
 }
 
@@ -396,7 +417,7 @@ const Today = {
   set(d, fresh) {
     const prevDate = this.data && this.data.pen.date;
     this.data = d;
-    if (prevDate !== d.pen.date) { this.res = null; this.guestStart = null; this.guestDone = null; }
+    if (prevDate !== d.pen.date) { this.res = null; this.guestBoard = null; this.guestStart = null; this.guestDone = null; this.starting = null; }
     const t = d.pen, me = d.me;
     const tierEl = `<span class="tier" style="--tier:${TIER_COLORS[t.tier]}">${esc(t.tierName)}</span>`;
     $('kicker').innerHTML = `${tierEl}<span>No. ${t.no}</span><span class="muted">${esc(t.day)} · par ${t.par}</span>`;
@@ -404,7 +425,7 @@ const Today = {
     rc.hidden = !me || !me.ribbons;
     if (me && me.ribbons) { rc.innerHTML = `${RIBBON}<span class="num">${me.ribbons}</span>`; rc.title = plural(me.ribbons, 'Blue Ribbon'); }
 
-    const board = t.board || (this.guestStart != null ? this.guestBoard : null);
+    const board = t.board || this.guestBoard || null;
     $('opener').hidden = !!board;
     $('play').hidden = !board;
     if (!board) this.opener();
@@ -420,7 +441,7 @@ const Today = {
   opener() {
     const t = this.data.pen, me = this.data.me;
     $('openWhat').innerHTML = me
-      ? `<b>The clock starts when you open the pen.</b> Your first getaway is your time. Get the goat out: <b>+30 amber</b>. Do it in ${t.par} moves with no hints: <b>+1 💎</b>.`
+      ? `<b>Open the pen and take a look: the clock starts on your first move.</b> Your first getaway is your time. Get the goat out: <b>+30 amber</b>. Do it in ${t.par} moves with no hints: <b>+1 💎</b>.`
       : `One pen a day, the same for everyone. Today’s is <b>${esc(t.tierName)}</b> level: the goat can get out in ${t.par} moves.`;
     $('openNote').innerHTML = me
       ? 'Amber and diamonds go into your Capra Lab wallet, the same one in every lab game.'
@@ -432,9 +453,10 @@ const Today = {
     try {
       const r = await call('/open');
       sfx.creak();
-      if (r.guest) { this.guestBoard = r.pen.board; this.guestStart = Date.now(); this.guestDone = null; }
+      if (r.guest) { this.guestBoard = r.pen.board; this.guestStart = null; this.guestDone = null; }
       const d = { ...this.data, pen: r.pen, me: r.me ? { ...this.data.me, ...r.me } : this.data.me };
       this.set(d, true);
+      if (!this.done() && this.elapsed() === 0) toast('Take a look. The clock starts on your first move.');
       $('board').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     } catch (e) { toast(e.message, 'err'); }
     this.busy = false; $('openBtn').disabled = false;
@@ -442,10 +464,26 @@ const Today = {
   done() { const me = this.data.me; return me ? me.ms != null : this.guestDone != null; },
   elapsed() {
     const me = this.data.me;
-    // hints before your first getaway count on the clock (HINT_MS each, on the server)
-    if (me) return me.ms != null ? me.ms : me.open != null ? serverNow() - me.open + (me.hints || 0) * 15000 : null;
-    if (this.guestStart == null) return null;
-    return (this.guestDone || Date.now()) - this.guestStart;
+    // the clock runs from the first move; hints before your first getaway count on it (HINT_MS each, on the server)
+    if (me) return me.ms != null ? me.ms : me.start != null ? serverNow() - me.start + (me.hints || 0) * 15000 : me.open != null ? 0 : null;
+    if (this.guestBoard == null) return null;
+    return this.guestStart == null ? 0 : (this.guestDone || Date.now()) - this.guestStart;
+  },
+  // The first move starts the clock (JC, Nov 18 2026). A signed-in player's runs on the server: the
+  // page tells it now and shows the time straight away; the server's own start replaces it.
+  begin() {
+    const me = this.data.me;
+    if (!me) { if (this.guestStart == null) this.guestStart = Date.now(); return; }
+    if (me.ms != null || me.start != null || this.starting) return;
+    me.start = serverNow();
+    this.startCall();
+  },
+  startCall() {
+    const date = this.data.pen.date;
+    this.starting = call('/start', { date })
+      .then((r) => { if (r.me && this.data.me && this.data.pen.date === date && r.me.start != null) this.data.me.start = r.me.start; return true; })
+      .catch(() => { this.starting = null; return false; });
+    return this.starting;
   },
   clock() {
     // one clock loop at a time (each set() used to start another one alongside the last)
@@ -478,6 +516,7 @@ const Today = {
         move = r.move;
         const firstHint = !me.hints;
         me.hints = r.hints;
+        if (r.start != null && me.ms == null) me.start = r.start;   // a hint before any move starts the clock
         if (r.penalty && firstHint) toast('Hint! Each one adds 15 seconds to your time, and today won’t earn the par diamond.');
         this.after();
       } else {
@@ -502,18 +541,22 @@ const Today = {
   moved(id, d) {
     const r = this.pen.play(id, d);
     if (!r) return;
+    this.begin();
     sfx.slide();
     this.hud();
     if (solved(r.board)) {
       this.pen.locked = true;
       if (!this.data.me && this.guestDone == null) this.guestDone = Date.now();
-      sfx.out();
+      const walk = this.pen.walkMs || 0;
+      setTimeout(() => sfx.out(), walk);
       this.hud();
-      setTimeout(() => this.submit(r.moves), 650);
+      setTimeout(() => this.submit(r.moves), 650 + walk);
     }
   },
   async submit(moves) {
     try {
+      // the server hears about the first move before the getaway (asked again if that call failed)
+      if (this.data.me && this.data.me.ms == null) await (this.starting || this.startCall());
       const r = await call('/solve', { moves, date: this.data.pen.date });
       this.res = r;
       if (r.paid && window.CapraWallet) CapraWallet.paid(r.paid);   // the server paid the lab wallet
@@ -690,7 +733,7 @@ const Practice = {
     sfx.slide();
     if (solved(r.board)) {
       this.doneAt = Date.now();
-      sfx.out();
+      setTimeout(() => sfx.out(), this.pen.walkMs || 0);
       const p = this.pool[this.idx], perfect = r.moves.length <= p[1];
       if (perfect) setTimeout(() => confetti(), 500);
       const el = $('pResult');

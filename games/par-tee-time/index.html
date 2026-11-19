@@ -2185,7 +2185,7 @@ const INK = '#0b0916', CREAM = '#f3e9d2', GOLD = '#d4af37', CORAL = '#e8877a', S
 const SFX_FONT = '"Bangers", "Impact", "Arial Black", sans-serif';
 const TITLE_FONT = '"Luckiest Guy", "Arial Black", sans-serif';
 
-const RD = { cv: null, ctx: null, dpr: 1, s: 1, ox: 0, oy: 0, cw: 0, ch: 0, stat: null, statKey: '', pat: {}, fx: [], parts: [], shake: 0, impact: 0, impactText: '', flash: 0, boom: null };
+const RD = { cv: null, ctx: null, dpr: 1, s: 1, ox: 0, oy: 0, cw: 0, ch: 0, stat: null, statKey: '', pat: {}, fx: [], parts: [], spag: [], shake: 0, impact: 0, impactText: '', flash: 0, boom: null };
 
 function rng32(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
@@ -2988,6 +2988,88 @@ function fxParticles(x, y, n, colors, spd = 120, life = 0.7, grav = 0) {
   for (let i = 0; i < n; i++) { const a = Math.random() * TAU, s = spd * (0.4 + Math.random() * 0.8); RD.parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, c: colors[i % colors.length], t0: now, life: life * (0.6 + Math.random() * 0.6), g: grav, r: 1.5 + Math.random() * 2.5 }); }
   if (RD.parts.length > 400) RD.parts.splice(0, RD.parts.length - 400);
 }
+/* Spaghettified (JC, Nov 18 2026: "a fun graphic of the ball getting spiralized"). A ball that falls into a
+   black hole springs into a noodle of its own colour coiled round the hole; the front end races down the
+   spiral, the back end follows, thinner the longer it's pulled, a little pasta wiggle in it, ink-lined with
+   a shine; the coil swirls as it drains, and the last of it goes down with a pop and a SLURP!. Drawn on
+   the ground overhead (spagPts in world units) and in the shot camera (the same points, projected). */
+const SPAG_DUR = 1.75, PASTA = '#f5cf6a';
+const mixHex = (a, b, k) => { const p = (h) => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)), x = p(a), y = p(b); return '#' + x.map((v, i) => Math.round(v + (y[i] - v) * k).toString(16).padStart(2, '0')).join(''); };
+function spagStart(e, now) {
+  let w = null, best = Infinity;
+  for (const x of G.hole.wells) { const d = vlen(e.x - x.x, e.y - x.y); if (d < best) { best = d; w = x; } }
+  if (!w) return;
+  const b = ((G.sim && G.sim.balls) || []).find(q => q.id === e.id) || G.balls.find(q => q.id === e.id) || {};
+  const ax = e.x - w.x, ay = e.y - w.y;
+  const color = /^#[0-9a-f]{6}$/i.test(b.color || '') ? b.color : CREAM;
+  RD.spag.push({ wx: w.x, wy: w.y, core: w.core, a0: Math.atan2(ay, ax), dir: Math.sign(ax * (b.vy || 0) - ay * (b.vx || 0)) || 1, color, t0: now, popped: false });
+  if (RD.spag.length > 4) RD.spag.shift();
+  fxParticles(e.x, e.y, 10, [PALE, GOLD, b.color || CREAM], 90, 0.5);
+}
+// the noodle's centre line at u (0 to 1): [x, y, z, width] from its back end to its front
+function spagPts(s, u) {
+  const PHI = TAU * 2.4, r0 = (s.core + 36) * (0.4 + 0.6 * clamp(u / 0.12, 0, 1));   // it springs out to full size
+  const ease = (k) => k * k * (3 - 2 * k);
+  const head = PHI * ease(clamp(u * 1.8, 0, 1)), tail = PHI * ease(clamp((u - 0.3) / 0.7, 0, 1)), len = head - tail;   // the front races down the spiral, the back follows late
+  const stretch = clamp(len / (PHI * 0.4), 0, 1), spin = s.dir * u * 2.2;
+  const n = Math.max(2, Math.ceil(len / 0.1)), out = [];
+  for (let i = 0; i <= n; i++) {
+    const ph = tail + (len * i) / n, f = ph / PHI;   // 0 at the rim, 1 down the middle
+    const r = r0 * Math.pow(1 - f, 0.9) + Math.sin(ph * 6 - u * 24) * 1.3 * (1 - f);
+    const a = s.a0 + s.dir * ph + spin;
+    out.push([s.wx + Math.cos(a) * r, s.wy + Math.sin(a) * r, -f * 6, Math.max(1.4, 2.2 * R * (1 - 0.62 * stretch) * Math.pow(1 - f, 0.5))]);
+  }
+  return out;
+}
+// ink, the pasta (the ball's own colour turning to spaghetti), a stripe of the ball's colour, a shine:
+// pts already on screen ([x, y, width])
+function spagStroke(ctx, pts, color, u) {
+  const k = clamp(u / 0.28, 0, 1), body = mixHex(color, PASTA, k);
+  ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  for (let pass = 0; pass < 4; pass++) {
+    if (pass === 2 && k < 0.3) continue;
+    ctx.strokeStyle = pass === 0 ? INK : pass === 1 ? body : pass === 2 ? color : 'rgba(255,255,255,.75)';
+    for (let i = 1; i < pts.length; i++) {
+      const a = pts[i - 1], b = pts[i], w = (a[2] + b[2]) / 2;
+      ctx.lineWidth = pass === 0 ? w + 3 : pass === 1 ? w : pass === 2 ? Math.max(0.7, w * 0.36) : Math.max(0.5, w * 0.16);
+      ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+// the pop as the last of it goes down: gold rays
+function spagPop(ctx, x, y, k, sc) {
+  ctx.save(); ctx.translate(x, y); ctx.globalAlpha = 1 - k; ctx.lineCap = 'round';
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * TAU, r1 = (4 + 16 * k) * sc, r2 = (9 + 26 * k) * sc;
+    ctx.beginPath(); ctx.moveTo(Math.cos(a) * r1, Math.sin(a) * r1); ctx.lineTo(Math.cos(a) * r2, Math.sin(a) * r2);
+    ctx.lineWidth = 4 * sc; ctx.strokeStyle = INK; ctx.stroke(); ctx.lineWidth = 2 * sc; ctx.strokeStyle = i % 2 ? GOLD : PALE; ctx.stroke();
+  }
+  ctx.restore();
+}
+const spagBusy = (now) => RD.spag.some(s => now - s.t0 < SPAG_DUR + 0.3);
+function spagTick(now) {
+  RD.spag = RD.spag.filter(s => now - s.t0 < SPAG_DUR + 0.45);
+  for (const s of RD.spag) if (!s.popped && now - s.t0 > SPAG_DUR * 0.92) { s.popped = true; sfx.slurp(); fxBurst('SLURP!', s.wx, s.wy + s.core + 30, 'gold', 0.75, 0.85); }
+}
+function drawSpag(ctx, now) {   // overhead, in world units
+  spagTick(now);
+  for (const s of RD.spag) {
+    const u = (now - s.t0) / SPAG_DUR;
+    if (u < 1) spagStroke(ctx, spagPts(s, u).map(p => [p[0], p[1], p[3]]), s.color, u);
+    else spagPop(ctx, s.wx, s.wy, (u - 1) / 0.28, 1);
+  }
+}
+function drawSpagCam(ctx, now, proj) {   // the shot camera: the same noodle, projected
+  spagTick(now);
+  for (const s of RD.spag) {
+    const u = (now - s.t0) / SPAG_DUR;
+    if (u >= 1) { const p = proj(s.wx, s.wy, 0); if (p) spagPop(ctx, p.x, p.y, (u - 1) / 0.28, clamp(p.s * 0.8, 0.5, 2.2)); continue; }
+    const pts = [];
+    for (const q of spagPts(s, u)) { const p = proj(q[0], q[1], q[2] + 1.5); if (p) pts.push([p.x, p.y, q[3] * p.s]); }
+    if (pts.length > 1) spagStroke(ctx, pts, s.color, u);
+  }
+}
 function drawFX(ctx, now) {
   // particles
   RD.parts = RD.parts.filter(p => now - p.t0 < p.life);
@@ -3298,6 +3380,7 @@ const sfx = {
   boing() { tone(260, 0.28, 'sine', 0.35, 720); },
   honk() { tone(440, 0.12, 'square', 0.1); tone(349, 0.14, 'square', 0.1, null, 0.13); },
   void() { tone(500, 0.6, 'sawtooth', 0.18, 40); noise(0.6, 0.2, 500, 1, 80); },
+  slurp() { tone(240, 0.3, 'triangle', 0.16, 1100); noise(0.28, 0.08, 900, 1, 2600); },
   boost() { noise(0.3, 0.25, 600, 1, 3000); tone(300, 0.3, 'triangle', 0.2, 900); },
   whap() { noise(0.12, 0.35, 900, 1.2); tone(140, 0.1, 'sine', 0.3, 90); },
   tick() { tone(2200, 0.03, 'square', 0.08); },
@@ -3650,7 +3733,7 @@ function processEvents(now) {
       case 'water': sfx.splash(); fxParticles(e.x, e.y, 26, [PALE, SKY, CREAM], 150, 0.8, 260); fxBurst('SPLOOSH!', e.x, e.y - 22, 'sky', 1, 1.1); if (!REDUCED) RD.shake = 4; break;
       case 'pocket': sfx.cup(); fxBurst(e.kind === 'o' ? (String(e.id) === G.eightId ? 'EIGHT BALL!' : 'SUNK!') : 'SCRATCH!', e.x, e.y - 22, e.kind === 'o' ? 'gold' : 'coral', 0.95, 1.0); break;
       case 'laser': sfx.zap(); fxBurst('ALARM!', e.x, e.y - 22, 'coral', 1.05, 1.1); fxParticles(e.x, e.y, 14, ['#ff4f5e', CREAM], 120, 0.6); if (!REDUCED) RD.shake = 5; break;
-      case 'void': sfx.void(); fxBurst('SPAGHETTIFIED!', e.x, e.y - 30, 'pale', 0.85, 1.2); break;
+      case 'void': { sfx.void(); const w = G.hole.wells.reduce((m, x) => (vlen(e.x - x.x, e.y - x.y) < vlen(e.x - m.x, e.y - m.y) ? x : m), G.hole.wells[0]); fxBurst('SPAGHETTIFIED!', e.x, (w ? w.y - w.core : e.y) - 62, 'pale', 0.85, 1.4); spagStart(e, now); break; }
       case 'boost': sfx.boost(); fxBurst('ZOOM!', e.x, e.y - 20, 'gold', 0.85, 0.7); break;
       case 'oob': fxBurst('OUT!', e.x, e.y, 'coral', 0.9, 0.9); break;
     }
@@ -3690,7 +3773,7 @@ function tick(ts) {
       while (G.simAcc >= DT && steps < 40) { const t0 = S.t; stepWorld(S); G.simAcc -= DT; steps++; spinBalls(S.t - t0); nearWatch(); if (!anyAwake(S)) break; }
       G.clock = G.sim.t;
       processEvents(now);
-      if (!anyAwake(G.sim) || G.sim.t - G.sim.t0 > 14) { nearMissCheck(); if (CAM.on) camSettle(); else finishShot(); }   // the shot camera finishes the shot when it's back overhead
+      if ((!anyAwake(G.sim) || G.sim.t - G.sim.t0 > 14) && (CAM.on || !spagBusy(now))) { nearMissCheck(); if (CAM.on) camSettle(); else finishShot(); }   // the shot camera finishes the shot when it's back overhead; overhead, a spaghettified ball goes all the way down first
     } else G.clock += dt;
     if (G.state === 'npc') npcTick(now);
     camTick(dt);
@@ -3710,6 +3793,7 @@ function render(now) {
   const t = G.clock, h = G.hole;
   const active = ['aim', 'npc', 'remote', 'roll'].includes(G.state) ? ballOf(G.cur) : null;
   drawMovers(ctx, h, t, active);
+  drawSpag(ctx, now);
   const near = G.balls.some(b => b.kind === 'p' && vlen(b.x - h.cup.x, b.y - h.cup.y) < 48);
   drawFlag(ctx, h, now, near);
   for (const b of G.balls) if (!b.out && b.kind === 'o') drawBall(ctx, b);
@@ -3831,7 +3915,8 @@ function camNarrate() {
     else if (e.type === 'lip') camSayOnce('lip', 'LIPPED OUT!');
     else if (e.type === 'cup') camSayOnce('cup', CAM.ace ? 'HOLE IN ONE!!!' : 'IT DROPS!');
     else if (e.type === 'pocket') camSayOnce('pocket', 'SIDE POCKET!');
-    else if (e.type === 'oob' || e.type === 'void') camSayOnce('oob', 'OUT OF BOUNDS!');
+    else if (e.type === 'void') camSayOnce('oob', 'SPAGHETTIFIED!');
+    else if (e.type === 'oob') camSayOnce('oob', 'OUT OF BOUNDS!');
   }
   const b = ballOf(CAM.s), cup = G.hole.cup;
   if (b && !b.out && vlen(b.x - cup.x, b.y - cup.y) < 60 && vlen(b.vx, b.vy) > 30) camSayOnce('near', 'WILL IT DROP…?');
@@ -3857,7 +3942,7 @@ function camTick(dt) {
   if ((CAM.phase === 'in' && CAM.k >= CAM_IN) || (CAM.phase === 'roll' && CAM.settled)) {
     if (CAM.settled) {
       const b = ballOf(CAM.s), cup = G.hole.cup;
-      CAM.phase = 'hold'; CAM.holdFor = b && b.out === 'cup' ? (CAM.ace ? 3.0 : CAM_HOLD_CUP) : G.nearMiss ? 1.2 : CAM_HOLD;
+      CAM.phase = 'hold'; CAM.holdFor = b && b.out === 'cup' ? (CAM.ace ? 3.0 : CAM_HOLD_CUP) : b && b.out === 'void' ? 1.4 : G.nearMiss ? 1.2 : CAM_HOLD;   // a spaghettified ball gets watched going down
       camNarrate();
       if (b && !b.out && !CAM.said.cup && !G.nearMiss) camSay(vlen(b.x - cup.x, b.y - cup.y) < 28 ? 'SO CLOSE…' : 'IT STOPS HERE.');
     } else CAM.phase = 'roll';
@@ -4171,6 +4256,7 @@ function renderChase(now) {
     if (it.o.tunnel && f.n && Math.abs(f.n[1]) > 0.9 && s > 0.6) camTunnel(ctx, it.o.tunnel, f, proj);
     ctx.globalAlpha = 1;
   }
+  drawSpagCam(ctx, now, proj);
   // the comic words, where they happened
   RD.fx = RD.fx.filter(f => now - f.t0 < f.dur);
   for (const f of RD.fx) { const p = proj(f.x, f.y, 30); if (p) drawBurst(ctx, f, now, p.x, p.y, clamp(p.s * 0.7, 0.45, 1.3)); }

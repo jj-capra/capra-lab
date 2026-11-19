@@ -4,24 +4,46 @@
 const INK = '#120E18';
 const PAPER = '#FFF8EC';
 
-// The goat, side view, heading right for the gate (200 x 100).
+// The goat seen from above, heading right for the gate (200 x 100). JC, Nov 18 2026: "an actual animated
+// goat from aerial view that is moving slightly" instead of a block. Its parts are named groups the page
+// animates (index.html): gg-head looks around, gg-earL/R flick, gg-tail wags, gg-body breathes, and when
+// it walks out (.walk) the legs step in diagonal pairs (gg-legA, gg-legB).
+const FUR = PAPER, SHADE = '#E9D6B8', PINK = '#F2B8A0', HORN = '#9C8564';
+const LEG = (x, top) => {
+  const y = top ? 11 : 71;
+  return `<rect x="${x}" y="${y}" width="12" height="18" rx="6" fill="${FUR}" stroke="${INK}" stroke-width="4"/>
+    <rect x="${x + 1}" y="${top ? y - 2 : y + 11}" width="10" height="9" rx="4" fill="${INK}"/>`;
+};
 const GOAT = `
-  <rect x="6" y="8" width="188" height="84" rx="22" fill="#FFD23F" stroke="${INK}" stroke-width="5"/>
-  <path d="M30 66 q-12 -6 -10 -20" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>
-  <ellipse cx="82" cy="58" rx="52" ry="22" fill="${PAPER}" stroke="${INK}" stroke-width="5"/>
-  <path d="M52 76 v10 M70 78 v9 M98 78 v9 M116 76 v10" stroke="${INK}" stroke-width="7" stroke-linecap="round"/>
-  <ellipse cx="74" cy="56" rx="12" ry="7" fill="#E9D6B8"/>
-  <path d="M126 50 q4 -18 22 -22" fill="none" stroke="${PAPER}" stroke-width="16" stroke-linecap="round"/>
-  <path d="M126 50 q4 -18 22 -22" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round" stroke-dasharray="0 0"/>
-  <path d="M138 30 q8 -14 26 -12 q16 2 18 18 q1 12 -9 16 l-14 4 q-16 2 -22 -12 z" fill="${PAPER}" stroke="${INK}" stroke-width="5" stroke-linejoin="round"/>
-  <path d="M150 22 q-4 -14 -18 -16" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>
-  <path d="M160 20 q2 -14 -10 -18" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>
-  <path d="M142 34 q-14 2 -18 10 q10 2 18 -4" fill="${PAPER}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
-  <circle cx="166" cy="34" r="4.5" fill="${INK}"/>
-  <circle cx="167.5" cy="32.5" r="1.4" fill="${PAPER}"/>
-  <path d="M180 44 q-4 3 -9 1" fill="none" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>
-  <path d="M168 54 q2 10 -2 16 q-6 -6 -6 -14" fill="${INK}"/>
-  <path d="M132 56 q8 6 16 2" fill="none" stroke="#E4572E" stroke-width="6" stroke-linecap="round"/>`;
+  <g class="gg-legA">${LEG(108, true)}${LEG(44, false)}</g>
+  <g class="gg-legB">${LEG(108, false)}${LEG(44, true)}</g>
+  <g class="gg-tail"><path d="M37 50 q-10 -11 -22 -12 q5 12 0 24 q12 -1 22 -12 z" fill="${FUR}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M22 46 l7 3 M22 54 l7 -3" stroke="${SHADE}" stroke-width="3" stroke-linecap="round"/></g>
+  <g class="gg-body">
+    <ellipse cx="84" cy="50" rx="51" ry="29" fill="${FUR}" stroke="${INK}" stroke-width="5"/>
+    <path d="M58 29 q20 -7 36 2 q-6 13 -24 13 q-15 -1 -12 -15 z" fill="#C9874A" stroke="${INK}" stroke-width="2.5"/>
+    <path d="M92 63 q14 -5 24 2 q-5 9 -16 8 q-9 -2 -8 -10 z" fill="#C9874A" stroke="${INK}" stroke-width="2.5"/>
+    <path d="M40 50 q46 -5 92 0" fill="none" stroke="${SHADE}" stroke-width="5" stroke-linecap="round"/>
+    <path d="M46 37 l7 3 M66 67 l8 1 M112 37 l6 3 M44 62 l7 -2" stroke="${SHADE}" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g class="gg-head">
+    <ellipse cx="136" cy="50" rx="15" ry="15.5" fill="${FUR}" stroke="${INK}" stroke-width="4"/>
+    <path d="M136 33 q9 17 0 34" fill="none" stroke="#E4572E" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="134" cy="71" r="5" fill="#FFD23F" stroke="${INK}" stroke-width="2.5"/>
+    <g class="gg-earL"><path d="M158 37 q-4 -22 -20 -30 q-2 18 10 32 z" fill="${FUR}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M154 34 q-3 -13 -11 -19 q-1 10 5 18 z" fill="${PINK}"/></g>
+    <g class="gg-earR"><path d="M158 63 q-4 22 -20 30 q-2 -18 10 -32 z" fill="${FUR}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M154 66 q-3 13 -11 19 q-1 -10 5 -18 z" fill="${PINK}"/></g>
+    <path d="M144 50 C144 33 156 28 170 30 C186 33 197 41 197 50 C197 59 186 67 170 70 C156 72 144 67 144 50 Z" fill="${FUR}" stroke="${INK}" stroke-width="5"/>
+    <path d="M165 40 Q148 35 133 27 Q146 42 165 47 Z" fill="${HORN}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M165 60 Q148 65 133 73 Q146 58 165 53 Z" fill="${HORN}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M158 39.5 l-1.5 5 M151 37.5 l-2 4.5 M144 34.5 l-2 4 M158 60.5 l-1.5 -5 M151 62.5 l-2 -4.5 M144 65.5 l-2 -4" stroke="${INK}" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M168 46 q4 4 0 8" fill="none" stroke="${SHADE}" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="188" cy="50" rx="7.5" ry="10" fill="${PINK}" stroke="${INK}" stroke-width="3"/>
+    <path d="M190 46 h1.5 M190 54 h1.5" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="174" cy="35" r="4.2" fill="${INK}"/><circle cx="175.4" cy="33.6" r="1.3" fill="${PAPER}"/>
+    <circle cx="174" cy="65" r="4.2" fill="${INK}"/><circle cx="175.4" cy="63.6" r="1.3" fill="${PAPER}"/>
+  </g>`;
 
 // A hay bale from above (200 x 100): straw and two bands of twine.
 const HAY = (fill, dark) => `
@@ -82,7 +104,7 @@ export function pieceArt(id, len, flat) {
 export const postArt = () => `<svg viewBox="0 0 100 100" aria-hidden="true">${POST}</svg>`;
 
 export function pieceName(id, len, flat) {
-  if (id === 'A') return 'The goat. Slide it right, out the gate.';
+  if (id === 'A') return 'The goat. Clear its path and it walks out the gate.';
   const n = id.charCodeAt(0) - 66;
   const what = len === 3 ? 'tractor' : n % 3 === 2 ? 'apple crate' : 'hay bale';
   return `${flat ? 'Side-to-side' : 'Up-and-down'} ${what}`;

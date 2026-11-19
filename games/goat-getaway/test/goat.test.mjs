@@ -28,7 +28,7 @@ function rig(start) {
     const res = await api.handle(new Request('https://capra-lab.netlify.app/goat-getaway/api' + path, { method: 'POST', body: JSON.stringify(body) }));
     return { status: res.status, ...(await res.json()) };
   };
-  return { store, wallet, walletStore, call, tick: (ms) => { t += ms; } };
+  return { store, wallet, walletStore, call, tick: (ms) => { t += ms; }, now: () => t };
 }
 const as = (who, extra = {}) => ({ lab: LAB[who], ...extra });
 
@@ -91,6 +91,37 @@ test('hidden until opened, server-timed, two diamonds at par, then nothing more'
   assert.equal(j.pen.board, t.board, 'opened today, so the board comes back');
   assert.equal(j.me.ms, 41000);
   assert.equal(j.me.parGem, true);
+});
+
+test('the clock starts on the first move, not when the pen opens', async () => {
+  const R = rig(Date.parse('2026-11-18T18:00:00Z'));
+  const t = daily('2026-11-18'), best = solve(t.board);
+  assert.equal((await R.call('/start', as('ann'))).status, 409, 'open first');
+  const o = await R.call('/open', as('ann'));
+  assert.equal(o.me.start, null, 'opening shows the pen, the clock waits');
+  R.tick(30000);                                       // studying the pen costs nothing
+  let st = await R.call('/start', as('ann', { date: '2026-11-18' }));
+  assert.equal(st.status, 200, st.error);
+  assert.equal(st.me.start, R.now());
+  const started = st.me.start;
+  R.tick(2000);
+  st = await R.call('/start', as('ann'));
+  assert.equal(st.me.start, started, 'a second start keeps the first');
+  R.tick(18000);
+  const s = await R.call('/solve', as('ann', { moves: best.path }));
+  assert.equal(s.ms, 20000, 'timed from the first move');
+  assert.equal((await R.call('/start', as('ann'))).me.start, started, 'after a getaway nothing restarts');
+  assert.equal((await R.call('/start')).guest, true, 'a guest’s clock is on the phone');
+  assert.equal((await R.call('/start', as('ann', { date: '2026-11-17' }))).status, 409, 'yesterday’s pen is closed');
+  // a hint before any move starts the clock too
+  await R.call('/open', as('bo'));
+  R.tick(10000);
+  const h = await R.call('/hint', as('bo', { moves: [] }));
+  assert.equal(h.start, R.now());
+  R.tick(5000);
+  await R.call('/start', as('bo'));
+  R.tick(5000);
+  assert.equal((await R.call('/solve', as('bo', { moves: best.path }))).ms, 10000 + HINT_MS, 'from the hint, plus its 15 s');
 });
 
 test('par later the same day still pays; the race keeps the first time', async () => {

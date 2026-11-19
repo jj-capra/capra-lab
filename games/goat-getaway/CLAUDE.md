@@ -18,8 +18,21 @@ on from Vault Jam (2026-11-02 = No. 1), on the same puzzles.
   Nov 15 (`EASY_FROM`, `WEEK_TIERS` in `server/daily.js`): Monday Kid, Tuesday and Wednesday Yearling,
   Thursday and Friday Nanny, Saturday and Sunday Billy (a tier on two days takes two pens a week). The
   tough pens stay in Practice (Hard). Older dates keep the old climb, so past pens don't change.
-- The board stays hidden until **Open the pen**; the server starts the clock then. The **first**
+- The board stays hidden until **Open the pen**, and looking is free: the clock starts on the **first
+  move** (JC, Nov 18 2026: "the clock for the daily challenge doesn't start until they make their first
+  move"; practice already worked that way). The page shows the time at once and calls `POST /start`
+  (asked again before `/solve` if it didn't get through); a hint before any move starts it too. A
+  getaway with no start on record (a pen opened before Nov 18) is timed from opening. The **first**
   getaway is your time. The server replays the moves before believing anything.
+- **The goat** (JC, Nov 18 2026: "an actual animated goat from aerial view that is moving slightly. Make
+  it a goat instead of a block and it needs to automatically walk out once they have clear path"): drawn
+  from above in `art.js` (`GOAT`, named groups), it looks around, flicks its ears, wags and breathes (the
+  `gg-` animations in index.html, off for reduced motion). Once nothing stands between it and the gate it
+  walks out by itself, 260 ms after the move that cleared the way (`Pen.walkCheck`): the walk is a goat
+  slide through `onMove` like any other, so it counts as the move it is (merged with a goat slide just
+  before it) and par stays exact; its legs step while it walks (`.walk`, `--walk` how long), the sound
+  and Today's submit wait for it (`walkMs`); a new drag, undo or reset calls it off. `.wrap` clips sideways
+  so the goat can walk off the page without the page scrolling.
 - **The lab wallet** (JC, Nov 12 2026: diamonds, amber and shards for the whole lab, paid by how
   rare): getting out of today's pen +30 amber (`PAY_OUT`), at par with no hints +1 💎 (`PAY_PAR`,
   also on a later try that day). The server pays them into the lab wallet (`wallet.pay`, lab/wallet.js)
@@ -52,7 +65,7 @@ on from Vault Jam (2026-11-02 = No. 1), on the same puzzles.
 - `shared/puzzles.mjs`: the pens (7 weekday tiers, 200 practice), made by
   `node dev/make-puzzles.mjs [seed]` (about 10 minutes; every pen is re-solved so par is exact;
   commit the result). A plain module, not JSON, so every bundler reads it the same way.
-- `server/daily.js` (today's pen, the race board), `server/api.js` (`POST /today`, `/open`,
+- `server/daily.js` (today's pen, the race board), `server/api.js` (`POST /today`, `/open`, `/start`,
   `/solve`, `/hint`, every call with the lab sign-in in the body), `server/store.js` (Blobs or memory,
   compare-and-swap). The function is `netlify/functions/goat-getaway.mjs` (`config.path`
   `/goat-getaway/api/*`). Store `goat-getaway`: `p/<handle>` (today, pending ribbon days,

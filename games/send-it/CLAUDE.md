@@ -4,6 +4,9 @@ A homemade flying machine off the end of a pier, flown by tilting the phone. Nat
 **capra-lab.netlify.app/send-it/** (JC, Nov 14 2026: "a game called Send It! The game is a vehicle or
 airworthy vessel of their choice is selected and they try to get it as far as possible using their phone
 motion to not stall or take on too much opposing wind or have too much drag. Make the choices funny").
+**Off the hub since Nov 18 2026** (JC: "Send it is in the main menu, remove it so it is just accessible
+in IRL"): no tile in the hub's grid; IRL's body-flown Send It! is the way in. The page still answers at
+/send-it/ for old links, and IRL imports its `logic.mjs` and `rear.mjs`, so keep both.
 JC pointed at a famous pier-jump flying contest for the feel; this is our own parody. Never use a real
 event's or sponsor's name, logo or marks anywhere in the game.
 

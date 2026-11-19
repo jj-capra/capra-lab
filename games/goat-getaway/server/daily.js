@@ -42,7 +42,7 @@ export function daily(today) {
 export const practicePens = () => DATA.practice.map(split).sort((a, b) => a.par - b.par).map((p) => [p.board, p.par]);
 
 /* The day's race board, blob j/<date>: { e: { handle: [ms, moves, at, name] } }.
-   Times are measured by the server from opening the pen to the first getaway. */
+   Times are measured by the server from the first move (or opening, for a pen with no start on record) to the first getaway. */
 const better = (a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2];
 
 export function leader(board) {

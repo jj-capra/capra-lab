@@ -66,7 +66,7 @@ export function createApi({ store, wallet = null, verify, clock = () => Date.now
   const mine = (rec, today) => {
     const d = rec && rec.day && rec.day.date === today ? rec.day : null;
     const ribbons = (rec && rec.ribbons) || [];
-    return { open: d ? d.open : null, ms: d ? d.ms ?? null : null, moves: d ? d.moves ?? null : null, best: d ? d.best ?? null : null, parGem: !!(d && d.parGem), hints: d ? d.hints || 0 : 0, ribbons: ribbons.length, ribbonList: ribbons.slice(-30) };
+    return { open: d ? d.open : null, start: d ? d.start ?? null : null, ms: d ? d.ms ?? null : null, moves: d ? d.moves ?? null : null, best: d ? d.best ?? null : null, parGem: !!(d && d.parGem), hints: d ? d.hints || 0 : 0, ribbons: ribbons.length, ribbonList: ribbons.slice(-30) };
   };
 
   async function route(method, path, body) {
@@ -85,9 +85,25 @@ export function createApi({ store, wallet = null, verify, clock = () => Date.now
       if (!me) return { now, pen: penOut(t, true), me: null, guest: true };
       const { data } = await mutate(store, 'p/' + me.handle, (r) => {
         if (r.day && r.day.date === today) return SKIP;
-        r.day = { date: today, open: now, ms: null, moves: null, best: null, parGem: false };
+        r.day = { date: today, open: now, start: null, ms: null, moves: null, best: null, parGem: false };
       }, () => ({ pend: [], ribbons: [] }));
       return { now, pen: penOut(t, true), me: { name: me.name, ...mine(data, today) } };
+    }
+    /* The clock starts on the first move (JC, Nov 18 2026: "the clock for the daily challenge doesn't
+       start until they make their first move"): the page says so here the moment it happens. Opening
+       only shows the pen. A getaway with no start on record (the call never got through, or a pen
+       opened before Nov 18) is timed from opening, as before. */
+    if (path === '/start') {
+      if (String((body && body.date) || today) !== today) fail(409, 'That pen closed at midnight. Today’s is waiting.');
+      const me = await who(body);
+      if (!me) return { now, guest: true };
+      const res = await mutate(store, 'p/' + me.handle, (rec) => {
+        if (!rec.day || rec.day.date !== today) fail(409, 'Open today’s pen first.');
+        if (rec.day.start != null || rec.day.ms != null) return SKIP;
+        rec.day.start = now;
+      });
+      if (!res) fail(409, 'Open today’s pen first.');
+      return { now, me: { name: me.name, ...mine(res.data, today) } };
     }
     if (path === '/solve') {
       if (String((body && body.date) || today) !== today) fail(409, 'That pen closed at midnight. Today’s is waiting.');
@@ -102,7 +118,7 @@ export function createApi({ store, wallet = null, verify, clock = () => Date.now
         gained = 0; parNow = false;
         let changed = first;
         if (first) {
-          rec.day.ms = Math.max(0, now - rec.day.open) + (rec.day.hints || 0) * HINT_MS;
+          rec.day.ms = Math.max(0, now - (rec.day.start ?? rec.day.open)) + (rec.day.hints || 0) * HINT_MS;
           rec.day.moves = r.n;
           gained += 1;
           rec.pend = [...(rec.pend || []).filter((d) => d !== today), today].slice(-10);
@@ -132,17 +148,19 @@ export function createApi({ store, wallet = null, verify, clock = () => Date.now
       const s = solve(r.board);
       if (!s || !s.path.length) fail(409, 'No hint from here. Reset the pen and try again.');
       const me = await who(body);
-      let hints = 0, counted = false;
+      let hints = 0, counted = false, start = null;
       if (me) {
         const res = await mutate(store, 'p/' + me.handle, (rec) => {
           if (!rec.day || rec.day.date !== today) fail(409, 'Open today’s pen first.');
           rec.day.hints = (rec.day.hints || 0) + 1;
           counted = rec.day.ms == null;   // only hints before your first getaway cost time
+          if (counted && rec.day.start == null) rec.day.start = now;   // a hint before any move starts the clock
         });
         if (!res) fail(409, 'Open today’s pen first.');
         hints = res.data.day.hints;
+        start = res.data.day.start ?? null;
       }
-      return { now, move: s.path[0], left: s.par, hints, penalty: counted ? HINT_MS : 0 };
+      return { now, move: s.path[0], left: s.par, hints, start, penalty: counted ? HINT_MS : 0 };
     }
     fail(404, 'Not found.');
   }

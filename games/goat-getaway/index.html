@@ -71,6 +71,7 @@
   .round-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 
   .wrap {
+    overflow-x: clip;   /* the goat walks out the gate and off the page, without a sideways scroll */
     max-width: 560px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px;
     padding: 2px calc(var(--sr) + var(--gut)) calc(var(--sb) + 28px) calc(var(--sl) + var(--gut));
   }
@@ -211,7 +212,32 @@
   .pc.drag svg { filter: drop-shadow(6px 9px 0 rgba(5, 3, 10, 0.4)); transform: scale(1.03); }
   .pc.goat { z-index: 2; }
   .pc.goat.drag { z-index: 6; }
-  .pc.goat.out { transition: transform 0.65s cubic-bezier(.5, 0, .9, .6), opacity 0.25s 0.5s; transform: translateX(170%); opacity: 0; }
+  /* The goat (JC, Nov 18 2026): seen from above, it looks around, flicks its ears, wags and breathes.
+     Once its path is clear it walks to the gate by itself (.walk: --walk is how long, the legs step in
+     diagonal pairs and the head bobs), then on out (.out). */
+  .pc.goat svg * { transform-box: view-box; }
+  .pc.goat .gg-head { transform-origin: 128px 50px; animation: ggLook 3.8s ease-in-out infinite; }
+  .pc.goat .gg-earL { transform-origin: 154px 38px; animation: ggEarL 3.1s ease-in-out infinite; }
+  .pc.goat .gg-earR { transform-origin: 154px 62px; animation: ggEarR 3.5s ease-in-out 0.7s infinite; }
+  .pc.goat .gg-tail { transform-origin: 36px 50px; animation: ggWag 1.2s ease-in-out infinite; }
+  .pc.goat .gg-body { transform-origin: 84px 50px; animation: ggBreathe 2.6s ease-in-out infinite; }
+  @keyframes ggLook { 0%, 16% { transform: rotate(0deg); } 28%, 44% { transform: rotate(-12deg); } 56%, 70% { transform: rotate(10deg); } 84%, 100% { transform: rotate(0deg); } }
+  @keyframes ggEarL { 0%, 68%, 100% { transform: rotate(0deg); } 76% { transform: rotate(-16deg); } 84% { transform: rotate(5deg); } }
+  @keyframes ggEarR { 0%, 68%, 100% { transform: rotate(0deg); } 76% { transform: rotate(16deg); } 84% { transform: rotate(-5deg); } }
+  @keyframes ggWag { 0%, 100% { transform: rotate(-15deg); } 50% { transform: rotate(15deg); } }
+  @keyframes ggBreathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.012, 1.045); } }
+  .pc.goat.walk { transition: left var(--walk, 0.14s) linear; }
+  .pc.goat.walk .gg-legA { animation: ggStepA 0.32s linear infinite; }
+  .pc.goat.walk .gg-legB { animation: ggStepB 0.32s linear infinite; }
+  .pc.goat.walk .gg-head { animation: ggBob 0.32s ease-in-out infinite; }
+  .pc.goat.walk .gg-tail { animation-duration: 0.32s; }
+  @keyframes ggStepA { 0%, 100% { transform: translateX(-8px); } 50% { transform: translateX(8px); } }
+  @keyframes ggStepB { 0%, 100% { transform: translateX(8px); } 50% { transform: translateX(-8px); } }
+  @keyframes ggBob { 0%, 100% { transform: translateX(0) rotate(-3deg); } 50% { transform: translateX(3px) rotate(3deg); } }
+  .pc.goat.out {
+    transition: left var(--walk, 0s) linear, transform 0.85s cubic-bezier(.4, 0, .9, .7) var(--walk, 0s), opacity 0.3s calc(var(--walk, 0s) + 0.6s);
+    transform: translateX(170%); opacity: 0;
+  }
   .pc.bump { animation: bump 0.22s; }
   /* a hint: the piece to move pulses with an arrow, and a dashed outline shows where it goes */
   .pc.hinted { z-index: 4; animation: hintPulse 0.9s ease-in-out infinite; }
@@ -299,6 +325,7 @@
   @keyframes fall { to { transform: translate3d(var(--dx), 110vh, 0) rotate(var(--r)); } }
   @media (prefers-reduced-motion: reduce) {
     .pc, .gate i { transition: none; }
+    .pc.goat * { animation: none !important; }
     .confetti { display: none; }
   }
   @media (min-width: 700px) { .wrap { gap: 16px; } }
@@ -407,10 +434,10 @@
     <h2 id="helpTitle">HOW TO PLAY</h2>
     <div class="legend" id="legend"></div>
     <ul>
-      <li>Drag anything along its length to clear a path, then get the goat out the red gate. Nothing turns or jumps.</li>
+      <li>Drag anything along its length to clear a path to the red gate. Nothing turns or jumps. Once nothing’s in its way, the goat walks out by itself (that walk is a move).</li>
       <li>One slide, any distance, is one move. <b>Par</b> is the fewest moves it can be done in.</li>
       <li><b>Today’s pen</b> is the same for everyone: a Kid’s pen on Monday, climbing to a Billy pen (about 15 moves) on the weekend. The really tough pens are in Practice on Hard.</li>
-      <li>The clock starts when you open the pen. Your first getaway is your time.</li>
+      <li>Opening the pen lets you look; the clock starts on your first move. Your first getaway is your time.</li>
       <li>Get out: <b>+1 💎</b>. Do it in par: <b>+1 more</b>, even on another try. Diamonds go to Mind Heist, for its daily card draw.</li>
       <li>The fastest getaway of the day wins a <b>Blue Ribbon</b> at midnight (Pacific time).</li>
       <li><b>Stuck?</b> 💡 shows the best next move from wherever you are. On today’s pen each hint adds 15 seconds to your time, and a day with hints doesn’t earn the par diamond. Hints are free in practice.</li>
