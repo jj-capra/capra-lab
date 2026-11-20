@@ -115,26 +115,38 @@ export function drawPuppet(ctx, lm, at, look, ring = null, bare = false) {
   limb(lh, pt(25), sw * 0.36, pants); limb(pt(25), pt(27), sw * 0.3, pants);
   limb(rh, pt(26), sw * 0.36, pants); limb(pt(26), pt(28), sw * 0.3, pants);
   for (const [a, f] of [[27, 31], [28, 32]]) { const A = pt(a), F = pt(f); if (A && F) limb(A, F, sw * 0.22, shoe); }
-  // the torso: shoulders to hips, a little wider than the joints
-  if (ls && rs) {
-    const hl = lh || { x: ls.x, y: ls.y + sw * 1.4 }, hr = rh || { x: rs.x, y: rs.y + sw * 1.4 };
-    const mid = { x: (ls.x + rs.x + hl.x + hr.x) / 4, y: (ls.y + rs.y + hl.y + hr.y) / 4 }, grow = (p, k) => ({ x: mid.x + (p.x - mid.x) * k, y: mid.y + (p.y - mid.y) * k });
-    poly(ctx, [grow(ls, 1.18), grow(rs, 1.18), grow(hr, 1.1), grow(hl, 1.1)], look.shirt || '#2D6BFF', INK, 4);
-    // the neck
-    const nk = { x: (ls.x + rs.x) / 2, y: (ls.y + rs.y) / 2 };
-    limb(nk, { x: nk.x, y: nk.y - sw * 0.35 }, sw * 0.28, look.skin || '#E8B07E');
-  }
-  limb(ls, pt(13), sw * 0.3, look.shirt || '#2D6BFF'); limb(pt(13), pt(15) || pt(19), sw * 0.24, look.skin || '#E8B07E');
-  limb(rs, pt(14), sw * 0.3, look.shirt || '#2D6BFF'); limb(pt(14), pt(16) || pt(20), sw * 0.24, look.skin || '#E8B07E');
-  for (const i of [15, 16]) { const h = pt(i) || pt(i + 4); if (h) { ctx.beginPath(); ctx.arc(h.x, h.y, sw * 0.17, 0, Math.PI * 2); ctx.fillStyle = look.skin || '#E8B07E'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke(); } }
-  // the head: the avatar drawing, centered between the ears (or on the nose), a big comic head
+  // the head's place, worked out first so the neck can reach it: centered between the ears (or on the nose), a
+  // big comic head, lifted when it would sit on the shoulders so it rides on a neck (JC, Nov 19 2026: "The avatar
+  // doesn't have a neck"). The avatar's chin is 0.58 of its head width below the middle of its head.
   const el = pt(7), er = pt(8), nose = pt(0);
   let hc = null, hw = sw * 0.9;
   if (el && er) { hc = { x: (el.x + er.x) / 2, y: (el.y + er.y) / 2 - sw * 0.05 }; hw = Math.max(hw, Math.hypot(el.x - er.x, el.y - er.y) * 1.5); }
   else if (nose) hc = { x: nose.x, y: nose.y - sw * 0.12 };
   else if (ls && rs) hc = { x: (ls.x + rs.x) / 2, y: (ls.y + rs.y) / 2 - sw * 0.75 };
-  if (!hc) return;
   hw = Math.min(hw, sw * 1.3) * 1.15;
+  const skin = look.skin || '#E8B07E', shirt = look.shirt || '#2D6BFF';
+  if (hc && ls && rs) { const sy = Math.min(ls.y, rs.y), chin = hc.y + hw * 0.58, want = sy - sw * 0.24; if (chin > want) hc.y -= chin - want; }
+  // the torso: shoulders to hips, a little wider than the joints
+  if (ls && rs) {
+    const hl = lh || { x: ls.x, y: ls.y + sw * 1.4 }, hr = rh || { x: rs.x, y: rs.y + sw * 1.4 };
+    const mid = { x: (ls.x + rs.x + hl.x + hr.x) / 4, y: (ls.y + rs.y + hl.y + hr.y) / 4 }, grow = (p, k) => ({ x: mid.x + (p.x - mid.x) * k, y: mid.y + (p.y - mid.y) * k });
+    poly(ctx, [grow(ls, 1.18), grow(rs, 1.18), grow(hr, 1.1), grow(hl, 1.1)], shirt, INK, 4);
+    // the neck: from between the shoulders up under the chin, a shadow where the chin meets it, the shirt's collar
+    const nk = { x: (ls.x + rs.x) / 2, y: (ls.y + rs.y) / 2 }, nw = Math.max(sw * 0.3, hw * 0.36);
+    const top = hc ? { x: hc.x, y: hc.y + hw * 0.5 } : { x: nk.x, y: nk.y - sw * 0.4 };
+    limb({ x: nk.x, y: nk.y + sw * 0.06 }, top, nw, skin);
+    ctx.save();
+    ctx.beginPath(); ctx.ellipse(top.x * 0.7 + nk.x * 0.3, top.y + (nk.y - top.y) * 0.22, nw * 0.46, Math.max(2, (nk.y - top.y) * 0.16), 0, 0, Math.PI * 2);
+    ctx.fillStyle = shade(skin, 0.74); ctx.globalAlpha = 0.7; ctx.fill(); ctx.restore();
+    ctx.beginPath(); ctx.ellipse(nk.x, nk.y + sw * 0.02, nw * 0.72, nw * 0.3, 0, 0, Math.PI);
+    ctx.lineWidth = Math.max(3, sw * 0.07); ctx.strokeStyle = INK; ctx.stroke();
+    ctx.lineWidth = Math.max(1.5, sw * 0.035); ctx.strokeStyle = shade(shirt, 0.7); ctx.stroke();
+  }
+  limb(ls, pt(13), sw * 0.3, shirt); limb(pt(13), pt(15) || pt(19), sw * 0.24, skin);
+  limb(rs, pt(14), sw * 0.3, shirt); limb(pt(14), pt(16) || pt(20), sw * 0.24, skin);
+  for (const i of [15, 16]) { const h = pt(i) || pt(i + 4); if (h) { ctx.beginPath(); ctx.arc(h.x, h.y, sw * 0.17, 0, Math.PI * 2); ctx.fillStyle = look.skin || '#E8B07E'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = INK; ctx.stroke(); } }
+  // the head: the avatar drawing where it was placed above
+  if (!hc) return;
   // the avatar drawn once onto a canvas when it loaded (look.bmp): Safari redraws an SVG picture from
   // scratch every time it's put on a canvas
   const img = look.bmp || (look.head && look.head.complete && look.head.naturalWidth ? look.head : null);
@@ -269,10 +281,12 @@ export function drawSport(ctx, kind, rect, c, t, info) {
 
 /* ---- BOWLING: the lane from behind the ball, pins far ahead, the scoresheet on top ---- */
 // The camera behind the ball: zoomed so the pins stand `pins` of the way down (below the scoresheet).
-function bowlingCam(rect, pins = 0.29) {
+function bowlingCamP(rect, pins = 0.29) {
   const f = Math.min(rect.h * 4.2, rect.w * 8);
-  return cam3({ x: 0, y: 1.0, z: -3.6, pitch: 0.0365 + ((0.5 - pins) * rect.h) / f, f, cx: rect.x + rect.w / 2, cy: rect.y + rect.h / 2 });
+  return { x: 0, y: 1.0, z: -3.6, pitch: 0.0365 + ((0.5 - pins) * rect.h) / f, f, cx: rect.x + rect.w / 2, cy: rect.y + rect.h / 2 };
 }
+const bowlingCam = (rect, pins) => cam3(bowlingCamP(rect, pins));
+const pinsAtOf = (rect, sb) => Math.max(0.29, (sb.bottom - rect.y) / rect.h + 0.11);
 // The scoresheet's spot: under the top bar on a narrow screen, else up between its buttons; a name
 // above it for two players.
 function sheetBox(rect, c, info) {
@@ -335,15 +349,15 @@ function bowlingAlley(ctx, rect, P) {
 }
 function bowlingScene(ctx, rect, c, t, info) {
   const sb = sheetBox(rect, c, info);
-  const pinsAt = Math.max(0.29, (sb.bottom - rect.y) / rect.h + 0.11);
-  const P = bowlingCam(rect, pinsAt), L = LANE, half = L.w / 2;
-  still(ctx, 'bowling', pinsAt.toFixed(4), rect, (ctx) => bowlingAlley(ctx, rect, P));
+  const pinsAt = pinsAtOf(rect, sb);
+  const P = bowlingCam(rect, pinsAt), L = LANE, half = L.w / 2, W3 = !!info.w3;
+  if (!W3) still(ctx, 'bowling', pinsAt.toFixed(4), rect, (ctx) => bowlingAlley(ctx, rect, P));
   // our pins, far ones first
-  const pins = [...(c ? c.pins : [])].filter((p) => !p.gone).sort((a, b) => b.z - a.z);
+  const pins = W3 ? [] : [...(c ? c.pins : [])].filter((p) => !p.gone).sort((a, b) => b.z - a.z);
   for (const p of pins) { const s = P(p.x, 0, p.z); if (s) pinShape(ctx, s.x, s.y, s.k, p.down ? p.tip : 0, p.tx); }
   // the ball rolling down the lane
   const ball = c && c.ball;
-  if (ball && !ball.gone) {
+  if (ball && !ball.gone && !W3) {
     const s = P(ball.x, ball.gutter ? -0.05 : 0, ball.z), r = s && Math.max(3, L.ballR * s.k);
     if (s) {
       ctx.beginPath(); ctx.ellipse(s.x, s.y, r * 1.1, r * 0.35, 0, 0, Math.PI * 2); ctx.fillStyle = 'rgba(18,14,24,0.25)'; ctx.fill();
@@ -406,10 +420,11 @@ function scoresheet(ctx, rect, c, info, sb) {
 
 /* ---- QB THROW: the field from behind the quarterback ---- */
 const FIELD_HALF = 26.65;
-function qbCam(rect) {
+function qbCamP(rect) {
   const f = Math.min(rect.w * 0.67, rect.h * 1.5);
-  return cam3({ x: 0, y: 3.5, z: -15, pitch: 0.14, f, cx: rect.x + rect.w / 2, cy: rect.y + rect.h * 0.45 });
+  return { x: 0, y: 3.5, z: -15, pitch: 0.14, f, cx: rect.x + rect.w / 2, cy: rect.y + rect.h * 0.45 };
 }
+const qbCam = (rect) => cam3(qbCamP(rect));
 function player(ctx, s, jersey, num = '', tag = null, run = 0) {
   if (!s) return;
   const k = s.k, h = 1.95 * k, w = 0.75 * k;
@@ -425,7 +440,31 @@ function player(ctx, s, jersey, num = '', tag = null, run = 0) {
   if (tag) label(ctx, tag.text, s.x, s.y - h - Math.max(10, k * 0.5), Math.max(12, Math.min(26, k * 0.9)), tag.color);
 }
 function qbScene(ctx, rect, c, t, info) {
-  const P = qbCam(rect);
+  const P = qbCam(rect), W3 = !!info.w3;
+  if (!W3) qbField(ctx, rect, t, P);
+  const play = c && c.play, s = c ? c.since(t) : -9;
+  const us = info.color || '#FF8A3D', them = '#2B2530';
+  const people = [];
+  if (!W3) for (let i = -2; i <= 2; i++) { people.push({ z: -0.8, x: i * 1.4, col: us, num: String(70 + i), s: P(i * 1.4, 0, -0.8) }); people.push({ z: 0.9, x: i * 1.5 + 0.4, col: them, num: '', s: P(i * 1.5 + 0.4, 0, 0.9) }); }
+  if (play) {
+    play.recv.forEach((r, i) => {
+      const p = routeAt(r, s), d = defenderAt(r, s), open = s >= 0 && isOpen(r, s);
+      const locked = c.lock && c.lock.r === r;
+      people.push({ s: P(d.x, 0, d.z), col: them, num: '', run: s, z: d.z, hide: W3 });
+      people.push({ s: P(p.x, 0, p.z), col: us, num: String([1, 8, 88][i]), run: s, z: p.z, tag: open ? { text: 'OPEN!', color: '#FFD23F' } : null, ring: open, locked, hide: W3 });
+    });
+  }
+  people.sort((a, b) => (b.z ?? 0) - (a.z ?? 0));
+  for (const p of people) {
+    if (p.ring && p.s) { ctx.beginPath(); ctx.ellipse(p.s.x, p.s.y, p.s.k * 1.2, p.s.k * 0.35, 0, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,214,63,0.45)'; ctx.fill(); }
+    if (p.locked && p.s) { ctx.save(); ctx.beginPath(); ctx.ellipse(p.s.x, p.s.y, p.s.k * 1.6, p.s.k * 0.5, 0, 0, Math.PI * 2); ctx.lineWidth = 4; ctx.strokeStyle = '#FF3D8B'; ctx.setLineDash([6, 5]); ctx.stroke(); ctx.restore(); }
+    if (p.hide) { if (p.tag && p.s) label(ctx, p.tag.text, p.s.x, p.s.y - 1.95 * p.s.k - Math.max(10, p.s.k * 0.5), Math.max(12, Math.min(26, p.s.k * 0.9)), p.tag.color); }
+    else player(ctx, p.s, p.col, p.num, p.tag, p.run || 0);
+  }
+  qbRest(ctx, rect, c, t, info, P, play, s, W3);
+}
+// The field, the stands and the goal posts (the 2D scene; the 3D one is world/qb.js).
+function qbField(ctx, rect, t, P) {
   ctx.fillStyle = '#0F1A3A'; ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
   // the stadium: stands and lights past the end zone
   const far = P(0, 0, 70);
@@ -448,31 +487,13 @@ function qbScene(ctx, rect, c, t, info) {
   // the line of scrimmage
   const l0 = P(-FIELD_HALF, 0, 0), l1 = P(FIELD_HALF, 0, 0);
   if (l0 && l1) { ctx.lineWidth = 3; ctx.strokeStyle = '#29D3F0'; ctx.beginPath(); ctx.moveTo(l0.x, l0.y); ctx.lineTo(l1.x, l1.y); ctx.stroke(); }
-  const play = c && c.play, s = c ? c.since(t) : -9;
-  const us = info.color || '#FF8A3D', them = '#2B2530';
-  // the linemen
-  const crowdOf = [];
-  for (let i = -2; i <= 2; i++) { crowdOf.push({ z: -0.8, x: i * 1.4, col: us, num: String(70 + i) }); crowdOf.push({ z: 0.9, x: i * 1.5 + 0.4, col: them, num: '' }); }
-  const people = crowdOf.map((p) => ({ ...p, s: P(p.x, 0, p.z) }));
-  if (play) {
-    play.recv.forEach((r, i) => {
-      const p = routeAt(r, s), d = defenderAt(r, s), open = s >= 0 && isOpen(r, s);
-      const locked = c.lock && c.lock.r === r;
-      people.push({ s: P(d.x, 0, d.z), col: them, num: '', run: s, z: d.z });
-      people.push({ s: P(p.x, 0, p.z), col: us, num: String([1, 8, 88][i]), run: s, z: p.z, tag: open ? { text: 'OPEN!', color: '#FFD23F' } : null, ring: open, locked });
-    });
-  }
-  people.sort((a, b) => (b.z ?? 0) - (a.z ?? 0));
-  for (const p of people) {
-    if (p.ring && p.s) { ctx.beginPath(); ctx.ellipse(p.s.x, p.s.y, p.s.k * 1.2, p.s.k * 0.35, 0, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,214,63,0.45)'; ctx.fill(); }
-    if (p.locked && p.s) { ctx.save(); ctx.beginPath(); ctx.ellipse(p.s.x, p.s.y, p.s.k * 1.6, p.s.k * 0.5, 0, 0, Math.PI * 2); ctx.lineWidth = 4; ctx.strokeStyle = '#FF3D8B'; ctx.setLineDash([6, 5]); ctx.stroke(); ctx.restore(); }
-    player(ctx, p.s, p.col, p.num, p.tag, p.run || 0);
-  }
+}
+function qbRest(ctx, rect, c, t, info, P, play, s, W3) {
   // the target where the ball will meet the locked receiver
   if (c && c.lock && c.lock.p) { const q = P(c.lock.p.x, 0, c.lock.p.z); if (q) { ctx.beginPath(); ctx.ellipse(q.x, q.y, q.k * 1.4, q.k * 0.45, 0, 0, Math.PI * 2); ctx.lineWidth = 3; ctx.strokeStyle = '#FFD23F'; ctx.stroke(); seg(ctx, { x: q.x - q.k, y: q.y }, { x: q.x + q.k, y: q.y }, '#FFD23F', 2); } }
   // the ball in the air
   const ball = c && c.ball;
-  if (ball) {
+  if (ball && !W3) {
     const u = clamp((t - ball.from) / (ball.land - ball.from), 0, 1), dist = Math.hypot(ball.to.x, ball.to.z + 7);
     const pos = { x: lerp(0.3, ball.to.x, u), z: lerp(-7, ball.to.z, u), y: lerp(2.2, 1.3, u) + (3 + dist * 0.12) * 4 * u * (1 - u) };
     const sh = P(pos.x, 0, pos.z), bp = P(pos.x, pos.y, pos.z);
@@ -508,12 +529,37 @@ function football(ctx, x, y, r, rot) {
 
 /* ---- FREE THROWS: the hoop from the line ---- */
 const HOOP = { x: 0, y: 3.05, z: 4.19, r: 0.23, board: 4.57 };
-function hoopsCam(rect) {
+function hoopsCamP(rect) {
   const f = Math.min(rect.h * 1.35, rect.w * 1.3);
-  return cam3({ x: 0, y: 1.75, z: 0, pitch: -0.12, f, cx: rect.x + rect.w / 2, cy: rect.y + rect.h * 0.55 });
+  return { x: 0, y: 1.75, z: 0, pitch: -0.12, f, cx: rect.x + rect.w / 2, cy: rect.y + rect.h * 0.55 };
 }
+const hoopsCam = (rect) => cam3(hoopsCamP(rect));
 function hoopsScene(ctx, rect, c, t, info) {
   const P = hoopsCam(rect);
+  if (!info.w3) hoopsWorld(ctx, rect, c, t, P);
+  // the ball in your hands until you shoot
+  if (!(c && c.shot)) {
+    const hs = handsOf(info.lm, rect, info).filter(Boolean), r = Math.min(rect.w, rect.h) * 0.1;
+    const h = hs.length ? { x: hs.reduce((s2, p) => s2 + p.x, 0) / hs.length, y: Math.min(...hs.map((p) => p.y)) } : null;
+    const bx = h ? clamp(h.x, rect.x + r, rect.x + rect.w - r) : rect.x + rect.w / 2;
+    const by = h ? clamp(rect.y + rect.h * 0.5 + (h.y - (rect.y + rect.h * 0.35)) * 1.0, rect.y + rect.h * 0.35, rect.y + rect.h - r * 0.6) : rect.y + rect.h - r;
+    basketball(ctx, bx, by, r, 0.3, c && c.streak >= 3);
+  }
+}
+// Where the free throw's ball is (meters), the same in 2D and 3D: in the air, then through, off the rim or short.
+export function hoopBall(shot, t) {
+  if (!shot) return null;
+  const tx = HOOP.x + shot.lat * 0.32, tz = HOOP.z + clamp(shot.dErr, -1, 1) * 1.6;
+  const u = clamp((t - shot.born) / HOOPS.flight, 0, 1);
+  const from = { x: shot.lat * 0.08, y: 2.2, z: 1.1 };
+  if (!shot.done) return { x: lerp(from.x, tx, u), z: lerp(from.z, tz, u), y: lerp(from.y, HOOP.y + 0.12, u) + 1.5 * 4 * u * (1 - u) };
+  const k = clamp((t - shot.end) / 700, 0, 1);
+  if (shot.make) return { x: HOOP.x + shot.lat * 0.05 * (1 - k), z: HOOP.z, y: HOOP.y + 0.1 - k * 2.6 };
+  if (shot.kind === 'long') return { x: tx, z: HOOP.board - 0.2 - k * 2.5, y: HOOP.y + 0.3 + 1.2 * 4 * k * (1 - k) - k * 2 };
+  if (shot.kind === 'short') return { x: tx, z: tz - k * 0.8, y: Math.max(0.12, HOOP.y - 0.1 - k * 3) };
+  return { x: tx + Math.sign(shot.lat || 1) * k * 1.4, z: HOOP.z - k * 0.5, y: HOOP.y + 0.2 + 0.6 * 4 * k * (1 - k) - k * 2.2 };
+}
+function hoopsWorld(ctx, rect, c, t, P) {
   // the arena: dark stands, the crowd, the floor
   ctx.fillStyle = '#1D1730'; ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
   const fl = P(0, 0, 9);
@@ -542,20 +588,7 @@ function hoopsScene(ctx, rect, c, t, info) {
   for (let i = 0; i < Math.min(top.length, bot.length); i += 2) { ctx.beginPath(); ctx.moveTo(top[i].x, top[i].y); ctx.lineTo(bot[(i + 2) % bot.length].x, bot[(i + 2) % bot.length].y); ctx.moveTo(top[i].x, top[i].y); ctx.lineTo(bot[(i + bot.length - 2) % bot.length].x, bot[(i + bot.length - 2) % bot.length].y); ctx.stroke(); }
   ctx.restore();
   // where the ball is: in the air, then through the net, off the rim or short
-  let bp = null;
-  if (shot) {
-    const tx = HOOP.x + shot.lat * 0.32, tz = HOOP.z + clamp(shot.dErr, -1, 1) * 1.6;
-    const u = clamp((t - shot.born) / HOOPS.flight, 0, 1);
-    const from = { x: shot.lat * 0.08, y: 2.2, z: 1.1 };
-    if (!shot.done) bp = { x: lerp(from.x, tx, u), z: lerp(from.z, tz, u), y: lerp(from.y, HOOP.y + 0.12, u) + 1.5 * 4 * u * (1 - u) };
-    else {
-      const k = clamp((t - shot.end) / 700, 0, 1);
-      if (shot.make) bp = { x: HOOP.x + shot.lat * 0.05 * (1 - k), z: HOOP.z, y: HOOP.y + 0.1 - k * 2.6 };
-      else if (shot.kind === 'long') bp = { x: tx, z: HOOP.board - 0.2 - k * 2.5, y: HOOP.y + 0.3 + 1.2 * 4 * k * (1 - k) - k * 2 };
-      else if (shot.kind === 'short') bp = { x: tx, z: tz - k * 0.8, y: Math.max(0.12, HOOP.y - 0.1 - k * 3) };
-      else bp = { x: tx + Math.sign(shot.lat || 1) * k * 1.4, z: HOOP.z - k * 0.5, y: HOOP.y + 0.2 + 0.6 * 4 * k * (1 - k) - k * 2.2 };
-    }
-  }
+  const bp = hoopBall(shot, t);
   const drawBall = (behind) => {
     if (!bp) return;
     const isBehind = bp.z > HOOP.z && bp.y < HOOP.y + 0.05;
@@ -567,14 +600,6 @@ function hoopsScene(ctx, rect, c, t, info) {
   ctx.save(); ctx.beginPath(); top.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); ctx.closePath(); ctx.lineWidth = 5; ctx.strokeStyle = '#FF7A1A'; ctx.stroke(); ctx.restore();
   drawBall(false);
   if (bp && bp.y > 0.2) { const sh = P(bp.x, 0, bp.z); if (sh) { ctx.beginPath(); ctx.ellipse(sh.x, sh.y, 0.14 * sh.k, 0.05 * sh.k, 0, 0, Math.PI * 2); ctx.fillStyle = 'rgba(5,3,10,0.3)'; ctx.fill(); } }
-  // the ball in your hands until you shoot
-  if (!shot) {
-    const hs = handsOf(info.lm, rect, info).filter(Boolean), r = Math.min(rect.w, rect.h) * 0.1;
-    const h = hs.length ? { x: hs.reduce((s2, p) => s2 + p.x, 0) / hs.length, y: Math.min(...hs.map((p) => p.y)) } : null;
-    const bx = h ? clamp(h.x, rect.x + r, rect.x + rect.w - r) : rect.x + rect.w / 2;
-    const by = h ? clamp(rect.y + rect.h * 0.5 + (h.y - (rect.y + rect.h * 0.35)) * 1.0, rect.y + rect.h * 0.35, rect.y + rect.h - r * 0.6) : rect.y + rect.h - r;
-    basketball(ctx, bx, by, r, 0.3, c && c.streak >= 3);
-  }
 }
 function basketball(ctx, x, y, r, rot, fire = false) {
   ctx.save(); ctx.translate(x, y);
@@ -589,12 +614,35 @@ function basketball(ctx, x, y, r, rot, fire = false) {
 }
 
 /* ---- TENNIS: the court from behind your baseline ---- */
-function tennisCam(rect) {
+function tennisCamP(rect) {
   const f = Math.min(rect.h * 1.6, rect.w * 1.0);
-  return cam3({ x: 0, y: 2.0, z: -3, pitch: 0.0745 + (0.2 * rect.h) / f, f, cx: rect.x + rect.w / 2, cy: rect.y + rect.h / 2 });
+  return { x: 0, y: 2.0, z: -3, pitch: 0.0745 + (0.2 * rect.h) / f, f, cx: rect.x + rect.w / 2, cy: rect.y + rect.h / 2 };
 }
+const tennisCam = (rect) => cam3(tennisCamP(rect));
 function tennisScene(ctx, rect, c, t, info) {
-  const P = tennisCam(rect), CL = 23.77, D = 5.485, S = 4.115, NET = CL / 2;
+  const P = tennisCam(rect), CL = 23.77, D = 5.485, S = 4.115, NET = CL / 2, W3 = !!info.w3;
+  const bk = c && c.back, bl = c && c.ball;
+  if (!W3) tennisWorld(ctx, rect, c, t, P);
+  // the timing ring as the ball reaches you
+  if (bl) { const bp = tennisBall(bl, t); if (bp.u > 0.7 && bp.u < 1.12) { const s2 = P(bl.to.x, bl.to.y ?? 0.95, bl.to.z); if (s2) { ctx.beginPath(); ctx.arc(s2.x, s2.y, 0.3 * s2.k + Math.max(0, 1 - bp.u) * 80, 0, Math.PI * 2); ctx.lineWidth = 4; ctx.strokeStyle = bp.u >= 0.88 ? '#5BE38A' : '#FFD23F'; ctx.stroke(); } } }
+  // your racket, in your hand
+  const hs = handsOf(info.lm, rect, info).filter(Boolean);
+  const h = hs.sort((a, b) => Math.abs(b.x - (rect.x + rect.w / 2)) - Math.abs(a.x - (rect.x + rect.w / 2)))[0];
+  if (h) {
+    const r = Math.min(rect.w, rect.h) * 0.16, side = h.x < rect.x + rect.w / 2 ? -1 : 1;
+    const x = clamp(h.x, rect.x + r * 0.3, rect.x + rect.w - r * 0.3), y = clamp(rect.y + rect.h * 0.62 + (h.y - (rect.y + rect.h * 0.5)) * 0.8, rect.y + rect.h * 0.4, rect.y + rect.h);
+    ctx.save(); ctx.translate(x, y); ctx.rotate(side * 0.7); racket(ctx, 0, 0, r); ctx.restore();
+  }
+  void bk;
+}
+// Where the other player stands across the net (meters across), the same in 2D and 3D.
+export function tennisOpp(c, t) {
+  const bk = c && c.back, bl = c && c.ball;
+  if (bk) return lerp(bk.from.x * 0.3, bk.to.x, clamp((t - bk.born) / (bk.land - bk.born), 0, 1));
+  return bl ? bl.from.x : 0;
+}
+function tennisWorld(ctx, rect, c, t, P) {
+  const CL = 23.77, D = 5.485, S = 4.115, NET = CL / 2;
   ctx.fillStyle = '#20345E'; ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
   const far = P(0, 0, CL + 6), farY = far ? far.y : rect.y + rect.h * 0.25;
   crowd(ctx, rect.x, Math.max(rect.y, farY - rect.h * 0.2), rect.w, Math.min(rect.h * 0.2, farY - rect.y), t);
@@ -630,16 +678,6 @@ function tennisScene(ctx, rect, c, t, info) {
     const sh = P(bp.x, 0, bp.z), s = P(bp.x, bp.y, bp.z);
     if (sh) { ctx.beginPath(); ctx.ellipse(sh.x, sh.y, Math.max(2, 0.08 * sh.k), Math.max(1, 0.03 * sh.k), 0, 0, Math.PI * 2); ctx.fillStyle = 'rgba(5,3,10,0.4)'; ctx.fill(); }
     if (s) { const r = Math.max(3, 0.075 * s.k); ctx.beginPath(); ctx.arc(s.x, s.y, r, 0, Math.PI * 2); ctx.fillStyle = '#D9F24A'; ctx.fill(); ctx.lineWidth = Math.max(1.5, r * 0.18); ctx.strokeStyle = INK; ctx.stroke(); ctx.beginPath(); ctx.arc(s.x - r * 0.9, s.y, r * 0.8, -0.8, 0.8); ctx.strokeStyle = PAPER; ctx.lineWidth = Math.max(1, r * 0.15); ctx.stroke(); }
-    // the timing ring as it reaches you
-    if (bl && bp.u > 0.7 && bp.u < 1.12) { const s2 = P(bl.to.x, bl.to.y ?? 0.95, bl.to.z); if (s2) { ctx.beginPath(); ctx.arc(s2.x, s2.y, 0.3 * s2.k + Math.max(0, 1 - bp.u) * 80, 0, Math.PI * 2); ctx.lineWidth = 4; ctx.strokeStyle = bp.u >= 0.88 ? '#5BE38A' : '#FFD23F'; ctx.stroke(); } }
-  }
-  // your racket, in your hand
-  const hs = handsOf(info.lm, rect, info).filter(Boolean);
-  const h = hs.sort((a, b) => Math.abs(b.x - (rect.x + rect.w / 2)) - Math.abs(a.x - (rect.x + rect.w / 2)))[0];
-  if (h) {
-    const r = Math.min(rect.w, rect.h) * 0.16, side = h.x < rect.x + rect.w / 2 ? -1 : 1;
-    const x = clamp(h.x, rect.x + r * 0.3, rect.x + rect.w - r * 0.3), y = clamp(rect.y + rect.h * 0.62 + (h.y - (rect.y + rect.h * 0.5)) * 0.8, rect.y + rect.h * 0.4, rect.y + rect.h);
-    ctx.save(); ctx.translate(x, y); ctx.rotate(side * 0.7); racket(ctx, 0, 0, r); ctx.restore();
   }
 }
 function racket(ctx, x, y, r) {
@@ -655,9 +693,21 @@ function racket(ctx, x, y, r) {
 }
 
 /* ---- SEND IT!: the chase camera behind the contraption, out over the water ---- */
-function sendItCam(rect, st) {
+function sendItCamP(rect, st) {
   const f = Math.min(rect.w * 0.95, rect.h * 1.5);
-  return cam3({ x: st.camX * 0.85, y: Math.max(6, st.y + 9), z: st.z - 46, pitch: 0.13, f, cx: rect.x + rect.w / 2, cy: rect.y + rect.h * 0.42 });
+  return { x: st.camX * 0.85, y: Math.max(6, st.y + 9), z: st.z - 46, pitch: 0.13, f, cx: rect.x + rect.w / 2, cy: rect.y + rect.h * 0.42 };
+}
+const sendItCam = (rect, st) => cam3(sendItCamP(rect, st));
+const SENDIT_IDLE = { camX: 0, x: 0, y: 30, z: -60, roll: 0, phase: 'push', craft: 'goat', pumps: 0 };
+/* The 3D sports (world/): the camera each sport sees through, as numbers, so the 3D world (three.js) sees exactly
+   what this file projects with cam3 and what it still draws on top (info.w3) lines up. */
+export function sportCam(kind, rect, c, info) {
+  if (kind === 'bowling') return bowlingCamP(rect, pinsAtOf(rect, sheetBox(rect, c, info)));
+  if (kind === 'qb') return qbCamP(rect);
+  if (kind === 'hoops') return hoopsCamP(rect);
+  if (kind === 'tennis') return tennisCamP(rect);
+  if (kind === 'sendit') return sendItCamP(rect, c ? c.state : SENDIT_IDLE);
+  return null;
 }
 function cloud(ctx, x, y, r) {
   ctx.beginPath();
@@ -665,8 +715,17 @@ function cloud(ctx, x, y, r) {
   ctx.fillStyle = PAPER; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = 'rgba(18,14,24,0.5)'; ctx.stroke();
 }
 function sendItScene(ctx, rect, c, t, info) {
-  const st = c ? c.state : { camX: 0, x: 0, y: 30, z: -60, roll: 0, phase: 'push', craft: 'goat', pumps: 0 };
+  const st = c ? c.state : SENDIT_IDLE;
   const P = sendItCam(rect, st);
+  if (info.w3) {
+    // the 3D world draws the sea, the pier, the air and the contraption; the buoys' distances stay here
+    for (let z = Math.max(100, Math.ceil((st.z - 30) / 100) * 100); z < st.z + 700; z += 100) for (const x of [-FLY.half - 6, FLY.half + 6]) {
+      const p = P(x, 0, z); if (p && p.k > 1.2) label(ctx, `${z}`, p.x, p.y - Math.max(4, p.k * 3) - 8, Math.min(18, p.k * 2.4), PAPER);
+    }
+  } else sendItWorld(ctx, rect, c, t, st, P);
+  sendItHud(ctx, rect, c, st, info);
+}
+function sendItWorld(ctx, rect, c, t, st, P) {
   // the sky down to the horizon, the sun and a few clouds that drift past
   const hz = P(0, 0, st.z + 4000), horizon = hz ? hz.y : rect.y + rect.h * 0.35;
   const g = ctx.createLinearGradient(0, rect.y, 0, horizon);
@@ -735,6 +794,8 @@ function sendItScene(ctx, rect, c, t, info) {
   if (sh) { ctx.beginPath(); ctx.ellipse(sh.x, sh.y, sh.k * 7, sh.k * 1.6, 0, 0, Math.PI * 2); ctx.fillStyle = 'rgba(5,3,10,0.28)'; ctx.fill(); }
   const cp = P(st.x, Math.max(0.5, st.y), st.z);
   if (cp) drawRear(ctx, st.craft, cp.x, cp.y, (cp.k * 16) / 180, st.roll, t / 1000, null);
+}
+function sendItHud(ctx, rect, c, st, info) {
   // the push: the crew on the deck and the flap meter
   if (st.phase === 'push') {
     const n = c ? Math.min(1, (c.pumps * FLY.perPump) / FLY.pumpMax) : 0, bw = Math.min(240, rect.w * 0.5), bx = rect.x + rect.w / 2 - bw / 2, by = rect.y + rect.h * 0.62;

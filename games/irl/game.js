@@ -7,7 +7,7 @@
    Tests set window.__irlFake before load and feed made-up bodies through window.__irl.feed(frame)
    ({ lm, world } for one player, { people: [{ lm, world }, ...] } for two). */
 import { CHALLENGES, ORDER, COUNTERS, BONES, P, SILOS, TWO_UP, framing, shareRow, splitPlayers, winnerOf, MIN_TO_PAY } from './logic.mjs';
-import { drawSport, drawBackdrop, drawPuppet, drawWorkout, setLite } from './scene.js';
+import { drawSport, drawBackdrop, drawPuppet, drawWorkout, setLite, sportCam } from './scene.js';
 import { MOVES, WORKOUT, workoutRow } from './workout.mjs';
 import { flyTitle } from './sports.mjs';
 import { CRAFTS } from '../send-it/logic.mjs';
@@ -423,8 +423,13 @@ function draw(frames, t = performance.now()) {
   if (!w3 && W3.world && W3.world.running && !worldFits()) sleepWorld();
   drawPip(frames);
   if (S && CHALLENGES[S.kind].sport) {
-    const { top, hud } = hudLayout(t);
-    for (const pl of S.players) drawSport(ctx, S.kind, sportRect(pl.i, b), pl.counter, t, { lm: frames && frames[pl.i] && frames[pl.i].lm, mirror: mirrored(), range: sideRange(pl.i), color: pl.color, aspect: b.aspect, top, hud, name: S.two ? pl.name : '' });
+    const { top, hud } = hudLayout(t), views = [];
+    for (const pl of S.players) {
+      const rect = sportRect(pl.i, b), info = { lm: frames && frames[pl.i] && frames[pl.i].lm, mirror: mirrored(), range: sideRange(pl.i), color: pl.color, aspect: b.aspect, top, hud, name: S.two ? pl.name : '', w3 };
+      drawSport(ctx, S.kind, rect, pl.counter, t, info);
+      if (w3) views.push({ rect, c: pl.counter, cam: sportCam(S.kind, rect, pl.counter, info), color: pl.color, i: pl.i, name: info.name });
+    }
+    if (w3) W3.world.set({ W: b.W, H: b.H, dpr, views });
     if (S.two) drawDivider(b, true, false);
     return;
   }
@@ -433,6 +438,7 @@ function draw(frames, t = performance.now()) {
   if (!S) return;
   // in a 3D place the puppets go on a canvas the size of the camera picture, which the place stands up as a cutout
   const ps = Math.min(1.25, dpr);
+  const dribBalls = [];
   if (w3) {
     const pw = Math.max(1, Math.round(b.dw * ps)), ph = Math.max(1, Math.round(b.dh * ps));
     if (pupCv.width !== pw || pupCv.height !== ph) { pupCv.width = pw; pupCv.height = ph; }
@@ -442,12 +448,12 @@ function draw(frames, t = performance.now()) {
   const live = S.phase === 'live';
   for (const pl of S.players) {
     const f = frames && frames[pl.i], c = pl.counter, lm = f && f.lm;
-    if (S.kind === 'keeper') drawGoal(b, ...sideRange(pl.i));
+    if (S.kind === 'keeper' && !w3) drawGoal(b, ...sideRange(pl.i));
     if (S.kind === 'derby' && c) drawSilos(b, t, pl);
     if (lm && scene) {
       if (w3) drawPuppet(pupCtx, lm, (p) => { const [x, y] = toScreen(b, p); return { x: x - b.ox, y: y - b.oy }; }, plLook(pl), S.two ? pl.color : null, true);
       else drawPuppet(ctx, lm, (p) => { const [x, y] = toScreen(b, p); return { x, y }; }, plLook(pl), S.two ? pl.color : null);
-      if (S.kind === 'dribble') drawDribbleBall(b, lm, pl);
+      if (S.kind === 'dribble') { const ball = dribbleBallAt(b, lm, pl); if (w3) { if (ball) dribBalls[pl.i] = ball; } else drawDribbleBall(ball); }
     } else if (lm) drawBody(b, lm, pl.color);
     // the target
     const tg = live && S.kind === 'targets' ? c.target : null;
@@ -466,7 +472,7 @@ function draw(frames, t = performance.now()) {
     if (live && S.kind === 'avocado') { drawTrails(b, f, pl, t); drawAvocados(b, t, c); }
     if (live && S.kind === 'derby') { drawBat(b, f, pl, t); drawPitch(b, t, c); drawFlyers(b, t, c); }
   }
-  if (w3) W3.world.set({ W: b.W, H: b.H, dpr, play: { x: b.ox, y: b.oy, w: b.dw, h: b.dh }, players: S.players.map((pl) => worldPlayer(b, frames && frames[pl.i] && frames[pl.i].lm)), pup: pupCv, pupDirty: true });
+  if (w3) W3.world.set({ W: b.W, H: b.H, dpr, two: S.two, balls: S.kind === 'dribble' ? S.players.map((pl) => dribBalls[pl.i] || null) : [], play: { x: b.ox, y: b.oy, w: b.dw, h: b.dh }, players: S.players.map((pl) => worldPlayer(b, frames && frames[pl.i] && frames[pl.i].lm)), pup: pupCv, pupDirty: true });
   if (live && S.kind === 'workout') {
     // the rest card: between the score and the clock from the top bar down when sideways alone, else
     // under them; the reaction arrows: under the top bar when sideways alone, else under the move bar
@@ -521,10 +527,10 @@ function drawPip(frames) {
 }
 // Dribble Drill in the scene: a basketball that bounces between the dribbling hand and the floor in time
 // with the hand (the camera follows the hand, not the ball, so the ball is drawn from it).
-function drawDribbleBall(b, lm, pl) {
+function dribbleBallAt(b, lm, pl) {
   const ok = (k) => lm[k] && (lm[k].visibility == null || lm[k].visibility > 0.45);
   const hands = [P.LW, P.RW].filter(ok);
-  if (!hands.length) return;
+  if (!hands.length) return null;
   const d = (pl.drib ||= { w: null, lo: 1, hi: 0 });
   const w = hands.length === 2 ? (d.w != null && hands.includes(d.w) ? d.w : hands.sort((a, c) => lm[c].y - lm[a].y)[0]) : hands[0];
   d.w = w;
@@ -534,7 +540,12 @@ function drawDribbleBall(b, lm, pl) {
   const feet = [27, 28, 31, 32].filter(ok).map((k) => lm[k].y), floorY = feet.length ? Math.max(...feet) : Math.min(1, y + 0.3);
   const by = y + (floorY - y) * (1 - down) + 0.03;
   const [x, sy] = toScreen(b, { x: lm[w].x, y: by }), r = Math.max(8, b.dh * 0.04);
-  ctx.save(); ctx.translate(x, sy - r);
+  return { x, y: sy - r, r };
+}
+function drawDribbleBall(ball) {
+  if (!ball) return;
+  const r = ball.r;
+  ctx.save(); ctx.translate(ball.x, ball.y);
   ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fillStyle = '#F2711C'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#120E18'; ctx.stroke();
   ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(-r, 0); ctx.lineTo(r, 0); ctx.moveTo(0, -r); ctx.lineTo(0, r); ctx.stroke();
   ctx.restore();
@@ -863,7 +874,14 @@ const PLACES = {
   zen: { emoji: '🎋', name: 'Zen Studio' },
 };
 const TOUR = ['field', 'rooftop', 'snow', 'zen'];
-const WORLD_KINDS = ['workout', 'squat', 'pushup', 'wallsit'];
+// The workouts pick their place; the games have their own (JC, Nov 19 2026: "Bring this level of details to the other
+// IRL games"): Target Smash a carnival midway, Dribble Drill a street court, Goalkeeper a stadium, Avocado Chop the
+// Guac Shack, Silo Derby a farm ballpark.
+const PICK_KINDS = ['workout', 'squat', 'pushup', 'wallsit'];
+const GAME_PLACE = { targets: 'carnival', dribble: 'court', keeper: 'stadium', avocado: 'kitchen', derby: 'farm',
+  // the sports are worlds of their own, seen through their own cameras (world/bowling.js and the rest)
+  bowling: 'bowling', qb: 'qb', hoops: 'hoops', tennis: 'tennis', sendit: 'sendit' };
+const WORLD_KINDS = [...PICK_KINDS, ...Object.keys(GAME_PLACE)];
 const W3 = { world: null, loading: null, failed: false, gl: null };
 const pupCv = document.createElement('canvas'), pupCtx = pupCv.getContext('2d');
 function glOK() {
@@ -871,9 +889,10 @@ function glOK() {
   return W3.gl;
 }
 const worldFits = () => !!S && WORLD_KINDS.includes(S.kind) && sceneOn() && perfLevel() < 2 && !W3.failed && glOK();
-const placeNow = () => (prefs.place === 'tour' || !PLACES[prefs.place] ? (S && S.tourPlace) || 'field' : prefs.place);
+const placeNow = () => (S && GAME_PLACE[S.kind]) || (prefs.place === 'tour' || !PLACES[prefs.place] ? (S && S.tourPlace) || 'field' : prefs.place);
 const worldLive = () => !!(W3.world && W3.world.running && worldFits());
-const worldPulse = (kind, i = 0) => { if (worldLive()) W3.world.pulse(kind, i); };
+// spot: a picture point ({ x, y } as the counters keep them) where it happened, for the place to answer there
+const worldPulse = (kind, i = 0, spot = null) => { if (!worldLive()) return; let at = null; if (spot) { const [x, y] = toScreen(box(), spot); at = { x, y }; } W3.world.pulse(kind, i, at); };
 function sleepWorld() { if (W3.world && W3.world.running) W3.world.sleep(); }
 // Wakes the place (loading world.js the first time), or puts it away when it doesn't fit now.
 async function syncWorld() {
@@ -892,7 +911,7 @@ async function syncWorld() {
 }
 // The setup's row of places (Tour only for the workout, which has moves to tour with).
 function placesRow(kind) {
-  if (!WORLD_KINDS.includes(kind) || !glOK() || !sceneOn()) return '';
+  if (!PICK_KINDS.includes(kind) || !glOK() || !sceneOn()) return '';
   if (perfLevel() >= 2) return `<p class="fine" style="margin-top:12px">WHERE: THE IRL GYM. The 3D places rest while IRL goes easy on this phone (the camera button's “Easy on the phone”).</p>`;
   const opts = TOUR.map((k) => [k, PLACES[k]]).concat(kind === 'workout' ? [['tour', { emoji: '🔀', name: 'Tour all four' }]] : []);
   const cur = kind === 'workout' ? (PLACES[prefs.place] || prefs.place === 'tour' ? prefs.place : 'field') : placeNow();
@@ -1004,16 +1023,16 @@ function play(pl, f) {
   if (r.rep) {
     pl.score = c.score;
     setCount(i, scoreText(S.kind, pl.score));
-    if (S.kind === 'targets') { sfx.smash(); pop(r.combo >= 3 ? `x${r.combo}!` : 'SMASH!', r.hit); }
-    else if (S.kind === 'keeper') { sfx.save(); pop(r.streak >= 3 ? `${r.streak} IN A ROW!` : 'SAVE!', r.save); if (solo && pl.score % 5 === 0) say(`${pl.score} saves`); }
+    if (S.kind === 'targets') { sfx.smash(); pop(r.combo >= 3 ? `x${r.combo}!` : 'SMASH!', r.hit); worldPulse(pl.score % 10 === 0 ? 'big' : 'rep', i, r.hit); }
+    else if (S.kind === 'keeper') { sfx.save(); pop(r.streak >= 3 ? `${r.streak} IN A ROW!` : 'SAVE!', r.save); if (solo && pl.score % 5 === 0) say(`${pl.score} saves`); worldPulse(pl.score % 5 === 0 ? 'big' : 'save', i, r.save); }
     else if (S.kind === 'avocado') { /* each cut pops its own points below */ }
     else if (S.kind === 'derby') {
       const h = r.hit, sl = c.silos[h.silo];
       sfx.crack(h.power); pop(h.row === 0 ? 'CRACK!' : 'POP!', h.from);
-      setTimeout(() => { if (!S || S.kind !== 'derby') return; (pl.lit ||= {})[h.silo] = performance.now(); sfx.drop(h.pts); pop(`+${h.pts}`, sl); if (h.pts >= 100) flashCam(); }, 760);
+      setTimeout(() => { if (!S || S.kind !== 'derby') return; (pl.lit ||= {})[h.silo] = performance.now(); sfx.drop(h.pts); pop(`+${h.pts}`, sl); if (h.pts >= 100) flashCam(); worldPulse(h.pts >= 100 ? 'big' : 'rep', i); }, 760);
       if (solo && h.pts >= 100) say('Corner pocket!');
     }
-    else { sfx.rep(); pop(S.kind === 'dribble' ? 'BOUNCE!' : r.say && r.say !== 'Nice!' ? r.say.toUpperCase() : 'REP!', null, i); }
+    else { sfx.rep(); pop(S.kind === 'dribble' ? 'BOUNCE!' : r.say && r.say !== 'Nice!' ? r.say.toUpperCase() : 'REP!', null, i); if (S.kind === 'dribble') worldPulse(pl.score % 10 === 0 ? 'big' : 'rep', i); }
     // the voice counts for one player (two at once would talk over each other)
     if (solo && (S.kind === 'squat' || S.kind === 'pushup')) say(String(pl.score));
     else if (solo && S.kind === 'dribble' && pl.score % 10 === 0) say(String(pl.score));
@@ -1022,7 +1041,7 @@ function play(pl, f) {
   if (r.miss) { sfx.miss(); pop('MISS', r.miss); }
   if (S.kind === 'keeper') {
     if (r.shot) sfx.kick();
-    if (r.goal) { sfx.goal(); pop('GOAL!', r.goal); flashCam(); setCount(i, String(c.score)); }
+    if (r.goal) { sfx.goal(); pop('GOAL!', r.goal); flashCam(); setCount(i, String(c.score)); worldPulse('goal', i, r.goal); }
   }
   if (S.kind === 'derby') {
     if (r.pitch) sfx.pitch();
@@ -1033,7 +1052,7 @@ function play(pl, f) {
   }
   if (S.kind === 'avocado') {
     for (const e of r.events || []) {
-      if (e.cut) { sfx.slice(e.cut.n); pop(e.cut.guac ? `+${e.cut.pts} GUAC!` : `+${e.cut.pts}`, e.cut); }
+      if (e.cut) { sfx.slice(e.cut.n); pop(e.cut.guac ? `+${e.cut.pts} GUAC!` : `+${e.cut.pts}`, e.cut); worldPulse(e.cut.guac ? 'big' : 'rep', i, e.cut); }
       if (e.spicy) { sfx.spicy(); pop('🌶️ −25', e.spicy); flashCam(); }
       if (e.drop) sfx.thud();
     }
@@ -1102,31 +1121,32 @@ function playSport(pl, r, f) {
     if (c.phase === 'rolling' && !pl.crashed && c.pins.some((p) => p.down)) { pl.crashed = true; sfx.pins(c.pins.filter((p) => p.down).length); }
     if (r.rolled) {
       const m = r.rolled.mark;
-      if (m === 'strike') { cheer(); flashCam(); pop('STRIKE!', null, i); if (solo) say('Strike!'); }
-      else if (m === 'spare') { cheer(); pop('SPARE!', null, i); if (solo) say('Spare!'); }
+      if (m === 'strike') { cheer(); flashCam(); pop('STRIKE!', null, i); if (solo) say('Strike!'); worldPulse('big', i); }
+      else if (m === 'spare') { cheer(); pop('SPARE!', null, i); if (solo) say('Spare!'); worldPulse('rep', i); }
       else if (m === 'gutter') { sfx.miss(); pop('GUTTER!', null, i); }
       else pop(String(r.rolled.down), null, i);
     }
   } else if (S.kind === 'qb') {
     if (r.huddle) sfx.beep();
     if (r.threw) sfx.whoosh();
-    if (r.caught) { cheer(); pop(r.caught.td ? 'TOUCHDOWN!' : `+${r.caught.yards} YDS`, null, i); if (r.caught.td) { flashCam(); if (solo) say('Touchdown!'); } }
+    if (r.caught) { cheer(); pop(r.caught.td ? 'TOUCHDOWN!' : `+${r.caught.yards} YDS`, null, i); worldPulse(r.caught.td ? 'big' : 'rep', i); if (r.caught.td) { flashCam(); if (solo) say('Touchdown!'); } }
     if (r.incomplete) { sfx.thud(); pop('INCOMPLETE', null, i); }
     if (r.picked) { sfx.miss(); pop('PICKED OFF!', null, i); }
     if (r.sacked) { sfx.thud(); pop('SACKED!', null, i); }
   } else if (S.kind === 'hoops') {
     if (r.shot) sfx.whoosh();
-    if (r.made) { r.made.kind === 'swish' ? sfx.swish() : sfx.clank(); setTimeout(() => sfx.swish(), 120); if (c.streak >= 3) cheer(); pop(c.streak >= 3 ? 'ON FIRE!' : r.made.kind === 'swish' ? 'SWISH!' : 'IN!', null, i); }
+    if (r.made) { r.made.kind === 'swish' ? sfx.swish() : sfx.clank(); setTimeout(() => sfx.swish(), 120); if (c.streak >= 3) cheer(); worldPulse(c.streak >= 3 ? 'big' : 'rep', i); pop(c.streak >= 3 ? 'ON FIRE!' : r.made.kind === 'swish' ? 'SWISH!' : 'IN!', null, i); }
     if (r.miss) { sfx.clank(); pop(r.miss.kind === 'short' ? 'SHORT' : r.miss.kind === 'long' ? 'LONG' : r.miss.kind === 'wide' ? 'WIDE' : 'RIMMED OUT', null, i); }
   } else if (S.kind === 'sendit') {
     if (c.phase === 'push' && c.pumps !== pl.pumps) { pl.pumps = c.pumps; sfx.whoosh(); }
-    if (r.launched) { sfx.cheer(); pop('SEND IT!', null, i); if (solo) say('Send it!'); }
+    if (r.launched) { sfx.cheer(); pop('SEND IT!', null, i); if (solo) say('Send it!'); worldPulse('move', i); }
     if (r.updraft) tone(300, 0, 0.5, 'triangle', 0.06, 900);
     if (r.downdraft) tone(700, 0, 0.5, 'sawtooth', 0.04, 160);
-    if (r.splash) { sfx.thud(); tone(180, 0, 0.6, 'sawtooth', 0.05, 50); pop(`SPLASH! ${c.score} FT`, null, i); flashCam(); if (solo) say(`${c.score} feet!`); }
+    if (r.splash) { sfx.thud(); tone(180, 0, 0.6, 'sawtooth', 0.05, 50); pop(`SPLASH! ${c.score} FT`, null, i); flashCam(); if (solo) say(`${c.score} feet!`); worldPulse('splash', i); }
+    if (r.updraft) worldPulse('rep', i);
   } else if (S.kind === 'tennis') {
     if (r.pitch) sfx.pok();
-    if (r.hit) { sfx.pok(); if (r.hit.winner) { cheer(); flashCam(); } pop(r.hit.winner ? 'WINNER!' : c.rally >= 5 ? `${c.rally} RALLY!` : 'NICE!', null, i); }
+    if (r.hit) { sfx.pok(); if (r.hit.winner) { cheer(); flashCam(); } worldPulse(r.hit.winner ? 'big' : 'rep', i); pop(r.hit.winner ? 'WINNER!' : c.rally >= 5 ? `${c.rally} RALLY!` : 'NICE!', null, i); }
     if (r.net) { sfx.thud(); pop('NET!', null, i); }
     if (r.miss) { sfx.miss(); pop('MISSED', null, i); }
   }

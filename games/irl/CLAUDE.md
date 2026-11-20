@@ -59,6 +59,31 @@ the browser was the plan he okayed).
     petals swirl; every tenth: the gong rings (it swings and shimmers); a new move: a koi jumps.
   - **Tour all four** (the workout only): a new place every move, switched during the rest (`TOUR`, a pop names
     it).
+  **The games' own places** (JC, Nov 19 2026: "Bring this level of details to the other IRL games"; not picked,
+  `GAME_PLACE`): Target Smash in a **carnival** (`carnival.js`: the SMASH-O-RAMA booth, a Ferris wheel and carousel
+  turning with chasing lights, striped tents, string lights, balloons, a high striker whose puck rings the bell on
+  every tenth hit with fireworks; a hit throws confetti from the target), Dribble Drill on a **street court**
+  (`court.js`: sunset, a hoop with a chain net, chain-link fence, graffiti wall, brownstones, sneakers on the wire, a
+  boombox; the dribbled ball is a real 3D ball, `dribbleBallAt` hands its spot over as `balls`; every tenth a ball
+  swishes through the net), Goalkeeper in a **stadium** (`stadium.js`: a real goal and net behind you fitted each
+  frame to the game's goal, so the 2D frame is gone; packed stands, LED boards, floodlights; a save brings the crowd
+  up with phone flashes, a goal bulges the net, every fifth save fireworks), Avocado Chop in the **Guac Shack**
+  (`kitchen.js`: tiles, a serving window on a sunny street, papel picado, pans, a counter of guacamole fixings; a cut
+  flicks green bits, guacamole sets the flags dancing with a marimba run), Silo Derby on a **farm ballfield**
+  (`farm.js`: home plate and chalk boxes at your feet, the outfield behind you, a fence, a cornfield, the farm's real
+  silos and barn, a wooden scoreboard, bleachers; the game's target silos stay drawn by the page; a corner pocket
+  plays Charge on the organ with fireworks). Hits, saves, goals and cuts pulse the place at their spot
+  (`worldPulse(kind, i, spot)`).
+  **The sports in 3D** (`bowling.js` cosmic lanes that mirror the pins, `qb.js` a stadium at night with both teams
+  running the routes, `hoops.js` an arena with a glass board and a net that snaps, `tennis.js` center court with
+  your opponent, `sendit.js` the sea, the pier and the air's columns with the contraption's drawing stood up in the
+  sky). scene.js keeps each sport's camera (`sportCam` answers its numbers, the same ones cam3 projects with) and,
+  given `info.w3`, draws only what stays flat on top: the scoresheet, the ball, football or racket in your hand, the
+  aim, the OPEN! tags and rings, the timing ring, the pocket clock, the gauges and the buoys' distances. The world
+  draws the rest from the counters' own state (`hoopBall`, `tennisOpp`, `routeAt`, `tennisBall`, the pins and ball,
+  the air), a view a player (scissored halves for two).
+  **The neck** (JC, Nov 19 2026: "The avatar doesn't have a neck"): `drawPuppet` lifts the avatar's head so its chin
+  sits a neck above the shoulders, and draws the neck (a shadow under the chin, the shirt's collar), in 2D and 3D.
   How it fits the page: the camera is fixed and set up so the puppet's card (`world/index.js`: a cutout standing
   where the player stands) covers exactly the camera picture's rectangle on screen, so what the page draws over
   it (the arrows, cones and rest card on `#overlay`) lines up. The camera sees about 72° corner to corner of the
@@ -253,8 +278,12 @@ the browser was the plan he okayed).
 - `world/`: the workouts' 3D places (three.js): `index.js` (the renderer, the fixed camera, the puppet's card,
   the loop, quality, sleep), `core.js` (shared shaders: noise, fog, the puppet's reflection; standard materials
   with a place's own surface (`patchStandard`), the sky dome, bursts, glows, merged props, sounds), and one file a
-  place (`field.js`, `rooftop.js`, `snow.js`, `zen.js`: each exports a builder answering `{ scene, key, camH,
-  exposure, pup, update, pulse, ambience, quality }`). Built into `public/irl/world.js`.
+  place (`field.js`, `rooftop.js`, `snow.js`, `zen.js`, the games' `carnival.js`, `court.js`, `stadium.js`,
+  `kitchen.js`, `farm.js`: each exports a builder answering `{ scene, key, camH, exposure, pup, update, pulse,
+  ambience, quality }`; the sports' `bowling.js`, `qb.js`, `hoops.js`, `tennis.js`, `sendit.js` answer `sport: true`
+  and `view(v, now)`, posing their world for one player's view before it's drawn through `v.cam`). `core.js` also has
+  crowds (`crowd`, `stands`), `bulbs`, `athletes` (posable players), `cityBlocks`, `clumps` (wheat, corn), sign
+  words. Built into `public/irl/world.js`.
 - `game.js`, `index.html`: the page (home, the camera stage, results). The camera layer starts under
   the status bar (`top: env(safe-area-inset-top)`) and fills to `--lab-h`; the scene is drawn on its
   canvas (`#overlay`), the video sits in the corner box (`#pip`, letterboxed, mirrored unless switched

@@ -17,8 +17,18 @@ import field from './field.js';
 import rooftop from './rooftop.js';
 import snow from './snow.js';
 import zen from './zen.js';
+import carnival from './carnival.js';
+import court from './court.js';
+import stadium from './stadium.js';
+import kitchen from './kitchen.js';
+import farm from './farm.js';
+import bowling from './bowling.js';
+import qb from './qb.js';
+import hoops from './hoops.js';
+import tennis from './tennis.js';
+import sendit from './sendit.js';
 
-const BUILD = { field, rooftop, snow, zen };
+const BUILD = { field, rooftop, snow, zen, carnival, court, stadium, kitchen, farm, bowling, qb, hoops, tennis, sendit };
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
 export function worldOK() {
@@ -89,7 +99,7 @@ export function createWorld(canvas, hooks = {}) {
     stopAmb();
     if (!places[name]) { places[name] = BUILD[name](env); places[name].name = name; places[name].quality?.(L.level); }
     P = places[name];
-    P.scene.add(pup, ...blobs);
+    if (!P.sport) P.scene.add(pup, ...blobs);
     renderer.toneMappingExposure = P.exposure ?? 1;
     pupU.uTint.value.copy(P.pup.tint); pupU.uRim.value.copy(P.pup.rim); pupU.uRimDir.value.set(...P.pup.rimDir);
     pupU.uRim2.value.copy(P.pup.rim2 || new THREE.Color(0, 0, 0)); pupU.uRimDir2.value.set(...(P.pup.rimDir2 || [0.7, 0.5]));
@@ -101,6 +111,8 @@ export function createWorld(canvas, hooks = {}) {
 
   // Screen point (CSS px) to the card's plane (z = 0 where the player stands), in meters.
   const toWorld = (sx, sy, z = 0) => ({ x: (sx - G.cx) / G.ppm, y: (P ? P.camH : 1.3) - (sy - G.yH) / G.ppm, z });
+  // Screen point to depth z (behind the player is negative): what shows at that spot, that far away.
+  const rayAt = (sx, sy, z) => { const p = toWorld(sx, sy, 0), h = P ? P.camH : 1.3, k = (G.D - z) / G.D; return { x: p.x * k, y: h + (p.y - h) * k, z }; };
 
   function layout(dt) {
     const play = L.play, W = L.W, H = L.H, now = U.uTime.value;
@@ -130,6 +142,31 @@ export function createWorld(canvas, hooks = {}) {
     for (let i = L.players.length; i < blobs.length; i++) blobs[i].visible = false;
   }
 
+  /* ---- the sports: a world seen through the sport's own camera (scene.js's numbers, so what it still draws on
+     top lines up), one view a player, each with its own game in it ---- */
+  const camFrom = (c, r) => {
+    const n = 0.1, f = c.f;
+    camera.position.set(c.x, c.y, -c.z); camera.rotation.set(-c.pitch, 0, 0); camera.updateMatrixWorld();
+    camera.projectionMatrix.makePerspective((-(c.cx - r.x) / f) * n, ((r.x + r.w - c.cx) / f) * n, ((c.cy - r.y) / f) * n, (-(r.y + r.h - c.cy) / f) * n, n, 3000);
+    camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
+  };
+  function drawSport(dt) {
+    const t = U.uTime.value, now = performance.now();
+    P.update(dt, t, { now, views: L.views });
+    if (P.fog) { U.uFogCol.value.copy(P.fog.color); U.uFogDen.value = P.fog.density; }
+    const many = L.views.length > 1;
+    renderer.setScissorTest(many);
+    for (const v of L.views) {
+      if (!v || !v.cam) continue;
+      P.view(v, now, t);
+      camFrom(v.cam, v.rect);
+      if (many) { renderer.setViewport(v.rect.x, L.H - v.rect.y - v.rect.h, v.rect.w, v.rect.h); renderer.setScissor(v.rect.x, L.H - v.rect.y - v.rect.h, v.rect.w, v.rect.h); }
+      else renderer.setViewport(0, 0, L.W, L.H);
+      renderer.render(P.scene, camera);
+    }
+    if (many) { renderer.setScissorTest(false); renderer.setViewport(0, 0, L.W, L.H); }
+  }
+
   /* ---- sounds: the place's own, while sounds may play ---- */
   let amb = null, ambAt = 0;
   function stopAmb() { if (amb) { amb.stop(); amb = null; } }
@@ -146,13 +183,14 @@ export function createWorld(canvas, hooks = {}) {
   function frame(now) {
     if (!running) return;
     raf = requestAnimationFrame(frame);
-    if (document.hidden || !P || !L.play || !L.W || !L.pup) return;
+    if (document.hidden || !P || !L.W || (P.sport ? !L.views : !L.play || !L.pup)) return;
     if (lastDraw && now - lastDraw < 1000 / (L.level ? 24 : 30) - 4) return;
     const dt = Math.min(0.1, lastDraw ? (now - lastDraw) / 1000 : 0.016);
     lastDraw = now;
     U.uTime.value = (now - T0) / 1000;
     const pr = Math.min(L.level ? 1 : 1.5, L.dpr || 1), key = [L.W, L.H, pr].join('x');
     if (key !== sizeKey) { renderer.setPixelRatio(pr); renderer.setSize(L.W, L.H, false); sizeKey = key; }
+    if (P.sport) { drawSport(dt); ambience(now); return; }
     // the puppet's canvas: a new size means a new texture (WebGL can't grow one in place)
     const src = L.pup;
     if (!pupTex || src.width !== pupW || src.height !== pupH) {
@@ -164,7 +202,7 @@ export function createWorld(canvas, hooks = {}) {
     } else if (L.pupDirty) pupTex.needsUpdate = true;
     L.pupDirty = false;
     layout(dt);
-    P.update(dt, U.uTime.value, { toWorld, players: L.players, W: L.W, H: L.H });
+    P.update(dt, U.uTime.value, { toWorld, rayAt, players: L.players, W: L.W, H: L.H, play: L.play, two: !!L.two, balls: L.balls || [], ppm: G.ppm, D: G.D });
     if (P.fog) { U.uFogCol.value.copy(P.fog.color); U.uFogDen.value = P.fog.density; }
     renderer.render(P.scene, camera);
     ambience(now);
@@ -175,12 +213,13 @@ export function createWorld(canvas, hooks = {}) {
     get current() { return P && P.name; },
     // the page's latest: { W, H, dpr, play, players: [{ foot, fx, head: {x, y} }], pup (canvas), pupDirty }
     set(o) { if (o.pupDirty) L.pupDirty = true; const d = L.pupDirty; Object.assign(L, o); L.pupDirty = d; },
-    pulse(kind, i = 0) {
+    // kind: 'rep' | 'big' | 'move', or a game's own ('save', 'goal'...); spot: where on screen it happened (CSS px)
+    pulse(kind, i = 0, spot = null) {
       if (!P || !P.pulse || !L.play) return;
       const p = L.players[i] || L.players[0];
       const foot = p && p.fx != null ? { x: (p.fx - G.cx) / G.ppm, y: 0.02, z: 0.1 } : { x: 0, y: 0.02, z: 0.1 };
       const head = p && p.head ? toWorld(p.head.x, p.head.y, 0.15) : { x: foot.x, y: 1.6, z: 0.15 };
-      P.pulse(kind, { foot, head, i, ac: hooks.audio ? hooks.audio() : null });
+      P.pulse(kind, { foot, head, i, pos: spot ? toWorld(spot.x, spot.y, 0.25) : null, ac: hooks.audio ? hooks.audio() : null });
     },
     quality(level) {
       if (level === L.level) return;
