@@ -28,6 +28,51 @@ the browser was the plan he okayed).
   typed for them when it's a lab player's (`guestLook`), else a free look from that name. The
   camera sheet's "Animated scene" switch puts the camera back full screen for those (`prefs.scene`);
   the sports always play in their scene.
+- **The 3D places** (JC, Nov 19 2026: "Bring the glacial max level of detail to the 3d rendering of IRL. I want
+  more vivid scenery and lighting with workouts in the pouring rain on a wheat field", then "A peaceful snow fall,
+  a zen studio. Make it fun but immersive", "*separate scenes"). The workouts (`WORLD_KINDS`: the Full Body
+  Workout, Squats, Push-ups, Wall Sit) play in a real 3D place instead of the comic gym, picked in the setup
+  (`prefs.place`, the WHERE YOU WORK OUT row) and drawn with three.js (r186, the family Glacial Maw uses) from
+  `world/`, bundled by `scripts/build.mjs` (esbuild) into `public/irl/world.js` and imported only when a place is
+  up. Four places, each its own world, everything made from geometry, canvas textures and shaders (nothing to
+  download):
+  - **Wheat Field** (`world/field.js`): golden hour, the sun low behind you, gusts rolling waves through thousands
+    of painted wheat clumps (`gust` in the shaders), a dirt track with tire ruts, red barn and silo, a windmill,
+    hay bales, a scarecrow, a red tractor, power poles to the hills, poppies, birds, butterflies, pollen. Rep:
+    chaff and dust at your feet; every tenth: a flock bursts out of the wheat on a gust; a new move: a gust and a
+    birdsong.
+  - **Rainy Rooftop** (`world/rooftop.js`): a city roof at night in pouring rain: neon (GYM on the stair hut,
+    CAPRA across the street, a NO PAIN NO GAIN billboard), a water tower, string lights, steam from the vents, a
+    skyline whose windows are worked out in the shader, curtains of rain, lightning (forked bolts, the flash, the
+    puppet's shadow jumping, thunder after it by the distance). The wet roof mirrors the lights in streaks and the
+    puppet, the puddles ring with drops. Rep: a splash; every tenth: lightning close by with a crack of thunder; a
+    new move: the neon blacks out a moment and thunder rolls far off.
+  - **Snowfall** (`world/snow.js`): a clearing in a snowy pine forest at night, the northern lights over the
+    mountains through a gap in the trees, the moon, stars, a log cabin glowing with chimney smoke, lanterns, a
+    snowman with a red scarf and his sled, a frozen pond, glints in the snow, soft flakes and big blurry ones
+    close up, your breath puffing every few seconds. Rep: snow kicked up; every tenth: a shooting star, a whirl
+    of flakes and the snowman waves; a new move: the northern lights flare.
+  - **Zen Studio** (`world/zen.js`): a polished wooden studio at golden hour, shoji open onto a garden: shafts of
+    sun with dust in them, the doorway and lanterns mirrored in the floor, raked gravel circling mossy rocks, a koi
+    pond, a cherry tree shedding petals that drift in, swaying bamboo, a stone lantern, a deer-scarer that tips and
+    clacks, mountains and a pagoda in the haze; inside a gong, paper lanterns, a bonsai, incense, a scroll. Rep:
+    petals swirl; every tenth: the gong rings (it swings and shimmers); a new move: a koi jumps.
+  - **Tour all four** (the workout only): a new place every move, switched during the rest (`TOUR`, a pop names
+    it).
+  How it fits the page: the camera is fixed and set up so the puppet's card (`world/index.js`: a cutout standing
+  where the player stands) covers exactly the camera picture's rectangle on screen, so what the page draws over
+  it (the arrows, cones and rest card on `#overlay`) lines up. The camera sees about 72° corner to corner of the
+  picture, as a phone does (the player stands about 2 m off upright, 3 m sideways); the floor line follows the
+  lowest foot of the last 1.2 s, so a jump doesn't lift the floor. The puppets are drawn by `drawPuppet` (`bare`:
+  no 2D shadow) onto `pupCv` (the camera picture's size, 1.25× at most) each tracker frame; the place lights the
+  card (a tint and rim lights on its edges), it casts a real shadow, wet and polished floors mirror it
+  (`pupRefl`), rain and snow fall in front of it. `#world3d` sits under `#overlay`; `syncWorld()` wakes the place,
+  `sleepWorld()` puts it away (results, home, another challenge, the scene switched off: the canvas shrinks to
+  nothing, the sounds stop). Its own loop draws at most 30 frames a second. Level 1 (eased off) draws at 24, 1×,
+  smaller shadows and fewer particles (`quality`); level 2 (light mode, `prefs.lite`) and phones without WebGL 2
+  keep the comic gym (`drawBackdrop`). Each place has quiet sounds of its own once the challenge starts (wind in
+  the wheat and birdsong, rain and a city hum, a winter wind, wind chimes), under the voice; off with the sound.
+  Test hooks: `window.__irl.world()` (fits, live, place, draw calls) and `window.__irl.pulse(kind)`.
 - **The sports games** (`sports.mjs`; `sport: true` in `CHALLENGES`), first on the home screen:
   - **Bowling** (five frames, goal 70 pins, real scoring with the last frame's bonus balls; untimed,
     the HUD hidden for the scoresheet in the scene): a hand dropping to the hip then coming up fast past
@@ -205,6 +250,11 @@ the browser was the plan he okayed).
   `reaction`, `burpees`), the circuit (`workout`, `WORKOUT`, `MOVES`) and its share row. No camera, no DOM.
 - `scene.js`: the scenes (`drawSport`, `drawBackdrop`, `drawWorkout` with the coach figure `drawDemo`),
   the puppet (`drawPuppet`), the little 3D camera (`cam3`) and light mode (`setLite`). Draws only.
+- `world/`: the workouts' 3D places (three.js): `index.js` (the renderer, the fixed camera, the puppet's card,
+  the loop, quality, sleep), `core.js` (shared shaders: noise, fog, the puppet's reflection; standard materials
+  with a place's own surface (`patchStandard`), the sky dome, bursts, glows, merged props, sounds), and one file a
+  place (`field.js`, `rooftop.js`, `snow.js`, `zen.js`: each exports a builder answering `{ scene, key, camH,
+  exposure, pup, update, pulse, ambience, quality }`). Built into `public/irl/world.js`.
 - `game.js`, `index.html`: the page (home, the camera stage, results). The camera layer starts under
   the status bar (`top: env(safe-area-inset-top)`) and fills to `--lab-h`; the scene is drawn on its
   canvas (`#overlay`), the video sits in the corner box (`#pip`, letterboxed, mirrored unless switched

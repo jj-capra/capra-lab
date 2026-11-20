@@ -97,7 +97,8 @@ const handsOf = (lm, rect, info) => [handIn(lm, 15, rect, info), handIn(lm, 16, 
    The player as a puppet: their lab avatar's head on a comic body whose joints are their joints.
    look: { head (an Image of the avatar), skin, shirt, pants }.
    --------------------------------------------------------------------------------------------------- */
-export function drawPuppet(ctx, lm, at, look, ring = null) {
+// bare: in a 3D place (world/), which lays its own soft shadow under the feet (two players keep their color ring).
+export function drawPuppet(ctx, lm, at, look, ring = null, bare = false) {
   const ok = (i) => seenP(lm[i]);
   const pt = (i) => (ok(i) ? at(lm[i]) : null);
   const ls = pt(11), rs = pt(12), lh = pt(23), rh = pt(24);
@@ -106,7 +107,7 @@ export function drawPuppet(ctx, lm, at, look, ring = null) {
   const limb = (a, b, w, color) => { if (!a || !b) return; seg(ctx, a, b, INK, w + 6); seg(ctx, a, b, color, w); };
   // the shadow under the feet (in the player's color, two players)
   const feet = [pt(27), pt(28), pt(31), pt(32)].filter(Boolean);
-  if (feet.length) {
+  if (feet.length && (ring || !bare)) {
     const fy = Math.max(...feet.map((p) => p.y)), fx = feet.reduce((s, p) => s + p.x, 0) / feet.length;
     ctx.save(); ctx.beginPath(); ctx.ellipse(fx, fy + 4, sw * 0.9, sw * 0.22, 0, 0, Math.PI * 2); ctx.fillStyle = ring ? ring + '66' : 'rgba(5,3,10,0.35)'; ctx.fill(); ctx.restore();
   }

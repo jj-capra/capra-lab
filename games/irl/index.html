@@ -73,6 +73,9 @@
      to my movement. Much like how NEX Playground displays an animation with a camera view of the players
      on the upper or bottom corner"). The camera sheet can switch back to the camera full screen. */
   .cam > canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+  /* the workouts' 3D places (world.js) under the scene canvas, shown only while one is up */
+  .cam > #world3d { z-index: 0; display: none; }
+  .cam.camera > #world3d { display: none !important; }
   /* (the box sits inside the camera layer, which already reaches the real bottom: no --lab-gap here) */
   .pip { position: absolute; z-index: 3; left: max(12px, var(--sl)); bottom: calc(var(--sb) + 86px); width: min(34vw, 190px); aspect-ratio: var(--pip-ar, 3 / 4);
     border-radius: 14px; overflow: hidden; background: #000; border: 3px solid var(--ink); box-shadow: 0 0 0 2px rgba(255, 248, 236, 0.85), 4px 5px 0 var(--shadow); pointer-events: none; }
@@ -278,7 +281,7 @@
 
 <!-- ============ THE CAMERA ============ -->
 <section class="screen stage" data-screen="stage" id="stage" hidden>
-  <div class="cam scene" id="cam"><canvas id="overlay"></canvas><div class="pip" id="pip"><video id="video" playsinline muted autoplay></video><canvas id="pipCv"></canvas></div></div>
+  <div class="cam scene" id="cam"><canvas id="world3d"></canvas><canvas id="overlay"></canvas><div class="pip" id="pip"><video id="video" playsinline muted autoplay></video><canvas id="pipCv"></canvas></div></div>
   <header class="sbar">
     <button class="round-btn" id="backBtn" type="button" aria-label="Back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
     <div class="ttl" id="stTitle"></div>
@@ -317,7 +320,7 @@
   <ul>
     <li><b>Pick a challenge</b>, then follow the setup: where to put your phone and how far to stand.</li>
     <li><b>Step into your spot.</b> When the camera sees what it needs, a 3-2-1 countdown starts on its own, so you never have to run back to tap the screen.</li>
-    <li><b>Move.</b> The game plays in an animated scene that copies your moves: your lab avatar does what you do, or the ball, football or racket in the front follows your hand. The camera picture sits in the corner with the stick figure it sees. A voice counts your reps so you can hear it from across the room.</li>
+    <li><b>Move.</b> The game plays in an animated scene that copies your moves: your lab avatar does what you do, or the ball, football or racket in the front follows your hand. The camera picture sits in the corner with the stick figure it sees. A voice counts your reps so you can hear it from across the room. The workouts (the Full Body Workout, squats, push-ups, wall sit) play in a 3D place you pick in the setup: a wheat field at sunset, a rooftop in the pouring rain, a snowfall under the northern lights or a zen studio (or a tour of all four, a new place every move). Every tenth rep the place answers: birds burst from the wheat, lightning, a shooting star, the gong.</li>
     <li><b>The sports:</b> Bowling (swing your arm and roll it; step left or right to line it up), QB Throw (ball up over your head to aim, then throw to the open man), Free Throws (shoot it up from your chest), Tennis Rally (swing as the ball reaches you) and Send It! (flap to push off the pier, then step side to side through the green updrafts, arms out like wings).</li>
     <li><b>Full Body Workout:</b> eight moves in a row, about six minutes: Jumping Jacks, Standing Knee Crunches, High Knees, Squats, Cross Crunches, Skater Hops, a Reaction Drill (move the way the arrow says, fast) and Burpees. Each move is on the clock with a 10-second rest that shows how to do the next one. Every rep adds to your total.</li>
     <li><b>2 players:</b> switch it on at the top, stand side by side, and each of you plays your own half of the screen. Whoever’s phone it is gets paid for their side.</li>

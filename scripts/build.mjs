@@ -187,7 +187,8 @@ async function buildSendIt() {
 
 /* IRL: real moves in front of the camera (Nov 14 2026). The pose model runs on the phone: MediaPipe's
    tasks-vision bundle and wasm (from node_modules) and the lite pose model (games/irl/models) are
-   served from the lab itself, next to the page. */
+   served from the lab itself, next to the page. The workouts' 3D places (games/irl/world/, three.js
+   from node_modules) are bundled by esbuild into public/irl/world.js. */
 async function buildIrl() {
   const game = path.join(ROOT, 'games', 'irl'), out = path.join(ROOT, 'public', 'irl');
   const tv = path.join(ROOT, 'node_modules', '@mediapipe', 'tasks-vision');
@@ -195,6 +196,9 @@ async function buildIrl() {
   await fs.mkdir(path.join(out, 'vendor', 'wasm'), { recursive: true });
   await fs.mkdir(path.join(out, 'models'), { recursive: true });
   for (const f of ['index.html', 'game.js', 'logic.mjs', 'sports.mjs', 'scene.js', 'workout.mjs']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  // the workouts' 3D places (Nov 19 2026): world/ and three.js bundled into one file, loaded only when a place is up
+  const esbuild = await import('esbuild');
+  await esbuild.build({ entryPoints: [path.join(game, 'world', 'index.js')], bundle: true, minify: true, format: 'esm', target: ['safari15', 'chrome100'], outfile: path.join(out, 'world.js'), logLevel: 'warning', legalComments: 'none' });
   // tasks-vision posts usage numbers (which task ran, how fast) to Google every minute; IRL promises
   // nothing leaves the phone, so the copy we serve has that send switched off. The build stops if a
   // new version moves it, so it can't come back unnoticed.

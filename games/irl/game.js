@@ -19,7 +19,7 @@ const FAKE = !!window.__irlFake;
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const store = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* private mode */ } } };
 const me = () => { const p = store.get('capra-lab.profile', null); return p && p.name && p.code ? p : null; };
-const prefs = Object.assign({ sound: true, cam: 'front', mirror: true, scene: true, players: 1, guest: 'Player 2', youRight: false, names: ['Player 1', 'Player 2'] }, store.get('irl.prefs', {}));
+const prefs = Object.assign({ sound: true, cam: 'front', mirror: true, scene: true, players: 1, guest: 'Player 2', youRight: false, names: ['Player 1', 'Player 2'], place: 'field' }, store.get('irl.prefs', {}));
 const savePrefs = () => store.set('irl.prefs', prefs);
 /* Going easy on the phone (JC, Nov 15 2026: IRL froze on his son's iPhone 17 and ran fine on his 16 Pro
    Max). The camera, the tracker and the scene all share the phone's chips, and a phone that heats up
@@ -53,6 +53,7 @@ const scoreText = (kind, n) => (kind === 'wallsit' ? fmt(n) : String(n));
 function show(name) {
   for (const s of document.querySelectorAll('[data-screen]')) s.hidden = s.dataset.screen !== name;
   window.scrollTo(0, 0);
+  if (name !== 'stage') sleepWorld();
 }
 
 /* ---------- sound and voice (made here; the voice counts so you can hear it across the room) ---------- */
@@ -389,7 +390,7 @@ function govern(work, det, t) {
   gov.slowSince ??= t;
   if (t - gov.slowSince < 2500) return;
   if (gpuSlow) rebuildTracker();
-  else { PERF.level++; savePerf(); setLite(perfLevel() >= 2); lay.at = 0; }
+  else { PERF.level++; savePerf(); setLite(perfLevel() >= 2); lay.at = 0; syncWorld(); }
   Object.assign(gov, { ema: 0, det: 0, rafEma: 0, last: 0, slowSince: null, since: 0 });
 }
 
@@ -418,7 +419,8 @@ function draw(frames, t = performance.now()) {
   if (canvas.width !== Math.round(b.W * dpr) || canvas.height !== Math.round(b.H * dpr)) { canvas.width = Math.round(b.W * dpr); canvas.height = Math.round(b.H * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, b.W, b.H);
-  const scene = sceneOn();
+  const scene = sceneOn(), w3 = scene && worldLive();
+  if (!w3 && W3.world && W3.world.running && !worldFits()) sleepWorld();
   drawPip(frames);
   if (S && CHALLENGES[S.kind].sport) {
     const { top, hud } = hudLayout(t);
@@ -426,9 +428,16 @@ function draw(frames, t = performance.now()) {
     if (S.two) drawDivider(b, true, false);
     return;
   }
-  if (scene) drawBackdrop(ctx, S ? S.kind : 'squat', b.W, b.H, { x: b.ox, y: b.oy, w: b.dw, h: b.dh }, t, S ? Math.max(0, ...S.players.map((pl) => pl.cheerAt || 0)) : 0, dpr);
-  else if (FAKE) { ctx.fillStyle = '#1B1528'; ctx.fillRect(b.ox, b.oy, b.dw, b.dh); }
+  if (scene && !w3) drawBackdrop(ctx, S ? S.kind : 'squat', b.W, b.H, { x: b.ox, y: b.oy, w: b.dw, h: b.dh }, t, S ? Math.max(0, ...S.players.map((pl) => pl.cheerAt || 0)) : 0, dpr);
+  else if (!scene && FAKE) { ctx.fillStyle = '#1B1528'; ctx.fillRect(b.ox, b.oy, b.dw, b.dh); }
   if (!S) return;
+  // in a 3D place the puppets go on a canvas the size of the camera picture, which the place stands up as a cutout
+  const ps = Math.min(1.25, dpr);
+  if (w3) {
+    const pw = Math.max(1, Math.round(b.dw * ps)), ph = Math.max(1, Math.round(b.dh * ps));
+    if (pupCv.width !== pw || pupCv.height !== ph) { pupCv.width = pw; pupCv.height = ph; }
+    pupCtx.setTransform(ps, 0, 0, ps, 0, 0); pupCtx.clearRect(0, 0, b.dw, b.dh);
+  }
   if (S.two) drawDivider(b);
   const live = S.phase === 'live';
   for (const pl of S.players) {
@@ -436,7 +445,8 @@ function draw(frames, t = performance.now()) {
     if (S.kind === 'keeper') drawGoal(b, ...sideRange(pl.i));
     if (S.kind === 'derby' && c) drawSilos(b, t, pl);
     if (lm && scene) {
-      drawPuppet(ctx, lm, (p) => { const [x, y] = toScreen(b, p); return { x, y }; }, plLook(pl), S.two ? pl.color : null);
+      if (w3) drawPuppet(pupCtx, lm, (p) => { const [x, y] = toScreen(b, p); return { x: x - b.ox, y: y - b.oy }; }, plLook(pl), S.two ? pl.color : null, true);
+      else drawPuppet(ctx, lm, (p) => { const [x, y] = toScreen(b, p); return { x, y }; }, plLook(pl), S.two ? pl.color : null);
       if (S.kind === 'dribble') drawDribbleBall(b, lm, pl);
     } else if (lm) drawBody(b, lm, pl.color);
     // the target
@@ -456,6 +466,7 @@ function draw(frames, t = performance.now()) {
     if (live && S.kind === 'avocado') { drawTrails(b, f, pl, t); drawAvocados(b, t, c); }
     if (live && S.kind === 'derby') { drawBat(b, f, pl, t); drawPitch(b, t, c); drawFlyers(b, t, c); }
   }
+  if (w3) W3.world.set({ W: b.W, H: b.H, dpr, play: { x: b.ox, y: b.oy, w: b.dw, h: b.dh }, players: S.players.map((pl) => worldPlayer(b, frames && frames[pl.i] && frames[pl.i].lm)), pup: pupCv, pupDirty: true });
   if (live && S.kind === 'workout') {
     // the rest card: between the score and the clock from the top bar down when sideways alone, else
     // under them; the reaction arrows: under the top bar when sideways alone, else under the move bar
@@ -744,7 +755,8 @@ async function openChallenge(kind) {
   if (!LOOK.sure) loadMyLook();
   for (const [h, g] of LOOK.guests) if (g.again) LOOK.guests.delete(h);
   $('cam').classList.remove('resting');
-  S = { kind, two, seed: (Math.random() * 1e9) >>> 0, phase: 'setup', players: [0, two ? 1 : null].filter((i) => i != null).map((i) => newPlayer(i, two, C)), okSince: null, startAt: 0, frames: null };
+  S = { kind, two, seed: (Math.random() * 1e9) >>> 0, phase: 'setup', players: [0, two ? 1 : null].filter((i) => i != null).map((i) => newPlayer(i, two, C)), okSince: null, startAt: 0, frames: null,
+    tourPlace: kind === 'workout' ? TOUR[0] : TOUR[(Math.random() * TOUR.length) | 0] };
   show('stage');
   $('stage').classList.remove('live');
   $('stage').classList.toggle('two', two);
@@ -760,6 +772,7 @@ async function openChallenge(kind) {
   $('setup').innerHTML = `<div class="top"><span class="em" aria-hidden="true">${C.emoji}</span><h2>${esc(C.name.toUpperCase())}<small>${two ? 'HEAD TO HEAD · ' : ''}${esc(challengeLine(kind, true))}</small></h2></div>
     <ol class="steps"><li>${esc(two ? C.setup2 : C.setup)}</li><li>${esc(C.how)}</li><li>Tap <b>Start</b>, then walk to your ${two ? 'spots' : 'spot'}. The countdown starts by itself when the camera sees ${two ? 'you both' : 'you'}.</li></ol>
     ${two ? '<div class="duo" id="duo"></div>' : ''}
+    ${placesRow(kind)}
     ${kind === 'workout' ? `<p class="fine" style="margin-top:12px">THE MOVES, IN ORDER</p><div class="rides moves">${WORKOUT.plan.map(([k, secs]) => `<span class="ride"><span aria-hidden="true">${MOVES[k].emoji}</span>${esc(MOVES[k].short)} · ${secs}s</span>`).join('')}</div>` : ''}
     ${kind === 'sendit' ? `<p class="fine" style="margin-top:12px">${two ? 'YOUR CONTRAPTIONS (THE RIGHT PLAYER GETS THE NEXT ONE)' : 'YOUR CONTRAPTION'}</p><div class="rides" id="rides">${CRAFTS.map((c) => `<button type="button" class="ride" data-id="${c.id}" aria-pressed="${c.id === prefs.craft}"><span aria-hidden="true">${c.emoji}</span>${esc(c.name)}</button>`).join('')}</div>` : ''}
     <button type="button" class="camrow" id="camRow"><span aria-hidden="true">📷</span><span id="camName">${esc(camName())}</span><small>CHANGE</small></button>
@@ -774,7 +787,14 @@ async function openChallenge(kind) {
     for (const pl of S.players) pl.counter = makeCounter(kind, C, pl.i);
     draw(S.frames);
   };
+  for (const el of document.querySelectorAll('#places .ride')) el.onclick = () => {
+    prefs.place = el.dataset.place; savePrefs();
+    if (prefs.place === 'tour') S.tourPlace = TOUR[0];
+    for (const b of document.querySelectorAll('#places .ride')) b.setAttribute('aria-pressed', String(b.dataset.place === el.dataset.place));
+    syncWorld();
+  };
   if (two) paintDuo();
+  syncWorld();
   draw(null);
   frameLoop();
   if (FAKE) { setStatus('Camera ready (test)', ''); $('startBtn').disabled = false; return; }
@@ -829,6 +849,64 @@ function cameraTrouble(e) {
   const f = $('frontCam'); if (f) f.onclick = () => { prefs.cam = 'front'; savePrefs(); openChallenge(S ? S.kind : 'squat'); };
 }
 
+/* ---------- the 3D places (JC, Nov 19 2026: "Bring the glacial max level of detail to the 3d rendering of IRL. I
+   want more vivid scenery and lighting with workouts in the pouring rain on a wheat field", then "A peaceful snow
+   fall, a zen studio. Make it fun but immersive", "*separate scenes") ----------
+   The workouts (the Full Body Workout, Squats, Push-ups, Wall Sit) play in a 3D place picked in the setup (or all
+   four in turn, one a move, on the workout's Tour). world.js (built from world/ with three.js) draws it on its own
+   canvas under the scene canvas; the puppets are drawn onto a canvas it stands in the place as a cutout. Light
+   mode (level 2) and phones without WebGL 2 keep the comic gym. */
+const PLACES = {
+  field: { emoji: '🌾', name: 'Wheat Field' },
+  rooftop: { emoji: '🌧️', name: 'Rainy Rooftop' },
+  snow: { emoji: '❄️', name: 'Snowfall' },
+  zen: { emoji: '🎋', name: 'Zen Studio' },
+};
+const TOUR = ['field', 'rooftop', 'snow', 'zen'];
+const WORLD_KINDS = ['workout', 'squat', 'pushup', 'wallsit'];
+const W3 = { world: null, loading: null, failed: false, gl: null };
+const pupCv = document.createElement('canvas'), pupCtx = pupCv.getContext('2d');
+function glOK() {
+  if (W3.gl == null) { try { const g = document.createElement('canvas').getContext('webgl2'); W3.gl = !!g; if (g) g.getExtension('WEBGL_lose_context')?.loseContext(); } catch { W3.gl = false; } }
+  return W3.gl;
+}
+const worldFits = () => !!S && WORLD_KINDS.includes(S.kind) && sceneOn() && perfLevel() < 2 && !W3.failed && glOK();
+const placeNow = () => (prefs.place === 'tour' || !PLACES[prefs.place] ? (S && S.tourPlace) || 'field' : prefs.place);
+const worldLive = () => !!(W3.world && W3.world.running && worldFits());
+const worldPulse = (kind, i = 0) => { if (worldLive()) W3.world.pulse(kind, i); };
+function sleepWorld() { if (W3.world && W3.world.running) W3.world.sleep(); }
+// Wakes the place (loading world.js the first time), or puts it away when it doesn't fit now.
+async function syncWorld() {
+  if (!worldFits()) { sleepWorld(); return; }
+  if (!W3.world) {
+    W3.loading ||= import('./world.js')
+      .then((m) => { W3.world = m.createWorld($('world3d'), { audio: () => (S && S.phase !== 'setup' && prefs.sound ? audio() : null), level: () => Math.min(1, perfLevel()) }); })
+      .catch((e) => { W3.failed = true; console.warn('IRL: the 3D places didn’t load', e); });
+    await W3.loading;
+    if (!W3.world || !worldFits()) return;
+  }
+  W3.world.quality(Math.min(1, perfLevel()));
+  W3.world.place(placeNow());
+  W3.world.start();
+  if (S) draw(S.frames);
+}
+// The setup's row of places (Tour only for the workout, which has moves to tour with).
+function placesRow(kind) {
+  if (!WORLD_KINDS.includes(kind) || !glOK() || !sceneOn()) return '';
+  if (perfLevel() >= 2) return `<p class="fine" style="margin-top:12px">WHERE: THE IRL GYM. The 3D places rest while IRL goes easy on this phone (the camera button's “Easy on the phone”).</p>`;
+  const opts = TOUR.map((k) => [k, PLACES[k]]).concat(kind === 'workout' ? [['tour', { emoji: '🔀', name: 'Tour all four' }]] : []);
+  const cur = kind === 'workout' ? (PLACES[prefs.place] || prefs.place === 'tour' ? prefs.place : 'field') : placeNow();
+  return `<p class="fine" style="margin-top:12px">WHERE YOU WORK OUT</p><div class="rides" id="places">${opts.map(([k, p]) => `<button type="button" class="ride" data-place="${k}" aria-pressed="${cur === k}"><span aria-hidden="true">${p.emoji}</span>${esc(p.name)}</button>`).join('')}</div>`;
+}
+// Where each player's feet and head are on screen, for the place (the floor line, the shadow, the breath).
+function worldPlayer(b, lm) {
+  if (!lm) return null;
+  const ok = (i) => lm[i] && (lm[i].visibility == null || lm[i].visibility > 0.5);
+  const feet = [27, 28, 29, 30, 31, 32].filter(ok).map((i) => toScreen(b, lm[i])), low = feet.concat([15, 16].filter(ok).map((i) => toScreen(b, lm[i])));
+  const nose = ok(0) ? toScreen(b, lm[0]) : null;
+  return { foot: low.length ? Math.max(...low.map((q) => q[1])) : null, fx: feet.length ? feet.reduce((a, q) => a + q[0], 0) / feet.length : null, head: nose ? { x: nose[0], y: nose[1] } : null };
+}
+
 /* ---------- the camera picker ---------- */
 function paintCamRow() { const el = $('camName'); if (el) el.textContent = camName(); }
 function openCams() {
@@ -856,9 +934,9 @@ async function pickCam(v) {
   try { await startCamera(); } catch (e) { cameraTrouble(e); }
 }
 $('mirrorChk').onchange = () => { prefs.mirror = $('mirrorChk').checked; savePrefs(); video.classList.toggle('mirror', mirrored()); if (S) draw(S.frames); };
-$('sceneChk').onchange = () => { prefs.scene = $('sceneChk').checked; savePrefs(); applyView(); if (S) draw(S.frames); };
+$('sceneChk').onchange = () => { prefs.scene = $('sceneChk').checked; savePrefs(); applyView(); syncWorld(); if (S) draw(S.frames); };
 $('liteChk').onchange = () => {
-  prefs.lite = $('liteChk').checked; savePrefs(); setLite(perfLevel() >= 2); lay.at = 0;
+  prefs.lite = $('liteChk').checked; savePrefs(); setLite(perfLevel() >= 2); lay.at = 0; syncWorld();
   $('liteNote').textContent = !prefs.lite && PERF.level ? 'IRL already eased off a little on this phone by itself.' : '';
   if (S) draw(S.frames);
   // a smaller camera picture too, before the go
@@ -939,6 +1017,7 @@ function play(pl, f) {
     // the voice counts for one player (two at once would talk over each other)
     if (solo && (S.kind === 'squat' || S.kind === 'pushup')) say(String(pl.score));
     else if (solo && S.kind === 'dribble' && pl.score % 10 === 0) say(String(pl.score));
+    if (S.kind === 'squat' || S.kind === 'pushup') worldPulse(pl.score % 10 === 0 ? 'big' : 'rep', i);
   }
   if (r.miss) { sfx.miss(); pop('MISS', r.miss); }
   if (S.kind === 'keeper') {
@@ -960,7 +1039,7 @@ function play(pl, f) {
     }
     if (c.score !== pl.score) { pl.score = c.score; setCount(i, String(pl.score)); }
   }
-  if (S.kind === 'wallsit') { const sc = c.score; if (sc !== pl.score) { pl.score = sc; setCount(i, scoreText('wallsit', sc)); if (solo && sc && sc % 10 === 0) say(`${sc} seconds`); } }
+  if (S.kind === 'wallsit') { const sc = c.score; if (sc !== pl.score) { pl.score = sc; setCount(i, scoreText('wallsit', sc)); if (solo && sc && sc % 10 === 0) say(`${sc} seconds`); if (sc && sc % 10 === 0) worldPulse(sc % 30 === 0 ? 'big' : 'rep', i); } }
   if (r.say && !(pl.lostSince && t - pl.lostSince > 1500)) coach(i, r.say, r.rep ? 'ok' : '');
   if (r.meter != null) meterOf(i).querySelector('i').style.height = Math.round(r.meter * 100) + '%';
   if (r.done) {
@@ -986,8 +1065,17 @@ function paintWk(c) {
 // the left player's clock: both run the same one).
 function playWorkout(pl, r, f) {
   const i = pl.i, solo = !S.two, c = pl.counter, lead = i === 0;
-  if (r.start && lead) { sfx.go(); say(r.start.name); paintWk(c); }
-  if (r.rest && lead) { if (c.station > 0) { sfx.whistle(); say(`Rest. Next up: ${r.next.name}`); } else say(`First up: ${r.next.name}`); paintWk(c); }
+  if (r.start && lead) { sfx.go(); say(r.start.name); paintWk(c); worldPulse('move', i); }
+  if (r.rest && lead) {
+    if (c.station > 0) { sfx.whistle(); say(`Rest. Next up: ${r.next.name}`); } else say(`First up: ${r.next.name}`);
+    paintWk(c);
+    // the tour: a new place for every move, there by the end of the rest
+    if (prefs.place === 'tour' && S.kind === 'workout') {
+      const p = TOUR[c.station % TOUR.length];
+      if (p !== S.tourPlace) { S.tourPlace = p; if (worldLive()) { W3.world.place(p); pop(`${PLACES[p].emoji} ${PLACES[p].name.toUpperCase()}`); } }
+    }
+  }
+  if (r.rep || r.hit) worldPulse(c.score && c.score % 10 === 0 ? 'big' : 'rep', i);
   if (r.cue) { sfx.beep(); if (solo) say(r.say); }
   // the reaction drill's pops go low, under the next arrow
   const [a, z] = sideRange(i), low = { x: mirrored() ? 1 - (a + z) / 2 : (a + z) / 2, y: 0.72 };
@@ -1356,7 +1444,9 @@ addEventListener('resize', () => {
 
 // tests drive the page with made-up bodies
 window.__irl = { feed: (f) => handle({ aspect: box().aspect, ...f, t: f.t ?? performance.now() }), state: () => S, open: openChallenge, finish, cams,
-  perf: () => ({ level: perfLevel(), saved: { ...PERF }, gov: { ...gov }, trk: { ...trk }, dpr: dprNow(), tracker: landmarker }) };
+  perf: () => ({ level: perfLevel(), saved: { ...PERF }, gov: { ...gov }, trk: { ...trk }, dpr: dprNow(), tracker: landmarker }),
+  world: () => ({ fits: worldFits(), live: worldLive(), failed: W3.failed, place: placeNow(), ...(W3.world ? W3.world.debug() : {}) }),
+  pulse: (kind, i = 0) => worldPulse(kind, i) };
 
 renderHome();
 loadMyLook();
