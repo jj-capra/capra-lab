@@ -211,6 +211,17 @@ async function buildIrl() {
   console.log('built public/irl/');
 }
 
+/* Studio: a free creative playground (Nov 20 2026): the camera puts you in the universe with an aura,
+   a band plays genre progressions, the voice goes through auto-tune and effects, you record. No server.
+   The pose model and its runtime are IRL's (/irl/vendor, /irl/models), so buildIrl comes first. */
+async function buildStudio() {
+  const game = path.join(ROOT, 'games', 'studio'), out = path.join(ROOT, 'public', 'studio');
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(out, { recursive: true });
+  for (const f of ['index.html', 'app.js', 'music.mjs', 'band.js', 'voice.js', 'tune-worklet.js', 'moves.mjs', 'aura.js']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  console.log('built public/studio/');
+}
+
 await buildPrimalSurvival();
 await buildMindHeist();
 await buildParTeeTime();
@@ -225,3 +236,4 @@ await buildThreeClueCrew();
 await buildPuzzledSpin();
 await buildIrl();
 await buildSendIt();
+await buildStudio();
