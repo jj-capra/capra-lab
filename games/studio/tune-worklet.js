@@ -7,8 +7,12 @@
    unless the voice moves clearly away (no warble between two notes). Hard tune gets there at once
    (the robot snap), Natural eases over 70 ms and leaves a little of the singer's own pitch.
    Two harmony voices sing the chord's next notes above the lead, one each side.
-   Messages in: { on, speed, strength, shift, formant, harmony, allowed[12], chord[pcs], gate }.
-   Messages out (20 a second): { f0, m, tgt, level }. */
+   It adds 23 ms (the grains need a voice's lowest period, 90 Hz, twice over).
+   Also: claps and beeps the mic hears, with the exact audio-clock time they arrived (for the clap
+   sync, while `onsets` is on), and a gate (`duck`, a level) that closes the voice when only the
+   band's echo from the phone's speaker is coming in.
+   Messages in: { on, speed, strength, shift, formant, harmony, allowed[12], chord[pcs], gate, duck, onsets }.
+   Messages out (20 a second): { f0, m, tgt, level }; and { onset: time } as they happen. */
 const mod12 = (n) => ((n % 12) + 12) % 12;
 
 class StudioTune extends AudioWorkletProcessor {
@@ -19,10 +23,10 @@ class StudioTune extends AudioWorkletProcessor {
     this.L = 16384; this.mask = this.L - 1;
     this.inp = new Float32Array(this.L); this.olaL = new Float32Array(this.L); this.olaR = new Float32Array(this.L);
     this.n = 0;
-    this.LAT = Math.round(0.03 * sr);
+    this.LAT = Math.round(0.023 * sr);
     // hearing the note
     this.D = Math.max(1, Math.round(sr / 12000)); this.dsr = sr / this.D;
-    this.W = Math.round(this.dsr * 0.032); this.tauMin = Math.max(2, Math.floor(this.dsr / 1000)); this.tauMax = Math.ceil(this.dsr / 80);
+    this.W = Math.round(this.dsr * 0.032); this.tauMin = Math.max(2, Math.floor(this.dsr / 1000)); this.tauMax = Math.ceil(this.dsr / 90);
     this.dN = this.W + this.tauMax + 2; this.dbuf = new Float32Array(this.dN * 2); this.dpos = 0; this.dcount = 0;
     this.acc = 0; this.accN = 0; this.hop = Math.round(this.dsr * 0.012); this.sinceHop = 0;
     this.diff = new Float32Array(this.tauMax + 2);
@@ -31,7 +35,9 @@ class StudioTune extends AudioWorkletProcessor {
     // the lead and two harmonies (left, right)
     this.voices = [0, 1, 2].map((i) => ({ next: -1, anchor: 0, anchorT: 0, lastMark: null, semis: 0, want: 0, last: 0,
       gain: i ? 0.5 : 1, panL: i === 1 ? 0.9 : i === 2 ? 0.3 : 1, panR: i === 1 ? 0.3 : i === 2 ? 0.9 : 1 }));
-    this.s = { on: false, speed: 0.07, strength: 0.75, shift: 0, formant: 1, harmony: 0, allowed: new Array(12).fill(true), chord: [0, 4, 7], gate: 0.006 };
+    this.s = { on: false, speed: 0.07, strength: 0.75, shift: 0, formant: 1, harmony: 0, allowed: new Array(12).fill(true), chord: [0, 4, 7], gate: 0.006, duck: 0, onsets: false };
+    this.envF = 0; this.envS = 0; this.lastOnset = -1e9; this.g = 1; this.hold = 0;
+    this.aF = 1 - Math.exp(-1 / (0.0005 * sr)); this.rF = 1 - Math.exp(-1 / (0.012 * sr)); this.aS = 1 - Math.exp(-1 / (0.3 * sr));
     this.wet = 0; this.level = 0; this.postAt = 0; this.slip = 0;
     this.port.onmessage = (e) => { if (e.data && typeof e.data === 'object') Object.assign(this.s, e.data); };
   }
@@ -136,10 +142,21 @@ class StudioTune extends AudioWorkletProcessor {
     const s = this.s, frames = oL.length, mask = this.mask, sr = this.sr;
     const bypass = !s.on && !s.shift && !s.harmony && (s.formant || 1) === 1;
     const wetT = bypass ? 0 : 1, wa = 1 - Math.exp(-1 / (0.03 * sr)), nv = 1 + Math.min(2, s.harmony | 0);
+    const t0 = typeof currentTime !== 'undefined' ? currentTime : this.n / sr, duck = s.duck || 0;
+    const ga = 1 - Math.exp(-1 / (0.004 * sr)), gr = 1 - Math.exp(-1 / (0.12 * sr));
     let sq = 0;
     for (let i = 0; i < frames; i++) {
       const x = iL ? (iR ? (iL[i] + iR[i]) * 0.5 : iL[i]) : 0, n = this.n;
       sq += x * x;
+      // claps and beeps: a sharp rise over the recent level
+      const ax = Math.abs(x);
+      this.envF += (ax - this.envF) * (ax > this.envF ? this.aF : this.rF);
+      this.envS += (ax - this.envS) * this.aS;
+      if (s.onsets && this.envF > 0.02 && this.envF > this.envS * 3.5 && n - this.lastOnset > 0.12 * sr) { this.lastOnset = n; this.port.postMessage({ onset: t0 + i / sr }); }
+      // the speaker's echo of the band alone doesn't get through (held open 150 ms after the voice)
+      if (duck > 0) { if (this.envF > duck) this.hold = Math.round(0.15 * sr); else if (this.hold > 0) this.hold--; }
+      const gt = duck > 0 && this.hold <= 0 ? 0 : 1;
+      this.g += (gt - this.g) * (gt > this.g ? ga : gr);
       this.inp[n & mask] = x;
       this.lp1 += (x - this.lp1) * this.lpa; this.lp2 += (this.lp1 - this.lp2) * this.lpa;
       this.acc += this.lp2;
@@ -153,8 +170,8 @@ class StudioTune extends AudioWorkletProcessor {
       const so = (n - this.LAT) & mask, wl = this.olaL[so], wr = this.olaR[so];
       this.olaL[so] = 0; this.olaR[so] = 0;
       this.wet += (wetT - this.wet) * wa;
-      oL[i] = x * (1 - this.wet) + wl * this.wet;
-      if (oR !== oL) oR[i] = x * (1 - this.wet) + wr * this.wet;
+      oL[i] = (x * (1 - this.wet) + wl * this.wet) * this.g;
+      if (oR !== oL) oR[i] = (x * (1 - this.wet) + wr * this.wet) * this.g;
       this.n = n + 1;
     }
     const rms = Math.sqrt(sq / frames);

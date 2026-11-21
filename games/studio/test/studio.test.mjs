@@ -237,6 +237,25 @@ test('auto-tune: chipmunk an octave up, harmonies on the chord\'s notes to each 
   assert.equal(quiet.last.f0, 0, 'silence has no pitch');
 });
 
+test('the clap sync\'s ears: a clap is heard at the exact moment it arrives; the speaker gate shuts out a quiet echo', () => {
+  const sr = 48000, p = worklet(sr);
+  p.s.onsets = true;
+  const x = new Float32Array(sr);
+  for (const at of [0.3, 0.8]) for (let i = 0; i < 600; i++) x[Math.round(at * sr) + i] = 0.5 * Math.exp(-i / 120) * (i % 2 ? 1 : -1);
+  const heard = [];
+  p.port.postMessage = (m) => { if (m.onset != null) heard.push(m.onset); };
+  run(p, x);
+  assert.equal(heard.length, 2, 'two claps: ' + heard.map((t) => t.toFixed(4)));
+  assert.ok(Math.abs(heard[0] - 0.3) < 0.002 && Math.abs(heard[1] - 0.8) < 0.002, 'right on time: ' + heard.map((t) => t.toFixed(4)));
+  const g = worklet(sr);
+  Object.assign(g.s, { duck: 0.05 });
+  const echo = voice(sr, 220, 0.6).map((v) => v * 0.1), loud = voice(sr, 220, 0.6);
+  const rms = (a, from) => Math.sqrt(a.slice(from).reduce((s, v) => s + v * v, 0) / (a.length - from));
+  assert.ok(rms(run(g, echo).L, 14400) < rms(echo, 14400) * 0.05, 'the band\'s echo alone stays out');
+  const g2 = worklet(sr); Object.assign(g2.s, { duck: 0.05 });
+  assert.ok(rms(run(g2, loud).L, 14400) > rms(loud, 14400) * 0.9, 'a voice over it comes through');
+});
+
 /* moves */
 const body = (o = {}) => {
   const lm = Array.from({ length: 33 }, () => ({ x: 0.5, y: 0.9, visibility: 0.1 }));

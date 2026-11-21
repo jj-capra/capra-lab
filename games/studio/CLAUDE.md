@@ -71,14 +71,30 @@ save for exploring again or the recordings you capture."). Public (not a JJ Brew
   heard (the audio clock less the output latency).
 - **The voice** (`voice.js`, `tune-worklet.js`): the mic through the auto-tune (an AudioWorklet: YIN pitch at
   12 kHz every 12 ms, PSOLA grains at the voice's own pitch so it keeps its sound; Hard snaps at once, Natural
-  eases over 70 ms and leaves a quarter of the singer's pitch, Off). The notes it may land on: the chord's own
+  eases over 70 ms and leaves a quarter of the singer's pitch, Off; it adds 23 ms). The notes it may land on: the chord's own
   plus the key's that are a whole step clear of them (`tuneSet`), so it always sounds right. Harmony: Solo, Duet
   (a third above, left), Choir (and a fifth, right), on the chord's notes. Voice: Natural, Chipmunk (an octave up,
   formants up), Deep (down a fifth, formants down), Robot (hard snap to the chord's notes and a ring modulator).
-  Effects: Space (a long reverb), Echo (dotted eighths in time), Radio. Headphones in: no echo-cancelling, you
-  hear yourself fully; otherwise the mic echo-cancels the phone's own speaker and "Hear myself" is quieter. iPhone
-  gets `navigator.audioSession.type` 'play-and-record' while the mic is on ('playback' otherwise, so the ring
-  switch doesn't mute the band). The pitch pill shows the note you sing and where it's going.
+  Effects: Space (a long reverb), Echo (dotted eighths in time), Radio. iPhone gets `navigator.audioSession.type`
+  'play-and-record' while the mic is on ('playback' otherwise, so the ring switch doesn't mute the band). The
+  pitch pill shows the note you sing and where it's going.
+- **Listening on** (JC, Nov 20 2026: "The delay makes this impossible and the music quiets when I sing... Kids are
+  going to use phone audio and wireless headphones"; `LISTEN`, `prefs.voice.listen`). Hearing your own voice back
+  needs it back within a few hundredths of a second; a phone speaker's round trip is about a tenth and Bluetooth's
+  about a fifth, so only **Wired** plays your tuned voice in your ears ("Hear myself live"). On **Phone speaker**
+  and **Wireless** you hear the band and your own natural voice, the auto-tune and effects go into the recording,
+  and the take plays back as soon as you stop. Phone speaker echo-cancels the mic (so it doesn't hear the band);
+  "Keep the music loud" turns that off if iPhone's echo-cancelling dips the music, and then the worklet's gate
+  (`duck`, set ten times a second by `updateDuck` from how much of the band the mic hears) shuts the voice between
+  lines. Wireless asks for the phone's own mic (`findPhoneMic`), so the headphones aren't switched to their
+  call-quality headset mode. The voice and the band each have their own limiter (one shared limiter used to turn
+  the band down whenever you sang), and the last limiters only catch what's left.
+- **The clap sync** (`syncCheck`): eight beeps on the speaker path (never recorded), you clap along; the worklet
+  reports each clap with its exact audio-clock time (`onsets`); the middle offset is the round trip for where
+  you're listening, kept per mode in `prefs.voice.sync` (a guess until then: `DEFAULT_RT`). The band goes into the
+  recording that much later plus the auto-tune's 23 ms (`estimateLatency`), so the voice lands on its beat; the
+  beat bar runs behind the audio clock by the round trip less 20 ms (`hearDelay`), in time with your ears. The
+  first recording on Wireless without a sync asks for one (Clap sync or Record anyway).
 - **Recording**: ⏺ when stopped counts you in for two bars (GET IN PLACE, then 4·3·2·1; the clicks go to the
   speaker, never the recording) and records the song from the top; while playing it records from there. It stops
   at the song's end, on ⏺, on leaving, or when the page hides. Video (the sky canvas composited 720×1280 or

@@ -19,8 +19,13 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const fmtTime = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
 
 /* ---------- settings ---------- */
+/* Where the sound goes decides what can work: a phone speaker or Bluetooth is too slow to hear your
+   own voice live (you'd hear yourself a tenth to a fifth of a second late), so only wired headphones
+   play your voice back; with the others your tuned voice goes into the recording. */
+const LISTEN = { speaker: '📱 Phone speaker', wireless: '🎧 Wireless', wired: '🔌 Wired' };
+const DEFAULT_RT = { speaker: 0.05, wireless: 0.24, wired: 0.03 };   // the round trip, out and back in, before a clap sync
 const DEF = {
-  voice: { tune: 'hard', harmony: 0, char: 'natural', space: true, echo: false, radio: false, volume: 1, phones: false, monitor: true },
+  voice: { tune: 'hard', harmony: 0, char: 'natural', space: true, echo: false, radio: false, volume: 1, listen: 'speaker', monitor: true, loud: false, sync: {} },
   look: { universe: 'glow', style: 'glow', bg: 'space', chordColors: true, trails: true, moveSounds: true, camera: 'front', recMode: 'video' },
 };
 const saved = store.get('studio.prefs', {});
@@ -31,6 +36,9 @@ const prefs = {
   seen: !!saved.seen,
 };
 if (!GENRES[prefs.song.genre]) prefs.song = defaultSong('pop');
+if (!LISTEN[prefs.voice.listen]) prefs.voice.listen = saved.voice && saved.voice.phones ? 'wired' : 'speaker';
+if (!prefs.voice.sync || typeof prefs.voice.sync !== 'object') prefs.voice.sync = {};
+delete prefs.voice.phones;
 prefs.look.universe = { nebula: 'glow', deep: 'starlight' }[prefs.look.universe] || prefs.look.universe;
 if (!UNIVERSES[prefs.look.universe]) prefs.look.universe = 'glow';
 if (!STYLES[prefs.look.style]) prefs.look.style = 'glow';
@@ -58,14 +66,19 @@ function audioUp() {
   if (!AC) return null;
   setSession(false);
   const ctx = new AC({ latencyHint: 'interactive' });
-  const limiter = () => { const c = ctx.createDynamicsCompressor(); c.threshold.value = -5; c.knee.value = 5; c.ratio.value = 12; c.attack.value = 0.002; c.release.value = 0.16; return c; };
-  const speakers = ctx.createGain(), lim = limiter(); speakers.connect(lim); lim.connect(ctx.destination);
-  const rec = ctx.createGain(), recLim = limiter(); rec.connect(recLim);
+  /* the band and the voice each get their own limiter (one shared limiter turned the band down
+     whenever you sang); the last stage only catches what's left */
+  const limiter = (thr, ratio, knee, rel = 0.16) => { const c = ctx.createDynamicsCompressor(); c.threshold.value = thr; c.knee.value = knee; c.ratio.value = ratio; c.attack.value = 0.002; c.release.value = rel; return c; };
+  const speakers = ctx.createGain(), lim = limiter(-1, 20, 0, 0.1); speakers.connect(lim); lim.connect(ctx.destination);
+  const rec = ctx.createGain(), recLim = limiter(-1, 20, 0, 0.1); rec.connect(recLim);
   let recDest = null;
   try { recDest = ctx.createMediaStreamDestination(); recLim.connect(recDest); } catch { /* no recording here */ }
-  const bandOut = ctx.createGain(); bandOut.gain.value = 0.9; bandOut.connect(speakers);
-  const recDelay = ctx.createDelay(1); recDelay.delayTime.value = 0.06; bandOut.connect(recDelay); recDelay.connect(rec);
-  const voiceOut = ctx.createGain(), monitor = ctx.createGain(); voiceOut.connect(monitor); monitor.connect(speakers); voiceOut.connect(rec);
+  const bandOut = ctx.createGain(); bandOut.gain.value = 0.72;
+  const bandLim = limiter(-6, 6, 6); bandOut.connect(bandLim); bandLim.connect(speakers);
+  const bandAn = ctx.createAnalyser(); bandAn.fftSize = 1024; bandLim.connect(bandAn);
+  const recDelay = ctx.createDelay(1); recDelay.delayTime.value = 0.06; bandLim.connect(recDelay); recDelay.connect(rec);
+  const voiceOut = ctx.createGain(), voiceLim = limiter(-9, 12, 4), monitor = ctx.createGain();
+  voiceOut.connect(voiceLim); voiceLim.connect(monitor); monitor.connect(speakers); voiceLim.connect(rec);
   const band = new Band(ctx, bandOut, speakers), voice = new Voice(ctx, voiceOut);
   band.setSong(prefs.song);
   band.on('end', onSongEnd);
@@ -73,23 +86,30 @@ function audioUp() {
   voice.load().then(() => estimateLatency());
   try { const b = ctx.createBuffer(1, 1, 22050), s = ctx.createBufferSource(); s.buffer = b; s.connect(ctx.destination); s.start(); } catch { /* fine */ }
   if (ctx.state !== 'running') ctx.resume().catch(() => {});
-  A = { ctx, speakers, rec, recDest, bandOut, recDelay, voiceOut, monitor, band, voice };
+  A = { ctx, speakers, rec, recDest, bandOut, bandAn, recDelay, voiceOut, monitor, band, voice };
   applyMonitor();
   return A;
 }
 const outLatency = () => (A ? (A.ctx.outputLatency || 0) + (A.ctx.baseLatency || 0) : 0);
 function applyMonitor() {
   if (!A) return;
-  const v = prefs.voice, g = v.monitor ? (v.phones ? 1 : 0.55) : 0;
+  const v = prefs.voice, g = v.listen === 'wired' && v.monitor ? 1 : 0;
   A.monitor.gain.setTargetAtTime(g, A.ctx.currentTime, 0.03);
 }
-// the band reaches the recording late by what the singer's voice takes to come back in
+/* The round trip: the band out to your ears, your voice back in through the mic. The clap sync
+   measures it for where you're listening (prefs.voice.sync); until then a fair guess. The band goes
+   into the recording that much later (plus the auto-tune's 23 ms), so your voice lands on its beat;
+   the beat bar runs that much behind the audio clock (less the mic's share), in time with your ears. */
+function roundTrip() {
+  const v = prefs.voice, s = v.sync && v.sync[v.listen];
+  return typeof s === 'number' ? s : Math.max(DEFAULT_RT[v.listen] || 0.05, outLatency() + 0.02);
+}
+const hearDelay = () => Math.max(outLatency(), roundTrip() - 0.02);
+const hasSync = () => typeof (prefs.voice.sync || {})[prefs.voice.listen] === 'number';
 function estimateLatency() {
   if (!A) return;
-  const tr = A.voice.stream && A.voice.stream.getAudioTracks()[0], st = tr && tr.getSettings ? tr.getSettings() : {};
-  const inp = typeof st.latency === 'number' ? st.latency : 0.012;
-  const tune = A.voice.node && !(prefs.voice.tune === 'off' && prefs.voice.char === 'natural' && !+prefs.voice.harmony) ? 0.03 : 0;
-  A.recDelay.delayTime.setTargetAtTime(clamp(outLatency() + inp + tune + 0.005, 0.02, 0.35), A.ctx.currentTime, 0.02);
+  const tune = A.voice.node && !(prefs.voice.tune === 'off' && prefs.voice.char === 'natural' && !+prefs.voice.harmony) ? 0.023 : 0;
+  A.recDelay.delayTime.setTargetAtTime(clamp(roundTrip() + tune, 0.02, 0.8), A.ctx.currentTime, 0.02);
 }
 
 /* ---------- screens ---------- */
@@ -110,7 +130,21 @@ let xf = [1, -1, 0, 1], lastPersonAt = 0, personSeen = false;
 const movers = [createMoves(), createMoves(), createMoves(), createMoves()];
 let hands = [null, null], head = null;
 const mirrored = () => prefs.look.camera !== 'back';
-const micConstraints = () => ({ echoCancellation: !prefs.voice.phones, noiseSuppression: false, autoGainControl: false, channelCount: 1 });
+let phoneMic = null;
+function micConstraints() {
+  const v = prefs.voice, c = { echoCancellation: v.listen === 'speaker' && !v.loud, noiseSuppression: false, autoGainControl: false, channelCount: 1 };
+  if (v.listen === 'wireless' && phoneMic) c.deviceId = { ideal: phoneMic };
+  return c;
+}
+async function findPhoneMic() {
+  try {
+    const ds = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === 'audioinput' && d.label);
+    const m = ds.find((d) => /iphone|ipad|built-?in|internal|phone/i.test(d.label) && !/airpods|bluetooth|headset|buds|beats|hands-?free/i.test(d.label));
+    phoneMic = m ? m.deviceId : null;
+  } catch { /* the browser picks */ }
+  return phoneMic;
+}
+const micDevice = () => { const tr = A && A.voice.stream && A.voice.stream.getAudioTracks()[0]; return tr && tr.getSettings ? tr.getSettings().deviceId : null; };
 function camConstraints() {
   return { facingMode: prefs.look.camera === 'back' ? 'environment' : 'user', width: { ideal: 1280 }, height: { ideal: 720 }, frameRate: { ideal: 30, max: 30 } };
 }
@@ -136,6 +170,7 @@ async function startMedia() {
   if (v.length) await useCamera(new MediaStream(v));
   if (a.length) { audioUp().voice.attach(new MediaStream(a)); micOn = true; } else { micOn = false; setSession(false); }
   paintMic(); estimateLatency();
+  if (micOn && prefs.voice.listen === 'wireless' && await findPhoneMic() && micDevice() !== phoneMic) setMic(true);
 }
 async function useCamera(stream) {
   stopCamera();
@@ -160,6 +195,7 @@ async function setMic(on) {
   const a = audioUp();
   if (!on) { a.voice.detach(); micOn = false; setSession(false); paintMic(); return; }
   setSession(true);
+  if (prefs.voice.listen === 'wireless' && !phoneMic) await findPhoneMic();
   try { a.voice.attach(await navigator.mediaDevices.getUserMedia({ audio: micConstraints() })); micOn = true; }
   catch { micOn = false; setSession(false); toast('The mic is blocked for this site'); }
   paintMic(); estimateLatency();
@@ -378,10 +414,12 @@ function pickType(isVideo) {
   for (const t of list) { try { if (MediaRecorder.isTypeSupported(t)) return t; } catch { /* next */ } }
   return '';
 }
-function recToggle() {
+function recToggle(asked) {
   if (rec || pendingRec) { stopRecord(); return; }
+  if (syncing) return;
   const a = audioUp();
   if (!a || !window.MediaRecorder || !a.recDest) { toast('This browser can\'t record here'); return; }
+  if (asked !== true && prefs.voice.listen === 'wireless' && micOn && !hasSync()) { openSheet('syncSheet'); return; }
   closeSheets();
   if (!a.band.playing) { a.band.setSong(prefs.song); a.band.play(0, { countIn: 2 }); pendingRec = true; }
   else startRecorder();
@@ -456,11 +494,12 @@ async function finishTake(r) {
   const type = (r.type || '').split(';')[0] || (r.isVideo ? 'video/webm' : 'audio/webm');
   if (!r.chunks.length) { toast('Nothing was recorded'); return; }
   const blob = new Blob(r.chunks, { type });
-  const n = (await Takes.all().catch(() => [])).filter((t) => t.handle === myHandle()).length + 1;
-  const take = { id: 't' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), handle: myHandle(), name: r.name + (n > 1 ? ' · take ' + n : ''), made: Date.now(),
+  const take = { id: 't' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), handle: myHandle(), name: r.name, made: Date.now(),
     dur: (performance.now() - r.t0) / 1000, kind: r.isVideo ? 'video' : 'audio', type, size: blob.size, blob, thumb: r.thumb || snapThumb(), song: r.song, voice: { ...prefs.voice }, look: { ...prefs.look } };
-  try { await Takes.put(take); } catch (e) { console.warn(e); toast('This phone is out of room for recordings'); }
   openTake(take, true);
+  const n = (await Takes.all().catch(() => [])).filter((t) => t.handle === myHandle()).length + 1;
+  if (n > 1) { take.name += ' · take ' + n; if (theTake === take) $('#takeName').value = take.name; }
+  try { await Takes.put(take); } catch (e) { console.warn(e); toast('This phone is out of room for recordings'); }
 }
 
 /* recordings live in IndexedDB on this phone */
@@ -494,6 +533,7 @@ function openTake(t, fresh) {
   m.className = 'player'; m.controls = true; m.playsInline = true; m.setAttribute('playsinline', ''); m.preload = 'metadata'; m.src = openTakeUrl;
   if (t.kind === 'video' && t.thumb) m.poster = t.thumb;
   box.appendChild(m);
+  if (fresh) m.play().catch(() => {});   // straight back (iPhone may want a tap on play)
   $('#takeHead').textContent = fresh ? 'YOUR TAKE' : 'RECORDING';
   $('#takeName').value = t.name;
   $('#takeNote').textContent = `${fmtTime(t.dur || 0)} · ${(t.size / 1048576).toFixed(1)} MB · ${new Date(t.made).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}. Share sends it to Messages, Photos (Save Video) and more.`;
@@ -533,8 +573,8 @@ function saveSong(asNew) {
 function openSong(entry) {
   currentSong = entry;
   prefs.song = { ...defaultSong(entry.song.genre), ...entry.song };
-  const { phones, monitor } = prefs.voice;
-  prefs.voice = { ...DEF.voice, ...(entry.voice || {}), phones, monitor };
+  const { listen, monitor, loud, sync } = prefs.voice;   // those belong to this phone, not the song
+  prefs.voice = { ...DEF.voice, ...(entry.voice || {}), listen, monitor, loud, sync };
   if (entry.look) Object.assign(prefs.look, { universe: entry.look.universe || prefs.look.universe, chordColors: entry.look.chordColors ?? prefs.look.chordColors });
   savePrefs();
   enterStudio();
@@ -601,7 +641,7 @@ function enterStudio() {
   keepAwake(true);
   startMedia();
   if (!prefs.seen) { prefs.seen = true; savePrefs(); setTimeout(() => { if (screen === 'studio') openSheet('songSheet'); }, 400); }
-  else hint('▶ to play, ⏺ to record. Clap, or put both hands up ✨', 4500);
+  else hint(prefs.voice.listen === 'wired' ? '▶ to play, ⏺ to record. Clap, or put both hands up ✨' : '▶ to play, ⏺ to record, then play it back to hear your auto-tuned voice ✨', 5000);
   studioAt = performance.now();
 }
 function leaveStudio() {
@@ -645,7 +685,7 @@ function openSheet(name) {
   closeSheets();
   openName = name;
   $('#' + name).hidden = false;
-  $('#veil').hidden = name !== 'takeSheet' && name !== 'saveSheet';
+  $('#veil').hidden = name !== 'takeSheet' && name !== 'saveSheet' && name !== 'syncSheet';
   for (const [id, sh] of [['dkSong', 'songSheet'], ['dkVoice', 'voiceSheet'], ['dkLook', 'lookSheet']]) $('#' + id).classList.toggle('on', sh === name);
   if (name === 'songSheet') paintSongSheet();
   if (name === 'voiceSheet') paintVoiceSheet();
@@ -735,18 +775,85 @@ function paintVoiceSheet() {
   const fx = [['space', '🌌 Space'], ['echo', '🔁 Echo'], ['radio', '📻 Radio']];
   segment($('#fx'), fx, (k) => !!v[k], (k) => { v[k] = !v[k]; voiceChanged(); });
   $('#vvol').value = v.volume; $('#vvolVal').textContent = Math.round(v.volume * 100) + '%';
-  $('#phonesTog').classList.toggle('on', !!v.phones);
-  $('#monTog').classList.toggle('on', !!v.monitor);
+  segment($('#listens'), Object.entries(LISTEN), (k) => k === v.listen, pickListen);
+  $('#listenNote').textContent = LISTEN_NOTE[v.listen];
+  $('#monTog').hidden = v.listen !== 'wired'; $('#monTog').classList.toggle('on', !!v.monitor);
+  $('#loudTog').hidden = v.listen !== 'speaker'; $('#loudTog').classList.toggle('on', !!v.loud);
+  const sy = (v.sync || {})[v.listen];
+  $('#syncNote').textContent = typeof sy === 'number' ? `Synced: ${Math.round(sy * 1000)} ms. Again if you switch headphones.` : 'Lines your voice up with the beat in recordings, about 5 seconds';
+}
+const LISTEN_NOTE = {
+  speaker: 'You hear the band from the phone. Your auto-tune and effects go into the recording, so play your take back to hear yourself (no speaker can play your voice back fast enough to sing along with).',
+  wireless: 'Bluetooth plays about a fifth of a second late, too slow to hear yourself live, so your tuned voice goes into the recording. Clap sync once and it lands on the beat. Studio listens with the phone\'s own mic, so your headphones keep their good sound.',
+  wired: 'Fast enough to hear your tuned voice while you sing.',
+};
+function pickListen(k) {
+  prefs.voice.listen = k;
+  voiceChanged();
+  if (micOn && !FAKE) setMic(true);   // the mic again, with the right echo-cancelling and mic for this
+  if (k === 'wireless' && !hasSync()) hint('👏 Clap sync your headphones (in VOICE) so your voice lands on the beat', 4500);
+}
+/* The clap sync: eight beeps, you clap along; the mic's claps (or, with the speaker and no echo-
+   cancelling, the beeps themselves) arrive one round trip after each beep. The middle of those is
+   the round trip for where you're listening. */
+let syncing = false;
+async function syncCheck(thenRecord) {
+  if (syncing || rec || pendingRec) return;
+  closeSheets();
+  const a = audioUp();
+  if (!a) return;
+  if (!micOn) await setMic(true);
+  if (!micOn) { toast('The clap sync needs the mic'); return; }
+  if (!a.voice.node) await a.voice.load();
+  if (!a.voice.node) { toast('This browser can\'t run the clap sync'); return; }
+  if (a.band.playing) stopSong();
+  syncing = true;
+  const onsets = [], beat = 0.5, n = 8, t0 = a.ctx.currentTime + 1.4;
+  a.voice.onOnset = (t) => onsets.push(t);
+  a.voice.listen(true);
+  for (let i = 0; i < n; i++) a.band.click(t0 + i * beat, i % 4 === 0 ? 1 : 0.75);
+  const show = setInterval(() => {
+    const k = Math.floor((a.ctx.currentTime - hearDelay() - t0) / beat);
+    if (k < 0) setBig('CLAP!', 'along with the 8 beeps', true); else if (k < n) setBig(String(n - k), 'clap with each beep');
+  }, 40);
+  await new Promise((r) => setTimeout(r, (t0 - a.ctx.currentTime + n * beat + 0.9) * 1000));
+  clearInterval(show); a.voice.listen(false); a.voice.onOnset = null; syncing = false; setBig('');
+  const offs = [];
+  for (let i = 0; i < n; i++) { const tc = t0 + i * beat, c = onsets.filter((o) => o > tc - 0.1 && o < tc + 0.45); if (c.length) offs.push(c[0] - tc); }
+  offs.sort((x, y) => x - y);
+  if (offs.length < 4) { toast('Didn\'t hear enough claps. Again, a little louder?'); return; }
+  const rt = clamp(offs[Math.floor(offs.length / 2)], 0.01, 0.5);
+  prefs.voice.sync = { ...prefs.voice.sync, [prefs.voice.listen]: Math.round(rt * 1000) / 1000 };
+  savePrefs(); estimateLatency(); if (openName === 'voiceSheet') paintVoiceSheet();
+  toast(`Synced: ${Math.round(rt * 1000)} ms`);
+  if (thenRecord) recToggle(true);
+}
+/* With the phone speaker and no echo-cancelling, the mic hears the band too: the voice stays shut
+   under what the band's echo alone brings in (how much the mic hears of the band, the low end of
+   the last six seconds, times the band's level now, doubled). */
+const duckRatios = [], bandBuf = new Float32Array(1024);
+let duckAt = 0;
+function updateDuck(now) {
+  if (!A || !A.voice.node) return;
+  const v = prefs.voice;
+  if (!(v.listen === 'speaker' && v.loud && micOn && A.band.playing)) { A.voice.setDuck(0); return; }
+  if (now - duckAt < 100) return;
+  duckAt = now;
+  A.bandAn.getFloatTimeDomainData(bandBuf);
+  let sq = 0; for (const x of bandBuf) sq += x * x;
+  const band = Math.sqrt(sq / bandBuf.length);
+  if (band < 0.01) return;
+  duckRatios.push(A.voice.level / band); if (duckRatios.length > 60) duckRatios.shift();
+  const sorted = [...duckRatios].sort((x, y) => x - y);
+  A.voice.setDuck(Math.min(0.2, sorted[Math.floor(sorted.length * 0.2)] * band * 2 + 0.004));
 }
 $('#micTog').addEventListener('click', () => setMic(!micOn));
 $('#vvol').addEventListener('input', (e) => { prefs.voice.volume = +e.target.value; $('#vvolVal').textContent = Math.round(prefs.voice.volume * 100) + '%'; if (A) A.voice.set(prefs.voice); savePrefs(); });
-$('#phonesTog').addEventListener('click', () => {
-  prefs.voice.phones = !prefs.voice.phones;
-  if (prefs.voice.phones) prefs.voice.monitor = true;
-  voiceChanged();
-  if (micOn && !FAKE) setMic(true);   // the mic again, with or without echo-cancelling
-});
 $('#monTog').addEventListener('click', () => { prefs.voice.monitor = !prefs.voice.monitor; voiceChanged(); });
+$('#loudTog').addEventListener('click', () => { prefs.voice.loud = !prefs.voice.loud; voiceChanged(); if (micOn && !FAKE) setMic(true); });
+$('#syncBtn').addEventListener('click', () => syncCheck(false));
+$('#syncGo').addEventListener('click', () => syncCheck(true));
+$('#syncSkip').addEventListener('click', () => { closeSheets(); recToggle(true); });
 
 function paintLookSheet() {
   const L = prefs.look;
@@ -789,7 +896,7 @@ $('#dkVoice').addEventListener('click', () => openSheet('voiceSheet'));
 $('#dkLook').addEventListener('click', () => openSheet('lookSheet'));
 $('#playBtn').addEventListener('click', () => { const a = audioUp(); if (!a) return; if (a.band.playing || pendingRec) stopSong(); else startSong(0); });
 $('#dkTop').addEventListener('click', () => { if (rec) return; if (A && A.band.playing) startSong(0); else setBig(''); });
-$('#recBtn').addEventListener('click', recToggle);
+$('#recBtn').addEventListener('click', () => recToggle(false));
 $('#saveDo').addEventListener('click', () => saveSong(false));
 $('#saveNew').addEventListener('click', () => saveSong(true));
 $('#songName').addEventListener('keydown', (e) => { if (e.key === 'Enter') saveSong(false); });
@@ -822,7 +929,7 @@ function frame(now) {
   last = now; lastRender = now;
   if (screen === 'studio') { if (fake) fakeStep(now); else trackStep(now); }
 
-  const at = A ? A.ctx.currentTime - outLatency() : 0;
+  const at = A ? A.ctx.currentTime - hearDelay() : 0;
   const playing = !!(A && A.band.playing);
   const pos = playing ? A.band.position(at) : null;
   const info = pos && pos.bar >= 0 ? songInfo(prefs.song, pos.bar) : null;
@@ -862,7 +969,7 @@ function frame(now) {
       if (fastFrames > 600) { fastFrames = 0; slowFrames = Math.max(0, slowFrames - 10); }
     }
   }
-  if (screen === 'studio') paintBeat(pos, info, now);
+  if (screen === 'studio') { paintBeat(pos, info, now); updateDuck(now); }
 }
 function paintBeat(pos, info, now) {
   // count-in

@@ -189,6 +189,7 @@
   .tog i::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: transform 0.15s; }
   .tog.on i { background: var(--green); }
   .tog.on i::after { transform: translateX(18px); }
+  .tog.sync em { flex: none; padding: 7px 12px; border-radius: 12px; font-style: normal; font-size: 13px; font-weight: 800; color: var(--ink); background: var(--yellow); }
   .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
   .sw { aspect-ratio: 1; border-radius: 16px; border: 3px solid transparent; padding: 0; position: relative; overflow: hidden; }
   .sw.on { border-color: #fff; }
@@ -326,6 +327,12 @@
 <section class="sheet" id="voiceSheet" hidden aria-label="Voice">
   <div class="sheet-head"><h3>YOUR VOICE</h3><button class="round-btn" data-close type="button" aria-label="Close">✕</button></div>
   <button class="tog" id="micTog" type="button"><span><b>Mic</b><small id="micNote">Sing or talk, it all goes through your sound</small></span><i></i></button>
+  <h4>LISTENING ON</h4>
+  <div class="seg" id="listens"></div>
+  <p class="note" id="listenNote"></p>
+  <button class="tog" id="monTog" type="button" hidden><span><b>Hear myself live</b><small>Your tuned voice in your ears while you sing</small></span><i></i></button>
+  <button class="tog" id="loudTog" type="button" hidden><span><b>Keep the music loud</b><small>If the music dips while you sing (iPhone's echo-cancelling does that), turn this on. The mic will hear the music too, so Studio shuts your mic between lines.</small></span><i></i></button>
+  <button class="tog sync" id="syncBtn" type="button"><span><b>👏 Clap sync</b><small id="syncNote">Lines your voice up with the beat in recordings</small></span><em>GO</em></button>
   <h4>AUTO-TUNE</h4>
   <div class="seg" id="tunes"></div>
   <p class="note" id="tuneNote"></p>
@@ -337,8 +344,6 @@
   <div class="seg" id="fx"></div>
   <h4>VOLUME</h4>
   <div class="tempo"><input type="range" id="vvol" min="0" max="2" step="0.05" aria-label="Voice volume"><b id="vvolVal">100%</b></div>
-  <button class="tog" id="phonesTog" type="button"><span><b>🎧 Headphones in</b><small>The cleanest sound: your voice in your ears with no echo-cancelling. Wired is best, Bluetooth adds a delay you'll hear.</small></span><i></i></button>
-  <button class="tog" id="monTog" type="button"><span><b>Hear myself</b><small>Your tuned voice out loud while you sing (quieter on the speaker)</small></span><i></i></button>
 </section>
 
 <section class="sheet" id="lookSheet" hidden aria-label="Look">
@@ -357,6 +362,12 @@
   <h4>RECORD</h4>
   <div class="seg" id="recModes"></div>
   <p class="note">Recording from the start counts you in for two bars, so you can get back to your spot.</p>
+</section>
+
+<section class="sheet" id="syncSheet" hidden aria-label="Clap sync">
+  <div class="sheet-head"><h3>CLAP SYNC</h3><button class="round-btn" data-close type="button" aria-label="Close">✕</button></div>
+  <p class="note" style="margin-top:0">Wireless headphones play the band a little late, so your voice would land behind the beat. Clap along with 8 beeps (about 5 seconds) and Studio lines them up. Once is enough for these headphones.</p>
+  <div class="actions"><button class="btn" id="syncGo" type="button">👏 Clap sync</button><button class="btn ghost" id="syncSkip" type="button">Record anyway</button></div>
 </section>
 
 <section class="sheet" id="saveSheet" hidden aria-label="Save the song">

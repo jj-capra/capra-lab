@@ -2,7 +2,7 @@
    (Robot: a ring modulator over a hard snap to the chord; Radio: a small speaker, squeezed and a
    little broken up), a vocal compressor, and the sends (Space: a long starry reverb; Echo: a
    dotted-eighth delay in time with the song). Out to `out`, which the page sends to the recording
-   and (Hear myself) to the speakers. */
+   (and, with wired headphones only, to your ears: anything else is too slow to sing with). */
 import { makeIR } from './band.js';
 
 export const TUNES = { off: 'Off', natural: 'Natural', hard: 'Hard' };
@@ -12,7 +12,7 @@ const CHAR = { natural: [0, 1], chipmunk: [12, 1.45], deep: [-7, 0.8], robot: [0
 
 export class Voice {
   constructor(ctx, out) {
-    this.ctx = ctx; this.out = out; this.node = null; this.src = null; this.level = 0; this.pitch = null;
+    this.ctx = ctx; this.out = out; this.node = null; this.src = null; this.level = 0; this.pitch = null; this.onOnset = null; this.duckAt = -1;
     this.opts = { tune: 'hard', harmony: 0, char: 'natural', space: true, echo: false, radio: false, volume: 1 };
     this.allowed = new Array(12).fill(true); this.chord = [0, 4, 7]; this.root = 0;
     const c = ctx;
@@ -39,7 +39,7 @@ export class Voice {
     this.bus = c.createGain(); this.radioDry.connect(this.bus); this.radioWet.connect(this.bus);
     const pres = c.createBiquadFilter(); pres.type = 'peaking'; pres.frequency.value = 3200; pres.gain.value = 3; pres.Q.value = 0.8;
     this.comp = c.createDynamicsCompressor(); this.comp.threshold.value = -26; this.comp.ratio.value = 4; this.comp.knee.value = 8; this.comp.attack.value = 0.004; this.comp.release.value = 0.12;
-    this.vol = c.createGain(); this.vol.gain.value = 1.6;
+    this.vol = c.createGain(); this.vol.gain.value = 1.25;
     this.bus.connect(pres); pres.connect(this.comp); this.comp.connect(this.vol); this.vol.connect(out);
     // sends
     this.spaceSend = c.createGain(); this.spaceSend.gain.value = 0;
@@ -58,7 +58,7 @@ export class Voice {
     try {
       await this.ctx.audioWorklet.addModule(new URL('./tune-worklet.js', import.meta.url).href);
       this.node = new AudioWorkletNode(this.ctx, 'studio-tune', { numberOfInputs: 1, numberOfOutputs: 1, outputChannelCount: [2] });
-      this.node.port.onmessage = (e) => { const d = e.data || {}; this.level = d.level || 0; this.pitch = d.f0 > 0 ? d : null; };
+      this.node.port.onmessage = (e) => { const d = e.data || {}; if (d.onset != null) { if (this.onOnset) this.onOnset(d.onset); return; } this.level = d.level || 0; this.pitch = d.f0 > 0 ? d : null; };
       this.hp.disconnect(); this.hp.connect(this.node); this.node.connect(this.post);
       this.apply();
       return true;
@@ -77,6 +77,14 @@ export class Voice {
     this.stream = null; this.level = 0; this.pitch = null;
   }
   get live() { return !!this.src; }
+  // claps and beeps the mic hears, with their audio-clock times (the clap sync)
+  listen(on) { if (this.node) this.node.port.postMessage({ onsets: !!on }); }
+  // the level under which the voice is only the band's echo off the speaker (0: always open)
+  setDuck(level) {
+    const v = Math.round(level * 2000) / 2000;
+    if (v === this.duckAt || !this.node) return;
+    this.duckAt = v; this.node.port.postMessage({ duck: v });
+  }
   set(o) { Object.assign(this.opts, o); this.apply(); }
   setChord(info) {
     if (!info) return;
@@ -105,6 +113,6 @@ export class Voice {
     this.radioWet.gain.setTargetAtTime(o.radio ? 0.8 : 0, t, tc); this.radioDry.gain.setTargetAtTime(o.radio ? 0 : 1, t, tc);
     this.spaceSend.gain.setTargetAtTime(o.space ? 0.42 : 0, t, tc);
     this.echoSend.gain.setTargetAtTime(o.echo ? 0.4 : 0, t, tc);
-    this.vol.gain.setTargetAtTime(1.6 * (o.volume ?? 1), t, tc);
+    this.vol.gain.setTargetAtTime(1.25 * (o.volume ?? 1), t, tc);
   }
 }
