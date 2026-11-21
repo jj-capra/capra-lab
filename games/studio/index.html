@@ -57,6 +57,8 @@
     font-family: var(--display); font-size: 31px; letter-spacing: 0.07em; color: var(--ink); background: linear-gradient(135deg, #FFE36B, #FF9BE0 55%, #8FE9FF); border: 3px solid var(--ink);
     box-shadow: 0 0 34px rgba(255, 140, 230, 0.55), 5px 6px 0 var(--shadow); }
   .enter:active { transform: translate(2px, 3px); box-shadow: 0 0 20px rgba(255, 140, 230, 0.4), 2px 2px 0 var(--shadow); }
+  .enter.alt { margin-top: 12px; min-height: 54px; font-size: 25px; color: var(--paper); background: rgba(22, 14, 40, 0.82); border-color: rgba(255, 210, 63, 0.85);
+    box-shadow: 0 0 22px rgba(255, 210, 63, 0.28), 4px 5px 0 var(--shadow); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
   .small { margin: 10px 0 0; font-size: 12.5px; font-weight: 700; color: rgba(255, 248, 236, 0.62); }
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 26px 0 6px; }
   .step { padding: 12px 10px; border-radius: 18px; background: var(--panel); border: 2px solid var(--line); text-align: center; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
@@ -106,6 +108,10 @@
   .tl { position: relative; display: flex; gap: 3px; height: 16px; }
   .tl button { min-width: 0; padding: 0; border: 0; border-radius: 5px; font-size: 9.5px; font-weight: 800; letter-spacing: 0.04em; color: rgba(255, 255, 255, 0.92); overflow: hidden; white-space: nowrap; background: var(--c); opacity: 0.55; }
   .tl button.on { opacity: 1; box-shadow: 0 0 10px var(--c); }
+  .tl.chords { gap: 4px; height: 20px; }
+  .tl .cseg { flex: 1; min-width: 0; display: grid; place-items: center; border-radius: 6px; font-size: 11px; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden;
+    background: var(--c); opacity: 0.5; text-shadow: 0 1px 2px rgba(5, 3, 10, 0.8); }
+  .tl .cseg.on { opacity: 1; box-shadow: 0 0 10px var(--c); }
   .tl .head { position: absolute; top: -3px; bottom: -3px; width: 3px; border-radius: 2px; background: #fff; box-shadow: 0 0 8px #fff; pointer-events: none; left: 0; }
   .brow { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; margin-top: 8px; }
   .sec b { display: block; font-family: var(--display); font-weight: 400; font-size: 23px; letter-spacing: 0.05em; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -166,6 +172,7 @@
   .sheet-head h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 28px; letter-spacing: 0.07em; }
   .sheet h4 { margin: 16px 0 8px; font-size: 11.5px; font-weight: 800; letter-spacing: 0.14em; color: rgba(255, 248, 236, 0.6); }
   .sheet h4:first-of-type { margin-top: 4px; }
+  #songSheet h4 { margin-top: 16px; }
   .genres { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .gcard { padding: 10px 11px; border-radius: 16px; text-align: left; background: rgba(255, 255, 255, 0.06); border: 2px solid transparent; }
   .gcard.on { border-color: var(--yellow); background: rgba(255, 210, 63, 0.12); }
@@ -189,6 +196,13 @@
   .tog i::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: transform 0.15s; }
   .tog.on i { background: var(--green); }
   .tog.on i::after { transform: translateX(18px); }
+  .tap { display: flex; align-items: center; gap: 14px; width: 100%; min-height: 72px; padding: 10px 16px; border-radius: 18px; border: 2px solid var(--line); background: rgba(255, 255, 255, 0.07);
+    text-align: left; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .tap .ic { font-size: 30px; }
+  .tap b { display: block; font-family: var(--display); font-weight: 400; font-size: 34px; letter-spacing: 0.04em; line-height: 1; color: var(--yellow); }
+  .tap small { display: block; margin-top: 2px; font-size: 12px; font-weight: 700; color: rgba(255, 248, 236, 0.62); }
+  .tap.hit { animation: taphit 0.18s ease-out; }
+  @keyframes taphit { from { background: rgba(255, 210, 63, 0.35); transform: scale(0.98); } }
   .tog.sync em { flex: none; padding: 7px 12px; border-radius: 12px; font-style: normal; font-size: 13px; font-weight: 800; color: var(--ink); background: var(--yellow); }
   .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
   .sw { aspect-ratio: 1; border-radius: 16px; border: 3px solid transparent; padding: 0; position: relative; overflow: hidden; }
@@ -253,7 +267,8 @@
         <p class="tagline">Sing in the universe</p>
         <p class="sub">Prop your phone up in selfie mode. Pick a progression on synth, piano or guitar, sing through auto-tune with an aura that moves with you, and record your song.</p>
         <button class="enter" id="enter" type="button">✨ Enter the studio</button>
-        <p class="small" id="enterNote">Asks for the camera and the mic</p>
+        <button class="enter alt" id="sing" type="button">🎤 Sing a song I know</button>
+        <p class="small" id="enterNote">Asks for the camera and the mic. Sing a song: hum it, Studio finds the key and loops the chords</p>
       </section>
       <div class="steps">
         <div class="step"><div class="em">📱</div><b>Prop it up</b><span>On a table, selfie side to you, a step back</span></div>
@@ -311,7 +326,20 @@
 
 <section class="sheet" id="songSheet" hidden aria-label="Song">
   <div class="sheet-head"><h3>THE SONG</h3><button class="round-btn" data-close type="button" aria-label="Close">✕</button></div>
-  <h4>GENRE</h4>
+  <div class="seg" id="modes"></div>
+  <p class="note" id="modeNote"></p>
+  <div id="singBox" hidden>
+    <button class="tog sync" id="humBtn" type="button"><span><b>🎵 Find my key</b><small>Hum or sing your song for a few seconds and Studio picks the key that fits</small></span><em>HUM</em></button>
+    <h4>CHORDS</h4>
+    <div class="genres" id="loops"></div>
+    <p class="note">Most songs fit one of these. Tap one while you sing and keep the one that sounds right (or look up your song's chords and match them).</p>
+    <h4>TAP THE BEAT</h4>
+    <button class="tap" id="tapBtn" type="button" aria-label="Tap the beat"><span class="ic">👆</span><span><b id="tapBig">112</b><small id="tapSmall">bpm · tap along with your song</small></span></button>
+    <h4>CLIP</h4>
+    <div class="seg" id="clips"></div>
+    <p class="note" id="clipNote"></p>
+  </div>
+  <h4 id="genreHead">GENRE</h4>
   <div class="genres" id="genres"></div>
   <h4>INSTRUMENT</h4>
   <div class="seg big3" id="insts"></div>

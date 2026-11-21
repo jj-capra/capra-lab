@@ -71,7 +71,7 @@ export class Band {
     this.kit = KITS[this.genre.kit] || KITS.pop;
     this.form = formOf(this.genre);
     if (was && was.genre !== song.genre && this.playing) {
-      if (this.bar >= formBars(this.form)) this.bar = this.form.find((s) => s.kind === 'verse').start;
+      if (!this.song.loop && this.bar >= formBars(this.form)) this.bar = this.form.find((s) => s.kind === 'verse').start;
       this.retone();
     }
     this.dirty = true;
@@ -135,7 +135,7 @@ export class Band {
     this.stop(true);
     const c = this.ctx;
     this.buses();
-    this.playing = true; this.endAt = 0; this.cueBar = null;
+    this.playing = true; this.endAt = 0; this.cueBar = null; this.endBar = null;
     this.bar = fromBar - countIn; this.beat = 0; this.marks = []; this.barEv = null;
     this.nextT = Math.max(at, c.currentTime + 0.06);
     this.B.filter.frequency.setValueAtTime(20000, this.nextT);
@@ -169,7 +169,7 @@ export class Band {
       if (this.bar < 0) {   // the count-in: clicks (the speakers only, never the recording)
         this.click(t0, this.beat === 0 ? 1 : 0.6);
       } else {
-        if (this.beat === 0 || this.dirty || !this.barEv) { this.barEv = barEvents(this.song, this.bar); this.dirty = false; }
+        if (this.beat === 0 || this.dirty || !this.barEv) { this.barEv = barEvents(this.song, this.bar, this.endBar); this.dirty = false; }
         for (const e of this.barEv) {
           if (e.step < this.beat * beatLen || e.step >= (this.beat + 1) * beatLen) { if (!(e.step >= grid && this.beat === 3)) continue; }
           const t = t0 + (this.swing(e.step) - this.beat * beatLen) * stepDur;
@@ -192,7 +192,9 @@ export class Band {
       }
     }
   }
+  /* the bar after this one: a sing-along loop goes on until its clip's last chord (`endBar`) */
   nextBarOf(bar) {
+    if (this.song.loop) return this.endBar != null && bar >= this.endBar ? -1 : bar + 1;
     const form = this.form, n = bar + 1, at = sectionAt(form, n);
     if (this.song.keepGoing && (!at || at.s.kind === 'outro')) { const v = form.filter((s) => s.kind === 'verse'); return (v[1] || v[0]).start; }
     return at ? n : -1;
@@ -496,7 +498,7 @@ export class Band {
     } else if (e.k === 'gap') {
       B.gap.gain.setValueAtTime(1, t - 0.005); B.gap.gain.linearRampToValueAtTime(0, t + 0.01); B.gap.gain.setValueAtTime(0, t + beatDur - 0.004); B.gap.gain.linearRampToValueAtTime(1, t + beatDur);
     } else if (e.k === 'end') {
-      this.endAt = t + 2.6;
+      this.endAt = t + (e.tail ?? 2.6);
     }
   }
 

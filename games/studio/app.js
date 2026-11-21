@@ -2,7 +2,7 @@
    band, your voice, the beat bar and the chorus countdown, recording), and the sheets that pick the
    song, the voice and the look. A free playground: no score, no pay; what you keep is the songs you
    save (localStorage, per lab player) and the recordings you capture (IndexedDB, on this phone). */
-import { GENRES, GENRE_ORDER, INSTRUMENTS, BEATS, defaultSong, songInfo, songName, hookOf, hookNames, keyName, noteName, flatKey, formOf, formBars, midiName, parseChord, guitarVoicing } from './music.mjs';
+import { GENRES, GENRE_ORDER, INSTRUMENTS, BEATS, LOOPS, LOOP_ORDER, defaultSong, songInfo, songName, hookOf, hookNames, keyName, noteName, flatKey, formOf, formBars, midiName, parseChord, chordName, guitarVoicing, loopSpec, loopChords, clipBars, keyFromNotes, mod12 } from './music.mjs';
 import { Band } from './band.js';
 import { Voice, TUNES, CHARS, HARMONIES } from './voice.js';
 import { createMoves } from './moves.mjs';
@@ -34,8 +34,11 @@ const prefs = {
   voice: { ...DEF.voice, ...(saved.voice || {}) },
   look: { ...DEF.look, ...(saved.look || {}) },
   seen: !!saved.seen,
+  singLoop: LOOPS[saved.singLoop] ? saved.singLoop : 'four',   // the loop Sing a song comes back to
 };
 if (!GENRES[prefs.song.genre]) prefs.song = defaultSong('pop');
+if (!LOOPS[prefs.song.loop]) prefs.song.loop = null;
+if (![15, 30, 60].includes(prefs.song.clip)) prefs.song.clip = 30;
 if (!LISTEN[prefs.voice.listen]) prefs.voice.listen = saved.voice && saved.voice.phones ? 'wired' : 'speaker';
 if (!prefs.voice.sync || typeof prefs.voice.sync !== 'object') prefs.voice.sync = {};
 delete prefs.voice.phones;
@@ -355,22 +358,39 @@ function songChanged(retime) {
 }
 function warmGuitar() {
   if (!A) return;
-  const g = genre(), seen = new Set();
+  const g = genre(), seen = new Set(), sp = prefs.song.loop ? loopSpec(prefs.song) : null;
   for (let b = 0; b < Math.min(formBars(formOf(g)), 32); b++) { const i = songInfo(prefs.song, b); if (!i || seen.has(i.sym)) continue; seen.add(i.sym); }
+  if (sp) seen.add(sp.end);
   // the band builds each string's pluck the first time it's played; build the progression's now
-  for (const sym of seen) A.band.warm(guitarVoicing(parseChord(sym), prefs.song.key, g.power && g.tone.guitar === 'drive'), g.tone.guitar);
+  for (const sym of seen) A.band.warm(guitarVoicing(parseChord(sym), sp ? sp.key : prefs.song.key, g.power && g.tone.guitar === 'drive'), g.tone.guitar);
 }
 function titleText() {
-  const g = genre();
-  return currentSong ? currentSong.name : `${g.emoji} ${g.name} · ${keyName(prefs.song.key, g.minor).replace(' major', '').replace(' minor', 'm')} · ${prefs.song.bpm}`;
+  const g = genre(), k = keyName(prefs.song.key, g.minor).replace(' major', '').replace(' minor', 'm');
+  if (currentSong) return currentSong.name;
+  return prefs.song.loop ? `🎤 ${g.name} sing-along · ${k} · ${prefs.song.bpm}` : `${g.emoji} ${g.name} · ${k} · ${prefs.song.bpm}`;
 }
 function paintTitle() { $('#songTitle').textContent = titleText(); }
 const KIND_COLOR = { intro: '#7A6BFF', verse: '#2A9DF4', pre: '#FFB13F', chorus: '#FF3D8B', bridge: '#3FCB86', outro: '#7A6BFF' };
 const KIND_SHORT = { intro: 'IN', verse: 'V', pre: 'PRE', chorus: 'CH', bridge: 'BR', outro: 'OUT' };
 let tlForm = null, tlBtns = [];
+const rgb = (c) => `rgb(${c.map((x) => Math.round(x * 255)).join(',')})`;
 function buildTimeline() {
   const g = genre(), form = formOf(g), tl = $('#tl'), headEl = $('#tlHead');
   tl.textContent = ''; tl.appendChild(headEl);
+  if (prefs.song.loop) {   // sing a song: the loop's chords in a row, so you see the next one coming
+    const sp = loopSpec(prefs.song);
+    tlForm = null;
+    tl.classList.add('chords');
+    tlBtns = sp.prog.map((sym) => {
+      const b = document.createElement('span');
+      b.className = 'cseg'; b.style.setProperty('--c', rgb(chordColor(parseChord(sym).deg)));
+      b.textContent = chordName(sym, sp.key, sp.minor);
+      tl.insertBefore(b, headEl);
+      return b;
+    });
+    return;
+  }
+  tl.classList.remove('chords');
   tlForm = form;
   tlBtns = form.map((s, i) => {
     const b = document.createElement('button');
@@ -383,8 +403,8 @@ function buildTimeline() {
   });
 }
 function cueSection(i) {
-  const s = tlForm[i], a = audioUp();
-  if (!a) return;
+  const s = tlForm && tlForm[i], a = audioUp();
+  if (!a || !s) return;
   if (a.band.playing && !pendingRec) { a.band.cue(s.start); toast('→ ' + s.title + ' next bar'); }
   else if (!rec) startSong(s.start);
 }
@@ -407,7 +427,7 @@ function onSongEnd() {
 }
 
 /* ---------- recording ---------- */
-let rec = null, pendingRec = false, recCv = null, recCtx = null;
+let rec = null, pendingRec = false, recFrom = 0, clip = null, recCv = null, recCtx = null;
 function pickType(isVideo) {
   const list = isVideo ? ['video/mp4;codecs=avc1.42E01E,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm']
     : ['audio/mp4;codecs=mp4a.40.2', 'audio/mp4', 'audio/webm;codecs=opus', 'audio/webm'];
@@ -416,12 +436,23 @@ function pickType(isVideo) {
 }
 function recToggle(asked) {
   if (rec || pendingRec) { stopRecord(); return; }
-  if (syncing) return;
+  if (syncing || humming) return;
   const a = audioUp();
   if (!a || !window.MediaRecorder || !a.recDest) { toast('This browser can\'t record here'); return; }
   if (asked !== true && prefs.voice.listen === 'wireless' && micOn && !hasSync()) { openSheet('syncSheet'); return; }
   closeSheets();
-  if (!a.band.playing) { a.band.setSong(prefs.song); a.band.play(0, { countIn: 2 }); pendingRec = true; }
+  if (prefs.song.loop) {
+    /* sing a song: a clip of whole rounds of the chords and one big last chord, from the top after a
+       count-in, or (already playing) from the next bar */
+    const mid = a.band.playing && a.band.bar >= 0;
+    if (!mid) { a.band.setSong(prefs.song); a.band.play(0, { countIn: 2 }); }
+    const from = mid ? (a.band.beat === 0 ? a.band.bar : a.band.bar + 1) : 0, n = clipBars(prefs.song, prefs.song.clip || 30);
+    // started part way round the chords: it still ends where they'd start over (the nearest round)
+    const unit = loopSpec(prefs.song).prog.length >= 8 ? loopSpec(prefs.song).prog.length : 4;
+    let end = Math.round((from + n) / unit) * unit;
+    if (end - from < 2) end += unit;
+    a.band.endBar = end; clip = { from, end, mid }; recFrom = from; pendingRec = true;
+  } else if (!a.band.playing) { a.band.setSong(prefs.song); a.band.play(0, { countIn: 2 }); recFrom = 0; pendingRec = true; }
   else startRecorder();
   paintPlay(); paintRec();
 }
@@ -450,7 +481,10 @@ function startRecorder() {
   paintRec();
 }
 function stopRecord() {
-  if (pendingRec && !rec) { pendingRec = false; if (A) A.band.stop(); paintPlay(); paintRec(); setBig(''); return; }
+  const mid = !!(clip && clip.mid);
+  if (clip && A && A.band.playing && A.band.bar < clip.end) A.band.endBar = null;   // stopped early: the loop plays on
+  clip = null;
+  if (pendingRec && !rec) { pendingRec = false; if (A && !mid) A.band.stop(); paintPlay(); paintRec(); setBig(''); return; }
   if (!rec) return;
   const r = rec;
   rec = null;
@@ -593,7 +627,7 @@ async function renderHome() {
     row.className = 'song'; row.setAttribute('role', 'button'); row.tabIndex = 0;
     row.innerHTML = `<span class="em">${g.emoji}</span><span><b></b><small></small></span><button class="x" type="button" aria-label="Delete">✕</button>`;
     row.querySelector('b').textContent = s.name;
-    row.querySelector('small').textContent = `${g.name} · ${keyName(s.song.key, g.minor)} · ${s.song.bpm} bpm · ${INSTRUMENTS[s.song.inst] || ''}`;
+    row.querySelector('small').textContent = `${s.song.loop ? '🎤 Sing-along · ' + loopChords(s.song) : g.name} · ${keyName(s.song.key, g.minor)} · ${s.song.bpm} bpm${s.song.loop ? '' : ' · ' + (INSTRUMENTS[s.song.inst] || '')}`;
     const go = () => openSong(s);
     row.addEventListener('click', (e) => { if (!e.target.closest('.x, .sure')) go(); });
     row.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
@@ -640,7 +674,7 @@ function enterStudio() {
   paintTitle(); buildTimeline(); paintAll();
   keepAwake(true);
   startMedia();
-  if (!prefs.seen) { prefs.seen = true; savePrefs(); setTimeout(() => { if (screen === 'studio') openSheet('songSheet'); }, 400); }
+  if (!prefs.seen || prefs.song.loop) { prefs.seen = true; savePrefs(); setTimeout(() => { if (screen === 'studio' && !openName) openSheet('songSheet'); }, 400); }
   else hint(prefs.voice.listen === 'wired' ? '▶ to play, ⏺ to record. Clap, or put both hands up ✨' : '▶ to play, ⏺ to record, then play it back to hear your auto-tuned voice ✨', 5000);
   studioAt = performance.now();
 }
@@ -739,10 +773,69 @@ function paintSongSheet() {
   segment($('#beats'), [...g.beats.map((id) => [id, BEATS[id].name]), ['off', 'No drums']], (v) => v === s.beat, (v) => { prefs.song.beat = v; songChanged(); });
   $('#keyHead').textContent = 'KEY · ' + keyName(s.key, g.minor).toUpperCase();
   segment($('#keys'), Array.from({ length: 12 }, (_, pc) => [pc, noteName(pc, flatKey(pc, g.minor)) + (g.minor ? 'm' : '')]), (v) => v === s.key, (v) => { prefs.song.key = v; songChanged(); if (currentSong) paintTitle(); });
-  const r = $('#bpm'), lo = Math.max(56, Math.round(g.bpm * 0.7)), hi = Math.min(190, Math.round(g.bpm * 1.3));
+  const r = $('#bpm'), [lo, hi] = bpmRange();
   r.min = lo; r.max = hi; r.value = s.bpm; $('#bpmVal').textContent = s.bpm;
   $('#keepGoing').classList.toggle('on', !!s.keepGoing);
+  // full song or sing a song
+  const sing = !!s.loop;
+  segment($('#modes'), [['song', '🎼 Full song'], ['sing', '🎤 Sing a song']], (k) => (k === 'sing') === sing, pickMode);
+  $('#singBox').hidden = !sing; $('#keepGoing').hidden = sing;
+  $('#genreHead').textContent = sing ? 'THE SOUND' : 'GENRE';
+  $('#modeNote').textContent = sing ? 'Sing a song you know. Studio loops the chords, you bring the words and the tune.' : 'Your own song: intro, verses, choruses, a bridge and an ending, with the chorus countdown.';
+  if (!sing) return;
+  const lb = $('#loops');
+  lb.textContent = '';
+  for (const id of LOOP_ORDER) {
+    const L = LOOPS[id], b = document.createElement('button');
+    b.type = 'button'; b.className = 'gcard' + (id === s.loop ? ' on' : '');
+    b.innerHTML = '<b></b><span class="num"></span><small></small>';
+    b.querySelector('b').textContent = id === 'genre' ? `${g.emoji} ${g.name}’s own` : L.name;
+    b.querySelector('.num').textContent = loopChords(s, id);
+    b.querySelector('small').textContent = L.blurb;
+    b.addEventListener('click', () => { prefs.song.loop = prefs.singLoop = id; songChanged(); });
+    lb.appendChild(b);
+  }
+  segment($('#clips'), [[15, '15 s'], [30, '30 s'], [60, '1 min']], (k) => +k === +s.clip, (k) => { prefs.song.clip = +k; paintSongSheet(); savePrefs(); });
+  const secs = (clipBars(s, s.clip) + 1) * 240 / s.bpm;
+  $('#clipNote').textContent = `At this tempo ⏺ records about ${fmtTime(secs)}: whole rounds of the chords, then one big last chord. Stopped, it counts you in first; playing, it starts at the next bar.`;
+  paintTap();
 }
+// Full song or Sing a song (the song restarts from the top if it was playing)
+function pickMode(k) {
+  if (rec || pendingRec) { toast('Stop recording first'); return; }
+  const was = !!(A && A.band.playing);
+  prefs.song.loop = k === 'sing' ? prefs.singLoop || 'four' : null;
+  songChanged();
+  setBpm(prefs.song.bpm);
+  if (was) startSong(0);
+}
+/* Tap the beat: four taps or more, the middle gap between them is the tempo (doubled or halved to
+   fit the genre, so a slow song tapped in halves still works). */
+let taps = [];
+function tapBeat() {
+  const now = performance.now(), b = $('#tapBtn');
+  if (taps.length && now - taps[taps.length - 1] > 2000) taps = [];
+  taps.push(now); if (taps.length > 9) taps.shift();
+  b.classList.remove('hit'); void b.offsetWidth; b.classList.add('hit');
+  if (taps.length >= 4) {
+    const gaps = []; for (let i = 1; i < taps.length; i++) gaps.push(taps[i] - taps[i - 1]);
+    gaps.sort((x, y) => x - y);
+    const raw = 60000 / gaps[Math.floor(gaps.length / 2)], [lo, hi] = bpmRange();
+    let best = raw, bd = Infinity;   // as tapped first, then doubled or halved
+    for (const f of [1, 2, 0.5, 4, 0.25]) { const c = raw * f, d = c < lo ? lo / c : c > hi ? c / hi : 1; if (d < bd) { bd = d; best = c; } }
+    setBpm(best);
+  }
+  paintTap();
+}
+function paintTap() {
+  const n = taps.length, live = n && performance.now() - taps[n - 1] < 2000;
+  $('#tapBig').textContent = live && n < 4 ? String(4 - n) : String(prefs.song.bpm);
+  $('#tapSmall').textContent = live && n < 4 ? 'more taps' : live ? 'bpm · keep tapping to fine-tune' : 'bpm · tap along with your song, 4 times or more';
+}
+const bpmRange = () => {   // a sing-along gets a wider range, to meet the song you know
+  const g = genre(), w = prefs.song.loop ? [0.6, 1.5] : [0.7, 1.3];
+  return [Math.max(56, Math.round(g.bpm * w[0])), Math.min(190, Math.round(g.bpm * w[1]))];
+};
 function pickGenre(id) {
   const G = GENRES[id];
   prefs.song = { ...prefs.song, genre: id, key: G.key, bpm: G.bpm, beat: G.beats[0] };
@@ -751,16 +844,20 @@ function pickGenre(id) {
   if (A && !A.band.playing && !pendingRec) startSong(0);
 }
 function setBpm(v) {
-  const g = genre();
-  prefs.song.bpm = clamp(Math.round(v), Math.max(56, Math.round(g.bpm * 0.7)), Math.min(190, Math.round(g.bpm * 1.3)));
+  const [lo, hi] = bpmRange();
+  prefs.song.bpm = clamp(Math.round(v), lo, hi);
   $('#bpm').value = prefs.song.bpm; $('#bpmVal').textContent = prefs.song.bpm;
   if (A) { A.band.setSong(prefs.song); A.voice.setTempo(prefs.song.bpm); }
   paintTitle(); savePrefs();
+  if (prefs.song.loop && openName === 'songSheet') { const secs = (clipBars(prefs.song, prefs.song.clip) + 1) * 240 / prefs.song.bpm; $('#clipNote').textContent = $('#clipNote').textContent.replace(/about \d+:\d\d/, 'about ' + fmtTime(secs)); }
 }
 $('#bpm').addEventListener('input', (e) => setBpm(+e.target.value));
 $('#bpmDown').addEventListener('click', () => setBpm(prefs.song.bpm - 2));
 $('#bpmUp').addEventListener('click', () => setBpm(prefs.song.bpm + 2));
 $('#keepGoing').addEventListener('click', () => { prefs.song.keepGoing = !prefs.song.keepGoing; songChanged(); });
+$('#tapBtn').addEventListener('pointerdown', (e) => { e.preventDefault(); tapBeat(); });
+$('#tapBtn').addEventListener('keydown', (e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); tapBeat(); } });
+$('#humBtn').addEventListener('click', humKey);
 
 const TUNE_NOTE = { hard: 'The snap: every note lands right on the song, the famous robotic pop sound.', natural: 'Nudged gently toward the song, still sounds like you.', off: 'Your own voice, just the effects.' };
 function voiceChanged() { if (A) A.voice.set(prefs.voice); applyMonitor(); estimateLatency(); paintVoiceSheet(); savePrefs(); }
@@ -798,7 +895,7 @@ function pickListen(k) {
    the round trip for where you're listening. */
 let syncing = false;
 async function syncCheck(thenRecord) {
-  if (syncing || rec || pendingRec) return;
+  if (syncing || humming || rec || pendingRec) return;
   closeSheets();
   const a = audioUp();
   if (!a) return;
@@ -827,6 +924,39 @@ async function syncCheck(thenRecord) {
   savePrefs(); estimateLatency(); if (openName === 'voiceSheet') paintVoiceSheet();
   toast(`Synced: ${Math.round(rt * 1000)} ms`);
   if (thenRecord) recToggle(true);
+}
+/* Find my key: hum or sing the song for seven seconds (the band quiet); every note the auto-tune's
+   pitch reader hears counts for its pitch class, and the key whose profile fits best is the song's
+   (keyFromNotes). Then the loop starts in that key so you can sing straight in. */
+let humming = false;
+const HUM_MS = 7000;
+async function humKey() {
+  if (humming || syncing || rec || pendingRec) return;
+  closeSheets();
+  const a = audioUp();
+  if (!a) return;
+  if (!micOn) await setMic(true);
+  if (!micOn) { toast('Finding your key needs the mic'); return; }
+  if (!a.voice.node) await a.voice.load();
+  if (!a.voice.node) { toast('This browser can\'t hear the notes'); return; }
+  if (a.band.playing) stopSong();
+  humming = true;
+  const minor = genre().minor, hist = new Array(12).fill(0);
+  let n = 0;
+  a.voice.onPitch = (d) => { hist[mod12(Math.round(d.m))]++; n++; };
+  const t0 = performance.now();
+  const show = setInterval(() => {
+    const el = performance.now() - t0, guess = n >= 12 ? keyName(keyFromNotes(hist, minor), minor) : null;
+    if (el < 1000) setBig('HUM IT!', 'or sing your song’s chorus', true);
+    else setBig(String(Math.max(1, Math.ceil((HUM_MS - el) / 1000))), guess ? 'sounds like ' + guess : 'keep humming');
+  }, 80);
+  await new Promise((r) => setTimeout(r, HUM_MS));
+  clearInterval(show); a.voice.onPitch = null; humming = false; setBig('');
+  if (n < 20) { toast('Didn\'t catch enough notes. Again, a little louder?'); return; }
+  prefs.song.key = keyFromNotes(hist, minor);
+  songChanged();
+  toast('Your key: ' + keyName(prefs.song.key, minor));
+  if (screen === 'studio') startSong(0);
 }
 /* With the phone speaker and no echo-cancelling, the mic hears the band too: the voice stays shut
    under what the band's echo alone brings in (how much the mic hears of the band, the low end of
@@ -887,7 +1017,8 @@ function paintRec() {
 function paintMic() { $('#dkVoice').classList.toggle('off', !micOn); $('#micIc').textContent = micOn ? '🎤' : '🔇'; if (openName === 'voiceSheet') paintVoiceSheet(); }
 function paintAll() { paintPlay(); paintRec(); paintMic(); }
 
-$('#enter').addEventListener('click', () => { currentSong = null; enterStudio(); });
+$('#enter').addEventListener('click', () => { currentSong = null; prefs.song.loop = null; enterStudio(); });
+$('#sing').addEventListener('click', () => { currentSong = null; prefs.song.loop = prefs.singLoop || 'four'; draftSeed = Date.now(); enterStudio(); });
 $('#back').addEventListener('click', leaveStudio);
 $('#titlePill').addEventListener('click', () => (rec ? null : openSheet('songSheet')));
 $('#saveBtn').addEventListener('click', () => openSheet('saveSheet'));
@@ -932,8 +1063,8 @@ function frame(now) {
   const at = A ? A.ctx.currentTime - hearDelay() : 0;
   const playing = !!(A && A.band.playing);
   const pos = playing ? A.band.position(at) : null;
-  const info = pos && pos.bar >= 0 ? songInfo(prefs.song, pos.bar) : null;
-  if (pendingRec && pos && (pos.bar >= 0 || (pos.bar === -1 && pos.beat >= 3))) { startRecorder(); paintRec(); }
+  const info = pos && pos.bar >= 0 ? songInfo(prefs.song, pos.bar, A.band.endBar) : null;
+  if (pendingRec && pos && (pos.bar >= recFrom || (pos.bar === recFrom - 1 && pos.beat >= 3))) { startRecorder(); paintRec(); }
   if (info && A && info.sym !== lastSym) { lastSym = info.sym; A.voice.setChord(info); }
   if (!info) lastSym = null;
 
@@ -980,15 +1111,16 @@ function paintBeat(pos, info, now) {
     return;
   }
   if (!info) {
-    if (secShown !== 'ready') {
-      secShown = 'ready';
-      $('#secName').textContent = 'Ready'; $('#secBar').textContent = 'Tap ▶ or a part'; $('#chordNow').textContent = '–'; $('#chordNext').innerHTML = '&nbsp;';
+    if (secShown !== 'ready' + !!prefs.song.loop) {
+      secShown = 'ready' + !!prefs.song.loop;
+      $('#secName').textContent = 'Ready'; $('#secBar').textContent = prefs.song.loop ? 'Tap ▶, then sing' : 'Tap ▶ or a part'; $('#chordNow').textContent = '–'; $('#chordNext').innerHTML = '&nbsp;';
       $('#coming').hidden = true; $('#tlHead').style.left = '0%';
       tlBtns.forEach((b) => b.classList.remove('on'));
       if (!pendingRec) setBig('');
     }
     paintDots(-1);
-  } else {
+  } else if (info.loop) paintLoop(pos, info);
+  else {
     const key = info.title + info.barIn + info.chord;
     if (secShown !== key) {
       secShown = key;
@@ -1020,6 +1152,28 @@ function paintBeat(pos, info, now) {
   } else if (now - pitchAt > 700) $('#pitch').hidden = true;
   $('#micMeter').style.width = (vLevel * 100).toFixed(0) + '%';
   if (rec) $('#recTime').textContent = fmtTime((now - rec.t0) / 1000);
+}
+/* Sing a song: the chord now and next, the playhead along the loop's chords, and while a clip
+   records, its bar, LAST 4 BARS, a 4·3·2·1 over the last one and THAT'S A WRAP on the big chord */
+function paintLoop(pos, info) {
+  const on = !!(clip && A && A.band.endBar != null), left = on ? clip.end - pos.bar : null, waiting = on && pos.bar < clip.from;
+  const key = 'L' + info.kind + info.barIn + info.chord + (info.next || '') + (on ? left : '') + (rec ? 'r' : '');
+  if (secShown !== key) {
+    secShown = key;
+    $('#secName').textContent = info.kind === 'end' ? 'The end' : on && !waiting ? 'Recording' : 'Sing along';
+    $('#secBar').textContent = info.kind === 'end' ? 'one big last chord' : waiting ? 'recording from the next bar' : on ? `bar ${pos.bar - clip.from + 1} of ${clip.end - clip.from}` : `chord ${info.barIn + 1} of ${info.bars}`;
+    $('#chordNow').textContent = info.chord;
+    $('#chordNext').textContent = info.next ? (info.next !== info.chord ? 'then ' + info.next : 'stay') : 'the end';
+    tlBtns.forEach((b, i) => b.classList.toggle('on', i === info.barIn && info.kind !== 'end'));
+    const c = $('#coming');
+    c.classList.remove('drop');
+    if (on && !waiting && left >= 2 && left <= 4) { c.hidden = false; c.textContent = `LAST ${left} BARS`; } else c.hidden = true;
+  }
+  paintDots(pos.beat);
+  $('#tlHead').style.left = (info.kind === 'end' ? 100 : ((info.barIn + (pos.beat + pos.frac) / 4) / info.bars) * 100).toFixed(2) + '%';
+  if (on && left === 1) setBig(String(4 - pos.beat), 'THE END');
+  else if (info.kind === 'end' && pos.beat < 3) setBig('THAT’S A WRAP!', '', true);
+  else setBig('');
 }
 function paintDots(b) {
   if (b === beatShown) return;

@@ -212,7 +212,7 @@ export const hookNames = (g, keyPc) => g.chorus.slice(0, g.form ? 12 : 4).filter
    an outro (64 bars; the blues does its twelves). */
 export const FORM = [['intro', 4], ['verse', 8], ['pre', 4], ['chorus', 8], ['verse', 8], ['pre', 4], ['chorus', 8], ['bridge', 8], ['chorus', 8], ['outro', 4]];
 const LABEL = { intro: 'Intro', verse: 'Verse', pre: 'Pre-Chorus', chorus: 'Chorus', bridge: 'Bridge', outro: 'Outro' };
-export const ENERGY = { intro: 0.25, verse: 0.5, pre: 0.7, chorus: 1, bridge: 0.35, outro: 0.3 };
+export const ENERGY = { intro: 0.25, verse: 0.5, pre: 0.7, chorus: 1, bridge: 0.35, outro: 0.3, loop: 0.8 };
 export function formOf(g) {
   let start = 0;
   const count = {};
@@ -244,6 +244,61 @@ export function nextBar(form, bar, keepGoing) {
   const n = bar + 1, at = sectionAt(form, n);
   if (keepGoing && (!at || at.s.kind === 'outro')) { const verses = form.filter((s) => s.kind === 'verse'); return (verses[1] || verses[0]).start; }
   return at ? n : -1;
+}
+
+/* Sing a song (JC, Nov 20 2026: kids singing a song they know, as a short clip). The band loops one
+   progression with no song form and the singer brings the words and the tune: a chord progression
+   belongs to nobody, so Studio never names, plays or shows anyone's song. The loops are written in a
+   major key; a minor genre plays them in its relative major (the same notes: A minor's Am F C G is
+   C major's vi IV I V), so the key Studio hears you hum always fits whichever you pick. */
+export const LOOPS = {
+  genre: { name: 'This genre’s own', blurb: 'The chorus chords of the genre you picked' },
+  four: { name: 'The four chords', prog: ['I', 'V', 'vi', 'IV'], blurb: 'Behind more pop hits than any other' },
+  sad: { name: 'Sad four', prog: ['vi', 'IV', 'I', 'V'], blurb: 'The same four from the sad side' },
+  fifties: { name: '’50s', prog: ['I', 'vi', 'IV', 'V'], blurb: 'Doo-wop, slow dances, old love songs' },
+  three: { name: 'Three chords', prog: ['I', 'IV', 'V', 'IV'], blurb: 'Rock, country and campfire songs' },
+  two: { name: 'Two chords', prog: ['I', 'IV'], blurb: 'Back and forth, a bar each' },
+  walk: { name: 'Walk down', prog: ['vi', 'V', 'IV', 'III'], blurb: 'The Andalusian walk: flamenco and surf' },
+  royal: { name: 'Royal Road', prog: ['IVmaj7', 'V7', 'iii7', 'vi'], end: 'vi', blurb: 'Anime openings and J-pop' },
+  jazzy: { name: 'Jazzy', prog: ['ii7', 'V7', 'Imaj7', 'vi7'], end: 'Imaj7', blurb: 'Lo-fi beats and old standards' },
+  blues: { name: 'Twelve-bar blues', prog: ['I7', 'I7', 'I7', 'I7', 'IV7', 'IV7', 'I7', 'I7', 'V7', 'IV7', 'I7', 'V7'], blurb: 'The blues and old rock ’n’ roll' },
+};
+export const LOOP_ORDER = Object.keys(LOOPS);
+// What a song's loop plays: the chords, the key and mode they're named in, and the chord it ends on.
+export function loopSpec(song) {
+  const g = GENRES[song.genre] || GENRES.pop, key = song.key ?? g.key, L = LOOPS[song.loop];
+  if (!L || !L.prog) return { prog: g.chorus, key, minor: g.minor, end: g.chorus.find((s) => parseChord(s).deg === 0) || (g.minor ? 'i' : 'I') };
+  return { prog: L.prog, key: g.minor ? mod12(key + 3) : key, minor: false, end: L.end || L.prog[0] };
+}
+// A loop's chords by name in the song's key, each once: "C G Am F"
+export function loopChords(song, id = song.loop) {
+  const sp = loopSpec({ ...song, loop: id });
+  return [...new Set(sp.prog)].map((s) => chordName(s, sp.key, sp.minor)).join(' ');
+}
+const phraseOf = (n) => (n >= 8 ? n : 8);   // a crash and a fill every eight bars (the blues: every twelve)
+/* A clip's length in bars before its last big chord: whole rounds of four bars (of twelve for the
+   blues), as close as that gets to the seconds asked for with the ending bar counted in. */
+export function clipBars(song, seconds) {
+  const sp = loopSpec(song), unit = sp.prog.length >= 8 ? sp.prog.length : 4, bar = 240 / (song.bpm || 100);
+  return Math.max(1, Math.round((seconds - bar) / bar / unit)) * unit;
+}
+/* The key of a hummed tune: how long each note was sung (a count per pitch class) matched against
+   the Krumhansl-Kessler profiles of all 24 keys, then said in the genre's own mode through the
+   relative key (a tune in A minor is C in a major genre: the same notes, so every loop fits). */
+const KK = { major: [6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29, 2.88], minor: [6.33, 2.68, 3.52, 5.38, 2.6, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17] };
+export function keyFromNotes(hist, minor = false) {
+  const avg = (a) => a.reduce((x, y) => x + y, 0) / a.length, hm = avg(hist);
+  let best = { k: 0, m: false }, bestR = -2;
+  for (const m of [false, true]) {
+    const prof = KK[m ? 'minor' : 'major'], pm = avg(prof);
+    for (let k = 0; k < 12; k++) {
+      let num = 0, dh = 0, dp = 0;
+      for (let i = 0; i < 12; i++) { const h = hist[(k + i) % 12] - hm, p = prof[i] - pm; num += h * p; dh += h * h; dp += p * p; }
+      const r = dh && dp ? num / Math.sqrt(dh * dp) : -1;
+      if (r > bestR) { bestR = r; best = { k, m }; }
+    }
+  }
+  return best.m === minor ? best.k : mod12(best.k + (minor ? 9 : 3));
 }
 
 /* A row of a groove or a part into hits: [{ step, vel, ch }] ('r' and 't' split a step). */
@@ -278,12 +333,22 @@ export function grooveFor(beat, kind) {
 
 /* Everything that plays in one bar, for one song ({ genre, key, inst, beat, bpm }). Events:
    d drum (v: k s c h o r p x crash), c chord (notes, strum, mute), b bass (note, glide), a arpeggio,
-   f effect (riser, gap, filter, end). Steps are sixteenths (twelfths for a 12/8 genre). */
-export function barEvents(song, bar) {
-  const g = GENRES[song.genre] || GENRES.pop;
-  const form = formOf(g), at = sectionAt(form, bar);
+   f effect (riser, gap, filter, end). Steps are sixteenths (twelfths for a 12/8 genre).
+   Sing a song (song.loop): the loop played like a chorus without the arpeggio (room for the singer),
+   a crash and a fill every phrase, and at `endBar` one big last chord. */
+export function barEvents(song, bar, endBar = null) {
+  let g = GENRES[song.genre] || GENRES.pop, form, key = song.key ?? g.key;
+  if (song.loop) {
+    if (endBar != null && bar > endBar) return [];
+    const sp = loopSpec(song), phrase = phraseOf(sp.prog.length), ending = endBar != null && bar === endBar;
+    g = { ...g, chorus: sp.prog, outro: [sp.end], arp: null, loop: true };
+    key = sp.key;
+    form = [{ kind: ending ? 'outro' : 'chorus', bars: ending ? 1 : phrase, start: 0, n: 1 }];
+    bar = ending ? 0 : ((bar % phrase) + phrase) % phrase;
+  } else form = formOf(g);
+  const at = sectionAt(form, bar);
   if (!at) return [];
-  const grid = g.grid || 16, beatLen = grid / 4, key = song.key ?? g.key;
+  const grid = g.grid || 16, beatLen = grid / 4;
   const { s, barIn, i: si } = at, kind = s.kind, last = barIn === s.bars - 1;
   const next = form[si + 1], nextKind = next ? next.kind : null;
   const intoChorus = last && nextKind === 'chorus';
@@ -327,7 +392,7 @@ export function barEvents(song, bar) {
         const step = g.build ? [beatLen, beatLen, beatLen / 2, beatLen / 4][Math.min(3, Math.floor(k * 4 / span))] : null;
         if (g.build) { for (let p = 0; p < grid - (last ? beatLen : 0); p += step) D('s', p, 0.35 + 0.6 * ((k * grid + p) / (span * grid))); }
         else { for (let p = 0; p < grid; p += p < grid / 2 ? beatLen / 2 : beatLen / 4) D('s', p, 0.35 + 0.6 * (p / grid)); }
-      } else if (last && (nextKind === 'chorus' || nextKind === 'pre' || nextKind === 'verse' || nextKind === 'bridge') && kind !== 'pre') {
+      } else if (last && (g.loop || nextKind === 'chorus' || nextKind === 'pre' || nextKind === 'verse' || nextKind === 'bridge') && kind !== 'pre') {
         for (let k = 0; k < beatLen; k++) D('s', grid - beatLen + k, 0.4 + 0.15 * k);   // a little fill into the next part
       }
     }
@@ -391,13 +456,23 @@ export function barEvents(song, bar) {
   const riserBars = g.build && kind === 'pre' ? s.bars : 2;
   if ((kind === 'pre' || kind === 'bridge') && nextKind === 'chorus' && barIn === s.bars - riserBars) ev.push({ t: 'f', k: 'riser', bars: riserBars, step: 0 });
   if (intoChorus && g.build) ev.push({ t: 'f', k: 'gap', step: grid - beatLen });
-  if (kind === 'outro' && last) ev.push({ t: 'f', k: 'end', step: grid });
+  if (kind === 'outro' && last) ev.push({ t: 'f', k: 'end', step: grid, tail: g.loop ? 1.6 : 2.6 });
   return ev;
 }
 
 /* Where the song is, for the beat bar: section, bar in it, the chord now and next, bars until the
    next chorus (or drop, or hook). */
-export function songInfo(song, bar) {
+export function songInfo(song, bar, endBar = null) {
+  if (song.loop) {   // sing a song: the loop's chord now and next, then the last big chord
+    const sp = loopSpec(song), n = sp.prog.length, ending = endBar != null && bar >= endBar, i = ((bar % n) + n) % n;
+    const sym = ending ? sp.end : sp.prog[i], c = parseChord(sym);
+    const nextSym = ending ? null : endBar != null && bar + 1 >= endBar ? sp.end : sp.prog[(i + 1) % n];
+    return {
+      i: 0, kind: ending ? 'end' : 'loop', title: ending ? 'The end' : 'Sing along', label: 'Sing along', barIn: i, bars: n, loop: true,
+      sym, chord: chordName(sym, sp.key, sp.minor), deg: c.deg, next: nextSym ? chordName(nextSym, sp.key, sp.minor) : null,
+      toChorus: null, chorusLabel: '', energy: ENERGY.loop, tune: tuneSet(sp.key, sp.minor, sym), pcs: chordPcs(c, sp.key), root: mod12(sp.key + c.deg),
+    };
+  }
   const g = GENRES[song.genre] || GENRES.pop, form = formOf(g), at = sectionAt(form, bar), key = song.key ?? g.key;
   if (!at) return null;
   const sym = chordSymAt(g, form, bar), nb = nextBar(form, bar, song.keepGoing);
@@ -417,6 +492,6 @@ export function songInfo(song, bar) {
 const WORDS = ['Cosmic', 'Nebula', 'Starlight', 'Orbit', 'Galaxy', 'Comet', 'Supernova', 'Moonlit', 'Stardust', 'Aurora', 'Lunar', 'Solar'];
 export function songName(song, n = Date.now()) {
   const g = GENRES[song.genre] || GENRES.pop, key = song.key ?? g.key;
-  return WORDS[Math.abs(Math.floor(n / 1000)) % WORDS.length] + ' ' + g.name + ' in ' + noteName(key, flatKey(key, g.minor)) + (g.minor ? 'm' : '');
+  return WORDS[Math.abs(Math.floor(n / 1000)) % WORDS.length] + ' ' + (song.loop ? 'Sing-Along' : g.name) + ' in ' + noteName(key, flatKey(key, g.minor)) + (g.minor ? 'm' : '');
 }
-export const defaultSong = (genre = 'pop') => ({ genre, key: GENRES[genre].key, bpm: GENRES[genre].bpm, inst: 'piano', beat: GENRES[genre].beats[0], keepGoing: false });
+export const defaultSong = (genre = 'pop') => ({ genre, key: GENRES[genre].key, bpm: GENRES[genre].bpm, inst: 'piano', beat: GENRES[genre].beats[0], keepGoing: false, loop: null, clip: 30 });

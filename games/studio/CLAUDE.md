@@ -65,6 +65,26 @@ save for exploring again or the recordings you capture."). Public (not a JJ Brew
   builds over its whole pre ("Build") and goes silent for the beat before the "Drop"; Trap and Boom Bap call the
   chorus the "Hook". Keep going (Song sheet): no ending, round to the second verse after the last chorus. Tap a
   part on the timeline to jump there at the next bar.
+- **Sing a song** (JC, Nov 20 2026: "Can they sing to a popular song just as a short clip?"; home's 🎤 Sing a song I
+  know, or the Song sheet's Full song / Sing a song switch; `song.loop`). Kids sing a song they know over a loop:
+  **Studio never names, plays, shows or spells out anyone's song** (no tracks, no lyrics, no melodies, no song
+  titles): chord progressions belong to nobody, the singer brings the words and the tune. Keep it that way.
+  - The loops (`LOOPS`, `LOOP_ORDER`): the genre's own chorus, The four chords I–V–vi–IV, Sad four, ’50s, Three
+    chords, Two chords, Walk down, Royal Road, Jazzy, Twelve-bar blues; shown by name in the key ("C G Am F").
+    Written in major; a minor genre plays them in its relative major (`loopSpec`), so every loop fits the key.
+    Played like a chorus without the arpeggio (room for the singer), a crash and a fill every eight bars (twelve
+    for the blues), no song form, no end (`barEvents(song, bar, endBar)`). The genre still picks the sound, beat and
+    instrument ("THE SOUND"). The timeline is the loop's chords, so the next one is always in sight.
+  - **Find my key** (`humKey`): seven seconds of humming or singing with the band quiet; every note the auto-tune's
+    pitch reader hears (`voice.onPitch`) counts for its pitch class, the best of all 24 Krumhansl-Kessler key
+    profiles wins, said in the genre's mode through the relative key (`keyFromNotes`); then the loop starts in it.
+  - **Tap the beat** (`tapBeat`): four taps or more, the middle gap is the tempo, tried as tapped, then doubled or
+    halved to fit; a sing-along's tempo range is wider (60% to 150% of the genre's, `bpmRange`).
+  - **Clips** (15 s, 30 s, 1 min, `song.clip`): ⏺ when stopped counts in and records whole rounds of the chords
+    (`clipBars`, the ending bar counted in), then one big last chord on the loop's home (`end`), a 1.6 s tail and
+    it stops; ⏺ while playing starts at the next bar and ends on the nearest round, so the last chord lands where
+    the loop would start over. The band knows the end as `band.endBar`; stopping early clears it and the loop
+    plays on. The beat bar counts the clip's bars, LAST 4 BARS, a 4·3·2·1 over the last and THAT'S A WRAP.
 - **The beat bar**: the parts as a timeline with a playhead, the part and bar, four beat dots (the one in
   yellow), the chord now and the next, "CHORUS IN 4 BARS" (or DROP, or HOOK) from four bars out, then a big hollow
   4·3·2·1 over the last bar and the word as it lands (with a hyperspace stretch of the stars). Synced to what's
@@ -111,8 +131,9 @@ save for exploring again or the recordings you capture."). Public (not a JJ Brew
 ## Files
 
 - `music.mjs`: keys, chords (numerals, names, voicings, the auto-tune's notes), `BEATS`, `GENRES`, the form,
-  `barEvents(song, bar)` (everything that plays in a bar: d drum, c chord, b bass, a arpeggio, f effect),
-  `songInfo` (what the beat bar shows). No audio, no DOM.
+  `barEvents(song, bar, endBar)` (everything that plays in a bar: d drum, c chord, b bass, a arpeggio, f effect),
+  `songInfo` (what the beat bar shows), the sing-along's `LOOPS`, `loopSpec`, `loopChords`, `clipBars` and
+  `keyFromNotes`. No audio, no DOM.
 - `band.js`: the Web Audio band (`Band`: `setSong`, `play(bar, { countIn })`, `stop`, `cue`, `position(now)`,
   `since(kinds, now)` for the visuals, `moveClap`, `moveSwell`), `makeIR`.
 - `tune-worklet.js`: the auto-tune processor (`studio-tune`). `voice.js`: the voice's chain (`Voice`).
@@ -124,7 +145,7 @@ save for exploring again or the recordings you capture."). Public (not a JJ Brew
 ## Develop and test
 
 ```
-node games/studio/test/studio.test.mjs   # the theory, every genre and bar, the worklet fed made-up voices, the moves
+node games/studio/test/studio.test.mjs   # the theory, every genre and bar, every loop in every genre, the key finder, the worklet fed made-up voices, the moves
 npm run build && node scripts/dev-server.mjs   # then /studio/ (and /studio/?fake)
 ```
 To hear the mix's balance, render the band offline in a browser (an OfflineAudioContext whose `currentTime` you

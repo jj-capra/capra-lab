@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import {
   GENRES, GENRE_ORDER, BEATS, FORM, parseChord, chordName, chordPcs, tuneSet, keysVoicing, guitarVoicing, bassNote, hits, formOf, formBars,
   sectionAt, chordSymAt, barsUntil, nextBar, barEvents, songInfo, songName, defaultSong, keyName, hookOf, hookNames, midiName,
+  LOOPS, LOOP_ORDER, loopSpec, loopChords, clipBars, keyFromNotes,
 } from '../music.mjs';
 import { createMoves } from '../moves.mjs';
 
@@ -162,6 +163,61 @@ test('the beat bar\'s numbers: section, chord now and next, bars to the chorus (
   assert.match(songName(pop, 5000), /^\w+ Pop in C$/);
   assert.match(songName(defaultSong('trap'), 5000), / Trap in Am$/);
   assert.equal(hits('X.x.r...t.......').length, 1 + 1 + 2 + 3);
+});
+
+test('sing a song: every loop in every genre loops its chords, a crash each phrase, no arpeggio, one big last chord', () => {
+  assert.equal(names(LOOPS.four.prog, 0, false), 'C G Am F');
+  assert.equal(loopChords({ ...defaultSong('pop'), loop: 'four' }), 'C G Am F');
+  assert.equal(loopChords({ ...defaultSong('trap'), loop: 'sad' }), 'Am F C G', 'a minor genre plays the loops in its relative major (the same notes)');
+  assert.equal(loopChords({ ...defaultSong('trap'), loop: 'four' }), 'C G Am F');
+  assert.equal(loopChords({ ...defaultSong('lofi'), loop: 'genre' }), 'Gm7 C7 Fmaj7 Dm7', 'the genre\'s own chorus');
+  assert.equal(loopChords({ ...defaultSong('blues'), loop: 'blues' }), 'A7 D7 E7');
+  assert.equal(loopChords({ ...defaultSong('flamenco'), loop: 'walk' }), 'Am G F E');
+  for (const genre of GENRE_ORDER) for (const loop of LOOP_ORDER) {
+    const song = { ...defaultSong(genre), loop }, sp = loopSpec(song), n = sp.prog.length, phrase = n >= 8 ? n : 8;
+    for (const s of [...sp.prog, sp.end]) parseChord(s);
+    const end = clipBars(song, 30);
+    assert.equal(end % (n >= 8 ? n : 4), 0, genre + ' ' + loop + ': the clip is whole rounds');
+    for (let bar = 0; bar <= end + 1; bar++) {
+      const ev = barEvents(song, bar, end), info = songInfo(song, bar, end);
+      if (bar > end) { assert.equal(ev.length, 0, 'nothing after the last chord'); continue; }
+      assert.ok(!ev.some((e) => e.t === 'a'), genre + ' ' + loop + ': no arpeggio over the singer');
+      if (bar === end) {
+        assert.equal(info.kind, 'end'); assert.equal(info.sym, sp.end); assert.equal(info.next, null);
+        const f = ev.find((e) => e.t === 'f' && e.k === 'end');
+        assert.ok(f && f.tail === 1.6, genre + ' ' + loop + ': the clip ends a little sooner than a song');
+        continue;
+      }
+      assert.equal(info.sym, sp.prog[bar % n], genre + ' ' + loop + ' bar ' + bar);
+      assert.equal(info.next, bar + 1 === end ? chordName(sp.end, sp.key, sp.minor) : chordName(sp.prog[(bar + 1) % n], sp.key, sp.minor));
+      const chords = ev.filter((e) => e.t === 'c');
+      assert.ok(chords.length >= 1, genre + ' ' + loop + ' bar ' + bar + ' has chords');
+      const pcs = new Set(chordPcs(parseChord(info.sym), sp.key));
+      for (const c of chords) for (const note of c.notes) assert.ok(pcs.has(note % 12), genre + ' ' + loop + ': ' + note + ' outside ' + info.chord);
+      if (song.beat !== 'off' && bar % phrase === 0) assert.ok(ev.some((e) => e.t === 'd' && e.v === 'x'), genre + ' ' + loop + ': a crash at each phrase');
+    }
+    assert.equal(barEvents(song, 400).length > 0, true, 'with no clip it never stops');
+  }
+  // a clip close to the seconds asked for, counting the last chord
+  const pop = { ...defaultSong('pop'), loop: 'four' }, secs = (b) => (b + 1) * 240 / pop.bpm;
+  assert.equal(clipBars(pop, 30), 12); assert.ok(Math.abs(secs(12) - 30) < 3);
+  assert.equal(clipBars(pop, 60), 28); assert.ok(Math.abs(secs(28) - 60) < 3);
+  assert.equal(clipBars(pop, 15), 8);
+  assert.equal(clipBars({ ...defaultSong('blues'), loop: 'blues' }, 15), 12, 'the blues goes round all twelve');
+  assert.match(songName(pop, 5000), / Sing-Along in C$/);
+});
+
+test('find my key: a hummed tune\'s notes give its key, in the genre\'s mode', () => {
+  const hist = (notes) => { const h = new Array(12).fill(0); for (const [pc, n] of notes) h[pc] += n; return h; };
+  const tune = (tonic, steps, beats) => hist(steps.map((s, i) => [(tonic + s) % 12, beats[i % beats.length]]));
+  const major = [0, 0, 4, 7, 7, 9, 7, 5, 4, 2, 0, 11, 0, 2, 4, 0], beats = [2, 1, 1, 2, 1, 1, 3, 1];
+  for (const k of [0, 2, 5, 7, 10]) {
+    assert.equal(keyFromNotes(tune(k, major, beats), false), k, 'major tune in ' + k);
+    assert.equal(keyFromNotes(tune(k, major, beats), true), (k + 9) % 12, 'in a minor genre: its relative minor (the same notes)');
+  }
+  const minor = [0, 3, 7, 3, 5, 3, 2, 0, 10, 0, 3, 7, 8, 7, 0];
+  for (const k of [9, 4, 2]) assert.equal(keyFromNotes(tune(k, minor, beats), true), k, 'minor tune in ' + k);
+  assert.equal(keyFromNotes(tune(9, minor, beats), false), 0, 'a minor tune in a major genre: its relative major');
 });
 
 /* the worklet, run here with stand-ins for the audio thread */

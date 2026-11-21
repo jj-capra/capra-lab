@@ -12,7 +12,7 @@ const CHAR = { natural: [0, 1], chipmunk: [12, 1.45], deep: [-7, 0.8], robot: [0
 
 export class Voice {
   constructor(ctx, out) {
-    this.ctx = ctx; this.out = out; this.node = null; this.src = null; this.level = 0; this.pitch = null; this.onOnset = null; this.duckAt = -1;
+    this.ctx = ctx; this.out = out; this.node = null; this.src = null; this.level = 0; this.pitch = null; this.onOnset = null; this.onPitch = null; this.duckAt = -1;
     this.opts = { tune: 'hard', harmony: 0, char: 'natural', space: true, echo: false, radio: false, volume: 1 };
     this.allowed = new Array(12).fill(true); this.chord = [0, 4, 7]; this.root = 0;
     const c = ctx;
@@ -58,7 +58,7 @@ export class Voice {
     try {
       await this.ctx.audioWorklet.addModule(new URL('./tune-worklet.js', import.meta.url).href);
       this.node = new AudioWorkletNode(this.ctx, 'studio-tune', { numberOfInputs: 1, numberOfOutputs: 1, outputChannelCount: [2] });
-      this.node.port.onmessage = (e) => { const d = e.data || {}; if (d.onset != null) { if (this.onOnset) this.onOnset(d.onset); return; } this.level = d.level || 0; this.pitch = d.f0 > 0 ? d : null; };
+      this.node.port.onmessage = (e) => { const d = e.data || {}; if (d.onset != null) { if (this.onOnset) this.onOnset(d.onset); return; } this.level = d.level || 0; this.pitch = d.f0 > 0 ? d : null; if (this.pitch && this.onPitch) this.onPitch(d); };
       this.hp.disconnect(); this.hp.connect(this.node); this.node.connect(this.post);
       this.apply();
       return true;
