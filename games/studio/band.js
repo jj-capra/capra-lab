@@ -2,7 +2,7 @@
    (five kits), piano and electric piano, four synths, a plucked-string guitar (Karplus-Strong, strummed
    string by string), bass and 808. A lookahead scheduler a beat at a time, so a change of key,
    tempo, instrument or groove lands on the next beat. Everything is made here; nothing downloads. */
-import { barEvents, GENRES, formOf, formBars, sectionAt } from './music.mjs';
+import { barEvents, GENRES, formBars, sectionAt, songForm } from './music.mjs';
 
 const mtof = (m) => 440 * Math.pow(2, (m - 69) / 12);
 const KITS = {   // kick: start Hz, end Hz, decay s, click; snare: band Hz, decay s, body Hz; hats: highpass Hz
@@ -69,7 +69,7 @@ export class Band {
     this.song = { ...song };
     this.genre = GENRES[this.song.genre] || GENRES.pop;
     this.kit = KITS[this.genre.kit] || KITS.pop;
-    this.form = formOf(this.genre);
+    this.form = songForm(this.song);   // a hummed song: its own parts
     if (was && was.genre !== song.genre && this.playing) {
       if (!this.song.loop && this.bar >= formBars(this.form)) this.bar = this.form.find((s) => s.kind === 'verse').start;
       this.retone();
@@ -309,11 +309,13 @@ export class Band {
     this.noiseHit(t, v * 0.3, 1.7, 'highpass', 4600, this.B.drums, 0.5, 0.1);
     this.noiseHit(t, v * 0.14, 1.1, 'bandpass', 7800, this.B.drums, 0.8, -0.15);
   }
-  click(t, v) {
+  // a click on the speaker path (never recorded); `hz` pitches it (the hum's click on the song's key)
+  click(t, v, hz = 0) {
     const c = this.ctx, o = c.createOscillator(), g = c.createGain();
-    o.frequency.value = v >= 1 ? 1760 : 1320;
+    o.frequency.value = hz || (v >= 1 ? 1760 : 1320);
     g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.35 * v, t + 0.002); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.07);
     o.connect(g); g.connect(this.clickOut); o.start(t); o.stop(t + 0.1);
+    return o;
   }
   duck(t) {
     for (const p of [this.B.duckC.gain, this.B.duckB.gain]) { p.setValueAtTime(0.28, t + 0.002); p.setTargetAtTime(1, t + 0.03, 0.085); }

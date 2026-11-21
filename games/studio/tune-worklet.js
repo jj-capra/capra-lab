@@ -177,9 +177,9 @@ class StudioTune extends AudioWorkletProcessor {
     const rms = Math.sqrt(sq / frames);
     this.level = Math.max(rms, this.level * 0.92);
     if (this.n >= this.postAt) {
-      this.postAt = this.n + Math.round(0.05 * sr);
+      this.postAt = this.n + Math.round((s.rate || 0.05) * sr);   // every 50 ms (20 ms while a part is hummed)
       const voiced = this.voiced || this.n - this.lastVoiced < 0.08 * sr;
-      this.port.postMessage({ f0: voiced ? this.f0 : 0, m: this.m, tgt: s.on ? this.tgt : Math.round(this.m + s.shift), level: this.level });
+      this.port.postMessage({ f0: voiced ? this.f0 : 0, m: this.m, tgt: s.on ? this.tgt : Math.round(this.m + s.shift), level: this.level, t: t0 + frames / sr });
     }
     return true;
   }

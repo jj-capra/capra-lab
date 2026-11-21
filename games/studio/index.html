@@ -203,6 +203,22 @@
   .tap small { display: block; margin-top: 2px; font-size: 12px; font-weight: 700; color: rgba(255, 248, 236, 0.62); }
   .tap.hit { animation: taphit 0.18s ease-out; }
   @keyframes taphit { from { background: rgba(255, 210, 63, 0.35); transform: scale(0.98); } }
+  .parts { display: grid; gap: 8px; margin-top: 10px; }
+  .part { display: flex; align-items: center; gap: 10px; padding: 9px 10px 9px 12px; border-radius: 14px; border: 2px solid var(--line); background: rgba(255, 255, 255, 0.05); }
+  .part.has { border-color: color-mix(in srgb, var(--c) 70%, transparent); background: color-mix(in srgb, var(--c) 14%, transparent); }
+  .part > i { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 8px var(--c); opacity: 0.45; }
+  .part.has > i { opacity: 1; }
+  .part > span { flex: 1; min-width: 0; }
+  .part b { display: block; font-size: 15px; font-weight: 800; }
+  .part small { display: block; font-size: 12px; font-weight: 700; color: rgba(255, 248, 236, 0.62); overflow-wrap: anywhere; }
+  .part.has small { color: var(--yellow); }
+  .phum { flex: none; min-height: 38px; padding: 0 12px; border-radius: 999px; border: 2px solid var(--yellow); background: rgba(255, 210, 63, 0.14); color: var(--paper); font-weight: 800; font-size: 13px; }
+  .px { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--line); background: transparent; color: rgba(255, 248, 236, 0.7); font-weight: 800; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .chip { min-height: 34px; padding: 0 12px; border-radius: 999px; border: 2px solid var(--c, var(--line)); background: color-mix(in srgb, var(--c, #fff) 18%, transparent); color: var(--paper); font-weight: 800; font-size: 13px; }
+  .chip.add { --c: rgba(255, 255, 255, 0.35); background: transparent; color: rgba(255, 248, 236, 0.8); }
+  .chip.clear { margin-top: 10px; }
+  .chip.red { --c: #FF4D5E; color: #FF8A94; }
   .tog.sync em { flex: none; padding: 7px 12px; border-radius: 12px; font-style: normal; font-size: 13px; font-weight: 800; color: var(--ink); background: var(--yellow); }
   .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
   .sw { aspect-ratio: 1; border-radius: 16px; border: 3px solid transparent; padding: 0; position: relative; overflow: hidden; }
@@ -329,15 +345,27 @@
   <div class="seg" id="modes"></div>
   <p class="note" id="modeNote"></p>
   <div id="singBox" hidden>
-    <button class="tog sync" id="humBtn" type="button"><span><b>🎵 Find my key</b><small>Hum or sing your song for a few seconds and Studio picks the key that fits</small></span><em>HUM</em></button>
-    <h4>CHORDS</h4>
-    <div class="genres" id="loops"></div>
-    <p class="note">Most songs fit one of these. Tap one while you sing and keep the one that sounds right (or look up your song's chords and match them).</p>
     <h4>TAP THE BEAT</h4>
     <button class="tap" id="tapBtn" type="button" aria-label="Tap the beat"><span class="ic">👆</span><span><b id="tapBig">112</b><small id="tapSmall">bpm · tap along with your song</small></span></button>
-    <h4>CLIP</h4>
-    <div class="seg" id="clips"></div>
-    <p class="note" id="clipNote"></p>
+    <h4>HUM YOUR SONG, PART BY PART</h4>
+    <p class="note">Tap a part and hum it with the click: two bars to get ready, then the part. Studio writes chords that fit your tune, and your parts become the song. Hum the same part again to redo it.</p>
+    <div class="seg" id="partBars"></div>
+    <div class="parts" id="parts"></div>
+    <div id="orderBox" hidden>
+      <h4>THE ORDER</h4>
+      <div class="chips" id="order"></div>
+      <div class="chips" id="orderAdd"></div>
+      <p class="note" id="orderNote"></p>
+      <button class="chip add clear" id="partsClear" type="button">🗑 Start over</button>
+    </div>
+    <div id="loopBox">
+      <h4>OR JUST LOOP SOME CHORDS</h4>
+      <div class="genres" id="loops"></div>
+      <p class="note">Most songs fit one of these. Tap one while you sing and keep the one that sounds right (or look up your song's chords and match them).</p>
+      <h4>CLIP</h4>
+      <div class="seg" id="clips"></div>
+      <p class="note" id="clipNote"></p>
+    </div>
   </div>
   <h4 id="genreHead">GENRE</h4>
   <div class="genres" id="genres"></div>
@@ -354,12 +382,12 @@
 
 <section class="sheet" id="voiceSheet" hidden aria-label="Voice">
   <div class="sheet-head"><h3>YOUR VOICE</h3><button class="round-btn" data-close type="button" aria-label="Close">✕</button></div>
-  <button class="tog" id="micTog" type="button"><span><b>Mic</b><small id="micNote">Sing or talk, it all goes through your sound</small></span><i></i></button>
+  <button class="tog" id="micTog" type="button"><span><b>Keep the mic on</b><small id="micNote">Studio turns it on only while you record, hum a part or clap sync</small></span><i></i></button>
   <h4>LISTENING ON</h4>
   <div class="seg" id="listens"></div>
   <p class="note" id="listenNote"></p>
   <button class="tog" id="monTog" type="button" hidden><span><b>Hear myself live</b><small>Your tuned voice in your ears while you sing</small></span><i></i></button>
-  <button class="tog" id="loudTog" type="button" hidden><span><b>Keep the music loud</b><small>If the music dips while you sing (iPhone's echo-cancelling does that), turn this on. The mic will hear the music too, so Studio shuts your mic between lines.</small></span><i></i></button>
+  <button class="tog" id="aecTog" type="button" hidden><span><b>Echo-cancelling</b><small>Off (best): the music stays steady and Studio shuts your mic between lines so the band's echo stays out. On: the mic hears less of the band, but iPhone dips the music whenever you sing.</small></span><i></i></button>
   <button class="tog sync" id="syncBtn" type="button"><span><b>👏 Clap sync</b><small id="syncNote">Lines your voice up with the beat in recordings</small></span><em>GO</em></button>
   <h4>AUTO-TUNE</h4>
   <div class="seg" id="tunes"></div>

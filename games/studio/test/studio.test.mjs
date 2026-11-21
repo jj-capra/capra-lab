@@ -7,6 +7,7 @@ import {
   GENRES, GENRE_ORDER, BEATS, FORM, parseChord, chordName, chordPcs, tuneSet, keysVoicing, guitarVoicing, bassNote, hits, formOf, formBars,
   sectionAt, chordSymAt, barsUntil, nextBar, barEvents, songInfo, songName, defaultSong, keyName, hookOf, hookNames, midiName,
   LOOPS, LOOP_ORDER, loopSpec, loopChords, clipBars, keyFromNotes,
+  humHist, addPart, partNames, partOrder, songForm, autoOrder, hasParts, chordKey,
 } from '../music.mjs';
 import { createMoves } from '../moves.mjs';
 
@@ -205,6 +206,59 @@ test('sing a song: every loop in every genre loops its chords, a crash each phra
   assert.equal(clipBars(pop, 15), 8);
   assert.equal(clipBars({ ...defaultSong('blues'), loop: 'blues' }, 15), 12, 'the blues goes round all twelve');
   assert.match(songName(pop, 5000), / Sing-Along in C$/);
+});
+
+test('hum a song: each hummed part gets chords that fit its tune, in one key, and the parts make the song', () => {
+  // a made-up tune hummed over the click (a note a beat walking the chord wanted), heard 0.2 s late, a little off pitch
+  const hum = (bars, { t0 = 10, beat = 0.6, lag = 0.2, shift = 0, drop = [] } = {}) => {
+    const samples = [];
+    bars.forEach((bar, b) => { if (drop.includes(b)) return; bar.forEach((note, k) => { for (let s = 0; s < beat * 0.9; s += 0.02) samples.push({ t: t0 + lag + (b * 4 + k) * beat + s + 0.01, m: note + shift + (((b * 7 + k * 3 + s * 50) % 5) - 2) * 0.1 }); }); });
+    return humHist(samples, { t0, beat, bars: bars.length, lag });
+  };
+  const I = [60, 64, 67, 64], V = [67, 71, 74, 71], vi = [69, 72, 76, 72], IV = [65, 69, 72, 69], ii = [62, 65, 69, 65], home = [72, 67, 64, 60];
+  const verse = hum([I, V, vi, IV, I, V, IV, V]);
+  assert.ok(Math.abs(verse.voiced - 8 * 4 * 0.54) < 0.3, 'every hummed note counted: ' + verse.voiced);
+  assert.equal(verse.hist[1][7] > verse.hist[1][0], true, 'notes land in their bars');
+  let song = addPart({ ...defaultSong('pop'), loop: 'four', key: 5 }, 'verse', verse.hist);
+  assert.equal(song.key, 0, 'the key heard from the humming');
+  assert.equal(partNames(song, 'verse'), 'C G Am F · C G F G');
+  // the chorus hummed in the same key: both parts, the usual order, a big last chord
+  song = addPart(song, 'chorus', hum([IV, I, V, vi, IV, I, ii, V]).hist);
+  assert.equal(partNames(song, 'chorus'), 'F C G Am · F C Dm G');
+  assert.deepEqual(partOrder(song), ['verse', 'chorus', 'verse', 'chorus', 'chorus']);
+  const form = songForm(song);
+  assert.deepEqual(form.map((s) => s.title), ['Verse 1', 'Chorus', 'Verse 2', 'Chorus', 'Chorus', 'The end']);
+  for (let bar = 0; bar < formBars(form); bar++) {
+    const info = songInfo(song, bar), ev = barEvents(song, bar), at = sectionAt(form, bar);
+    assert.equal(info.sym, at.s.prog[at.barIn], 'bar ' + bar + ' plays its part\'s chord');
+    const pcs = new Set(chordPcs(parseChord(info.sym), 0));
+    for (const c of ev.filter((e) => e.t === 'c')) for (const n of c.notes) assert.ok(pcs.has(n % 12), 'bar ' + bar + ': ' + n + ' outside ' + info.chord);
+  }
+  const last = barEvents(song, formBars(form) - 1);
+  assert.ok(last.some((e) => e.t === 'f' && e.k === 'end'), 'it ends');
+  assert.equal(songInfo(song, 4).toChorus, 4, 'the chorus countdown works on hummed parts'); assert.equal(songInfo(song, 20).toChorus, 4); assert.equal(songInfo(song, 33).toChorus, null);
+  assert.equal(barEvents(song, formBars(form)).length, 0);
+  // a bar left quiet keeps the chord before it
+  assert.equal(partNames(addPart(song, 'bridge', hum([vi, IV, I, V], { drop: [2] }).hist), 'bridge'), 'Am F F G');
+  // your own order, repeats and all
+  assert.deepEqual(songForm({ ...song, order: ['chorus', 'verse', 'chorus', 'chorus'] }).map((s) => s.kind), ['chorus', 'verse', 'chorus', 'chorus', 'outro']);
+  assert.deepEqual(partOrder({ ...song, order: ['bridge', 'verse'] }), ['verse'], 'parts not hummed are skipped');
+  // hummed in D in a minor genre: the key is its relative minor and the chords the same D A Bm G
+  let trap = addPart({ ...defaultSong('trap'), loop: 'four' }, 'verse', hum([I, V, vi, IV], { shift: 2 }).hist);
+  assert.equal(keyName(trap.key, true), 'B minor');
+  assert.equal(partNames(trap, 'verse'), 'D A Bm G');
+  // a tune that sits on the sixth comes home there; the jazzy genres get sevenths, the blues dominant ones
+  const minorTune = hum([vi, IV, I, V, vi, IV, V, vi]).hist;
+  assert.equal(partNames(addPart({ ...defaultSong('pop'), loop: 'four' }, 'outro', minorTune), 'outro').split(' ').pop(), 'Am');
+  assert.equal(partNames(addPart({ ...defaultSong('lofi'), loop: 'four' }, 'verse', verse.hist), 'verse'), 'Cmaj7 G7 Am7 Fmaj7 · Cmaj7 G7 Fmaj7 G7');
+  assert.equal(partNames(addPart({ ...defaultSong('blues'), loop: 'four' }, 'verse', hum([I, I, IV, IV, I, V, IV, I]).hist), 'verse'), 'C7 C7 F7 F7 · C7 G7 F7 C7');
+  // a later part hummed a tone higher: the key moves to fit every part, and the first part's chords move with it
+  const up = addPart({ ...song, parts: { verse: song.parts.verse } }, 'chorus', hum([I, V, vi, IV], { shift: 2 }).hist);
+  assert.ok(up.parts.verse && up.parts.chorus);
+  assert.equal(autoOrder({ verse: 1 }).length, 3); assert.deepEqual(autoOrder({ bridge: 1 }), ['bridge', 'bridge']);
+  assert.equal(chordKey(trap), (trap.key + 3) % 12);
+  assert.match(songName(song, 5000), / Pop Song in C$/);
+  assert.ok(!hasParts({ ...song, loop: null }), 'a full song ignores the hummed parts');
 });
 
 test('find my key: a hummed tune\'s notes give its key, in the genre\'s mode', () => {

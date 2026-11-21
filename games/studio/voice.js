@@ -79,6 +79,8 @@ export class Voice {
   get live() { return !!this.src; }
   // claps and beeps the mic hears, with their audio-clock times (the clap sync)
   listen(on) { if (this.node) this.node.port.postMessage({ onsets: !!on }); }
+  // every note heard, 50 times a second with its audio-clock time (humming a part)
+  notes(on) { if (this.node) this.node.port.postMessage({ rate: on ? 0.02 : 0.05 }); }
   // the level under which the voice is only the band's echo off the speaker (0: always open)
   setDuck(level) {
     const v = Math.round(level * 2000) / 2000;

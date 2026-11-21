@@ -2,7 +2,7 @@
    band, your voice, the beat bar and the chorus countdown, recording), and the sheets that pick the
    song, the voice and the look. A free playground: no score, no pay; what you keep is the songs you
    save (localStorage, per lab player) and the recordings you capture (IndexedDB, on this phone). */
-import { GENRES, GENRE_ORDER, INSTRUMENTS, BEATS, LOOPS, LOOP_ORDER, defaultSong, songInfo, songName, hookOf, hookNames, keyName, noteName, flatKey, formOf, formBars, midiName, parseChord, chordName, guitarVoicing, loopSpec, loopChords, clipBars, keyFromNotes, mod12 } from './music.mjs';
+import { GENRES, GENRE_ORDER, INSTRUMENTS, BEATS, LOOPS, LOOP_ORDER, PART_KINDS, PART_LABEL, defaultSong, songInfo, songName, hookOf, hookNames, keyName, noteName, flatKey, formBars, midiName, parseChord, chordName, guitarVoicing, loopSpec, loopChords, clipBars, hasParts, partOrder, partNames, songForm, humHist, addPart, chordKey } from './music.mjs';
 import { Band } from './band.js';
 import { Voice, TUNES, CHARS, HARMONIES } from './voice.js';
 import { createMoves } from './moves.mjs';
@@ -25,7 +25,7 @@ const fmtTime = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).pad
 const LISTEN = { speaker: '📱 Phone speaker', wireless: '🎧 Wireless', wired: '🔌 Wired' };
 const DEFAULT_RT = { speaker: 0.05, wireless: 0.24, wired: 0.03 };   // the round trip, out and back in, before a clap sync
 const DEF = {
-  voice: { tune: 'hard', harmony: 0, char: 'natural', space: true, echo: false, radio: false, volume: 1, listen: 'speaker', monitor: true, loud: false, sync: {} },
+  voice: { tune: 'hard', harmony: 0, char: 'natural', space: true, echo: false, radio: false, volume: 1, listen: 'speaker', monitor: true, aec: false, keepMic: false, sync: {} },
   look: { universe: 'glow', style: 'glow', bg: 'space', chordColors: true, trails: true, moveSounds: true, camera: 'front', recMode: 'video' },
 };
 const saved = store.get('studio.prefs', {});
@@ -41,7 +41,8 @@ if (!LOOPS[prefs.song.loop]) prefs.song.loop = null;
 if (![15, 30, 60].includes(prefs.song.clip)) prefs.song.clip = 30;
 if (!LISTEN[prefs.voice.listen]) prefs.voice.listen = saved.voice && saved.voice.phones ? 'wired' : 'speaker';
 if (!prefs.voice.sync || typeof prefs.voice.sync !== 'object') prefs.voice.sync = {};
-delete prefs.voice.phones;
+delete prefs.voice.phones; delete prefs.voice.loud;   // echo-cancelling is `aec` now, off unless asked for
+if (![4, 8, 16].includes(prefs.song.partBars)) prefs.song.partBars = 8;
 prefs.look.universe = { nebula: 'glow', deep: 'starlight' }[prefs.look.universe] || prefs.look.universe;
 if (!UNIVERSES[prefs.look.universe]) prefs.look.universe = 'glow';
 if (!STYLES[prefs.look.style]) prefs.look.style = 'glow';
@@ -77,7 +78,7 @@ function audioUp() {
   let recDest = null;
   try { recDest = ctx.createMediaStreamDestination(); recLim.connect(recDest); } catch { /* no recording here */ }
   const bandOut = ctx.createGain(); bandOut.gain.value = 0.72;
-  const bandLim = limiter(-6, 6, 6); bandOut.connect(bandLim); bandLim.connect(speakers);
+  const bandLim = limiter(-6, 6, 6), spkBoost = ctx.createGain(); bandOut.connect(bandLim); bandLim.connect(spkBoost); spkBoost.connect(speakers);
   const bandAn = ctx.createAnalyser(); bandAn.fftSize = 1024; bandLim.connect(bandAn);
   const recDelay = ctx.createDelay(1); recDelay.delayTime.value = 0.06; bandLim.connect(recDelay); recDelay.connect(rec);
   const voiceOut = ctx.createGain(), voiceLim = limiter(-9, 12, 4), monitor = ctx.createGain();
@@ -89,8 +90,8 @@ function audioUp() {
   voice.load().then(() => estimateLatency());
   try { const b = ctx.createBuffer(1, 1, 22050), s = ctx.createBufferSource(); s.buffer = b; s.connect(ctx.destination); s.start(); } catch { /* fine */ }
   if (ctx.state !== 'running') ctx.resume().catch(() => {});
-  A = { ctx, speakers, rec, recDest, bandOut, bandAn, recDelay, voiceOut, monitor, band, voice };
-  applyMonitor();
+  A = { ctx, speakers, rec, recDest, bandOut, bandAn, recDelay, voiceOut, monitor, band, voice, spkBoost };
+  applyMonitor(); applyBoost();
   return A;
 }
 const outLatency = () => (A ? (A.ctx.outputLatency || 0) + (A.ctx.baseLatency || 0) : 0);
@@ -98,6 +99,13 @@ function applyMonitor() {
   if (!A) return;
   const v = prefs.voice, g = v.listen === 'wired' && v.monitor ? 1 : 0;
   A.monitor.gain.setTargetAtTime(g, A.ctx.currentTime, 0.03);
+}
+/* iPhone plays its speaker several times quieter whenever a page has the mic open (it switches to a
+   call), and no page can stop that. So the mic opens only while you sing (micFor), and while it's
+   open the band goes to the phone's speaker louder (the last limiter holds the peaks). */
+function applyBoost() {
+  if (!A) return;
+  A.spkBoost.gain.setTargetAtTime(micOn && prefs.voice.listen === 'speaker' ? 1.6 : 1, A.ctx.currentTime, 0.05);
 }
 /* The round trip: the band out to your ears, your voice back in through the mic. The clap sync
    measures it for where you're listening (prefs.voice.sync); until then a fair guess. The band goes
@@ -126,7 +134,15 @@ function show(name) {
 }
 
 /* ---------- camera, mic and the tracker ---------- */
-let camStream = null, micOn = false, camDenied = false;
+let camStream = null, micOn = false, camDenied = false, micBlocked = false;
+/* The mic opens only while you're singing into it (a take, a hummed part, the clap sync), unless you
+   keep it on or hear yourself live on wired headphones: iPhone turns its speaker down the whole time
+   any mic is open. */
+const micHolds = new Set();
+const liveMonitor = () => prefs.voice.listen === 'wired' && !!prefs.voice.monitor;
+const micWanted = () => !!prefs.voice.keepMic || liveMonitor() || micHolds.size > 0;
+async function micFor(why) { micHolds.add(why); if (!micOn) await setMic(true); return micOn; }
+function micDone(why) { micHolds.delete(why); if (micOn && !micWanted()) setMic(false); }
 const tcv = document.createElement('canvas'), tctx = tcv.getContext('2d', { willReadFrequently: false });
 let tracker = null, trackerLoad = null, trackerFail = false, trackErrs = 0, lastVidT = -1, lastTs = 0, trackMs = 0, lastTrackAt = 0, maskU8 = null, maskW = 0, maskH = 0;
 let xf = [1, -1, 0, 1], lastPersonAt = 0, personSeen = false;
@@ -135,7 +151,7 @@ let hands = [null, null], head = null;
 const mirrored = () => prefs.look.camera !== 'back';
 let phoneMic = null;
 function micConstraints() {
-  const v = prefs.voice, c = { echoCancellation: v.listen === 'speaker' && !v.loud, noiseSuppression: false, autoGainControl: false, channelCount: 1 };
+  const v = prefs.voice, c = { echoCancellation: v.listen === 'speaker' && !!v.aec, noiseSuppression: false, autoGainControl: false, channelCount: 1 };
   if (v.listen === 'wireless' && phoneMic) c.deviceId = { ideal: phoneMic };
   return c;
 }
@@ -155,24 +171,25 @@ async function startMedia() {
   if (FAKE) { startFake(); return; }
   const md = navigator.mediaDevices;
   if (!md || !md.getUserMedia) { hint('This browser has no camera or mic for Studio. The band still plays.', 6000); return; }
-  setSession(true);
-  const wantCam = prefs.look.camera !== 'off';
+  const wantCam = prefs.look.camera !== 'off', wantMic = micWanted();
+  if (!wantCam && !wantMic) return;
+  if (wantMic) setSession(true);
   let s = null;
-  try { s = await md.getUserMedia({ video: wantCam ? camConstraints() : false, audio: micConstraints() }); }
+  try { s = await md.getUserMedia({ video: wantCam ? camConstraints() : false, audio: wantMic ? micConstraints() : false }); }
   catch {
-    if (wantCam) { try { s = await md.getUserMedia({ video: camConstraints(), audio: false }); } catch { /* no camera either */ } }
-    if (!s) { try { s = await md.getUserMedia({ video: false, audio: micConstraints() }); } catch { /* nothing */ } }
+    if (wantCam && wantMic) { try { s = await md.getUserMedia({ video: camConstraints(), audio: false }); } catch { /* no camera either */ } }
+    if (!s && wantMic) { try { s = await md.getUserMedia({ video: false, audio: micConstraints() }); } catch { /* nothing */ } }
   }
   if (screen !== 'studio') { if (s) for (const t of s.getTracks()) t.stop(); return; }
   if (!s) {
-    camDenied = true; micOn = false; setSession(false); paintMic();
-    hint('Camera and mic are off, so the band plays on its own. To sing and see your aura, allow both for this site in Settings, then come back.', 8000);
+    camDenied = true; micOn = false; micBlocked = wantMic; setSession(false); paintMic();
+    hint(wantMic ? 'Camera and mic are off, so the band plays on its own. To sing and see your aura, allow both for this site in Settings, then come back.' : 'The camera is off. To see your aura, allow it for this site in Settings, then come back.', 8000);
     return;
   }
   const v = s.getVideoTracks(), a = s.getAudioTracks();
   if (v.length) await useCamera(new MediaStream(v));
   if (a.length) { audioUp().voice.attach(new MediaStream(a)); micOn = true; } else { micOn = false; setSession(false); }
-  paintMic(); estimateLatency();
+  paintMic(); estimateLatency(); applyBoost();
   if (micOn && prefs.voice.listen === 'wireless' && await findPhoneMic() && micDevice() !== phoneMic) setMic(true);
 }
 async function useCamera(stream) {
@@ -193,20 +210,24 @@ async function switchCamera() {
   try { await useCamera(await navigator.mediaDevices.getUserMedia({ video: camConstraints(), audio: false })); }
   catch { toast('That camera would not open'); }
 }
-async function setMic(on) {
-  if (FAKE) { micOn = on; paintMic(); return; }
+async function setMic(on, again = false) {
+  if (FAKE) { micOn = on; paintMic(); applyBoost(); return; }
   const a = audioUp();
-  if (!on) { a.voice.detach(); micOn = false; setSession(false); paintMic(); return; }
+  if (!on) { a.voice.detach(); micOn = false; setSession(false); paintMic(); applyBoost(); return; }
   setSession(true);
   if (prefs.voice.listen === 'wireless' && !phoneMic) await findPhoneMic();
-  try { a.voice.attach(await navigator.mediaDevices.getUserMedia({ audio: micConstraints() })); micOn = true; }
-  catch { micOn = false; setSession(false); toast('The mic is blocked for this site'); }
-  paintMic(); estimateLatency();
+  try { a.voice.attach(await navigator.mediaDevices.getUserMedia({ audio: micConstraints() })); micOn = true; micBlocked = false; }
+  catch { micOn = false; micBlocked = true; setSession(false); toast('The mic is blocked for this site'); }
+  if (micOn && !micWanted()) { a.voice.detach(); micOn = false; setSession(false); }   // no longer wanted by the time it opened
+  if (a.ctx.state !== 'running') await a.ctx.resume().catch(() => {});
+  paintMic(); estimateLatency(); applyBoost();
+  // the first time, the phone's own mic only has a name once the mic is allowed: again with it, so the headphones keep their sound
+  if (micOn && !again && prefs.voice.listen === 'wireless' && await findPhoneMic() && micDevice() !== phoneMic) await setMic(true, true);
 }
 function stopMedia() {
   stopCamera();
   if (A) A.voice.detach();
-  micOn = false; setSession(false);
+  micOn = false; micHolds.clear(); setSession(false); applyBoost();
   stopFake();
 }
 async function startTracker() {
@@ -358,15 +379,16 @@ function songChanged(retime) {
 }
 function warmGuitar() {
   if (!A) return;
-  const g = genre(), seen = new Set(), sp = prefs.song.loop ? loopSpec(prefs.song) : null;
-  for (let b = 0; b < Math.min(formBars(formOf(g)), 32); b++) { const i = songInfo(prefs.song, b); if (!i || seen.has(i.sym)) continue; seen.add(i.sym); }
+  const g = genre(), seen = new Set(), sp = prefs.song.loop && !hasParts(prefs.song) ? loopSpec(prefs.song) : null;
+  for (let b = 0; b < Math.min(formBars(songForm(prefs.song)), 48); b++) { const i = songInfo(prefs.song, b); if (!i || seen.has(i.sym)) continue; seen.add(i.sym); }
   if (sp) seen.add(sp.end);
   // the band builds each string's pluck the first time it's played; build the progression's now
-  for (const sym of seen) A.band.warm(guitarVoicing(parseChord(sym), sp ? sp.key : prefs.song.key, g.power && g.tone.guitar === 'drive'), g.tone.guitar);
+  for (const sym of seen) A.band.warm(guitarVoicing(parseChord(sym), chordKey(prefs.song), g.power && g.tone.guitar === 'drive'), g.tone.guitar);
 }
 function titleText() {
   const g = genre(), k = keyName(prefs.song.key, g.minor).replace(' major', '').replace(' minor', 'm');
   if (currentSong) return currentSong.name;
+  if (hasParts(prefs.song)) return `🎵 ${g.name} song · ${k} · ${prefs.song.bpm}`;
   return prefs.song.loop ? `🎤 ${g.name} sing-along · ${k} · ${prefs.song.bpm}` : `${g.emoji} ${g.name} · ${k} · ${prefs.song.bpm}`;
 }
 function paintTitle() { $('#songTitle').textContent = titleText(); }
@@ -375,9 +397,9 @@ const KIND_SHORT = { intro: 'IN', verse: 'V', pre: 'PRE', chorus: 'CH', bridge: 
 let tlForm = null, tlBtns = [];
 const rgb = (c) => `rgb(${c.map((x) => Math.round(x * 255)).join(',')})`;
 function buildTimeline() {
-  const g = genre(), form = formOf(g), tl = $('#tl'), headEl = $('#tlHead');
+  const g = genre(), form = songForm(prefs.song), tl = $('#tl'), headEl = $('#tlHead'), parts = hasParts(prefs.song);
   tl.textContent = ''; tl.appendChild(headEl);
-  if (prefs.song.loop) {   // sing a song: the loop's chords in a row, so you see the next one coming
+  if (prefs.song.loop && !parts) {   // sing a song: the loop's chords in a row, so you see the next one coming
     const sp = loopSpec(prefs.song);
     tlForm = null;
     tl.classList.add('chords');
@@ -395,7 +417,7 @@ function buildTimeline() {
   tlBtns = form.map((s, i) => {
     const b = document.createElement('button');
     b.type = 'button'; b.style.flex = String(s.bars); b.style.setProperty('--c', KIND_COLOR[s.kind]);
-    b.textContent = s.kind === 'chorus' ? (g.labels && g.labels.chorus ? g.labels.chorus.toUpperCase() : 'CH') : s.kind === 'verse' ? 'V' + s.n : KIND_SHORT[s.kind];
+    b.textContent = s.end ? '' : s.kind === 'chorus' ? (!parts && g.labels && g.labels.chorus ? g.labels.chorus.toUpperCase() : 'CH') : s.kind === 'verse' ? 'V' + s.n : KIND_SHORT[s.kind];
     b.setAttribute('aria-label', 'Go to ' + s.title);
     b.addEventListener('click', () => cueSection(i));
     tl.insertBefore(b, headEl);
@@ -411,6 +433,7 @@ function cueSection(i) {
 function startSong(bar = 0, countIn = 0) {
   const a = audioUp();
   if (!a) return;
+  cancelHum();
   a.band.setSong(prefs.song);
   a.band.play(bar, { countIn });
   paintPlay();
@@ -434,14 +457,22 @@ function pickType(isVideo) {
   for (const t of list) { try { if (MediaRecorder.isTypeSupported(t)) return t; } catch { /* next */ } }
   return '';
 }
-function recToggle(asked) {
+let arming = false;
+async function recToggle(asked) {
   if (rec || pendingRec) { stopRecord(); return; }
-  if (syncing || humming) return;
+  if (hum) { cancelHum(); return; }
+  if (syncing || arming) return;
   const a = audioUp();
   if (!a || !window.MediaRecorder || !a.recDest) { toast('This browser can\'t record here'); return; }
-  if (asked !== true && prefs.voice.listen === 'wireless' && micOn && !hasSync()) { openSheet('syncSheet'); return; }
+  if (asked !== true && prefs.voice.listen === 'wireless' && !micBlocked && !hasSync()) { openSheet('syncSheet'); return; }
   closeSheets();
-  if (prefs.song.loop) {
+  // the mic opens now, before the count-in (iPhone takes a moment), and closes when the take ends
+  arming = true; paintRec();
+  await micFor('rec');
+  arming = false;
+  if (screen !== 'studio') { micDone('rec'); paintRec(); return; }
+  if (!micOn) toast('No mic, so this take is the band and the picture');
+  if (prefs.song.loop && !hasParts(prefs.song)) {
     /* sing a song: a clip of whole rounds of the chords and one big last chord, from the top after a
        count-in, or (already playing) from the next bar */
     const mid = a.band.playing && a.band.bar >= 0;
@@ -484,11 +515,12 @@ function stopRecord() {
   const mid = !!(clip && clip.mid);
   if (clip && A && A.band.playing && A.band.bar < clip.end) A.band.endBar = null;   // stopped early: the loop plays on
   clip = null;
-  if (pendingRec && !rec) { pendingRec = false; if (A && !mid) A.band.stop(); paintPlay(); paintRec(); setBig(''); return; }
+  if (pendingRec && !rec) { pendingRec = false; if (A && !mid) A.band.stop(); micDone('rec'); paintPlay(); paintRec(); setBig(''); return; }
   if (!rec) return;
   const r = rec;
   rec = null;
   try { if (r.mr.state !== 'inactive') r.mr.stop(); } catch { finishTake(r); }
+  micDone('rec');   // the speaker comes back up for the playback
   paintRec();
 }
 function composite(now, el) {
@@ -607,8 +639,9 @@ function saveSong(asNew) {
 function openSong(entry) {
   currentSong = entry;
   prefs.song = { ...defaultSong(entry.song.genre), ...entry.song };
-  const { listen, monitor, loud, sync } = prefs.voice;   // those belong to this phone, not the song
-  prefs.voice = { ...DEF.voice, ...(entry.voice || {}), listen, monitor, loud, sync };
+  const { listen, monitor, aec, keepMic, sync } = prefs.voice;   // those belong to this phone, not the song
+  prefs.voice = { ...DEF.voice, ...(entry.voice || {}), listen, monitor, aec, keepMic, sync };
+  delete prefs.voice.loud;
   if (entry.look) Object.assign(prefs.look, { universe: entry.look.universe || prefs.look.universe, chordColors: entry.look.chordColors ?? prefs.look.chordColors });
   savePrefs();
   enterStudio();
@@ -627,7 +660,7 @@ async function renderHome() {
     row.className = 'song'; row.setAttribute('role', 'button'); row.tabIndex = 0;
     row.innerHTML = `<span class="em">${g.emoji}</span><span><b></b><small></small></span><button class="x" type="button" aria-label="Delete">✕</button>`;
     row.querySelector('b').textContent = s.name;
-    row.querySelector('small').textContent = `${s.song.loop ? '🎤 Sing-along · ' + loopChords(s.song) : g.name} · ${keyName(s.song.key, g.minor)} · ${s.song.bpm} bpm${s.song.loop ? '' : ' · ' + (INSTRUMENTS[s.song.inst] || '')}`;
+    row.querySelector('small').textContent = `${hasParts(s.song) ? '🎵 Hummed · ' + partOrder(s.song).length + ' parts' : s.song.loop ? '🎤 Sing-along · ' + loopChords(s.song) : g.name} · ${keyName(s.song.key, g.minor)} · ${s.song.bpm} bpm${s.song.loop ? '' : ' · ' + (INSTRUMENTS[s.song.inst] || '')}`;
     const go = () => openSong(s);
     row.addEventListener('click', (e) => { if (!e.target.closest('.x, .sure')) go(); });
     row.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });
@@ -679,6 +712,7 @@ function enterStudio() {
   studioAt = performance.now();
 }
 function leaveStudio() {
+  cancelHum();
   if (rec || pendingRec) stopRecord();
   if (A) A.band.stop();
   stopMedia(); keepAwake(false);
@@ -781,8 +815,12 @@ function paintSongSheet() {
   segment($('#modes'), [['song', '🎼 Full song'], ['sing', '🎤 Sing a song']], (k) => (k === 'sing') === sing, pickMode);
   $('#singBox').hidden = !sing; $('#keepGoing').hidden = sing;
   $('#genreHead').textContent = sing ? 'THE SOUND' : 'GENRE';
-  $('#modeNote').textContent = sing ? 'Sing a song you know. Studio loops the chords, you bring the words and the tune.' : 'Your own song: intro, verses, choruses, a bridge and an ending, with the chorus countdown.';
+  $('#modeNote').textContent = sing ? 'Sing a song you know or make one up: hum each part with the click and Studio writes chords that fit your tune. Or just loop some chords.' : 'Your own song: intro, verses, choruses, a bridge and an ending, with the chorus countdown.';
   if (!sing) return;
+  paintParts();
+  const looping = !hasParts(s);
+  $('#loopBox').hidden = !looping;
+  if (!looping) { paintTap(); return; }
   const lb = $('#loops');
   lb.textContent = '';
   for (const id of LOOP_ORDER) {
@@ -800,6 +838,82 @@ function paintSongSheet() {
   $('#clipNote').textContent = `At this tempo ⏺ records about ${fmtTime(secs)}: whole rounds of the chords, then one big last chord. Stopped, it counts you in first; playing, it starts at the next bar.`;
   paintTap();
 }
+/* Your parts: hum each one (or again), clear it, how many bars the next one gets; the order they play
+   in (the usual one until you change it: tap a part to take it out, add parts at the end). */
+function paintParts() {
+  const s = prefs.song, parts = s.parts || {};
+  segment($('#partBars'), [[4, '4 bars'], [8, '8 bars'], [16, '16 bars']], (k) => +k === +s.partBars, (k) => { prefs.song.partBars = +k; paintParts(); savePrefs(); });
+  const box = $('#parts');
+  box.textContent = '';
+  for (const kind of PART_KINDS) {
+    const has = !!parts[kind], row = document.createElement('div');
+    row.className = 'part' + (has ? ' has' : '');
+    row.style.setProperty('--c', KIND_COLOR[kind]);
+    row.innerHTML = '<i></i><span><b></b><small></small></span><button class="phum" type="button"></button>';
+    row.querySelector('b').textContent = PART_LABEL[kind];
+    row.querySelector('small').textContent = has ? partNames(s, kind) + (parts[kind].bars !== 8 ? ` (${parts[kind].bars} bars)` : '') : 'not hummed yet';
+    const hb = row.querySelector('.phum');
+    hb.textContent = has ? '🎵 Again' : '🎵 Hum'; hb.setAttribute('aria-label', 'Hum the ' + PART_LABEL[kind]);
+    hb.addEventListener('click', () => humPart(kind));
+    if (has) {
+      const x = document.createElement('button');
+      x.type = 'button'; x.className = 'px'; x.textContent = '✕'; x.setAttribute('aria-label', 'Clear the ' + PART_LABEL[kind]);
+      x.addEventListener('click', () => clearPart(kind));
+      row.appendChild(x);
+    }
+    box.appendChild(row);
+  }
+  const any = hasParts(s);
+  $('#orderBox').hidden = !any;
+  if (!any) return;
+  const order = partOrder(s), ob = $('#order');
+  ob.textContent = '';
+  order.forEach((kind, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.style.setProperty('--c', KIND_COLOR[kind]);
+    b.textContent = PART_LABEL[kind] + ' ✕'; b.setAttribute('aria-label', 'Take out ' + PART_LABEL[kind] + ' ' + (i + 1));
+    b.addEventListener('click', () => { const o = partOrder(prefs.song).slice(); o.splice(i, 1); setOrder(o.length ? o : null); });
+    ob.appendChild(b);
+  });
+  const ab = $('#orderAdd');
+  ab.textContent = '';
+  for (const kind of PART_KINDS.filter((k) => parts[k])) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip add'; b.textContent = '+ ' + PART_LABEL[kind];
+    b.addEventListener('click', () => setOrder([...partOrder(prefs.song), kind]));
+    ab.appendChild(b);
+  }
+  if (s.order) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip add'; b.textContent = '↺ The usual order';
+    b.addEventListener('click', () => setOrder(null));
+    ab.appendChild(b);
+  }
+  const bars = formBars(songForm(s));
+  $('#orderNote').textContent = `${s.order ? 'Your order' : 'The usual order'}: ${bars} bars, about ${fmtTime(bars * 240 / s.bpm)}. ⏺ records it all, after a count-in.`;
+}
+function setOrder(o) {
+  if (rec || pendingRec) { toast('Stop recording first'); return; }
+  prefs.song.order = o; songChanged();
+}
+function clearPart(kind) {
+  if (rec || pendingRec) { toast('Stop recording first'); return; }
+  const parts = { ...(prefs.song.parts || {}) };
+  delete parts[kind];
+  prefs.song.parts = Object.keys(parts).length ? parts : null;
+  if (!prefs.song.parts) prefs.song.order = null;
+  if (A && A.band.playing) stopSong();
+  songChanged();
+}
+$('#partsClear').addEventListener('click', (e) => {
+  const b = e.currentTarget;
+  if (!b.classList.contains('red')) { b.classList.add('red'); b.textContent = 'Tap again to clear every part'; setTimeout(() => { b.classList.remove('red'); b.textContent = '🗑 Start over'; }, 3000); return; }
+  b.classList.remove('red'); b.textContent = '🗑 Start over';
+  if (rec || pendingRec) { toast('Stop recording first'); return; }
+  prefs.song.parts = null; prefs.song.order = null;
+  if (A && A.band.playing) stopSong();
+  songChanged();
+});
 // Full song or Sing a song (the song restarts from the top if it was playing)
 function pickMode(k) {
   if (rec || pendingRec) { toast('Stop recording first'); return; }
@@ -857,14 +971,16 @@ $('#bpmUp').addEventListener('click', () => setBpm(prefs.song.bpm + 2));
 $('#keepGoing').addEventListener('click', () => { prefs.song.keepGoing = !prefs.song.keepGoing; songChanged(); });
 $('#tapBtn').addEventListener('pointerdown', (e) => { e.preventDefault(); tapBeat(); });
 $('#tapBtn').addEventListener('keydown', (e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); tapBeat(); } });
-$('#humBtn').addEventListener('click', humKey);
 
 const TUNE_NOTE = { hard: 'The snap: every note lands right on the song, the famous robotic pop sound.', natural: 'Nudged gently toward the song, still sounds like you.', off: 'Your own voice, just the effects.' };
 function voiceChanged() { if (A) A.voice.set(prefs.voice); applyMonitor(); estimateLatency(); paintVoiceSheet(); savePrefs(); }
 function paintVoiceSheet() {
   const v = prefs.voice;
-  $('#micTog').classList.toggle('on', micOn);
-  $('#micNote').textContent = micOn ? 'Sing or talk, it all goes through your sound' : camDenied ? 'Blocked: allow the mic for this site in Settings' : 'Off: tap to turn it on';
+  $('#micTog').classList.toggle('on', !!v.keepMic || liveMonitor());
+  $('#micNote').textContent = micBlocked ? 'Blocked: allow the mic for this site in Settings'
+    : liveMonitor() ? 'On while you hear yourself live'
+    : v.keepMic ? 'The mic stays on, and the note you sing shows as you go. iPhone keeps its speaker quieter while it\'s on.'
+    : 'Studio turns it on only while you record, hum a part or clap sync, because iPhone turns its speaker down whenever a mic is on.';
   segment($('#tunes'), Object.entries(TUNES), (k) => k === v.tune, (k) => { v.tune = k; voiceChanged(); });
   $('#tuneNote').textContent = TUNE_NOTE[v.tune] + (v.char === 'robot' ? ' (Robot always snaps hard.)' : '');
   segment($('#harms'), Object.entries(HARMONIES), (k) => +k === +v.harmony, (k) => { v.harmony = +k; voiceChanged(); });
@@ -875,7 +991,7 @@ function paintVoiceSheet() {
   segment($('#listens'), Object.entries(LISTEN), (k) => k === v.listen, pickListen);
   $('#listenNote').textContent = LISTEN_NOTE[v.listen];
   $('#monTog').hidden = v.listen !== 'wired'; $('#monTog').classList.toggle('on', !!v.monitor);
-  $('#loudTog').hidden = v.listen !== 'speaker'; $('#loudTog').classList.toggle('on', !!v.loud);
+  $('#aecTog').hidden = v.listen !== 'speaker'; $('#aecTog').classList.toggle('on', !!v.aec);
   const sy = (v.sync || {})[v.listen];
   $('#syncNote').textContent = typeof sy === 'number' ? `Synced: ${Math.round(sy * 1000)} ms. Again if you switch headphones.` : 'Lines your voice up with the beat in recordings, about 5 seconds';
 }
@@ -886,8 +1002,9 @@ const LISTEN_NOTE = {
 };
 function pickListen(k) {
   prefs.voice.listen = k;
-  voiceChanged();
-  if (micOn && !FAKE) setMic(true);   // the mic again, with the right echo-cancelling and mic for this
+  voiceChanged(); applyBoost();
+  if (micOn && !FAKE) { if (micWanted()) setMic(true); else setMic(false); }   // the mic again, with the right echo-cancelling and mic for this
+  else if (micWanted()) setMic(true);
   if (k === 'wireless' && !hasSync()) hint('👏 Clap sync your headphones (in VOICE) so your voice lands on the beat', 4500);
 }
 /* The clap sync: eight beeps, you clap along; the mic's claps (or, with the speaker and no echo-
@@ -895,14 +1012,13 @@ function pickListen(k) {
    the round trip for where you're listening. */
 let syncing = false;
 async function syncCheck(thenRecord) {
-  if (syncing || humming || rec || pendingRec) return;
+  if (syncing || hum || rec || pendingRec || arming) return;
   closeSheets();
   const a = audioUp();
   if (!a) return;
-  if (!micOn) await setMic(true);
-  if (!micOn) { toast('The clap sync needs the mic'); return; }
+  if (!(await micFor('sync'))) { micDone('sync'); toast('The clap sync needs the mic'); return; }
   if (!a.voice.node) await a.voice.load();
-  if (!a.voice.node) { toast('This browser can\'t run the clap sync'); return; }
+  if (!a.voice.node) { micDone('sync'); toast('This browser can\'t run the clap sync'); return; }
   if (a.band.playing) stopSong();
   syncing = true;
   const onsets = [], beat = 0.5, n = 8, t0 = a.ctx.currentTime + 1.4;
@@ -915,6 +1031,7 @@ async function syncCheck(thenRecord) {
   }, 40);
   await new Promise((r) => setTimeout(r, (t0 - a.ctx.currentTime + n * beat + 0.9) * 1000));
   clearInterval(show); a.voice.listen(false); a.voice.onOnset = null; syncing = false; setBig('');
+  micDone('sync');
   const offs = [];
   for (let i = 0; i < n; i++) { const tc = t0 + i * beat, c = onsets.filter((o) => o > tc - 0.1 && o < tc + 0.45); if (c.length) offs.push(c[0] - tc); }
   offs.sort((x, y) => x - y);
@@ -925,38 +1042,90 @@ async function syncCheck(thenRecord) {
   toast(`Synced: ${Math.round(rt * 1000)} ms`);
   if (thenRecord) recToggle(true);
 }
-/* Find my key: hum or sing the song for seven seconds (the band quiet); every note the auto-tune's
-   pitch reader hears counts for its pitch class, and the key whose profile fits best is the song's
-   (keyFromNotes). Then the loop starts in that key so you can sing straight in. */
-let humming = false;
-const HUM_MS = 7000;
-async function humKey() {
-  if (humming || syncing || rec || pendingRec) return;
+/* Hum a part (JC, Nov 21 2026: "a click track to establish the beat for eight measure and then I
+   hum. I can hum each section to have a verse and bridge and chorus and other parts or repeated
+   parts"). Two bars of click to get ready, then the part's bars (song.partBars) while you hum along;
+   the click is plain for the first part and on the song's key after that (its home note on each
+   downbeat), so every part lands in one key. Every note the auto-tune hears comes with its audio-
+   clock time, less the round trip (you hum to what you hear), so it lands in its bar (humHist); the
+   part goes into the song (addPart: the key heard again from every part) and the song plays from it. */
+let hum = null;
+const HUM_COUNT = 2;
+async function humPart(kind) {
+  if (hum || syncing || rec || pendingRec || arming) return;
   closeSheets();
   const a = audioUp();
   if (!a) return;
-  if (!micOn) await setMic(true);
-  if (!micOn) { toast('Finding your key needs the mic'); return; }
-  if (!a.voice.node) await a.voice.load();
-  if (!a.voice.node) { toast('This browser can\'t hear the notes'); return; }
   if (a.band.playing) stopSong();
-  humming = true;
-  const minor = genre().minor, hist = new Array(12).fill(0);
-  let n = 0;
-  a.voice.onPitch = (d) => { hist[mod12(Math.round(d.m))]++; n++; };
-  const t0 = performance.now();
-  const show = setInterval(() => {
-    const el = performance.now() - t0, guess = n >= 12 ? keyName(keyFromNotes(hist, minor), minor) : null;
-    if (el < 1000) setBig('HUM IT!', 'or sing your song’s chorus', true);
-    else setBig(String(Math.max(1, Math.ceil((HUM_MS - el) / 1000))), guess ? 'sounds like ' + guess : 'keep humming');
-  }, 80);
-  await new Promise((r) => setTimeout(r, HUM_MS));
-  clearInterval(show); a.voice.onPitch = null; humming = false; setBig('');
-  if (n < 20) { toast('Didn\'t catch enough notes. Again, a little louder?'); return; }
-  prefs.song.key = keyFromNotes(hist, minor);
+  const h = hum = { kind, on: false, clicks: [], samples: [], cancel: false, done: null };
+  const quit = (msg) => { if (hum === h) hum = null; micDone('hum'); if (msg) toast(msg); };
+  if (!(await micFor('hum'))) return quit('Humming a part needs the mic');
+  if (!a.voice.node) await a.voice.load();
+  if (!a.voice.node) return quit('This browser can\'t hear the notes');
+  if (h.cancel || screen !== 'studio') return quit();
+  const bars = prefs.song.partBars || 8, beat = 60 / prefs.song.bpm, start = a.ctx.currentTime + 0.5;
+  const t0 = start + HUM_COUNT * 4 * beat, end = t0 + bars * 4 * beat;
+  const keyed = hasParts(prefs.song) && Object.keys(prefs.song.parts).some((k) => k !== kind), hz = (m) => 440 * 2 ** ((m - 69) / 12);
+  for (let i = 0; i < (HUM_COUNT + bars) * 4; i++) {
+    const acc = i % 4 === 0;
+    h.clicks.push(a.band.click(start + i * beat, acc ? 1 : 0.6, keyed ? hz((acc ? 84 : 72) + prefs.song.key) : 0));
+  }
+  Object.assign(h, { on: true, bars, beat, start, t0, end, lag: roundTrip() + 0.025 });
+  buildHumTimeline(kind, bars);
+  a.voice.notes(true);
+  a.voice.onPitch = (d) => { if (d.t != null) h.samples.push({ t: d.t, m: d.m }); };
+  await new Promise((r) => { h.done = r; setTimeout(r, Math.max(0, (end + h.lag + 0.15 - a.ctx.currentTime) * 1000)); });
+  a.voice.onPitch = null; a.voice.notes(false);
+  if (hum === h) hum = null;
+  micDone('hum'); setBig(''); secShown = ''; buildTimeline();
+  if (h.cancel) return;
+  const { hist, voiced } = humHist(h.samples, { t0, beat, bars, lag: h.lag });
+  if (voiced < Math.min(2, bars * 4 * beat * 0.12)) { toast('Didn\'t hear enough humming. Again, a little louder?'); openSheet('songSheet'); return; }
+  prefs.song = addPart(prefs.song, kind, hist);
   songChanged();
-  toast('Your key: ' + keyName(prefs.song.key, minor));
-  if (screen === 'studio') startSong(0);
+  toast(`${PART_LABEL[kind]}: ${partNames(prefs.song, kind)}`);
+  const at = songForm(prefs.song).find((x) => x.kind === kind);
+  if (screen === 'studio') startSong(at ? at.start : 0);   // hear it with its chords
+}
+function cancelHum() {
+  const h = hum;
+  if (!h) return;
+  h.cancel = true; hum = null;
+  for (const o of h.clicks) { try { o.stop(); } catch { /* done */ } }
+  if (h.done) h.done();
+  setBig(''); secShown = ''; buildTimeline();
+}
+function buildHumTimeline(kind, bars) {
+  const tl = $('#tl'), headEl = $('#tlHead');
+  tl.textContent = ''; tl.appendChild(headEl); tl.classList.add('chords');
+  tlForm = null;
+  tlBtns = Array.from({ length: bars }, (_, i) => {
+    const b = document.createElement('span');
+    b.className = 'cseg'; b.style.setProperty('--c', KIND_COLOR[kind]); b.textContent = String(i + 1);
+    tl.insertBefore(b, headEl);
+    return b;
+  });
+}
+// the hum on the beat bar: GET READY, then 4·3·2·1 and HUM!, then its bars as you hum them
+function paintHum() {
+  const h = hum, b = (A.ctx.currentTime - hearDelay() - h.start) / h.beat, cnt = HUM_COUNT * 4, label = PART_LABEL[h.kind];
+  const beatIn = b < 0 ? -1 : Math.floor(b) % 4, k = b - cnt, bar = k < 0 ? -1 : Math.min(h.bars - 1, Math.floor(k / 4));
+  const key = 'H' + h.kind + bar;
+  if (secShown !== key) {
+    secShown = key;
+    $('#secName').textContent = bar < 0 ? 'Get ready' : label;
+    $('#secBar').textContent = bar < 0 ? `then hum ${h.bars} bars` : `humming · bar ${bar + 1} of ${h.bars}`;
+    $('#chordNow').textContent = '🎵'; $('#chordNext').textContent = 'hum the tune';
+    $('#coming').hidden = true;
+    tlBtns.forEach((e, i) => e.classList.toggle('on', i === bar));
+  }
+  if (b < cnt - 4) setBig(label.toUpperCase(), 'get ready to hum', true);
+  else if (b < cnt) setBig(String(4 - beatIn), 'HUM YOUR ' + label.toUpperCase());
+  else if (k < 1.5) setBig('HUM!', '', true);
+  else if (h.bars - k / 4 <= 1) setBig(String(4 - beatIn), 'LAST BAR');
+  else setBig('');
+  $('#tlHead').style.left = (clamp(k / (h.bars * 4), 0, 1) * 100).toFixed(2) + '%';
+  paintDots(beatIn);
 }
 /* With the phone speaker and no echo-cancelling, the mic hears the band too: the voice stays shut
    under what the band's echo alone brings in (how much the mic hears of the band, the low end of
@@ -966,7 +1135,7 @@ let duckAt = 0;
 function updateDuck(now) {
   if (!A || !A.voice.node) return;
   const v = prefs.voice;
-  if (!(v.listen === 'speaker' && v.loud && micOn && A.band.playing)) { A.voice.setDuck(0); return; }
+  if (!(v.listen === 'speaker' && !v.aec && micOn && A.band.playing)) { A.voice.setDuck(0); return; }
   if (now - duckAt < 100) return;
   duckAt = now;
   A.bandAn.getFloatTimeDomainData(bandBuf);
@@ -977,10 +1146,14 @@ function updateDuck(now) {
   const sorted = [...duckRatios].sort((x, y) => x - y);
   A.voice.setDuck(Math.min(0.2, sorted[Math.floor(sorted.length * 0.2)] * band * 2 + 0.004));
 }
-$('#micTog').addEventListener('click', () => setMic(!micOn));
+$('#micTog').addEventListener('click', () => {
+  if (liveMonitor()) { toast('It stays on while you hear yourself live'); return; }
+  prefs.voice.keepMic = !prefs.voice.keepMic; savePrefs();
+  if (micWanted() !== micOn) setMic(micWanted()); else paintVoiceSheet();
+});
 $('#vvol').addEventListener('input', (e) => { prefs.voice.volume = +e.target.value; $('#vvolVal').textContent = Math.round(prefs.voice.volume * 100) + '%'; if (A) A.voice.set(prefs.voice); savePrefs(); });
-$('#monTog').addEventListener('click', () => { prefs.voice.monitor = !prefs.voice.monitor; voiceChanged(); });
-$('#loudTog').addEventListener('click', () => { prefs.voice.loud = !prefs.voice.loud; voiceChanged(); if (micOn && !FAKE) setMic(true); });
+$('#monTog').addEventListener('click', () => { prefs.voice.monitor = !prefs.voice.monitor; voiceChanged(); if (micWanted() !== micOn) setMic(micWanted()); });
+$('#aecTog').addEventListener('click', () => { prefs.voice.aec = !prefs.voice.aec; voiceChanged(); if (micOn && !FAKE) setMic(true); });
 $('#syncBtn').addEventListener('click', () => syncCheck(false));
 $('#syncGo').addEventListener('click', () => syncCheck(true));
 $('#syncSkip').addEventListener('click', () => { closeSheets(); recToggle(true); });
@@ -1009,12 +1182,12 @@ function paintPlay() {
   $('#playBtn').setAttribute('aria-label', on ? 'Stop' : 'Play');
 }
 function paintRec() {
-  const on = !!rec || pendingRec;
+  const on = !!rec || pendingRec || arming;
   $('#recBtn').classList.toggle('on', on);
   $('#recBtn').setAttribute('aria-label', on ? 'Stop recording' : 'Record');
   $('#titlePill').classList.toggle('recording', !!rec);
 }
-function paintMic() { $('#dkVoice').classList.toggle('off', !micOn); $('#micIc').textContent = micOn ? '🎤' : '🔇'; if (openName === 'voiceSheet') paintVoiceSheet(); }
+function paintMic() { $('#dkVoice').classList.toggle('off', micBlocked); $('#micIc').textContent = micBlocked ? '🔇' : '🎤'; if (openName === 'voiceSheet') paintVoiceSheet(); }
 function paintAll() { paintPlay(); paintRec(); paintMic(); }
 
 $('#enter').addEventListener('click', () => { currentSong = null; prefs.song.loop = null; enterStudio(); });
@@ -1025,7 +1198,7 @@ $('#saveBtn').addEventListener('click', () => openSheet('saveSheet'));
 $('#dkSong').addEventListener('click', () => openSheet('songSheet'));
 $('#dkVoice').addEventListener('click', () => openSheet('voiceSheet'));
 $('#dkLook').addEventListener('click', () => openSheet('lookSheet'));
-$('#playBtn').addEventListener('click', () => { const a = audioUp(); if (!a) return; if (a.band.playing || pendingRec) stopSong(); else startSong(0); });
+$('#playBtn').addEventListener('click', () => { const a = audioUp(); if (!a) return; if (hum) { cancelHum(); return; } if (a.band.playing || pendingRec) stopSong(); else startSong(0); });
 $('#dkTop').addEventListener('click', () => { if (rec) return; if (A && A.band.playing) startSong(0); else setBig(''); });
 $('#recBtn').addEventListener('click', () => recToggle(false));
 $('#saveDo').addEventListener('click', () => saveSong(false));
@@ -1046,7 +1219,7 @@ $('#takeName').addEventListener('change', async (e) => {
   await Takes.put(theTake).catch(() => {});
 });
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) { if (rec || pendingRec) stopRecord(); if (A && A.band.playing) stopSong(); }
+  if (document.hidden) { cancelHum(); if (rec || pendingRec) stopRecord(); if (A && A.band.playing) stopSong(); }
   else if (screen === 'studio') keepAwake(true);
 });
 
@@ -1103,20 +1276,19 @@ function frame(now) {
   if (screen === 'studio') { paintBeat(pos, info, now); updateDuck(now); }
 }
 function paintBeat(pos, info, now) {
-  // count-in
-  if (pos && pos.bar < 0) {
-    if ($('#secName').textContent !== 'Count-in') { $('#secName').textContent = 'Count-in'; $('#secBar').textContent = pendingRec ? 'recording next' : ''; }
+  const looping = prefs.song.loop && !hasParts(prefs.song);
+  if (hum && hum.on && A) paintHum();
+  else if (pos && pos.bar < 0) {   // count-in
+    if (secShown !== 'count') { secShown = 'count'; $('#secName').textContent = 'Count-in'; $('#secBar').textContent = pendingRec ? 'recording next' : ''; }
     setBig(pos.bar === -1 ? String(4 - pos.beat) : 'GET IN PLACE', pos.bar === -1 ? (pendingRec ? 'recording' : '') : 'the song starts in 2 bars', pos.bar !== -1);
     paintDots(pos.beat);
-    return;
-  }
-  if (!info) {
-    if (secShown !== 'ready' + !!prefs.song.loop) {
-      secShown = 'ready' + !!prefs.song.loop;
-      $('#secName').textContent = 'Ready'; $('#secBar').textContent = prefs.song.loop ? 'Tap ▶, then sing' : 'Tap ▶ or a part'; $('#chordNow').textContent = '–'; $('#chordNext').innerHTML = '&nbsp;';
+  } else if (!info) {
+    if (secShown !== 'ready' + looping) {
+      secShown = 'ready' + looping;
+      $('#secName').textContent = hum ? 'Opening the mic' : 'Ready'; $('#secBar').textContent = looping ? 'Tap ▶, then sing' : 'Tap ▶ or a part'; $('#chordNow').textContent = '–'; $('#chordNext').innerHTML = '&nbsp;';
       $('#coming').hidden = true; $('#tlHead').style.left = '0%';
       tlBtns.forEach((b) => b.classList.remove('on'));
-      if (!pendingRec) setBig('');
+      if (!pendingRec && !hum) setBig('');
     }
     paintDots(-1);
   } else if (info.loop) paintLoop(pos, info);
@@ -1190,7 +1362,7 @@ if (!universe) $('#enterNote').textContent = 'This phone can\'t draw the univers
 
 // test hooks
 window.__studio = {
-  state: () => ({ screen, playing: !!(A && A.band.playing), bar: A && A.band.playing ? A.band.position(A.ctx.currentTime) : null, rec: !!rec, pendingRec, micOn, tracker: !!tracker, trackerFail, trackMs, quality, prefs: JSON.parse(JSON.stringify(prefs)), particles: universe ? universe.particles : 0, person: personSeen }),
+  state: () => ({ screen, playing: !!(A && A.band.playing), bar: A && A.band.playing ? A.band.position(A.ctx.currentTime) : null, rec: !!rec, pendingRec, micOn, micHolds: [...micHolds], boost: A ? A.spkBoost.gain.value : null, hum: hum && hum.on ? { kind: hum.kind, t0: hum.t0, beat: hum.beat, bars: hum.bars, lag: hum.lag, start: hum.start } : hum ? 'arming' : null, tracker: !!tracker, trackerFail, trackMs, quality, prefs: JSON.parse(JSON.stringify(prefs)), particles: universe ? universe.particles : 0, person: personSeen }),
   band: () => A && A.band, voice: () => A && A.voice, universe: () => universe, audio: () => A,
   pose: (pts) => takePose(pts, performance.now() / 1000),
   move: (type, x = 0.5, y = 0.4) => onMove({ type, x, y }),

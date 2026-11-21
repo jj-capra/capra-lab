@@ -75,9 +75,27 @@ save for exploring again or the recordings you capture."). Public (not a JJ Brew
     Played like a chorus without the arpeggio (room for the singer), a crash and a fill every eight bars (twelve
     for the blues), no song form, no end (`barEvents(song, bar, endBar)`). The genre still picks the sound, beat and
     instrument ("THE SOUND"). The timeline is the loop's chords, so the next one is always in sight.
-  - **Find my key** (`humKey`): seven seconds of humming or singing with the band quiet; every note the auto-tune's
-    pitch reader hears (`voice.onPitch`) counts for its pitch class, the best of all 24 Krumhansl-Kessler key
-    profiles wins, said in the genre's mode through the relative key (`keyFromNotes`); then the loop starts in it.
+  - **Hum your song, part by part** (JC, Nov 21 2026: "I hum or sing and it goes to a preset loop of chords. I
+    would like there to be a click track to establish the beat for eight measure and then I hum. I can hum each
+    section to have a verse and bridge and chorus and other parts or repeated parts"). Parts: Intro, Verse,
+    Pre-Chorus, Chorus, Bridge, Outro (`PART_KINDS`), each 4, 8 (the default) or 16 bars (`song.partBars`).
+    `humPart`: two bars of click to get ready (VERSE, then 4·3·2·1, HUM!), then the part's bars while you hum along,
+    the beat bar counting them; the click is plain for the first part and on the song's key after that (the home
+    note, an octave up on each downbeat), so every part lands in one key. The worklet reports every note 50 times a
+    second with its audio-clock time (`voice.notes`); less the round trip (you hum to what you hear) each lands in
+    its bar, the first and third beats half again (`humHist`). The part goes in by `addPart`: the key heard again
+    from every part (the new one as hummed, the others as they'd be sung now), every part's notes kept counted from
+    that key (`song.parts[kind] = { bars, hist }`), so a manual key change moves them all. The chords are worked out
+    when played (`partsShape`, cached per parts object): a chord a bar from I ii iii IV V vi ♭VII III (a minor genre:
+    named from its relative major), the ones whose root, third and fifth the bar's notes hit, leaning to the common
+    ones and the moves songs make, starting at home, ending ready to go on (an outro: at home), a quiet bar keeping
+    the chord before (`partChords`, Viterbi); the jazzy genres get sevenths, the blues dominant sevenths. Then the
+    song plays from that part. The parts play in `song.order` (THE ORDER: tap a part to take it out, + to add one
+    at the end, ↺ for the usual) or `autoOrder` (intro, verse, pre, chorus, verse, pre, chorus, bridge, chorus,
+    outro, of what's hummed), each with its own chords (`section.prog`) and the genre's sections (builds, fills,
+    the chorus countdown), then one big last chord unless an outro ends it. With parts, ⏺ records the whole song
+    after a count-in and the loops and clips are hidden; 🗑 Start over (tap twice) clears them. A part not hummed
+    well enough (under 2 s of notes, or 12% of the part) asks again.
   - **Tap the beat** (`tapBeat`): four taps or more, the middle gap is the tempo, tried as tapped, then doubled or
     halved to fit; a sing-along's tempo range is wider (60% to 150% of the genre's, `bpmRange`).
   - **Clips** (15 s, 30 s, 1 min, `song.clip`): ⏺ when stopped counts in and records whole rounds of the chords
@@ -98,15 +116,23 @@ save for exploring again or the recordings you capture."). Public (not a JJ Brew
   Effects: Space (a long reverb), Echo (dotted eighths in time), Radio. iPhone gets `navigator.audioSession.type`
   'play-and-record' while the mic is on ('playback' otherwise, so the ring switch doesn't mute the band). The
   pitch pill shows the note you sing and where it's going.
+- **The mic only while you sing** (JC, Nov 21 2026: "The music still dips when I sing"). iPhone plays its speaker
+  several times quieter whenever a page has a mic open (it switches to a call; WebKit bug 218012, and nothing a page
+  sets turns it off), and its echo-canceller dips the music again while it hears you. So entering Studio opens only
+  the camera; the mic opens for a take (before the count-in: iPhone takes about half a second), a hummed part and
+  the clap sync, and closes after (`micFor(why)`, `micDone(why)`, `micHolds`), so the music and the take's playback
+  are full volume. It stays on with "Keep the mic on" (VOICE, `keepMic`) or while you hear yourself live on wired
+  headphones. While it's open on the phone speaker the band goes out louder (`spkBoost` ×1.6 after the band's
+  limiter, before the last one; not into the recording). A mic still opening when it's no longer wanted closes.
 - **Listening on** (JC, Nov 20 2026: "The delay makes this impossible and the music quiets when I sing... Kids are
   going to use phone audio and wireless headphones"; `LISTEN`, `prefs.voice.listen`). Hearing your own voice back
   needs it back within a few hundredths of a second; a phone speaker's round trip is about a tenth and Bluetooth's
   about a fifth, so only **Wired** plays your tuned voice in your ears ("Hear myself live"). On **Phone speaker**
   and **Wireless** you hear the band and your own natural voice, the auto-tune and effects go into the recording,
-  and the take plays back as soon as you stop. Phone speaker echo-cancels the mic (so it doesn't hear the band);
-  "Keep the music loud" turns that off if iPhone's echo-cancelling dips the music, and then the worklet's gate
+  and the take plays back as soon as you stop. On the phone speaker echo-cancelling is off by default (VOICE,
+  "Echo-cancelling", `aec`; it used to be on, and iPhone's dips the music when you sing): the worklet's gate
   (`duck`, set ten times a second by `updateDuck` from how much of the band the mic hears) shuts the voice between
-  lines. Wireless asks for the phone's own mic (`findPhoneMic`), so the headphones aren't switched to their
+  lines so the band's echo stays out. Wireless asks for the phone's own mic (`findPhoneMic`), so the headphones aren't switched to their
   call-quality headset mode. The voice and the band each have their own limiter (one shared limiter used to turn
   the band down whenever you sang), and the last limiters only catch what's left.
 - **The clap sync** (`syncCheck`): eight beeps on the speaker path (never recorded), you clap along; the worklet
@@ -133,7 +159,8 @@ save for exploring again or the recordings you capture."). Public (not a JJ Brew
 - `music.mjs`: keys, chords (numerals, names, voicings, the auto-tune's notes), `BEATS`, `GENRES`, the form,
   `barEvents(song, bar, endBar)` (everything that plays in a bar: d drum, c chord, b bass, a arpeggio, f effect),
   `songInfo` (what the beat bar shows), the sing-along's `LOOPS`, `loopSpec`, `loopChords`, `clipBars` and
-  `keyFromNotes`. No audio, no DOM.
+  `keyFromNotes`, the hummed song's `humHist`, `addPart`, `partChords`, `partsShape`, `songForm`, `partOrder`,
+  `autoOrder`, `partNames`, `chordKey`. No audio, no DOM.
 - `band.js`: the Web Audio band (`Band`: `setSong`, `play(bar, { countIn })`, `stop`, `cue`, `position(now)`,
   `since(kinds, now)` for the visuals, `moveClap`, `moveSwell`), `makeIR`.
 - `tune-worklet.js`: the auto-tune processor (`studio-tune`). `voice.js`: the voice's chain (`Voice`).
@@ -145,7 +172,7 @@ save for exploring again or the recordings you capture."). Public (not a JJ Brew
 ## Develop and test
 
 ```
-node games/studio/test/studio.test.mjs   # the theory, every genre and bar, every loop in every genre, the key finder, the worklet fed made-up voices, the moves
+node games/studio/test/studio.test.mjs   # the theory, every genre and bar, every loop in every genre, hummed parts to chords, the key finder, the worklet fed made-up voices, the moves
 npm run build && node scripts/dev-server.mjs   # then /studio/ (and /studio/?fake)
 ```
 To hear the mix's balance, render the band offline in a browser (an OfflineAudioContext whose `currentTime` you

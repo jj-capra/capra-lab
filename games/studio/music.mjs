@@ -231,7 +231,7 @@ export function sectionAt(form, bar) {
 export function chordSymAt(g, form, bar) {
   const at = sectionAt(form, bar);
   if (!at) return g.chorus[0];
-  const prog = g[at.s.kind] || (at.s.kind === 'intro' || at.s.kind === 'outro' ? g.verse : g.chorus);
+  const prog = at.s.prog || g[at.s.kind] || (at.s.kind === 'intro' || at.s.kind === 'outro' ? g.verse : g.chorus);   // a hummed part carries its own
   return prog[at.barIn % prog.length];
 }
 // Bars from `bar` until the next section of a kind starts (0 = it starts this bar), or null.
@@ -301,6 +301,150 @@ export function keyFromNotes(hist, minor = false) {
   return best.m === minor ? best.k : mod12(best.k + (minor ? 9 : 3));
 }
 
+/* Hum a song, part by part (JC, Nov 21 2026: "a click track to establish the beat for eight measure
+   and then I hum. I can hum each section to have a verse and bridge and chorus and other parts or
+   repeated parts"). Each part is hummed over a click; Studio keeps how long each note was hummed in
+   each bar (song.parts[kind] = { bars, hist: a row of 12 a bar, pitch classes counted from the song's
+   key }) and picks a chord a bar that fits the tune (partChords). The parts play in song.order (or
+   autoOrder) with the genre's sound, each with its own chords, then one big last chord. */
+export const PART_KINDS = ['intro', 'verse', 'pre', 'chorus', 'bridge', 'outro'];
+export const PART_LABEL = LABEL;
+const CANDS = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'bVII', 'III'];   // in a major key (a minor genre: its relative major)
+const PRIOR = { I: 0.1, ii: 0.02, iii: -0.02, IV: 0.08, V: 0.08, vi: 0.06, bVII: -0.08, III: -0.12 };
+const MOVE = { 'V>I': 0.15, 'V>vi': 0.1, 'IV>V': 0.08, 'IV>I': 0.08, 'ii>V': 0.12, 'vi>IV': 0.08, 'vi>ii': 0.06, 'I>IV': 0.05, 'I>V': 0.05, 'I>vi': 0.05,
+  'iii>vi': 0.1, 'iii>IV': 0.06, 'III>vi': 0.2, 'bVII>I': 0.12, 'bVII>IV': 0.06, 'V>IV': 0.03, 'IV>vi': 0.03, 'vi>V': 0.04 };
+const IN_MAJOR = new Set(SCALES.major);
+// how well a chord sits under a bar's notes: its root, third and fifth count, other notes of the key a little against, notes outside it more
+function fitOf(h, sym) {
+  const c = parseChord(sym), tones = c.iv.slice(0, 3).map((i) => mod12(c.deg + i));
+  let tot = 0, s = 0;
+  for (let pc = 0; pc < 12; pc++) {
+    const w = h[pc];
+    if (!w) continue;
+    const k = tones.indexOf(pc);
+    tot += w; s += w * (k === 0 ? 1.15 : k === 1 ? 1 : k === 2 ? 0.8 : IN_MAJOR.has(pc) ? -0.15 : -0.7);
+  }
+  return tot ? s / tot : 0;
+}
+// where a tune comes home: 'vi' when it sits on the sixth like a minor tune, else 'I'
+export function centerOf(h) {
+  const r = (prof, k) => { const avg = (a) => a.reduce((x, y) => x + y, 0) / 12, hm = avg(h), pm = avg(prof); let n = 0, a = 0, b = 0; for (let i = 0; i < 12; i++) { const x = h[(k + i) % 12] - hm, y = prof[i] - pm; n += x * y; a += x * x; b += y * y; } return a && b ? n / Math.sqrt(a * b) : -1; };
+  return r(KK.minor, 9) > r(KK.major, 0) ? 'vi' : 'I';
+}
+/* A chord a bar for a hummed part (each bar's notes in a major key's frame): the chords that fit the
+   notes best, with a lean toward the common ones and the moves songs make (V to I, IV to V, ii to V,
+   vi to IV...), starting at home and ending ready to go on (or, an outro, at home). A bar with no
+   humming keeps the chord before it. */
+export function partChords(hist, { kind = 'verse', center = 'I' } = {}) {
+  const n = hist.length;
+  if (!n) return [];
+  const tot = hist.map((h) => h.reduce((a, b) => a + b, 0)), quiet = (tot.reduce((a, b) => a + b, 0) / n) * 0.15;
+  const score = (b, sym) => {
+    let v = PRIOR[sym] + (tot[b] > quiet ? fitOf(hist[b], sym) : 0);
+    if (b === 0 && kind !== 'pre' && kind !== 'bridge' && sym === center) v += 0.25;
+    if (b === n - 1 && n > 1) v += kind === 'outro' ? (sym === center ? 0.4 : 0) : sym === 'V' ? 0.12 : 0;
+    return v;
+  };
+  let best = CANDS.map((s) => ({ v: score(0, s), path: [s] }));
+  for (let b = 1; b < n; b++) {
+    const empty = tot[b] <= quiet;
+    best = CANDS.map((s) => {
+      let top = null;
+      for (const p of best) {
+        const prev = p.path[p.path.length - 1], v = p.v + (prev === s ? (empty ? 0.4 : 0) : MOVE[prev + '>' + s] || 0);
+        if (!top || v > top.v) top = { v, path: p.path };
+      }
+      return { v: top.v + score(b, s), path: [...top.path, s] };
+    });
+  }
+  return best.reduce((a, b) => (b.v > a.v ? b : a)).path;
+}
+// the genre's colour on plain chords: sevenths for the jazzy ones (Lo-Fi, R&B, Boom Bap), dominant sevenths for the blues
+function colorer(g) {
+  if (g.form) return (s) => s + '7';
+  if (g.chorus.filter((s) => /7|9/.test(s)).length * 2 >= g.chorus.length) return (s) => ({ I: 'Imaj7', IV: 'IVmaj7', V: 'V7', III: 'III7' }[s] || (s === 'bVII' ? s : s + '7'));
+  return (s) => s;
+}
+// The parts in the order they play: the song's own order if it has one, else the usual
+const TEMPLATE = ['intro', 'verse', 'pre', 'chorus', 'verse', 'pre', 'chorus', 'bridge', 'chorus', 'outro'];
+export function autoOrder(parts = {}) {
+  const has = (k) => !!parts[k];
+  let o = has('chorus') ? TEMPLATE.filter(has) : has('verse') ? ['intro', 'verse', 'pre', 'verse', 'bridge', 'verse', 'outro'].filter(has) : TEMPLATE.filter(has);
+  o = o.filter((k, i) => i === 0 || k !== o[i - 1] || k === 'verse' || k === 'chorus');   // no pre-chorus twice in a row
+  return o.length === 1 ? [o[0], o[0]] : o;
+}
+export const hasParts = (song) => !!(song.loop && song.parts && PART_KINDS.some((k) => song.parts[k]));
+export function partOrder(song) {
+  const parts = song.parts || {}, o = (song.order || []).filter((k) => parts[k]);
+  return o.length ? o : autoOrder(parts);
+}
+const shapes = new WeakMap();
+// A hummed song as the band plays it: its sections (each with its chords), the key they're named in, its last chord
+export function partsShape(song) {
+  const g0 = GENRES[song.genre] || GENRES.pop, key = song.key ?? g0.key, parts = song.parts, order = partOrder(song);
+  const sig = song.genre + '|' + key + '|' + order.join(',') + '|' + PART_KINDS.map((k) => (parts[k] ? parts[k].bars : 0)).join(',');
+  const hit = shapes.get(parts);
+  if (hit && hit.sig === sig) return hit.shape;
+  const fk = g0.minor ? mod12(key + 3) : key, frame = (h) => (g0.minor ? h.map((_, i) => h[(i + 3) % 12]) : h);
+  const all = new Array(12).fill(0);
+  for (const k of PART_KINDS) if (parts[k]) for (const h of parts[k].hist) frame(h).forEach((w, i) => { all[i] += w; });
+  const center = centerOf(all), color = colorer(g0), progs = {};
+  for (const k of PART_KINDS) if (parts[k]) progs[k] = partChords(parts[k].hist.map(frame), { kind: k, center }).map(color);
+  let start = 0;
+  const count = {};
+  const form = order.map((kind) => {
+    count[kind] = (count[kind] || 0) + 1;
+    const s = { kind, bars: parts[kind].bars, start, n: count[kind], label: LABEL[kind], prog: progs[kind] };
+    start += s.bars;
+    return s;
+  }).map((s, i, all) => ({ ...s, title: s.kind === 'verse' && all.filter((o) => o.kind === 'verse').length > 1 ? s.label + ' ' + s.n : s.label }));
+  const endSym = color(center);
+  if (order[order.length - 1] !== 'outro') form.push({ kind: 'outro', bars: 1, start, n: 1, label: 'The end', title: 'The end', prog: [endSym], end: true });
+  const shape = { g: { ...g0, labels: null, parts: true }, form, key: fk, minor: false, center, progs, endSym };
+  shapes.set(parts, { sig, shape });
+  return shape;
+}
+export const songForm = (song) => (hasParts(song) ? partsShape(song).form : formOf(GENRES[song.genre] || GENRES.pop));
+// a hummed part's chords by name: "C G Am F · C G F G"
+export function partNames(song, kind) {
+  const sh = partsShape(song), p = sh.progs[kind];
+  if (!p) return '';
+  const names = p.map((s) => chordName(s, sh.key, false)), out = [];
+  for (let i = 0; i < names.length; i += 4) out.push(names.slice(i, i + 4).join(' '));
+  return out.join(' · ');
+}
+/* A take of humming into a part: samples { t: audio time it reached the mic, m: MIDI pitch (0 when
+   not a note) } against the click (t0: the first hummed bar's downbeat as heard, beat: seconds a beat,
+   lag: from hearing to the mic), counted a bar and pitch class at a time, the first and third beats
+   half again. Back: the bars' notes (absolute pitch classes) and seconds of humming heard. */
+export function humHist(samples, { t0, beat, bars, lag = 0, step = 0.02 }) {
+  const hist = Array.from({ length: bars }, () => new Array(12).fill(0));
+  let voiced = 0;
+  for (const s of samples) {
+    if (!(s.m > 0)) continue;
+    const b = (s.t - lag - t0) / beat;
+    if (b < -0.35 || b >= bars * 4) continue;
+    const bb = Math.max(0, b), bar = Math.min(bars - 1, Math.floor(bb / 4)), inBar = bb - bar * 4, near = Math.abs(inBar - Math.round(inBar / 2) * 2);
+    hist[bar][mod12(Math.round(s.m))] += step * (near < 0.3 ? 1.5 : 1);
+    voiced += step;
+  }
+  return { hist, voiced };
+}
+export const rotateHist = (rows, by) => rows.map((h) => h.map((_, i) => h[mod12(i + by)]));
+/* A newly hummed part into the song: the key heard again from every part (the new one as hummed, the
+   others as they'd be sung now in the song's key), and every part's notes counted from that key. */
+export function addPart(song, kind, absHist) {
+  const g = GENRES[song.genre] || GENRES.pop, K = song.key ?? g.key, others = { ...(song.parts || {}) };
+  delete others[kind];
+  const abs = { [kind]: absHist };
+  for (const k of Object.keys(others)) abs[k] = rotateHist(others[k].hist, -K);
+  const sum = new Array(12).fill(0);
+  for (const rows of Object.values(abs)) for (const h of rows) h.forEach((w, i) => { sum[i] += w; });
+  const K2 = keyFromNotes(sum, g.minor), parts = {};
+  for (const k of PART_KINDS) if (abs[k]) parts[k] = { bars: abs[k].length, hist: rotateHist(abs[k], K2).map((h) => h.map((w) => Math.round(w * 100) / 100)) };
+  return { ...song, key: K2, parts };
+}
+
 /* A row of a groove or a part into hits: [{ step, vel, ch }] ('r' and 't' split a step). */
 const VEL = { X: 1, x: 0.72, g: 0.36, m: 0.7, r: 0.6, t: 0.55 };
 export function hits(row, bar = 0, grid = 16) {
@@ -338,7 +482,8 @@ export function grooveFor(beat, kind) {
    a crash and a fill every phrase, and at `endBar` one big last chord. */
 export function barEvents(song, bar, endBar = null) {
   let g = GENRES[song.genre] || GENRES.pop, form, key = song.key ?? g.key;
-  if (song.loop) {
+  if (hasParts(song)) { const sh = partsShape(song); g = sh.g; form = sh.form; key = sh.key; }
+  else if (song.loop) {
     if (endBar != null && bar > endBar) return [];
     const sp = loopSpec(song), phrase = phraseOf(sp.prog.length), ending = endBar != null && bar === endBar;
     g = { ...g, chorus: sp.prog, outro: [sp.end], arp: null, loop: true };
@@ -463,7 +608,7 @@ export function barEvents(song, bar, endBar = null) {
 /* Where the song is, for the beat bar: section, bar in it, the chord now and next, bars until the
    next chorus (or drop, or hook). */
 export function songInfo(song, bar, endBar = null) {
-  if (song.loop) {   // sing a song: the loop's chord now and next, then the last big chord
+  if (song.loop && !hasParts(song)) {   // sing a song: the loop's chord now and next, then the last big chord
     const sp = loopSpec(song), n = sp.prog.length, ending = endBar != null && bar >= endBar, i = ((bar % n) + n) % n;
     const sym = ending ? sp.end : sp.prog[i], c = parseChord(sym);
     const nextSym = ending ? null : endBar != null && bar + 1 >= endBar ? sp.end : sp.prog[(i + 1) % n];
@@ -473,18 +618,20 @@ export function songInfo(song, bar, endBar = null) {
       toChorus: null, chorusLabel: '', energy: ENERGY.loop, tune: tuneSet(sp.key, sp.minor, sym), pcs: chordPcs(c, sp.key), root: mod12(sp.key + c.deg),
     };
   }
-  const g = GENRES[song.genre] || GENRES.pop, form = formOf(g), at = sectionAt(form, bar), key = song.key ?? g.key;
+  const sh = hasParts(song) ? partsShape(song) : null;   // a hummed song: its own parts and chords
+  const g = sh ? sh.g : GENRES[song.genre] || GENRES.pop, form = sh ? sh.form : formOf(g), at = sectionAt(form, bar);
+  const key = sh ? sh.key : song.key ?? g.key, minor = sh ? false : g.minor, keepGoing = !sh && song.keepGoing;
   if (!at) return null;
-  const sym = chordSymAt(g, form, bar), nb = nextBar(form, bar, song.keepGoing);
+  const sym = chordSymAt(g, form, bar), nb = nextBar(form, bar, keepGoing);
   const nextSym = nb >= 0 ? chordSymAt(g, form, nb) : null;
   let toChorus = barsUntil(form, bar, 'chorus');
-  if (toChorus == null && song.keepGoing) { const v2 = nextBar(form, form[form.length - 1].start - 1, true); toChorus = (formBars(form) - 4 - bar) + (barsUntil(form, v2, 'chorus') ?? 0); }
+  if (toChorus == null && keepGoing) { const v2 = nextBar(form, form[form.length - 1].start - 1, true); toChorus = (formBars(form) - 4 - bar) + (barsUntil(form, v2, 'chorus') ?? 0); }
   const c = parseChord(sym);
   return {
-    i: at.i, kind: at.s.kind, title: at.s.title, label: at.s.label, barIn: at.barIn, bars: at.s.bars,
-    sym, chord: chordName(sym, key, g.minor), deg: c.deg, next: nextSym ? chordName(nextSym, key, g.minor) : null,
+    i: at.i, kind: at.s.kind, title: at.s.title, label: at.s.label, barIn: at.barIn, bars: at.s.bars, parts: !!sh,
+    sym, chord: chordName(sym, key, minor), deg: c.deg, next: nextSym ? chordName(nextSym, key, minor) : null,
     toChorus, chorusLabel: (g.labels && g.labels.chorus) || 'Chorus', energy: ENERGY[at.s.kind],
-    tune: tuneSet(key, g.minor, sym), pcs: chordPcs(c, key), root: (key + c.deg) % 12,
+    tune: tuneSet(key, minor, sym), pcs: chordPcs(c, key), root: (key + c.deg) % 12,
   };
 }
 
@@ -492,6 +639,8 @@ export function songInfo(song, bar, endBar = null) {
 const WORDS = ['Cosmic', 'Nebula', 'Starlight', 'Orbit', 'Galaxy', 'Comet', 'Supernova', 'Moonlit', 'Stardust', 'Aurora', 'Lunar', 'Solar'];
 export function songName(song, n = Date.now()) {
   const g = GENRES[song.genre] || GENRES.pop, key = song.key ?? g.key;
-  return WORDS[Math.abs(Math.floor(n / 1000)) % WORDS.length] + ' ' + (song.loop ? 'Sing-Along' : g.name) + ' in ' + noteName(key, flatKey(key, g.minor)) + (g.minor ? 'm' : '');
+  return WORDS[Math.abs(Math.floor(n / 1000)) % WORDS.length] + ' ' + (hasParts(song) ? g.name + ' Song' : song.loop ? 'Sing-Along' : g.name) + ' in ' + noteName(key, flatKey(key, g.minor)) + (g.minor ? 'm' : '');
 }
-export const defaultSong = (genre = 'pop') => ({ genre, key: GENRES[genre].key, bpm: GENRES[genre].bpm, inst: 'piano', beat: GENRES[genre].beats[0], keepGoing: false, loop: null, clip: 30 });
+// the key a song's chord numerals are counted from (a loop or a hummed song in a minor genre: its relative major)
+export const chordKey = (song) => (hasParts(song) ? partsShape(song).key : song.loop ? loopSpec(song).key : song.key ?? (GENRES[song.genre] || GENRES.pop).key);
+export const defaultSong = (genre = 'pop') => ({ genre, key: GENRES[genre].key, bpm: GENRES[genre].bpm, inst: 'piano', beat: GENRES[genre].beats[0], keepGoing: false, loop: null, clip: 30, parts: null, order: null, partBars: 8 });
