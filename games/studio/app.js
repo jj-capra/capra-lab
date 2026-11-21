@@ -25,7 +25,7 @@ const DEF = {
 };
 const saved = store.get('studio.prefs', {});
 const prefs = {
-  song: { ...defaultSong('pop'), ...(saved.song || {}) },
+  song: { ...defaultSong(saved.song && GENRES[saved.song.genre] ? saved.song.genre : 'pop'), ...(saved.song || {}) },
   voice: { ...DEF.voice, ...(saved.voice || {}) },
   look: { ...DEF.look, ...(saved.look || {}) },
   seen: !!saved.seen,

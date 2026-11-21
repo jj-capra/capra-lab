@@ -201,8 +201,8 @@ void main(){
         // a soft backlit halo of starlight, breathing with the beat, blooming when you sing
         float b4 = textureLod(uMask, iuv, 4.2 + reach * 0.4).r, b6 = textureLod(uMask, iuv, 6.0 + reach * 0.5).r;
         float shimmer = 0.85 + 0.15 * vn(vec2(uv.x * 5.0, uv.y * 3.0 - uT * 0.6));
-        float halo = (b3 * 0.7 + b4 * 0.62 + b6 * 0.42) * outside * shimmer;
-        col += starCol * halo * inten * 0.72;
+        float halo = (b3 * 0.7 + b4 * 0.8 + b6 * 0.6) * outside * shimmer;
+        col += starCol * halo * inten * 0.8;
       } else {
         // the aura field: color rippling out along your outline, flames licking up
         float n1 = vn(vec2(uv.x * 6.0, uv.y * 4.0 - uT * 1.5)), n2 = vn(vec2(uv.x * 12.0 + 5.0, uv.y * 8.0 - uT * 2.4));
