@@ -222,6 +222,15 @@ async function buildStudio() {
   console.log('built public/studio/');
 }
 
+/* Color by Numbers: 100 cuddly pictures drawn from a kit, four levels from 1st grade to grown-ups (Nov 21 2026). No server. */
+async function buildColorByNumbers() {
+  const game = path.join(ROOT, 'games', 'color-by-numbers'), out = path.join(ROOT, 'public', 'color-by-numbers');
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(out, { recursive: true });
+  for (const f of ['index.html', 'game.js', 'logic.mjs', 'render.mjs', 'library.mjs', 'art-kit.mjs', 'art-critters.mjs', 'art-props.mjs', 'art-friends.mjs', 'art-scenes.mjs']) await fs.copyFile(path.join(game, f), path.join(out, f));
+  console.log('built public/color-by-numbers/');
+}
+
 await buildPrimalSurvival();
 await buildMindHeist();
 await buildParTeeTime();
@@ -237,3 +246,4 @@ await buildPuzzledSpin();
 await buildIrl();
 await buildSendIt();
 await buildStudio();
+await buildColorByNumbers();

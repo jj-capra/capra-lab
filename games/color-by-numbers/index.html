@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="/lab/fill.js"></script>
+<title>Color by Numbers · Capra Lab</title>
+<meta name="description" content="Tap a color, fill every spot with its number. 100 pictures of unicorns, puppies, kittens, dolls and more, from big crayon spaces for 1st graders to stained glass for grown-ups.">
+<meta name="theme-color" content="#16141F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Capra Lab">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #120E18;
+    --night: #16141F;
+    --panel: #221B2E;
+    --panel-2: #2C2340;
+    --paper: #FFF8EC;
+    --yellow: #FFD23F;
+    --magenta: #FF3D8B;
+    --cyan: #29D3F0;
+    --green: #5BE38A;
+    --red: #FF5A5A;
+    --shadow: #05030A;
+    --display: Bangers, Impact, "Arial Narrow Bold", system-ui, sans-serif;
+    --sl: env(safe-area-inset-left);
+    --sr: env(safe-area-inset-right);
+    --st: env(safe-area-inset-top);
+    --sb: env(safe-area-inset-bottom);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background-color: var(--night);
+    background-image: radial-gradient(rgba(255, 248, 236, 0.07) 1px, transparent 1.6px);
+    background-size: 9px 9px;
+    color: var(--paper);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible, a:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  .screen { min-height: 100vh; min-height: var(--lab-h, 100dvh); display: flex; flex-direction: column; }
+  .wrap { width: 100%; max-width: 680px; margin: 0 auto; }
+
+  /* ---------- shared ---------- */
+  .bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: calc(var(--st) + 10px) max(16px, var(--sr)) 6px max(16px, var(--sl));
+  }
+  .bar-right { display: flex; align-items: center; gap: 8px; flex: none; }
+  .back {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px 0 8px; flex: none;
+    border-radius: 999px; background: var(--panel); border: 2px solid var(--shadow);
+    color: var(--paper); font-size: 12px; font-weight: 800; letter-spacing: 0.1em; white-space: nowrap;
+  }
+  .back svg, .round-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .round-btn {
+    flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--panel); border: 2px solid var(--shadow); padding: 0;
+    font-family: var(--display); font-size: 22px; line-height: 1;
+  }
+  .round-btn.on { background: var(--yellow); color: var(--ink); border-color: var(--ink); }
+  .label { margin: 0 0 7px; font-size: 11px; font-weight: 800; letter-spacing: 0.16em; color: rgba(255, 248, 236, 0.7); }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 54px; padding: 10px 22px; border-radius: 16px;
+    background: var(--yellow); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 5px 0 var(--shadow);
+    font-size: 17px; font-weight: 800; letter-spacing: 0.02em; text-decoration: none;
+  }
+  .btn:active { transform: translate(3px, 4px); box-shadow: 1px 1px 0 var(--shadow); }
+  .btn.alt { background: var(--panel); color: var(--paper); border-color: var(--shadow); }
+  .btn.arm { background: var(--red); }
+
+  /* ---------- home ---------- */
+  .home-body { flex: 1; display: grid; align-content: start; gap: 18px; padding: 8px max(16px, var(--sr)) calc(var(--sb) + 22px) max(16px, var(--sl)); }
+  .logo { margin: 4px 0 0; display: flex; align-items: center; gap: 12px; }
+  .logo svg { flex: none; width: 70px; height: 70px; filter: drop-shadow(3px 3px 0 var(--shadow)); }
+  .logo h1 {
+    margin: 0; font-family: var(--display); font-weight: 400; font-size: clamp(40px, 10.5vw, 62px); line-height: 0.88; letter-spacing: 0.04em;
+    text-shadow: 3px 0 var(--magenta), -3px 0 var(--cyan);
+  }
+  .logo h1 em { font-style: normal; color: var(--yellow); }
+  .tag { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.4; color: rgba(255, 248, 236, 0.85); }
+  .seg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .seg button {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    min-height: 64px; padding: 6px 3px; border-radius: 12px;
+    background: var(--panel); border: 2px solid var(--shadow); color: var(--paper);
+  }
+  .seg button i { font-style: normal; font-size: 20px; line-height: 1; }
+  .seg button b { font-family: var(--display); font-weight: 400; font-size: 17px; line-height: 1; letter-spacing: 0.04em; text-align: center; }
+  .seg button small { font-size: 10px; font-weight: 800; letter-spacing: 0.02em; line-height: 1.1; text-align: center; color: rgba(255, 248, 236, 0.72); }
+  .seg button[aria-checked="true"] { background: var(--yellow); color: var(--ink); border-color: var(--ink); box-shadow: 2px 3px 0 var(--shadow); }
+  .seg button[aria-checked="true"] small { color: var(--ink); }
+  .tier-info { margin: 8px 2px 0; font-size: 13px; font-weight: 700; line-height: 1.4; color: rgba(255, 248, 236, 0.78); }
+  .keep { display: flex; gap: 10px; overflow-x: auto; padding: 2px 2px 8px; scrollbar-width: none; }
+  .keep::-webkit-scrollbar { display: none; }
+  .keep .tile { flex: none; width: 108px; }
+  .cats { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 6px; scrollbar-width: none; }
+  .cats::-webkit-scrollbar { display: none; }
+  .cats button {
+    flex: none; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border-radius: 999px;
+    background: var(--panel); border: 2px solid var(--shadow); color: var(--paper); font-size: 14px; font-weight: 800; white-space: nowrap;
+  }
+  .cats button[aria-pressed="true"] { background: var(--paper); color: var(--ink); border-color: var(--ink); }
+  .count { margin: -8px 2px 0; font-size: 12.5px; font-weight: 700; color: rgba(255, 248, 236, 0.68); }
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 12px; }
+  .tile { position: relative; display: grid; gap: 5px; padding: 0; border: 0; background: none; text-align: left; color: var(--paper); }
+  .tile .pic { position: relative; aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: #f7f4fa; border: 3px solid var(--ink); box-shadow: 3px 4px 0 var(--shadow); }
+  .tile .pic img { width: 100%; height: 100%; display: block; }
+  .tile:active .pic { transform: translate(2px, 3px); box-shadow: 1px 1px 0 var(--shadow); }
+  .tile b { font-size: 12.5px; font-weight: 800; line-height: 1.15; }
+  .tile .ring { position: absolute; right: 5px; bottom: 5px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+    background: conic-gradient(var(--green) calc(var(--p) * 1%), rgba(18, 14, 24, 0.25) 0); border: 2px solid var(--ink); }
+  .tile .ring::after { content: attr(data-p); width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--ink); font-size: 8.5px; font-weight: 800; }
+  .tile .star { position: absolute; right: 4px; top: 4px; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: var(--yellow); border: 2px solid var(--ink); font-size: 15px; }
+
+  /* ---------- painting ---------- */
+  .paint { height: 100vh; height: var(--lab-h, 100dvh); min-height: 0; overflow: hidden; }
+  .paint .bar { padding-bottom: 8px; }
+  .ptitle { flex: 1; min-width: 0; display: grid; gap: 1px; text-align: center; }
+  .ptitle b { font-family: var(--display); font-weight: 400; font-size: 23px; letter-spacing: 0.05em; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ptitle small { font-size: 11.5px; font-weight: 800; letter-spacing: 0.06em; color: rgba(255, 248, 236, 0.72); }
+  .meter { height: 6px; border-radius: 99px; background: var(--panel); border: 1px solid var(--shadow); overflow: hidden; margin: 2px 18% 0; }
+  .meter i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--green)); transition: width 0.3s; }
+  .paint-body { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 0 max(12px, var(--sr)) calc(var(--sb) + 10px) max(12px, var(--sl)); }
+  .stage { position: relative; flex: none; width: 100%; height: 300px; align-self: center; border-radius: 18px; overflow: hidden; background: #f7f4fa; border: 3px solid var(--ink); box-shadow: 5px 6px 0 var(--shadow); touch-action: none; }
+  .stage canvas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
+  .stage #fx { pointer-events: none; }
+  .stage.cheer { animation: cheer 0.7s cubic-bezier(0.3, 1.6, 0.5, 1); }
+  @keyframes cheer { 40% { transform: scale(1.04) rotate(-1deg); } 70% { transform: scale(0.99) rotate(0.6deg); } }
+  .zoomhint { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); padding: 6px 12px; border-radius: 999px; background: rgba(18, 14, 24, 0.82); color: var(--paper); font-size: 12px; font-weight: 800; pointer-events: none; white-space: nowrap; transition: opacity 0.4s; }
+  .mixing { position: absolute; inset: 0; display: grid; place-items: center; background: #f7f4fa; color: var(--ink); font-family: var(--display); font-size: 30px; letter-spacing: 0.05em; }
+  .burst-wrap { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+  .burst { position: relative; padding: 18px 30px; animation: pop 0.5s cubic-bezier(0.3, 1.6, 0.5, 1); }
+  .burst::before { content: ""; position: absolute; inset: 0; background: var(--yellow);
+    clip-path: polygon(50% 0, 60% 22%, 84% 6%, 76% 32%, 100% 34%, 80% 52%, 98% 72%, 72% 70%, 74% 98%, 54% 80%, 38% 100%, 34% 76%, 8% 90%, 20% 64%, 0 50%, 22% 38%, 6% 14%, 32% 22%); }
+  .burst h2 { position: relative; margin: 0; font-family: var(--display); font-weight: 400; font-size: 46px; letter-spacing: 0.05em; color: var(--magenta); text-shadow: 2px 2px 0 var(--ink); -webkit-text-stroke: 1.5px var(--ink); white-space: nowrap; }
+  @keyframes pop { from { transform: scale(0.2) rotate(-12deg); opacity: 0; } }
+  .palette { flex: none; display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-start; gap: 10px 9px; overflow-x: hidden; overflow-y: auto; padding: 9px 6px 8px; scrollbar-width: none; overscroll-behavior: contain; }
+  .palette::-webkit-scrollbar { display: none; }
+  .sw {
+    --s: 54px;
+    position: relative; flex: none; width: var(--s); height: var(--s); padding: 0; border-radius: 50%; border: 3px solid var(--ink);
+    background: var(--c); box-shadow: 2px 3px 0 var(--shadow); display: grid; place-items: center; transition: transform 0.15s;
+    font-family: Inter, system-ui, sans-serif; font-weight: 800; font-size: calc(var(--s) * 0.36); color: var(--tx, #120E18);
+  }
+  .sw::before { content: ""; position: absolute; inset: -7px; border-radius: 50%; background: conic-gradient(var(--paper) calc(var(--p) * 1%), transparent 0); z-index: -1; opacity: 0.85;
+    -webkit-mask: radial-gradient(circle, transparent calc(var(--s) / 2 + 1px), #000 calc(var(--s) / 2 + 2px)); mask: radial-gradient(circle, transparent calc(var(--s) / 2 + 1px), #000 calc(var(--s) / 2 + 2px)); }
+  .sw.sel { transform: translateY(-4px) scale(1.1); border-color: var(--paper); box-shadow: 0 0 0 3px var(--ink), 3px 5px 0 3px var(--shadow); }
+  .sw.done { opacity: 0.45; }
+  .sw.done::after { content: "✓"; position: absolute; inset: 0; display: grid; place-items: center; font-size: calc(var(--s) * 0.5); color: var(--tx, #120E18); background: inherit; border-radius: 50%; }
+  .sw.wiggle { animation: wiggle 0.5s; }
+  @keyframes wiggle { 20% { transform: rotate(-14deg) scale(1.15); } 40% { transform: rotate(12deg) scale(1.15); } 60% { transform: rotate(-8deg); } 80% { transform: rotate(5deg); } }
+  .lv0 .sw { --s: 62px; }
+  .lv3 .sw { --s: 46px; }
+  .palette-wrap { position: relative; flex: none; }
+  .ptools { display: flex; gap: 8px; }
+
+  /* ---------- results ---------- */
+  .res-body { flex: 1; display: grid; align-content: start; gap: 16px; padding: 6px max(16px, var(--sr)) calc(var(--sb) + 22px) max(16px, var(--sl)); }
+  .frame { position: relative; margin: 0; padding: 12px; border-radius: 22px; background: var(--paper); border: 3px solid var(--ink); box-shadow: 6px 7px 0 var(--shadow); }
+  .frame canvas { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: 12px; border: 3px solid var(--ink); }
+  .frame figcaption { display: grid; gap: 2px; padding: 10px 4px 0; color: var(--ink); text-align: center; }
+  .frame figcaption b { font-family: var(--display); font-weight: 400; font-size: 32px; letter-spacing: 0.05em; line-height: 1; }
+  .frame figcaption small { font-size: 13px; font-weight: 700; color: #5a5266; }
+  .ribbon { position: absolute; left: -10px; top: 18px; padding: 6px 14px; background: var(--magenta); color: var(--ink); border: 3px solid var(--ink); box-shadow: 3px 3px 0 var(--shadow); font-family: var(--display); font-size: 22px; letter-spacing: 0.05em; transform: rotate(-6deg); }
+  .res-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .res-actions .wide { grid-column: 1 / -1; }
+  .paid { margin: 0; font-size: 13px; font-weight: 700; color: rgba(255, 248, 236, 0.78); text-align: center; }
+  .paid:empty { display: none; }
+
+  /* ---------- how to play ---------- */
+  .sheet { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 40; display: grid; place-items: center; padding: calc(var(--st) + 16px) max(16px, var(--sr)) calc(var(--sb) + 16px) max(16px, var(--sl)); background: rgba(5, 3, 10, 0.72); }
+  .sheet-card { width: 100%; max-width: 460px; max-height: 100%; overflow: auto; padding: 20px 18px; border-radius: 20px; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 5px 6px 0 var(--shadow); }
+  .sheet-card h2 { margin: 0 0 10px; font-family: var(--display); font-weight: 400; font-size: 32px; letter-spacing: 0.04em; }
+  .sheet-card ol { margin: 0 0 14px; padding-left: 22px; display: grid; gap: 8px; font-size: 15px; font-weight: 600; line-height: 1.4; }
+  .sheet-card .btn { width: 100%; }
+  .col { display: contents; }
+
+  /* Sideways (JC, Nov 15 2026: "All games need to maximize viewport in landscape mode"): the gallery
+     beside the levels, the picture as big as the screen is tall with the colors in a column beside it,
+     the results in two columns. */
+  @media (orientation: landscape) and (min-width: 600px) {
+    .wrap { max-width: 1180px; }
+    .home-body, .res-body { grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.6fr); column-gap: 28px; align-items: start; }
+    .logo svg { width: 56px; height: 56px; }
+    .logo h1 { font-size: clamp(30px, 3.7vw, 54px); }
+    .res-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .col { display: grid; gap: 16px; align-content: start; min-width: 0; }
+    .gallery { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); }
+    .paint .bar { padding-top: calc(var(--st) + 6px); padding-bottom: 6px; }
+    .paint-body { flex-direction: row; align-items: stretch; justify-content: center; gap: 16px; }
+    .stage { align-self: auto; }
+    .palette-wrap { flex: 1; max-width: 360px; min-width: 150px; display: flex; flex-direction: column; min-height: 0; }
+    .palette { flex: 1; justify-content: flex-start; padding: 10px 8px; gap: 12px 10px; max-height: none !important; }
+    .frame { max-width: calc(var(--lab-h, 100dvh) - var(--st) - var(--sb) - 150px); min-width: 240px; justify-self: center; width: 100%; padding: 10px; }
+    .frame figcaption { padding-top: 6px; }
+    .frame figcaption b { font-size: 24px; }
+    .frame figcaption small { font-size: 12px; }
+  }
+  @media (max-width: 360px) { .seg button b { font-size: 15px; } .seg button small { font-size: 9px; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HOME: levels and the gallery ============ -->
+<section class="screen" data-screen="home">
+  <header class="bar wrap">
+    <capra-lab-chip></capra-lab-chip>
+    <div class="bar-right">
+      <button class="round-btn" id="soundBtn" type="button" aria-label="Sound" aria-pressed="true"></button>
+      <button class="round-btn" id="helpBtn" type="button" aria-label="How to play">?</button>
+    </div>
+  </header>
+  <div class="home-body wrap">
+    <div class="col">
+      <div class="logo">
+        <svg viewBox="0 0 70 70" aria-hidden="true">
+          <path d="M35 4C17 4 4 16 4 33c0 15 11 25 22 25 5 0 6-3 6-6 0-4 3-6 7-6h7c11 0 20-7 20-19C66 14 52 4 35 4Z" fill="#FFF8EC" stroke="#120E18" stroke-width="3.5"/>
+          <circle cx="20" cy="28" r="6" fill="#FF3D8B" stroke="#120E18" stroke-width="2.5"/>
+          <circle cx="32" cy="16" r="6" fill="#FFD23F" stroke="#120E18" stroke-width="2.5"/>
+          <circle cx="47" cy="18" r="6" fill="#29D3F0" stroke="#120E18" stroke-width="2.5"/>
+          <circle cx="54" cy="31" r="6" fill="#5BE38A" stroke="#120E18" stroke-width="2.5"/>
+          <text x="22" y="49" font-family="Bangers, Impact, sans-serif" font-size="15" fill="#120E18" text-anchor="middle">1</text>
+        </svg>
+        <h1>COLOR BY <em>NUMBERS</em></h1>
+      </div>
+      <p class="tag">Pick a picture, tap a color, and fill in every spot with its number. 100 pictures of unicorns, puppies, kittens, dolls and lots more cuddly friends!</p>
+      <div>
+        <p class="label" id="lvLabel">PICK YOUR LEVEL</p>
+        <div class="seg" id="levels" role="radiogroup" aria-labelledby="lvLabel"></div>
+        <p class="tier-info" id="levelInfo"></p>
+      </div>
+      <div id="keepBox" hidden>
+        <p class="label">KEEP COLORING</p>
+        <div class="keep" id="keep"></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="cats" id="cats" role="toolbar" aria-label="Kinds of pictures"></div>
+      <p class="count" id="galCount"></p>
+      <div class="gallery" id="gallery"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAINTING ============ -->
+<section class="screen paint" data-screen="paint" hidden>
+  <header class="bar">
+    <button class="back" id="paintBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>PICTURES</button>
+    <div class="ptitle"><b id="pTitle"></b><small id="pSub"></small><div class="meter"><i id="pMeter"></i></div></div>
+    <div class="ptools">
+      <button class="round-btn" id="fitBtn" type="button" aria-label="Show the whole picture" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+      <button class="round-btn" id="hintBtn" type="button" aria-label="Find a spot for this color"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></button>
+    </div>
+  </header>
+  <div class="paint-body" id="paintBody">
+    <div class="stage" id="stage">
+      <canvas id="pic" aria-label="The picture to color"></canvas>
+      <canvas id="fx" aria-hidden="true"></canvas>
+      <div class="zoomhint" id="zoomHint" hidden>Pinch to zoom in on the little spots</div>
+      <div class="mixing" id="mixing" hidden>Mixing the paints…</div>
+      <div class="burst-wrap" id="burst" hidden><div class="burst"><h2 id="burstText">YOU DID IT!</h2></div></div>
+    </div>
+    <div class="palette-wrap">
+      <div class="palette" id="palette" role="radiogroup" aria-label="Colors"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="screen" data-screen="results" hidden>
+  <header class="bar wrap">
+    <button class="back" id="resBack" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>PICTURES</button>
+  </header>
+  <div class="res-body wrap">
+    <div class="col">
+      <figure class="frame">
+        <span class="ribbon" id="resRibbon">MASTERPIECE!</span>
+        <canvas id="resPic" width="800" height="800" aria-label="Your finished picture"></canvas>
+        <figcaption><b id="resTitle"></b><small id="resSub"></small></figcaption>
+      </figure>
+    </div>
+    <div class="col">
+      <div class="res-actions">
+        <button class="btn wide" id="saveBtn" type="button">📸 Save my picture</button>
+        <button class="btn alt" id="nextBtn" type="button">Next picture</button>
+        <button class="btn alt" id="againBtn" type="button">Color it again</button>
+      </div>
+      <p class="paid" id="resPaid"></p>
+      <div id="resShare"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW TO PLAY ============ -->
+<div class="sheet" id="help" role="dialog" aria-modal="true" aria-labelledby="helpTitle" hidden>
+  <div class="sheet-card">
+    <h2 id="helpTitle">HOW TO COLOR</h2>
+    <ol>
+      <li>Pick your level, then pick any picture.</li>
+      <li>Tap a color at the bottom. Every spot with its number lights up gray.</li>
+      <li>Tap the spots to fill them in. Hold your finger down and slide to fill lots of spots at once!</li>
+      <li>Can't find one? Tap 🔍 and it shows you where.</li>
+      <li>Paintbrush and Stained Glass have lots of tiny pieces: pinch the picture to zoom in, and drag to move around.</li>
+      <li>Fill every spot to finish your masterpiece, then save it or text it to the family. Your coloring is saved, so you can come back any time.</li>
+    </ol>
+    <button class="btn" id="helpClose" type="button">Let's color!</button>
+  </div>
+</div>
+
+<script src="/lab/chip.js" defer></script>
+<script src="/lab/share.js" defer></script>
+<script src="/lab/wallet.js" type="module"></script>
+<script type="module" src="./game.js"></script>
+</body>
+</html>
