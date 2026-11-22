@@ -33,6 +33,7 @@ export const EARN = {
   'primal-survival': { name: 'Primal Survival', match: { amber: 25, why: 'a match' }, win: { shards: 1, why: 'a win' } },
   'three-clue-crew': { name: 'Three Clue Crew', game: { amber: 20, why: 'a game of ten' }, perfect: { shards: 1, why: 'a perfect ten' } },
   'puzzled-spin':    { name: 'Puzzled Spin', run: { amber: 20, why: 'a run of five' }, clear: { shards: 1, why: 'all five solved' } },
+  'tough-sleddin':   { name: 'Tough Sleddin', run: { amber: 20, why: 'all three winter worlds sledded' }, best: { shards: 1, why: 'a new best total' } },
   'color-by-numbers': { name: 'Color by Numbers', picture: { amber: 20, why: 'a finished picture' }, masterpiece: { shards: 1, why: 'a Paintbrush or Stained Glass picture' } },
   'send-it':         { name: 'Send It!', flight: { amber: 20, why: 'a flight off the pier' }, best: { shards: 1, why: 'a new best distance' } },
   // IRL pays more (JC, Nov 14 2026: "this earns more Amber and other loot"), with its own daily cap

@@ -18,6 +18,7 @@ public/irl/
 public/send-it/
 public/studio/
 public/color-by-numbers/
+public/tough-sleddin/
 netlify/functions/mind-heist.mjs
 games/mind-heist/src/server/decks.gen.json
 games/punchline/server/decks.gen.mjs

@@ -222,6 +222,18 @@ async function buildStudio() {
   console.log('built public/studio/');
 }
 
+/* Tough Sleddin: a goat on a saucer sled down three winter worlds (Nov 22 2026). three.js and IRL's world kit
+   bundled with the game by esbuild into one module. No server. */
+async function buildToughSleddin() {
+  const game = path.join(ROOT, 'games', 'tough-sleddin'), out = path.join(ROOT, 'public', 'tough-sleddin');
+  await fs.rm(out, { recursive: true, force: true });
+  await fs.mkdir(out, { recursive: true });
+  await fs.copyFile(path.join(game, 'index.html'), path.join(out, 'index.html'));
+  const esbuild = await import('esbuild');
+  await esbuild.build({ entryPoints: [path.join(game, 'game.js')], bundle: true, minify: true, format: 'esm', target: ['safari15', 'chrome100'], outfile: path.join(out, 'game.js'), logLevel: 'warning', legalComments: 'none' });
+  console.log('built public/tough-sleddin/');
+}
+
 /* Color by Numbers: 100 cuddly pictures drawn from a kit, four levels from 1st grade to grown-ups (Nov 21 2026). No server. */
 async function buildColorByNumbers() {
   const game = path.join(ROOT, 'games', 'color-by-numbers'), out = path.join(ROOT, 'public', 'color-by-numbers');
@@ -247,3 +259,4 @@ await buildIrl();
 await buildSendIt();
 await buildStudio();
 await buildColorByNumbers();
+await buildToughSleddin();
