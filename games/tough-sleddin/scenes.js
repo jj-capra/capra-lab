@@ -17,7 +17,7 @@ function prism(w, d, h) { const s = new THREE.Shape(); s.moveTo(-w / 2, 0); s.li
 const SNOW = '#f2f6ff';
 
 // ---- the snow under the sled: soft drifts, a groomed corduroy track, glints that twinkle ----
-function snowMaterial(U, { a = '#e9f0ff', b = '#f8faff', bank = '#cdd9f5', glint = '#ffffff', glintK = 2.2, track = 0.07 }) {
+function snowMaterial(U, { a = '#e9f0ff', b = '#f8faff', bank = '#cdd9f5', glint = '#ffffff', glintK = 2.2, track = 0.07, ripple = 0.04 }) {
   const m = patchStandard(new THREE.MeshStandardMaterial({ roughness: 0.78 }), U, {
     uniforms: { uSA: { value: new THREE.Color(a) }, uSB: { value: new THREE.Color(b) }, uBank: { value: new THREE.Color(bank) }, uGl: { value: new THREE.Color(glint) } },
     vdecl: 'attribute vec2 aT; varying vec2 vT;', vertex: 'vT = aT;',
@@ -31,6 +31,9 @@ function snowMaterial(U, { a = '#e9f0ff', b = '#f8faff', bank = '#cdd9f5', glint
       sn *= 1.0 - cord * onT * ${track.toFixed(3)};
       float groove = smoothstep(0.18, 0.0, abs(u - 2.4 - sin(vWP.z * 0.05) * 1.6)) + smoothstep(0.18, 0.0, abs(u + 3.1 + sin(vWP.z * 0.043 + 2.0) * 1.8));
       sn *= 1.0 - groove * onT * 0.08;
+      // wind ripples across the hill (a mark every few meters rushing at you: the snow shows your speed)
+      float rip = 0.5 + 0.5 * sin(vWP.z * 1.05 + sin(vWP.x * 0.31) * 1.8 + vnoise(vWP.xz * vec2(0.2, 0.12)) * 5.0);
+      sn *= 1.0 - smoothstep(0.55, 1.0, rip) * ${ripple.toFixed(3)};
       // the banks: bluer where they turn from the light
       sn = mix(sn, uBank, (1.0 - onT) * (0.35 - 0.3 * clamp(vWN.y, 0.0, 1.0)) * 1.4);
       diffuseColor.rgb = sn;
@@ -177,7 +180,7 @@ function pinewood({ U }) {
     scene, props, snowMat, kinds, exposure: 0.92,
     rampMat: rampMaterial(U), iceMat: null,
     sprayCols: ['#ffffff', '#eef4ff', '#dfe8ff'],
-    flakes: { color: '#ffffff', k: 0.55, fall: 1.0 },
+    flakes: { color: '#ffffff', k: 0.7, fall: 1.0 },
     reset(C) { chimneys = []; arch.position.set(C.center(12), C.height(C.center(12), 12), -12); for (const m of markers) scene.remove(m); markers = []; },
     barrier(o, { put, C }) { put('log', mat(o.x, C.height(o.x, o.d), -o.d, 0, 0, 0, [o.x1 - o.x0, 1, 1])); },
     decorate(k, d0, d1, { put, at, C, group, quality }) {
@@ -446,6 +449,16 @@ function glacier({ U }) {
     return ps;
   };
   const kinds = {
+    // a glowing ice marker at the track's edge every few meters: lights rushing past in the dark (JC, Nov 22 2026:
+    // "Aurora glacier is notably slower feeling")
+    beacon: { geo: merge([
+      { geo: Cy(0.07, 0.1, 1.3, 6), color: '#cfe8ff', matrix: mat(0, 0.65, 0) },
+      { geo: new THREE.OctahedronGeometry(0.26, 0), color: '#7fe3ff', matrix: mat(0, 1.55, 0, 0, 0, 0, [1, 1.6, 1]), emit: 2.4 },
+    ]) },
+    beacon2: { geo: merge([
+      { geo: Cy(0.07, 0.1, 1.3, 6), color: '#cfe8ff', matrix: mat(0, 0.65, 0) },
+      { geo: new THREE.OctahedronGeometry(0.26, 0), color: '#b496ff', matrix: mat(0, 1.55, 0, 0, 0, 0, [1, 1.6, 1]), emit: 2.4 },
+    ]) },
     spire: { geo: merge(crystal(4.2, 0.7, '#7fe3ff')) },
     spire2: { geo: merge(crystal(6, 1.0, '#a68bff', 6)) },
     spire3: { geo: merge(crystal(3, 0.6, '#6dffc8', 4)) },
@@ -466,7 +479,7 @@ function glacier({ U }) {
       { geo: Cy(0.62, 0.62, 0.1, 12), color: '#ffb24a', matrix: mat(3.12, 0.55, 0, 0, 0, Math.PI / 2), emit: 2.6 },
     ]) },
   };
-  const snowMat = snowMaterial(U, { a: '#c3d2f3', b: '#e6eeff', bank: '#8299d2', glint: '#bfe6ff', glintK: 2.6, track: 0.1 });
+  const snowMat = snowMaterial(U, { a: '#c3d2f3', b: '#e6eeff', bank: '#8299d2', glint: '#bfe6ff', glintK: 2.6, track: 0.1, ripple: 0.14 });
   // ice that mirrors the northern lights, with cracks in it
   const iceMat = patchStandard(new THREE.MeshStandardMaterial({ color: '#7fb3ff', roughness: 0.12, metalness: 0.0, transparent: true, opacity: 0.92 }), U, {
     uniforms: A,
@@ -495,7 +508,7 @@ function glacier({ U }) {
     scene, props, snowMat, kinds, exposure: 1.2, iceMat,
     rampMat: rampMaterial(U, '#dfeaff'),
     sprayCols: ['#ffffff', '#dff0ff', '#bfe0ff'],
-    flakes: { color: '#e4f0ff', k: 0.6, fall: 0.9 },
+    flakes: { color: '#e4f0ff', k: 1, fall: 0.9 },
     reset(C) { arch.position.set(C.center(12), C.height(C.center(12), 12), -12); },
     barrier(o, { C, group }) {
       const cols = 14, g = new THREE.BufferGeometry(), pos = [], edge = [], idx = [];
@@ -513,6 +526,12 @@ function glacier({ U }) {
     decorate(k, d0, d1, { put, at, C, group, quality }) {
       const r = rng(k * 151 + 11), glows = [];
       const spires = ['spire', 'spire2', 'spire3'], gcol = ['#59d8ff', '#a68bff', '#5dffc0'];
+      // the markers down both edges, every 12 m
+      for (let d = Math.ceil(d0 / 12) * 12; d < d1; d += 12) for (const s of [-1, 1]) {
+        const x = C.center(d) + s * (C.halfWidth(d) + EDGE + 0.5), j = (d / 12 + (s > 0 ? 1 : 0)) % 2;
+        put(j ? 'beacon2' : 'beacon', at(x, d));
+        glows.push([x, C.height(x, d) + 1.55, -d, j ? 1 : 0]);
+      }
       for (const s of [-1, 1]) {
         for (let d = d0 + r() * 3; d < d1; d += 3 + r() * 3) {
           const u = s * (C.halfWidth(d) + EDGE + 0.8 + r() * 3), x = C.center(d) + u, i = Math.floor(r() * 3), sc = 0.7 + r() * 0.8;

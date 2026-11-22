@@ -9,6 +9,7 @@
 import { THREE, shared, shaderMat, quadInstances, bursts, merge, mat, canvasTex } from '../irl/world/core.js';
 import { KINDS, RAMP_LEN, RAMP_H, SLOPE, EDGE } from './logic.mjs';
 import { SCENE_BUILDERS } from './scenes.js';
+import { jumpGeo, hasJumpGeo } from './jumps.js';
 
 const CHUNK = 50, AHEAD = 340, BEHIND = 40;
 const INK = new THREE.Color('#1a1222');
@@ -44,8 +45,10 @@ export function createWorld(canvas, { level = 0 } = {}) {
   /* ---------------- falling snow that streams past at your speed ---------------- */
   const FLAKES = 3600;
   const flakeMat = shaderMat(U, {
-    uniforms: { uCam: { value: new THREE.Vector3() }, uTravel: { value: 0 }, uFlakeCol: { value: new THREE.Color('#eef4ff') }, uFlakeK: { value: 1 }, uFall: { value: 1.2 }, uWind: { value: 0.6 } },
-    vertex: /* glsl */ `attribute vec4 aF; uniform float uTime; uniform vec3 uCam; uniform float uTravel; uniform float uFall; uniform float uWind; varying vec2 vUv; varying float vA;
+    uniforms: { uCam: { value: new THREE.Vector3() }, uTravel: { value: 0 }, uFlakeCol: { value: new THREE.Color('#eef4ff') }, uFlakeK: { value: 1 }, uFall: { value: 1.2 }, uWind: { value: 0.6 }, uStreak: { value: 0 } },
+    // (each flake is drawn as a streak along the way it's rushing past, longer the faster you go: the snow alone
+    // tells you your speed)
+    vertex: /* glsl */ `attribute vec4 aF; uniform float uTime; uniform vec3 uCam; uniform float uTravel; uniform float uFall; uniform float uWind; uniform float uStreak; varying vec2 vUv; varying float vA;
       void main() {
         vec3 box = vec3(36.0, 20.0, 60.0);
         vec3 p = aF.xyz * box;
@@ -55,12 +58,18 @@ export function createWorld(canvas, { level = 0 } = {}) {
         p = mod(p, box) - box * vec3(0.5, 0.45, 0.8);
         vec3 w = uCam + p;
         vec4 mv = viewMatrix * vec4(w, 1.0);
+        vec4 mb = viewMatrix * vec4(w - vec3(0.0, 0.0, uStreak), 1.0);     // where it was a moment ago
         float dist = -mv.z;
         float sz = 0.05 + 0.05 * fract(aF.w * 13.0);
-        mv.xy += vec2(position.x, position.y - 0.5) * sz;
-        gl_Position = projectionMatrix * mv;
+        if (mv.z > -0.3 || mb.z > -0.3) mb = mv;
+        vec2 sa = mv.xy / -mv.z, sb = mb.xy / -mb.z, dir = sb - sa;
+        float dl = length(dir);
+        vec2 ax = dl > 1e-5 ? dir / dl : vec2(0.0, 1.0), perp = vec2(-ax.y, ax.x);
+        vec3 P = mix(mv.xyz, mb.xyz, position.y);
+        P.xy += perp * position.x * sz * 1.3 + ax * (position.y - 0.5) * sz;
+        gl_Position = projectionMatrix * vec4(P, 1.0);
         vUv = vec2(position.x + 0.5, position.y);
-        vA = smoothstep(0.4, 2.0, dist) * (1.0 - smoothstep(30.0, 46.0, dist));
+        vA = smoothstep(0.4, 2.0, dist) * (1.0 - smoothstep(30.0, 46.0, dist)) * mix(1.0, 0.7, clamp(uStreak / 3.0, 0.0, 1.0));
       }`,
     fragment: /* glsl */ `uniform vec3 uFlakeCol; uniform float uFlakeK; varying vec2 vUv; varying float vA;
       void main() { float a = smoothstep(1.0, 0.15, length(vUv - 0.5) * 2.0) * vA * uFlakeK; if (a < 0.01) discard; gl_FragColor = vec4(uFlakeCol, a);
@@ -147,6 +156,40 @@ export function createWorld(canvas, { level = 0 } = {}) {
   }
 
   /* ---------------- ramps and ice ---------------- */
+  // Bright arrows on every ramp (JC, Nov 22 2026: "Give all ramps some bright arrows so they are easy to see"):
+  // yellow chevrons marching up its face, and a big arrow bobbing over it, seen from far off (it fades away as
+  // you get close, so it's never in your face). Neither is fogged or tone-mapped: they stay bright.
+  const chevTex = canvasTex(128, 128, (g) => {
+    const path = () => { g.beginPath(); g.moveTo(16, 94); g.lineTo(64, 42); g.lineTo(112, 94); };
+    g.lineCap = 'round'; g.lineJoin = 'round';
+    path(); g.strokeStyle = '#1a1222'; g.lineWidth = 34; g.stroke();
+    path(); g.strokeStyle = '#ffd23f'; g.lineWidth = 19; g.stroke();
+  }, { repeat: true });
+  const chevMat = new THREE.MeshBasicMaterial({ map: chevTex, transparent: true, depthWrite: false, toneMapped: false, fog: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
+  // the chevrons on a face rising `rise` over `len` from its foot, w wide, lifted off it a little
+  function chevrons(len, rise, w, lift) {
+    const L = Math.hypot(len, rise), a = Math.atan2(rise, len), g = new THREE.PlaneGeometry(w, L * 0.94);
+    const uv = g.attributes.uv, across = Math.max(1, Math.round(w / 2.2));
+    for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * across, (uv.getY(i) * L) / 1.5);
+    g.rotateX(a - Math.PI / 2);
+    g.translate(0, rise / 2 + lift * Math.cos(a), -len / 2 + lift * Math.sin(a));
+    const m = new THREE.Mesh(g, chevMat); m.userData.own = true; m.renderOrder = 3;
+    return m;
+  }
+  const arrowGeo = (() => {
+    const P = [[-0.32, 1.5], [0.32, 1.5], [0.32, 0.55], [0.85, 0.55], [0, -0.45], [-0.85, 0.55], [-0.32, 0.55]];
+    const shape = (k) => { const sh = new THREE.Shape(); P.forEach(([x, y], i) => { const X = x * k, Y = 0.5 + (y - 0.5) * k; i ? sh.lineTo(X, Y) : sh.moveTo(X, Y); }); sh.closePath(); return new THREE.ShapeGeometry(sh); };
+    return merge([{ geo: shape(1.25), color: '#1a1222', matrix: mat(0, 0, -0.03) }, { geo: shape(1), color: '#ffd23f' }, { geo: shape(0.55), color: '#fff3b0', matrix: mat(0, 0.08, 0.02) }]);
+  })();
+  const arrowMat = shaderMat(U, {
+    vertex: /* glsl */ `attribute vec3 color; uniform float uTime; varying vec3 vC; varying vec3 vW;
+      void main() { vC = color; vec4 w = modelMatrix * vec4(position, 1.0); w.y += sin(uTime * 4.0 + modelMatrix[3].z * 0.37) * 0.3; vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
+    fragment: /* glsl */ `varying vec3 vC; varying vec3 vW;
+      void main() { float d = distance(vW, cameraPosition); float a = smoothstep(14.0, 26.0, d) * (1.0 - smoothstep(300.0, 345.0, d)); if (a < 0.01) discard; gl_FragColor = vec4(vC, a);
+        #include <colorspace_fragment>
+      }`,
+    transparent: true, depthWrite: false, side: THREE.DoubleSide,
+  });
   const GEOS = {};
   function rampMesh(r) {
     if (!GEOS.ramp) {
@@ -159,13 +202,24 @@ export function createWorld(canvas, { level = 0 } = {}) {
         { geo: new THREE.BoxGeometry(0.02, 0.4, 0.55), color: '#ff5a2a', matrix: mat(0, 1.6, -0.28), emit: 0.6 },
       ]) };
     }
+    // everything in the ramp's own frame: its foot at the origin, upright; its lip `rise` above the foot, len down
     const g = new THREE.Group();
-    const y0 = C.height(r.x, r.d), y1 = C.height(r.x, r.d + RAMP_LEN);
-    const m = new THREE.Mesh(GEOS.ramp.wedge, place.rampMat);
-    m.position.set(r.x, y0, -r.d); m.scale.set(r.hw * 2, 1, 1);
-    m.rotation.x = Math.atan2(y1 - y0, RAMP_LEN);     // lying on the slope
-    g.add(m);
-    for (const s of [-1, 1]) { const f = new THREE.Mesh(GEOS.ramp.flag, place.props); f.position.set(r.x + s * (r.hw + 0.3), C.height(r.x + s * (r.hw + 0.3), r.d + RAMP_LEN), -(r.d + RAMP_LEN)); g.add(f); }
+    const y0 = C.height(r.x, r.d), y1 = C.height(r.x, r.d + r.len), rise = y1 + r.h - y0;
+    g.position.set(r.x, y0, -r.d);
+    if (r.big && hasJumpGeo(r.kind)) {
+      // a world's own big jump (jumps.js: a rooftop, a log, an igloo...)
+      const m = new THREE.Mesh(jumpGeo(r, rise), place.props); m.userData.own = true;
+      g.add(m, chevrons(r.len, rise, Math.max(1, r.hw * 2 - 1.5), 0.06));
+    } else {
+      const m = new THREE.Mesh(GEOS.ramp.wedge, place.rampMat);
+      m.scale.set(r.hw * 2, 1, 1);
+      m.rotation.x = Math.atan2(y1 - y0, RAMP_LEN);     // lying on the slope
+      g.add(m, chevrons(r.len, rise, r.hw * 2 - 0.5, 0.17));
+      for (const s of [-1, 1]) { const f = new THREE.Mesh(GEOS.ramp.flag, place.props); f.position.set(s * (r.hw + 0.3), C.height(r.x + s * (r.hw + 0.3), r.d + RAMP_LEN) - y0, -RAMP_LEN); g.add(f); }
+    }
+    const a = new THREE.Mesh(arrowGeo, arrowMat);
+    a.position.set(0, Math.max(0, rise) + (r.big ? 3.6 : 2.7), 0.6); a.scale.setScalar(r.big ? 1.5 : 1.05); a.renderOrder = 18;
+    g.add(a);
     return g;
   }
   function iceMesh(p) {
@@ -205,6 +259,9 @@ export function createWorld(canvas, { level = 0 } = {}) {
   /* ---------------- each frame ---------------- */
   const cam = { x: 0, y: 0, z: 0, lx: 0, ly: 0, lz: 0, fov: 60, roll: 0, shake: 0, ready: false };
   const tilt = { x: 0, z: 0 };
+  // the arrows' lean, eased (the goat that rides itself flicks its steering on and off: unsmoothed, the goat
+  // twitched); a big jump's spin
+  let lean = 0, spinOf = -9, spinDir = 1;
   const ground = (x, d) => C.height(x, d);
   // the snow's slope at a spot: down the hill (negative: it drops) and across (positive: rising to the right)
   const slopeAt = (x, d) => [(ground(x, d + 0.9) - ground(x, d - 0.9)) / 1.8, (ground(x + 0.9, d) - ground(x - 0.9, d)) / 1.8];
@@ -216,21 +273,26 @@ export function createWorld(canvas, { level = 0 } = {}) {
     syncChunks(d, mode === 'menu' || intro < 1 ? 140 : BEHIND);
     // the goat: leans into the turn, turns its nose the way it's sliding, the saucer spins
     const yaw = Math.atan2(-st.vx, st.v) * 0.8;
+    lean += (input - lean) * Math.min(1, dt * 9);
     if (!crash) {
       goat.root.position.set(gx, gy, -d);
-      goat.root.rotation.set(0, 0, 0);
+      // off a big jump the goat spins round once (JC, Nov 22 2026: "Have the goat spin when in the air off bigger
+      // jumps"), the way it's sliding, done just before it lands
+      if (st.big && st.jumpedAt !== spinOf) { spinOf = st.jumpedAt; spinDir = st.vx < -0.5 ? 1 : st.vx > 0.5 ? -1 : (Math.random() < 0.5 ? 1 : -1); }
+      const spin = st.air && st.big && st.airT > 0 ? spinDir * Math.PI * 2 * easeIO(Math.min(1, (st.t - st.jumpedAt) / (st.airT * 0.9))) : 0;
+      goat.root.rotation.set(0, spin, 0);
       goat.saucer.rotation.y += dt * (2.2 + Math.abs(st.vx) * 0.5 + (st.air ? 4 : 0));
       // the saucer lies on the snow: front down the hill, tipped up the bank (it was once tilted the wrong way and
       // its back half sank into the snow); up a ramp it tips up, off the lip nose up, then nose down to land
       const [fall, across] = slopeAt(gx, d);
-      const pitch = st.air ? Math.max(-0.42, Math.min(0.3, st.vy * 0.035)) + Math.atan(fall) * 0.4 : Math.atan(fall) + (st.ramp ? Math.atan(RAMP_H / RAMP_LEN) : 0);
+      const pitch = st.air ? Math.max(-0.42, Math.min(0.3, st.vy * 0.035)) + Math.atan(fall) * 0.4 : Math.atan(fall) + (st.ramp ? Math.atan(st.ramp.h / st.ramp.len) : 0);
       const roll = st.air ? 0 : Math.atan(across);
       const kt = Math.min(1, dt * 14);
       tilt.x += (pitch - tilt.x) * kt; tilt.z += (roll - tilt.z) * kt;
       goat.saucer.position.set(0, 0.03, 0);
       goat.saucer.rotation.x = tilt.x;
       goat.saucer.rotation.z = tilt.z - st.vx * 0.012;
-      goat.rider.rotation.set(tilt.x * 0.85 - 0.05 + (st.air ? -0.1 : 0), yaw, tilt.z * 0.6 - st.vx * 0.035 - input * 0.12);
+      goat.rider.rotation.set(tilt.x * 0.85 - 0.05 + (st.air ? -0.1 : 0), yaw, tilt.z * 0.6 - st.vx * 0.035 - lean * 0.12);
       goat.flap(t, st.v);
     } else goat.tumble(crash, t, dt, ground);
     // its shadow on the snow (lying on the slope there), smaller and fainter the higher it flies
@@ -245,7 +307,7 @@ export function createWorld(canvas, { level = 0 } = {}) {
     // snow thrown up: more when carving, a burst on landing, none in the air
     if (mode !== 'idle' && !st.air && !crash && t - lastSpray > 1 / 50) {
       lastSpray = t;
-      const carve = Math.min(1, Math.abs(st.vx) / 8 + Math.abs(input) * 0.4);
+      const carve = Math.min(1, Math.abs(st.vx) / 8 + Math.abs(lean) * 0.4);
       const back = { x: gx + Math.sin(yaw) * 0.5 - Math.sign(st.vx) * 0.5 * carve, y: gy + 0.12, z: -d + 0.85 };
       spray.emit(back, Math.round(2 + carve * 5 + st.v / 14), { speed: 1.4 + carve * 2.6, up: 0.55, size: 0.07, life: 0.6, colors: place.sprayCols, spread: 0.7, dir: { x: -st.vx * 0.25, y: 0.6, z: st.v * 0.12 } });
     }
@@ -268,7 +330,9 @@ export function createWorld(canvas, { level = 0 } = {}) {
       // picture: the card comes up over the bottom half)
       px = g.x + side * 5 * e; pz = g.z + 8.2 * (1 - e) - 1.5 * e;
       py = Math.max(g.y + 4.4 * (1 - e) + 5.8 * e, ground(px, -pz) + 1.9);
-      lx = g.x; ly = g.y + 0.4 - 1.9 * e; lz = g.z;
+      // the look turns from where you were looking down the hill to the goat (not a snap)
+      const el = easeIO(Math.min(1, (t - crash.t0) / 0.7)), L = crash.look;
+      lx = L.x + (g.x - L.x) * el; ly = L.y + (g.y + 0.4 - 1.9 * e - L.y) * el; lz = L.z + (g.z - L.z) * el;
     } else {
       // (it pulls back a little and looks farther ahead as you speed up: at full speed the next 2 seconds are 140 m)
       const back = 8.2 + v01 * 1.2, ahead = 30 + v01 * 14;
@@ -291,23 +355,26 @@ export function createWorld(canvas, { level = 0 } = {}) {
     // never under the snow (the banks rise steeply past the edges)
     cam.y = Math.max(cam.y, ground(cam.x, -cam.z) + 1.1);
     cam.shake *= Math.exp(-dt * 6);
+    // a shake on landing and crashing: a smooth wobble, not a new random spot every frame (that jittered)
     const sh = cam.shake;
-    camera.position.set(cam.x + (Math.random() - 0.5) * sh, cam.y + (Math.random() - 0.5) * sh, cam.z);
+    camera.position.set(cam.x + (Math.sin(t * 47.3) + Math.sin(t * 29.1 + 1.7)) * 0.25 * sh, cam.y + (Math.sin(t * 41.9 + 0.6) + Math.sin(t * 23.3)) * 0.25 * sh, cam.z);
     camera.lookAt(cam.lx, cam.ly, cam.lz);
-    cam.roll += ((crash || mode === 'menu' ? 0 : -st.vx * 0.012 - input * 0.02) - cam.roll) * k;
+    cam.roll += ((crash || mode === 'menu' ? 0 : -st.vx * 0.012 - lean * 0.02) - cam.roll) * k;
     camera.rotateZ(cam.roll);
     const fov = (mode === 'menu' ? 52 : 58 + v01 * 16) + (st.air ? 3 : 0);
     if (Math.abs(fov - camera.fov) > 0.05) { camera.fov += (fov - camera.fov) * k; camera.updateProjectionMatrix(); }
     // snow streams past at your speed
     flakeMat.uniforms.uCam.value.copy(camera.position);
     flakeMat.uniforms.uTravel.value = d;
+    flakeMat.uniforms.uStreak.value = crash ? 0 : st.v * (mode === 'play' ? 0.035 : 0.02);
+    chevTex.offset.y = -t * 1.6;
     place.update(dt, t, { st, camera, goat: goat.root.position, d, mode });
     renderer.render(place.scene, camera);
   }
 
   function doCrash(st) {
     const o = st.crashed;
-    crash = { t0: U.uTime.value, x: st.x, d: st.d, y: st.y, vx: st.vx, v: st.v, kind: o.kind };
+    crash = { t0: U.uTime.value, x: st.x, d: st.d, y: st.y, vx: st.vx, v: st.v, kind: o.kind, look: { x: cam.lx, y: cam.ly, z: cam.lz } };
     const p = { x: st.x, y: st.y + 0.5, z: -st.d };
     poof.emit(p, 60, { speed: 4.5, up: 0.5, size: 0.9, life: 1.6, colors: place.sprayCols, spread: 1.2, dir: { x: st.vx * 0.2, y: 0.5, z: -st.v * 0.12 } });
     spray.emit(p, 90, { speed: 6, up: 0.45, size: 0.1, life: 1.2, colors: place.sprayCols, spread: 1.2, dir: { x: 0, y: 1, z: -st.v * 0.15 } });
@@ -441,7 +508,7 @@ function buildGoat(U) {
     },
     startTumble(c) {
       // the saucer skids on, the goat flies off it in a tumble and lands in the snow
-      tumbleState = { c, vx: c.vx * 0.3, vy: 5.5, vz: -Math.min(14, c.v * 0.3), x: 0, y: 0.3, z: 0, spin: 7 + Math.random() * 4, sx: 0, sz: 0, svz: -Math.min(22, c.v * 0.4), rest: false };
+      tumbleState = { c, vx: c.vx * 0.3, vy: 5.5, vz: -Math.min(14, c.v * 0.3), x: 0, y: 0.1, z: 0, spin: 7 + Math.random() * 4, sx: 0, sz: 0, svz: -Math.min(22, c.v * 0.4), rest: false };
     },
     // ground(x, d): the snow's height (the real hill, its rolls and banks: the goat lands on it, not in it)
     tumble(c, t, dt, ground) {
@@ -458,9 +525,14 @@ function buildGoat(U) {
         }
         rider.rotation.x += T.spin * dt; rider.rotation.z += T.spin * 0.3 * dt;
       } else {
-        // sliding to a stop on the snow
+        // sliding to a stop on the snow, rolling over onto its back, legs up (wherever the tumble left it: it once
+        // stopped mid-roll, upside down and half sunk in the snow)
         T.vz *= Math.exp(-dt * 3); T.vx *= Math.exp(-dt * 3); T.x += T.vx * dt; T.z += T.vz * dt;
-        T.y = ground(c.x + T.x, c.d - T.z) - c.y + 0.25;
+        const kk = Math.min(1, dt * 6), TAU = Math.PI * 2;
+        const tx = Math.round((rider.rotation.x + 1.32) / TAU) * TAU - 1.32, tz = Math.round(rider.rotation.z / TAU) * TAU;
+        rider.rotation.x += (tx - rider.rotation.x) * kk; rider.rotation.z += (tz - rider.rotation.z) * kk;
+        T.lift = (T.lift || 0) + (0.2 - (T.lift || 0)) * kk;
+        T.y = ground(c.x + T.x, c.d - T.z) - c.y + 0.25 + T.lift;
       }
       rider.position.set(T.x, T.y, T.z);
       // the saucer skids on down the hill on the snow

@@ -1,7 +1,7 @@
 // Tough Sleddin: the courses always leave a way through, the sled steers, jumps, slides and crashes the way
 // it should, and the score is feet.
 import assert from 'node:assert/strict';
-import { SCENES, KINDS, ROW, FIRST, LAT_MAX, RAMP_LEN, AIR_T, MPH, makeCourse, newRun, step, botInput, feet, FT, shareRows, speedAt, CRASH_WORDS } from '../logic.mjs';
+import { SCENES, KINDS, JUMPS, ROW, FIRST, LAT_MAX, RAMP_LEN, airTime, MPH, makeCourse, newRun, step, botInput, feet, FT, shareRows, speedAt, CRASH_WORDS } from '../logic.mjs';
 import { EARN } from '../../../public/lab/wallet-catalog.mjs';
 
 let n = 0;
@@ -15,6 +15,8 @@ test('three winter worlds, each with its own things in the way', () => {
     assert.ok(KINDS[S.barrier].barrier, `${S.id}: its barrier`);
     assert.ok(S.vMax > S.v0 && S.acc > 0);
     for (const k of [...Object.keys(S.kinds), S.barrier]) assert.ok(CRASH_WORDS[k], `${k} has words for the card`);
+    // its own big jumps (rooftops and the like), each with words for hitting its side
+    assert.ok(S.jumps.length >= 2 && S.jumps.every((j) => JUMPS[j] && JUMPS[j].big && CRASH_WORDS[j]), `${S.id}: big jumps`);
   }
   assert.ok(SCENES[2].ice, 'the glacier has ice');
   // twice the first day's speeds (JC: "Double the speed"): over 65 mph from the start, past 150 at the top
@@ -42,8 +44,14 @@ test('every row leaves a gap, and you can steer from one gap to the next', () =>
           assert.ok(row.ramp && Math.abs(row.ramp.x - row.gap) < 0.01, 'a ramp in front of the barrier');
           const hw = C.halfWidth(row.d), c = C.center(row.d);
           assert.ok(o.x0 - (c - hw) >= 3 || (c + hw) - o.x1 >= 3, 'a way round the barrier');
-        } else assert.ok(Math.abs(o.x - row.gap) >= 3.4 - 1e-9, `${o.kind} out of the gap`);
+        } else {
+          assert.ok(Math.abs(o.x - row.gap) >= 3.4 - 1e-9, `${o.kind} out of the gap`);
+          // a big jump has a lane either side of it
+          if (row.ramp && row.ramp.big) assert.ok(Math.abs(o.x - row.ramp.x) >= row.ramp.hw + 2.6 - 1e-9, `${o.kind} clear of the ${row.ramp.kind}`);
+        }
       }
+      // a big jump stays on the snow
+      if (row.ramp && row.ramp.big) assert.ok(Math.abs(row.ramp.x - C.center(row.d)) + row.ramp.hw <= C.halfWidth(row.d) + 1e-9, `${row.ramp.kind} on the snow`);
       if (last) {
         const v = speedAt(C.S, row.d), dist = row.d - last.d;
         // walked at half your sideways speed; where the track bends hard and the gap has to stay on it, still
@@ -54,7 +62,8 @@ test('every row leaves a gap, and you can steer from one gap to the next', () =>
     }
     // a jump lands before the next ramp (you can't take a ramp you're flying over)
     const rs = C.ramps(0, 4000);
-    for (let i = 1; i < rs.length; i++) assert.ok(rs[i].d - rs[i - 1].d > speedAt(C.S, rs[i - 1].d) * AIR_T + RAMP_LEN, `ramps apart at ${rs[i].d}`);
+    for (let i = 1; i < rs.length; i++) { const p = rs[i - 1]; assert.ok(rs[i].d > p.d + p.len + speedAt(C.S, p.d + p.len) * airTime(p.h, p.vy), `ramps apart at ${rs[i].d}`); }
+    if (seed === 1) assert.ok(rs.some((r) => r.big), `${SCENES[s].name}: a big jump in 4,000 m`);
     assert.equal(C.rows[0].d, FIRST);
     assert.equal(C.rows[1].d - C.rows[0].d, ROW);
   }
@@ -95,7 +104,7 @@ test('the run speeds up, and the score is feet', () => {
 test('a ramp: up its slope, off the lip, under a second in the air, back down', () => {
   const C = makeCourse(11, 0);
   C.ensure(2000);
-  const r = C.ramps(200, 2000)[0];
+  const r = C.ramps(200, 2000).find((q) => q.kind === 'ramp');
   assert.ok(r, 'a ramp somewhere');
   const st = newRun(C);
   st.d = r.d - 5; st.x = r.x; st.t = 20;
@@ -111,6 +120,37 @@ test('a ramp: up its slope, off the lip, under a second in the air, back down', 
   assert.ok(peak > 1.5 && peak < 3.5, `a good hop (${peak.toFixed(2)})`);
   const secs = (landed - launched) / st.v;
   assert.ok(secs > 0.6 && secs < 1.2, `${secs.toFixed(2)} s in the air`);
+});
+
+test('a rooftop: up the roof, off the ridge, over a second in the air, and its side is solid', () => {
+  let C, r;
+  for (let seed = 1; seed < 40 && !r; seed++) { C = makeCourse(seed, 1); C.ensure(4000); r = C.ramps(0, 4000).find((q) => q.kind === 'roof'); }
+  assert.ok(r, 'a rooftop somewhere');
+  const ride = (x0, from, hold, vx = 0) => {
+    const st = newRun(C); st.d = from; st.x = x0; st.t = 20; st.vx = vx;
+    let launched = null, peak = 0, landed = null, maxDrop = 0, lastH = 0;
+    for (let i = 0; i < 900 && !st.crashed && landed == null; i++) {
+      if (hold) { st.x = x0; st.vx = 0; }
+      step(st, hold ? 0 : 1, H, C);
+      if (st.air && launched == null) launched = st.d;
+      if (st.air) peak = Math.max(peak, st.h);
+      maxDrop = Math.max(maxDrop, lastH - st.h); lastH = st.h;
+      if (launched != null && !st.air) landed = st.d;
+    }
+    return { st, peak, maxDrop, launched };
+  };
+  const up = ride(r.x, r.d - 1, true);
+  assert.equal(up.st.crashed, null);
+  assert.ok(up.peak > 4, `big air (${up.peak.toFixed(2)})`);
+  assert.ok(airTime(r.h, r.vy) > 1.1, 'over a second in the air');
+  // in from the side up high: its wall
+  const side = newRun(C); side.d = r.d + r.len * 0.7; side.x = r.x - r.hw - 0.6; side.t = 20; side.vx = 14;
+  for (let i = 0; i < 30 && !side.crashed; i++) step(side, 1, H, C);
+  assert.equal(side.crashed && side.crashed.kind, 'roof');
+  // steer off its side on the way up: you drop off it, you don't snap down
+  const off = ride(r.x + r.hw - 0.2, r.d + 1, false, 8);
+  assert.ok(off.launched != null && off.launched < r.d + r.len - 0.5, 'dropped off the side');
+  assert.ok(off.maxDrop < 0.2, `no snap (${off.maxDrop.toFixed(2)})`);
 });
 
 test("a barrier: hit it on the snow and you crash, fly over it from its ramp and you don't", () => {

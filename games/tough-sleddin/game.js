@@ -2,7 +2,7 @@
 // goat rides by itself behind it) -> each of the three worlds: its name and a 3-2-1 while the camera swings in
 // behind the goat, then left and right until the one crash -> its card -> after the third, the final score (all
 // three added up) with the results text.
-import { SCENES, makeCourse, newRun, step, botInput, feet, FT, MPH, CRASH_WORDS, shareRows, fmt } from './logic.mjs';
+import { SCENES, JUMPS, makeCourse, newRun, step, botInput, feet, FT, MPH, CRASH_WORDS, shareRows, fmt } from './logic.mjs';
 import { createWorld } from './world.js';
 
 const $ = (id) => document.getElementById(id);
@@ -108,7 +108,7 @@ let quality = q0;
 
 /* ---------------- the game ---------------- */
 // mode: menu | intro (name and 3-2-1) | play | crash | card | results
-let mode = 'menu', C = null, st = null, sceneIdx = 0, run = null, modeAt = 0, lastFlag = 0, wasAir = false;
+let mode = 'menu', C = null, st = null, sceneIdx = 0, run = null, modeAt = 0, lastFlag = 0, wasAir = false, lastBig = -9;
 const keys = { left: false, right: false }, held = { left: new Set(), right: new Set() };
 const input = () => ((keys.right || held.right.size) ? 1 : 0) - ((keys.left || held.left.size) ? 1 : 0);
 const now = () => performance.now() / 1000;
@@ -240,10 +240,10 @@ function frame() {
   const t = now(), dt = Math.min(0.05, t - last); last = t;
   const inp = window.__sledAuto && C ? botInput(st, C) : input();
   if (mode === 'menu') {
-    // the goat rides itself; a crash just starts it again
+    // the goat rides itself, through anything it bumps (starting it again was a jump cut behind the menu)
     acc += dt;
-    while (acc >= H) { step(st, botInput(st, C), H, C); acc -= H; }
-    if (st.crashed || st.d > 2500) menuRide();
+    while (acc >= H) { step(st, botInput(st, C), H, C); if (st.crashed) st.crashed = null; acc -= H; }
+    if (st.d > 9000) menuRide();
     W.frame(st, { mode: 'menu', dt, t, input: botInput(st, C) });
   } else if (mode === 'intro') {
     const e = t - modeAt;
@@ -261,7 +261,11 @@ function frame() {
     acc += dt;
     while (acc >= H && !st.crashed) { step(st, inp, H, C); acc -= H; }
     if (st.air && !wasAir) sfx.jump();
-    if (!st.air && wasAir) sfx.land();
+    if (!st.air && wasAir) {
+      sfx.land();
+      // landed a big one (and its spin)
+      if (st.big && st.jumpedAt !== lastBig) { lastBig = st.jumpedAt; toast(`${JUMPS[st.big].name.toUpperCase()} 360!`); sfx.flag(); }
+    }
     wasAir = st.air;
     const ft = feet(st);
     if (Math.floor(ft / 1000) > lastFlag) { lastFlag = Math.floor(ft / 1000); toast(`${fmt(lastFlag * 1000)} ft!`); sfx.flag(); }
@@ -335,6 +339,8 @@ window.__sled = {
   scene: (i) => { run = { id: 'test', results: [] }; startScene(i); },
   // jump the run ahead to d meters (at the speed it would have by then)
   warp: (d) => { if (!st) return; const S = C.S; st.t = Math.min((S.vMax - S.v0) / S.acc, (Math.sqrt(S.v0 * S.v0 + 2 * S.acc * d) - S.v0) / S.acc) + Math.max(0, d - (S.vMax * S.vMax - S.v0 * S.v0) / (2 * S.acc)) / S.vMax; st.d = d; st.x = C.center(d); st.vx = 0; st.y = C.height(st.x, d); lastFlag = Math.floor((d * FT) / 1000); },
+  // jump the run to just before the next big jump (or one of a kind), lined up with it
+  jump: (kind) => { if (!st) return null; const r = C.ramps(st.d + 30, st.d + 8000).find((q) => (kind ? q.kind === kind : q.big)); if (!r) return null; window.__sled.warp(r.d - 60); st.x = r.x; st.y = C.height(st.x, st.d); return { kind: r.kind, d: r.d }; },
   crash: () => { if (st && mode === 'play') { st.crashed = { kind: 'rock', d: st.d, x: st.x, v: st.v, vx: st.vx, t: st.t }; } },
   next: () => nextFromCard(),
   skipIntro: () => { if (mode === 'intro') modeAt -= 3.4; },

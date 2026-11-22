@@ -23,7 +23,9 @@ export const STEER = 52;         // m/s² of sideways push from an arrow
 export const LAT_MAX = 15;       // fastest sideways speed
 export const G = 18;             // gravity in the air (a bit floaty: it's a cartoon)
 export const RAMP_H = 0.9, RAMP_LEN = 3.6, JUMP_V = 7;   // a jump: off the ramp's lip at 7 m/s up (under a second in the air)
-export const AIR_T = (JUMP_V + Math.sqrt(JUMP_V * JUMP_V + 2 * G * RAMP_H)) / G;   // how long a jump lasts
+// how long a jump lasts, off a lip h above the snow at vy up (landing back on the snow)
+export const airTime = (h, vy) => (vy + Math.sqrt(vy * vy + 2 * G * h)) / G;
+export const AIR_T = airTime(RAMP_H, JUMP_V);
 export const EDGE = 1.2;         // past the track's edge by this much is the tree line
 
 // What can be in the way: r (crash radius), h (how high you must be flying to clear it; 99: you can't), and
@@ -34,17 +36,31 @@ export const KINDS = {
   spire: { r: 0.95, h: 99 }, berg: { r: 1.25, h: 1.7 }, drift: { r: 1.15, h: 0.9 }, crevasse: { barrier: true, hd: 0.9, h: 0.15 },
 };
 
+// Things to ride up and fly off: the snow kicker everywhere, and each world's own big jumps (JC, Nov 22 2026: "There
+// should be some rooftops and other unique things they can jump"): longer, higher, a harder launch, over a second in
+// the air, and the goat spins (world.js). len and h: the ride up (h above the snow at the lip), vy: the launch,
+// hw: half its width. Come at a big one from the side where it's already up high and you hit it.
+export const JUMPS = {
+  ramp: { len: RAMP_LEN, h: RAMP_H, vy: JUMP_V, hw: 2.2, name: 'Ramp' },
+  cabin: { len: 7, h: 2.5, vy: 9, hw: 3.3, big: true, name: 'Cabin roof' },       // a log cabin snowed in to its eaves
+  trunk: { len: 9, h: 2.2, vy: 8.6, hw: 1.5, big: true, name: 'Log ride' },       // a fallen giant pine propped on a boulder
+  roof: { len: 7, h: 2.6, vy: 9.4, hw: 3.4, big: true, name: 'Rooftop' },         // a cottage snowed in to its eaves
+  stall: { len: 5.5, h: 2, vy: 8.8, hw: 2.6, big: true, name: 'Market stall' },   // a market stall's snowy lean-to roof
+  igloo: { len: 6, h: 2.3, vy: 9, hw: 2.8, big: true, name: 'Igloo' },            // a drift up and over an igloo
+  slab: { len: 8, h: 2.4, vy: 9.4, hw: 2.6, big: true, name: 'Ice slab' },        // a tipped-up slab of glacier ice
+};
+
 // The three runs, one life each, played in order.
 export const SCENES = [
   { id: 'pinewood', name: 'Pinewood Run', emoji: '🌲', time: 'a sunny morning',
     blurb: 'A sunny morning in the snowy pines. Dodge the trees and rocks; hit a snow ramp to fly over the logs.',
-    v0: 30, vMax: 68, acc: 0.6, width: 12, narrow: 3.5, dens: [0.3, 0.72], kinds: { pine: 5, rock: 3, stump: 2 }, barrier: 'log', pBarrier: 0.1, pRamp: 0.07 },
+    v0: 30, vMax: 68, acc: 0.6, width: 12, narrow: 3.5, dens: [0.3, 0.72], kinds: { pine: 5, rock: 3, stump: 2 }, barrier: 'log', pBarrier: 0.1, pRamp: 0.2, jumps: ['cabin', 'trunk'], pBig: 0.45 },
   { id: 'village', name: 'Lantern Village', emoji: '🏘️', time: 'dusk',
     blurb: 'Down the main street at dusk, lanterns lit. Snowmen, presents and fences everywhere.',
-    v0: 32, vMax: 72, acc: 0.64, width: 11, narrow: 3, dens: [0.36, 0.78], kinds: { snowman: 4, gifts: 3, xmas: 3, lamp: 1 }, barrier: 'fence', pBarrier: 0.11, pRamp: 0.08 },
+    v0: 32, vMax: 72, acc: 0.64, width: 11, narrow: 3, dens: [0.36, 0.78], kinds: { snowman: 4, gifts: 3, xmas: 3, lamp: 1 }, barrier: 'fence', pBarrier: 0.11, pRamp: 0.2, jumps: ['roof', 'roof', 'stall'], pBig: 0.5 },
   { id: 'glacier', name: 'Aurora Glacier', emoji: '🧊', time: 'night',
     blurb: 'Under the northern lights. Ice spires, crevasses to jump, and slippery ice that slides you sideways.',
-    v0: 34, vMax: 76, acc: 0.68, width: 11.5, narrow: 3, dens: [0.32, 0.75], kinds: { spire: 5, berg: 3, drift: 2 }, barrier: 'crevasse', pBarrier: 0.11, pRamp: 0.07, ice: true },
+    v0: 37, vMax: 82, acc: 0.75, width: 11.5, narrow: 3, dens: [0.32, 0.75], kinds: { spire: 5, berg: 3, drift: 2 }, barrier: 'crevasse', pBarrier: 0.11, pRamp: 0.2, jumps: ['igloo', 'slab'], pBig: 0.45, ice: true },
 ];
 
 // ---- seeded randomness ----
@@ -73,8 +89,7 @@ export function makeCourse(seed, sceneIdx) {
   const rows = [];           // { d, gap (absolute x), obs: [...], ramp }
   const obstacles = [];      // every obstacle, in order down the hill
   const ramps = [], ice = [];
-  let lastGap = center(FIRST), lastGapD = 0, lastRampD = -99, since = 9, cool = 0, iceUpTo = 0, gapAt = 0;
-  const flights = [];        // [from, to] meters spent in the air after a ramp: you can barely steer there
+  let lastGap = center(FIRST), lastGapD = 0, lastLand = -99, since = 9, cool = 0, iceUpTo = 0, gapAt = 0;
 
   // the track: straight at first, curvier as you go
   function center(d) {
@@ -82,8 +97,16 @@ export function makeCourse(seed, sceneIdx) {
     return k * (10 * Math.sin(d / 200 + P[0]) + 4 * Math.sin(d / 88 + P[1]) + 1.5 * Math.sin(d / 52 + P[2]));
   }
   const halfWidth = (d) => S.width - S.narrow * clamp(d / 5000, 0, 1);
-  // meters in the air off a ramp at d (a jump lasts the same time whatever the speed, so it flies farther later)
-  const flight = (d) => speedAt(S, Math.max(0, d)) * AIR_T + 2;
+  // a ramp of a kind with its foot at d: where it is and how far it flies you (a jump lasts the same time whatever
+  // the speed, so the same ramp flies you farther later on); nothing else goes on it until you've landed
+  const flights = [];        // [from, to] meters spent in the air after a ramp: you can barely steer there
+  function addRamp(kind, foot, x) {
+    const J = JUMPS[kind], lip = foot + J.len;
+    const ramp = { kind, d: foot, x, hw: J.hw, len: J.len, h: J.h, vy: J.vy, big: !!J.big };
+    const fly = speedAt(S, lip) * airTime(J.h, J.vy) + 2;
+    ramps.push(ramp); flights.push([lip, lip + fly]); lastLand = lip + fly;
+    return ramp;
+  }
   // the snow: down the hill, gentle rolls, a bank past the edge rising into the trees
   function bank(e) { return e <= 0 ? 0 : 2.2 * (1 - Math.exp(-e / 3)) + 0.1 * e + 0.6 * Math.sin(e * 0.21 + P[5]) * Math.min(1, e / 12); }
   function height(x, d) {
@@ -101,7 +124,7 @@ export function makeCourse(seed, sceneIdx) {
     if (rr() > dens) { since++; return; }
     // where the way through is: no farther from the last gap than you can steer before you get there (for a
     // barrier, before its ramp, 14 m sooner)
-    const pick = rr(), barrier = d > 450 && since >= 2 && pick < S.pBarrier && d - 14 - lastRampD > flight(lastRampD) + 8;
+    const pick = rr(), barrier = d > 450 && since >= 2 && pick < S.pBarrier && d - 14 > lastLand + 8;
     const to = d - (barrier ? 14 : 0);
     let run = to - lastGapD;
     for (const [a, b] of flights) run -= 0.75 * Math.max(0, Math.min(b, to) - Math.max(a, lastGapD));
@@ -116,23 +139,28 @@ export function makeCourse(seed, sceneIdx) {
       const x0 = side < 0 ? c - hw + edgeGap : c - hw - 1, x1 = side < 0 ? c + hw + 1 : c + hw - edgeGap;
       const o = { kind: S.barrier, d, x: (x0 + x1) / 2, x0, x1, ...KINDS[S.barrier], s: 1, yaw: 0 };
       row.obs.push(o); obstacles.push(o);
-      const ramp = { d: d - 14, x: c + gap, hw: 2.3 };
-      row.ramp = ramp; ramps.push(ramp); lastRampD = ramp.d; flights.push([ramp.d + RAMP_LEN, ramp.d + RAMP_LEN + flight(ramp.d)]);
+      row.ramp = addRamp('ramp', d - 14, c + gap); row.ramp.barrier = true;
       // nothing in the way of the ramp or just after the barrier
       cool = 2;
       since = 0;
       return;
     }
-    if (pick < S.pBarrier + S.pRamp && since >= 2 && d - 2 - lastRampD > flight(lastRampD) + 8) {
-      const ramp = { d: d - 2, x: c + gap, hw: 2.1 };
-      row.ramp = ramp; ramps.push(ramp); lastRampD = ramp.d; flights.push([ramp.d + RAMP_LEN, ramp.d + RAMP_LEN + flight(ramp.d)]);
+    // a jump on the way through (its lip just past the row): a snow ramp, or one of the world's big ones
+    const bigPick = rr(), kind = d > 350 && bigPick < S.pBig ? S.jumps[Math.floor(rr() * S.jumps.length)] : 'ramp', J = JUMPS[kind];
+    let clear = 3.4;
+    if (pick < S.pBarrier + S.pRamp && since >= 1 && d + 1.6 - J.len > lastLand + 8) {
+      // a big one stays on the snow (inside the edges), as close to the way through as that allows
+      const x = J.big ? clamp(c + gap, c - hw + J.hw + 0.3, c + hw - J.hw - 0.3) : c + gap;
+      row.ramp = addRamp(kind, d + 1.6 - J.len, x);
+      // (and room to go round it on the way through: a lane either side)
+      if (J.big) clear = Math.max(clear, Math.abs(x - (c + gap)) + J.hw + 2.6);
     }
     // a scatter of things, never in the gap
     const n = 1 + Math.floor(rr() * (1.4 + 2.6 * k));
     const kinds = Object.entries(S.kinds), total = kinds.reduce((a, [, w]) => a + w, 0);
     for (let tries = 0; tries < n * 6 && row.obs.length < n; tries++) {
       const rel = (rr() * 2 - 1) * (hw - 0.6);
-      if (Math.abs(rel - gap) < 3.4) continue;
+      if (Math.abs(rel - gap) < clear) continue;
       if (row.obs.some((o) => Math.abs(o.x - (c + rel)) < 2.4)) continue;
       let w = rr() * total, kind = kinds[0][0];
       for (const [kk, ww] of kinds) { if ((w -= ww) <= 0) { kind = kk; break; } }
@@ -149,14 +177,16 @@ export function makeCourse(seed, sceneIdx) {
       if (S.ice && iceUpTo > 260 && rr() < 0.35 + 0.35 * clamp(iceUpTo / 6000, 0, 1)) {
         const d = iceUpTo + rr() * 66, len = 24 + rr() * 26, hw = halfWidth(d);
         const full = rr() < 0.3, w = full ? hw + 1 : 3 + rr() * 4;
-        ice.push({ d, len, x: center(d) + (full ? 0 : (rr() * 2 - 1) * (hw - w)), hw: w });
+        // never on the way into a jump over a crevasse (you'd slide past its ramp)
+        const onRun = ramps.some((r) => r.barrier && d < r.d + r.len && d + len > r.d - 40);
+        if (!onRun) ice.push({ d, len, x: center(d) + (full ? 0 : (rr() * 2 - 1) * (hw - w)), hw: w });
       }
       iceUpTo += 150;
     }
   }
   function ensure(d) {
     while (FIRST + rows.length * ROW < d + 400) makeRow(rows.length);
-    makeIce(d + 440);
+    makeIce(d + 360);      // (behind the rows, so it knows where the crevasse jumps are)
   }
   // things between d0 and d1 (generated as needed)
   function between(list, d0, d1) {
@@ -170,7 +200,7 @@ export function makeCourse(seed, sceneIdx) {
     obstacles: (d0, d1) => between(obstacles, d0, d1),
     ramps: (d0, d1) => between(ramps, d0, d1),
     ice: (d0, d1) => { ensure(d1); return ice.filter((p) => p.d + p.len >= d0 && p.d < d1); },
-    rampAt(x, d) { ensure(d); for (const r of ramps) if (d >= r.d && d <= r.d + RAMP_LEN && Math.abs(x - r.x) < r.hw) return r; return null; },
+    rampAt(x, d) { ensure(d); for (let i = ramps.length - 1; i >= 0; i--) { const r = ramps[i]; if (r.d < d - 30) break; if (d >= r.d && d <= r.d + r.len && Math.abs(x - r.x) < r.hw) return r; } return null; },
     onIce(x, d) { ensure(d); for (const p of ice) if (d >= p.d && d <= p.d + p.len && Math.abs(x - p.x) < p.hw) return true; return false; },
     // the next way through at or after d (for the goat that rides by itself behind the menu)
     nextGap(d) {
@@ -184,7 +214,7 @@ export function makeCourse(seed, sceneIdx) {
 
 // ---- the sled ----
 export function newRun(C) {
-  return { t: 0, d: 0, x: C.center(0), y: C.height(C.center(0), 0), h: 0, vx: 0, vy: 0, v: C.S.v0, air: false, ramp: null, ice: false, jumps: 0, airTime: 0, crashed: null, jumpedAt: -9, landedAt: -9 };
+  return { t: 0, d: 0, x: C.center(0), y: C.height(C.center(0), 0), h: 0, vx: 0, vy: 0, v: C.S.v0, air: false, ramp: null, ice: false, jumps: 0, airTime: 0, crashed: null, jumpedAt: -9, landedAt: -9, big: null, airT: 0 };
 }
 
 // One step of dt seconds. input: -1 left, 0, +1 right. Answers the run (changed in place).
@@ -210,9 +240,17 @@ export function step(st, input, dt, C) {
   } else {
     const r = st.ramp || C.rampAt(st.x, st.d);
     if (r && Math.abs(st.x - r.x) < r.hw + 0.3) {
+      // a big one is ridden from its foot: come at it from the side where it's already up past your knees and you
+      // hit its side (lower down you hop on)
+      if (!st.ramp && r.big && r.h * (st.d - r.d) / r.len > 0.9) return crash(st, r.kind, r);
       st.ramp = r;
-      if (st.d >= r.d + RAMP_LEN) { st.ramp = null; st.air = true; st.vy = JUMP_V; st.h = RAMP_H; st.jumps++; st.jumpedAt = st.t; }
-      else st.h = RAMP_H * Math.max(0, (st.d - r.d) / RAMP_LEN);
+      if (st.d >= r.d + r.len) {
+        st.ramp = null; st.air = true; st.vy = r.vy; st.h = r.h; st.jumps++; st.jumpedAt = st.t;
+        st.big = r.big ? r.kind : null; st.airT = airTime(r.h, r.vy);
+      } else st.h = r.h * Math.max(0, (st.d - r.d) / r.len);
+    } else if (st.ramp && st.h > 0.2) {
+      // steered off its side on the way up: you drop off it (no snap down to the snow)
+      st.ramp = null; st.air = true; st.vy = 0; st.big = null; st.jumpedAt = st.t; st.airT = airTime(st.h, 0);
     } else { st.ramp = null; st.h = 0; }
   }
   st.y = C.height(st.x, st.d) + st.h;
@@ -236,13 +274,15 @@ export const CRASH_WORDS = {
   trees: 'into the trees', pine: 'a pine tree', rock: 'a rock', stump: 'a stump', log: 'a log',
   snowman: 'a snowman', gifts: 'a pile of presents', xmas: 'a Christmas tree', lamp: 'a lamp post', fence: 'a fence',
   spire: 'an ice spire', berg: 'a block of ice', drift: 'a snow drift', crevasse: 'a crevasse',
+  cabin: 'the side of a cabin', trunk: 'a giant log', roof: 'the side of a house', stall: 'a market stall', igloo: 'an igloo', slab: 'a slab of ice',
 };
 
 // The goat that rides by itself behind the menu: steer for the next way through.
 export function botInput(st, C) {
-  const row = C.nextGap(st.d + 3);
-  const tx = row && row.d - st.d < Math.max(40, st.v * 0.9) ? row.gap : C.center(st.d + 28);
-  const err = tx - (st.x + st.vx * 0.32);
+  // (on a ramp, or when the next way through has one: line up with the ramp)
+  const row = st.ramp ? null : C.nextGap(st.d + 3);
+  const tx = st.ramp ? st.ramp.x : row && row.d - st.d < Math.max(40, st.v * 0.9) ? (row.ramp ? row.ramp.x : row.gap) : C.center(st.d + 28);
+  const err = tx - (st.x + st.vx * 0.22);
   return Math.abs(err) < 0.35 ? 0 : Math.sign(err);
 }
 
