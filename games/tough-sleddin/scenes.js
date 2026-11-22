@@ -45,26 +45,45 @@ function snowMaterial(U, { a = '#e9f0ff', b = '#f8faff', bank = '#cdd9f5', glint
   return m;
 }
 function rampMaterial(U, col = '#f4f8ff') { return new THREE.MeshStandardMaterial({ color: col, roughness: 0.65 }); }
-// the mountains all round, carried along with the camera so they stay on the horizon
-function mountains(cols, { seed = 1, height = 150, sharp = 1 } = {}) {
-  const r = rng(seed), N = 220, R = 700, g = new THREE.BufferGeometry(), pos = [], col = [], idx = [];
-  const ph = [r() * 9, r() * 9, r() * 9, r() * 9];
-  const c0 = new THREE.Color(cols.base), c1 = new THREE.Color(cols.cap), c2 = new THREE.Color(cols.low || cols.base);
-  for (let i = 0; i <= N; i++) {
-    const a = (i / N) * Math.PI * 2;
-    let h = Math.abs(Math.sin(a * 3 + ph[0])) * 0.45 + Math.abs(Math.sin(a * 7 + ph[1])) * 0.3 + Math.abs(Math.sin(a * 17 + ph[2])) * 0.15 * sharp + Math.abs(Math.sin(a * 41 + ph[3])) * 0.06 * sharp;
-    h = height * (0.35 + h);
-    const x = Math.cos(a) * R, z = Math.sin(a) * R;
-    pos.push(x, -20, z, x * 1.02, h, z * 1.02);
-    col.push(c2.r, c2.g, c2.b);
-    const cap = new THREE.Color().copy(c0).lerp(c1, Math.min(1, Math.max(0, (h - height * 0.55) / (height * 0.3))));
-    col.push(cap.r, cap.g, cap.b);
-    if (i < N) { const k = i * 2; idx.push(k, k + 2, k + 1, k + 1, k + 2, k + 3); }
+// The mountains on the horizon, drawn in the sky itself (a ring of geometry out there once showed as a striped wall
+// with a band of sky under it, JC: "it doesn't look good"): a far range pale in the haze and a nearer, darker one,
+// sharp peaks with snow on top (brighter on the side facing the sun or moon), and under the horizon a sea of clouds
+// filling the valley (the fog's colour, lit on top: `sea`), so the far end of the snow fades straight into it.
+// Appended to a sky dome whose own sky is sky0().
+function ranges({ far, near, snow, shade, sea, hFar = 0.07, hNear = 0.04, sharp = 1, seed = 1, snowFar = 0.62, snowNear = 0.85, hazeFar = 0.45, hazeNear = 0.18 }) {
+  const r = rng(seed), ph = () => `vec4(${[r(), r(), r(), r()].map((v) => (v * 6.2832).toFixed(3)).join(', ')})`;
+  const c = (hex) => { const k = new THREE.Color(hex); return `vec3(${k.r.toFixed(4)}, ${k.g.toFixed(4)}, ${k.b.toFixed(4)})`; };
+  const f = (v) => v.toFixed(4);
+  return /* glsl */ `
+  uniform vec3 uFogCol;
+  float rdg(float x) { return pow(1.0 - abs(sin(x)), 1.6); }
+  float range(float az, vec4 p) { return 0.42 * rdg(az * 2.0 + p.x) + 0.3 * rdg(az * 5.0 + p.y) + ${f(0.17 * sharp)} * rdg(az * 11.0 + p.z) + ${f(0.07 * sharp)} * rdg(az * 23.0 + p.w); }
+  vec3 peaks(vec3 col, float e, float az, float side, vec4 p, float H, float snowAt, vec3 rock, float hz) {
+    float top = H * (0.22 + range(az, p));
+    float cov = smoothstep(top + 0.0012, top - 0.0012, e);
+    if (cov <= 0.0) return col;
+    float dh = range(az + 0.003, p) - range(az - 0.003, p);
+    float lit = clamp(0.5 + dh * 60.0 * side, 0.0, 1.0);
+    float sn = smoothstep(-0.0015, 0.0015, e - H * snowAt + 0.008 * (vnoise(vec2(az * 80.0, e * 300.0)) - 0.5));
+    vec3 m = mix(rock * (0.85 + 0.3 * lit), mix(${c(shade)}, ${c(snow)}, lit), sn);
+    m = mix(m, uFogCol, hz + (1.0 - hz) * (1.0 - smoothstep(-0.015, top * 0.8, e)));
+    return mix(col, m, cov);
   }
-  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); g.setIndex(idx);
-  const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ vertexColors: true, fog: false, side: THREE.DoubleSide }));
-  m.frustumCulled = false; m.renderOrder = -8;
-  return m;
+  vec3 sky(vec3 d) {
+    vec3 col = sky0(d);
+    float az = atan(d.x, -d.z), e = d.y, side = sin(az - atan(uSun.x, -uSun.z));
+    col = peaks(col, e, az, side, ${ph()}, ${f(hFar)}, ${f(snowFar)}, ${c(far)}, ${f(hazeFar)});
+    col = peaks(col, e, az, side, ${ph()}, ${f(hNear)}, ${f(snowNear)}, ${c(near)}, ${f(hazeNear)});
+    // the sea of clouds below (billows shrinking toward the horizon, drifting; plain haze right at the horizon
+    // where they'd shimmer, and plain haze far below where the snow's own fog meets it)
+    if (e < 0.0) {
+      vec2 q = d.xz / max(-e, 0.004) * 0.32 + vec2(uTime * 0.012, uTime * 0.004);
+      float b = smoothstep(0.4, 0.8, fbm(q)) * smoothstep(-0.002, -0.03, e) * smoothstep(-0.32, -0.12, e);
+      vec3 sea = mix(uFogCol * 0.94, ${c(sea)}, b * 0.6) + ${c(sea)} * 0.12 * smoothstep(-0.05, 0.0, e);
+      col = mix(col, sea, smoothstep(0.0, -0.012, e));
+    }
+    return col;
+  }`;
 }
 // a start arch with the place's name, and distance flags down the run
 function startArch(U, props, name, colors) {
@@ -85,13 +104,13 @@ function startArch(U, props, name, colors) {
 /* =================== Pinewood Run =================== */
 function pinewood({ U }) {
   const scene = new THREE.Scene();
-  const fog = new THREE.FogExp2('#cfe2f8', 0.0052);
+  const fog = new THREE.FogExp2('#cfe2f8', 0.0045);
   scene.fog = fog;
   const SUN = new THREE.Vector3(-0.35, 0.32, -0.88).normalize();
   U.uSun.value.copy(SUN);
   const sky = skyDome(U, /* glsl */ `
     vec3 S(float r, float g, float b) { return pow(vec3(r, g, b), vec3(2.2)); }
-    vec3 sky(vec3 d) {
+    vec3 sky0(vec3 d) {
       float h = max(d.y, -0.2);
       vec3 col = mix(S(0.80, 0.90, 1.0), S(0.30, 0.55, 0.92), smoothstep(-0.02, 0.55, h));
       float sd = max(dot(d, uSun), 0.0);
@@ -103,12 +122,10 @@ function pinewood({ U }) {
       vec3 cc = mix(S(0.82, 0.86, 0.94), S(1.0, 1.0, 1.0), smoothstep(0.0, 0.4, fbm(uv + 1.7))) + S(1.0, 0.9, 0.7) * pow(sd, 8.0) * 0.4;
       col = mix(col, cc, cl * smoothstep(0.02, 0.18, h) * 0.85);
       return col;
-    }`);
+    }` + ranges({ far: '#9ab2da', near: '#6684b8', snow: '#ffffff', shade: '#b4c6ea', sea: '#ffffff', seed: 3, hFar: 0.075, hNear: 0.042 }));
   scene.add(sky);
   const sunGlow = glow(U, '#fff2cc', 160, 0.55, { order: -5 });
   scene.add(sunGlow);
-  const mtn = mountains({ base: '#6f8fc4', cap: '#f4f8ff', low: '#9db5dc' }, { seed: 3, height: 105 });
-  scene.add(mtn);
   const hemi = new THREE.HemisphereLight('#bcd4ff', '#eef2ff', 0.85);
   const sun = new THREE.DirectionalLight('#ffeacc', 1.9);
   sun.position.set(-0.5, 0.75, 0.5);
@@ -192,7 +209,7 @@ function pinewood({ U }) {
       for (let f = Math.ceil((d0 * FT) / 1000) * 1000; f < d1 * FT; f += 1000) if (f > 0) group.add(distFlag(U, props, f, C, '#2a5e44'));
     },
     update(dt, t, { mode, camera, goat, d }) {
-      sky.position.copy(camera.position); mtn.position.set(camera.position.x, camera.position.y - 45, camera.position.z);
+      sky.position.copy(camera.position);
       arch.visible = mode !== 'menu';
       sunGlow.position.copy(camera.position).addScaledVector(SUN, 420); sunGlow.lookAt(camera.position);
       chimneys = chimneys.filter((c) => c.z < -(d - 60));
@@ -206,7 +223,7 @@ function pinewood({ U }) {
 /* =================== Lantern Village =================== */
 function village({ U }) {
   const scene = new THREE.Scene();
-  const fog = new THREE.FogExp2('#4a4677', 0.0105);
+  const fog = new THREE.FogExp2('#4a4677', 0.0068);
   scene.fog = fog;
   const DUSK = new THREE.Vector3(-0.25, 0.08, -0.96).normalize();
   const MOON = new THREE.Vector3(0.5, 0.42, -0.75).normalize();
@@ -215,7 +232,7 @@ function village({ U }) {
   const sky = skyDome(U, /* glsl */ `
     uniform vec3 uMoon;
     vec3 S(float r, float g, float b) { return pow(vec3(r, g, b), vec3(2.2)); }
-    vec3 sky(vec3 d) {
+    vec3 sky0(vec3 d) {
       float h = d.y;
       float glowAz = max(dot(normalize(vec3(d.x, 0.0, d.z)), normalize(vec3(uSun.x, 0.0, uSun.z))), 0.0);
       vec3 col = mix(S(1.0, 0.62, 0.42), S(0.55, 0.42, 0.72), smoothstep(-0.02, 0.18, h));
@@ -233,10 +250,8 @@ function village({ U }) {
       float cl = smoothstep(0.55, 0.82, fbm(uv));
       col = mix(col, mix(S(0.95, 0.55, 0.55), S(0.3, 0.28, 0.5), smoothstep(0.05, 0.4, h)), cl * smoothstep(0.02, 0.15, h) * 0.75);
       return col;
-    }`, M);
+    }` + ranges({ far: '#45437e', near: '#2d2e5c', snow: '#f6cddb', shade: '#7270ad', sea: '#c99bc4', seed: 8, hFar: 0.062, hNear: 0.035 }), M);
   scene.add(sky);
-  const mtn = mountains({ base: '#2c2f5c', cap: '#8d8fc6', low: '#3c3a6c' }, { seed: 8, height: 80 });
-  scene.add(mtn);
   const hemi = new THREE.HemisphereLight('#8a86d8', '#e6dcff', 0.95);
   const key = new THREE.DirectionalLight('#ffb48e', 0.55);
   key.position.set(-0.4, 0.5, -0.8);
@@ -362,7 +377,7 @@ function village({ U }) {
       for (let f = Math.ceil((d0 * FT) / 1000) * 1000; f < d1 * FT; f += 1000) if (f > 0) group.add(distFlag(U, props, f, C, '#b0302f'));
     },
     update(dt, t, { mode, camera, d }) {
-      sky.position.copy(camera.position); mtn.position.set(camera.position.x, camera.position.y - 40, camera.position.z);
+      sky.position.copy(camera.position);
       arch.visible = mode !== 'menu';
       chimneys = chimneys.filter((c) => c.z < -(d - 60) && c.z > -(d + 200));
       if (t - lastSmoke > 0.3) { lastSmoke = t; for (const c of chimneys) smoke.emit(c, 1, { speed: 0.35, up: 1, size: 1.2, life: 4.5, color: '#8b86b8', spread: 0.2, dir: { x: 0.3, y: 0.3, z: 0 } }); }
@@ -374,7 +389,7 @@ function village({ U }) {
 /* =================== Aurora Glacier =================== */
 function glacier({ U }) {
   const scene = new THREE.Scene();
-  const fog = new THREE.FogExp2('#101c3e', 0.0085);
+  const fog = new THREE.FogExp2('#101c3e', 0.006);
   scene.fog = fog;
   const MOON = new THREE.Vector3(0.42, 0.14, -0.9).normalize();
   U.uSun.value.copy(MOON);
@@ -399,7 +414,7 @@ function glacier({ U }) {
       return acc * uAur;
     }`;
   const sky = skyDome(U, AURORA + /* glsl */ `
-    vec3 sky(vec3 d) {
+    vec3 sky0(vec3 d) {
       float h = d.y;
       vec3 col = mix(S(0.1, 0.17, 0.36), S(0.015, 0.025, 0.07), smoothstep(-0.02, 0.6, h));
       vec2 g = floor(d.xz / (h + 1.2) * 360.0);
@@ -409,12 +424,10 @@ function glacier({ U }) {
       col = mix(col, S(0.95, 0.96, 1.0) * (0.8 + 0.2 * vnoise(d.xy * 400.0)) * 3.0, smoothstep(0.99965, 0.9998, md));
       col += S(0.6, 0.75, 1.0) * (pow(md, 400.0) * 0.6 + pow(md, 25.0) * 0.12);
       return col;
-    }`, A);
+    }` + ranges({ far: '#2e4886', near: '#1e2f60', snow: '#d2e2ff', shade: '#5a74b6', sea: '#7f9fd8', snowFar: 0.5, snowNear: 0.75, seed: 13, hFar: 0.075, hNear: 0.04, sharp: 1.8 }), A);
   scene.add(sky);
   const moonGlow = glow(U, '#9fc4ff', 110, 0.45, { order: -5 });
   scene.add(moonGlow);
-  const mtn = mountains({ base: '#16234a', cap: '#9ec4ff', low: '#1c2c58' }, { seed: 13, height: 115, sharp: 2.2 });
-  scene.add(mtn);
   const hemi = new THREE.HemisphereLight('#5a7cd0', '#e2eeff', 1.35);
   const key = new THREE.DirectionalLight('#b6d2ff', 1.6); key.position.set(0.4, 0.6, -0.7);
   const aur = new THREE.DirectionalLight('#5cffb0', 0.45); aur.position.set(-0.5, 0.7, -0.4);
@@ -524,7 +537,7 @@ function glacier({ U }) {
       for (let f = Math.ceil((d0 * FT) / 1000) * 1000; f < d1 * FT; f += 1000) if (f > 0) group.add(distFlag(U, props, f, C, '#16234a'));
     },
     update(dt, t, { mode, camera, goat }) {
-      sky.position.copy(camera.position); mtn.position.set(camera.position.x, camera.position.y - 45, camera.position.z);
+      sky.position.copy(camera.position);
       arch.visible = mode !== 'menu';
       moonGlow.position.copy(camera.position).addScaledVector(MOON, 420); moonGlow.lookAt(camera.position);
       A.uAur.value = 0.85 + 0.2 * Math.sin(t * 0.35);

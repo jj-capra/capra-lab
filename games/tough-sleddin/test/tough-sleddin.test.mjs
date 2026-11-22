@@ -1,7 +1,7 @@
 // Tough Sleddin: the courses always leave a way through, the sled steers, jumps, slides and crashes the way
 // it should, and the score is feet.
 import assert from 'node:assert/strict';
-import { SCENES, KINDS, ROW, FIRST, LAT_MAX, RAMP_LEN, makeCourse, newRun, step, botInput, feet, FT, shareRows, speedAt, CRASH_WORDS } from '../logic.mjs';
+import { SCENES, KINDS, ROW, FIRST, LAT_MAX, RAMP_LEN, AIR_T, MPH, makeCourse, newRun, step, botInput, feet, FT, shareRows, speedAt, CRASH_WORDS } from '../logic.mjs';
 import { EARN } from '../../../public/lab/wallet-catalog.mjs';
 
 let n = 0;
@@ -17,6 +17,8 @@ test('three winter worlds, each with its own things in the way', () => {
     for (const k of [...Object.keys(S.kinds), S.barrier]) assert.ok(CRASH_WORDS[k], `${k} has words for the card`);
   }
   assert.ok(SCENES[2].ice, 'the glacier has ice');
+  // twice the first day's speeds (JC: "Double the speed"): over 65 mph from the start, past 150 at the top
+  for (const S of SCENES) assert.ok(S.v0 * MPH > 65 && S.vMax * MPH > 150, `${S.id}: fast`);
 });
 
 test('the same seed makes the same run', () => {
@@ -50,6 +52,9 @@ test('every row leaves a gap, and you can steer from one gap to the next', () =>
       }
       last = row;
     }
+    // a jump lands before the next ramp (you can't take a ramp you're flying over)
+    const rs = C.ramps(0, 4000);
+    for (let i = 1; i < rs.length; i++) assert.ok(rs[i].d - rs[i - 1].d > speedAt(C.S, rs[i - 1].d) * AIR_T + RAMP_LEN, `ramps apart at ${rs[i].d}`);
     assert.equal(C.rows[0].d, FIRST);
     assert.equal(C.rows[1].d - C.rows[0].d, ROW);
   }
@@ -60,11 +65,11 @@ test('a goat that steers for the gaps gets a long way in every world', () => {
     const far = [];
     for (let seed = 1; seed <= 12; seed++) {
       const C = makeCourse(seed * 7919, s), st = newRun(C);
-      while (!st.crashed && st.d < 3000) step(st, botInput(st, C), H, C);
+      while (!st.crashed && st.d < 6000) step(st, botInput(st, C), H, C);
       far.push(st.d);
     }
     far.sort((a, b) => a - b);
-    assert.ok(far[6] > 1200, `${SCENES[s].name}: half the rides past 1,200 m (median ${far[6].toFixed(0)})`);
+    assert.ok(far[6] > 2400, `${SCENES[s].name}: half the rides past 2,400 m (median ${far[6].toFixed(0)})`);
   }
 });
 

@@ -10,7 +10,7 @@ import { THREE, shared, shaderMat, quadInstances, bursts, merge, mat, canvasTex 
 import { KINDS, RAMP_LEN, RAMP_H, SLOPE, EDGE } from './logic.mjs';
 import { SCENE_BUILDERS } from './scenes.js';
 
-const CHUNK = 50, AHEAD = 260, BEHIND = 40;
+const CHUNK = 50, AHEAD = 340, BEHIND = 40;
 const INK = new THREE.Color('#1a1222');
 
 export function createWorld(canvas, { level = 0 } = {}) {
@@ -73,7 +73,7 @@ export function createWorld(canvas, { level = 0 } = {}) {
   flakes.frustumCulled = false; flakes.renderOrder = 20;
 
   /* ---------------- the snow, chunk by chunk ---------------- */
-  const tmpV = new THREE.Vector3();
+  const tmpV = new THREE.Vector3(), tmpS = new THREE.Vector3();
   function terrainGeo(k) {
     const cols = 40, rows = 10, W = 95, d0 = k * CHUNK;
     const g = new THREE.BufferGeometry();
@@ -204,6 +204,10 @@ export function createWorld(canvas, { level = 0 } = {}) {
 
   /* ---------------- each frame ---------------- */
   const cam = { x: 0, y: 0, z: 0, lx: 0, ly: 0, lz: 0, fov: 60, roll: 0, shake: 0, ready: false };
+  const tilt = { x: 0, z: 0 };
+  const ground = (x, d) => C.height(x, d);
+  // the snow's slope at a spot: down the hill (negative: it drops) and across (positive: rising to the right)
+  const slopeAt = (x, d) => [(ground(x, d + 0.9) - ground(x, d - 0.9)) / 1.8, (ground(x + 0.9, d) - ground(x - 0.9, d)) / 1.8];
   function frame(st, { mode = 'play', dt = 1 / 60, t = 0, input = 0, intro = 1 } = {}) {
     if (!place) return;
     U.uTime.value = t;
@@ -215,20 +219,29 @@ export function createWorld(canvas, { level = 0 } = {}) {
     if (!crash) {
       goat.root.position.set(gx, gy, -d);
       goat.root.rotation.set(0, 0, 0);
-      goat.rider.rotation.set(-0.06 + (st.air ? -0.15 : 0), yaw, -st.vx * 0.035 - input * 0.12);
       goat.saucer.rotation.y += dt * (2.2 + Math.abs(st.vx) * 0.5 + (st.air ? 4 : 0));
-      // tilt the saucer to the snow (the hill's slope)
-      goat.saucer.rotation.x = st.air ? -0.2 : Math.atan(SLOPE) * 0.9;
-      goat.saucer.rotation.z = -st.vx * 0.02;
+      // the saucer lies on the snow: front down the hill, tipped up the bank (it was once tilted the wrong way and
+      // its back half sank into the snow); up a ramp it tips up, off the lip nose up, then nose down to land
+      const [fall, across] = slopeAt(gx, d);
+      const pitch = st.air ? Math.max(-0.42, Math.min(0.3, st.vy * 0.035)) + Math.atan(fall) * 0.4 : Math.atan(fall) + (st.ramp ? Math.atan(RAMP_H / RAMP_LEN) : 0);
+      const roll = st.air ? 0 : Math.atan(across);
+      const kt = Math.min(1, dt * 14);
+      tilt.x += (pitch - tilt.x) * kt; tilt.z += (roll - tilt.z) * kt;
+      goat.saucer.position.set(0, 0.03, 0);
+      goat.saucer.rotation.x = tilt.x;
+      goat.saucer.rotation.z = tilt.z - st.vx * 0.012;
+      goat.rider.rotation.set(tilt.x * 0.85 - 0.05 + (st.air ? -0.1 : 0), yaw, tilt.z * 0.6 - st.vx * 0.035 - input * 0.12);
       goat.flap(t, st.v);
-    } else goat.tumble(crash, t, dt);
-    // its shadow on the snow, smaller and fainter the higher it flies
-    const gr = C.height(goat.root.position.x, -goat.root.position.z);
-    const lift = Math.max(0, goat.root.position.y - gr);
-    shadow.position.set(goat.root.position.x, gr + 0.06, goat.root.position.z);
+    } else goat.tumble(crash, t, dt, ground);
+    // its shadow on the snow (lying on the slope there), smaller and fainter the higher it flies
+    const gp = crash ? goat.rider.getWorldPosition(tmpS) : goat.root.position;
+    const shx = gp.x, shd = -gp.z;
+    const gr = ground(shx, shd), [sf, sa] = slopeAt(shx, shd);
+    const lift = Math.max(0, gp.y - gr - (crash ? 0.25 : 0));
+    shadow.position.set(shx, gr + 0.07, -shd);
     shadow.scale.setScalar(2.3 / (1 + lift * 0.35));
     shadow.material.opacity = 1 / (1 + lift * 0.5);
-    shadow.rotation.x = -Math.PI / 2 + Math.atan(SLOPE);
+    shadow.rotation.set(-Math.PI / 2 + Math.atan(sf), -Math.atan(sa), 0);
     // snow thrown up: more when carving, a burst on landing, none in the air
     if (mode !== 'idle' && !st.air && !crash && t - lastSpray > 1 / 50) {
       lastSpray = t;
@@ -245,13 +258,21 @@ export function createWorld(canvas, { level = 0 } = {}) {
     const k = 1 - Math.exp(-dt * 7);
     let px, py, pz, lx, ly, lz;
     if (crash) {
-      // swing round to watch the goat land in the snow
+      // swing round from behind to the open side (toward the middle of the track, away from the trees) to watch
+      // the goat land in the snow, always up above the snow there (it once sank into the hill and the goat
+      // seemed to float over nothing)
       const g = goat.rider.getWorldPosition(tmpV);
-      const ct = Math.min(1, (t - crash.t0) / 1.4);
-      px = crash.x + 4.5 * ct + (1 - ct) * 0; py = g.y + 2.2 + 1.5 * (1 - ct); pz = -crash.d + 6 - 9 * ct;
-      lx = g.x; ly = g.y + 0.4; lz = g.z;
+      const e = easeIO(Math.min(1, (t - crash.t0) / 1.4));
+      const side = Math.sign(C.center(crash.d) - crash.x) || 1;
+      // (high up and looking down on it, over the posts and trees around, and with the goat in the top half of the
+      // picture: the card comes up over the bottom half)
+      px = g.x + side * 5 * e; pz = g.z + 8.2 * (1 - e) - 1.5 * e;
+      py = Math.max(g.y + 4.4 * (1 - e) + 5.8 * e, ground(px, -pz) + 1.9);
+      lx = g.x; ly = g.y + 0.4 - 1.9 * e; lz = g.z;
     } else {
-      const play = { px: gx * 0.75 + C.center(d + 10) * 0.25, py: gy + 2.9 + SLOPE * 8.2, pz: -d + 8.2, lx: gx * 0.55 + C.center(d + 34) * 0.45, ly: gy - SLOPE * 30 + 0.2, lz: -d - 30 };
+      // (it pulls back a little and looks farther ahead as you speed up: at full speed the next 2 seconds are 140 m)
+      const back = 8.2 + v01 * 1.2, ahead = 30 + v01 * 14;
+      const play = { px: gx * 0.92 + C.center(d + 10) * 0.08, py: gy + 2.9 + v01 * 0.5 + SLOPE * back, pz: -d + back, lx: gx * 0.8 + C.center(d + ahead + 4) * 0.2, ly: gy - SLOPE * ahead + 0.2, lz: -d - ahead };
       if (mode === 'menu' || intro < 1) {
         // in front of the goat looking back up at it, swinging round behind it as the countdown runs
         const a = Math.sin(t * 0.25) * 0.6;
@@ -264,8 +285,11 @@ export function createWorld(canvas, { level = 0 } = {}) {
     }
     if (!cam.ready) { cam.x = px; cam.y = py; cam.z = pz; cam.lx = lx; cam.ly = ly; cam.lz = lz; cam.ready = true; }
     // z and the look follow tightly (the hill doesn't lag), x and y ease
-    cam.x += (px - cam.x) * k; cam.y += (py - cam.y) * Math.min(1, k * 1.6); cam.z += (pz - cam.z) * Math.min(1, k * 3);
-    cam.lx += (lx - cam.lx) * k; cam.ly += (ly - cam.ly) * Math.min(1, k * 1.6); cam.lz += (lz - cam.lz) * Math.min(1, k * 3);
+    // (sideways it keeps up quicker: at full tilt you cross the track in a second)
+    cam.x += (px - cam.x) * Math.min(1, k * 2); cam.y += (py - cam.y) * Math.min(1, k * 1.6); cam.z += (pz - cam.z) * Math.min(1, k * 3);
+    cam.lx += (lx - cam.lx) * Math.min(1, k * 2); cam.ly += (ly - cam.ly) * Math.min(1, k * 1.6); cam.lz += (lz - cam.lz) * Math.min(1, k * 3);
+    // never under the snow (the banks rise steeply past the edges)
+    cam.y = Math.max(cam.y, ground(cam.x, -cam.z) + 1.1);
     cam.shake *= Math.exp(-dt * 6);
     const sh = cam.shake;
     camera.position.set(cam.x + (Math.random() - 0.5) * sh, cam.y + (Math.random() - 0.5) * sh, cam.z);
@@ -333,6 +357,7 @@ function starGeo() {
 function buildGoat(U) {
   const root = new THREE.Group();
   const saucer = new THREE.Group(), rider = new THREE.Group();
+  saucer.rotation.order = 'ZXY';     // the spin is its own; the tilt to the snow stays put while it spins
   root.add(saucer, rider);
   const mats = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.55, metalness: 0.05 });
   const S = (r, w = 20, h = 14) => new THREE.SphereGeometry(r, w, h), Cy = (a, b, h, s = 16) => new THREE.CylinderGeometry(a, b, h, s);
@@ -411,28 +436,36 @@ function buildGoat(U) {
       head.rotation.set(0, 0, 0);
     },
     flap(t, v) {
-      tails.forEach((g, i) => { g.rotation.x = -0.25 + Math.sin(t * (9 + v * 0.3) + i * 1.7) * (0.25 + v * 0.008); g.rotation.y = Math.sin(t * 5 + i) * 0.2; });
+      tails.forEach((g, i) => { g.rotation.x = -0.25 + Math.sin(t * (9 + v * 0.16) + i * 1.7) * (0.25 + v * 0.004); g.rotation.y = Math.sin(t * 5 + i) * 0.2; });
       head.rotation.y = Math.sin(t * 0.9) * 0.08; head.rotation.x = Math.sin(t * 1.7) * 0.03;
     },
     startTumble(c) {
       // the saucer skids on, the goat flies off it in a tumble and lands in the snow
-      tumbleState = { c, vx: c.vx * 0.3, vy: 5.5, vz: -Math.min(14, c.v * 0.42), x: 0, y: 0.3, z: 0, spin: 7 + Math.random() * 4, sx: 0, sz: 0, svz: -c.v * 0.5, rest: false };
+      tumbleState = { c, vx: c.vx * 0.3, vy: 5.5, vz: -Math.min(14, c.v * 0.3), x: 0, y: 0.3, z: 0, spin: 7 + Math.random() * 4, sx: 0, sz: 0, svz: -Math.min(22, c.v * 0.4), rest: false };
     },
-    tumble(c, t, dt) {
+    // ground(x, d): the snow's height (the real hill, its rolls and banks: the goat lands on it, not in it)
+    tumble(c, t, dt, ground) {
       const T = tumbleState;
       if (!T) return;
       root.position.set(c.x, c.y, -c.d);
       // the rider
       if (!T.rest) {
         T.vy -= 16 * dt; T.x += T.vx * dt; T.y += T.vy * dt; T.z += T.vz * dt;
-        const gyRel = -SLOPE * (-T.z) * 1;     // the snow drops away as it flies on down the hill
-        if (T.y < gyRel + 0.25 && T.vy < 0) { if (Math.abs(T.vy) > 3) { T.vy = -T.vy * 0.35; T.vz *= 0.6; T.spin *= 0.5; } else { T.rest = true; T.y = gyRel + 0.25; } }
+        const gyRel = ground(c.x + T.x, c.d - T.z) - c.y;
+        if (T.y < gyRel + 0.25) {
+          T.y = gyRel + 0.25;
+          if (T.vy < 0) { if (Math.abs(T.vy) > 3) { T.vy = -T.vy * 0.35; T.vz *= 0.6; T.vx *= 0.6; T.spin *= 0.5; } else { T.rest = true; T.vy = 0; } }
+        }
         rider.rotation.x += T.spin * dt; rider.rotation.z += T.spin * 0.3 * dt;
-      } else { rider.rotation.x += (Math.PI * 0.5 - rider.rotation.x % (Math.PI * 2)) * 0; }
+      } else {
+        // sliding to a stop on the snow
+        T.vz *= Math.exp(-dt * 3); T.vx *= Math.exp(-dt * 3); T.x += T.vx * dt; T.z += T.vz * dt;
+        T.y = ground(c.x + T.x, c.d - T.z) - c.y + 0.25;
+      }
       rider.position.set(T.x, T.y, T.z);
-      // the saucer
-      T.svz *= Math.exp(-dt * 1.6); T.sz += T.svz * dt; T.sx += c.vx * 0.4 * dt;
-      saucer.position.set(T.sx, -SLOPE * (-T.sz) + 0.02, T.sz);
+      // the saucer skids on down the hill on the snow
+      T.svz *= Math.exp(-dt * 1.6); T.sz += T.svz * dt; T.sx += c.vx * 0.4 * dt * Math.exp(-(t - c.t0) * 1.6);
+      saucer.position.set(T.sx, ground(c.x + T.sx, c.d - T.sz) - c.y + 0.03, T.sz);
       saucer.rotation.y += dt * 9 * Math.exp(-(t - c.t0));
     },
   };

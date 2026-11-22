@@ -8,17 +8,22 @@
 // is US measures (JC, Nov 22 2026: "Only US measurements should be used"): the score in feet, speed in mph.
 // x, d and y: three.js puts a point at
 // (x, y, -d). The track snakes left and right (center(d)), narrows as you go, and drops 0.2 m every meter with
-// gentle rolls; past its edge a snowbank rises into the trees. Obstacles come in rows 6 m apart, and every row
+// gentle rolls; past its edge a snowbank rises into the trees. Obstacles come in rows 10 m apart, and every row
 // with something in it leaves a gap you can reach from the last one at the speed you'll be going.
+//
+// Twice as fast since the first day (JC, Nov 22 2026: "Double the speed"): every speed doubled, the sideways push
+// raised to match, and the course stretched down the hill (rows, bends, the run-in, how soon it gets hard) so it
+// keeps coming at you about as often as before, only faster.
 
-export const ROW = 6;            // meters between rows of obstacles
-export const FIRST = 70;         // a clear run-in before the first row
+export const ROW = 10;           // meters between rows of obstacles
+export const FIRST = 140;        // a clear run-in before the first row
 export const SLOPE = 0.2;        // the hill drops this much a meter
 export const SLED_R = 0.8;       // the saucer's radius for crashes
-export const STEER = 34;         // m/s² of sideways push from an arrow
-export const LAT_MAX = 11;       // fastest sideways speed
+export const STEER = 52;         // m/s² of sideways push from an arrow
+export const LAT_MAX = 15;       // fastest sideways speed
 export const G = 18;             // gravity in the air (a bit floaty: it's a cartoon)
 export const RAMP_H = 0.9, RAMP_LEN = 3.6, JUMP_V = 7;   // a jump: off the ramp's lip at 7 m/s up (under a second in the air)
+export const AIR_T = (JUMP_V + Math.sqrt(JUMP_V * JUMP_V + 2 * G * RAMP_H)) / G;   // how long a jump lasts
 export const EDGE = 1.2;         // past the track's edge by this much is the tree line
 
 // What can be in the way: r (crash radius), h (how high you must be flying to clear it; 99: you can't), and
@@ -33,13 +38,13 @@ export const KINDS = {
 export const SCENES = [
   { id: 'pinewood', name: 'Pinewood Run', emoji: '🌲', time: 'a sunny morning',
     blurb: 'A sunny morning in the snowy pines. Dodge the trees and rocks; hit a snow ramp to fly over the logs.',
-    v0: 15, vMax: 34, acc: 0.3, width: 12, narrow: 3.5, dens: [0.3, 0.72], kinds: { pine: 5, rock: 3, stump: 2 }, barrier: 'log', pBarrier: 0.1, pRamp: 0.07 },
+    v0: 30, vMax: 68, acc: 0.6, width: 12, narrow: 3.5, dens: [0.3, 0.72], kinds: { pine: 5, rock: 3, stump: 2 }, barrier: 'log', pBarrier: 0.1, pRamp: 0.07 },
   { id: 'village', name: 'Lantern Village', emoji: '🏘️', time: 'dusk',
     blurb: 'Down the main street at dusk, lanterns lit. Snowmen, presents and fences everywhere.',
-    v0: 16, vMax: 36, acc: 0.32, width: 11, narrow: 3, dens: [0.36, 0.78], kinds: { snowman: 4, gifts: 3, xmas: 3, lamp: 1 }, barrier: 'fence', pBarrier: 0.11, pRamp: 0.08 },
+    v0: 32, vMax: 72, acc: 0.64, width: 11, narrow: 3, dens: [0.36, 0.78], kinds: { snowman: 4, gifts: 3, xmas: 3, lamp: 1 }, barrier: 'fence', pBarrier: 0.11, pRamp: 0.08 },
   { id: 'glacier', name: 'Aurora Glacier', emoji: '🧊', time: 'night',
     blurb: 'Under the northern lights. Ice spires, crevasses to jump, and slippery ice that slides you sideways.',
-    v0: 17, vMax: 38, acc: 0.34, width: 11.5, narrow: 3, dens: [0.32, 0.75], kinds: { spire: 5, berg: 3, drift: 2 }, barrier: 'crevasse', pBarrier: 0.11, pRamp: 0.07, ice: true },
+    v0: 34, vMax: 76, acc: 0.68, width: 11.5, narrow: 3, dens: [0.32, 0.75], kinds: { spire: 5, berg: 3, drift: 2 }, barrier: 'crevasse', pBarrier: 0.11, pRamp: 0.07, ice: true },
 ];
 
 // ---- seeded randomness ----
@@ -73,10 +78,12 @@ export function makeCourse(seed, sceneIdx) {
 
   // the track: straight at first, curvier as you go
   function center(d) {
-    const k = clamp(d / 600, 0, 1);
-    return k * (10 * Math.sin(d / 120 + P[0]) + 4 * Math.sin(d / 53 + P[1]) + 1.5 * Math.sin(d / 31 + P[2]));
+    const k = clamp(d / 1200, 0, 1);
+    return k * (10 * Math.sin(d / 200 + P[0]) + 4 * Math.sin(d / 88 + P[1]) + 1.5 * Math.sin(d / 52 + P[2]));
   }
-  const halfWidth = (d) => S.width - S.narrow * clamp(d / 2500, 0, 1);
+  const halfWidth = (d) => S.width - S.narrow * clamp(d / 5000, 0, 1);
+  // meters in the air off a ramp at d (a jump lasts the same time whatever the speed, so it flies farther later)
+  const flight = (d) => speedAt(S, Math.max(0, d)) * AIR_T + 2;
   // the snow: down the hill, gentle rolls, a bank past the edge rising into the trees
   function bank(e) { return e <= 0 ? 0 : 2.2 * (1 - Math.exp(-e / 3)) + 0.1 * e + 0.6 * Math.sin(e * 0.21 + P[5]) * Math.min(1, e / 12); }
   function height(x, d) {
@@ -89,12 +96,12 @@ export function makeCourse(seed, sceneIdx) {
     const hw = halfWidth(d), c = center(d);
     const row = { d, gap: null, obs: [], ramp: null };
     rows.push(row);
-    const k = clamp(d / 3000, 0, 1), dens = S.dens[0] + (S.dens[1] - S.dens[0]) * k;
+    const k = clamp(d / 6000, 0, 1), dens = S.dens[0] + (S.dens[1] - S.dens[0]) * k;
     if (cool > 0) { cool--; since++; return; }
     if (rr() > dens) { since++; return; }
     // where the way through is: no farther from the last gap than you can steer before you get there (for a
     // barrier, before its ramp, 14 m sooner)
-    const pick = rr(), barrier = d > 260 && since >= 2 && pick < S.pBarrier && d - 14 - lastRampD > 32;
+    const pick = rr(), barrier = d > 450 && since >= 2 && pick < S.pBarrier && d - 14 - lastRampD > flight(lastRampD) + 8;
     const to = d - (barrier ? 14 : 0);
     let run = to - lastGapD;
     for (const [a, b] of flights) run -= 0.75 * Math.max(0, Math.min(b, to) - Math.max(a, lastGapD));
@@ -110,15 +117,15 @@ export function makeCourse(seed, sceneIdx) {
       const o = { kind: S.barrier, d, x: (x0 + x1) / 2, x0, x1, ...KINDS[S.barrier], s: 1, yaw: 0 };
       row.obs.push(o); obstacles.push(o);
       const ramp = { d: d - 14, x: c + gap, hw: 2.3 };
-      row.ramp = ramp; ramps.push(ramp); lastRampD = ramp.d; flights.push([ramp.d + RAMP_LEN, ramp.d + RAMP_LEN + 32]);
+      row.ramp = ramp; ramps.push(ramp); lastRampD = ramp.d; flights.push([ramp.d + RAMP_LEN, ramp.d + RAMP_LEN + flight(ramp.d)]);
       // nothing in the way of the ramp or just after the barrier
       cool = 2;
       since = 0;
       return;
     }
-    if (pick < S.pBarrier + S.pRamp && since >= 2 && d - 2 - lastRampD > 32) {
+    if (pick < S.pBarrier + S.pRamp && since >= 2 && d - 2 - lastRampD > flight(lastRampD) + 8) {
       const ramp = { d: d - 2, x: c + gap, hw: 2.1 };
-      row.ramp = ramp; ramps.push(ramp); lastRampD = ramp.d; flights.push([ramp.d + RAMP_LEN, ramp.d + RAMP_LEN + 32]);
+      row.ramp = ramp; ramps.push(ramp); lastRampD = ramp.d; flights.push([ramp.d + RAMP_LEN, ramp.d + RAMP_LEN + flight(ramp.d)]);
     }
     // a scatter of things, never in the gap
     const n = 1 + Math.floor(rr() * (1.4 + 2.6 * k));
@@ -138,18 +145,18 @@ export function makeCourse(seed, sceneIdx) {
   // slippery patches on the glacier (ice slides you: little grip, little drag)
   function makeIce(upTo) {
     while (iceUpTo < upTo) {
-      const j = Math.floor(iceUpTo / 90), rr = rng(hash(seed, sceneIdx, j, 9));
-      if (S.ice && iceUpTo > 150 && rr() < 0.35 + 0.35 * clamp(iceUpTo / 3000, 0, 1)) {
-        const d = iceUpTo + rr() * 40, len = 14 + rr() * 16, hw = halfWidth(d);
+      const j = Math.floor(iceUpTo / 150), rr = rng(hash(seed, sceneIdx, j, 9));
+      if (S.ice && iceUpTo > 260 && rr() < 0.35 + 0.35 * clamp(iceUpTo / 6000, 0, 1)) {
+        const d = iceUpTo + rr() * 66, len = 24 + rr() * 26, hw = halfWidth(d);
         const full = rr() < 0.3, w = full ? hw + 1 : 3 + rr() * 4;
         ice.push({ d, len, x: center(d) + (full ? 0 : (rr() * 2 - 1) * (hw - w)), hw: w });
       }
-      iceUpTo += 90;
+      iceUpTo += 150;
     }
   }
   function ensure(d) {
-    while (FIRST + rows.length * ROW < d + 220) makeRow(rows.length);
-    makeIce(d + 260);
+    while (FIRST + rows.length * ROW < d + 400) makeRow(rows.length);
+    makeIce(d + 440);
   }
   // things between d0 and d1 (generated as needed)
   function between(list, d0, d1) {
@@ -234,7 +241,7 @@ export const CRASH_WORDS = {
 // The goat that rides by itself behind the menu: steer for the next way through.
 export function botInput(st, C) {
   const row = C.nextGap(st.d + 3);
-  const tx = row && row.d - st.d < 40 ? row.gap : C.center(st.d + 14);
+  const tx = row && row.d - st.d < Math.max(40, st.v * 0.9) ? row.gap : C.center(st.d + 28);
   const err = tx - (st.x + st.vx * 0.32);
   return Math.abs(err) < 0.35 ? 0 : Math.sign(err);
 }

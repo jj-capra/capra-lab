@@ -147,7 +147,7 @@
 
   /* Sideways (JC, Nov 15 2026: "All games need to maximize viewport in landscape mode... so I can mirror to my
      tv"): the world fills the screen; the menu's words go left and its card right with the goat between, the
-     results in two columns, the arrows stay in the bottom corners. */
+     card after a wipeout to the right, the results in two columns, the arrows stay in the bottom corners. */
   @media (orientation: landscape) and (min-width: 600px) {
     .menu { flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 24px; padding-top: calc(var(--st) + 60px);
       background: linear-gradient(90deg, rgba(10, 8, 20, 0.7), rgba(10, 8, 20, 0) 40%, rgba(10, 8, 20, 0) 60%, rgba(10, 8, 20, 0.7)); }
@@ -161,7 +161,8 @@
     .total span { font-size: clamp(56px, 8vw, 100px); white-space: nowrap; }
     .res-actions .btn { font-size: 16px; padding: 10px 12px; white-space: nowrap; }
     .res-body .col { display: grid; gap: 16px; align-content: start; }
-    .card { width: min(calc(100% - 340px), 460px); bottom: calc(var(--sb) + 10px); gap: 6px; padding: 12px 14px; }
+    /* the card off to the right, so the goat in the snow stays in sight in the middle */
+    .card { left: auto; right: max(16px, var(--sr)); transform: none; width: min(40%, 440px); bottom: calc(var(--sb) + 10px); gap: 6px; padding: 12px 14px; }
     .card .m { font-size: 50px; }
     .card .btn { min-height: 50px; }
   }

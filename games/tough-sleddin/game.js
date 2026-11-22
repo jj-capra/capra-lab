@@ -324,6 +324,9 @@ $('helpBtn').onclick = () => { $('help').hidden = false; $('helpClose').focus();
 $('helpClose').onclick = () => { $('help').hidden = true; if (!prefs.seen) { prefs.seen = true; savePrefs(); } };
 addEventListener('resize', () => W && W.resize());
 if (window.visualViewport) visualViewport.addEventListener('resize', () => W && W.resize());
+// the stage itself changing size (the lab's fill script stretching it to the bottom of the screen in the Home Screen
+// app sends no resize event): the picture follows it, so nothing is left short at the bottom
+if (window.ResizeObserver) new ResizeObserver(() => W && W.resize()).observe($('world'));
 
 // for checking the game by hand
 window.__sled = {
