@@ -173,6 +173,9 @@ export function makeCourse(seed, sceneIdx) {
   // slippery patches on the glacier (ice slides you: little grip, little drag)
   function makeIce(upTo) {
     while (iceUpTo < upTo) {
+      // the rows (and their crevasse jumps) past this stretch first, however far ahead the course was asked for:
+      // so the ice comes out the same for the page drawing far ahead and the server riding a run again
+      while (FIRST + rows.length * ROW < iceUpTo + 200) makeRow(rows.length);
       const j = Math.floor(iceUpTo / 150), rr = rng(hash(seed, sceneIdx, j, 9));
       if (S.ice && iceUpTo > 260 && rr() < 0.35 + 0.35 * clamp(iceUpTo / 6000, 0, 1)) {
         const d = iceUpTo + rr() * 66, len = 24 + rr() * 26, hw = halfWidth(d);
@@ -260,7 +263,10 @@ export function step(st, input, dt, C) {
     if (st.h > o.h) continue;
     if (o.barrier) {
       if (Math.abs(st.d - o.d) < o.hd + SLED_R * 0.6 && st.x > o.x0 - SLED_R * 0.5 && st.x < o.x1 + SLED_R * 0.5) return crash(st, o.kind, o);
-    } else if (Math.hypot(st.x - o.x, st.d - o.d) < o.r * o.s + SLED_R) return crash(st, o.kind, o);
+    } else {
+      const dx = st.x - o.x, dd = st.d - o.d, rr = o.r * o.s + SLED_R;     // (squared: exact on every phone and the server)
+      if (dx * dx + dd * dd < rr * rr) return crash(st, o.kind, o);
+    }
   }
   return st;
 }
@@ -268,6 +274,36 @@ function crash(st, kind, o) { st.crashed = { kind, o, d: st.d, x: st.x, v: st.v,
 export const FT = 3.28084, MPH = 2.23694;
 // the score: feet down the hill
 export const feet = (st) => Math.floor((st.crashed ? st.crashed.d : st.d) * FT);
+
+/* ---- Today's run (JC, Nov 22 2026: "Tough sledding just needs a longest leaderboard for the day. Same thing,
+   they get a trophy"): the day's three courses, the same for everyone, and the daily board (lab/daily.js) rides
+   each world again from the arrows you held, step by step, so the feet on the board are the feet you sledded. ---- */
+export const H = 1 / 120;                  // one step of the sled: the page runs it at this rate too
+export const WORLDS = SCENES.length;
+export const MAX_STEPS = 120 * 60 * 20;    // twenty minutes in one world (nobody lasts that long)
+export const daySeed = (date) => hash(...String(date).split('').map((c) => c.charCodeAt(0)), 1122);
+// Today's run No. 1 was Nov 22 2026
+export const sledNo = (date) => Math.round((Date.parse(date + 'T12:00:00Z') - Date.parse('2026-11-22T12:00:00Z')) / 86400000) + 1;
+// the arrows held a step at a time, kept as runs: [input, steps, input, steps, ...]
+export function logInput(log, v) { if (log.length && log[log.length - 2] === v) log[log.length - 1]++; else log.push(v, 1); }
+export function cleanLog(log) {
+  if (!Array.isArray(log) || log.length % 2 || log.length > 80000) return null;
+  let steps = 0;
+  for (let i = 0; i < log.length; i += 2) {
+    const v = log[i], n = log[i + 1];
+    if ((v !== -1 && v !== 0 && v !== 1) || !Number.isInteger(n) || n < 1) return null;
+    if ((steps += n) > MAX_STEPS) return null;
+  }
+  return log;
+}
+// One world ridden again from its log: how far (feet), how long (seconds), what it hit ('end': the log stopped first).
+export function replay(seed, sceneIdx, log) {
+  const C = makeCourse(seed, sceneIdx), st = newRun(C);
+  ride: for (let i = 0; i < log.length; i += 2) {
+    for (let k = 0; k < log[i + 1]; k++) { step(st, log[i], H, C); if (st.crashed) break ride; }
+  }
+  return { ft: feet(st), t: st.t, hit: st.crashed ? st.crashed.kind : 'end' };
+}
 
 // What you hit, for the card (and a cheeky line).
 export const CRASH_WORDS = {

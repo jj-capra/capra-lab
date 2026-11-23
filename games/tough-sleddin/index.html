@@ -68,6 +68,13 @@
   .scene small { font-size: 11px; font-weight: 800; color: rgba(255, 248, 236, 0.7); }
   .best-line { margin: 0; text-align: center; font-size: 13px; font-weight: 800; color: rgba(255, 248, 236, 0.8); }
   .menu .btn { width: 100%; font-size: 21px; min-height: 62px; }
+  /* Today's run: the big one, its number and who leads under it; free sled and the board beside each other */
+  .menu .btn.daily { flex-direction: column; gap: 3px; padding: 9px 14px; line-height: 1.05; }
+  .btn.daily small { font-size: 12px; font-weight: 700; letter-spacing: 0; line-height: 1.25; color: rgba(18, 14, 24, 0.78); }
+  .btn:disabled { opacity: 0.7; }
+  .menu-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .menu .menu-row .btn { min-height: 50px; padding: 8px 10px; font-size: 16px; }
+  .best-line.side { display: none; }
 
   /* ---------- playing ---------- */
   .hud { pointer-events: none; }
@@ -90,6 +97,7 @@
   .toast { position: absolute; left: 50%; top: calc(var(--st) + 120px); transform: translateX(-50%); padding: 6px 14px; border-radius: 999px; background: var(--yellow); color: var(--ink); border: 3px solid var(--ink);
     font-family: var(--display); font-size: 24px; letter-spacing: 0.05em; white-space: nowrap; animation: pop2 1.3s ease forwards; pointer-events: none; }
   @keyframes pop2 { 0% { transform: translateX(-50%) scale(0.3); opacity: 0; } 15% { transform: translateX(-50%) scale(1.1); opacity: 1; } 80% { opacity: 1; } 100% { transform: translateX(-50%) translateY(-20px); opacity: 0; } }
+  .toast.long { width: min(calc(100% - 32px), 420px); white-space: normal; text-align: center; font-family: Inter, system-ui, sans-serif; font-size: 15px; font-weight: 800; letter-spacing: 0; line-height: 1.3; border-radius: 16px; padding: 8px 14px; }
 
   /* the two arrows: big, at the bottom, one for each thumb */
   .arrows { position: absolute; left: 0; right: 0; bottom: calc(var(--sb) + 14px); display: flex; justify-content: space-between; gap: 14px; padding: 0 max(14px, var(--sr)) 0 max(14px, var(--sl)); pointer-events: none; }
@@ -136,6 +144,7 @@
   .res-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .paid { margin: 0; text-align: center; font-size: 13px; font-weight: 700; color: rgba(255, 248, 236, 0.78); }
   .paid:empty { display: none; }
+  .paid.post { font-size: 14px; font-weight: 800; color: var(--yellow); }
 
   /* ---------- how to play, no 3D ---------- */
   .sheet { position: fixed; inset: 0 0 auto; height: var(--lab-h, 100%); z-index: 40; display: grid; place-items: center; padding: calc(var(--st) + 16px) max(16px, var(--sr)) calc(var(--sb) + 16px) max(16px, var(--sl)); background: rgba(5, 3, 10, 0.72); }
@@ -155,7 +164,12 @@
     .menu .col:first-child { align-self: center; }
     .title { font-size: clamp(48px, 8vw, 104px); text-align: left; }
     .tag { text-align: left; margin-left: 0; }
-    .menu-card { margin: 0; }
+    .menu-card { margin: 0; gap: 10px; padding: 12px; }
+    /* (the card is the screen's height: your best moves over under the words, and the board button stays one line) */
+    .menu-card .best-line { display: none; }
+    .best-line.side { display: block; text-align: left; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8); }
+    .scene { padding: 7px 4px; }
+    .menu .menu-row .btn { font-size: 15px; white-space: nowrap; }
     .arrow { height: 104px; max-width: 280px; flex-basis: 30%; }
     .res-body { max-width: 1180px; grid-template-columns: 1fr 1fr; column-gap: 28px; align-items: start; }
     .total span { font-size: clamp(56px, 8vw, 100px); white-space: nowrap; }
@@ -178,12 +192,17 @@
     <div class="col">
       <h1 class="title">TOUGH <em>SLEDDIN</em></h1>
       <p class="tag">One goat. One saucer sled. Three winter worlds. How far can you make it?</p>
+      <p class="best-line side" id="bestLine2"></p>
     </div>
     <div class="col">
       <div class="menu-card">
         <div class="scenes" id="scenes"></div>
         <p class="best-line" id="bestLine"></p>
-        <button class="btn" id="startBtn" type="button">🛷 Start sleddin'</button>
+        <button class="btn daily" id="dailyBtn" type="button"><span>🛷 TODAY'S RUN</span><small id="dailySub"></small></button>
+        <div class="menu-row">
+          <button class="btn alt" id="startBtn" type="button">❄️ Free sled</button>
+          <button class="btn alt" id="boardBtn" type="button">🏆 Today's board</button>
+        </div>
       </div>
     </div>
   </section>
@@ -226,7 +245,7 @@
   <section class="layer results" id="results" hidden>
     <div class="res-body">
       <div class="col">
-        <h2 class="total"><small>YOUR FINAL SCORE</small><span id="resTotal"></span><em id="resPb" hidden>NEW BEST!</em></h2>
+        <h2 class="total"><small id="resKind">YOUR FINAL SCORE</small><span id="resTotal"></span><em id="resPb" hidden>NEW BEST!</em></h2>
         <div class="rows" id="resRows"></div>
         <p class="best-line" id="resBest"></p>
       </div>
@@ -235,6 +254,8 @@
           <button class="btn" id="againBtn" type="button">🛷 Sled again</button>
           <button class="btn alt" id="menuBtn" type="button">Menu</button>
         </div>
+        <p class="paid post" id="resPost" role="status" aria-live="polite"></p>
+        <lab-daily-board id="resBoard"></lab-daily-board>
         <p class="paid" id="resPaid"></p>
         <div id="resShare"></div>
       </div>
@@ -252,6 +273,7 @@
       <li>Dodge the trees, rocks, snowmen and ice. Hit a snow ramp to fly over logs, fences and crevasses.</li>
       <li>On the glacier, shiny ice is slippery: you slide sideways!</li>
       <li>One crash and that world is over. Three worlds, then your final score is all three added up.</li>
+      <li><b>Today's run</b> is the day's three courses, the same for everyone. Your first one each day goes on today's board, and the longest at midnight wins a trophy. <b>Free sled</b> is new courses every time, just for fun.</li>
     </ol>
     <button class="btn" id="helpClose" type="button">Let's sled!</button>
   </div>
@@ -267,6 +289,7 @@
 <script src="/lab/chip.js" defer></script>
 <script src="/lab/share.js" defer></script>
 <script src="/lab/wallet.js" type="module"></script>
+<script src="/lab/daily.js" type="module"></script>
 <script type="module" src="./game.js"></script>
 </body>
 </html>

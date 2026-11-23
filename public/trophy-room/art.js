@@ -83,6 +83,21 @@ export function trophySvg(kind, { stolen = false, size = '' } = {}) {
       <circle cx="46" cy="35" r="21" fill="#FFF8EC" stroke="${INK}" stroke-width="3.2"/>${dimples}
       <path d="M33 25c-4 4-5 10-3 15" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
       <path d="M36 79h28l3 9H33Z" fill="url(#${g})" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>`;
+  } else if (kind === 'sled') {
+    // Tough Sleddin's Today's run: a gold saucer sled flying, red grips, a puff of snow behind it
+    body = `<path d="M8 22h12M5 30h11M9 38h8" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="21" cy="61" r="6" fill="#fff" stroke="${INK}" stroke-width="2.4"/><circle cx="12" cy="57" r="4.2" fill="#fff" stroke="${INK}" stroke-width="2.2"/><circle cx="14" cy="67" r="3.4" fill="#fff" stroke="${INK}" stroke-width="2"/>
+      <path d="M45 54h10v25h-10Z" fill="url(#${g})" stroke="${INK}" stroke-width="3"/>
+      <g transform="rotate(-14 52 38)">
+        <ellipse cx="52" cy="43" rx="31" ry="13" fill="#9C5A0E" stroke="${INK}" stroke-width="3.2"/>
+        <ellipse cx="52" cy="38" rx="31" ry="15" fill="url(#${g})" stroke="${INK}" stroke-width="3.2"/>
+        <ellipse cx="52" cy="37" rx="21" ry="9" fill="#E09A1C" stroke="${INK}" stroke-width="2.4"/>
+        <ellipse cx="49" cy="35" rx="11" ry="4" fill="#FFF4B0" opacity=".7"/>
+        <path d="M19 34c-6 0-6 8 0 8M85 34c6 0 6 8 0 8" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>
+        <path d="M19 34c-6 0-6 8 0 8M85 34c6 0 6 8 0 8" fill="none" stroke="#FF3D5A" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <path d="M36 79h28l3 9H33Z" fill="url(#${g})" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+      ${shine('M30 36c2-5 7-9 13-11')}`;
   } else if (kind === 'cap') {
     // No Cap: a gold cap under the red no-cap ring
     body = `<path d="M26 46c0-20 11-31 25-31s24 10 25 27l-1 4Z" fill="url(#${g})" stroke="${INK}" stroke-width="3.2" stroke-linejoin="round"/>
@@ -99,7 +114,7 @@ export function trophySvg(kind, { stolen = false, size = '' } = {}) {
   }
   const tag = stolen ? `<g transform="rotate(-12 50 60)"><rect x="14" y="52" width="72" height="16" rx="2" fill="#FF3D3D" stroke="${INK}" stroke-width="2.6"/><text x="50" y="64.5" text-anchor="middle" font-family="Bangers, Impact, sans-serif" font-size="13" fill="#fff" letter-spacing="1.5">STOLEN</text></g>` : '';
   const sz = size ? ` width="${size}" height="${Math.round(size * 1.2)}"` : '';
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120"${sz} aria-hidden="true"><defs>${GOLD(g)}</defs>${body}${plinth(kind === 'masters' ? 'MASTERS' : kind === 'goat' ? 'AT PAR' : kind === 'screen' ? 'HIGH SCORE' : ['clues', 'spin', 'cap', 'golf'].includes(kind) ? 'DAILY #1' : '')}${tag}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120"${sz} aria-hidden="true"><defs>${GOLD(g)}</defs>${body}${plinth(kind === 'masters' ? 'MASTERS' : kind === 'goat' ? 'AT PAR' : kind === 'screen' ? 'HIGH SCORE' : ['clues', 'spin', 'cap', 'golf', 'sled'].includes(kind) ? 'DAILY #1' : '')}${tag}</svg>`;
 }
 
 /* ---------- the treasure trove's pieces (shared with the selfie) ---------- */

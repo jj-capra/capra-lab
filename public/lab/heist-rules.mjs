@@ -64,6 +64,7 @@ export function trophyKind(t) {
   if (g === 'three-clue-crew') return 'clues';
   if (g === 'puzzled-spin') return 'spin';
   if (g === 'no-cap') return 'cap';
+  if (g === 'tough-sleddin') return 'sled';     // Today's run's #1
   return 'star';
 }
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

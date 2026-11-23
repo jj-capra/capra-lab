@@ -4,7 +4,8 @@ A goat on a saucer sled down three winter worlds, native in Capra Lab at **capra
 (JC, Nov 22 2026: "a game like Sled Surfer game with immersive worlds a goat traverses on a saucer sled. These are
 all winter scenes. The user just has left and right arrows at the bottom and try to see how far they can make it.
 Just one life per scene, three scenes and once they have crashed in each scene their final score shows." Named by
-JC: "Call it Tough Sleddin"). Public (not a JJ Brew). No server. Our own game: never another game's name or marks.
+JC: "Call it Tough Sleddin"). Public (not a JJ Brew). No server of its own (Today's run posts to the lab's daily boards).
+Our own game: never another game's name or marks.
 
 ## Rules
 
@@ -18,6 +19,21 @@ JC: "Call it Tough Sleddin"). Public (not a JJ Brew). No server. Our own game: n
   JC: "Aurora glacier is notably slower feeling"), and the only controls are **◀ and ▶ at the bottom** (held; the arrow keys
   or A/D on a keyboard). One crash: WIPEOUT!, the goat tumbles, dizzy stars, a card with the feet and what you hit,
   then the next world.
+- **Today's run** (JC, Nov 22 2026: "Tough sledding just needs a longest leaderboard for the day. Same thing, they get
+  a trophy"): the menu's big button. The day's three courses (midnight Pacific), the same for everyone (`daySeed(date)`;
+  No. 1 was Nov 22 2026, `sledNo`), and your first one each day goes on today's board (`tough-sleddin` in
+  `public/lab/daily-boards.mjs`, server `lab/daily.js`): the longest total wins, in feet, a tie to the shorter
+  sledding time; at midnight the #1 takes a diamond and a trophy, a gold saucer (`trophyKind` 'sled'). Each world is
+  opened when it starts and posted when it crashes (`CapraDaily.sled`, one call at a time in order, retried when the
+  signal drops) with the arrows held a step at a time (`logInput`: `[input, steps, ...]`); the server rides it again
+  with `replay` on the same course and its feet are the ones that count (the page shows them if they differ). Leave a
+  world part way (close the app) and coming back puts it down as 0 ft and carries on with the next. Later runs that
+  day and guests sled the same courses as practice; **Free sled** is a new course every time and never counts; the
+  🏆 Today's board button opens the board, and the final score shows it. So **the page and the server must ride the
+  same way**: `step` runs at `H` (1/120 s) on exact math only (no `Math.hypot`), and the course comes out the same
+  however far ahead it's asked for (the page draws 340 m ahead, the server asks only as it rides: the ice waits for
+  the rows past it). Change `step` or the course and a run sledded on the old page just before a deploy rides again
+  differently; that's fine, it's rare.
 - **The worlds** (`SCENES` in logic.mjs, drawn by scenes.js):
   - **Pinewood Run** (a sunny morning): deep snowy pines on the banks, mountains, log cabins with chimney smoke,
     diamond dust in the sun. In the way: pines, rocks, stumps; logs across the track. Big jumps: a log cabin snowed
@@ -90,12 +106,17 @@ JC: "Call it Tough Sleddin"). Public (not a JJ Brew). No server. Our own game: n
 - **Bests** per player on the phone (`tough-sleddin.best.<handle>`: each world's and the total).
 - **Pay** (`tough-sleddin` in the wallet catalog): +20 amber for sledding all three worlds, +1 shard for a new best
   total (1,500 ft or more).
-- **The results text**: `🛷 Tough Sleddin · 3 winter worlds`, each world's feet, the total (👑 new best), and a row a
-  world: a 🟩 per 1,000 ft (ten at most), ⚡ for a new best there.
+- **The results text**: `🛷 Tough Sleddin · 3 winter worlds` (Today's run: `🛷 Tough Sleddin No. 1 · Today’s run`),
+  each world's feet, the total (👑 new best), and a row a world: a 🟩 per 1,000 ft (ten at most), ⚡ for a new best
+  there.
+- **The menu**: the worlds with your bests, then 🛷 TODAY'S RUN (its number, whether you've sledded it, who leads), then
+  ❄️ Free sled and 🏆 Today's board side by side. Sideways the menu card is the screen's height, so your best total
+  moves over under the words on the left (it once ran up under the sound and help buttons).
 
 ## Files
 
-- `logic.mjs`: the worlds, the course, the sled, the score, the share rows (pure, tested).
+- `logic.mjs`: the worlds, the course, the sled, the score, the share rows, Today's run's seed and `replay` (pure,
+  tested; the daily server imports it).
 - `world.js`: the renderer, the goat, the chunks, ramps (and their arrows) and ice, the camera, the crash.
 - `jumps.js`: the big jumps' shapes (`jumpGeo`).
 - `scenes.js`: the three worlds (sky, light, snow, obstacle shapes, scenery, effects).
@@ -103,4 +124,5 @@ JC: "Call it Tough Sleddin"). Public (not a JJ Brew). No server. Our own game: n
 - `test/tough-sleddin.test.mjs`.
 
 Test hooks: `window.__sled.state()`, `.start()`, `.scene(i)` (straight into a world), `.skipIntro()`, `.warp(meters)`,
-`.jump(kind)` (to just before the next big jump, or one of a kind: 'roof', 'ramp'...), `.crash()`, `.next()`, `.autopilot(true)` (the menu goat's steering), `.world()` (`place()`, `stats()`).
+`.jump(kind)` (to just before the next big jump, or one of a kind: 'roof', 'ramp'...), `.crash()`, `.next()`, `.autopilot(true)` (the menu goat's steering), `.world()` (`place()`, `stats()`), `.daily()` (Today's run), `.log()` (this world's arrows so far). The hooks
+that move the goat (`warp`, `jump`, `crash`) make a run the server rides differently: fine for checking by hand.

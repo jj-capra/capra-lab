@@ -19,6 +19,14 @@
  *                                                           (left part way) goes down as double par. The third
  *                                                           hole posts the round: net of the handicap the run
  *                                                           started with, to par; timed from the first start.
+ *   POST /api/daily/sled   { name, code, board: 'tough-sleddin', world, inputs, open }
+ *                                                           Tough Sleddin's Today's run, world by world: a world
+ *                                                           that's over (its arrows, step by step: ridden again
+ *                                                           here on the day's course, and what that comes to is
+ *                                                           what counts) and the world opening. A world opened
+ *                                                           before and never posted (left part way) goes down as
+ *                                                           0 ft. The third world posts the run: all three added
+ *                                                           up, timed by the sledding itself.
  *   GET  /api/daily/board?b=&d=                             a board (today unless d=), plus yesterday's winner
  *                                                           (and the Daily 3's holes on the golf board)
  *   GET  /api/daily/today                                   today's leader on every board
@@ -32,6 +40,7 @@ import { GOLF } from './heist-library.mjs';
 import { ROUNDS } from '../games/three-clue-crew/rounds.js';
 import { dailySet, dayNumber as tccDay, PER_GAME } from '../games/three-clue-crew/logic.mjs';
 import { puzzle, check, dailySeed, dayNumber as spinDay, solvePoints, PER_RUN } from '../games/puzzled-spin/logic.mjs';
+import { replay as sledReplay, cleanLog, daySeed as sledSeed, sledNo, WORLDS as SLED_WORLDS } from '../games/tough-sleddin/logic.mjs';
 
 export const STORE = 'capra-lab-daily';
 const SHOW = 20, OPEN_KEEP = 400;
@@ -73,7 +82,9 @@ export function createDaily({ store, wallet = null, verify = null, clock = () =>
     await mutate(store, keyOf(board, date), (d) => {
       d.runs ||= {};
       first = !d.runs[me.handle];
-      if (first) d.runs[me.handle] = BOARDS[board].game === 'par-tee-time' ? { at: now, hcp: cleanHcp(me.hcp || 0), scores: [], opened: null } : { at: now };
+      const game = BOARDS[board].game;
+      if (first) d.runs[me.handle] = game === 'par-tee-time' ? { at: now, hcp: cleanHcp(me.hcp || 0), scores: [], opened: null }
+        : game === 'tough-sleddin' ? { at: now, worlds: [], opened: null } : { at: now };
       run = d.runs[me.handle]; posted = !!(d.entries && d.entries[me.handle]);
       if (!first) return SKIP;
     }, () => blank(board, date));
@@ -179,6 +190,7 @@ export function createDaily({ store, wallet = null, verify = null, clock = () =>
       winMin: WIN_MIN,
     };
     if (BOARDS[board].game === 'par-tee-time') out.deal = golfDeal(date);
+    if (BOARDS[board].game === 'tough-sleddin') out.no = sledNo(date);
     if (me) {
       const mine = list.find((e) => e.handle === me.handle);
       out.me = mine ? { rank: mine.rank, points: mine.points, ms: mine.ms } : { started: !!(d && d.runs && d.runs[me.handle]) };
@@ -289,6 +301,64 @@ export function createDaily({ store, wallet = null, verify = null, clock = () =>
     return out;
   }
 
+  /* ---------- Tough Sleddin's Today's run, world by world ---------- */
+  const sledOut = (date, run, extra = {}) => ({ no: sledNo(date), date, worlds: run ? (run.worlds || []).map((w) => ({ ft: w.ft, hit: w.hit })) : [], opened: run ? run.opened : null, ...extra });
+  async function sled(board, me, world, inputs, open) {
+    if (BOARDS[board].game !== 'tough-sleddin') throw fail(400, 'That board isn’t Tough Sleddin.');
+    const date = today(), now = clock();
+    // ride the world again first (the slow part, outside the write): the day's course, the arrows as held
+    let rep = null;
+    if (world != null) {
+      if (!Number.isInteger(world) || world < 0 || world >= SLED_WORLDS) throw fail(400, 'That isn’t one of the worlds.');
+      const log = cleanLog(inputs);
+      if (!log) throw fail(400, 'That run didn’t come through whole.');
+      rep = sledReplay(sledSeed(date), world, log);
+    }
+    let run = null, left = null, done = false, entry = null;
+    const got = await mutate(store, keyOf(board, date), (d) => {
+      left = null; done = false; entry = null;
+      const r = d.runs && d.runs[me.handle];
+      if (!r) throw fail(409, 'Start today’s run first.', 'not_started');
+      if (d.entries && d.entries[me.handle]) { run = r; done = true; return SKIP; }
+      r.worlds ||= [];
+      const before = JSON.stringify(r);
+      // the world that's over (posted twice, say on a retry: the first one stands)
+      if (rep && world === r.worlds.length) {
+        const sledded = r.worlds.reduce((a, w) => a + w.t, 0) + rep.t;
+        if (sledded * 1000 > now - r.at + 5000) throw fail(400, 'Those times don’t add up.');
+        r.worlds.push({ ft: rep.ft, t: Math.round(rep.t * 1000) / 1000, hit: rep.hit });
+        r.opened = null;
+      }
+      // the world opening: one opened before and never posted was left part way (0 ft)
+      if (Number.isInteger(open) && open === r.worlds.length && open < SLED_WORLDS) {
+        if (r.opened === open) { r.worlds.push({ ft: 0, t: 0, hit: 'left' }); left = open; r.opened = null; }   // the page opens the next one itself
+        else r.opened = open;
+      }
+      if (r.worlds.length >= SLED_WORLDS) {
+        d.entries ||= {};
+        if (!d.settled) {
+          const ft = r.worlds.reduce((a, w) => a + w.ft, 0), t = r.worlds.reduce((a, w) => a + w.t, 0);
+          entry = { name: String(me.name || me.handle).slice(0, 17), points: ft, ms: Math.round(t * 1000), at: now, detail: { worlds: r.worlds.map((w) => ({ ft: w.ft, hit: w.hit })) } };
+          d.entries[me.handle] = entry;
+        }
+        r.opened = null; done = true;
+      }
+      run = r;
+      if (JSON.stringify(r) === before && !entry) return SKIP;
+    });
+    if (!got || !run) throw fail(409, 'Start today’s run first.', 'not_started');
+    if (entry) await mutate(store, 'open', (o) => {
+      o.list ||= [];
+      const k = `${board}|${date}`;
+      if (o.list.includes(k)) return SKIP;
+      o.list.push(k);
+      if (o.list.length > OPEN_KEEP) o.list.splice(0, o.list.length - OPEN_KEEP);
+    }, () => ({ list: [] })).catch(() => {});
+    const out = { sled: sledOut(date, run, { left, done }) };
+    if (done) out.view = await view(board, date, me);
+    return out;
+  }
+
   /* ---------- the wire ---------- */
   async function route(method, path, body, query) {
     const action = path.replace(/^.*\/api\/daily\/?/, '').replace(/\/$/, '');
@@ -297,7 +367,7 @@ export function createDaily({ store, wallet = null, verify = null, clock = () =>
     if (method === 'GET' && action === 'board') return view(String(query.get('b') || ''), /^\d{4}-\d{2}-\d{2}$/.test(query.get('d') || '') ? query.get('d') : today());
     if (method === 'GET' && action === 'today') return leaders();
     if (method !== 'POST') throw fail(405, 'Use POST.');
-    if (!['start', 'finish', 'board', 'golf'].includes(action)) throw fail(404, 'Not found.');
+    if (!['start', 'finish', 'board', 'golf', 'sled'].includes(action)) throw fail(404, 'Not found.');
     if (!verify) throw fail(500, 'The daily boards can’t check sign-ins here.');
     const name = String((body && body.name) || ''), code = String((body && body.code) || '');
     const me = name && code ? await verify(name, code) : null;
@@ -305,12 +375,14 @@ export function createDaily({ store, wallet = null, verify = null, clock = () =>
     const board = String(body.board || '');
     if (action === 'board') return view(board, today(), me);
     if (action === 'start') {
-      const b = await begin(board, me), v = await view(board, b.date, me);
-      if (BOARDS[board].game !== 'par-tee-time') return { ...b, view: v };
-      const d = await read(board, b.date);
-      return { ...b, view: v, golf: golfOut(v.deal, d.runs[me.handle], { done: !!(d.entries && d.entries[me.handle]) }) };
+      const b = await begin(board, me), v = await view(board, b.date, me), game = BOARDS[board].game;
+      if (game !== 'par-tee-time' && game !== 'tough-sleddin') return { ...b, view: v };
+      const d = await read(board, b.date), done = !!(d.entries && d.entries[me.handle]);
+      if (game === 'tough-sleddin') return { ...b, view: v, sled: sledOut(b.date, d.runs[me.handle], { done }) };
+      return { ...b, view: v, golf: golfOut(v.deal, d.runs[me.handle], { done }) };
     }
     if (action === 'golf') { check1(board); return golf(board, me, body.scores, body.open == null ? null : Number(body.open)); }
+    if (action === 'sled') { check1(board); return sled(board, me, body.world == null ? null : Number(body.world), body.inputs, body.open == null ? null : Number(body.open)); }
     return finish(board, me, body.answers);
   }
   async function handleRequest(req) {
@@ -325,5 +397,5 @@ export function createDaily({ store, wallet = null, verify = null, clock = () =>
       return new Response(JSON.stringify({ error: status === 500 ? 'The daily board didn’t answer just then. Try again in a moment.' : e.message, code: e.code || null }), { status, headers });
     }
   }
-  return { begin, post, view, settle, settleDue, fixSoloWins, leaders, finish, golf, route, handle: handleRequest, today };
+  return { begin, post, view, settle, settleDue, fixSoloWins, leaders, finish, golf, sled, route, handle: handleRequest, today };
 }

@@ -1,7 +1,8 @@
 // Tough Sleddin: the courses always leave a way through, the sled steers, jumps, slides and crashes the way
 // it should, and the score is feet.
 import assert from 'node:assert/strict';
-import { SCENES, KINDS, JUMPS, ROW, FIRST, LAT_MAX, RAMP_LEN, airTime, MPH, makeCourse, newRun, step, botInput, feet, FT, shareRows, speedAt, CRASH_WORDS } from '../logic.mjs';
+import { SCENES, KINDS, JUMPS, ROW, FIRST, LAT_MAX, RAMP_LEN, airTime, MPH, makeCourse, newRun, step, botInput, feet, FT, shareRows, speedAt, CRASH_WORDS,
+  H as STEP, daySeed, sledNo, logInput, cleanLog, replay } from '../logic.mjs';
 import { EARN } from '../../../public/lab/wallet-catalog.mjs';
 
 let n = 0;
@@ -205,6 +206,36 @@ test('the results text: a row a world, a square a thousand feet, ⚡ for a best'
 test('the wallet pays for a run of all three and a new best', () => {
   assert.ok(EARN['tough-sleddin'].run.amber > 0);
   assert.ok(EARN['tough-sleddin'].best.shards > 0);
+});
+
+test('Today’s run: the same courses for everyone that day, and the board rides a run again to the same feet', () => {
+  assert.equal(STEP, H);
+  assert.equal(sledNo('2026-11-22'), 1); assert.equal(sledNo('2026-12-01'), 10);
+  assert.equal(daySeed('2026-11-22'), daySeed('2026-11-22')); assert.notEqual(daySeed('2026-11-22'), daySeed('2026-11-23'));
+  // the page asks for the course far ahead (to draw it) and runs uneven frames, one arrow a frame; the server asks
+  // only as it rides. The course (the ice too) and the run must come out the same.
+  for (let day = 22; day < 28; day++) for (let sc = 0; sc < 3; sc++) {
+    const seed = daySeed(`2026-11-${day}`);
+    const C = makeCourse(seed, sc), st = newRun(C), log = [];
+    let acc = 0, r = day * 7 + sc + 1;
+    const rnd = () => (r = (r * 16807) % 2147483647) / 2147483647;
+    while (!st.crashed && st.t < 150) {
+      C.ice(st.d - 40, st.d + 340 + rnd() * 80); C.obstacles(st.d, st.d + 420);
+      acc += 0.006 + rnd() * 0.035;
+      const inp = rnd() < 0.12 ? Math.floor(rnd() * 3) - 1 : botInput(st, C);
+      while (acc >= H && !st.crashed) { step(st, inp, H, C); logInput(log, inp); acc -= H; }
+    }
+    const rep = replay(seed, sc, cleanLog(log));
+    assert.equal(rep.ft, feet(st), `Nov ${day}, ${SCENES[sc].name}`);
+    assert.equal(rep.hit, st.crashed ? st.crashed.kind : 'end');
+    // and the ice is the same however far ahead it was asked for
+    const C2 = makeCourse(seed, sc);
+    for (let d = 0; d < st.d; d += 5) C2.onIce(0, d);
+    assert.deepEqual(C2.ice(0, st.d).map((p) => [p.d, p.x]), C.ice(0, st.d).map((p) => [p.d, p.x]));
+  }
+  // what isn't a run of arrows is turned away
+  assert.equal(cleanLog([1, 3, 0]), null); assert.equal(cleanLog([2, 3]), null); assert.equal(cleanLog([1, 0]), null); assert.equal(cleanLog('x'), null);
+  assert.deepEqual(cleanLog([-1, 4, 0, 2]), [-1, 4, 0, 2]);
 });
 
 console.log(`Tough Sleddin: ${n} tests passed`);

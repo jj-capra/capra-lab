@@ -9,14 +9,16 @@ import { trophyName, trophyKind } from '../../public/lab/heist-rules.mjs';
 import { ROUNDS } from '../../games/three-clue-crew/rounds.js';
 import { dailySet, dayNumber as tccDay } from '../../games/three-clue-crew/logic.mjs';
 import { puzzle, dailySeed, dayNumber as spinDay, solvePoints } from '../../games/puzzled-spin/logic.mjs';
+import { makeCourse, newRun, step, botInput, feet, H, logInput, daySeed as sledSeed } from '../../games/tough-sleddin/logic.mjs';
+import { fmtPoints } from '../../public/lab/daily-boards.mjs';
 
 let passed = 0;
 async function test(name, fn) {
   try { await fn(); passed++; console.log('ok  ', name); }
   catch (e) { console.log('FAIL', name); console.error(e); process.exitCode = 1; }
 }
-function setup() {
-  let now = Date.parse('2026-11-14T20:00:00Z');   // noon Pacific
+function setup(at = '2026-11-14T20:00:00Z') {
+  let now = Date.parse(at);   // noon Pacific
   const players = { 'JJ-Capra': 'jj-capra', Roman: 'roman', Mia: 'mia' };
   const hcps = { Mia: 6 };
   const verify = async (name, code) => (players[name] && code === 'k' ? { name, handle: players[name], hcp: hcps[name] || 0 } : null);
@@ -211,6 +213,69 @@ await test('Par-Tee Time’s Daily 3: three holes a day, hole by hole, fewest ne
   assert.equal(trophyKind(box.trophies[0]), 'golf');
   assert.equal(trophyName(box.trophies[0]), 'Par-Tee Time #1 · Daily 3 · Nov 14');
   assert.equal((await g.wallet.wallet('mia')).diamonds, 1);
+});
+
+// A sled run the way the page rides it: the menu goat's steering for a while, then hands off until the crash.
+function sledRide(date, world, secs) {
+  const C = makeCourse(sledSeed(date), world), st = newRun(C), log = [];
+  while (!st.crashed && st.t < 600) { const v = st.t < secs ? botInput(st, C) : 0; step(st, v, H, C); logInput(log, v); }
+  return { log, ft: feet(st), t: st.t, hit: st.crashed && st.crashed.kind };
+}
+await test('Tough Sleddin’s Today’s run: world by world, ridden again on the server, the longest total wins', async () => {
+  const g = setup('2026-11-22T20:00:00Z'), board = 'tough-sleddin', day = '2026-11-22';
+  assert.equal(fmtPoints(board, 12345), '12,345 ft');
+  assert.equal((await g.get('board?b=tough-sleddin')).no, 1, 'Today’s run No. 1 is Nov 22');
+  await assert.rejects(g.call('sled', { ...JJ, board, open: 0 }), /Start today/);
+  await assert.rejects(g.call('finish', { ...JJ, board, answers: [] }), /posts its own/);
+  const w = [sledRide(day, 0, 20), sledRide(day, 1, 14), sledRide(day, 2, 9)];
+  assert.ok(w.every((x) => x.hit && x.ft > 1000), 'three crashes, each a way down');
+  // JJ sleds all three
+  let s = await g.call('start', { ...JJ, board });
+  assert.equal(s.sled.no, 1); assert.deepEqual(s.sled.worlds, []); assert.equal(s.sled.done, false);
+  let r = await g.call('sled', { ...JJ, board, open: 0 });
+  assert.equal(r.sled.opened, 0);
+  // a world sledded faster than the clock has run since the start doesn't count
+  await assert.rejects(g.call('sled', { ...JJ, board, world: 0, inputs: w[0].log }), /don’t add up/);
+  g.tick(Math.ceil(w[0].t + 10) * 1000);
+  r = await g.call('sled', { ...JJ, board, world: 0, inputs: w[0].log, open: 1 });
+  assert.deepEqual(r.sled.worlds, [{ ft: w[0].ft, hit: w[0].hit }], 'the server rides it again: the same feet');
+  assert.equal(r.sled.opened, 1);
+  // the same world posted again (a retry) changes nothing; arrows that aren't arrows are turned away
+  r = await g.call('sled', { ...JJ, board, world: 0, inputs: [0, 50] });
+  assert.equal(r.sled.worlds.length, 1); assert.equal(r.sled.worlds[0].ft, w[0].ft);
+  await assert.rejects(g.call('sled', { ...JJ, board, world: 1, inputs: [2, 5] }), /whole/);
+  await assert.rejects(g.call('sled', { ...JJ, board, world: 1, inputs: [1, 5, 0] }), /whole/);
+  g.tick(Math.ceil(w[1].t + w[2].t + 20) * 1000);
+  r = await g.call('sled', { ...JJ, board, world: 1, inputs: w[1].log, open: 2 });
+  r = await g.call('sled', { ...JJ, board, world: 2, inputs: w[2].log });
+  const total = w[0].ft + w[1].ft + w[2].ft;
+  assert.equal(r.sled.done, true);
+  assert.equal(r.view.list[0].points, total); assert.equal(r.view.list[0].ms, Math.round((w[0].t + w[1].t + w[2].t) * 1000));
+  // a second run today changes nothing
+  s = await g.call('start', { ...JJ, board });
+  assert.equal(s.first, false); assert.equal(s.sled.done, true);
+  // Roman leaves Lantern Village part way and comes back: it goes down as 0 ft, then he sleds the glacier
+  await g.call('start', { ...RO, board });
+  await g.call('sled', { ...RO, board, open: 0 });
+  g.tick(Math.ceil(w[0].t + 5) * 1000);
+  await g.call('sled', { ...RO, board, world: 0, inputs: w[0].log, open: 1 });
+  s = await g.call('start', { ...RO, board });
+  assert.equal(s.sled.worlds.length, 1); assert.equal(s.sled.opened, 1);
+  r = await g.call('sled', { ...RO, board, open: 1 });
+  assert.equal(r.sled.left, 1); assert.deepEqual(r.sled.worlds[1], { ft: 0, hit: 'left' }); assert.equal(r.sled.opened, null);
+  r = await g.call('sled', { ...RO, board, open: 2 });
+  assert.equal(r.sled.left, null); assert.equal(r.sled.opened, 2, 'the next one opens fresh');
+  g.tick(Math.ceil(w[2].t + 5) * 1000);
+  r = await g.call('sled', { ...RO, board, world: 2, inputs: w[2].log });
+  assert.deepEqual(r.view.list.map((e) => e.name), ['JJ-Capra', 'Roman']);
+  assert.equal(r.view.list[1].points, w[0].ft + w[2].ft);
+  // midnight: the longest run takes the trophy (a gold saucer) and a diamond
+  g.tick(13 * 3600e3);
+  await g.get('today');
+  const box = await g.wallet.trophyCase('jj-capra');
+  assert.equal(trophyKind(box.trophies[0]), 'sled');
+  assert.equal(trophyName(box.trophies[0]), 'Tough Sleddin #1 · Today’s run · Nov 22');
+  assert.equal((await g.wallet.wallet('jj-capra')).diamonds, 1);
 });
 
 console.log(`\nDaily boards: ${passed} tests passed`);

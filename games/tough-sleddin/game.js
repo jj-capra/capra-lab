@@ -2,7 +2,12 @@
 // goat rides by itself behind it) -> each of the three worlds: its name and a 3-2-1 while the camera swings in
 // behind the goat, then left and right until the one crash -> its card -> after the third, the final score (all
 // three added up) with the results text.
-import { SCENES, JUMPS, makeCourse, newRun, step, botInput, feet, FT, MPH, CRASH_WORDS, shareRows, fmt } from './logic.mjs';
+//
+// Today's run (JC, Nov 22 2026: "Tough sledding just needs a longest leaderboard for the day. Same thing, they get
+// a trophy"): the day's three courses, the same for everyone. Your first one goes on today's board (lab/daily.js):
+// each world is opened as it starts and posted when it ends with the arrows you held, step by step, which the
+// server rides again on the same course. Free sled is a new random course every time and never counts.
+import { SCENES, JUMPS, makeCourse, newRun, step, botInput, feet, FT, MPH, CRASH_WORDS, shareRows, fmt, H, daySeed, sledNo, logInput } from './logic.mjs';
 import { createWorld } from './world.js';
 
 const $ = (id) => document.getElementById(id);
@@ -13,6 +18,11 @@ const store = {
 const prefs = Object.assign({ sound: true, seen: false }, store.get('tough-sleddin.prefs', {}));
 const savePrefs = () => store.set('tough-sleddin.prefs', prefs);
 function player() { try { const p = JSON.parse(localStorage.getItem('capra-lab.profile') || 'null'); return p && p.handle ? p : null; } catch (e) { return null; } }
+const signedIn = () => { const p = player(); return !!(p && p.name && p.code); };
+const D_BOARD = 'tough-sleddin';
+// the lab's day (midnight Pacific), for a guest or no signal: the board's own date when it answers
+const labDay = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' }).format(Date.now());
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const bestKey = () => `tough-sleddin.best.${(player() || {}).handle || 'guest'}`;
 const bests = () => Object.assign({ s: [0, 0, 0], total: 0 }, store.get(bestKey(), {}));
 const mph = (v) => Math.round(v * MPH);
@@ -123,7 +133,23 @@ function show(which) {
 function paintMenu() {
   const b = bests();
   $('scenes').innerHTML = SCENES.map((s, i) => `<div class="scene"><i aria-hidden="true">${s.emoji}</i><b>${s.name.toUpperCase()}</b><small>${b.s[i] ? `best ${fmt(b.s[i])} ft` : s.time}</small></div>`).join('');
-  $('bestLine').textContent = b.total ? `Your best total: ${fmt(b.total)} ft` : 'Three worlds, one life in each. Your score is all three added up.';
+  $('bestLine').textContent = $('bestLine2').textContent = b.total ? `Your best total: ${fmt(b.total)} ft` : 'Three worlds, one life in each. Your score is all three added up.';
+  paintDaily();
+}
+// Today's run on the menu: its number, whether you've sledded it, who leads
+let paintedFor = 0;
+async function paintDaily() {
+  const ask = ++paintedFor;
+  if (!$('dailySub').textContent) $('dailySub').textContent = `No. ${sledNo(labDay())} · the same three courses for everyone`;
+  if (!window.CapraDaily) return;
+  const v = await CapraDaily.board(D_BOARD).catch(() => null);
+  if (!v || ask !== paintedFor) return;
+  const no = v.no || sledNo(v.date), top = v.list[0], mine = v.me && v.me.rank ? v.me : null;
+  const lead = top ? `${top.name} leads, ${fmt(top.points)} ft` : 'nobody yet, be first!';
+  $('dailySub').textContent = mine ? `No. ${no} · done: ${fmt(mine.points)} ft, #${mine.rank} of ${v.of} · again for fun`
+    : v.me && v.me.started ? `No. ${no} · pick up where you left off · ${lead}`
+    : signedIn() ? `No. ${no} · the same courses for everyone · ${lead}`
+    : `No. ${no} · ${lead} · sign in on the hub to get on the board`;
 }
 // the goat riding by itself behind the menu
 function menuRide() {
@@ -136,20 +162,80 @@ function menuRide() {
 }
 function startGame() {
   audio(); sfx.click();
-  run = { id: `${Date.now().toString(36)}${Math.floor(Math.random() * 1e6).toString(36)}`, results: [] };
+  run = { id: `${Date.now().toString(36)}${Math.floor(Math.random() * 1e6).toString(36)}`, results: [], daily: null };
   startScene(0);
+}
+/* ---------------- Today's run ---------------- */
+let dailyBusy = false;
+async function startDaily() {
+  if (dailyBusy) return;
+  dailyBusy = true;
+  audio(); sfx.click();
+  const btn = $('dailyBtn');
+  btn.disabled = true;
+  try {
+    let date = null, official = false, worlds = [], opened = null, view = null, note = '';
+    if (signedIn() && window.CapraDaily) {
+      const s = await CapraDaily.start(D_BOARD);
+      if (s && s.sled) { date = s.sled.date; official = !s.sled.done; worlds = official ? s.sled.worlds : []; opened = s.sled.opened; }
+      note = s && s.sled ? (official ? '' : 'Practice: your first run today is the one on the board.') : 'Today’s board didn’t answer, so this one is practice.';
+      // left a world part way last time: it goes down as 0 ft and the run carries on with the next one
+      if (official && opened != null && opened === worlds.length) {
+        const r = await CapraDaily.sled({ open: opened });
+        if (r && r.sled) {
+          worlds = r.sled.worlds; view = r.view || null;
+          if (r.sled.left != null) note = `You left ${SCENES[r.sled.left].name} part way, so it went down as 0 ft.`;
+        }
+      }
+    } else {
+      note = 'Practice: sign in on the Capra Lab hub to get on today’s board.';
+      const v = window.CapraDaily ? await CapraDaily.board(D_BOARD).catch(() => null) : null;
+      date = v && v.date;
+    }
+    date = date || labDay();
+    run = { id: `daily:${date}:${official ? 'board' : Date.now().toString(36)}`, results: [], q: Promise.resolve(),
+      daily: { date, no: sledNo(date), seed: daySeed(date), official, view, error: '' } };
+    worlds.forEach((w, i) => run.results.push({ scene: i, ft: w.ft, hit: w.hit, best: false }));
+    if (run.results.length >= SCENES.length) { run.daily.note = note; showResults(); return; }
+    startScene(run.results.length);
+    if (note) setTimeout(() => toast(note, 3800), 300);
+  } finally { dailyBusy = false; btn.disabled = false; }
+}
+// Today's run talks to the board one call at a time, in order (a world's post before the next one opens), and
+// tries again when the signal drops; a call the board turns down is shown on the final score.
+function dailySend(body) {
+  const r0 = run;
+  r0.q = r0.q.then(async () => {
+    for (let k = 0; k < 4; k++) {
+      const res = await CapraDaily.sled(body);
+      if (!res) return;
+      if (!res.error) {
+        // the server's feet are the ones that count (it rode the run again)
+        res.sled.worlds.forEach((w, j) => { const x = r0.results[j]; if (x) { x.ft = w.ft; x.hit = w.hit; } });
+        if (res.view) r0.daily.view = res.view;
+        return;
+      }
+      if (res.status && res.status < 500 && res.status !== 429) { r0.daily.error = res.error; return; }
+      await wait(1500 * (k + 1));
+    }
+    r0.daily.error = 'Today’s board didn’t answer. Check your signal.';
+  });
+  return r0.q;
 }
 function startScene(i) {
   sceneIdx = i;
-  C = makeCourse(Math.floor(Math.random() * 1e9), i);
+  const D = run.daily;
+  C = makeCourse(D ? D.seed : Math.floor(Math.random() * 1e9), i);
+  run.log = [];
+  if (D && D.official) dailySend({ open: i });
   W.clearCrash();
   W.load(i, C);
   st = newRun(C);
   const S = SCENES[i];
   $('hudScene').textContent = `${S.emoji} ${S.name.toUpperCase()}`;
-  $('hudOf').textContent = `WORLD ${i + 1} OF 3`;
+  $('hudOf').textContent = `${D ? 'TODAY · ' : ''}WORLD ${i + 1} OF 3`;
   $('hudBest').textContent = bests().s[i] ? `${fmt(bests().s[i])} ft` : '—';
-  $('introOf').textContent = `WORLD ${i + 1} OF 3`;
+  $('introOf').textContent = `${D ? (D.official ? `TODAY'S RUN NO. ${D.no} · ` : 'PRACTICE · ') : ''}WORLD ${i + 1} OF 3`;
   $('introName').textContent = S.name.toUpperCase();
   $('introBlurb').textContent = S.blurb;
   $('intro').hidden = false;
@@ -164,9 +250,10 @@ function paintHud() {
   $('hudDist').textContent = `${fmt(feet(st))} ft`;
   $('hudSpeed').textContent = `${mph(st.v)} MPH${st.ice ? ' · ICE!' : ''}`;
 }
-function toast(text) {
-  const el = document.createElement('div'); el.className = 'toast'; el.textContent = text;
-  $('toasts').appendChild(el); setTimeout(() => el.remove(), 1400);
+function toast(text, ms = 1400) {
+  const el = document.createElement('div'); el.className = 'toast' + (ms > 1400 ? ' long' : ''); el.textContent = text;
+  if (ms > 1400) el.style.animationDuration = `${ms}ms`;
+  $('toasts').appendChild(el); setTimeout(() => el.remove(), ms);
 }
 function crashed() {
   mode = 'crash'; modeAt = now();
@@ -180,6 +267,8 @@ function crashed() {
   keys.left = keys.right = false; held.left.clear(); held.right.clear(); paintArrows();
   const ft = feet(st), b = bests();
   run.results.push({ scene: sceneIdx, ft, hit: st.crashed.kind, best: ft > (b.s[sceneIdx] || 0) });
+  // Today's run: the world goes to the board with the arrows held, step by step
+  if (run.daily && run.daily.official) dailySend({ world: sceneIdx, inputs: run.log });
 }
 function showCard() {
   mode = 'card'; modeAt = now();
@@ -188,7 +277,7 @@ function showCard() {
   $('dots').innerHTML = SCENES.map((_, i) => `<i class="${i < run.results.length ? 'on' : ''}"></i>`).join('');
   $('cardK').textContent = `${S.emoji} ${S.name.toUpperCase()}`;
   $('cardM').textContent = `${fmt(r.ft)} ft`;
-  $('cardWhy').textContent = r.hit === 'trees' ? 'Off the trail and into the trees!' : `You hit ${CRASH_WORDS[r.hit] || 'something'}!`;
+  $('cardWhy').textContent = whyOf(r.hit, true);
   $('cardPb').hidden = !r.best;
   $('cardBtn').textContent = r.scene < 2 ? `Next: ${SCENES[r.scene + 1].emoji} ${SCENES[r.scene + 1].name} ▶` : 'See my final score ▶';
   show('card');
@@ -199,40 +288,70 @@ function nextFromCard() {
   if (sceneIdx < 2) startScene(sceneIdx + 1);
   else showResults();
 }
+const whyOf = (hit, card) => (hit === 'trees' ? (card ? 'Off the trail and into the trees!' : 'into the trees') : hit === 'left' ? 'left part way' : hit === 'end' ? 'still going' : card ? `You hit ${CRASH_WORDS[hit] || 'something'}!` : `hit ${CRASH_WORDS[hit] || 'something'}`);
 function showResults() {
   mode = 'results'; modeAt = now();
   stopLoops();
-  const b = bests(), total = run.results.reduce((a, r) => a + r.ft, 0), pb = total > (b.total || 0);
+  const D = run.daily, b = bests(), total = run.results.reduce((a, r) => a + r.ft, 0), pb = total > (b.total || 0);
   // keep the bests (each world's, and the total)
   run.results.forEach((r) => { if (r.ft > (b.s[r.scene] || 0)) b.s[r.scene] = r.ft; });
   if (pb) b.total = total;
   store.set(bestKey(), b);
-  $('resTotal').textContent = `${fmt(total)} ft`;
+  run.pb = pb;
+  $('resKind').textContent = D ? (D.official ? `TODAY'S RUN NO. ${D.no}` : `TODAY'S COURSES · PRACTICE`) : 'YOUR FINAL SCORE';
   $('resPb').hidden = !pb;
-  $('resRows').innerHTML = run.results.map((r) => { const S = SCENES[r.scene]; return `<div class="row"><i aria-hidden="true">${S.emoji}</i><div><b>${S.name.toUpperCase()}</b><small>${r.hit === 'trees' ? 'into the trees' : `hit ${CRASH_WORDS[r.hit] || 'something'}`}</small></div><strong>${fmt(r.ft)} ft${r.best ? '<sup>BEST</sup>' : ''}</strong></div>`; }).join('');
   $('resBest').textContent = pb ? 'Your best total ever!' : `Your best total: ${fmt(b.total)} ft`;
+  $('againBtn').textContent = D ? '🛷 Sled it again' : '🛷 Sled again';
   // the lab wallet: amber for finishing all three, a shard for a new best total
   $('resPaid').textContent = player() ? '' : 'Make a Capra Lab profile on the hub to earn amber every time you sled.';
   if (window.CapraWallet) {
     CapraWallet.earn('tough-sleddin', 'run', run.id);
     if (pb && total >= 1500) CapraWallet.earn('tough-sleddin', 'best', run.id);
   }
+  // today's board: Today's run waits for its last world to post; anything else just shows the board
+  const board = $('resBoard');
+  board.setAttribute('board', D_BOARD);
+  const post = $('resPost');
+  if (D && D.official) {
+    post.textContent = D.note || 'Posting to today’s board…';
+    const r0 = run;
+    run.q.then(() => { if (run === r0 && mode === 'results') posted(); });
+  } else post.textContent = D ? 'Practice never counts. Your first Today’s run of the day is the one on the board.' : 'Free sleds never count. Today’s board takes your first Today’s run of the day.';
+  paintScore();
+  if (D && D.official && D.view) board.show(D.view); else board.refresh();
+  sfx.win();
+  show('results');
+}
+// the score, the rows and the results text (painted again if the board's feet differ from the page's)
+function paintScore() {
+  const D = run.daily, total = run.results.reduce((a, r) => a + r.ft, 0), pb = run.pb;
+  $('resTotal').textContent = `${fmt(total)} ft`;
+  $('resRows').innerHTML = run.results.map((r) => { const S = SCENES[r.scene]; return `<div class="row"><i aria-hidden="true">${S.emoji}</i><div><b>${S.name.toUpperCase()}</b><small>${whyOf(r.hit, false)}</small></div><strong>${fmt(r.ft)} ft${r.best ? '<sup>BEST</sup>' : ''}</strong></div>`; }).join('');
   // the results text, the same card in every Capra Lab game
   const box = $('resShare');
   box.innerHTML = '';
   if (window.CapraShare) {
-    const text = CapraShare.text({ emoji: '🛷', game: 'Tough Sleddin', sub: '3 winter worlds',
+    const text = CapraShare.text({ emoji: '🛷', game: 'Tough Sleddin', no: D ? D.no : 0, sub: D ? (D.official ? 'Today’s run' : 'Today’s run, practice') : '3 winter worlds',
       lines: [...run.results.map((r) => `${SCENES[r.scene].name} ${fmt(r.ft)} ft`), `Total ${fmt(total)} ft${pb ? ' 👑 new best' : ''}`], grid: shareRows(run.results) });
     box.innerHTML = '<lab-text-share></lab-text-share>';
     box.firstChild.set({ emoji: '🛷', title: 'Tough Sleddin', text, url: `${location.origin}/tough-sleddin/` });
   }
-  sfx.win();
-  show('results');
+}
+// Today's run is on the board (or why not)
+function posted() {
+  const D = run.daily, post = $('resPost'), v = D.view;
+  if (v) {
+    paintScore();
+    $('resBoard').show(v);
+    const mine = v.me && v.me.rank ? v.me : null;
+    post.textContent = (D.note ? D.note + ' ' : '') + (!mine ? 'On today’s board.' : mine.rank === 1 ? '#1 on today’s board! Hold it till midnight and the trophy’s yours.' : `#${mine.rank} of ${v.of} on today’s board.`);
+  } else if (D.error) post.textContent = `Not on the board: ${D.error}`;
+  else { post.textContent = 'On today’s board.'; $('resBoard').refresh(); }
+  paintDaily();
 }
 function toMenu() { sfx.click(); stopLoops(); paintMenu(); show('menu'); menuRide(); }
 
 /* ---------------- the loop ---------------- */
-const H = 1 / 120;
 let acc = 0, last = now(), frames = [], slowSince = 0;
 function frame() {
   requestAnimationFrame(frame);
@@ -259,7 +378,8 @@ function frame() {
     W.frame(st, { mode: 'intro', dt, t, input: inp, intro: Math.min(1, Math.max(0, (e - 0.9) / 2.5)) });
   } else if (mode === 'play') {
     acc += dt;
-    while (acc >= H && !st.crashed) { step(st, inp, H, C); acc -= H; }
+    // (each step's arrow kept for Today's run: the board rides it again)
+    while (acc >= H && !st.crashed) { step(st, inp, H, C); logInput(run.log, inp); acc -= H; }
     if (st.air && !wasAir) sfx.jump();
     if (!st.air && wasAir) {
       sfx.land();
@@ -320,8 +440,11 @@ addEventListener('blur', () => { keys.left = keys.right = false; held.left.clear
 document.addEventListener('visibilitychange', () => { last = now(); if (document.hidden) stopLoops(); else if (mode === 'play') startLoops(); });
 
 $('startBtn').onclick = startGame;
+$('dailyBtn').onclick = startDaily;
+$('boardBtn').onclick = () => { sfx.click(); if (window.CapraDaily) CapraDaily.open(D_BOARD); };
 $('cardBtn').onclick = nextFromCard;
-$('againBtn').onclick = startGame;
+$('againBtn').onclick = () => (run && run.daily ? startDaily() : startGame());
+addEventListener('capra-daily:posted', () => { if (mode === 'menu') paintDaily(); });
 $('menuBtn').onclick = toMenu;
 $('soundBtn').onclick = () => { prefs.sound = !prefs.sound; savePrefs(); paintSound(); if (!prefs.sound) stopLoops(); else sfx.click(); };
 $('helpBtn').onclick = () => { $('help').hidden = false; $('helpClose').focus(); };
@@ -336,7 +459,9 @@ if (window.ResizeObserver) new ResizeObserver(() => W && W.resize()).observe($('
 window.__sled = {
   state: () => st && { mode, scene: sceneIdx, d: st.d, x: st.x, v: st.v, air: st.air, h: st.h, ice: st.ice, crashed: st.crashed && st.crashed.kind, results: run && run.results, stats: W && W.stats() },
   start: () => startGame(),
-  scene: (i) => { run = { id: 'test', results: [] }; startScene(i); },
+  scene: (i) => { run = { id: 'test', results: [], daily: null }; startScene(i); },
+  daily: () => startDaily(),
+  log: () => run && run.log,
   // jump the run ahead to d meters (at the speed it would have by then)
   warp: (d) => { if (!st) return; const S = C.S; st.t = Math.min((S.vMax - S.v0) / S.acc, (Math.sqrt(S.v0 * S.v0 + 2 * S.acc * d) - S.v0) / S.acc) + Math.max(0, d - (S.vMax * S.vMax - S.v0 * S.v0) / (2 * S.acc)) / S.vMax; st.d = d; st.x = C.center(d); st.vx = 0; st.y = C.height(st.x, d); lastFlag = Math.floor((d * FT) / 1000); },
   // jump the run to just before the next big jump (or one of a kind), lined up with it

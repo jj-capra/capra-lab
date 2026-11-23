@@ -1,6 +1,7 @@
 /* The daily challenge boards (JC, Nov 14 2026: "Three clue crew, and the puzzle, mind heist, and no cap
    to have a daily challenge leaderboard. More trophies to win. The most points the fastest wins"; and
-   later that night: "Par-Tee Time needs a daily three hole challenge with a leaderboard and trophy too").
+   later that night: "Par-Tee Time needs a daily three hole challenge with a leaderboard and trophy too"; and
+   Nov 22 2026: "Tough sledding just needs a longest leaderboard for the day. Same thing, they get a trophy").
    One board a game a day (a board a tier or shelf where the game has them): most points wins, a tie goes
    to the faster run, then the earlier one. Golf boards (`low`) go the other way: fewest strokes wins
    (net of the player's handicap, kept to par), then the faster round. Your first official run of the day is the one that counts.
@@ -26,6 +27,8 @@ export const BOARDS = {
   'no-cap:middle': { game: 'no-cap', title: 'No Cap', variant: 'Middle School', emoji: '🧢', unit: 'pts' },
   'no-cap:high': { game: 'no-cap', title: 'No Cap', variant: 'High School', emoji: '🧢', unit: 'pts' },
   'no-cap:adult': { game: 'no-cap', title: 'No Cap', variant: 'Young Adults', emoji: '🧢', unit: 'pts' },
+  // Tough Sleddin's Today's run: the day's three courses, the same for everyone; the longest total wins (feet)
+  'tough-sleddin': { game: 'tough-sleddin', title: 'Tough Sleddin', variant: 'Today’s run', emoji: '🛷', unit: 'ft' },
 };
 export const boardName = (id) => { const b = BOARDS[id]; return b ? `${b.title} · ${b.variant}` : id; };
 
@@ -46,6 +49,7 @@ export function fmtPoints(id, n) {
   if (u === '$') return '$' + Number(n || 0).toLocaleString('en-US');
   if (u === 'right') return `${n}/10`;
   if (u === 'topar') return toPar(Number(n) || 0);
+  if (u === 'ft') return Number(n || 0).toLocaleString('en-US') + ' ft';
   return Number(n || 0).toLocaleString('en-US');
 }
 export function fmtMs(ms) {
@@ -56,6 +60,7 @@ export function fmtMs(ms) {
 // The board's rule, in a line.
 export function ruleOf(id, winMin) {
   const how = isLow(id) ? 'Fewest strokes wins (net: your golf handicap’s share comes off), shown to par; a tie goes to the faster round. Your first round of the day counts.'
+    : (BOARDS[id] || {}).unit === 'ft' ? 'The longest run wins: all three worlds added up, on today’s courses (the same for everyone). Your first run of the day counts; leave a world part way and it goes down as 0 ft.'
     : 'Most points wins; a tie goes to the faster run. Your first run of the day counts.';
   return `${how} At midnight the #1 takes a trophy for their trophy room and a 💎${winMin > 1 ? ` (when ${winMin} or more played)` : ''}.`;
 }

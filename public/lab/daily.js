@@ -11,6 +11,8 @@
      await CapraDaily.start(board)            today's official run starts (the first call starts the clock)
      await CapraDaily.finish(board, answers)  → the board, with { points, ms }; null for a guest
      await CapraDaily.golf(scores, open)      Par-Tee Time's Daily 3: the strokes so far, hole by hole
+     await CapraDaily.sled({ world, inputs, open })  Tough Sleddin's Today's run, world by world: a world's
+                                              arrows (the server rides it again), and the world opening
    Games with a server post their own (lab/daily.js begin/post). */
 import { BOARDS, fmtPoints, fmtMs, WIN_MIN, ruleOf } from './daily-boards.mjs';
 
@@ -35,6 +37,13 @@ const CapraDaily = {
   async golf(scores, open = null) {
     if (!me()) return null;
     try { const v = await post('golf', { board: 'par-tee-time', scores, open }); if (v.view) window.dispatchEvent(new CustomEvent('capra-daily:posted', { detail: v.view })); return v; }
+    catch (e) { return { error: e.message, code: e.code, status: e.status }; }
+  },
+  // Tough Sleddin's Today's run: post a world that's over ({ world, inputs }: the arrows held, step by step) and/or
+  // say which one is opening ({ open }).  → { sled: { worlds, opened, left, done }, view? }
+  async sled(body) {
+    if (!me()) return null;
+    try { const v = await post('sled', { board: 'tough-sleddin', ...body }); if (v.view) window.dispatchEvent(new CustomEvent('capra-daily:posted', { detail: v.view })); return v; }
     catch (e) { return { error: e.message, code: e.code, status: e.status }; }
   },
   async board(board) {
@@ -93,7 +102,7 @@ class LabDailyBoard extends HTMLElement {
 if (!customElements.get('lab-daily-board')) customElements.define('lab-daily-board', LabDailyBoard);
 
 // <lab-daily-today>: every board's leader right now, for the hub (dark panel). Each row opens its game.
-const GAME_URL = { 'three-clue-crew': '/three-clue-crew/', 'puzzled-spin': '/puzzled-spin/', 'mind-heist': '/mind-heist/', 'no-cap': '/no-cap/', 'par-tee-time': '/par-tee-time/' };
+const GAME_URL = { 'three-clue-crew': '/three-clue-crew/', 'puzzled-spin': '/puzzled-spin/', 'mind-heist': '/mind-heist/', 'no-cap': '/no-cap/', 'par-tee-time': '/par-tee-time/', 'tough-sleddin': '/tough-sleddin/' };
 const TODAY_CSS = `
   :host { display: block; font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif; color: #FFF8EC; }
   ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
