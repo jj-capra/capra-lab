@@ -15,6 +15,7 @@
                                               arrows (the server rides it again), and the world opening
    Games with a server post their own (lab/daily.js begin/post). */
 import { BOARDS, fmtPoints, fmtMs, WIN_MIN, ruleOf } from './daily-boards.mjs';
+import './runs.js';   /* the Daily Runs: every board card ends with what's next (<lab-runs-next>) */
 
 const me = () => { try { const p = JSON.parse(localStorage.getItem('capra-lab.profile') || 'null'); return p && p.name && p.code ? p : null; } catch { return null; } };
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -96,7 +97,8 @@ class LabDailyBoard extends HTMLElement {
     this.shadowRoot.innerHTML = `<style>${CSS}</style><div class="c" role="region" aria-label="Today's board">
       <div class="top"><h3>🏆 TODAY’S BOARD</h3><span class="sub">${esc(b.emoji)} ${esc(b.variant)}</span></div>
       ${rows}${mine}${y}
-      <p class="rule">${esc(ruleOf(id, WIN_MIN))}</p></div>`;
+      <p class="rule">${esc(ruleOf(id, WIN_MIN))}</p>
+      <lab-runs-next game="${esc(b.game)}"${v && v.me && v.me.rank ? ' done' : ''}></lab-runs-next></div>`;
   }
 }
 if (!customElements.get('lab-daily-board')) customElements.define('lab-daily-board', LabDailyBoard);

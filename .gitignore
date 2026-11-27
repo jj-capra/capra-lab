@@ -8,7 +8,6 @@ public/swerve-planet/
 public/dont-look/
 public/goat-getaway/
 public/mind-heist/
-public/punchline/
 public/classified/
 public/no-cap/
 public/screensaver/
@@ -16,12 +15,10 @@ public/three-clue-crew/
 public/puzzled-spin/
 public/irl/
 public/send-it/
-public/studio/
 public/color-by-numbers/
 public/tough-sleddin/
 netlify/functions/mind-heist.mjs
 games/mind-heist/src/server/decks.gen.json
-games/punchline/server/decks.gen.mjs
 games/classified/server/content.gen.mjs
 games/no-cap/server/decks.gen.mjs
 games/mind-heist/netlify/

@@ -15,9 +15,6 @@ import { makeHandler as mindHeist } from '../games/mind-heist/src/server/api.mjs
 import { memoryStore as mhMemory } from '../games/mind-heist/src/server/store.mjs';
 import { createApi as goatApi } from '../games/goat-getaway/server/api.js';
 import { memoryStore as goatMemory } from '../games/goat-getaway/server/store.js';
-import { createApi as punchApi } from '../games/punchline/server/api.js';
-import { memoryStore as punchMemory } from '../games/punchline/server/store.js';
-import { loadDecks as punchDecks } from '../games/punchline/server/load.mjs';
 import { createApi as classifiedApi } from '../games/classified/server/api.js';
 import { memoryStore as classifiedMemory } from '../games/classified/server/store.js';
 import { loadContent as classifiedContent } from '../games/classified/server/content.mjs';
@@ -76,10 +73,6 @@ const mh = mindHeist(mhStore, { clock: () => Date.now() + mhOffset, labCheck: as
 // moves its clock (local only) so a test can reach tomorrow's ribbon
 let goatOffset = 0;
 const goat = goatApi({ store: goatMemory(), wallet, clock: () => Date.now() + goatOffset,
-  verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
-
-// Punchline reads its decks straight from games/punchline/decks/ (Netlify uses the built copy)
-const punch = punchApi({ store: punchMemory(), decks: punchDecks(), role: (handle) => crew.role(handle),
   verify: async (name, code) => { const p = await profiles.verify(name, code); return p ? { name: p.name, handle: p.handle } : null; } });
 
 // Classified reads its content straight from games/classified/content/; /classified/__clock?add=ms
@@ -158,7 +151,6 @@ http.createServer(async (req, res) => {
   if (url.pathname.startsWith('/mind-heist/api/')) return toFunction(req, res, mh);
   if (url.pathname.startsWith('/mind-heist/__')) return mhHook(url, res);
   if (url.pathname.startsWith('/goat-getaway/api/')) return toFunction(req, res, (r) => goat.handle(r));
-  if (url.pathname.startsWith('/punchline/api/')) return toFunction(req, res, (r) => punch.handle(r));
   if (url.pathname.startsWith('/classified/api/')) return toFunction(req, res, (r) => classified.handle(r));
   if (url.pathname.startsWith('/no-cap/api/')) return toFunction(req, res, (r) => noCap.handle(r));
   if (url.pathname.startsWith('/screensaver/api/')) return toFunction(req, res, (r) => screensaver.handle(r));
@@ -223,15 +215,16 @@ http.createServer(async (req, res) => {
     return json(res, await route(primal, req.method, url.pathname, url.searchParams, body));
   }
   let rel = decodeURIComponent(url.pathname);
-  if (rel === '/primal-survival' || rel === '/mind-heist' || rel === '/goat-getaway' || rel === '/punchline' || rel === '/classified' || rel === '/no-cap' || rel === '/screensaver') { res.writeHead(301, { location: rel + '/' }); return res.end(); }
+  // Punchline and Studio left the lab (Nov 27 2026): old links land on the hub, as netlify.toml does
+  if (/^\/(punchline|studio)(\/|$)/.test(rel)) { res.writeHead(302, { location: '/' }); return res.end(); }
+  if (rel === '/primal-survival' || rel === '/mind-heist' || rel === '/goat-getaway' || rel === '/classified' || rel === '/no-cap' || rel === '/screensaver') { res.writeHead(301, { location: rel + '/' }); return res.end(); }
   if (rel.endsWith('/')) rel += 'index.html';
   const file = path.normalize(path.join(ROOT, rel));
   if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end(); }
   fs.readFile(file, (err, buf) => {
     // Mind Heist's invite links (/mind-heist/ABCD, /r/, /c/, /tv/, /jam) load its app, as netlify.toml does
-    // Punchline's room links (/punchline/ABCD) load its page, as netlify.toml does
-    // Classified's room links (/classified/ABCD) and share files (/classified/file/<id>) too
-    const app = err && (rel.startsWith('/mind-heist/') ? 'mind-heist' : rel.startsWith('/punchline/') ? 'punchline' : rel.startsWith('/classified/') ? 'classified' : rel.startsWith('/no-cap/') ? 'no-cap' : null);
+    // Mind Heist's invite links and Classified's room links (/classified/ABCD) and share files (/classified/file/<id>) too
+    const app = err && (rel.startsWith('/mind-heist/') ? 'mind-heist' : rel.startsWith('/classified/') ? 'classified' : rel.startsWith('/no-cap/') ? 'no-cap' : null);
     if (app) return fs.readFile(path.join(ROOT, app, 'index.html'), (e2, page) => {
       if (e2) { res.writeHead(404); return res.end('not found'); }
       res.writeHead(200, { 'content-type': 'text/html' }); res.end(page);

@@ -86,7 +86,8 @@ on purpose; do not bring any of them back unless JC asks.
 15. **Jokes moved to Punchline** (JC, Nov 7 2026: "joke decks move out completely"). The 30 joke
     decks and the joke of the day now live in **Punchline**, Capra Lab's own party game of Wrong
     Signs and jokes (`games/punchline/`, with its own CLAUDE.md; the decks are
-    `games/punchline/decks/jokes/`). Don't bring jokes back into Mind Heist. The face-off rules for
+    `games/punchline/decks/jokes/`). Don't bring jokes back into Mind Heist. (Punchline itself left Capra Lab on Nov 27 2026, JC: "They just
+    aren't up to par"; its decks are in git history, last in commit baac02b.) The face-off rules for
     `kind: "jokes"` decks (Nov 2026: setup intro, secret picks, the replay, the blank round) are
     still in `engine.mjs` and its unit tests (`faceoff.test.mjs`, synthetic decks), unused: no
     deck has that kind any more.

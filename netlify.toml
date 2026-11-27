@@ -65,13 +65,17 @@
   to = "/mind-heist/index.html"
   status = 200
 
-# Punchline is native too: its server claims /punchline/api/* through its own config.path
-# (netlify/functions/punchline.mjs). Room links (/punchline/ABCD) load the page; real files are
-# served as they are.
+# Punchline and Studio left the lab on Nov 27 2026 (JC: "Studio and punchline can go away in Capra Lab.
+# They just aren't up to par"): an old link or Home Screen icon lands on the hub.
 [[redirects]]
   from = "/punchline/*"
-  to = "/punchline/index.html"
-  status = 200
+  to = "/"
+  status = 302
+
+[[redirects]]
+  from = "/studio/*"
+  to = "/"
+  status = 302
 
 # Classified: its server claims /classified/api/* through its own config.path
 # (netlify/functions/classified.mjs). Room links (/classified/ABCD) and share files

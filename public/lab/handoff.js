@@ -32,7 +32,7 @@
     .then((r) => (r.ok ? r.json() : null)).catch(() => null);
 
   const GAMES = {
-    'par-tee-time': 'Par-Tee Time', 'mind-heist': 'Mind Heist', 'no-cap': 'No Cap', punchline: 'Punchline', classified: 'Classified',
+    'par-tee-time': 'Par-Tee Time', 'mind-heist': 'Mind Heist', 'no-cap': 'No Cap', classified: 'Classified',
     'primal-survival': 'Primal Survival', 'swerve-planet': 'Swerve Planet', 'dont-look': 'Don’t Look!', 'goat-getaway': 'Goat Getaway',
     screensaver: 'Screensaver', 'three-clue-crew': 'Three Clue Crew', 'puzzled-spin': 'Puzzled Spin', 'color-by-numbers': 'Color by Numbers', 'tough-sleddin': 'Tough Sleddin', 'glacial-maw': 'Glacial Maw', 'trophy-room': 'Trophy Room',
   };
@@ -89,6 +89,7 @@
     const deep = path.split('/').filter(Boolean).length > 1;
     if (!(deep || u.search.length > 1 || u.hash.length > 1)) return;                       // a game's front page isn't an invite
     if (document.referrer && document.referrer.indexOf(location.origin) === 0) return;    // browsing the lab in Safari
+    if (u.searchParams.has('runs')) return;                                                // the Daily Runs (/lab/runs.js), not an invite
     if (store(localStorage, 'capra-lab.no-app') === '1') return;
     if (store(sessionStorage, 'capra-lab.play-here') === url) return;
     post('/api/handoff/drop', { url, fp: fp(), ...me() }).then((r) => {

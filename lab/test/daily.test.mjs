@@ -65,6 +65,24 @@ await test('Three Clue Crew: the server checks the ten and times the run from it
   assert.equal(last.of, 3);
 });
 
+await test('the Daily Runs on the hub: every leader, and where you stand on each board you touched today', async () => {
+  const g = setup(), board = 'three-clue-crew:4';
+  const ids = dailySet(ROUNDS[4].length, 4, tccDay('2026-11-14'));
+  await g.call('start', { ...JJ, board }); g.tick(60000);
+  await g.call('finish', { ...JJ, board, answers: ids.map((id, i) => (i < 7 ? ROUNDS[4][id].answer : 'x')) });
+  await g.call('start', { ...RO, board }); g.tick(30000);
+  await g.call('finish', { ...RO, board, answers: ids.map((id) => ROUNDS[4][id].answer) });
+  await g.call('start', { ...JJ, board: 'mind-heist' }).catch(() => {});
+  await g.call('start', { ...JJ, board: 'puzzled-spin:2' });
+  const t = await g.call('today', JJ);
+  assert.deepEqual(t.mine[board], { rank: 2, of: 2, points: 7, ms: 60000 });
+  assert.deepEqual(t.mine['puzzled-spin:2'], { started: true });
+  assert.equal(t.mine['no-cap:kids'], undefined);
+  assert.equal(t.boards.find((b) => b.board === board).top.name, 'Roman');
+  assert.equal((await g.get('today')).mine, undefined, 'the public list has no `mine`');
+  await assert.rejects(g.call('today', { name: 'JJ-Capra', code: 'nope' }), /Sign in/);
+});
+
 await test('Puzzled Spin: pictures must be whole and the clocks must add up', async () => {
   const g = setup(), board = 'puzzled-spin:1', no = spinDay('2026-11-14');
   await g.call('start', { ...JJ, board });

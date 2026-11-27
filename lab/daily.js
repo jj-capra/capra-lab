@@ -28,6 +28,8 @@
  *                                                           0 ft. The third world posts the run: all three added
  *                                                           up, timed by the sledding itself.
  *   GET  /api/daily/board?b=&d=                             a board (today unless d=), plus yesterday's winner
+ *   POST /api/daily/today  { name, code }                   every board's leader, plus `mine`: your rank on each
+ *                                                           board you've posted to today, or { started }
  *                                                           (and the Daily 3's holes on the golf board)
  *   GET  /api/daily/today                                   today's leader on every board
  * Days settle lazily: any call after midnight Pacific settles the days still open, paying each winner
@@ -197,14 +199,20 @@ export function createDaily({ store, wallet = null, verify = null, clock = () =>
     }
     return out;
   }
-  async function leaders() {
-    const date = today(), out = [];
-    for (const id of Object.keys(BOARDS)) {
+  // Every board's leader today; signed in, also where you are on each board you've started (`mine`: your rank, or
+  // started), for the hub's Daily Runs.
+  async function leaders(me = null) {
+    const date = today(), out = [], mine = {};
+    await Promise.all(Object.keys(BOARDS).map(async (id, i) => {
       const d = await read(id, date);
       const list = ranked(d ? d.entries : {}, isLow(id));
-      if (list.length) out.push({ board: id, of: list.length, top: { name: list[0].name, points: list[0].points, ms: list[0].ms } });
-    }
-    return { date, boards: out };
+      if (list.length) out[i] = { board: id, of: list.length, top: { name: list[0].name, points: list[0].points, ms: list[0].ms } };
+      if (!me || !d) return;
+      const e = list.find((x) => x.handle === me.handle);
+      if (e) mine[id] = { rank: e.rank, of: list.length, points: e.points, ms: e.ms };
+      else if (d.runs && d.runs[me.handle]) mine[id] = { started: true };
+    }));
+    return me ? { date, boards: out.filter(Boolean), mine } : { date, boards: out.filter(Boolean) };
   }
 
   /* ---------- the games without a server: check their answers here ---------- */
@@ -367,11 +375,12 @@ export function createDaily({ store, wallet = null, verify = null, clock = () =>
     if (method === 'GET' && action === 'board') return view(String(query.get('b') || ''), /^\d{4}-\d{2}-\d{2}$/.test(query.get('d') || '') ? query.get('d') : today());
     if (method === 'GET' && action === 'today') return leaders();
     if (method !== 'POST') throw fail(405, 'Use POST.');
-    if (!['start', 'finish', 'board', 'golf', 'sled'].includes(action)) throw fail(404, 'Not found.');
+    if (!['start', 'finish', 'board', 'golf', 'sled', 'today'].includes(action)) throw fail(404, 'Not found.');
     if (!verify) throw fail(500, 'The daily boards can’t check sign-ins here.');
     const name = String((body && body.name) || ''), code = String((body && body.code) || '');
     const me = name && code ? await verify(name, code) : null;
     if (!me) throw fail(401, 'Sign in to Capra Lab to get on the board.', 'signin');
+    if (action === 'today') return leaders(me);
     const board = String(body.board || '');
     if (action === 'board') return view(board, today(), me);
     if (action === 'start') {

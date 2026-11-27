@@ -82,6 +82,9 @@ function paint() {
   box.querySelectorAll('.cd-card').forEach((b) => { b.onclick = () => flip(Number(b.dataset.i)); });
   const join = $('cdJoin'); if (join) join.onclick = () => { const w = $('whoBtn'); if (w) w.click(); };
   const all = $('cdAll'); if (all) all.onclick = flipAll;
+  // where today's draw stands, for the hub's guided TODAY panel (public/lab/today.js)
+  const won = d && d.today ? S.up.filter((i) => d.today[i] && d.today[i].k !== 'dud').length : 0;
+  window.dispatchEvent(new CustomEvent('capra-cards:state', { detail: { me: !!S.me, loaded: !!d, left, won, held: kinds.reduce((a, k) => a + hand[k], 0), err: S.err } }));
 }
 
 async function ensureDrawn() {

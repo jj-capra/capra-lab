@@ -350,6 +350,7 @@ async function finish() {
       <p class="note">Level ${played} · ${right} perfect corner${right === 1 ? '' : 's'}${ended ? ` · ${G.lives} ♥ left` : ''}${G.mode === 'practice' ? ' · practice' : G.mode === 'replay' ? ' · not counted' : ''}</p><p class="note" id="postLine"></p></div>
     <div id="shareBox"></div>
     <section class="card" id="overBoard" ${G.mode === 'practice' ? 'hidden' : ''}><h2>TODAY’S BOARD</h2><ul class="board" id="board2"></ul></section>
+    <lab-runs-next${G.mode === 'daily' && lab() ? ' done' : ''}></lab-runs-next>
     <button class="btn wide" type="button" id="againBtn">Practice run</button>
     <button class="btn alt wide" type="button" id="homeBtn">Home</button>`;
   $('againBtn').onclick = () => start('practice');

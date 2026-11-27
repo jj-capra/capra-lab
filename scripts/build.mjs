@@ -82,24 +82,6 @@ async function buildGoatGetaway() {
   console.log('built public/goat-getaway/');
 }
 
-/* Punchline: a page, its art and the clock and scoring rules (the same file the server keeps time
-   with). The decks are checked, then baked into games/punchline/server/decks.gen.mjs for its
-   function (netlify/functions/punchline.mjs); answers never go into public/. */
-async function buildPunchline() {
-  const game = path.join(ROOT, 'games', 'punchline'), out = path.join(ROOT, 'public', 'punchline');
-  const { loadDecks, problems } = await import(path.join(game, 'server', 'load.mjs'));
-  const decks = loadDecks();
-  const bad = problems(decks);
-  if (bad.length) throw new Error('punchline decks:\n  ' + bad.join('\n  '));
-  await fs.writeFile(path.join(game, 'server', 'decks.gen.mjs'),
-    `// Built by scripts/build.mjs from games/punchline/decks/. Edit the decks, not this file.\nexport const DECKS = ${JSON.stringify(decks)};\n`);
-  await fs.rm(out, { recursive: true, force: true });
-  await fs.mkdir(path.join(out, 'shared'), { recursive: true });
-  for (const f of ['index.html', 'game.js', 'art.js']) await fs.copyFile(path.join(game, f), path.join(out, f));
-  for (const f of ['rules.mjs', 'glyphs.mjs']) await fs.copyFile(path.join(game, 'shared', f), path.join(out, 'shared', f));
-  console.log(`built public/punchline/ (${decks.length} decks, ${decks.reduce((n, d) => n + d.cards.length, 0)} cards)`);
-}
-
 /* Classified: a page, its script and the shared rules and avatars (the share page uses the same
    art). The missions, questions and awards are checked, then baked into
    games/classified/server/content.gen.mjs for its function (netlify/functions/classified.mjs). */
@@ -211,17 +193,6 @@ async function buildIrl() {
   console.log('built public/irl/');
 }
 
-/* Studio: a free creative playground (Nov 20 2026): the camera puts you in the universe with an aura,
-   a band plays genre progressions, the voice goes through auto-tune and effects, you record. No server.
-   The pose model and its runtime are IRL's (/irl/vendor, /irl/models), so buildIrl comes first. */
-async function buildStudio() {
-  const game = path.join(ROOT, 'games', 'studio'), out = path.join(ROOT, 'public', 'studio');
-  await fs.rm(out, { recursive: true, force: true });
-  await fs.mkdir(out, { recursive: true });
-  for (const f of ['index.html', 'app.js', 'music.mjs', 'band.js', 'voice.js', 'tune-worklet.js', 'moves.mjs', 'aura.js']) await fs.copyFile(path.join(game, f), path.join(out, f));
-  console.log('built public/studio/');
-}
-
 /* Tough Sleddin: a goat on a saucer sled down three winter worlds (Nov 22 2026). three.js and IRL's world kit
    bundled with the game by esbuild into one module. No server. */
 async function buildToughSleddin() {
@@ -249,7 +220,6 @@ await buildParTeeTime();
 await buildSwervePlanet();
 await buildDontLook();
 await buildGoatGetaway();
-await buildPunchline();
 await buildClassified();
 await buildNoCap();
 await buildScreensaver();
@@ -257,6 +227,5 @@ await buildThreeClueCrew();
 await buildPuzzledSpin();
 await buildIrl();
 await buildSendIt();
-await buildStudio();
 await buildColorByNumbers();
 await buildToughSleddin();

@@ -4,7 +4,7 @@
  *     <script src="/lab/brew.js"></script>
  * and take it out (plus the hub tile's data-brew) when JC says the game goes live.
  * A party game can let in the people a member invites: data-invite is a pattern for the page's
- * path (Punchline: data-invite="^/punchline/[A-Z]{4}$", a room link), and anyone opening such a
+ * path (say data-invite="^/my-game/[A-Z]{4}$", a room link), and anyone opening such a
  * link gets the page. They still need the room code, and they can't host or see anything else.
  * This keeps the public out of the game; the page's files are still on the site, so anything
  * truly secret (like trivia answers) belongs on a server, which is how Mind Heist hides decks. */

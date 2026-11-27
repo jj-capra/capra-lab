@@ -86,7 +86,7 @@ await test('sign-in, bad routes, and two pages paying at once', async () => {
   await assert.rejects(g.call('me', { name: 'JJ-Capra', code: 'nope' }), (e) => e.status === 401);
   await assert.rejects(g.w.route('GET', '/api/wallet/me', JJ), (e) => e.status === 405);
   await assert.rejects(g.call('spend', JJ), (e) => e.status === 404);
-  await Promise.all(Array.from({ length: 8 }, (_, i) => g.call('earn', { ...JJ, game: 'punchline', event: 'game', ref: 'p' + i })));
+  await Promise.all(Array.from({ length: 8 }, (_, i) => g.call('earn', { ...JJ, game: 'classified', event: 'game', ref: 'p' + i })));
   assert.equal((await g.call('me', JJ)).amber, 150, 'eight at once still stop at the cap');
   const res = await g.w.handle(new Request('http://x/api/wallet/me', { method: 'POST', body: JSON.stringify(JJ) }));
   assert.equal(res.status, 200);

@@ -605,7 +605,8 @@ const Today = {
       <div class="row">
         ${out ? '<button class="btn alt" type="button" id="againBtn">Play again</button>' : ''}
         ${me ? '<a class="btn alt" href="/mind-heist/">Mind Heist 💎</a>' : ''}
-      </div>`;
+      </div>
+      <lab-runs-next${me && me.ms != null ? ' done' : ''}></lab-runs-next>`;
     this.share();
     if (out) $('againBtn').addEventListener('click', () => { this.res = null; this.pen.reset(); this.set(this.data, false); });
   },

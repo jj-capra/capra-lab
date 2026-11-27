@@ -164,6 +164,80 @@
   .cl-add input { flex: 1; min-width: 0; min-height: 44px; padding: 0 12px; border-radius: 12px; border: 2px solid #05030A; background: var(--paper); color: var(--ink); font: 700 16px/1 Inter, system-ui, sans-serif; }
   .cl-msg { margin: 10px 0 0; font-size: 13px; font-weight: 700; color: #FF9A8B; min-height: 0; }
   .cl-msg:empty { display: none; }
+  /* TODAY: the guided way through the lab (public/lab/today.js) */
+  .today { margin: 0 0 26px; padding: 14px 14px 16px; border: 3px solid var(--ink); border-radius: 22px; background: #221B33; box-shadow: 5px 6px 0 #05030A; }
+  .td-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+  .td-head h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 28px; letter-spacing: 0.06em; line-height: 1; color: var(--yellow); }
+  .td-head span { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 248, 236, 0.7); white-space: nowrap; }
+  .td-cols { display: grid; gap: 14px; }
+  .td-steps { display: grid; gap: 8px; }
+  .td-steps[hidden], .td-guest[hidden] { display: none; }
+  .td-step { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 62px; padding: 10px 12px; border-radius: 16px; background: #2A2238; border: 2px solid #05030A; color: var(--paper); font: inherit; text-align: left; }
+  button.td-step { cursor: pointer; }
+  button.td-step:active { transform: translate(2px, 2px); }
+  button.td-step:focus-visible, .td-start:focus-visible, .rn a:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+  .td-n { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--yellow); color: var(--ink); border: 2px solid var(--ink); font-family: var(--display); font-size: 21px; line-height: 1; }
+  .td-step.done .td-n { background: var(--live); font-size: 0; }
+  .td-step.done .td-n::after { content: "✓"; font: 900 18px/1 Inter, system-ui, sans-serif; }
+  .td-t { flex: 1; min-width: 0; display: grid; gap: 2px; }
+  .td-t b { font-size: 16px; font-weight: 800; }
+  .td-t small { font-size: 13px; font-weight: 700; line-height: 1.3; color: rgba(255, 248, 236, 0.75); }
+  .td-go { flex: none; font-size: 26px; line-height: 1; color: var(--yellow); }
+  .td-three { background: none; border-color: transparent; padding-bottom: 2px; min-height: 0; }
+  .td-start { width: 100%; min-height: 62px; padding: 12px 16px; border-radius: 16px; background: var(--yellow); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 5px 0 #05030A;
+    font-family: var(--display); font-weight: 400; font-size: 25px; letter-spacing: 0.05em; line-height: 1; cursor: pointer; }
+  .td-start:active { transform: translate(3px, 4px); box-shadow: 1px 1px 0 #05030A; }
+  .td-start:disabled { background: var(--live); cursor: default; transform: none; box-shadow: 4px 5px 0 #05030A; }
+  .td-guest p { margin: 0 0 12px; font-size: 15px; font-weight: 600; line-height: 1.45; color: rgba(255, 248, 236, 0.86); }
+  .td-list .cd-h { margin-top: 0; }
+  .td-runs { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .rn a { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 54px; padding: 7px 12px; border-radius: 12px; background: rgba(255, 248, 236, 0.07); border: 2px solid rgba(5, 3, 10, 0.6); color: var(--paper); text-decoration: none; }
+  .rn a:active { transform: translate(1px, 2px); }
+  .rn .e { font-size: 22px; text-align: center; }
+  .rn .g { min-width: 0; line-height: 1.25; }
+  .rn .g b { display: block; font-size: 14.5px; font-weight: 800; }
+  .rn .g small { display: block; font-size: 12.5px; font-weight: 700; color: rgba(255, 248, 236, 0.72); overflow-wrap: anywhere; }
+  .rn .g small.ld { color: rgba(255, 210, 63, 0.9); }
+  .rn .s { font-size: 18px; font-weight: 900; color: var(--yellow); }
+  .rn.done a { background: rgba(91, 227, 138, 0.12); border-color: rgba(91, 227, 138, 0.45); }
+  .rn.done .s { color: var(--live); }
+
+  /* the welcome-back walk-through (first open of the day) */
+  .welcome .ob-card { max-width: 520px; }
+  .wb-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+  .wb-top .dots { margin: 0; flex: 1; }
+  .wb-x { flex: none; width: 44px; height: 44px; border-radius: 50%; background: #221B2E; border: 2px solid #05030A; color: var(--paper); font-size: 17px; font-weight: 800; cursor: pointer; }
+  .wb-x:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+  /* upright: the words, then the cards / the haul / the runs, then the buttons, held at the bottom of the screen */
+  .wb-step { display: flex; flex-direction: column; gap: 14px; }
+  .wb-step[hidden] { display: none; }
+  .wb-text { display: contents; }
+  .wb-text h2 { order: 1; }
+  .wb-text p { order: 2; }
+  .wb-body { order: 3; }
+  .wb-act { order: 4; position: sticky; bottom: -24px; z-index: 2; display: flex; flex-direction: column; gap: 10px; margin: 0 -20px -24px; padding: 14px 20px calc(16px + env(safe-area-inset-bottom));
+    background: linear-gradient(rgba(22, 20, 31, 0), var(--night) 18px); border-radius: 0 0 22px 22px; }
+  .wb-act .ob-link { padding: 4px 12px; min-height: 36px; }
+  .wb-text h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 36px; line-height: 1; letter-spacing: 0.03em; text-shadow: 2px 0 var(--magenta), -2px 0 var(--cyan); outline: none; overflow-wrap: anywhere; }
+  .wb-text p { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.45; color: rgba(255, 248, 236, 0.86); }
+  a.ob-btn { text-decoration: none; box-sizing: border-box; }
+  .wb-body .cdraw { margin: 0; padding: 0; border: 0; border-radius: 0; box-shadow: none; background: none; }
+  .wb-body .cd-head h2 { display: none; }
+  .hl-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .hl-big { display: grid; justify-items: center; align-content: center; gap: 5px; padding: 10px 6px; border-radius: 14px; background: #2A2238; border: 2px solid #05030A; text-align: center; }
+  .hl-big b { font-family: var(--display); font-weight: 400; font-size: 30px; line-height: 1; color: var(--yellow); }
+  .hl-big small { font-size: 9.5px; font-weight: 800; letter-spacing: 0.1em; line-height: 1.2; color: rgba(255, 248, 236, 0.72); }
+  .hl-new { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; }
+  .hl-new figure { margin: 0; display: grid; justify-items: center; gap: 4px; padding: 8px 6px; border-radius: 14px; background: #2A2238; border: 2px solid #05030A; text-align: center; }
+  .hl-new img { width: 64px; height: auto; }
+  .hl-new figcaption { font-size: 11.5px; font-weight: 800; line-height: 1.25; }
+  .hl-new figcaption small { display: block; font-weight: 700; color: rgba(255, 248, 236, 0.65); }
+  .hl-log { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .hl-log li { display: flex; align-items: flex-start; gap: 10px; padding: 9px 10px; border-radius: 12px; background: #2A2238; border: 2px solid #05030A; font-size: 14px; line-height: 1.35; }
+  .hl-log i { flex: none; font-style: normal; font-size: 20px; line-height: 1.1; }
+  .hl-log small { display: block; margin-top: 2px; font-size: 12px; font-weight: 700; color: rgba(255, 248, 236, 0.65); }
+  .hl-none { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.45; color: rgba(255, 248, 236, 0.82); }
+
   .masthead { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
   .masthead img { flex: none; width: 88px; height: 88px; }
   .masthead h1 {
@@ -252,6 +326,7 @@
   }
   .chip.live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--live); }
   .chip.original { color: var(--yellow); }
+  .chip.trophy { color: var(--yellow); }   /* a trophy up for grabs every day: it's in the Daily Runs */
   .chip.soon { background: transparent; color: var(--ink); border: 2px solid var(--ink); padding: 3px 7px; }
 
   .name { position: relative; display: flex; flex-direction: column; gap: 3px; z-index: 1; }
@@ -404,13 +479,25 @@
     .tile { min-height: 172px; }
   }
   /* Sideways (JC, Nov 15 2026: "All games need to maximize viewport in landscape mode"): the hub spreads
-     across the screen, the wallet and the card draw side by side, the games five or six across. */
+     across the screen, TODAY in two columns, the games five or six across. */
   @media (orientation: landscape) and (min-width: 700px) {
-    .lab { max-width: 1240px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 22px; align-items: start; padding-top: calc(env(safe-area-inset-top) + 22px); }
+    .lab { max-width: 1240px; padding-top: calc(env(safe-area-inset-top) + 18px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 22px; align-items: center; }
     .lab > * { grid-column: 1 / -1; }
-    .lab > .wallet { grid-column: 1; }
-    .lab > #cardDraw { grid-column: 2; }
+    .lab > .masthead { grid-column: 1; margin-bottom: 16px; }
+    .lab > .who-btn { grid-column: 2; margin-bottom: 16px; }
+    .masthead img { width: 64px; height: 64px; }
+    .masthead h1 { font-size: 48px; }
+    /* TODAY: the steps and the start button on the left, the Daily Runs on the right */
+    .td-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); align-items: start; column-gap: 18px; }
+    .td-runs { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
     .games { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+    /* the walk-through: the words and buttons on the left, the cards / the haul / the runs on the right */
+    .welcome .ob-card { max-width: 1120px; padding-top: 12px; }
+    .wb-top { margin-bottom: 4px; }
+    .wb-step { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: start; column-gap: 24px; }
+    .wb-text { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 0; }
+    .wb-act { position: static; margin: 4px 0 0; padding: 0; background: none; }
+    .welcome .td-runs { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
   }
   @media (prefers-reduced-motion: reduce) {
     .tile { transition: none; }
@@ -433,67 +520,37 @@
     <span class="who-text"><small>One profile, every game</small><b>Make your Capra Lab profile</b></span><span class="who-cta">Start</span>
   </button>
 
-  <!-- The wallet (public/lab/wallet-panel.js, lab/wallet.js): diamonds, amber and shards, one per
-       lab player, paid by every game and shared with Glacial Maw. -->
-  <section class="wallet" id="walletPanel" aria-label="Your wallet">
-    <h2>YOUR WALLET</h2>
-    <div id="wlBody"></div>
-  </section>
-
-  <!-- The daily Card Draw (public/lab/card-draw.js, lab/cards.js): four cards a day for every lab
-       player; prizes wait in the hand until a game plays them. -->
-  <section class="cdraw" id="cardDraw" aria-label="Daily card draw">
-    <div class="cd-head"><h2>DAILY CARD DRAW</h2><span id="cdWhen"></span></div>
-    <div class="cd-cards" id="cdCards"></div>
-    <p class="cd-line" id="cdLine" role="status" aria-live="polite"></p>
-    <div class="cd-hand" id="cdHand" hidden>
-      <h3 class="cd-h">YOUR HAND</h3>
-      <div class="cd-list" id="cdHandList"></div>
-    </div>
-  </section>
-
-  <!-- Today's boards (public/lab/daily.js, lab/daily.js): Three Clue Crew, Puzzled Spin, Mind Heist, No Cap,
-       Par-Tee Time and Tough Sleddin rank every day's first run; the #1 at midnight takes a trophy and a diamond. -->
-  <section class="cdraw dboards" id="dailyBoards" aria-label="Today's boards">
-    <div class="cd-head"><h2 class="db-h">TODAY'S BOARDS</h2><span>#1 at midnight wins a trophy</span></div>
-    <lab-daily-today></lab-daily-today>
-  </section>
-
-  <!-- Capra's Lab: JC's private side (lab/crew.js, public/lab/capras-lab.js). Only the owner and his
-       crew ever see it; games still in testing go in #clGames as tiles marked data-brew. -->
-  <section class="capras" id="caprasLab" aria-label="Capra's Lab" hidden>
-    <button class="cl-head" id="clToggle" type="button" aria-expanded="true" aria-controls="clBody">
-      <span class="cl-lock" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg></span>
-      <span class="cl-title"><b>CAPRA'S LAB</b><small id="clRole">Crew</small></span>
-      <span class="cl-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
-    </button>
-    <div class="cl-body" id="clBody">
-      <p class="cl-note">Only you and your crew can see this.</p>
-
-      <h3 class="cl-h">IN TESTING</h3>
-      <nav class="games cl-games" id="clGames" aria-label="Games in testing">
-      </nav>
-      <p class="cl-note" id="clGamesEmpty">Nothing in testing right now. New games you call JJ Brews show up here before anyone else sees them.</p>
-
-      <div class="cl-row"><h3 class="cl-h">TRIVIA DECKS</h3><span class="cl-count" id="clDeckCount"></span></div>
-      <div class="cl-decks" id="clDecks"></div>
-      <a class="cl-btn" href="/mind-heist/">Host a trivia night in Mind Heist</a>
-
-      <div id="clCrewBox" hidden>
-        <h3 class="cl-h">CREW</h3>
-        <ul class="cl-crew" id="clCrew"></ul>
-        <form class="cl-add" id="clAdd" autocomplete="off">
-          <input id="clAddName" maxlength="17" placeholder="Their Capra Lab name" aria-label="Capra Lab name to add" autocapitalize="off" spellcheck="false">
-          <button class="cl-btn sm" type="submit">Add</button>
-        </form>
+  <!-- TODAY: the guided way through the lab (public/lab/today.js; JC, Nov 27 2026: "Simplify the main menu to be
+       more guided in navigation"): flip today's cards, check your trophy haul, start your Daily Runs. -->
+  <section class="today" id="today" aria-labelledby="tdHello">
+    <div class="td-head"><h2 id="tdHello">TODAY IN THE LAB</h2><span id="tdDate"></span></div>
+    <div class="td-cols">
+      <div class="td-steps" id="tdSteps">
+        <button class="td-step" id="tdCards" type="button">
+          <span class="td-n" aria-hidden="true">1</span><span class="td-t"><b>Flip today’s cards</b><small id="tdCardsLine">Four new cards every day</small></span><span class="td-go" aria-hidden="true">›</span>
+        </button>
+        <button class="td-step" id="tdHaul" type="button">
+          <span class="td-n" aria-hidden="true">2</span><span class="td-t"><b>Check your trophy haul</b><small id="tdHaulLine">Trophies and break-ins</small></span><span class="td-go" aria-hidden="true">›</span>
+        </button>
+        <div class="td-step td-three" id="tdRunsStep">
+          <span class="td-n" aria-hidden="true">3</span><span class="td-t"><b>Start my Daily Runs</b><small id="tdRunsLine">Every game with a trophy up for grabs today</small></span>
+        </div>
+        <button class="td-start" id="tdStart" type="button">START MY DAILY RUNS ▸</button>
       </div>
-      <p class="cl-msg" id="clMsg" role="status"></p>
+      <div class="td-guest" id="tdGuest" hidden>
+        <p>Make your Capra Lab profile and every day you get four cards to flip, trophies to win, and your Daily Runs: every game with a trophy up for grabs, one after another.</p>
+        <button class="td-start" id="tdJoin" type="button">MAKE MY PROFILE ▸</button>
+      </div>
+      <div class="td-list">
+        <h3 class="cd-h">DAILY RUNS · A TROPHY IN EACH</h3>
+        <ul class="td-runs" id="tdRuns"></ul>
+      </div>
     </div>
   </section>
 
   <div class="label">
-    <h2>PICK AN EXPERIMENT</h2>
-    <span>17 GAMES</span>
+    <h2>ALL GAMES</h2>
+    <span>15 GAMES</span>
   </div>
 
   <nav class="games" aria-label="Games">
@@ -502,7 +559,7 @@
     <a class="tile" href="/tough-sleddin/" style="--tile: #7FC8FF">
       <div class="top">
         <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="16.5" rx="9" ry="3.2"/><path d="M7.5 15c0-3.2 2-5.6 4.5-5.6s4.5 2.4 4.5 5.6"/><circle cx="12" cy="6.6" r="2.4"/><path d="M10 4.8 8.6 3.2M14 4.8l1.4-1.6"/></svg></div>
-        <span class="chip live">NEW</span>
+        <span class="chip trophy">🏆 DAILY</span>
       </div>
       <div class="name"><strong>TOUGH SLEDDIN</strong><span>Three winter worlds. One life each.</span></div>
     </a>
@@ -514,15 +571,6 @@
         <span class="chip live">NEW</span>
       </div>
       <div class="name"><strong>COLOR BY NUMBERS</strong><span>Tap a number. Fill the picture.</span></div>
-    </a>
-
-    <!-- Studio (Nov 20 2026): sing in the universe; genre progressions, auto-tune, an aura from the camera, record songs -->
-    <a class="tile" href="/studio/" style="--tile: #B57CFF">
-      <div class="top">
-        <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/><path d="M19.5 3.5l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6zM4 4.5l.4 1 1 .4-1 .4-.4 1-.4-1-1-.4 1-.4z"/></svg></div>
-        <span class="chip live">NEW</span>
-      </div>
-      <div class="name"><strong>STUDIO</strong><span>Sing in the universe.</span></div>
     </a>
 
     <!-- IRL (Nov 14 2026): squats, push-ups, wall sits, targets and dribbles, counted by the phone's camera -->
@@ -547,7 +595,7 @@
     <a class="tile" href="/three-clue-crew/" style="--tile: #8C6CFF">
       <div class="top">
         <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="6" height="12" rx="1.5"/><rect x="9" y="4" width="6" height="12" rx="1.5"/><rect x="15.5" y="6" width="6" height="12" rx="1.5"/><path d="M12 19.5v1"/></svg></div>
-        <span class="chip original">LAB ORIGINAL</span>
+        <span class="chip trophy">🏆 DAILY</span>
       </div>
       <div class="name"><strong>THREE CLUE CREW</strong><span>Three clues. One answer.</span></div>
     </a>
@@ -556,7 +604,7 @@
     <a class="tile" href="/puzzled-spin/" style="--tile: #29D3F0">
       <div class="top">
         <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><path d="M14.5 17a3 3 0 1 0 3-3"/><path d="M17.5 12.4v1.8h1.8"/></svg></div>
-        <span class="chip original">LAB ORIGINAL</span>
+        <span class="chip trophy">🏆 DAILY</span>
       </div>
       <div class="name"><strong>PUZZLED SPIN</strong><span>Spin the tiles. Match every edge.</span></div>
     </a>
@@ -565,7 +613,7 @@
     <a class="tile" href="/par-tee-time/" style="--tile: #4CC9A0">
       <div class="top">
         <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 19V3"/><path d="M8 3.5l9 3.2-9 3.3"/><ellipse cx="12" cy="19.5" rx="8" ry="2"/><circle cx="17" cy="15" r="1.6"/></svg></div>
-        <span class="chip original">LAB ORIGINAL</span>
+        <span class="chip trophy">🏆 DAILY</span>
       </div>
       <div class="name"><strong>PAR-TEE TIME</strong><span>Pool-shot mini golf</span></div>
     </a>
@@ -583,18 +631,9 @@
     <a class="tile" href="/goat-getaway/" style="--tile: #FF9A4D">
       <div class="top">
         <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.6 7.2C8 5 6 3.6 3.5 3.5"/><path d="M15.4 7.2C16 5 18 3.6 20.5 3.5"/><path d="M7.8 9.4 3.2 8.8c.6 1.7 2.3 2.5 4.8 2.1"/><path d="M16.2 9.4l4.6-.6c-.6 1.7-2.3 2.5-4.8 2.1"/><path d="M8 7.8c2.6-1.6 5.4-1.6 8 0 .5 3.9-.5 7.6-2.6 9.9h-2.8C8.5 15.4 7.5 11.7 8 7.8z"/><path d="M10.6 17.9c.4 1.9.9 2.8 1.4 2.8s1-.9 1.4-2.8"/><path d="M10.2 11.3h.01M13.8 11.3h.01" stroke-width="3"/></svg></div>
-        <span class="chip original">LAB ORIGINAL</span>
+        <span class="chip trophy">🏆 DAILY</span>
       </div>
       <div class="name"><strong>GOAT GETAWAY</strong><span>Slide the hay. Free the goat.</span></div>
-    </a>
-
-    <!-- Lab original: spot the sign that's off (a JJ Brew until it went live on Nov 8 2026) -->
-    <a class="tile" href="/punchline/" style="--tile: #FF3D8B">
-      <div class="top">
-        <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v11H11l-5 4v-4H4z"/><path d="M8.5 8.5h7M8.5 11.5h4.5"/></svg></div>
-        <span class="chip original">LAB ORIGINAL</span>
-      </div>
-      <div class="name"><strong>PUNCHLINE</strong><span>Spot the sign that’s off</span></div>
     </a>
 
     <!-- Lab original: the sleepover game (a JJ Brew until it went live on Nov 8 2026) -->
@@ -610,7 +649,7 @@
     <a class="tile" href="/no-cap/" style="--tile: #3D7BFF">
       <div class="top">
         <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M6 18L18 6"/><path d="M8.5 13.5c0-2.5 1.6-4.5 3.8-4.5 2 0 3.4 1.5 3.6 3.6l1.6.4"/></svg></div>
-        <span class="chip original">LAB ORIGINAL</span>
+        <span class="chip trophy">🏆 DAILY</span>
       </div>
       <div class="name"><strong>NO CAP</strong><span>Three facts, one cap</span></div>
     </a>
@@ -619,7 +658,7 @@
     <a class="tile" href="/screensaver/" style="--tile: #3BE7FF">
       <div class="top">
         <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="13" rx="2"/><rect x="13" y="11" width="5" height="4" rx="1"/><path d="M8 20.5h8M7 9l4 2.5"/></svg></div>
-        <span class="chip original">LAB ORIGINAL</span>
+        <span class="chip trophy">🏆 DAILY</span>
       </div>
       <div class="name"><strong>SCREENSAVER</strong><span>Call the perfect corner</span></div>
     </a>
@@ -627,7 +666,7 @@
     <a class="tile" href="/mind-heist/" style="--tile: #EAB83C">
       <div class="top">
         <div class="badge"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2.5M12 18v2.5M3.5 12H6M18 12h2.5M14.1 9.9l2.6-2.6"/></svg></div>
-        <span class="chip live">LIVE</span>
+        <span class="chip trophy">🏆 DAILY</span>
       </div>
       <div class="name"><strong>MIND HEIST</strong><span>Trivia heist for crews</span></div>
     </a>
@@ -662,6 +701,45 @@
     </div>
 
   </nav>
+
+  <!-- The wallet (public/lab/wallet-panel.js, lab/wallet.js): diamonds, amber and shards, one per
+       lab player, paid by every game and shared with Glacial Maw. -->
+  <section class="wallet" id="walletPanel" aria-label="Your wallet">
+    <h2>YOUR WALLET</h2>
+    <div id="wlBody"></div>
+  </section>
+
+  <!-- Capra's Lab: JC's private side (lab/crew.js, public/lab/capras-lab.js). Only the owner and his
+       crew ever see it; games still in testing go in #clGames as tiles marked data-brew. -->
+  <section class="capras" id="caprasLab" aria-label="Capra's Lab" hidden>
+    <button class="cl-head" id="clToggle" type="button" aria-expanded="true" aria-controls="clBody">
+      <span class="cl-lock" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg></span>
+      <span class="cl-title"><b>CAPRA'S LAB</b><small id="clRole">Crew</small></span>
+      <span class="cl-chev" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+    </button>
+    <div class="cl-body" id="clBody">
+      <p class="cl-note">Only you and your crew can see this.</p>
+
+      <h3 class="cl-h">IN TESTING</h3>
+      <nav class="games cl-games" id="clGames" aria-label="Games in testing">
+      </nav>
+      <p class="cl-note" id="clGamesEmpty">Nothing in testing right now. New games you call JJ Brews show up here before anyone else sees them.</p>
+
+      <div class="cl-row"><h3 class="cl-h">TRIVIA DECKS</h3><span class="cl-count" id="clDeckCount"></span></div>
+      <div class="cl-decks" id="clDecks"></div>
+      <a class="cl-btn" href="/mind-heist/">Host a trivia night in Mind Heist</a>
+
+      <div id="clCrewBox" hidden>
+        <h3 class="cl-h">CREW</h3>
+        <ul class="cl-crew" id="clCrew"></ul>
+        <form class="cl-add" id="clAdd" autocomplete="off">
+          <input id="clAddName" maxlength="17" placeholder="Their Capra Lab name" aria-label="Capra Lab name to add" autocapitalize="off" spellcheck="false">
+          <button class="cl-btn sm" type="submit">Add</button>
+        </form>
+      </div>
+      <p class="cl-msg" id="clMsg" role="status"></p>
+    </div>
+  </section>
 
   <p class="tip">On iPhone: Share › Add to Home Screen opens the lab full-screen.</p>
 
@@ -752,7 +830,56 @@
   </div>
 </div>
 
+<!-- Welcome back (public/lab/today.js): the first time a signed-in player opens the hub each day. The daily Card
+     Draw (public/lab/card-draw.js, lab/cards.js) lives in its first step. -->
+<div class="onboard welcome" id="welcome" role="dialog" aria-modal="true" aria-label="Welcome back" hidden>
+  <div class="ob-card wb-card">
+    <div class="wb-top"><div class="dots" aria-hidden="true"><span></span><span></span><span></span></div><button class="wb-x" id="wbClose" type="button" aria-label="Close">✕</button></div>
+
+    <section class="wb-step" data-w="cards">
+      <div class="wb-text">
+        <h2 id="wbHello">Welcome back!</h2>
+        <p>Four new cards today. Flip them: some do nothing, the rest go in your hand for a game.</p>
+        <div class="wb-act"><button class="ob-btn" type="button" data-wnext="haul">Next: my trophy haul ›</button></div>
+      </div>
+      <div class="wb-body">
+        <!-- the daily Card Draw: four cards a day for every lab player; prizes wait in the hand until a game plays them -->
+        <section class="cdraw" id="cardDraw" aria-label="Daily card draw">
+          <div class="cd-head"><h2>DAILY CARD DRAW</h2><span id="cdWhen"></span></div>
+          <div class="cd-cards" id="cdCards"></div>
+          <p class="cd-line" id="cdLine" role="status" aria-live="polite"></p>
+          <div class="cd-hand" id="cdHand" hidden>
+            <h3 class="cd-h">YOUR HAND</h3>
+            <div class="cd-list" id="cdHandList"></div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="wb-step" data-w="haul" hidden>
+      <div class="wb-text">
+        <h2>Your trophy haul</h2>
+        <p id="wbHaulSub">Here’s what happened since you were last here.</p>
+        <div class="wb-act"><button class="ob-btn" type="button" data-wnext="runs">Next: my Daily Runs ›</button>
+        <a class="ob-btn alt" id="wbRoom" href="/trophy-room/">Visit my trophy room</a></div>
+      </div>
+      <div class="wb-body" id="wbHaul"></div>
+    </section>
+
+    <section class="wb-step" data-w="runs" hidden>
+      <div class="wb-text">
+        <h2>Start my Daily Runs</h2>
+        <p>Every game here has a trophy up for grabs today. Your first run in each one counts, and the #1 at midnight takes the trophy. Finish one and it takes you to the next.</p>
+        <div class="wb-act"><button class="ob-btn" id="wbStart" type="button">START MY DAILY RUNS ▸</button>
+        <button class="ob-link" id="wbLater" type="button">Not now, show me the lab</button></div>
+      </div>
+      <div class="wb-body"><ul class="td-runs" id="wbRuns"></ul></div>
+    </section>
+  </div>
+</div>
+
 <script type="module" src="/lab/hub.js"></script>
+<script type="module" src="/lab/today.js"></script>
 <script type="module" src="/lab/handicap.js"></script>
 </body>
 </html>
